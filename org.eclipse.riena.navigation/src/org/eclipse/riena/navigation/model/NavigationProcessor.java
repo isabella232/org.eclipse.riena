@@ -33,6 +33,7 @@ import org.eclipse.riena.core.util.Iter;
 import org.eclipse.riena.core.util.Nop;
 import org.eclipse.riena.core.util.Trace;
 import org.eclipse.riena.internal.navigation.Activator;
+import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.IJumpTargetListener;
 import org.eclipse.riena.navigation.IJumpTargetListener.JumpTargetState;
 import org.eclipse.riena.navigation.IModuleGroupNode;
@@ -278,6 +279,7 @@ public class NavigationProcessor implements INavigationProcessor {
 		final INavigationNode<?> nodeToDispose = getNodeToDispose(toDispose);
 		if (nodeToDispose != null && !nodeToDispose.isDisposed()) {
 			final State nodeStartState = nodeToDispose.getState();
+			final IApplicationNode applicationNode = nodeToDispose.getParentOfType(IApplicationNode.class);
 			handleJumpsOnDispose(nodeToDispose);
 			final List<INavigationNode<?>> toDeactivateList = getNodesToDeactivateOnDispose(nodeToDispose);
 			Boolean oldSelectable = null;
@@ -308,7 +310,13 @@ public class NavigationProcessor implements INavigationProcessor {
 						}
 						deactivate(navigationContext);
 						dispose(navigationContext);
-						activate(navigationContext);
+						final Object target = toDispose.getContext(INavigationNode.CONTEXTKEY_NAVIGATE_AFTER_DISPOSE);
+						if ((target instanceof NavigationNodeId) && (applicationNode != null)) {
+							final NavigationNodeId targetId = (NavigationNodeId) target;
+							navigate(applicationNode, targetId, new NavigationArgument());
+						} else {
+							activate(navigationContext);
+						}
 					}
 				}
 			}
@@ -467,7 +475,9 @@ public class NavigationProcessor implements INavigationProcessor {
 		if (node == null) {
 			node = targetNode;
 		}
-		navigationMap.put(node, sourceNode);
+		if (!(sourceNode instanceof IApplicationNode)) {
+			navigationMap.put(node, sourceNode);
+		}
 
 		if (NavigationType.JUMP == navigationType) {
 			handleJump(sourceNode, node);
@@ -1235,6 +1245,63 @@ public class NavigationProcessor implements INavigationProcessor {
 				LOGGER.log(LogService.LOG_DEBUG, "NaviProc: - onAfterActivate: " + nextToActivate.getNodeId()); //$NON-NLS-1$
 			}
 			nextToActivate.onAfterActivate(context);
+		}
+		if (!nextNodesToActivate.isEmpty()) {
+			checkActiveNodes(nextNodesToActivate.iterator().next());
+		}
+	}
+
+	/**
+	 * Checks if only one kind of navigation node (e.g. ISubModuleNode) is
+	 * activated.
+	 * 
+	 * @param someChild
+	 *            some child in the tree of the navigation model
+	 * @return {@code true} all active nodes are correct, otherwise
+	 *         {@code false}
+	 */
+	private boolean checkActiveNodes(final INavigationNode<?> someChild) {
+		boolean ok = true;
+		if (someChild instanceof IApplicationNode) {
+			return ok;
+		}
+		final IApplicationNode application = someChild.getParentOfType(IApplicationNode.class);
+		final List<INavigationNode<?>> activeNodes = new LinkedList<INavigationNode<?>>();
+		addChildren(application, activeNodes, State.ACTIVATED);
+		for (int i = 0; i < activeNodes.size(); i++) {
+			for (int j = i + 1; j < activeNodes.size(); j++) {
+				final INavigationNode<?> iNode = activeNodes.get(i);
+				final INavigationNode<?> jNode = activeNodes.get(j);
+				if (iNode instanceof IApplicationNode && jNode instanceof IApplicationNode) {
+					LOGGER.log(LogService.LOG_ERROR, "Two active IApplicationNodes"); //$NON-NLS-1$
+					ok = false;
+				} else if (iNode instanceof ISubApplicationNode && jNode instanceof ISubApplicationNode) {
+					LOGGER.log(LogService.LOG_ERROR, "Two active ISubApplicationNodes"); //$NON-NLS-1$
+					ok = false;
+				} else if (iNode instanceof IModuleGroupNode && jNode instanceof IModuleGroupNode) {
+					LOGGER.log(LogService.LOG_ERROR, "Two active IModuleGroupNode"); //$NON-NLS-1$
+					ok = false;
+				} else if (iNode instanceof IModuleNode && jNode instanceof IModuleNode) {
+					LOGGER.log(LogService.LOG_ERROR, "Two active IModuleNode"); //$NON-NLS-1$
+					ok = false;
+				} else if (iNode instanceof ISubModuleNode && jNode instanceof ISubModuleNode) {
+					LOGGER.log(LogService.LOG_ERROR, "Two active ISubModuleNodes"); //$NON-NLS-1$
+					ok = false;
+				}
+			}
+		}
+		return ok;
+	}
+
+	private void addChildren(final INavigationNode<?> parent, final List<INavigationNode<?>> nodes,
+			final State nodeState) {
+		if (parent != null) {
+			for (final INavigationNode<?> child : parent.getChildren()) {
+				if (child.getState() == nodeState) {
+					nodes.add(child);
+				}
+				addChildren(child, nodes, nodeState);
+			}
 		}
 	}
 
