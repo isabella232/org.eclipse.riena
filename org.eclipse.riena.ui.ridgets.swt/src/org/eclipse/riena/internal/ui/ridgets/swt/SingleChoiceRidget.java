@@ -328,7 +328,9 @@ public class SingleChoiceRidget extends AbstractChoiceRidget implements ISingleC
 						if (button.getSelection() && !isOutputOnly()) {
 							// this is a workaround to make composite table aware of focus changes, Bug #264627
 							SingleChoiceRidget.this.setSelection(data);
-							fireFocusIn(button.getParent());
+							if (!button.isDisposed()) {
+								fireFocusIn(button.getParent());
+							}
 						}
 					}
 				});
