@@ -114,8 +114,6 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 			createDetails(details);
 		}
 		setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
-		// master.setBackground(master.getDisplay().getSystemColor(SWT.COLOR_CYAN));
-		// details.setBackground(details.getDisplay().getSystemColor(SWT.COLOR_RED));
 	}
 
 	/**
