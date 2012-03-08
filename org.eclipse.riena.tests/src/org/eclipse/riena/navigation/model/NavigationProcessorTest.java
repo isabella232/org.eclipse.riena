@@ -26,6 +26,7 @@ import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationContext;
 import org.eclipse.riena.navigation.INavigationNode;
+import org.eclipse.riena.navigation.INavigationNode.State;
 import org.eclipse.riena.navigation.INavigationProcessor;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
@@ -253,6 +254,44 @@ public class NavigationProcessorTest extends RienaTestCase {
 		subApplication.setVisible(false);
 		navigationProcessor.activate(subApplication);
 		assertFalse(subApplication.isActivated());
+
+	}
+
+	/**
+	 * Tests the <i>private</i> method
+	 * {@code checkActiveNodes(INavigationNode<?>)}
+	 */
+	public void testCheckActiveNodes() {
+
+		navigationProcessor.activate(subApplication);
+		assertTrue(subApplication.isActivated());
+		assertTrue(moduleGroup.isActivated());
+		assertFalse(moduleGroup2.isActivated());
+		assertTrue(module.isActivated());
+		assertFalse(module2.isActivated());
+		assertTrue(subModule1.isActivated());
+		assertFalse(subModule2.isActivated());
+		assertFalse(subModule3.isActivated());
+		assertFalse(subModule4.isActivated());
+
+		boolean ret = ReflectionUtils.invokeHidden(navigationProcessor, "checkActiveNodes", module); //$NON-NLS-1$
+		assertTrue(ret);
+
+		ReflectionUtils.invokeHidden(subModule4, "setState", State.ACTIVATED); //$NON-NLS-1$
+		ret = ReflectionUtils.invokeHidden(navigationProcessor, "checkActiveNodes", module); //$NON-NLS-1$
+		assertFalse(ret);
+
+		ReflectionUtils.invokeHidden(moduleGroup2, "setState", State.ACTIVATED); //$NON-NLS-1$
+		ret = ReflectionUtils.invokeHidden(navigationProcessor, "checkActiveNodes", module); //$NON-NLS-1$
+		assertFalse(ret);
+
+		ReflectionUtils.invokeHidden(subModule1, "setState", State.DEACTIVATED); //$NON-NLS-1$
+		ret = ReflectionUtils.invokeHidden(navigationProcessor, "checkActiveNodes", module); //$NON-NLS-1$
+		assertFalse(ret);
+
+		ReflectionUtils.invokeHidden(moduleGroup, "setState", State.DEACTIVATED); //$NON-NLS-1$
+		ret = ReflectionUtils.invokeHidden(navigationProcessor, "checkActiveNodes", module); //$NON-NLS-1$
+		assertTrue(ret);
 
 	}
 
@@ -519,6 +558,28 @@ public class NavigationProcessorTest extends RienaTestCase {
 		navigationProcessor.dispose(moduleNode);
 		assertTrue(moduleNode.isDisposed());
 		assertTrue(moduleGroupNode.isDisposed());
+
+	}
+
+	/**
+	 * Tests the method {@code dispose} with the context property
+	 * "CONTEXTKEY_NAVIGATE_AFTER_DISPOSE".
+	 */
+	public void testDisposeWithNavigateAfterDispose() {
+
+		navigationProcessor.activate(subModule3);
+		assertTrue(subModule3.isActivated());
+
+		navigationProcessor.dispose(subModule3);
+		assertTrue(subModule1.isActivated());
+
+		navigationProcessor.activate(subModule2);
+		assertTrue(subModule2.isActivated());
+
+		subModule2.setContext(INavigationNode.CONTEXTKEY_NAVIGATE_AFTER_DISPOSE, subModule4.getNodeId());
+		navigationProcessor.dispose(subModule2);
+		assertTrue(subModule4.isActivated());
+		assertFalse(subModule2.isActivated());
 
 	}
 
