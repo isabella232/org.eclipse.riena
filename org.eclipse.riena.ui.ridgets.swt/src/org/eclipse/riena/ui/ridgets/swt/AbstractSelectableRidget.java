@@ -165,6 +165,21 @@ public abstract class AbstractSelectableRidget extends AbstractSWTRidget impleme
 		return (T) selection.get(0);
 	}
 
+	@SuppressWarnings("unchecked")
+	public <T> List<T> getMultiSelection() {
+		if (!hasSelection()) {
+			return null;
+		}
+		Assert.isLegal(getSelectionType() == SelectionType.MULTI,
+				"A multi selection is only provided if selection type is SelectionType.MULTI. "); //$NON-NLS-1$
+
+		final List<Object> selection = getSelection();
+		if (selection.size() < 0) {
+			return null;
+		}
+		return (List<T>) selection;
+	}
+
 	public final SelectionType getSelectionType() {
 		return selectionType;
 	}

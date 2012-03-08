@@ -156,6 +156,13 @@ public interface ISelectableRidget extends IMarkableRidget, ISelectionObservable
 	<T> T getSingleSelection();
 
 	/**
+	 * 
+	 * @return the multi selection if {@link #getSelectionType()} ==
+	 *         {@link SelectionType#MULTI}. Otherwise return null.
+	 */
+	<T> List<T> getMultiSelection();
+
+	/**
 	 * Selects the given values. Values that are not in the set of selectable
 	 * options will be ignored.
 	 * 

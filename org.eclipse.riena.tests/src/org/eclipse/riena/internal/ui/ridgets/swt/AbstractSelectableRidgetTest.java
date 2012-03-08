@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.core.databinding.observable.Realm;
@@ -28,17 +29,14 @@ import org.eclipse.riena.ui.ridgets.swt.AbstractSelectableRidget;
 public class AbstractSelectableRidgetTest extends RienaTestCase {
 
 	private MySelectableRidget ridget;
-	private Matrix matrix;
 
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		matrix = new Matrix();
 		Realm.runWithDefault(new AllwaysCurrent(), new Runnable() {
 
 			public void run() {
 				ridget = new MySelectableRidget();
-				ridget.bindSingleSelectionToModel(matrix, "theSelectedOne"); //$NON-NLS-1$
 			}
 		});
 
@@ -59,16 +57,15 @@ public class AbstractSelectableRidgetTest extends RienaTestCase {
 		assertNull(ridget.getSingleSelection());
 	}
 
-	class Matrix {
-		private Person theSelectedOne;
-
-		public Person getTheSelectedOne() {
-			return theSelectedOne;
-		}
-
-		public void setTheSelectedOne(final Person theSelectedOne) {
-			this.theSelectedOne = theSelectedOne;
-		}
+	public void testGeMultiSelection() throws Exception {
+		ridget.setSelectionType(ISelectableRidget.SelectionType.MULTI);
+		assertNull(ridget.getMultiSelection());
+		final List<Person> value = Arrays.asList(new Person[] { PersonFactory.createPersonList().get(0),
+				PersonFactory.createPersonList().get(1) });
+		ridget.getMultiSelectionObservable().addAll(value);
+		assertEquals(2, ridget.getMultiSelection().size());
+		ridget.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
+		assertNull(ridget.getMultiSelection());
 	}
 
 	class MySelectableRidget extends AbstractSelectableRidget {
