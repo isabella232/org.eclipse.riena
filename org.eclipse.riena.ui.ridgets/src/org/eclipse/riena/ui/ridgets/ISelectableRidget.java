@@ -149,6 +149,13 @@ public interface ISelectableRidget extends IMarkableRidget, ISelectionObservable
 	List<Object> getSelection();
 
 	/**
+	 * 
+	 * @return the single selection if {@link #getSelectionType()} ==
+	 *         {@link SelectionType#SINGLE}. Otherwise return null.
+	 */
+	<T> T getSingleSelection();
+
+	/**
 	 * Selects the given values. Values that are not in the set of selectable
 	 * options will be ignored.
 	 * 
@@ -170,6 +177,12 @@ public interface ISelectableRidget extends IMarkableRidget, ISelectionObservable
 	 *             when there is no bound model to select from
 	 */
 	void setSelection(Object newSelection);
+
+	/**
+	 * 
+	 * @return true if and only if this ridget has a selection
+	 */
+	boolean hasSelection();
 
 	/**
 	 * Indicates whether the specified option is one of the options among which

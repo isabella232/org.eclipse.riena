@@ -151,8 +151,30 @@ public abstract class AbstractSelectableRidget extends AbstractSWTRidget impleme
 		return result;
 	}
 
+	public <T> T getSingleSelection() {
+		if (!hasSelection()) {
+			return null;
+		}
+		Assert.isLegal(getSelectionType() == SelectionType.SINGLE,
+				"A single selection is only provided if selection type is SelectionType.SINGLE. "); //$NON-NLS-1$
+
+		final List<Object> selection = getSelection();
+		if (selection.size() != 1) {
+			return null;
+		}
+		return (T) selection.get(0);
+	}
+
 	public final SelectionType getSelectionType() {
 		return selectionType;
+	}
+
+	public boolean hasSelection() {
+		final List<Object> selection = getSelection();
+		if (null == selection || selection.isEmpty()) {
+			return false;
+		}
+		return true;
 	}
 
 	public final IObservableValue getSingleSelectionObservable() {
