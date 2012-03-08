@@ -211,7 +211,7 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 		isSigned = true;
 		isGrouping = true;
 		isMarkNegative = true;
-		maxLength = -1;
+		maxLength = INumericTextRidget.MAX_LENGTH_UNBOUNDED;
 		precision = -1;
 		addPropertyChangeListener(ITextRidget.PROPERTY_TEXT, new PropertyChangeListener() {
 			public void propertyChange(final PropertyChangeEvent evt) {
@@ -370,8 +370,8 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 	}
 
 	public final synchronized void setMaxLength(final int maxLength) {
-		Assert.isLegal(maxLength == -1 || maxLength > 0,
-				"maxLength must be greater than zero or -1 (unlimited): " + maxLength); //$NON-NLS-1$
+		Assert.isLegal(INumericTextRidget.MAX_LENGTH_UNBOUNDED == maxLength || maxLength > 0,
+				"maxLength must be greater than zero or -1 (INumericTextRidget.MAX_LENGTH_UNBOUNDED): " + maxLength); //$NON-NLS-1$
 		final int oldValue = this.maxLength;
 		if (oldValue != maxLength) {
 			this.maxLength = maxLength;
@@ -482,7 +482,7 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 	}
 
 	private void checkMaxLength(final String number) {
-		if (maxLength == -1) {
+		if (INumericTextRidget.MAX_LENGTH_UNBOUNDED == maxLength) {
 			return;
 		}
 		int length = number.length() - StringUtils.count(number, GROUPING_SEPARATOR);
@@ -579,7 +579,8 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 			}
 		} else {
 			// -1 => no length limit
-			final int length = getMaxLength() == -1 ? input.length() : getMaxLength();
+			final int length = getMaxLength() == INumericTextRidget.MAX_LENGTH_UNBOUNDED ? input.length()
+					: getMaxLength();
 			if (isSigned) {
 				result = String.format("%c?\\d{0,%d}", MINUS_SIGN, length); //$NON-NLS-1$
 			} else {

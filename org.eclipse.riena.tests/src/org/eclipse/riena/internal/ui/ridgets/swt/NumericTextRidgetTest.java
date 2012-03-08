@@ -1217,6 +1217,21 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		assertEquals(localize("-123.456"), control.getText());
 		assertEquals(localize("-123.456"), ridget.getText());
 		assertEquals(localize("-123.456"), bean.getValue());
+
+		boolean exception = false;
+		try {
+			ridget.setMaxLength(-2);
+		} catch (final IllegalArgumentException e) {
+			exception = true;
+		}
+		assertTrue(exception);
+		exception = false;
+		try {
+			ridget.setMaxLength(INumericTextRidget.MAX_LENGTH_UNBOUNDED);
+		} catch (final IllegalArgumentException e) {
+			exception = true;
+		}
+		assertFalse(exception);
 	}
 
 	public void testExceedMaxLengthWithSetText() {

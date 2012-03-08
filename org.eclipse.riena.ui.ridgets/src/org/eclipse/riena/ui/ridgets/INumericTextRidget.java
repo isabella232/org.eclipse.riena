@@ -36,6 +36,15 @@ public interface INumericTextRidget extends ITextRidget {
 	String PROPERTY_MAXLENGTH = "maxLength"; //$NON-NLS-1$
 
 	/**
+	 * Max length configuration value for unbounded input length.
+	 * 
+	 * <pre/>
+	 * Usage:
+	 * setMaxLength(INumericTextRidget.MAX_LENGTH_UNBOUNDED )
+	 */
+	int MAX_LENGTH_UNBOUNDED = -1;
+
+	/**
 	 * Returns the maximum number of decimal digits (excluding separators and
 	 * the minus sign). May be -1 if no limit is set.
 	 * 

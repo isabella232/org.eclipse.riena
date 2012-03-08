@@ -45,7 +45,9 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 
 	@Override
 	protected IRidget createRidget() {
-		return new DecimalTextRidget();
+		final DecimalTextRidget decimalTextRidget = new DecimalTextRidget();
+		decimalTextRidget.setMaxLength(10);
+		return decimalTextRidget;
 	}
 
 	@Override

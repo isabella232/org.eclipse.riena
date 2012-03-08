@@ -32,7 +32,6 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 public class DecimalTextRidget extends NumericTextRidget implements IDecimalTextRidget {
 
 	public DecimalTextRidget() {
-		setMaxLength(10);
 		setPrecision(2);
 		setText("0"); //$NON-NLS-1$
 		setSigned(true);
@@ -116,6 +115,9 @@ public class DecimalTextRidget extends NumericTextRidget implements IDecimalText
 
 	private void checkMaxLength(final String number) {
 		final int maxLength = getMaxLength();
+		if (-1 == maxLength) {
+			return;
+		}
 		int length;
 		final int decSepIndex = number.indexOf(DECIMAL_SEPARATOR);
 		if (decSepIndex != -1) {
