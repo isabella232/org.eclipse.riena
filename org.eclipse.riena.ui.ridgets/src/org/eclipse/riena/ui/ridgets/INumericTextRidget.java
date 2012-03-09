@@ -41,6 +41,7 @@ public interface INumericTextRidget extends ITextRidget {
 	 * <pre/>
 	 * Usage:
 	 * setMaxLength(INumericTextRidget.MAX_LENGTH_UNBOUNDED )
+	 * @since 4.0
 	 */
 	int MAX_LENGTH_UNBOUNDED = -1;
 

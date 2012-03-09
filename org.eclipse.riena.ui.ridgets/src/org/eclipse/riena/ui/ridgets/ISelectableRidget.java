@@ -152,6 +152,7 @@ public interface ISelectableRidget extends IMarkableRidget, ISelectionObservable
 	 * 
 	 * @return the single selection if {@link #getSelectionType()} ==
 	 *         {@link SelectionType#SINGLE}. Otherwise return null.
+	 * @since 4.0
 	 */
 	<T> T getSingleSelection();
 
@@ -159,6 +160,7 @@ public interface ISelectableRidget extends IMarkableRidget, ISelectionObservable
 	 * 
 	 * @return the multi selection if {@link #getSelectionType()} ==
 	 *         {@link SelectionType#MULTI}. Otherwise return null.
+	 * @since 4.0
 	 */
 	<T> List<T> getMultiSelection();
 
@@ -188,6 +190,7 @@ public interface ISelectableRidget extends IMarkableRidget, ISelectionObservable
 	/**
 	 * 
 	 * @return true if and only if this ridget has a selection
+	 * @since 4.0
 	 */
 	boolean hasSelection();
 

@@ -12,6 +12,8 @@ package org.eclipse.riena.ui.ridgets;
 
 /**
  * Ridget for a CompletionCombo.
+ * 
+ * @since 4.0
  */
 public interface ICompletionComboRidget extends IComboRidget {
 

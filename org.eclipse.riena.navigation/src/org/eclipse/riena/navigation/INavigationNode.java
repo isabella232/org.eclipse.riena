@@ -39,6 +39,9 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 */
 	String PROPERTY_TOOLTIPTEXT = "toolTipText"; //$NON-NLS-1$
 
+	/**
+	 * @since 4.0
+	 */
 	String CONTEXTKEY_NAVIGATE_AFTER_DISPOSE = "riena.navigation.navigateAfterDispose"; //$NON-NLS-1$
 
 	/**

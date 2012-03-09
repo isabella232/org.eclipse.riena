@@ -55,6 +55,9 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 		ridgets.put(id, ridget);
 	}
 
+	/**
+	 * @since 4.0
+	 */
 	public String idOfRidget(final IRidget ridget) {
 		for (final String ridgetId : ridgets.keySet()) {
 			if (ridgets.get(ridgetId) == ridget) {
@@ -375,6 +378,8 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 
 	/**
 	 * {@inheritDoc}
+	 * 
+	 * @since 4.0
 	 */
 	public void setConfigured(final boolean configured) {
 		this.configured = configured;
@@ -382,6 +387,9 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 
 	/**
 	 * {@inheritDoc}
+	 * 
+	 * @since 4.0
+	 * 
 	 */
 	public boolean isConfigured() {
 		return configured;

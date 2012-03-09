@@ -12,6 +12,8 @@ package org.eclipse.riena.ui.ridgets;
 
 /**
  * Ridget for a CCombo.
+ * 
+ * @since 4.0
  */
 public interface ICComboRidget extends IComboRidget {
 

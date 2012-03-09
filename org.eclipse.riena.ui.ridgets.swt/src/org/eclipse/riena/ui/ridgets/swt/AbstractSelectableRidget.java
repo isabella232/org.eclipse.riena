@@ -165,6 +165,9 @@ public abstract class AbstractSelectableRidget extends AbstractSWTRidget impleme
 		return (T) selection.get(0);
 	}
 
+	/**
+	 * @since 4.0
+	 */
 	@SuppressWarnings("unchecked")
 	public <T> List<T> getMultiSelection() {
 		if (!hasSelection()) {

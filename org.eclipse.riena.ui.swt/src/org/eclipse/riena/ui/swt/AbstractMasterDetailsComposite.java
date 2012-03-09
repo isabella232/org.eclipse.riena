@@ -544,6 +544,7 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 
 	/**
 	 * @return the buttonComposite
+	 * @since 4.0
 	 */
 	public Composite getButtonComposite() {
 		return buttonComposite;
