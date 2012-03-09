@@ -33,7 +33,7 @@ public class AbstractSelectableRidgetTest extends RienaTestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		Realm.runWithDefault(new AllwaysCurrent(), new Runnable() {
+		Realm.runWithDefault(new AlwaysCurrent(), new Runnable() {
 
 			public void run() {
 				ridget = new MySelectableRidget();
@@ -66,6 +66,9 @@ public class AbstractSelectableRidgetTest extends RienaTestCase {
 		assertEquals(2, ridget.getMultiSelection().size());
 		ridget.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
 		assertNull(ridget.getMultiSelection());
+		ridget.setSelectionType(ISelectableRidget.SelectionType.MULTI);
+		ridget.getMultiSelectionObservable().clear();
+		assertNull(ridget.getMultiSelection());
 	}
 
 	class MySelectableRidget extends AbstractSelectableRidget {
@@ -90,7 +93,7 @@ public class AbstractSelectableRidgetTest extends RienaTestCase {
 
 	}
 
-	class AllwaysCurrent extends Realm {
+	class AlwaysCurrent extends Realm {
 
 		@Override
 		public boolean isCurrent() {
