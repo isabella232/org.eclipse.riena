@@ -26,8 +26,7 @@ import org.eclipse.riena.security.common.authorization.IPermissionCache;
 import org.eclipse.riena.security.common.authorization.ISentinelService;
 
 /**
- * An implementation of the {@code ISentinelService} which will be registered as
- * 'default' OSGi service that can be overwritten.
+ * An implementation of the {@code ISentinelService} which will be registered as 'default' OSGi service that can be overwritten.
  */
 public class SentinelServiceImpl implements ISentinelService {
 
@@ -123,8 +122,10 @@ public class SentinelServiceImpl implements ISentinelService {
 
 		// if there are principals with no permissions, retrieve them from the server
 		if (missingPrincipals.size() > 0) {
-			final Permissions[] permissionsArray = authService.getPermissions(missingPrincipals
-					.toArray(new Principal[missingPrincipals.size()]));
+			if (authService == null) {
+				return new Permissions();
+			}
+			final Permissions[] permissionsArray = authService.getPermissions(missingPrincipals.toArray(new Principal[missingPrincipals.size()]));
 			for (int i = 0; i < missingPrincipals.size(); i++) {
 				thePermCache.putPermissions(missingPrincipals.get(i), permissionsArray[i]);
 				final Enumeration<Permission> permEnum = permissionsArray[i].elements();
