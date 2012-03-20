@@ -282,6 +282,8 @@ public abstract class AbstractWindowController implements IController, IContext 
 
 	/**
 	 * {@inheritDoc}
+	 * 
+	 * @since 4.0
 	 */
 	public void setConfigured(final boolean configured) {
 		this.configured = configured;
@@ -289,6 +291,8 @@ public abstract class AbstractWindowController implements IController, IContext 
 
 	/**
 	 * {@inheritDoc}
+	 * 
+	 * @since 4.0
 	 */
 	public boolean isConfigured() {
 		return configured;

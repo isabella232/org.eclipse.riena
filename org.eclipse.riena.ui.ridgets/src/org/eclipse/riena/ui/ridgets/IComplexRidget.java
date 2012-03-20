@@ -36,6 +36,7 @@ public interface IComplexRidget extends IRidget, IRidgetContainer {
 	/**
 	 * 
 	 * @return the id of the given {@link IRidget} if registered
+	 * @since 4.0
 	 */
 	String idOfRidget(final IRidget ridget);
 }

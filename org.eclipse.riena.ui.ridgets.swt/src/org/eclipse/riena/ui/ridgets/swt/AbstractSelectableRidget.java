@@ -151,6 +151,9 @@ public abstract class AbstractSelectableRidget extends AbstractSWTRidget impleme
 		return result;
 	}
 
+	/**
+	 * @since 4.0
+	 */
 	public <T> T getSingleSelection() {
 		if (!hasSelection()) {
 			return null;
@@ -183,10 +186,16 @@ public abstract class AbstractSelectableRidget extends AbstractSWTRidget impleme
 		return (List<T>) selection;
 	}
 
+	/**
+	 * @since 4.0
+	 */
 	public final SelectionType getSelectionType() {
 		return selectionType;
 	}
 
+	/**
+	 * @since 4.0
+	 */
 	public boolean hasSelection() {
 		final List<Object> selection = getSelection();
 		if (null == selection || selection.isEmpty()) {
