@@ -1852,6 +1852,24 @@ public final class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		assertEquals(modelHolder.getBean().getText2(), ridget.getText());
 
 	}
+	
+	public void testVetoValidationWithOnEditRule() {
+		final Text control = getWidget();
+		final ITextRidget ridget = getRidget();
+
+		ridget.bindToModel(bean, TestBean.PROPERTY);
+		ridget.addValidationRule(new MinLength(2), ValidationTime.ON_UI_CONTROL_EDIT);
+		ridget.addValidationRule(new ValidCharacters(ValidCharacters.VALID_NUMBERS), ValidationTime.ON_UI_CONTROL_EDIT);
+
+		UITestHelper.sendString(control.getDisplay(), "1");
+		assertEquals(1, ridget.getMarkers().size());
+		assertEquals("'1' is less than 2 characters long.", ((IMessageMarker) ridget.getMarkers().iterator().next()).getMessage());
+
+		UITestHelper.sendString(control.getDisplay(), "a");
+		assertEquals(1, ridget.getMarkers().size());
+		assertEquals("'1' is less than 2 characters long.", ((IMessageMarker) ridget.getMarkers().iterator().next()).getMessage());
+	}
+
 
 	// helping methods
 	//////////////////
