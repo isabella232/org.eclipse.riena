@@ -245,7 +245,7 @@ public abstract class AbstractTitleBarMouseListener implements MouseListener, Mo
 					}
 				} else if (getTitleBarRenderer().isInsideMaximizeButton(pointer)) {
 					if (btnStates[MAX_BTN_INDEX] == BtnState.HOVER_SELECTED) {
-						SHELL_HELPER.maximizeRestore();
+						SHELL_HELPER.maximizeRestore(shell);
 					}
 				} else if (getTitleBarRenderer().isInsideMinimizeButton(pointer)) {
 					if (btnStates[MIN_BTN_INDEX] == BtnState.HOVER_SELECTED) {

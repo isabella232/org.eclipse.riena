@@ -37,13 +37,19 @@ public class ShellHelper {
 	 * Maximizes or restores the shell of the active workbench.
 	 */
 	public void maximizeRestore() {
-		final Shell shell = RcpUtilities.getWorkbenchShell();
+		maximizeRestore(RcpUtilities.getWorkbenchShell());
+	}
+
+	/**
+	 * Maximizes or restores the given shell.
+	 */
+	public void maximizeRestore(final Shell shell) {
 		if (shell == null) {
 			LOGGER.log(LogService.LOG_WARNING, "No shell of the application found! Maximize/restore of shell canceled."); //$NON-NLS-1$
 			return;
 		}
-		if (isShellTitleless()) {
-			if (isShellMaximzed()) {
+		if (isTitleless(shell)) {
+			if (isMaximzed(shell)) {
 				if (restoreBounds != null) {
 					shell.setBounds(restoreBounds);
 					shell.redraw(restoreBounds.x, restoreBounds.y, restoreBounds.width, restoreBounds.height, true);
