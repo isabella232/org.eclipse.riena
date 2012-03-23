@@ -100,7 +100,7 @@ public class TableRidgetTest extends AbstractTableListRidgetTest {
 		ridget.bindToModel(manager, "persons", Person.class, columns3, null); //$NON-NLS-1$
 		ridget.updateFromModel();
 
-		ridget.setColumnWidths(new Object[] { new ColumnWeightData(1), new ColumnWeightData(2), new ColumnWeightData(3) });
+		ridget.setColumnWidths(new Object[] { new ColumnWeightData(1, 1, true), new ColumnWeightData(2, 1, true), new ColumnWeightData(3, 1, true) });
 
 		assertTrue("column 0 should be smaller than column 1", table.getColumn(0).getWidth() < table.getColumn(1).getWidth()); //$NON-NLS-1$
 		assertTrue("column 1 should be smaller than column 2", table.getColumn(1).getWidth() < table.getColumn(2).getWidth()); //$NON-NLS-1$

@@ -182,6 +182,12 @@ public final class ColumnUtils {
 			//    compute remaining width and total weight; for each column: apply
 			//    the largest value of either the relative width or the minimum width
 			int widthRemaining = control.getClientArea().width;
+
+			// Workaround for Bug 301682
+			if (widthRemaining == 0) {
+				parent.layout();
+				widthRemaining = control.getClientArea().width;
+			}
 			int totalWeights = 0;
 			for (int index = 0; index < expectedCols; index++) {
 				final ColumnLayoutData data = columnData[index];
