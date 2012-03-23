@@ -151,6 +151,7 @@ public abstract class AbstractDialogView extends Dialog {
 			}
 		});
 
+		getShell().setMinimumSize(100, 50);
 	}
 
 	@Override
