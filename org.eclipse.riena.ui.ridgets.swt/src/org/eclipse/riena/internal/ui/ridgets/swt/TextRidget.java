@@ -457,14 +457,19 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 			if (inputConverter != null) {
 				e.text = (String) inputConverter.convert(e.text);
 			}
-			final String newText = getText(e);
+			final String oldText = getUIText();
+			final String newText = getText(oldText, e);
 			final IStatus status = checkOnEditRules(newText, new ValidationCallback(true));
 			final boolean doit = !(status.getCode() == ValidationRuleStatus.ERROR_BLOCK_WITH_FLASH);
+			if (!doit) {
+				// we preserve the old text so we also have to restore the validation status
+				// see Bug 374184
+				checkOnEditRules(oldText, new ValidationCallback(false));
+			}
 			e.doit = doit;
 		}
 
-		private String getText(final VerifyEvent e) {
-			final String oldText = getUIText();
+		private String getText(final String oldText, final VerifyEvent e) {
 			String newText;
 			// deletion
 			if (e.keyCode == 127 || e.keyCode == 8) {
