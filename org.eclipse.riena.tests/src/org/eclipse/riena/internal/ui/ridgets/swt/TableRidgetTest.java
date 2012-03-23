@@ -22,6 +22,7 @@ import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.ColumnPixelData;
+import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
@@ -86,6 +87,24 @@ public class TableRidgetTest extends AbstractTableListRidgetTest {
 
 	// test methods
 	// /////////////
+
+	/**
+	 * Bug 301682
+	 */
+	public void testSetColumnWidthsRelative() {
+		final ITableRidget ridget = createRidget();
+		final Table table = createWidget(getShell());
+		ridget.setUIControl(table);
+
+		final String[] columns3 = { Person.PROPERTY_FIRSTNAME, Person.PROPERTY_LASTNAME, Person.PROPERTY_BIRTHDAY };
+		ridget.bindToModel(manager, "persons", Person.class, columns3, null); //$NON-NLS-1$
+		ridget.updateFromModel();
+
+		ridget.setColumnWidths(new Object[] { new ColumnWeightData(1), new ColumnWeightData(2), new ColumnWeightData(3) });
+
+		assertTrue("column 0 should be smaller than column 1", table.getColumn(0).getWidth() < table.getColumn(1).getWidth()); //$NON-NLS-1$
+		assertTrue("column 1 should be smaller than column 2", table.getColumn(1).getWidth() < table.getColumn(2).getWidth()); //$NON-NLS-1$
+	}
 
 	public void testRidgetMapping() {
 		final SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
