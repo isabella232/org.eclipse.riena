@@ -14,10 +14,6 @@ import org.eclipse.jface.action.MenuManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MenuEvent;
 import org.eclipse.swt.events.MenuListener;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
@@ -34,8 +30,7 @@ import org.eclipse.swt.widgets.TypedListener;
 public class MenuManagerHelper {
 
 	/**
-	 * Creates with the help of the given menu manager a menu. If the given tool
-	 * item is selected, the menu is shown.
+	 * Creates with the help of the given menu manager a menu. If the given tool item is selected, the menu is shown.
 	 * 
 	 * @param parent
 	 * @param toolItem
@@ -56,14 +51,11 @@ public class MenuManagerHelper {
 	}
 
 	public void addListeners(final ToolItem toolItem, final Menu menu) {
-
 		menu.addMenuListener(new TopMenuListener(menu, toolItem));
-		toolItem.addSelectionListener(new TopItemListener(menu, toolItem));
 	}
 
 	public void removeListeners(final ToolItem toolItem, final Menu menu) {
-
-		Listener[] listeners = menu.getListeners(SWT.Hide);
+		final Listener[] listeners = menu.getListeners(SWT.Hide);
 		for (final Listener listener : listeners) {
 			if (listener instanceof TypedListener) {
 				final TypedListener typedListener = (TypedListener) listener;
@@ -72,16 +64,6 @@ public class MenuManagerHelper {
 				}
 			}
 		}
-		listeners = toolItem.getListeners(SWT.Selection);
-		for (final Listener listener : listeners) {
-			if (listener instanceof TypedListener) {
-				final TypedListener typedListener = (TypedListener) listener;
-				if (typedListener.getEventListener() instanceof TopItemListener) {
-					toolItem.removeSelectionListener((TopItemListener) typedListener.getEventListener());
-				}
-			}
-		}
-
 	}
 
 	private static class TopMenuListener implements MenuListener {
@@ -104,35 +86,4 @@ public class MenuManagerHelper {
 		}
 
 	}
-
-	private static class TopItemListener implements SelectionListener {
-
-		private final ToolItem toolItem;
-		private final Menu menu;
-
-		public TopItemListener(final Menu menu, final ToolItem toolItem) {
-			this.menu = menu;
-			this.toolItem = toolItem;
-		}
-
-		/**
-		 * @see org.eclipse.swt.events.SelectionListener#widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent)
-		 */
-		public void widgetDefaultSelected(final SelectionEvent e) {
-		}
-
-		/**
-		 * @see org.eclipse.swt.events.SelectionListener#widgetSelected(org.eclipse.swt.events.SelectionEvent)
-		 */
-		public void widgetSelected(final SelectionEvent e) {
-			if (e.getSource() == toolItem) {
-				final Rectangle itemBounds = toolItem.getBounds();
-				final Point loc = toolItem.getParent().toDisplay(itemBounds.x, itemBounds.height + itemBounds.y);
-				menu.setLocation(loc);
-				menu.setVisible(true);
-			}
-		}
-
-	}
-
 }
