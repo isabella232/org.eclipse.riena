@@ -58,8 +58,7 @@ import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 /**
  * Helper class for SWT Ridgets to delegate their marker issues to.
  * <p>
- * The class can hide these marker types (including subclasses):
- * {@link MandatoryMarker}, {@link ErrorMarker}
+ * The class can hide these marker types (including subclasses): {@link MandatoryMarker}, {@link ErrorMarker}
  */
 public class MarkerSupport extends BasicMarkerSupport {
 
@@ -68,40 +67,34 @@ public class MarkerSupport extends BasicMarkerSupport {
 	private static final String PRE_OUTPUT_BACKGROUND_KEY = "MaSu.preOuBa"; //$NON-NLS-1$
 	private static final String PRE_OUTPUT_FOREGROUND_KEY = "MaSu.preOuFo"; //$NON-NLS-1$
 	private static final String PRE_NEGATIVE_FOREGROUND_KEY = "MaSu.preNeFo"; //$NON-NLS-1$
+	private static final String ERROR_DECORATION_FOR_CONTROL_KEY = "MaSu.errDe"; //$NON-NLS-1$
 	private static final long FLASH_DURATION_MS = 300;
 
 	/**
-	 * This flag defines the default value that defines whether disabled ridgets
-	 * do hide their content. Since v2.0 the default value is {@code false}. It
-	 * can be overridden by setting the system property
-	 * {@code  'HIDE_DISABLED_RIDGET_CONTENT'} to {@code true}.
+	 * This flag defines the default value that defines whether disabled ridgets do hide their content. Since v2.0 the default value is {@code false}. It can be
+	 * overridden by setting the system property {@code  'HIDE_DISABLED_RIDGET_CONTENT'} to {@code true}.
 	 * <p>
-	 * Note: A Look&Feel constants exists to define whether disabled ridgets do
-	 * hide their content: {@code LnfKeyConstants.DISABLED_MARKER_HIDE_CONTENT}.
-	 * The default value is only used, if the current Look&Feel doesn't use
-	 * {@code LnfKeyConstants.DISABLED_MARKER_HIDE_CONTENT}.
+	 * Note: A Look&Feel constants exists to define whether disabled ridgets do hide their content: {@code LnfKeyConstants.DISABLED_MARKER_HIDE_CONTENT}. The
+	 * default value is only used, if the current Look&Feel doesn't use {@code LnfKeyConstants.DISABLED_MARKER_HIDE_CONTENT}.
 	 */
 	private static final boolean HIDE_DISABLED_RIDGET_CONTENT = Boolean.parseBoolean(System.getProperty(
 			"HIDE_DISABLED_RIDGET_CONTENT", Boolean.FALSE.toString())); //$NON-NLS-1$
 	private static Boolean hideDisabledRidgetContent;
 
-	private IControlDecoration errorDecoration;
 	private boolean isFlashInProgress;
 
 	// internal data of the control
 	private final Map<String, Object> internalData;
 
 	/**
-	 * Returns whether the content of a disabled ridget should be visible (
-	 * {@code false}) or hidden {@code true}.
+	 * Returns whether the content of a disabled ridget should be visible ( {@code false}) or hidden {@code true}.
 	 * 
 	 * @return ({@code false}): visible; {@code true}: hidden
 	 * @since 2.0
 	 */
 	public static boolean isHideDisabledRidgetContent() {
 		if (hideDisabledRidgetContent == null) {
-			hideDisabledRidgetContent = LnfManager.getLnf().getBooleanSetting(
-					LnfKeyConstants.DISABLED_MARKER_HIDE_CONTENT, HIDE_DISABLED_RIDGET_CONTENT);
+			hideDisabledRidgetContent = LnfManager.getLnf().getBooleanSetting(LnfKeyConstants.DISABLED_MARKER_HIDE_CONTENT, HIDE_DISABLED_RIDGET_CONTENT);
 		}
 		return hideDisabledRidgetContent;
 	}
@@ -125,10 +118,7 @@ public class MarkerSupport extends BasicMarkerSupport {
 		if (!isFlashInProgress && control != null) {
 			isFlashInProgress = true;
 
-			if (errorDecoration == null) {
-				errorDecoration = createErrorDecoration(control);
-			}
-
+			final IControlDecoration errorDecoration = getOrCreateErrorDecorationForControl(control);
 			final boolean isShowing = errorDecoration.isVisible();
 			if (isShowing) {
 				errorDecoration.hide();
@@ -163,10 +153,7 @@ public class MarkerSupport extends BasicMarkerSupport {
 	////////////////////
 
 	protected void addError(final Control control) {
-		if (errorDecoration == null) {
-			errorDecoration = createErrorDecoration(control);
-		}
-		errorDecoration.show();
+		getOrCreateErrorDecorationForControl(control).show();
 	}
 
 	protected void addMandatory(final Control control) {
@@ -234,6 +221,7 @@ public class MarkerSupport extends BasicMarkerSupport {
 	}
 
 	protected void clearError(final Control control) {
+		final IControlDecoration errorDecoration = getErrorDecorationForControl(control);
 		if (errorDecoration != null) {
 			errorDecoration.hide();
 		}
@@ -300,6 +288,29 @@ public class MarkerSupport extends BasicMarkerSupport {
 	// helping methods
 	//////////////////
 
+	/**
+	 * Since each {@link IControlDecoration} is associated with exactly one UI control, we must ensure that we do not reuse the old decoration after a new
+	 * control is set.
+	 * <p>
+	 * DO NOT RENAME. This method is being called by the unit tests (via reflection).
+	 */
+	private IControlDecoration getErrorDecorationForControl(final Control control) {
+		return (IControlDecoration) control.getData(ERROR_DECORATION_FOR_CONTROL_KEY);
+	}
+
+	/**
+	 * Check the data field with key {@link MarkerSupport}.ERROR_DECORATION_FOR_CONTROL_KEY and returns the value if set, otherwise create a control decoration
+	 * and set it as control data.
+	 * 
+	 * @return never <code>null</code>
+	 */
+	private IControlDecoration getOrCreateErrorDecorationForControl(final Control control) {
+		if (getErrorDecorationForControl(control) == null) {
+			control.setData(ERROR_DECORATION_FOR_CONTROL_KEY, createErrorDecoration(control));
+		}
+		return getErrorDecorationForControl(control);
+	}
+
 	private void addNegative(final Control control) {
 		if (getData(PRE_NEGATIVE_FOREGROUND_KEY) == null) {
 			setData(PRE_NEGATIVE_FOREGROUND_KEY, control.getForeground());
@@ -346,8 +357,7 @@ public class MarkerSupport extends BasicMarkerSupport {
 	}
 
 	private void updateError(final Control control) {
-		if (getRidget().isErrorMarked() && getRidget().isEnabled() && getRidget().isVisible()
-				&& !isHidden(ErrorMarker.class)) {
+		if (getRidget().isErrorMarked() && getRidget().isEnabled() && getRidget().isVisible() && !isHidden(ErrorMarker.class)) {
 			if (!(isButton(control) && getRidget().isOutputOnly())) {
 				addError(control);
 			} else {
@@ -359,8 +369,7 @@ public class MarkerSupport extends BasicMarkerSupport {
 	}
 
 	private void updateMandatory(final Control control) {
-		if (isMandatory(getRidget()) && !getRidget().isOutputOnly() && getRidget().isEnabled()
-				&& !isHidden(MandatoryMarker.class)) {
+		if (isMandatory(getRidget()) && !getRidget().isOutputOnly() && getRidget().isEnabled() && !isHidden(MandatoryMarker.class)) {
 			addMandatory(control);
 		} else {
 			clearMandatory(control);
@@ -460,8 +469,7 @@ public class MarkerSupport extends BasicMarkerSupport {
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * The constructor of this implementation sets the margin width and the
-	 * image to avoid unnecessary updates.
+	 * The constructor of this implementation sets the margin width and the image to avoid unnecessary updates.
 	 */
 	private static class MarkerControlDecoration extends ControlDecoration implements IControlDecoration {
 

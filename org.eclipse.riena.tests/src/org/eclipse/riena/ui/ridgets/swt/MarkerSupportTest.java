@@ -36,6 +36,7 @@ import org.eclipse.riena.ui.core.marker.ICustomMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.core.marker.NegativeMarker;
 import org.eclipse.riena.ui.core.marker.OutputMarker;
+import org.eclipse.riena.ui.ridgets.IControlDecoration;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.swt.lnf.ILnfResource;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
@@ -65,6 +66,29 @@ public class MarkerSupportTest extends RienaTestCase {
 	protected void tearDown() {
 		SwtUtilities.dispose(shell);
 		display = null;
+	}
+
+	/**
+	 * Bug 294024: The control decoration is always associated with a UI element and must be reset when <tt>setUIControl(...)</tt> is called on a ridget. We can
+	 * not reuse the control decoration after the ui control has been changed.
+	 * <p>
+	 * see {@link ControlDecoration}
+	 */
+	public void testUpdateControlDecorationOnUpdateControl() throws Exception {
+		final DefaultRealm realm = new DefaultRealm();
+		try {
+			final Text control1 = new Text(shell, SWT.NONE);
+			final Text control2 = new Text(shell, SWT.NONE);
+			final ITextRidget ridget = new TextRidget();
+			ridget.setUIControl(control1);
+			ridget.setErrorMarked(true);
+			final MarkerSupport support = ReflectionUtils.getHidden(ridget, "markerSupport");
+			final IControlDecoration ed1 = ReflectionUtils.invokeHidden(support, "getOrCreateErrorDecorationForControl", control1);
+			ridget.setUIControl(control2);
+			assertNotSame(ed1, ReflectionUtils.invokeHidden(support, "getOrCreateErrorDecorationForControl", control2));
+		} finally {
+			realm.dispose();
+		}
 	}
 
 	public void testHideDisabledRidgetContentSystemProperty() throws IOException {
@@ -125,8 +149,7 @@ public class MarkerSupportTest extends RienaTestCase {
 			final TextRidget ridget = new TextRidget();
 			ridget.setUIControl(control);
 			final BasicMarkerSupport msup = ReflectionUtils.invokeHidden(ridget, "createMarkerSupport");
-			final Object visualizer = ReflectionUtils
-					.invokeHidden(msup, "getDisabledMarkerVisualizer", (Object[]) null);
+			final Object visualizer = ReflectionUtils.invokeHidden(msup, "getDisabledMarkerVisualizer", (Object[]) null);
 
 			assertNotNull(visualizer);
 
@@ -190,7 +213,7 @@ public class MarkerSupportTest extends RienaTestCase {
 
 			ridget.addMarker(new ErrorMarker());
 			markerSupport.updateMarkers();
-			final ControlDecoration errorDecoration = ReflectionUtils.getHidden(markerSupport, "errorDecoration");
+			final ControlDecoration errorDecoration = ReflectionUtils.invokeHidden(markerSupport, "getErrorDecorationForControl", control);
 			assertNotNull(errorDecoration);
 			assertTrue(errorDecoration.isVisible());
 
@@ -204,8 +227,7 @@ public class MarkerSupportTest extends RienaTestCase {
 	}
 
 	/**
-	 * Test reflection usage which does not cause an exception in method
-	 * getControlBackground()
+	 * Test reflection usage which does not cause an exception in method getControlBackground()
 	 */
 	public void testReflectionUtilsUsageInGetControlBackground() {
 		final CCombo combo = new CCombo(shell, SWT.NONE);
@@ -321,9 +343,8 @@ public class MarkerSupportTest extends RienaTestCase {
 	//////////////////
 
 	/**
-	 * This {@code ClassLoader}s method {@code getFreshMarkSupportClass()}
-	 * retrieves with each call a new, fresh {@code MarkSupport} class. This
-	 * allows testing of the static field which gets initialized on class load.
+	 * This {@code ClassLoader}s method {@code getFreshMarkSupportClass()} retrieves with each call a new, fresh {@code MarkSupport} class. This allows testing
+	 * of the static field which gets initialized on class load.
 	 */
 	private static class MarkSupportClassLoader extends ClassLoader {
 		public MarkSupportClassLoader() {
@@ -366,8 +387,7 @@ public class MarkerSupportTest extends RienaTestCase {
 		@Override
 		protected void initializeTheme() {
 			super.initializeTheme();
-			final Map<String, ILnfResource> resourceTable = ReflectionUtils.getHidden(MyNonsenseLnf.this,
-					"resourceTable");
+			final Map<String, ILnfResource> resourceTable = ReflectionUtils.getHidden(MyNonsenseLnf.this, "resourceTable");
 			resourceTable.clear();
 			final Map<String, Object> settingTable = ReflectionUtils.getHidden(MyNonsenseLnf.this, "settingTable");
 			settingTable.clear();
@@ -376,8 +396,7 @@ public class MarkerSupportTest extends RienaTestCase {
 	}
 
 	/**
-	 * This extension changes the visibility of some protected methods for
-	 * testing.
+	 * This extension changes the visibility of some protected methods for testing.
 	 */
 	private static class MyMarkerSupport extends MarkerSupport {
 
