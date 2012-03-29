@@ -31,6 +31,7 @@ import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.model.NavigationProcessor;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
  * Tests of the class {@link SubModuleController}.
@@ -60,6 +61,7 @@ public class SubModuleControllerTest extends TestCase {
 		labelRidget.setRetryRequestFocus(true);
 		controller.setBlocked(false);
 		assertFalse(labelRidget.isRetryRequestFocus());
+		SwtUtilities.dispose(shell);
 	}
 
 	/**
@@ -220,12 +222,12 @@ public class SubModuleControllerTest extends TestCase {
 		} catch (final BindingException e) {
 			fail("unexpected BindingException: " + e.getMessage()); //$NON-NLS-1$
 		}
+		SwtUtilities.dispose(shell);
 
 	}
 
 	/**
-	 * This extension of {@code SubModuleController} is only necessary to
-	 * increase the visibility of protected methods.
+	 * This extension of {@code SubModuleController} is only necessary to increase the visibility of protected methods.
 	 */
 	private static class MySubModuleController extends SubModuleController {
 

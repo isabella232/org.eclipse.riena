@@ -13,8 +13,10 @@ package org.eclipse.riena.navigation.ui.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.riena.navigation.ApplicationNodeManager;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
+import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.listener.ModuleNodeListener;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
 import org.eclipse.riena.ui.ridgets.listener.IWindowRidgetListener;
@@ -43,14 +45,13 @@ public class ModuleController extends NavigationNodeController<IModuleNode> {
 	}
 
 	/**
-	 * Listener observes the node of the module. If the label or the icon
-	 * changed, the window ridget will be updated.
+	 * Listener observes the node of the module. If the label or the icon changed, the window ridget will be updated.
 	 */
 	private final class MyModuleNodeListener extends ModuleNodeListener {
 
 		@Override
 		public void labelChanged(final IModuleNode moduleNode) {
-			updateLabel();
+			updateWindowTitle();
 		}
 
 		@Override
@@ -87,7 +88,7 @@ public class ModuleController extends NavigationNodeController<IModuleNode> {
 	@Override
 	public void afterBind() {
 		super.afterBind();
-		updateLabel();
+		updateWindowTitle();
 		updateToolTipText();
 		updateIcon();
 		updateCloseable();
@@ -98,9 +99,13 @@ public class ModuleController extends NavigationNodeController<IModuleNode> {
 		updateIcon(getWindowRidget());
 	}
 
-	private void updateLabel() {
+	private void updateWindowTitle() {
 		if (getWindowRidget() != null) {
 			getWindowRidget().setTitle(getNavigationNode().getLabel());
+			final ISubModuleNode subModule = ApplicationNodeManager.locateActiveSubModuleNode();
+			if ((subModule != null) && (subModule.getNavigationNodeController() instanceof SubModuleController)) {
+				((SubModuleController) subModule.getNavigationNodeController()).updateWindowTitle();
+			}
 		}
 	}
 

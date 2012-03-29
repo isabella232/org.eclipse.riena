@@ -26,7 +26,6 @@ import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
-import org.eclipse.riena.navigation.model.SimpleNavigationNodeAdapter;
 import org.eclipse.riena.ui.ridgets.AbstractRidget;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IComplexRidget;
@@ -55,8 +54,7 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 
 	private IDefaultActionManager actionManager;
 	/**
-	 * The ridget the should get the focus, the very first time this controller
-	 * is activated. May be null.
+	 * The ridget the should get the focus, the very first time this controller is activated. May be null.
 	 */
 	private IRidget initialFocus;
 
@@ -72,24 +70,18 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	}
 
 	/**
-	 * Make {@code action} the default action while the focus is within
-	 * {@code focusRidget} including it's children.
+	 * Make {@code action} the default action while the focus is within {@code focusRidget} including it's children.
 	 * <p>
-	 * If a default action is available and enabled, it will be invoked whenever
-	 * the user presses ENTER within the window. The mapping is enabled when the
-	 * navigation node for this controller becomes active. It is disabled when
-	 * the navigation node for this controller becomes inactive.
+	 * If a default action is available and enabled, it will be invoked whenever the user presses ENTER within the window. The mapping is enabled when the
+	 * navigation node for this controller becomes active. It is disabled when the navigation node for this controller becomes inactive.
 	 * <p>
-	 * Note: the algorithm stops at the first match. It will check the most
-	 * specific (innermost) ridget first and check the most general (outremost)
-	 * ridget last.
+	 * Note: the algorithm stops at the first match. It will check the most specific (innermost) ridget first and check the most general (outremost) ridget
+	 * last.
 	 * 
 	 * @param focusRidget
-	 *            the ridget that needs to have the focus to activate this rule.
-	 *            Never null.
+	 *            the ridget that needs to have the focus to activate this rule. Never null.
 	 * @param action
-	 *            this ridget will become the default action, while focusRidget
-	 *            has the focus. Never null.
+	 *            this ridget will become the default action, while focusRidget has the focus. Never null.
 	 * 
 	 * @since 2.0
 	 */
@@ -106,9 +98,9 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	@Override
 	public void afterBind() {
 		super.afterBind();
-
-		updateLabel();
+		System.out.println("*****************SubModuleController.afterBind()");
 		updateIcon();
+		updateWindowTitle();
 		updateCloseable();
 		updateActive();
 		if (getWindowRidget() != null) {
@@ -126,9 +118,8 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	}
 
 	/**
-	 * Returns the ridget that should get the focus, when this controller's view
-	 * is opened for the first time. If null, then the first focusable widget
-	 * will get the focus (i.e. same behavior as in standard RCP).
+	 * Returns the ridget that should get the focus, when this controller's view is opened for the first time. If null, then the first focusable widget will get
+	 * the focus (i.e. same behavior as in standard RCP).
 	 * <p>
 	 * The default value is null.
 	 * 
@@ -140,9 +131,8 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	}
 
 	/**
-	 * Returns the ridget that should get the focus. If a ridget is set via
-	 * {@see setInitialFocus}, it will be returned. Otherwise a ridget which can
-	 * receive the focus is searched, if none is found null is returned.
+	 * Returns the ridget that should get the focus. If a ridget is set via {@see setInitialFocus}, it will be returned. Otherwise a ridget which can receive
+	 * the focus is searched, if none is found null is returned.
 	 * 
 	 * @return a IRidget instance or null.
 	 * @since 4.0
@@ -153,8 +143,7 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 		}
 		for (final IRidget ridget : getRidgets()) {
 			final boolean markable = ridget instanceof IMarkableRidget;
-			if (ridget.isFocusable() && ridget.isEnabled() && ridget.isVisible()
-					&& (!markable || (markable && !((IMarkableRidget) ridget).isOutputOnly()))) {
+			if (ridget.isFocusable() && ridget.isEnabled() && ridget.isVisible() && (!markable || (markable && !((IMarkableRidget) ridget).isOutputOnly()))) {
 				return ridget;
 			}
 		}
@@ -164,8 +153,7 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	/**
 	 * Returns the controller of the parent module.
 	 * 
-	 * @return module controller or {@code null} if not parent module controller
-	 *         exists.
+	 * @return module controller or {@code null} if not parent module controller exists.
 	 */
 	public ModuleController getModuleController() {
 		final IModuleNode moduleNode = getNavigationNode().getParentOfType(IModuleNode.class);
@@ -189,19 +177,15 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	 * @since 2.0
 	 */
 	public IInfoFlyoutRidget getInfoFlyout() {
-		final ApplicationController appController = (ApplicationController) ApplicationNodeManager.getApplicationNode()
-				.getNavigationNodeController();
+		final ApplicationController appController = (ApplicationController) ApplicationNodeManager.getApplicationNode().getNavigationNodeController();
 		return appController.getInfoFlyout();
 	}
 
 	/**
-	 * Set the ridget that should get the focus, when this controller's view is
-	 * opened for the first time.
+	 * Set the ridget that should get the focus, when this controller's view is opened for the first time.
 	 * <p>
-	 * If the value is null or if the ridget cannot receive the focus (because
-	 * it is not enabled / not visible / not focusable) then the first
-	 * ridget/widget that can receive the focus will get the focus (i.e. same
-	 * behavior as in standard RCP).
+	 * If the value is null or if the ridget cannot receive the focus (because it is not enabled / not visible / not focusable) then the first ridget/widget
+	 * that can receive the focus will get the focus (i.e. same behavior as in standard RCP).
 	 * 
 	 * @param ridget
 	 *            an IRidget instance or null
@@ -219,12 +203,10 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	}
 
 	/**
-	 * Checks all ridgets recursively in this controller, if a previous call to
-	 * setFocus() failed and tries to set the focus again.
+	 * Checks all ridgets recursively in this controller, if a previous call to setFocus() failed and tries to set the focus again.
 	 * <p>
-	 * SWT has the limitation that it doesn't set the focus if the parent
-	 * composite is disabled. Therefore we have to try to restore the first
-	 * previous call to setFocus(), while the view is blocked.
+	 * SWT has the limitation that it doesn't set the focus if the parent composite is disabled. Therefore we have to try to restore the first previous call to
+	 * setFocus(), while the view is blocked.
 	 * 
 	 * @param collection
 	 *            the collection to check
@@ -251,15 +233,6 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	public void setNavigationNode(final ISubModuleNode navigationNode) {
 		super.setNavigationNode(navigationNode);
 
-		if (getModuleController() != null) {
-			getNavigationNode().getParent().addSimpleListener(new SimpleNavigationNodeAdapter() {
-				@Override
-				public void labelChanged(final INavigationNode<?> parent) {
-					updateLabel();
-				}
-			});
-		}
-
 		getNavigationNode().addListener(new SubModuleNodeListener() {
 			@Override
 			public void iconChanged(final ISubModuleNode source) {
@@ -268,7 +241,7 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 
 			@Override
 			public void labelChanged(final ISubModuleNode subModuleNode) {
-				updateLabel();
+				updateWindowTitle();
 			}
 
 			@Override
@@ -329,10 +302,8 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	/**
 	 * Returns the full title of this sub-module.
 	 * <p>
-	 * The title is made up from the label of parent module node and all parent
-	 * sub-module nodes. One exception exists: If the module has one sub-module
-	 * (and this is not visible in the tree), then only the label of the module
-	 * is returned.
+	 * The title is made up from the label of parent module node and all parent sub-module nodes. One exception exists: If the module has one sub-module (and
+	 * this is not visible in the tree), then only the label of the module is returned.
 	 * 
 	 * @return full title of the sub-module
 	 */
@@ -390,17 +361,14 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	}
 
 	private ApplicationController getApplicationController() {
-		return (ApplicationController) getNavigationNode().getParentOfType(IApplicationNode.class)
-				.getNavigationNodeController();
+		return (ApplicationController) getNavigationNode().getParentOfType(IApplicationNode.class).getNavigationNodeController();
 	}
 
 	/**
-	 * Returns whether the sub-module is hidden in the navigation tree. A
-	 * sub-module is hidden if it is the only child of a module unless its
-	 * parent is configured to show a single child.
+	 * Returns whether the sub-module is hidden in the navigation tree. A sub-module is hidden if it is the only child of a module unless its parent is
+	 * configured to show a single child.
 	 * 
-	 * @return {@code true} if there is a navigation tree but the sub-module is
-	 *         not shown; otherwise {@code false}
+	 * @return {@code true} if there is a navigation tree but the sub-module is not shown; otherwise {@code false}
 	 */
 	private boolean isInvisibleInTree() {
 		if (getModuleController() != null && getModuleController().hasSingleLeafChild()) {
@@ -427,14 +395,18 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 		updateIcon(getWindowRidget());
 	}
 
-	private void updateLabel() {
+	void updateWindowTitle() {
 		final IWindowRidget windowRidget = getWindowRidget();
-		if (windowRidget != null) {
-			windowRidget.setTitle(getFullTitle());
-			for (final ISubModuleNode child : getNavigationNode().getChildren()) {
-				if (child.getNavigationNodeController() != null) {
-					((SubModuleController) child.getNavigationNodeController()).updateLabel();
-				}
+		if (getNavigationNode().isActivated()) {
+			if (windowRidget != null) {
+				windowRidget.setTitle(getFullTitle());
+			}
+		} else {
+			final ISubModuleNode subModule = ApplicationNodeManager.locateActiveSubModuleNode();
+			if ((subModule != null) && (subModule.getNavigationNodeController() instanceof SubModuleController)) {
+				((SubModuleController) subModule.getNavigationNodeController()).updateWindowTitle();
+			} else {
+				LOGGER.log(LogService.LOG_WARNING, "No active sub-module (with controller) found!"); //$NON-NLS-1$
 			}
 		}
 	}

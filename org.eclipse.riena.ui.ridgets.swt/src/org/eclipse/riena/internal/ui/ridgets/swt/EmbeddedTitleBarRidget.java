@@ -14,6 +14,7 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Image;
 
 import org.eclipse.riena.core.util.ListenerList;
+import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IDefaultActionManager;
@@ -73,6 +74,9 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IEmbedd
 	}
 
 	public void setTitle(final String title) {
+		if (StringUtils.equals(this.text, title)) {
+			return;
+		}
 		final String oldValue = this.text;
 		this.text = title;
 		updateTextInControl();
@@ -130,8 +134,7 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IEmbedd
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * <b>Implementation note:</b> activation, deactivation and disposal of the
-	 * returned {@link IDefaultActionManager} must be handled by the controller.
+	 * <b>Implementation note:</b> activation, deactivation and disposal of the returned {@link IDefaultActionManager} must be handled by the controller.
 	 */
 	public IDefaultActionManager addDefaultAction(final IRidget focusRidget, final IActionRidget actionRidget) {
 		if (actionManager == null) {
@@ -154,8 +157,7 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IEmbedd
 	}
 
 	/**
-	 * Always returns true because mandatory markers do not make sense for this
-	 * ridget.
+	 * Always returns true because mandatory markers do not make sense for this ridget.
 	 */
 	@Override
 	public boolean isDisableMandatoryMarker() {
