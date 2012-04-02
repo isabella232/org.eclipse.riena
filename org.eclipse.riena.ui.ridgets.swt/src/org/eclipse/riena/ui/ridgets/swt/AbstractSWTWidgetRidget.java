@@ -69,11 +69,9 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	private ClickForwarder mouseListener;
 
 	/**
-	 * Return true if an instance of the given {@code clazz} is a bean, false
-	 * otherwise.
+	 * Return true if an instance of the given {@code clazz} is a bean, false otherwise.
 	 * <p>
-	 * Implementation note: currently an instance is assumed to be a bean, if it
-	 * has an addPropertyListener(PropertyChangeListener) method.
+	 * Implementation note: currently an instance is assumed to be a bean, if it has an addPropertyListener(PropertyChangeListener) method.
 	 * 
 	 * @param clazz
 	 *            a non-null class value
@@ -214,9 +212,8 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	}
 
 	/**
-	 * FIXME: this method does not check whether the MandatoryMarkers that it
-	 * finds might have a disabled flag set (in the marker). We also couldnt
-	 * find code that calls this method.
+	 * FIXME: this method does not check whether the MandatoryMarkers that it finds might have a disabled flag set (in the marker). We also couldnt find code
+	 * that calls this method.
 	 * 
 	 * @deprecated
 	 */
@@ -304,10 +301,8 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	}
 
 	/*
-	 * Do not override. Template Method Pattern: Subclasses may implement {@code
-	 * unbindUIControl()} and {@code bindUIControl}, if they need to manipulate
-	 * the control when it is bound/unbound, for example to add/remove
-	 * listeners.
+	 * Do not override. Template Method Pattern: Subclasses may implement {@code unbindUIControl()} and {@code bindUIControl}, if they need to manipulate the
+	 * control when it is bound/unbound, for example to add/remove listeners.
 	 */
 	public final void setUIControl(final Object uiControl) {
 		checkUIControl(uiControl);
@@ -353,8 +348,7 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	/**
 	 * Performs checks on the control about to be bound by this ridget.
 	 * <p>
-	 * Implementors must make sure the given <tt>uiControl</tt> has the expected
-	 * type.
+	 * Implementors must make sure the given <tt>uiControl</tt> has the expected type.
 	 * 
 	 * @param uiControl
 	 *            a {@link Widget} instance or null
@@ -366,34 +360,29 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	/**
 	 * Bind the current <tt>uiControl</tt> to the ridget.
 	 * <p>
-	 * Implementors must call {@link #getUIControl()} to obtain the current
-	 * control. If the control is non-null they must do whatever necessary to
-	 * bind it to the ridget.
+	 * Implementors must call {@link #getUIControl()} to obtain the current control. If the control is non-null they must do whatever necessary to bind it to
+	 * the ridget.
 	 */
 	abstract protected void bindUIControl();
 
 	/**
 	 * Unbind the current <tt>uiControl</tt> from the ridget.
 	 * <p>
-	 * Implementors ensure they dispose the control-to-ridget binding and
-	 * dispose any data structures that are not necessary in an unbound state.
+	 * Implementors ensure they dispose the control-to-ridget binding and dispose any data structures that are not necessary in an unbound state.
 	 */
 	abstract protected void unbindUIControl();
 
 	/**
-	 * Returns true if mandatory markers should be disabled (i.e. if the ridget
-	 * has non empty input).
+	 * Returns true if mandatory markers should be disabled (i.e. if the ridget has non empty input).
 	 */
 	// TODO [ev] why is this public?
 	abstract public boolean isDisableMandatoryMarker();
 
 	/**
-	 * Update the enabled state for the ridget's control, based on the
-	 * information from {@link #isEnabled()}
+	 * Update the enabled state for the ridget's control, based on the information from {@link #isEnabled()}
 	 * <p>
-	 * Implementation note: if a ridget has markers, the marker support logic
-	 * may compute a different enabled state for this widget. The marker support
-	 * will be invoked after this method is invoked.
+	 * Implementation note: if a ridget has markers, the marker support logic may compute a different enabled state for this widget. The marker support will be
+	 * invoked after this method is invoked.
 	 * 
 	 * @see #setUIControl(Object)
 	 */
@@ -410,10 +399,8 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	/**
 	 * Creates and initializes the marker support for this Ridget.
 	 * <p>
-	 * The Look&Feel returns the marker support according of the Look&Feel
-	 * setting and the type of this Ridget. If the Look&Feel can not return a
-	 * appropriate marker support, this method creates and returns the default
-	 * marker support.
+	 * The Look&Feel returns the marker support according of the Look&Feel setting and the type of this Ridget. If the Look&Feel can not return a appropriate
+	 * marker support, this method creates and returns the default marker support.
 	 * 
 	 * @return marker support
 	 */
@@ -432,8 +419,7 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	}
 
 	/**
-	 * Iterates over the MandatoryMarker instances held by this ridget changing
-	 * their disabled state to given value.
+	 * Iterates over the MandatoryMarker instances held by this ridget changing their disabled state to given value.
 	 * 
 	 * @param disable
 	 *            the new disabled state
@@ -449,8 +435,7 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	 * "Flashes" the error marker.
 	 * <p>
 	 * 
-	 * Note: this is designed to be delegated to {@link AbstractMarkerSupport}
-	 * and may vary depending on the concrete implementation.
+	 * Note: this is designed to be delegated to {@link AbstractMarkerSupport} and may vary depending on the concrete implementation.
 	 * 
 	 * @since 3.0
 	 */
@@ -492,8 +477,7 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	}
 
 	/**
-	 * Adds listeners to the <tt>uiControl</tt> after it was bound to the
-	 * ridget.
+	 * Adds listeners to the <tt>uiControl</tt> after it was bound to the ridget.
 	 */
 	protected void installListeners() {
 		if (getUIControl() != null) {
@@ -528,8 +512,7 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	}
 
 	/**
-	 * Removes listeners from the <tt>uiControl</tt> when it is about to be
-	 * unbound from the ridget.
+	 * Removes listeners from the <tt>uiControl</tt> when it is about to be unbound from the ridget.
 	 */
 	protected void uninstallListeners() {
 		if (getUIControl() instanceof Control) {
@@ -623,16 +606,25 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	private final class ClickForwarder implements MouseListener {
 
 		private int pressedBtn;
+		private boolean doubleClickInProcess = false;
 
 		public void mouseDoubleClick(final MouseEvent e) {
 			pressedBtn = -1;
 			if (!isEnabled()) {
 				return;
 			}
-			if (doubleClickListeners != null) {
-				for (final IActionListener listener : doubleClickListeners.getListeners()) {
-					listener.callback();
+			if (doubleClickInProcess) {
+				return;
+			}
+			try {
+				doubleClickInProcess = true;
+				if (doubleClickListeners != null) {
+					for (final IActionListener listener : doubleClickListeners.getListeners()) {
+						listener.callback();
+					}
 				}
+			} finally {
+				doubleClickInProcess = false;
 			}
 		}
 
@@ -660,13 +652,11 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 		}
 
 		/**
-		 * Returns whether the given point is inside or outside the bounds of
-		 * the widget.
+		 * Returns whether the given point is inside or outside the bounds of the widget.
 		 * 
 		 * @param point
 		 *            position of the mouse pointer
-		 * @return {@code true} if point is inside the widget; otherwise
-		 *         {@code false}
+		 * @return {@code true} if point is inside the widget; otherwise {@code false}
 		 */
 		private boolean isOverWidget(final Point point) {
 			if (SwtUtilities.isDisposed(getUIControl())) {
@@ -675,8 +665,7 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 			if (getUIControl() instanceof Control) {
 				final Control control = (Control) getUIControl();
 				final Rectangle widgetBounds = control.getBounds();
-				return (point.x <= widgetBounds.width && point.x >= 0)
-						&& (point.y <= widgetBounds.height && point.y >= 0);
+				return (point.x <= widgetBounds.width && point.x >= 0) && (point.y <= widgetBounds.height && point.y >= 0);
 			} else {
 				return true;
 			}
