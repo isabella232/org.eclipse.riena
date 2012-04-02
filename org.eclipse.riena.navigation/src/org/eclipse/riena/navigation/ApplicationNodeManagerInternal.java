@@ -16,8 +16,7 @@ import java.util.Map;
 import org.eclipse.riena.navigation.model.NavigationProcessor;
 
 /**
- * This class holds the ApplicationNode(s) of a Riena application in a static
- * way. If you need more than one ApplicationNode, you must specify a unique
+ * This class holds the ApplicationNode(s) of a Riena application in a static way. If you need more than one ApplicationNode, you must specify a unique
  * ApplicationNode names.
  * 
  * @since 3.0
@@ -32,8 +31,7 @@ final class ApplicationNodeManagerInternal {
 	 * Answer the default applicationModel
 	 * 
 	 * @see org.eclipse.riena.navigation.IApplicationNode
-	 * @return the default application model or null if no defaultmodel is
-	 *         present. Usually only one (the default model) model is used.
+	 * @return the default application model or null if no defaultmodel is present. Usually only one (the default model) model is used.
 	 */
 	public IApplicationNode getApplicationNode() {
 		final IApplicationNode model = getApplicationNode(DEFAULT_NODE_NAME);
@@ -51,8 +49,7 @@ final class ApplicationNodeManagerInternal {
 	 *            the name of the mApplicationModel
 	 * 
 	 * @see org.eclipse.riena.navigation.IApplicationNode
-	 * @return the ApplicationNode with the matching name or null if no matching
-	 *         model is present.
+	 * @return the ApplicationNode with the matching name or null if no matching model is present.
 	 */
 	public IApplicationNode getApplicationNode(final String name) {
 		String modelName = name;
@@ -72,8 +69,7 @@ final class ApplicationNodeManagerInternal {
 	}
 
 	/**
-	 * Register the given ApplicationNode. If the ApplicationNode already
-	 * exists, an ApplicationModelFailure is thrown
+	 * Register the given ApplicationNode. If the ApplicationNode already exists, an ApplicationModelFailure is thrown
 	 * 
 	 * @see org.eclipse.riena.navigation.IApplicationNode
 	 * @see org.eclipse.riena.navigation.ApplicationModelFailure
@@ -169,29 +165,7 @@ final class ApplicationNodeManagerInternal {
 		if (moduleNode == null) {
 			return null;
 		}
-		for (final ISubModuleNode child : moduleNode.getChildren()) {
-			final ISubModuleNode subModuleNode = getActiveSubModule(child);
-			if (subModuleNode != null) {
-				return getActiveSubModule(child);
-			}
-		}
-		return null;
-	}
-
-	private static ISubModuleNode getActiveSubModule(final ISubModuleNode node) {
-
-		if (node.isActivated()) {
-			return node;
-		}
-		for (final ISubModuleNode child : node.getChildren()) {
-			final ISubModuleNode subModuleNode = getActiveSubModule(child);
-			if (subModuleNode != null) {
-				return getActiveSubModule(child);
-			}
-		}
-
-		return null;
-
+		return ApplicationNodeManager.getActiveSubModule(moduleNode);
 	}
 
 }

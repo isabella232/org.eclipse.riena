@@ -102,7 +102,7 @@ public class ModuleController extends NavigationNodeController<IModuleNode> {
 	private void updateWindowTitle() {
 		if (getWindowRidget() != null) {
 			getWindowRidget().setTitle(getNavigationNode().getLabel());
-			final ISubModuleNode subModule = ApplicationNodeManager.locateActiveSubModuleNode();
+			final ISubModuleNode subModule = ApplicationNodeManager.getActiveSubModule(getNavigationNode());
 			if ((subModule != null) && (subModule.getNavigationNodeController() instanceof SubModuleController)) {
 				((SubModuleController) subModule.getNavigationNodeController()).updateWindowTitle();
 			}

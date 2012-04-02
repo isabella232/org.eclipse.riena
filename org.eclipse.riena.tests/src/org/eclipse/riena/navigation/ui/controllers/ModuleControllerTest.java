@@ -34,7 +34,7 @@ public class ModuleControllerTest extends TestCase {
 
 		final ModuleNode node = new ModuleNode();
 		node.setClosable(true);
-		node.setLabel("Hello");
+		node.setLabel("Hello"); //$NON-NLS-1$
 		final ModuleController controller = new ModuleController(node);
 		final ShellRidget shellRidget = new ShellRidget();
 		final Shell shell = new Shell();
@@ -42,7 +42,7 @@ public class ModuleControllerTest extends TestCase {
 		controller.setWindowRidget(shellRidget);
 		controller.afterBind();
 		assertTrue(controller.isCloseable());
-		assertEquals("Hello", shellRidget.getTitle());
+		assertEquals("Hello", shellRidget.getTitle()); //$NON-NLS-1$
 
 		node.setClosable(false);
 		controller.configureRidgets();
@@ -52,12 +52,13 @@ public class ModuleControllerTest extends TestCase {
 
 	}
 
-	public void testSetLabel() throws Exception {
+	public void testUpdateWindowTitle() throws Exception {
 
-		// test setLabel() with one submodule
+		// test updateWindowTitle() with one submodule
 		final ModuleNode node = new ModuleNode();
 		final SubModuleNode subNode1 = new SubModuleNode();
 		node.addChild(subNode1);
+		subNode1.activate(null);
 
 		final ModuleController controller = new ModuleController(node);
 		final SubModuleController subModuleController1 = new SubModuleController(subNode1);
@@ -72,18 +73,18 @@ public class ModuleControllerTest extends TestCase {
 		subModuleShellRidget1.setUIControl(subModuleShell1);
 		subModuleController1.setWindowRidget(subModuleShellRidget1);
 
-		node.setLabel("Hello");
+		node.setLabel("Hello"); //$NON-NLS-1$
 
-		assertEquals("Hello", shellRidget.getTitle());
-		assertEquals("Hello", subModuleShellRidget1.getTitle());
+		assertEquals("Hello", shellRidget.getTitle()); //$NON-NLS-1$
+		assertEquals("Hello", subModuleShellRidget1.getTitle()); //$NON-NLS-1$
 
 		shell.dispose();
 		subModuleShell1.dispose();
 
-		// test setLabel() with two submodules
+		// test updateWindowTitle() with two submodules
 		final ModuleNode modNode = new ModuleNode();
-		final SubModuleNode subModNode1 = new SubModuleNode(new NavigationNodeId("sm1"));
-		final SubModuleNode subModNode2 = new SubModuleNode(new NavigationNodeId("sm2"));
+		final SubModuleNode subModNode1 = new SubModuleNode(new NavigationNodeId("sm1")); //$NON-NLS-1$
+		final SubModuleNode subModNode2 = new SubModuleNode(new NavigationNodeId("sm2")); //$NON-NLS-1$
 		modNode.addChild(subModNode1);
 		modNode.addChild(subModNode2);
 
@@ -106,13 +107,21 @@ public class ModuleControllerTest extends TestCase {
 		subModShellRidget2.setUIControl(subModShell2);
 		subModController2.setWindowRidget(subModShellRidget2);
 
-		modNode.setLabel("Module");
-		subModNode1.setLabel("SubModule 1");
-		subModNode2.setLabel("SubModule 2");
+		modNode.setLabel("Module"); //$NON-NLS-1$
+		subModNode1.activate(null);
+		subModNode1.setLabel("SubModule 1"); //$NON-NLS-1$
+		subModNode1.deactivate(null);
+		subModNode2.activate(null);
+		subModNode2.setLabel("SubModule 2"); //$NON-NLS-1$
 
-		assertEquals("Module", shellRidgetMod.getTitle());
-		assertEquals("Module - SubModule 1", subModShellRidget1.getTitle());
-		assertEquals("Module - SubModule 2", subModShellRidget2.getTitle());
+		assertEquals("Module", shellRidgetMod.getTitle()); //$NON-NLS-1$
+		assertEquals("Module - SubModule 1", subModShellRidget1.getTitle()); //$NON-NLS-1$
+		assertEquals("Module - SubModule 2", subModShellRidget2.getTitle()); //$NON-NLS-1$
+
+		modNode.setLabel("newTitle"); //$NON-NLS-1$
+		assertEquals("newTitle", shellRidgetMod.getTitle()); //$NON-NLS-1$
+		assertEquals("Module - SubModule 1", subModShellRidget1.getTitle()); //$NON-NLS-1$
+		assertEquals("newTitle - SubModule 2", subModShellRidget2.getTitle()); //$NON-NLS-1$
 
 		shellMod.dispose();
 		subModShell1.dispose();
@@ -127,9 +136,9 @@ public class ModuleControllerTest extends TestCase {
 
 		final ModuleNode node = new ModuleNode();
 		node.setNavigationProcessor(new NavigationProcessor());
-		final SubModuleNode sub1 = new SubModuleNode(new NavigationNodeId("sm1"));
+		final SubModuleNode sub1 = new SubModuleNode(new NavigationNodeId("sm1")); //$NON-NLS-1$
 		node.addChild(sub1);
-		final SubModuleNode sub2 = new SubModuleNode(new NavigationNodeId("sm2"));
+		final SubModuleNode sub2 = new SubModuleNode(new NavigationNodeId("sm2")); //$NON-NLS-1$
 		node.addChild(sub2);
 		final SubModuleNode sub3 = new SubModuleNode();
 		node.addChild(sub3);
@@ -157,9 +166,9 @@ public class ModuleControllerTest extends TestCase {
 
 		final ModuleNode node = new ModuleNode();
 		node.setNavigationProcessor(new NavigationProcessor());
-		final SubModuleNode sub1 = new SubModuleNode(new NavigationNodeId("sm1"));
+		final SubModuleNode sub1 = new SubModuleNode(new NavigationNodeId("sm1")); //$NON-NLS-1$
 		node.addChild(sub1);
-		final SubModuleNode sub2 = new SubModuleNode(new NavigationNodeId("sm2"));
+		final SubModuleNode sub2 = new SubModuleNode(new NavigationNodeId("sm2")); //$NON-NLS-1$
 		node.addChild(sub2);
 		final SubModuleNode sub3 = new SubModuleNode();
 		sub2.addChild(sub3);
