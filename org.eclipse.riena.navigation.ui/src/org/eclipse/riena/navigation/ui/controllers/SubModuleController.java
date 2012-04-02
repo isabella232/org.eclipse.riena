@@ -98,7 +98,6 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	@Override
 	public void afterBind() {
 		super.afterBind();
-		System.out.println("*****************SubModuleController.afterBind()");
 		updateIcon();
 		updateWindowTitle();
 		updateCloseable();
