@@ -16,14 +16,14 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Scale;
 
-import org.eclipse.riena.ui.ridgets.ITraverseRidget;
+import org.eclipse.riena.ui.ridgets.IScaleRidget;
 
 /**
  * Ridget for a SWT {@link Scale} widget.
  * 
  * @since 1.2
  */
-public class ScaleRidget extends AbstractTraverseRidget implements ITraverseRidget {
+public class ScaleRidget extends AbstractTraverseRidget implements IScaleRidget {
 
 	@Override
 	public Scale getUIControl() {

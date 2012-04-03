@@ -77,14 +77,14 @@ public class TreeTableSubModuleController extends SubModuleController {
 	@Override
 	public void configureRidgets() {
 
-		tree = getRidget("tree"); //$NON-NLS-1$
-		final IToggleButtonRidget buttonEnableGrouping = getRidget("buttonEnableGrouping"); //$NON-NLS-1$
-		final IActionRidget buttonAddSibling = getRidget("buttonAddSibling"); //$NON-NLS-1$
-		final IActionRidget buttonAddChild = getRidget("buttonAddChild"); //$NON-NLS-1$
-		buttonRename = getRidget("buttonRename"); //$NON-NLS-1$
-		final IActionRidget buttonDelete = getRidget("buttonDelete"); //$NON-NLS-1$
-		final IActionRidget buttonExpand = getRidget("buttonExpand"); //$NON-NLS-1$
-		final IActionRidget buttonCollapse = getRidget("buttonCollapse"); //$NON-NLS-1$
+		tree = getRidget(IGroupedTreeTableRidget.class, "tree"); //$NON-NLS-1$
+		final IToggleButtonRidget buttonEnableGrouping = getRidget(IToggleButtonRidget.class, "buttonEnableGrouping"); //$NON-NLS-1$
+		final IActionRidget buttonAddSibling = getRidget(IActionRidget.class, "buttonAddSibling"); //$NON-NLS-1$
+		final IActionRidget buttonAddChild = getRidget(IActionRidget.class, "buttonAddChild"); //$NON-NLS-1$
+		buttonRename = getRidget(IActionRidget.class, "buttonRename"); //$NON-NLS-1$
+		final IActionRidget buttonDelete = getRidget(IActionRidget.class, "buttonDelete"); //$NON-NLS-1$
+		final IActionRidget buttonExpand = getRidget(IActionRidget.class, "buttonExpand"); //$NON-NLS-1$
+		final IActionRidget buttonCollapse = getRidget(IActionRidget.class, "buttonCollapse"); //$NON-NLS-1$
 
 		tree.addDoubleClickListener(new IActionListener() {
 			public void callback() {

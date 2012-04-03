@@ -34,8 +34,7 @@ public class RemoteServiceProgressSubModuleController extends SubModuleControlle
 
 	public RemoteServiceProgressSubModuleController() {
 		remoteService = new InfoServiceFake();
-		Inject.service(IRemoteProgressMonitorRegistry.class).useRanking().into(this)
-				.andStart(Activator.getDefault().getContext());
+		Inject.service(IRemoteProgressMonitorRegistry.class).useRanking().into(this).andStart(Activator.getDefault().getContext());
 	}
 
 	public void bind(final IRemoteProgressMonitorRegistry remoteProgressMonitorRegistry) {
@@ -55,15 +54,11 @@ public class RemoteServiceProgressSubModuleController extends SubModuleControlle
 	}
 
 	private IActionRidget getActionRidgetManual() {
-		return getActionRidget(SERVICE_CALL_ACTION_MANUAL);
+		return getRidget(IActionRidget.class, SERVICE_CALL_ACTION_MANUAL);
 	}
 
 	private IActionRidget getActionRidgetUIProcess() {
-		return getActionRidget(SERVICE_CALL_ACTION_UIPROCESS);
-	}
-
-	private IActionRidget getActionRidget(final String ridgetName) {
-		return IActionRidget.class.cast(getRidget(ridgetName));
+		return getRidget(IActionRidget.class, SERVICE_CALL_ACTION_UIPROCESS);
 	}
 
 	//
@@ -94,8 +89,7 @@ public class RemoteServiceProgressSubModuleController extends SubModuleControlle
 			final ServiceProgressVisualizer serviceProgress = new ServiceProgressVisualizer("remote"); //$NON-NLS-1$
 
 			// add monitor
-			remoteProgressMonitorRegistry.addProgressMonitor(remoteService, serviceProgress,
-					IRemoteProgressMonitorRegistry.RemovalPolicy.AFTER_ALL_CALLS);
+			remoteProgressMonitorRegistry.addProgressMonitor(remoteService, serviceProgress, IRemoteProgressMonitorRegistry.RemovalPolicy.AFTER_ALL_CALLS);
 
 			remoteService.getInfo("foo"); //$NON-NLS-1$
 

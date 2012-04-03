@@ -52,9 +52,9 @@ public class CustomerSearchController extends SubModuleController {
 		suchName.bindToModel(customerSearchBean, "lastName"); //$NON-NLS-1$
 		suchName.setMandatory(true);
 
-		((ILabelRidget) getRidget("hits")).bindToModel(result, "hits"); //$NON-NLS-1$ //$NON-NLS-2$
+		getRidget(ILabelRidget.class, "hits").bindToModel(result, "hits"); //$NON-NLS-1$ //$NON-NLS-2$
 
-		final ITableRidget kunden = getRidget("result"); //$NON-NLS-1$
+		final ITableRidget kunden = getRidget(ITableRidget.class, "result"); //$NON-NLS-1$
 		final String[] columnNames = { "Lastname", "Firstname", "Birthdate", "Street", "City" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 		final String[] propertyNames = { "lastName", "firstName", "birthDate", "address.street", "address.city" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 		kunden.bindToModel(result, "customers", Customer.class, propertyNames, columnNames); //$NON-NLS-1$
@@ -71,12 +71,12 @@ public class CustomerSearchController extends SubModuleController {
 	@OnActionCallback(ridgetId = "search")
 	protected void search() {
 		result.setCustomers(null);
-		getRidget("result").updateFromModel(); //$NON-NLS-1$
+		getRidget(ITableRidget.class, "result").updateFromModel(); //$NON-NLS-1$
 
 		result.setCustomers(customerDemoService.search(customerSearchBean.getLastName()));
 
-		getRidget("result").updateFromModel(); //$NON-NLS-1$
-		getRidget("hits").updateFromModel(); //$NON-NLS-1$
+		getRidget(ITableRidget.class, "result").updateFromModel(); //$NON-NLS-1$
+		getRidget(ILabelRidget.class, "hits").updateFromModel(); //$NON-NLS-1$
 		updateAllRidgetsFromModel();
 	}
 
@@ -88,14 +88,11 @@ public class CustomerSearchController extends SubModuleController {
 	@OnActionCallback(ridgetId = "open")
 	@OnDoubleClick(ridgetId = "result")
 	protected void openSelectedCustomer() {
-		final ITableRidget kunden = getRidget("result"); //$NON-NLS-1$
+		final ITableRidget kunden = getRidget(ITableRidget.class, "result"); //$NON-NLS-1$
 		final int selectionIndex = kunden.getSelectionIndex();
 		if (selectionIndex >= 0) {
-			getNavigationNode()
-					.navigate(
-							new NavigationNodeId(
-									"riena.demo.client.CustomerRecord", result.getCustomers().get(selectionIndex).getEmailAddress()), //$NON-NLS-1$
-							new NavigationArgument(result.getCustomers().get(selectionIndex)));
+			getNavigationNode().navigate(new NavigationNodeId("riena.demo.client.CustomerRecord", result.getCustomers().get(selectionIndex).getEmailAddress()), //$NON-NLS-1$
+					new NavigationArgument(result.getCustomers().get(selectionIndex)));
 		}
 	}
 }

@@ -35,6 +35,7 @@ import org.eclipse.riena.ui.ridgets.IDateTimeRidget;
 import org.eclipse.riena.ui.ridgets.ILabelRidget;
 import org.eclipse.riena.ui.ridgets.IListRidget;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
+import org.eclipse.riena.ui.ridgets.IScaleRidget;
 import org.eclipse.riena.ui.ridgets.ISliderRidget;
 import org.eclipse.riena.ui.ridgets.ISpinnerRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
@@ -46,8 +47,7 @@ import org.eclipse.riena.ui.ridgets.ITraverseRidget;
  * Test for most of the existing ridgets.
  */
 @NonUITestCase
-public class ControllerTestsPlaygroundSubModuleControllerTest extends
-		AbstractSubModuleControllerTest<ControllerTestsPlaygroundSubModuleController> {
+public class ControllerTestsPlaygroundSubModuleControllerTest extends AbstractSubModuleControllerTest<ControllerTestsPlaygroundSubModuleController> {
 
 	private final List<Person> persons = PersonFactory.createPersonList();
 
@@ -60,7 +60,7 @@ public class ControllerTestsPlaygroundSubModuleControllerTest extends
 	}
 
 	public void testScaleSpinner() {
-		final ITraverseRidget scale = getController().getRidget(ITraverseRidget.class, "celsiusScale"); //$NON-NLS-1$
+		final ITraverseRidget scale = getController().getRidget(IScaleRidget.class, "celsiusScale"); //$NON-NLS-1$
 		final ISpinnerRidget fahrenheitSpinner = getController().getRidget(ISpinnerRidget.class, "fahrenheitSpinner"); //$NON-NLS-1$
 		final ISliderRidget kelvinSlider = getController().getRidget(ISliderRidget.class, "kelvinSlider"); //$NON-NLS-1$
 
@@ -132,8 +132,7 @@ public class ControllerTestsPlaygroundSubModuleControllerTest extends
 		final ITableRidget table = getController().getRidget(ITableRidget.class, "multiTable"); //$NON-NLS-1$
 		final IActionRidget copySelectionButton = getController().getRidget(IActionRidget.class, "copySelectionButton"); //$NON-NLS-1$
 		final IListRidget list = getController().getRidget(IListRidget.class, "tableList"); //$NON-NLS-1$
-		final IToggleButtonRidget selectAllToggleButton = getController().getRidget(IToggleButtonRidget.class,
-				"toggleButton"); //$NON-NLS-1$
+		final IToggleButtonRidget selectAllToggleButton = getController().getRidget(IToggleButtonRidget.class, "toggleButton"); //$NON-NLS-1$
 
 		assertFalse(selectAllToggleButton.isSelected());
 

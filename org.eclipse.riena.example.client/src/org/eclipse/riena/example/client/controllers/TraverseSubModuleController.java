@@ -16,13 +16,14 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.riena.beans.common.AbstractBean;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.IActionListener;
+import org.eclipse.riena.ui.ridgets.IProgressBarRidget;
+import org.eclipse.riena.ui.ridgets.IScaleRidget;
 import org.eclipse.riena.ui.ridgets.ISpinnerRidget;
 import org.eclipse.riena.ui.ridgets.IStatusMeterRidget;
 import org.eclipse.riena.ui.ridgets.ITraverseRidget;
 
 /**
- * Controller of the sub-module to show some examples of {@code ITraverseRidget}
- * s.
+ * Controller of the sub-module to show some examples of {@code ITraverseRidget} s.
  */
 public class TraverseSubModuleController extends SubModuleController {
 
@@ -31,8 +32,7 @@ public class TraverseSubModuleController extends SubModuleController {
 	private IStatusMeterRidget rankineStatusMeter;
 
 	/**
-	 * Creates a new instance of {@code TraverseSubModuleController} and
-	 * initializes the <i>domain</i> model of the controller.
+	 * Creates a new instance of {@code TraverseSubModuleController} and initializes the <i>domain</i> model of the controller.
 	 */
 	public TraverseSubModuleController() {
 		super();
@@ -47,16 +47,15 @@ public class TraverseSubModuleController extends SubModuleController {
 
 		final TemperatureListener listener = new TemperatureListener();
 
-		final ISpinnerRidget fahrenheitSpinner = getRidget("fahrenheitSpinner"); //$NON-NLS-1$
+		final ISpinnerRidget fahrenheitSpinner = getRidget(ISpinnerRidget.class, "fahrenheitSpinner"); //$NON-NLS-1$
 		fahrenheitSpinner.setIncrement(1);
 		fahrenheitSpinner.setMaximum(122);
 		fahrenheitSpinner.setMinimum(32);
-		fahrenheitSpinner.bindToModel(BeansObservables.observeValue(temperature,
-				Temperature.PROPERTY_DEGREE_FAHRENHEITN));
+		fahrenheitSpinner.bindToModel(BeansObservables.observeValue(temperature, Temperature.PROPERTY_DEGREE_FAHRENHEITN));
 		fahrenheitSpinner.updateFromModel();
 		fahrenheitSpinner.addListener(listener);
 
-		final ITraverseRidget celsiusScale = getRidget("celsiusScale"); //$NON-NLS-1$
+		final ITraverseRidget celsiusScale = getRidget(IScaleRidget.class, "celsiusScale"); //$NON-NLS-1$
 		celsiusScale.setIncrement(1);
 		celsiusScale.setMaximum(50);
 		celsiusScale.setMinimum(0);
@@ -64,14 +63,14 @@ public class TraverseSubModuleController extends SubModuleController {
 		celsiusScale.updateFromModel();
 		celsiusScale.addListener(listener);
 
-		final ITraverseRidget kelvinProgressBar = getRidget("kelvinProgressBar"); //$NON-NLS-1$
+		final ITraverseRidget kelvinProgressBar = getRidget(IProgressBarRidget.class, "kelvinProgressBar"); //$NON-NLS-1$
 		kelvinProgressBar.setIncrement(1);
 		kelvinProgressBar.setMaximum(323);
 		kelvinProgressBar.setMinimum(273);
 		kelvinProgressBar.bindToModel(BeansObservables.observeValue(temperature, Temperature.PROPERTY_KELVIN));
 		kelvinProgressBar.updateFromModel();
 
-		rankineStatusMeter = getRidget("rankineStatusMeter"); //$NON-NLS-1$
+		rankineStatusMeter = getRidget(IStatusMeterRidget.class, "rankineStatusMeter"); //$NON-NLS-1$
 		rankineStatusMeter.bindToModel(BeansObservables.observeValue(temperature, Temperature.PROPERTY_RANKINE));
 		rankineStatusMeter.setMaximum(RANKINE_MAX);
 		rankineStatusMeter.setMinimum(491);

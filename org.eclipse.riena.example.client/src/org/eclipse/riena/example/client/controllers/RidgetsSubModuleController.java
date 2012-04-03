@@ -14,6 +14,7 @@ import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
+import org.eclipse.riena.ui.ridgets.IImageButtonRidget;
 import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
 
 /**
@@ -84,15 +85,15 @@ public class RidgetsSubModuleController extends SubModuleController {
 			}
 		};
 
-		final IActionRidget imageButton = getRidget("imageButton"); //$NON-NLS-1$
+		final IActionRidget imageButton = getRidget(IImageButtonRidget.class, "imageButton"); //$NON-NLS-1$
 		imageButton.setIcon("imageBtn"); //$NON-NLS-1$
 		imageButton.addListener(actionListener);
 
-		final IActionRidget arrowButton = getRidget("arrowButton"); //$NON-NLS-1$
+		final IActionRidget arrowButton = getRidget(IImageButtonRidget.class, "arrowButton"); //$NON-NLS-1$
 		arrowButton.setIcon("arrowRight"); //$NON-NLS-1$
 		arrowButton.addListener(actionListener);
 
-		final IActionRidget arrowHotButton = getRidget("arrowHotButton"); //$NON-NLS-1$
+		final IActionRidget arrowHotButton = getRidget(IImageButtonRidget.class, "arrowHotButton"); //$NON-NLS-1$
 		arrowHotButton.setIcon("arrowRight"); //$NON-NLS-1$
 		arrowHotButton.addListener(actionListener);
 	}

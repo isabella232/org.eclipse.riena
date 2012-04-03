@@ -83,7 +83,7 @@ public class CustomerOverviewController extends SubModuleController {
 	@OnActionCallback(ridgetId = "assistent")
 	protected void assistentAction() {
 		final IApplicationNode applNode = getNavigationNode().getParentOfType(IApplicationNode.class);
-		if (((IToggleButtonRidget) getRidget("assistent")).isSelected()) { //$NON-NLS-1$
+		if (getRidget(IToggleButtonRidget.class, "assistent").isSelected()) { //$NON-NLS-1$
 			applNode.addFilter(assistent);
 		} else {
 			applNode.removeFilter(assistent);
@@ -93,7 +93,7 @@ public class CustomerOverviewController extends SubModuleController {
 	@OnActionCallback(ridgetId = "mandatory")
 	protected void mandatoryAction() {
 		final IApplicationNode applNode = getNavigationNode().getParentOfType(IApplicationNode.class);
-		if (((IToggleButtonRidget) getRidget("mandatory")).isSelected()) { //$NON-NLS-1$
+		if (getRidget(IToggleButtonRidget.class, "mandatory").isSelected()) { //$NON-NLS-1$
 			applNode.addFilter(mandatory);
 		} else {
 			applNode.removeFilter(mandatory);

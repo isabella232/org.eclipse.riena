@@ -45,8 +45,7 @@ public class CustomerContractController extends SubModuleController {
 		master.setDelegate(new ContractDelegate());
 		final String[] properties = new String[] { "contractNo", "contractValue", "status" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		final String[] headers = new String[] { "ContractNo", "Value in Euro", "Status" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		master.bindToModel(new WritableList(customer.getContracts(), Contract.class), Contract.class, properties,
-				headers);
+		master.bindToModel(new WritableList(customer.getContracts(), Contract.class), Contract.class, properties, headers);
 
 		final ITableRidget table = master.getRidget(ITableRidget.class, MasterDetailsComposite.BIND_ID_TABLE);
 		table.setColumnFormatter(1, new NumberColumnFormatter(Double.class, 2) {
@@ -69,16 +68,16 @@ public class CustomerContractController extends SubModuleController {
 		// configure ridgets for the details
 		public void configureRidgets(final IRidgetContainer container) {
 
-			final ITextRidget txtcontractNo = (ITextRidget) container.getRidget("contractno"); //$NON-NLS-1$
+			final ITextRidget txtcontractNo = container.getRidget(ITextRidget.class, "contractno"); //$NON-NLS-1$
 			txtcontractNo.setMandatory(true);
 			txtcontractNo.bindToModel(workingCopy, "contractNo"); //$NON-NLS-1$
 			txtcontractNo.updateFromModel();
 
-			final ITextRidget txtLast = (ITextRidget) container.getRidget("description"); //$NON-NLS-1$
+			final ITextRidget txtLast = container.getRidget(ITextRidget.class, "description"); //$NON-NLS-1$
 			txtLast.bindToModel(workingCopy, "description"); //$NON-NLS-1$
 			txtLast.updateFromModel();
 
-			final ITextRidget txtValue = (ITextRidget) container.getRidget("value"); //$NON-NLS-1$
+			final ITextRidget txtValue = container.getRidget(ITextRidget.class, "value"); //$NON-NLS-1$
 			txtValue.setMandatory(true);
 			txtValue.bindToModel(workingCopy, "contractValue"); //$NON-NLS-1$
 			txtValue.updateFromModel();
@@ -110,10 +109,8 @@ public class CustomerContractController extends SubModuleController {
 		public boolean isChanged(final Object source, final Object target) {
 			final Contract source2 = (Contract) source;
 			final Contract target2 = (Contract) target;
-			return !(source2.getContractNo().equals(target2.getContractNo())
-					&& source2.getContractValue() == target2.getContractValue()
-					&& source2.getDescription().equals(target2.getDescription()) && source2.getStatus().equals(
-					target2.getStatus()));
+			return !(source2.getContractNo().equals(target2.getContractNo()) && source2.getContractValue() == target2.getContractValue()
+					&& source2.getDescription().equals(target2.getDescription()) && source2.getStatus().equals(target2.getStatus()));
 		}
 	}
 

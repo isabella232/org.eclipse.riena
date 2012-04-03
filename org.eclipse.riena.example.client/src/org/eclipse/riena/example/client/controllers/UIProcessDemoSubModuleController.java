@@ -36,11 +36,11 @@ public class UIProcessDemoSubModuleController extends SubModuleController {
 	}
 
 	public IActionRidget getActionRidget() {
-		return getRidget("actionRidget"); //$NON-NLS-1$
+		return getRidget(IActionRidget.class, "actionRidget"); //$NON-NLS-1$
 	}
 
 	public IActionRidget getActionRidgetJob() {
-		return getRidget("actionRidgetJob"); //$NON-NLS-1$
+		return getRidget(IActionRidget.class, "actionRidgetJob"); //$NON-NLS-1$
 	}
 
 	/**

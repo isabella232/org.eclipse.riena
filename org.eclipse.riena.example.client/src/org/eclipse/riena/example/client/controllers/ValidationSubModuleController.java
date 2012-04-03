@@ -57,46 +57,43 @@ public class ValidationSubModuleController extends SubModuleController {
 	@Override
 	public void configureRidgets() {
 
-		final ITextRidget txtNumbersOnly = getRidget("txtNumbersOnly"); //$NON-NLS-1$
-		final ITextRidget txtNumbersOnlyDW = getRidget("txtNumbersOnlyDW"); //$NON-NLS-1$
-		final ITextRidget txtCharactersOnly = getRidget("txtCharactersOnly"); //$NON-NLS-1$
-		final ITextRidget txtExpression = getRidget("txtExpression"); //$NON-NLS-1$
-		final ITextRidget txtLengthLessThan5 = getRidget("txtLengthLessThan5"); //$NON-NLS-1$
-		final ITextRidget txtRequiredLowercase = getRidget("txtRequiredLowercase"); //$NON-NLS-1$
-		final ITextRidget txtRange18to80 = getRidget("txtRange18to80"); //$NON-NLS-1$
-		final ITextRidget txtLength5to10 = getRidget("txtLength5to10"); //$NON-NLS-1$
-		final ITextRidget txtDate = getRidget("txtDate"); //$NON-NLS-1$
-		final ITextRidget txtEmail = getRidget("txtEmail"); //$NON-NLS-1$
+		final ITextRidget txtNumbersOnly = getRidget(ITextRidget.class, "txtNumbersOnly"); //$NON-NLS-1$
+		final ITextRidget txtNumbersOnlyDW = getRidget(ITextRidget.class, "txtNumbersOnlyDW"); //$NON-NLS-1$
+		final ITextRidget txtCharactersOnly = getRidget(ITextRidget.class, "txtCharactersOnly"); //$NON-NLS-1$
+		final ITextRidget txtExpression = getRidget(ITextRidget.class, "txtExpression"); //$NON-NLS-1$
+		final ITextRidget txtLengthLessThan5 = getRidget(ITextRidget.class, "txtLengthLessThan5"); //$NON-NLS-1$
+		final ITextRidget txtRequiredLowercase = getRidget(ITextRidget.class, "txtRequiredLowercase"); //$NON-NLS-1$
+		final ITextRidget txtRange18to80 = getRidget(ITextRidget.class, "txtRange18to80"); //$NON-NLS-1$
+		final ITextRidget txtLength5to10 = getRidget(ITextRidget.class, "txtLength5to10"); //$NON-NLS-1$
+		final ITextRidget txtDate = getRidget(ITextRidget.class, "txtDate"); //$NON-NLS-1$
+		final ITextRidget txtEmail = getRidget(ITextRidget.class, "txtEmail"); //$NON-NLS-1$
 
-		final ITextRidget lblNumbersOnly = getRidget("lblNumbersOnly"); //$NON-NLS-1$
-		final ITextRidget lblNumbersOnlyDW = getRidget("lblNumbersOnlyDW"); //$NON-NLS-1$
-		final ITextRidget lblCharactersOnly = getRidget("lblCharactersOnly"); //$NON-NLS-1$
-		final ITextRidget lblExpression = getRidget("lblExpression"); //$NON-NLS-1$
-		final ITextRidget lblLengthLessThan5 = getRidget("lblLengthLessThan5"); //$NON-NLS-1$
-		final ITextRidget lblRequiredLowercase = getRidget("lblRequiredLowercase"); //$NON-NLS-1$
-		final ITextRidget lblRange18to80 = getRidget("lblRange18to80"); //$NON-NLS-1$
-		final ITextRidget lblLength5to10 = getRidget("lblLength5to10"); //$NON-NLS-1$
-		final ITextRidget lblDate = getRidget("lblDate"); //$NON-NLS-1$
-		final ITextRidget lblEmail = getRidget("lblEmail"); //$NON-NLS-1$
+		final ITextRidget lblNumbersOnly = getRidget(ITextRidget.class, "lblNumbersOnly"); //$NON-NLS-1$
+		final ITextRidget lblNumbersOnlyDW = getRidget(ITextRidget.class, "lblNumbersOnlyDW"); //$NON-NLS-1$
+		final ITextRidget lblCharactersOnly = getRidget(ITextRidget.class, "lblCharactersOnly"); //$NON-NLS-1$
+		final ITextRidget lblExpression = getRidget(ITextRidget.class, "lblExpression"); //$NON-NLS-1$
+		final ITextRidget lblLengthLessThan5 = getRidget(ITextRidget.class, "lblLengthLessThan5"); //$NON-NLS-1$
+		final ITextRidget lblRequiredLowercase = getRidget(ITextRidget.class, "lblRequiredLowercase"); //$NON-NLS-1$
+		final ITextRidget lblRange18to80 = getRidget(ITextRidget.class, "lblRange18to80"); //$NON-NLS-1$
+		final ITextRidget lblLength5to10 = getRidget(ITextRidget.class, "lblLength5to10"); //$NON-NLS-1$
+		final ITextRidget lblDate = getRidget(ITextRidget.class, "lblDate"); //$NON-NLS-1$
+		final ITextRidget lblEmail = getRidget(ITextRidget.class, "lblEmail"); //$NON-NLS-1$
 
-		makeOutputOnly(lblNumbersOnly, lblNumbersOnlyDW, lblCharactersOnly, lblExpression, lblLengthLessThan5,
-				lblRequiredLowercase, lblRange18to80, lblLength5to10, lblDate, lblEmail);
+		makeOutputOnly(lblNumbersOnly, lblNumbersOnlyDW, lblCharactersOnly, lblExpression, lblLengthLessThan5, lblRequiredLowercase, lblRange18to80,
+				lblLength5to10, lblDate, lblEmail);
 
 		// on edit validation
 
-		txtNumbersOnly.addValidationRule(new ValidCharacters(ValidCharacters.VALID_NUMBERS),
-				ValidationTime.ON_UI_CONTROL_EDIT);
+		txtNumbersOnly.addValidationRule(new ValidCharacters(ValidCharacters.VALID_NUMBERS), ValidationTime.ON_UI_CONTROL_EDIT);
 		txtNumbersOnly.addValidationMessage("Only numbers are allowed!"); //$NON-NLS-1$
 		txtNumbersOnly.bindToModel(getTextValue(lblNumbersOnly));
 
-		txtNumbersOnlyDW.addValidationRule(new ValidCharacters(ValidCharacters.VALID_NUMBERS),
-				ValidationTime.ON_UI_CONTROL_EDIT);
+		txtNumbersOnlyDW.addValidationRule(new ValidCharacters(ValidCharacters.VALID_NUMBERS), ValidationTime.ON_UI_CONTROL_EDIT);
 		txtNumbersOnlyDW.addValidationMessage("Only numbers are allowed!"); //$NON-NLS-1$
 		txtNumbersOnlyDW.setDirectWriting(true);
 		txtNumbersOnlyDW.bindToModel(getTextValue(lblNumbersOnlyDW));
 
-		txtCharactersOnly.addValidationRule(new ValidCharacters(ValidCharacters.VALID_LETTER),
-				ValidationTime.ON_UI_CONTROL_EDIT);
+		txtCharactersOnly.addValidationRule(new ValidCharacters(ValidCharacters.VALID_LETTER), ValidationTime.ON_UI_CONTROL_EDIT);
 		txtCharactersOnly.addValidationMessage("Only characters are allowed!"); //$NON-NLS-1$
 		txtCharactersOnly.bindToModel(getTextValue(lblCharactersOnly));
 
@@ -110,8 +107,7 @@ public class ValidationSubModuleController extends SubModuleController {
 		txtLengthLessThan5.bindToModel(getTextValue(lblLengthLessThan5));
 
 		txtRequiredLowercase.addValidationRule(new RequiredField(), ValidationTime.ON_UI_CONTROL_EDIT);
-		txtRequiredLowercase.addValidationRule(new ValidCharacters(ValidCharacters.VALID_LOWERCASE),
-				ValidationTime.ON_UI_CONTROL_EDIT);
+		txtRequiredLowercase.addValidationRule(new ValidCharacters(ValidCharacters.VALID_LOWERCASE), ValidationTime.ON_UI_CONTROL_EDIT);
 		txtRequiredLowercase.addValidationMessage("Only lowercase characters are allowed!"); //$NON-NLS-1$
 		txtRequiredLowercase.bindToModel(getTextValue(lblRequiredLowercase));
 
@@ -139,12 +135,11 @@ public class ValidationSubModuleController extends SubModuleController {
 		// show validation messages in statusline and tooltip
 
 		final IStatuslineRidget statuslineRidget = getApplicationController().getStatusline();
-		final StatuslineMessageMarkerViewer statuslineMessageMarkerViewer = new StatuslineMessageMarkerViewer(
-				statuslineRidget);
+		final StatuslineMessageMarkerViewer statuslineMessageMarkerViewer = new StatuslineMessageMarkerViewer(statuslineRidget);
 		final TooltipMessageMarkerViewer tooltipMessageMarkerViewer = new TooltipMessageMarkerViewer();
 
-		final IBasicMarkableRidget[] ridgets = { txtNumbersOnly, txtNumbersOnlyDW, txtCharactersOnly, txtExpression,
-				txtLengthLessThan5, txtRequiredLowercase, txtRange18to80, txtLength5to10, txtDate, txtEmail };
+		final IBasicMarkableRidget[] ridgets = { txtNumbersOnly, txtNumbersOnlyDW, txtCharactersOnly, txtExpression, txtLengthLessThan5, txtRequiredLowercase,
+				txtRange18to80, txtLength5to10, txtDate, txtEmail };
 		for (final IBasicMarkableRidget ridget : ridgets) {
 			statuslineMessageMarkerViewer.addRidget(ridget);
 			tooltipMessageMarkerViewer.addRidget(ridget);
@@ -164,8 +159,7 @@ public class ValidationSubModuleController extends SubModuleController {
 	 * @return sub-application controller
 	 */
 	private ApplicationController getApplicationController() {
-		return (ApplicationController) getNavigationNode().getParentOfType(IApplicationNode.class)
-				.getNavigationNodeController();
+		return (ApplicationController) getNavigationNode().getParentOfType(IApplicationNode.class).getNavigationNodeController();
 	}
 
 	private void makeOutputOnly(final ITextRidget... ridgets) {

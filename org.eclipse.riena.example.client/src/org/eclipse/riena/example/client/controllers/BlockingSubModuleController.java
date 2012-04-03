@@ -50,7 +50,7 @@ public class BlockingSubModuleController extends SubModuleController {
 	public void configureRidgets() {
 		super.configureRidgets();
 
-		final IActionRidget blockSubModule = getRidget(RIDGET_BLOCK_SUB_MODULE);
+		final IActionRidget blockSubModule = getRidget(IActionRidget.class, RIDGET_BLOCK_SUB_MODULE);
 		blockSubModule.setText("Block current SubModule = Blocking"); //$NON-NLS-1$
 		blockSubModule.addListener(new IActionListener() {
 			public void callback() {
@@ -58,7 +58,7 @@ public class BlockingSubModuleController extends SubModuleController {
 			}
 		});
 
-		final IActionRidget blockModule = getRidget(RIDGET_BLOCK_MODULE);
+		final IActionRidget blockModule = getRidget(IActionRidget.class, RIDGET_BLOCK_MODULE);
 		blockModule.setText("Block current Module = Playground"); //$NON-NLS-1$
 		blockModule.addListener(new IActionListener() {
 			public void callback() {
@@ -66,7 +66,7 @@ public class BlockingSubModuleController extends SubModuleController {
 			}
 		});
 
-		final IActionRidget blockSubApp = getRidget(RIDGET_BLOCK_SUB_APP);
+		final IActionRidget blockSubApp = getRidget(IActionRidget.class, RIDGET_BLOCK_SUB_APP);
 		blockSubApp.setText("Block current SubApplication = Playground Tab"); //$NON-NLS-1$
 		blockSubApp.addListener(new IActionListener() {
 			public void callback() {
@@ -74,7 +74,7 @@ public class BlockingSubModuleController extends SubModuleController {
 			}
 		});
 
-		final IActionRidget disableModule = getRidget(RIDGET_DISABLE_MODULE);
+		final IActionRidget disableModule = getRidget(IActionRidget.class, RIDGET_DISABLE_MODULE);
 		disableModule.setText("Disable current Module = Playground"); //$NON-NLS-1$
 		disableModule.addListener(new IActionListener() {
 			public void callback() {
@@ -83,7 +83,7 @@ public class BlockingSubModuleController extends SubModuleController {
 			}
 		});
 
-		status = getRidget(RIDGET_STATUS);
+		status = getRidget(ILabelRidget.class, RIDGET_STATUS);
 	}
 
 	// helping methods

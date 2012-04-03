@@ -51,19 +51,19 @@ public class CompositeTableSubModuleController extends SubModuleController {
 
 		@Override
 		public void configureRidgets() {
-			final ITextRidget txtFirst = getRidget("first"); //$NON-NLS-1$
+			final ITextRidget txtFirst = getRidget(ITextRidget.class, "first"); //$NON-NLS-1$
 			txtFirst.bindToModel(rowData, Person.PROPERTY_FIRSTNAME);
 			txtFirst.updateFromModel();
 
-			final ITextRidget txtLast = getRidget("last"); //$NON-NLS-1$
+			final ITextRidget txtLast = getRidget(ITextRidget.class, "last"); //$NON-NLS-1$
 			txtLast.bindToModel(rowData, Person.PROPERTY_LASTNAME);
 			txtLast.updateFromModel();
 
-			final ISingleChoiceRidget gender = getRidget("gender"); //$NON-NLS-1$
+			final ISingleChoiceRidget gender = getRidget(ISingleChoiceRidget.class, "gender"); //$NON-NLS-1$
 			gender.bindToModel(Arrays.asList(GENDER), (List<String>) null, rowData, Person.PROPERTY_GENDER);
 			gender.updateFromModel();
 
-			final IMultipleChoiceRidget pets = getRidget("pets"); //$NON-NLS-1$
+			final IMultipleChoiceRidget pets = getRidget(IMultipleChoiceRidget.class, "pets"); //$NON-NLS-1$
 			pets.bindToModel(Arrays.asList(Person.Pets.values()), (List<String>) null, rowData, Person.PROPERTY_PETS);
 			pets.updateFromModel();
 		}
@@ -81,10 +81,10 @@ public class CompositeTableSubModuleController extends SubModuleController {
 
 	@Override
 	public void configureRidgets() {
-		final ICompositeTableRidget table = getRidget("table"); //$NON-NLS-1$
-		final IActionRidget buttonAdd = getRidget("buttonAdd"); //$NON-NLS-1$
-		final IActionRidget buttonDelete = getRidget("buttonDelete"); //$NON-NLS-1$
-		final IActionRidget buttonDump = getRidget("buttonDump"); //$NON-NLS-1$
+		final ICompositeTableRidget table = getRidget(ICompositeTableRidget.class, "table"); //$NON-NLS-1$
+		final IActionRidget buttonAdd = getRidget(IActionRidget.class, "buttonAdd"); //$NON-NLS-1$
+		final IActionRidget buttonDelete = getRidget(IActionRidget.class, "buttonDelete"); //$NON-NLS-1$
+		final IActionRidget buttonDump = getRidget(IActionRidget.class, "buttonDump"); //$NON-NLS-1$
 
 		table.bindToModel(new WritableList(input, Person.class), Person.class, RowRidget.class);
 		table.updateFromModel();

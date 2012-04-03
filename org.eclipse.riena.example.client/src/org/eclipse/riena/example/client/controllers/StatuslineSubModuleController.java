@@ -21,8 +21,7 @@ import org.eclipse.riena.ui.ridgets.IComboRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 
 /**
- * Controller of the sub-module that is an example how to display something in
- * the status line.
+ * Controller of the sub-module that is an example how to display something in the status line.
  */
 public class StatuslineSubModuleController extends SubModuleController {
 
@@ -74,35 +73,35 @@ public class StatuslineSubModuleController extends SubModuleController {
 	 * @return the messageText
 	 */
 	private ITextRidget getMessageText() {
-		return getRidget("messageText"); //$NON-NLS-1$
+		return getRidget(ITextRidget.class, "messageText"); //$NON-NLS-1$
 	}
 
 	/**
 	 * @return the severity
 	 */
 	private IComboRidget getSeverity() {
-		return getRidget("severity"); //$NON-NLS-1$
+		return getRidget(IComboRidget.class, "severity"); //$NON-NLS-1$
 	}
 
 	/**
 	 * @return the showMessage
 	 */
 	private IActionRidget getShowMessage() {
-		return getRidget("showMessage"); //$NON-NLS-1$
+		return getRidget(IActionRidget.class, "showMessage"); //$NON-NLS-1$
 	}
 
 	/**
 	 * @return the numberText
 	 */
 	private ITextRidget getNumberText() {
-		return getRidget("numberText"); //$NON-NLS-1$
+		return getRidget(ITextRidget.class, "numberText"); //$NON-NLS-1$
 	}
 
 	/**
 	 * @return the showNumber
 	 */
 	private IActionRidget getShowNumber() {
-		return getRidget("showNumber"); //$NON-NLS-1$
+		return getRidget(IActionRidget.class, "showNumber"); //$NON-NLS-1$
 	}
 
 	/**
@@ -212,8 +211,7 @@ public class StatuslineSubModuleController extends SubModuleController {
 		private Severity severity;
 
 		/**
-		 * Creates a new instance of {@code StatuslineModel} and sets the
-		 * default values.
+		 * Creates a new instance of {@code StatuslineModel} and sets the default values.
 		 */
 		public StatuslineModel() {
 			messageText = "Message"; //$NON-NLS-1$

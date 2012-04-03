@@ -68,7 +68,7 @@ public class FilterExampleSubModuleController extends SubModuleController {
 
 		super.configureRidgets();
 
-		final IToggleButtonRidget navigationAction = getRidget("navigationBtn"); //$NON-NLS-1$
+		final IToggleButtonRidget navigationAction = getRidget(IToggleButtonRidget.class, "navigationBtn"); //$NON-NLS-1$
 		updateToggleText(navigationAction);
 		navigationAction.addListener(new IActionListener() {
 			public void callback() {
@@ -76,7 +76,7 @@ public class FilterExampleSubModuleController extends SubModuleController {
 			}
 		});
 
-		final IToggleButtonRidget menuToolAction = getRidget("menuToolItemBtn"); //$NON-NLS-1$
+		final IToggleButtonRidget menuToolAction = getRidget(IToggleButtonRidget.class, "menuToolItemBtn"); //$NON-NLS-1$
 		updateToggleText(menuToolAction);
 		menuToolAction.addListener(new IActionListener() {
 			public void callback() {
@@ -84,7 +84,7 @@ public class FilterExampleSubModuleController extends SubModuleController {
 			}
 		});
 
-		final IToggleButtonRidget ridgetAction = getRidget("ridgetBtn"); //$NON-NLS-1$
+		final IToggleButtonRidget ridgetAction = getRidget(IToggleButtonRidget.class, "ridgetBtn"); //$NON-NLS-1$
 		updateToggleText(ridgetAction);
 		ridgetAction.addListener(new IActionListener() {
 			public void callback() {
@@ -92,7 +92,7 @@ public class FilterExampleSubModuleController extends SubModuleController {
 			}
 		});
 
-		final IToggleButtonRidget ridgetDisableAction = getRidget("ridgetDisableBtn"); //$NON-NLS-1$
+		final IToggleButtonRidget ridgetDisableAction = getRidget(IToggleButtonRidget.class, "ridgetDisableBtn"); //$NON-NLS-1$
 		updateToggleText(ridgetAction);
 		ridgetDisableAction.addListener(new IActionListener() {
 			public void callback() {
@@ -100,7 +100,7 @@ public class FilterExampleSubModuleController extends SubModuleController {
 			}
 		});
 
-		final IToggleButtonRidget ridgetHideAction = getRidget("ridgetHideBtn"); //$NON-NLS-1$
+		final IToggleButtonRidget ridgetHideAction = getRidget(IToggleButtonRidget.class, "ridgetHideBtn"); //$NON-NLS-1$
 		updateToggleText(ridgetAction);
 		ridgetHideAction.addListener(new IActionListener() {
 			public void callback() {
@@ -108,7 +108,7 @@ public class FilterExampleSubModuleController extends SubModuleController {
 			}
 		});
 
-		final IToggleButtonRidget ridget01Action = getRidget("ridget01Btn"); //$NON-NLS-1$
+		final IToggleButtonRidget ridget01Action = getRidget(IToggleButtonRidget.class, "ridget01Btn"); //$NON-NLS-1$
 		updateToggleText(ridgetAction);
 		ridget01Action.addListener(new IActionListener() {
 			public void callback() {
@@ -118,18 +118,16 @@ public class FilterExampleSubModuleController extends SubModuleController {
 
 		final MySampleBean sampleBean = new MySampleBean();
 
-		final ITextRidget sampleText = getRidget("sampleText"); //$NON-NLS-1$
+		final ITextRidget sampleText = getRidget(ITextRidget.class, "sampleText"); //$NON-NLS-1$
 		sampleText.setMandatory(true);
 		sampleText.bindToModel(sampleBean, "text"); //$NON-NLS-1$
 		sampleText.updateFromModel();
 
-		final IActionRidget addFilteredNode = getRidget("addNode"); //$NON-NLS-1$
+		final IActionRidget addFilteredNode = getRidget(IActionRidget.class, "addNode"); //$NON-NLS-1$
 		addFilteredNode.addListener(new IActionListener() {
 			public void callback() {
-				final ISubModuleNode sharedViewSm10 = new SubModuleNode(new NavigationNodeId(
-						"newx", "10" + System.currentTimeMillis()), "new x"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-				WorkareaManager.getInstance().registerDefinition(sharedViewSm10,
-						SharedViewDemoSubModuleController.class, SharedViewDemoSubModuleView.ID, true);
+				final ISubModuleNode sharedViewSm10 = new SubModuleNode(new NavigationNodeId("newx", "10" + System.currentTimeMillis()), "new x"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				WorkareaManager.getInstance().registerDefinition(sharedViewSm10, SharedViewDemoSubModuleController.class, SharedViewDemoSubModuleView.ID, true);
 				getNavigationNode().getParentOfType(ModuleNode.class).addChild(sharedViewSm10);
 
 			}
@@ -139,7 +137,7 @@ public class FilterExampleSubModuleController extends SubModuleController {
 
 	private void doFilter(final FilterId filterId, final String buttonRidgetId) {
 
-		final IToggleButtonRidget menuToolAction = getRidget(buttonRidgetId);
+		final IToggleButtonRidget menuToolAction = getRidget(IToggleButtonRidget.class, buttonRidgetId);
 
 		final IApplicationNode applNode = getNavigationNode().getParentOfType(IApplicationNode.class);
 		final IUIFilterContainer container = Service.get(IUIFilterProvider.class).provideFilter(filterId.toString());

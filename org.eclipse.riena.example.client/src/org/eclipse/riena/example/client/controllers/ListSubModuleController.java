@@ -25,6 +25,7 @@ import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
+import org.eclipse.riena.ui.ridgets.IListRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
@@ -73,7 +74,7 @@ public class ListSubModuleController extends SubModuleController {
 	@Override
 	public void configureRidgets() {
 
-		listPersons = getRidget("listPersons"); //$NON-NLS-1$
+		listPersons = getListRidget();
 		listPersons.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
 		listPersons.setComparator(0, new TypedComparator<String>());
 		listPersons.setSortedColumn(0);
@@ -82,25 +83,25 @@ public class ListSubModuleController extends SubModuleController {
 
 		listPersons.bindSingleSelectionToModel(manager, PersonManager.PROPERTY_SELECTED_PERSON);
 
-		textFirst = getRidget("textFirst"); //$NON-NLS-1$
+		textFirst = getRidget(ITextRidget.class, "textFirst"); //$NON-NLS-1$
 		textFirst.bindToModel(value, "firstName"); //$NON-NLS-1$
 		textFirst.updateFromModel();
-		textLast = getRidget("textLast"); //$NON-NLS-1$
+		textLast = getRidget(ITextRidget.class, "textLast"); //$NON-NLS-1$
 		textLast.bindToModel(value, "lastName"); //$NON-NLS-1$
 		textLast.updateFromModel();
 
-		buttonSort = getRidget("buttonSort"); //$NON-NLS-1$
+		buttonSort = getRidget(IToggleButtonRidget.class, "buttonSort"); //$NON-NLS-1$
 		buttonSort.setText("Sort ascending"); //$NON-NLS-1$
 		buttonSort.setSelected(true);
 		listPersons.setSortedAscending(buttonSort.isSelected());
 
-		final IActionRidget buttonAdd = getRidget("buttonAdd"); //$NON-NLS-1$
+		final IActionRidget buttonAdd = getRidget(IActionRidget.class, "buttonAdd"); //$NON-NLS-1$
 		buttonAdd.setText("&Add"); //$NON-NLS-1$
 
-		final IActionRidget buttonRemove = getRidget("buttonRemove"); //$NON-NLS-1$
+		final IActionRidget buttonRemove = getRidget(IActionRidget.class, "buttonRemove"); //$NON-NLS-1$
 		buttonRemove.setText("&Remove"); //$NON-NLS-1$
 
-		final IActionRidget buttonSave = getRidget("buttonSave"); //$NON-NLS-1$
+		final IActionRidget buttonSave = getRidget(IActionRidget.class, "buttonSave"); //$NON-NLS-1$
 		buttonSave.setText("&Save"); //$NON-NLS-1$
 
 		final IObservableValue viewerSelection = listPersons.getSingleSelectionObservable();
@@ -118,6 +119,10 @@ public class ListSubModuleController extends SubModuleController {
 			setValuesFromNavigation();
 		}
 
+	}
+
+	protected ITableRidget getListRidget() {
+		return getRidget(IListRidget.class, "listPersons"); //$NON-NLS-1$
 	}
 
 	@OnPropertyChange(ridgetId = "listPersons", propertyName = ITableRidget.PROPERTY_SELECTION)

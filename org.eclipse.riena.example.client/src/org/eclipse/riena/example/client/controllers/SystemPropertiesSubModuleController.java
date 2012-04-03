@@ -72,8 +72,8 @@ public class SystemPropertiesSubModuleController extends SubModuleController {
 	}
 
 	private void bindModels() {
-		tableProperties.bindToModel(new WritableList(properties, KeyValueBean.class), KeyValueBean.class, new String[] {
-				"key", "value" }, new String[] { "Key", "Value" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		tableProperties.bindToModel(new WritableList(properties, KeyValueBean.class), KeyValueBean.class,
+				new String[] { "key", "value" }, new String[] { "Key", "Value" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		tableProperties.updateFromModel();
 		tableProperties.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
 		tableProperties.setComparator(0, new TypedComparator<String>());
@@ -97,12 +97,12 @@ public class SystemPropertiesSubModuleController extends SubModuleController {
 	@Override
 	public void configureRidgets() {
 
-		tableProperties = getRidget("tableProperties"); //$NON-NLS-1$
-		textKey = getRidget("textKey"); //$NON-NLS-1$
-		textValue = getRidget("textValue"); //$NON-NLS-1$
-		final IActionRidget buttonAdd = getRidget("buttonAdd"); //$NON-NLS-1$
-		final IToggleButtonRidget toggleDoubleClick = getRidget("toggleDoubleClick"); //$NON-NLS-1$
-		final IActionRidget buttonSave = getRidget("buttonSave"); //$NON-NLS-1$
+		tableProperties = getRidget(ITableRidget.class, "tableProperties"); //$NON-NLS-1$
+		textKey = getRidget(ITextRidget.class, "textKey"); //$NON-NLS-1$
+		textValue = getRidget(ITextRidget.class, "textValue"); //$NON-NLS-1$
+		final IActionRidget buttonAdd = getRidget(IActionRidget.class, "buttonAdd"); //$NON-NLS-1$
+		final IToggleButtonRidget toggleDoubleClick = getRidget(IToggleButtonRidget.class, "toggleDoubleClick"); //$NON-NLS-1$
+		final IActionRidget buttonSave = getRidget(IActionRidget.class, "buttonSave"); //$NON-NLS-1$
 
 		final Set<Object> keys = System.getProperties().keySet();
 		for (final Object key : keys) {

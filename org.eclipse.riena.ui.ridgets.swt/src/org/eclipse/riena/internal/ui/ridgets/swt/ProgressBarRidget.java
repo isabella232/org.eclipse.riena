@@ -14,12 +14,12 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.ProgressBar;
 
-import org.eclipse.riena.ui.ridgets.ITraverseRidget;
+import org.eclipse.riena.ui.ridgets.IProgressBarRidget;
 
 /**
  * Ridget for a SWT {@link ProgressBar} widget.
  */
-public class ProgressBarRidget extends AbstractTraverseRidget implements ITraverseRidget {
+public class ProgressBarRidget extends AbstractTraverseRidget implements IProgressBarRidget {
 
 	private boolean initialized;
 	private boolean maxInitialized;

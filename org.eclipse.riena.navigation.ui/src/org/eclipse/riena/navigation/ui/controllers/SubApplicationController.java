@@ -41,8 +41,7 @@ public class SubApplicationController extends NavigationNodeController<ISubAppli
 	private final NodeEventDelegation contextUpdater = new NodeEventDelegation();
 
 	/**
-	 * Create a new Controller, find the corresponding subApplication for the
-	 * passed ID
+	 * Create a new Controller, find the corresponding subApplication for the passed ID
 	 */
 	public SubApplicationController(final ISubApplicationNode pSubApplication) {
 		super(pSubApplication);
@@ -138,8 +137,7 @@ public class SubApplicationController extends NavigationNodeController<ISubAppli
 	/**
 	 * Prepares the controller for the given sub-module node.
 	 * <p>
-	 * Controller is created and the ridgets are configured. So the logic of the
-	 * controller works without a binded view.
+	 * Controller is created and the ridgets are configured. So the logic of the controller works without a binded view.
 	 * 
 	 * @param source
 	 *            node of the sub-module.
@@ -153,11 +151,16 @@ public class SubApplicationController extends NavigationNodeController<ISubAppli
 		}
 		try {
 			if (!definition.isRequiredPreparation()) {
-				final String message = String
-						.format("controller for class %s will be prepared, although required preparation flag is not set", definition.getControllerClass()); //$NON-NLS-1$ 
+				final String message = String.format(
+						"controller for class %s will be prepared, although required preparation flag is not set", definition.getControllerClass()); //$NON-NLS-1$ 
 				LOGGER.log(LogService.LOG_WARNING, message);
 			}
 			final SubModuleController controller = (SubModuleController) definition.createController();
+			if (controller == null && definition.getControllerClass() == null) {
+				final String message = String.format("no controller class is define for %s", source); //$NON-NLS-1$ 
+				LOGGER.log(LogService.LOG_DEBUG, message);
+				return;
+			}
 			controller.setNavigationNode(source);
 			source.setNavigationNodeController(controller);
 			controller.configureRidgets();
@@ -171,8 +174,7 @@ public class SubApplicationController extends NavigationNodeController<ISubAppli
 				}
 			}
 		} catch (final Exception ex) {
-			final String message = String.format(
-					"cannnot create controller for class %s", definition.getControllerClass()); //$NON-NLS-1$ 
+			final String message = String.format("cannnot create controller for class %s", definition.getControllerClass()); //$NON-NLS-1$ 
 			LOGGER.log(LogService.LOG_ERROR, message, ex);
 		}
 	}

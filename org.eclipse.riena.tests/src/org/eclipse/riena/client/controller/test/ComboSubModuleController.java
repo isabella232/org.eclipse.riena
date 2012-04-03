@@ -78,8 +78,7 @@ public class ComboSubModuleController extends SubModuleController {
 		textFirst = getRidget(ITextRidget.class, "textFirst"); //$NON-NLS-1$
 		textLast = getRidget(ITextRidget.class, "textLast"); //$NON-NLS-1$
 
-		if (getNavigationNode().getNavigationArgument() != null
-				&& getNavigationNode().getNavigationArgument().getParameter() instanceof PersonModificationBean) { // we came here from a navigation
+		if (getNavigationNode().getNavigationArgument() != null && getNavigationNode().getNavigationArgument().getParameter() instanceof PersonModificationBean) { // we came here from a navigation
 			setValuesFromNavigation();
 		}
 
@@ -101,7 +100,7 @@ public class ComboSubModuleController extends SubModuleController {
 			}
 		});
 
-		final IToggleButtonRidget buttonSecondValue = getRidget("buttonSecondValue"); //$NON-NLS-1$
+		final IToggleButtonRidget buttonSecondValue = getRidget(IToggleButtonRidget.class, "buttonSecondValue"); //$NON-NLS-1$
 		if (buttonSecondValue != null) {
 			buttonSecondValue.setText("Always use second person!"); //$NON-NLS-1$
 			buttonSecondValue.addListener(new IActionListener() {

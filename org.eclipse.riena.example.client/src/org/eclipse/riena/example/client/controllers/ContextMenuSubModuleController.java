@@ -41,38 +41,38 @@ public class ContextMenuSubModuleController extends SubModuleController {
 	 */
 	@Override
 	public void configureRidgets() {
-		final ITextRidget textField = getRidget("textField"); //$NON-NLS-1$
+		final ITextRidget textField = getRidget(ITextRidget.class, "textField"); //$NON-NLS-1$
 		textField.updateFromModel();
 
-		final IMenuItemRidget textClear = getRidget("textClear"); //$NON-NLS-1$
+		final IMenuItemRidget textClear = getRidget(IMenuItemRidget.class, "textClear"); //$NON-NLS-1$
 		textClear.addListener(new IActionListener() {
 			public void callback() {
 				textField.setText(""); //$NON-NLS-1$
 			}
 		});
 
-		final IMenuItemRidget itemFoo = getRidget("itemFoo"); //$NON-NLS-1$
+		final IMenuItemRidget itemFoo = getRidget(IMenuItemRidget.class, "itemFoo"); //$NON-NLS-1$
 		itemFoo.addListener(new IActionListener() {
 			public void callback() {
 				textField.setText("foo"); //$NON-NLS-1$
 			}
 		});
 
-		final IMenuItemRidget itemBar = getRidget("itemBar"); //$NON-NLS-1$
+		final IMenuItemRidget itemBar = getRidget(IMenuItemRidget.class, "itemBar"); //$NON-NLS-1$
 		itemBar.addListener(new IActionListener() {
 			public void callback() {
 				textField.setText("bar"); //$NON-NLS-1$
 			}
 		});
 
-		final IMenuItemRidget itemBaz = getRidget("itemBaz"); //$NON-NLS-1$
+		final IMenuItemRidget itemBaz = getRidget(IMenuItemRidget.class, "itemBaz"); //$NON-NLS-1$
 		itemBaz.addListener(new IActionListener() {
 			public void callback() {
 				textField.setText("baz"); //$NON-NLS-1$
 			}
 		});
 
-		final IToggleButtonRidget markerButton = getRidget("markerButton"); //$NON-NLS-1$
+		final IToggleButtonRidget markerButton = getRidget(IToggleButtonRidget.class, "markerButton"); //$NON-NLS-1$
 		markerButton.addListener(new IActionListener() {
 			public void callback() {
 				final boolean state = markerButton.isSelected();
@@ -81,14 +81,14 @@ public class ContextMenuSubModuleController extends SubModuleController {
 		});
 
 		final WritableList personList = new WritableList(PersonFactory.createPersonList(), Person.class);
-		final ITableRidget table = getRidget("table"); //$NON-NLS-1$
+		final ITableRidget table = getRidget(ITableRidget.class, "table"); //$NON-NLS-1$
 
 		final String[] columnPropertyNames = { Person.PROPERTY_FIRSTNAME, Person.PROPERTY_LASTNAME };
 		final String[] columnHeaders = { "FirstName", "LastName" }; //$NON-NLS-1$ //$NON-NLS-2$ 
 		table.bindToModel(new WritableList(personList, Person.class), Person.class, columnPropertyNames, columnHeaders);
 		table.updateFromModel();
 
-		final IMenuItemRidget tableRemoveSelected = getRidget("tableRemove"); //$NON-NLS-1$
+		final IMenuItemRidget tableRemoveSelected = getRidget(IMenuItemRidget.class, "tableRemove"); //$NON-NLS-1$
 		tableRemoveSelected.addListener(new IActionListener() {
 			public void callback() {
 				final int sel = table.getSelectionIndex();

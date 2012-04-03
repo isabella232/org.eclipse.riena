@@ -37,15 +37,15 @@ public class DateTimeSubModuleController extends SubModuleController {
 
 	@Override
 	public void configureRidgets() {
-		final IDateTimeRidget dtDate = getRidget("dtDate"); //$NON-NLS-1$
-		final IDateTimeRidget dtTime = getRidget("dtTime"); //$NON-NLS-1$
-		final IDateTimeRidget dtDateOnly = getRidget("dtDateOnly"); //$NON-NLS-1$
-		final IDateTimeRidget dtTimeOnly = getRidget("dtTimeOnly"); //$NON-NLS-1$
-		final IDateTimeRidget dtCal = getRidget("dtCal"); //$NON-NLS-1$
-		final ITextRidget txt1 = getRidget("txt1"); //$NON-NLS-1$
-		final ITextRidget txt2 = getRidget("txt2"); //$NON-NLS-1$
-		final ITextRidget txt3 = getRidget("txt3"); //$NON-NLS-1$
-		final ITextRidget txt4 = getRidget("txt4"); //$NON-NLS-1$
+		final IDateTimeRidget dtDate = getRidget(IDateTimeRidget.class, "dtDate"); //$NON-NLS-1$
+		final IDateTimeRidget dtTime = getRidget(IDateTimeRidget.class, "dtTime"); //$NON-NLS-1$
+		final IDateTimeRidget dtDateOnly = getRidget(IDateTimeRidget.class, "dtDateOnly"); //$NON-NLS-1$
+		final IDateTimeRidget dtTimeOnly = getRidget(IDateTimeRidget.class, "dtTimeOnly"); //$NON-NLS-1$
+		final IDateTimeRidget dtCal = getRidget(IDateTimeRidget.class, "dtCal"); //$NON-NLS-1$
+		final ITextRidget txt1 = getRidget(ITextRidget.class, "txt1"); //$NON-NLS-1$
+		final ITextRidget txt2 = getRidget(ITextRidget.class, "txt2"); //$NON-NLS-1$
+		final ITextRidget txt3 = getRidget(ITextRidget.class, "txt3"); //$NON-NLS-1$
+		final ITextRidget txt4 = getRidget(ITextRidget.class, "txt4"); //$NON-NLS-1$
 
 		final long now = System.currentTimeMillis();
 		final TypedBean<Date> date1 = new TypedBean<Date>(new Date(now));
@@ -68,14 +68,10 @@ public class DateTimeSubModuleController extends SubModuleController {
 		dtCal.updateFromModel();
 
 		final DataBindingContext dbc = new DataBindingContext();
-		dbc.bindValue(BeansObservables.observeValue(txt1, ITextRidget.PROPERTY_TEXT),
-				BeansObservables.observeValue(date1, TypedBean.PROP_VALUE));
-		dbc.bindValue(BeansObservables.observeValue(txt2, ITextRidget.PROPERTY_TEXT),
-				BeansObservables.observeValue(date2, TypedBean.PROP_VALUE));
-		dbc.bindValue(BeansObservables.observeValue(txt3, ITextRidget.PROPERTY_TEXT),
-				BeansObservables.observeValue(date3, TypedBean.PROP_VALUE));
-		dbc.bindValue(BeansObservables.observeValue(txt4, ITextRidget.PROPERTY_TEXT),
-				BeansObservables.observeValue(date4, TypedBean.PROP_VALUE));
+		dbc.bindValue(BeansObservables.observeValue(txt1, ITextRidget.PROPERTY_TEXT), BeansObservables.observeValue(date1, TypedBean.PROP_VALUE));
+		dbc.bindValue(BeansObservables.observeValue(txt2, ITextRidget.PROPERTY_TEXT), BeansObservables.observeValue(date2, TypedBean.PROP_VALUE));
+		dbc.bindValue(BeansObservables.observeValue(txt3, ITextRidget.PROPERTY_TEXT), BeansObservables.observeValue(date3, TypedBean.PROP_VALUE));
+		dbc.bindValue(BeansObservables.observeValue(txt4, ITextRidget.PROPERTY_TEXT), BeansObservables.observeValue(date4, TypedBean.PROP_VALUE));
 
 		makeOutputOnly(txt1, txt2, txt3, txt4);
 	}

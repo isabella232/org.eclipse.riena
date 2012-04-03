@@ -26,14 +26,13 @@ public class ComboAndChoiceSubModuleController extends SubModuleController {
 
 	@Override
 	public void configureRidgets() {
-		comboRidgetWithModel = getRidget("comboBoxWithModel"); //$NON-NLS-1$
-		final SingleSelectionListBean colors = new SingleSelectionListBean(new Object[] {
-				"white", "black", "red", "blue", "green", "brown", "yellow" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+		comboRidgetWithModel = getRidget(IComboRidget.class, "comboBoxWithModel"); //$NON-NLS-1$
+		final SingleSelectionListBean colors = new SingleSelectionListBean(new Object[] { "white", "black", "red", "blue", "green", "brown", "yellow" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
 		colors.setSelection("blue"); //$NON-NLS-1$
 		comboRidgetWithModel.bindToModel(colors, SingleSelectionListBean.PROPERTY_VALUES, String.class, null, colors,
 				SingleSelectionListBean.PROPERTY_SELECTION);
 
-		comboRidgetWithoutModel = getRidget("comboBoxWithoutModel"); //$NON-NLS-1$
+		comboRidgetWithoutModel = getRidget(IComboRidget.class, "comboBoxWithoutModel"); //$NON-NLS-1$
 	}
 
 	@OnActionCallback(ridgetId = "updateAllRidgetsFromModel")
@@ -43,20 +42,17 @@ public class ComboAndChoiceSubModuleController extends SubModuleController {
 
 	@OnActionCallback(ridgetId = "bindComboToModel")
 	public void handleBindComboToModelAction() {
-		final SingleSelectionListBean colors = new SingleSelectionListBean(new Object[] {
-				"white", "black", "red", "blue", "green", "brown", "yellow" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+		final SingleSelectionListBean colors = new SingleSelectionListBean(new Object[] { "white", "black", "red", "blue", "green", "brown", "yellow" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
 		colors.setSelection("red"); //$NON-NLS-1$
-		comboRidgetWithoutModel.bindToModel(colors, SingleSelectionListBean.PROPERTY_VALUES, String.class, null,
-				colors, SingleSelectionListBean.PROPERTY_SELECTION);
+		comboRidgetWithoutModel.bindToModel(colors, SingleSelectionListBean.PROPERTY_VALUES, String.class, null, colors,
+				SingleSelectionListBean.PROPERTY_SELECTION);
 	}
 
 	@OnActionCallback(ridgetId = "bindChoiceToModel")
 	public void handleBindChoiceToModelAction() {
-		final SingleSelectionListBean numbers = new SingleSelectionListBean(new Object[] {
-				"choice 1", "choice 2", "choice 3" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		final SingleSelectionListBean numbers = new SingleSelectionListBean(new Object[] { "choice 1", "choice 2", "choice 3" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		numbers.setSelection("choice 1"); //$NON-NLS-1$
-		final ISingleChoiceRidget compositeNumberModel = getRidget("compositeNumberModel"); //$NON-NLS-1$
-		compositeNumberModel.bindToModel(numbers, SingleSelectionListBean.PROPERTY_VALUES, numbers,
-				SingleSelectionListBean.PROPERTY_SELECTION);
+		final ISingleChoiceRidget compositeNumberModel = getRidget(ISingleChoiceRidget.class, "compositeNumberModel"); //$NON-NLS-1$
+		compositeNumberModel.bindToModel(numbers, SingleSelectionListBean.PROPERTY_VALUES, numbers, SingleSelectionListBean.PROPERTY_SELECTION);
 	}
 }

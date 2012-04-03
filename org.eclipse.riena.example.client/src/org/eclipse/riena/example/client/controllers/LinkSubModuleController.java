@@ -34,20 +34,20 @@ public class LinkSubModuleController extends SubModuleController {
 
 	@Override
 	public void configureRidgets() {
-		final ILinkRidget link1 = getRidget("link1"); //$NON-NLS-1$
+		final ILinkRidget link1 = getRidget(ILinkRidget.class, "link1"); //$NON-NLS-1$
 		link1.setText("<a>http://www.eclipse.org/</a>"); //$NON-NLS-1$
 
-		final ILinkRidget link2 = getRidget("link2"); //$NON-NLS-1$
+		final ILinkRidget link2 = getRidget(ILinkRidget.class, "link2"); //$NON-NLS-1$
 		link2.setText("Visit <a href=\"http://www.eclipse.org/riena/\">Riena</a>"); //$NON-NLS-1$
 
-		final ILinkRidget link3 = getRidget("link3"); //$NON-NLS-1$
+		final ILinkRidget link3 = getRidget(ILinkRidget.class, "link3"); //$NON-NLS-1$
 		link3.setText("Eclipse <a href=\"http://planeteclipse.org\">Blogs</a>, <a href=\"http://www.eclipse.org/community/news/\">News</a> and <a href=\"http://live.eclipse.org\">Events</a>"); //$NON-NLS-1$
 
-		final ITextRidget textLinkUrl = getRidget("textLinkUrl"); //$NON-NLS-1$
+		final ITextRidget textLinkUrl = getRidget(ITextRidget.class, "textLinkUrl"); //$NON-NLS-1$
 		textLinkUrl.setText("http://www.eclipse.org"); //$NON-NLS-1$
 		textLinkUrl.setOutputOnly(true);
 
-		final IBrowserRidget browser = getRidget("browser"); //$NON-NLS-1$
+		final IBrowserRidget browser = getRidget(IBrowserRidget.class, "browser"); //$NON-NLS-1$
 		browser.bindToModel(textLinkUrl, ITextRidget.PROPERTY_TEXT);
 		browser.updateFromModel();
 

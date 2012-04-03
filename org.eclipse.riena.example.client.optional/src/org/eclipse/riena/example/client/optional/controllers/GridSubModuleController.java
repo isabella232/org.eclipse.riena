@@ -35,6 +35,7 @@ import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
+import org.eclipse.riena.ui.ridgets.IGridRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
@@ -72,12 +73,10 @@ public class GridSubModuleController extends SubModuleController {
 	@Override
 	public void configureRidgets() {
 
-		grid = getRidget(ITableRidget.class, GridSubModuleView.BINDING_ID_GRID_TABLE);
+		grid = getRidget(IGridRidget.class, GridSubModuleView.BINDING_ID_GRID_TABLE);
 
-		final IToggleButtonRidget buttonPrintSelection = getRidget(IToggleButtonRidget.class,
-				GridSubModuleView.BINDING_ID_BUTTON_PRINT_SELECTION);
-		final IActionRidget buttonAddSibling = getRidget(IActionRidget.class,
-				GridSubModuleView.BINDING_ID_BUTTON_ADD_SIBLING);
+		final IToggleButtonRidget buttonPrintSelection = getRidget(IToggleButtonRidget.class, GridSubModuleView.BINDING_ID_BUTTON_PRINT_SELECTION);
+		final IActionRidget buttonAddSibling = getRidget(IActionRidget.class, GridSubModuleView.BINDING_ID_BUTTON_ADD_SIBLING);
 		buttonRename = getRidget(IActionRidget.class, GridSubModuleView.BINDING_ID_BUTTON_RENAME);
 		final IActionRidget buttonDelete = getRidget(IActionRidget.class, GridSubModuleView.BINDING_ID_BUTTON_DELETE);
 
@@ -204,8 +203,7 @@ public class GridSubModuleController extends SubModuleController {
 			@Override
 			public ImageData getImage(final Object element) {
 				if (((WordNode) element).isUpperCase()) {
-					return StatusMeter.imageFinished().width(16).gradientStartColor(green).gradientEndColor(darkGreen)
-							.getImageData();
+					return StatusMeter.imageFinished().width(16).gradientStartColor(green).gradientEndColor(darkGreen).getImageData();
 				} else {
 					final int value = (int) ((WordNode) element).getAQuota();
 					return StatusMeter.imageDefault().width(16).value(value).getImageData();

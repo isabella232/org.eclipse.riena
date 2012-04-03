@@ -40,7 +40,7 @@ public class AllowsDisposeSubModuleController extends SubModuleController {
 		});
 		checkBoxRidget.setSelected(true);
 
-		messageBoxRidget = getRidget("messageBox"); //$NON-NLS-1$
+		messageBoxRidget = getRidget(IMessageBoxRidget.class, "messageBox"); //$NON-NLS-1$
 		messageBoxRidget
 				.setText("The Controller \"" + getNavigationNode().getLabel() + "\" does not allow disposing.\n Do you want to close the application nevertheless or navigate to the controller?"); //$NON-NLS-1$ //$NON-NLS-2$
 		final MessageBoxOption[] options = new MessageBoxOption[] { CLOSE_NEVERTHELESS, NAVIGATE_TO_CONTROLLER };
@@ -52,8 +52,7 @@ public class AllowsDisposeSubModuleController extends SubModuleController {
 		if (!allowsDispose) {
 			final IMessageBoxRidget.MessageBoxOption selectedOption = messageBoxRidget.show();
 			if (selectedOption.equals(NAVIGATE_TO_CONTROLLER)) {
-				getNavigationNode().navigate(
-						new NavigationNodeId("org.eclipse.riena.example.client.subModule.allowsDispose")); //$NON-NLS-1$
+				getNavigationNode().navigate(new NavigationNodeId("org.eclipse.riena.example.client.subModule.allowsDispose")); //$NON-NLS-1$
 			} else if (selectedOption.equals(CLOSE_NEVERTHELESS)) {
 				return true;
 			}

@@ -47,6 +47,7 @@ import org.eclipse.riena.ui.ridgets.IListRidget;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
 import org.eclipse.riena.ui.ridgets.IMultipleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
+import org.eclipse.riena.ui.ridgets.IScaleRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.ISliderRidget;
@@ -62,8 +63,7 @@ import org.eclipse.riena.ui.ridgets.validation.NotEmpty;
 import org.eclipse.riena.ui.swt.MasterDetailsComposite;
 
 /**
- * Example Controller with as many ridgets as possible. Used for controller
- * testing.
+ * Example Controller with as many ridgets as possible. Used for controller testing.
  */
 public class ControllerTestsPlaygroundSubModuleController extends SubModuleController {
 	private ITableRidget multiTable;
@@ -159,14 +159,10 @@ public class ControllerTestsPlaygroundSubModuleController extends SubModuleContr
 		dtCal.updateFromModel();
 
 		final DataBindingContext dbc = new DataBindingContext();
-		dbc.bindValue(BeansObservables.observeValue(txt1, ITextRidget.PROPERTY_TEXT),
-				BeansObservables.observeValue(date1, TypedBean.PROP_VALUE));
-		dbc.bindValue(BeansObservables.observeValue(txt2, ITextRidget.PROPERTY_TEXT),
-				BeansObservables.observeValue(date2, TypedBean.PROP_VALUE));
-		dbc.bindValue(BeansObservables.observeValue(txt3, ITextRidget.PROPERTY_TEXT),
-				BeansObservables.observeValue(date3, TypedBean.PROP_VALUE));
-		dbc.bindValue(BeansObservables.observeValue(txt4, ITextRidget.PROPERTY_TEXT),
-				BeansObservables.observeValue(date4, TypedBean.PROP_VALUE));
+		dbc.bindValue(BeansObservables.observeValue(txt1, ITextRidget.PROPERTY_TEXT), BeansObservables.observeValue(date1, TypedBean.PROP_VALUE));
+		dbc.bindValue(BeansObservables.observeValue(txt2, ITextRidget.PROPERTY_TEXT), BeansObservables.observeValue(date2, TypedBean.PROP_VALUE));
+		dbc.bindValue(BeansObservables.observeValue(txt3, ITextRidget.PROPERTY_TEXT), BeansObservables.observeValue(date3, TypedBean.PROP_VALUE));
+		dbc.bindValue(BeansObservables.observeValue(txt4, ITextRidget.PROPERTY_TEXT), BeansObservables.observeValue(date4, TypedBean.PROP_VALUE));
 
 		makeOutputOnly(txt1, txt2, txt3, txt4);
 
@@ -202,8 +198,7 @@ public class ControllerTestsPlaygroundSubModuleController extends SubModuleContr
 			master.bindToModel(new WritableList(input, Person.class), Person.class, properties, headers);
 			master.updateFromModel();
 
-			final IActionRidget actionApply = master.getRidget(IActionRidget.class,
-					MasterDetailsComposite.BIND_ID_APPLY);
+			final IActionRidget actionApply = master.getRidget(IActionRidget.class, MasterDetailsComposite.BIND_ID_APPLY);
 			addDefaultAction(master, actionApply);
 		}
 
@@ -250,8 +245,7 @@ public class ControllerTestsPlaygroundSubModuleController extends SubModuleContr
 	private void configureComboGroup() {
 		final ITextRidget comboText = getRidget(ITextRidget.class, "comboTextField"); //$NON-NLS-1$
 
-		final List<String> ages = new ArrayList<String>(Arrays.asList(new String[] {
-				"<none>", "young", "moderate", "aged", "old" })); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		final List<String> ages = new ArrayList<String>(Arrays.asList(new String[] { "<none>", "young", "moderate", "aged", "old" })); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 
 		final ILabelRidget comboLabel = getRidget(ILabelRidget.class, "comboLabel"); //$NON-NLS-1$
 		comboLabel.setText(ages.get(0));
@@ -353,7 +347,7 @@ public class ControllerTestsPlaygroundSubModuleController extends SubModuleContr
 
 	private void configureTraverseGroup() {
 		final ISpinnerRidget fahrenheitSpinner = getRidget(ISpinnerRidget.class, "fahrenheitSpinner"); //$NON-NLS-1$
-		final ITraverseRidget celsiusScale = getRidget(ITraverseRidget.class, "celsiusScale"); //$NON-NLS-1$
+		final ITraverseRidget celsiusScale = getRidget(IScaleRidget.class, "celsiusScale"); //$NON-NLS-1$
 		final ISliderRidget kelvinSlider = getRidget(ISliderRidget.class, "kelvinSlider"); //$NON-NLS-1$
 
 		final IActionListener listener = new IActionListener() {
@@ -376,8 +370,7 @@ public class ControllerTestsPlaygroundSubModuleController extends SubModuleContr
 		fahrenheitSpinner.setIncrement(1);
 		fahrenheitSpinner.setMaximum(122);
 		fahrenheitSpinner.setMinimum(32);
-		fahrenheitSpinner.bindToModel(BeansObservables
-				.observeValue(temperature, Temperature.PROPERTY_DEGREE_FAHRENHEIT));
+		fahrenheitSpinner.bindToModel(BeansObservables.observeValue(temperature, Temperature.PROPERTY_DEGREE_FAHRENHEIT));
 		fahrenheitSpinner.updateFromModel();
 		fahrenheitSpinner.addListener(listener);
 
@@ -493,8 +486,7 @@ public class ControllerTestsPlaygroundSubModuleController extends SubModuleContr
 	}
 
 	/**
-	 * Setup the ridgets for editing a person (text ridgets for name, single
-	 * choice ridget for gender, multiple choice ridgets for pets).
+	 * Setup the ridgets for editing a person (text ridgets for name, single choice ridget for gender, multiple choice ridgets for pets).
 	 */
 	private static final class PersonDelegate extends AbstractMasterDetailsDelegate {
 
@@ -522,8 +514,7 @@ public class ControllerTestsPlaygroundSubModuleController extends SubModuleContr
 
 			final IMultipleChoiceRidget pets = container.getRidget(IMultipleChoiceRidget.class, "pets"); //$NON-NLS-1$
 			if (pets != null) {
-				pets.bindToModel(Arrays.asList(Person.Pets.values()), (List<String>) null, workingCopy,
-						Person.PROPERTY_PETS);
+				pets.bindToModel(Arrays.asList(Person.Pets.values()), (List<String>) null, workingCopy, Person.PROPERTY_PETS);
 				pets.updateFromModel();
 			}
 		}
@@ -550,9 +541,8 @@ public class ControllerTestsPlaygroundSubModuleController extends SubModuleContr
 		public boolean isChanged(final Object source, final Object target) {
 			final Person p1 = (Person) source;
 			final Person p2 = (Person) target;
-			final boolean equals = p1.getFirstname().equals(p2.getFirstname())
-					&& p1.getLastname().equals(p2.getLastname()) && p1.getGender().equals(p2.getGender())
-					&& p1.getPets().equals(p2.getPets());
+			final boolean equals = p1.getFirstname().equals(p2.getFirstname()) && p1.getLastname().equals(p2.getLastname())
+					&& p1.getGender().equals(p2.getGender()) && p1.getPets().equals(p2.getPets());
 			return !equals;
 		}
 

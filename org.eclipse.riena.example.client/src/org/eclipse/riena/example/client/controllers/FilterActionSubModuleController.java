@@ -36,8 +36,7 @@ import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 
 /**
- * Controller of the sub module that demonstrates UI filters for navigation
- * nodes.
+ * Controller of the sub module that demonstrates UI filters for navigation nodes.
  */
 public class FilterActionSubModuleController extends SubModuleController {
 
@@ -86,7 +85,7 @@ public class FilterActionSubModuleController extends SubModuleController {
 	public void configureRidgets() {
 		super.configureRidgets();
 		filterModel = new FilterModel();
-		final ISingleChoiceRidget filterType = getRidget("filterType"); //$NON-NLS-1$		
+		final ISingleChoiceRidget filterType = getRidget(ISingleChoiceRidget.class, "filterType"); //$NON-NLS-1$		
 		filterType.addPropertyChangeListener(new FilterTypeChangeListener());
 		filterType.bindToModel(filterModel, "types", filterModel, "selectedType"); //$NON-NLS-1$ //$NON-NLS-2$
 		filterType.updateFromModel();
@@ -97,11 +96,11 @@ public class FilterActionSubModuleController extends SubModuleController {
 	 */
 	private void initNavigationFilterGroup() {
 
-		final ITextRidget itemId = getRidget("itemId"); //$NON-NLS-1$
+		final ITextRidget itemId = getRidget(ITextRidget.class, "itemId"); //$NON-NLS-1$
 		itemId.bindToModel(filterModel, "itemId"); //$NON-NLS-1$
 		itemId.updateFromModel();
 
-		filterTypeValues = getRidget("filterTypeValues"); //$NON-NLS-1$
+		filterTypeValues = getRidget(IComboRidget.class, "filterTypeValues"); //$NON-NLS-1$
 		filterTypeValues.addPropertyChangeListener(new PropertyChangeListener() {
 			public void propertyChange(final PropertyChangeEvent evt) {
 				if (addFilter != null) {
@@ -110,14 +109,14 @@ public class FilterActionSubModuleController extends SubModuleController {
 			}
 		});
 
-		addFilter = getRidget("addFilter"); //$NON-NLS-1$
+		addFilter = getRidget(IActionRidget.class, "addFilter"); //$NON-NLS-1$
 		addFilter.addListener(new IActionListener() {
 			public void callback() {
 				doAddFilter();
 			}
 		});
 
-		final IActionRidget removeFilters = getRidget("removeFilters"); //$NON-NLS-1$
+		final IActionRidget removeFilters = getRidget(IActionRidget.class, "removeFilters"); //$NON-NLS-1$
 		removeFilters.addListener(new IActionListener() {
 			public void callback() {
 				doRemoveFilters();
@@ -127,8 +126,7 @@ public class FilterActionSubModuleController extends SubModuleController {
 	}
 
 	/**
-	 * The combo box for filter values is update with the given model. Also the
-	 * add button is enabled or disabled.
+	 * The combo box for filter values is update with the given model. Also the add button is enabled or disabled.
 	 * 
 	 * @param model
 	 * @param typeValues
@@ -143,8 +141,8 @@ public class FilterActionSubModuleController extends SubModuleController {
 		}
 		model.setSelectedFilterTypeValue(null);
 		if (typeValues != null) {
-			typeValues.bindToModel(new WritableList(Arrays.asList(model.getSelectedType().getArgs()), Object.class),
-					FilterModel.class, null, PojoObservables.observeValue(model, "selectedFilterTypeValue")); //$NON-NLS-1$
+			typeValues.bindToModel(new WritableList(Arrays.asList(model.getSelectedType().getArgs()), Object.class), FilterModel.class, null,
+					PojoObservables.observeValue(model, "selectedFilterTypeValue")); //$NON-NLS-1$
 			typeValues.updateFromModel();
 		}
 		if (add != null) {
@@ -177,8 +175,7 @@ public class FilterActionSubModuleController extends SubModuleController {
 	}
 
 	/**
-	 * Creates a filter attribute for a ridget, dependent on the selected type
-	 * of filter.
+	 * Creates a filter attribute for a ridget, dependent on the selected type of filter.
 	 * 
 	 * @param model
 	 *            model with selections.

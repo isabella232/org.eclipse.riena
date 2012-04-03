@@ -27,7 +27,7 @@ public class ExceptionTestController extends SubModuleController {
 		// TODO Auto-generated method stub
 		super.configureRidgets();
 
-		final IActionRidget localNullPtr = getRidget("localNullPointerAction"); //$NON-NLS-1$
+		final IActionRidget localNullPtr = getRidget(IActionRidget.class, "localNullPointerAction"); //$NON-NLS-1$
 		localNullPtr.addListener(new IActionListener() {
 
 			public void callback() {
@@ -36,7 +36,7 @@ public class ExceptionTestController extends SubModuleController {
 			}
 		});
 
-		final IActionRidget uiprocessNullPtr1 = getRidget("uiprocessNullPointerActionRunJob"); //$NON-NLS-1$
+		final IActionRidget uiprocessNullPtr1 = getRidget(IActionRidget.class, "uiprocessNullPointerActionRunJob"); //$NON-NLS-1$
 		uiprocessNullPtr1.addListener(new IActionListener() {
 
 			public void callback() {
@@ -52,7 +52,7 @@ public class ExceptionTestController extends SubModuleController {
 
 			}
 		});
-		final IActionRidget uiprocessNullPtr2 = getRidget("uiprocessNullPointerActionUpdateUI"); //$NON-NLS-1$
+		final IActionRidget uiprocessNullPtr2 = getRidget(IActionRidget.class, "uiprocessNullPointerActionUpdateUI"); //$NON-NLS-1$
 		uiprocessNullPtr2.addListener(new IActionListener() {
 
 			public void callback() {
@@ -74,7 +74,7 @@ public class ExceptionTestController extends SubModuleController {
 
 			}
 		});
-		final IActionRidget uiprocessNullPtr3 = getRidget("uiprocessNullPointerActionFinalUpdateUI"); //$NON-NLS-1$
+		final IActionRidget uiprocessNullPtr3 = getRidget(IActionRidget.class, "uiprocessNullPointerActionFinalUpdateUI"); //$NON-NLS-1$
 		uiprocessNullPtr3.addListener(new IActionListener() {
 
 			public void callback() {

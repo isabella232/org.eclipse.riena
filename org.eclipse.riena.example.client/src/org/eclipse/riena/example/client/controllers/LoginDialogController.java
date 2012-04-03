@@ -48,7 +48,7 @@ public class LoginDialogController extends AbstractWindowController {
 	@Override
 	public void afterBind() {
 		super.afterBind();
-		getRidget(RIDGET_ID_USER).requestFocus();
+		getRidget(ITextRidget.class, RIDGET_ID_USER).requestFocus();
 	}
 
 	@Override
@@ -58,12 +58,12 @@ public class LoginDialogController extends AbstractWindowController {
 		getWindowRidget().setTitle("Riena login"); //$NON-NLS-1$
 		getWindowRidget().setIcon(ExampleIcons.ICON_SAMPLE);
 
-		final ITextRidget user = getRidget(RIDGET_ID_USER);
+		final ITextRidget user = getRidget(ITextRidget.class, RIDGET_ID_USER);
 		user.setMandatory(true);
-		final ITextRidget password = getRidget(RIDGET_ID_PASSWORD);
+		final ITextRidget password = getRidget(ITextRidget.class, RIDGET_ID_PASSWORD);
 		password.setMandatory(true);
 
-		final IActionRidget okAction = getRidget(RIDGET_ID_OK);
+		final IActionRidget okAction = getRidget(IActionRidget.class, RIDGET_ID_OK);
 		okAction.addListener(new IActionListener() {
 			public void callback() {
 				canLogin = checkLogin();
@@ -76,7 +76,7 @@ public class LoginDialogController extends AbstractWindowController {
 		});
 		addDefaultAction(getWindowRidget(), okAction);
 
-		final IActionRidget cancelAction = getRidget(RIDGET_ID_CANCEL);
+		final IActionRidget cancelAction = getRidget(IActionRidget.class, RIDGET_ID_CANCEL);
 		cancelAction.addListener(new IActionListener() {
 			public void callback() {
 				dispose(EXIT_ABORT);
@@ -93,15 +93,15 @@ public class LoginDialogController extends AbstractWindowController {
 
 	private boolean checkLogin() {
 		// do not use server authentication in case user = "" and password=""
-		final String userId = ((ITextRidget) getRidget(RIDGET_ID_USER)).getText();
-		final String password = ((ITextRidget) getRidget(RIDGET_ID_PASSWORD)).getText();
+		final String userId = getRidget(ITextRidget.class, RIDGET_ID_USER).getText();
+		final String password = getRidget(ITextRidget.class, RIDGET_ID_PASSWORD).getText();
 		if (StringUtils.isEmpty(userId) && StringUtils.isEmpty(password)) {
 			return true;
 		}
 
 		// set the user, password that the authenticating callback handler will set (as user input)
-		LocalLoginCallbackHandler.setSuppliedCredentials(((ITextRidget) getRidget(RIDGET_ID_USER)).getText(),
-				((ITextRidget) getRidget(RIDGET_ID_PASSWORD)).getText());
+		LocalLoginCallbackHandler.setSuppliedCredentials(getRidget(ITextRidget.class, RIDGET_ID_USER).getText(),
+				getRidget(ITextRidget.class, RIDGET_ID_PASSWORD).getText());
 
 		final URL configUrl = Activator.getDefault().getContext().getBundle().getEntry(JAAS_CONFIG_FILE);
 		final ILoginContext secureContext = LoginContextFactory.createContext("Remote", configUrl); //$NON-NLS-1$
@@ -121,7 +121,7 @@ public class LoginDialogController extends AbstractWindowController {
 	}
 
 	private void showMessage(final LoginException e) {
-		final IMessageBoxRidget messageLoginException = getRidget(RIDGET_ID_MESSAGE_LOGIN_EXCEPTION);
+		final IMessageBoxRidget messageLoginException = getRidget(IMessageBoxRidget.class, RIDGET_ID_MESSAGE_LOGIN_EXCEPTION);
 		messageLoginException.setType(IMessageBoxRidget.Type.ERROR);
 		messageLoginException.setTitle("Login exception"); //$NON-NLS-1$
 		messageLoginException.setText(e.getMessage()); //$NON-NLS-1

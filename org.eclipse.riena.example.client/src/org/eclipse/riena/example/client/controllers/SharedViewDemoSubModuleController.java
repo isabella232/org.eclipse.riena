@@ -17,6 +17,7 @@ import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
+import org.eclipse.riena.ui.ridgets.ICompositeRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 
 /**
@@ -45,7 +46,7 @@ public class SharedViewDemoSubModuleController extends SubModuleController {
 		txtLast.bindToModel(personBean, Person.PROPERTY_LASTNAME);
 
 		final IActionRidget btnDefault = getRidget(IActionRidget.class, "btnDefault"); //$NON-NLS-1$
-		addDefaultAction(getRidget("view"), btnDefault); //$NON-NLS-1$
+		addDefaultAction(getRidget(ICompositeRidget.class, "view"), btnDefault); //$NON-NLS-1$
 		btnDefault.addListener(new IActionListener() {
 			public void callback() {
 				System.out.println(btnDefault.getText() + " pushed."); //$NON-NLS-1$

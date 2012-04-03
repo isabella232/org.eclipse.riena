@@ -21,6 +21,7 @@ import org.eclipse.riena.ui.core.resource.IIconManager;
 import org.eclipse.riena.ui.core.resource.IconManagerProvider;
 import org.eclipse.riena.ui.core.resource.IconSize;
 import org.eclipse.riena.ui.core.resource.IconState;
+import org.eclipse.riena.ui.ridgets.IImageButtonRidget;
 import org.eclipse.riena.ui.swt.ImageButton;
 import org.eclipse.riena.ui.swt.utils.ImageStore;
 
@@ -29,7 +30,7 @@ import org.eclipse.riena.ui.swt.utils.ImageStore;
  * 
  * @since 2.0
  */
-public class ImageButtonRidget extends AbstractActionRidget {
+public class ImageButtonRidget extends AbstractActionRidget implements IImageButtonRidget {
 
 	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), ImageButtonRidget.class);
 
@@ -76,8 +77,7 @@ public class ImageButtonRidget extends AbstractActionRidget {
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * An {@link ImageButton} hasn't a property "text". This method has no
-	 * effect.
+	 * An {@link ImageButton} hasn't a property "text". This method has no effect.
 	 * 
 	 */
 	@Override
@@ -89,8 +89,7 @@ public class ImageButtonRidget extends AbstractActionRidget {
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * Adds the selection listener to the button and updates the icon/image of
-	 * the button.
+	 * Adds the selection listener to the button and updates the icon/image of the button.
 	 */
 	@Override
 	protected void bindUIControl() {
@@ -127,8 +126,7 @@ public class ImageButtonRidget extends AbstractActionRidget {
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * This method also updates other icons (images) e.g. disabled icon, hover
-	 * icon.
+	 * This method also updates other icons (images) e.g. disabled icon, hover icon.
 	 */
 	@Override
 	protected void updateUIIcon() {

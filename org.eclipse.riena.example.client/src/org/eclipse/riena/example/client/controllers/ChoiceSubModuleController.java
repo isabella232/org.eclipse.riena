@@ -43,6 +43,10 @@ public class ChoiceSubModuleController extends SubModuleController {
 	private final CarConfig carConfig = new CarConfig();
 	private final String[] additionalColors = new String[] { "white", "silver", "gray", "yellow" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
+	public ChoiceSubModuleController() {
+		this(null);
+	}
+
 	public ChoiceSubModuleController(final ISubModuleNode navigationNode) {
 		super(navigationNode);
 	}
@@ -56,27 +60,23 @@ public class ChoiceSubModuleController extends SubModuleController {
 	public void configureRidgets() {
 
 		compositeCarModel = getRidget(SingleChoiceRidget.class, "compositeCarModel"); //$NON-NLS-1$
-		compositeCarModel.bindToModel(toList(CarModels.values()),
-				BeansObservables.observeValue(carConfig, CarConfig.PROP_MODEL));
+		compositeCarModel.bindToModel(toList(CarModels.values()), BeansObservables.observeValue(carConfig, CarConfig.PROP_MODEL));
 		compositeCarModel.addMarker(new MandatoryMarker());
 		compositeCarModel.updateFromModel();
 
 		compositeCarExtras = getRidget(IMultipleChoiceRidget.class, "compositeCarExtras"); //$NON-NLS-1$
 		final String[] labels = { "Front Machine Guns", "Self Destruct Button", "Underwater Package", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				"Park Distance Control System", }; //$NON-NLS-1$
-		compositeCarExtras.bindToModel(toList(CarOptions.values()), Arrays.asList(labels), carConfig,
-				CarConfig.PROP_OPTIONS);
+		compositeCarExtras.bindToModel(toList(CarOptions.values()), Arrays.asList(labels), carConfig, CarConfig.PROP_OPTIONS);
 		compositeCarExtras.updateFromModel();
 
 		compositeCarWarranty = getRidget(ISingleChoiceRidget.class, "compositeCarWarranty"); //$NON-NLS-1$
-		compositeCarWarranty.bindToModel(toList(CarWarranties.values()),
-				BeansObservables.observeValue(carConfig, CarConfig.PROP_WARRANTY));
+		compositeCarWarranty.bindToModel(toList(CarWarranties.values()), BeansObservables.observeValue(carConfig, CarConfig.PROP_WARRANTY));
 		compositeCarWarranty.addMarker(new MandatoryMarker());
 		compositeCarWarranty.updateFromModel();
 
 		compositeCarPlates = getRidget(IMultipleChoiceRidget.class, "compositeCarPlates"); //$NON-NLS-1$
-		compositeCarPlates
-				.bindToModel(toList(carPlates), PojoObservables.observeList(carConfig, CarConfig.PROP_PLATES));
+		compositeCarPlates.bindToModel(toList(carPlates), PojoObservables.observeList(carConfig, CarConfig.PROP_PLATES));
 		compositeCarPlates.addMarker(new MandatoryMarker());
 		compositeCarPlates.updateFromModel();
 
@@ -86,15 +86,14 @@ public class ChoiceSubModuleController extends SubModuleController {
 
 		compositeSunroof = getRidget(ISingleChoiceRidget.class, "compositeSunroof"); //$NON-NLS-1$
 		final String[] roofLabels = { "yes", "no" }; //$NON-NLS-1$ //$NON-NLS-2$
-		compositeSunroof.bindToModel(toList(new Boolean[] { true, false }), toList(roofLabels), carConfig,
-				CarConfig.PROP_SUNROOF);
+		compositeSunroof.bindToModel(toList(new Boolean[] { true, false }), toList(roofLabels), carConfig, CarConfig.PROP_SUNROOF);
 		compositeSunroof.updateFromModel();
 
 		final ITextRidget txtPrice = getRidget(ITextRidget.class, "txtPrice"); //$NON-NLS-1$
 		txtPrice.setOutputOnly(true);
 		final DataBindingContext dbc = new DataBindingContext();
-		dbc.bindValue(BeansObservables.observeValue(txtPrice, ITextRidget.PROPERTY_TEXT),
-				BeansObservables.observeValue(carConfig, CarConfig.PROP_PRICE), null, null);
+		dbc.bindValue(BeansObservables.observeValue(txtPrice, ITextRidget.PROPERTY_TEXT), BeansObservables.observeValue(carConfig, CarConfig.PROP_PRICE), null,
+				null);
 
 		final IActionRidget buttonPreset = getRidget(IActionRidget.class, "buttonPreset"); //$NON-NLS-1$
 		buttonPreset.setText("&Quick Config"); //$NON-NLS-1$
@@ -145,8 +144,7 @@ public class ChoiceSubModuleController extends SubModuleController {
 	// ////////////////
 
 	/**
-	 * Bean that holds a single car configuration composed of: model, option(s),
-	 * warranty, plate(s).
+	 * Bean that holds a single car configuration composed of: model, option(s), warranty, plate(s).
 	 */
 	public static final class CarConfig extends AbstractBean {
 		public static final String PROP_MODEL = "model"; //$NON-NLS-1$

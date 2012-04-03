@@ -63,8 +63,8 @@ public class TreeSubModuleController extends SubModuleController {
 		tree.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
 		final TreeNode[] roots = createTreeInput();
 		tree.setRootsVisible(false);
-		tree.bindToModel(roots, TreeNode.class, TreeNode.PROPERTY_CHILDREN, TreeNode.PROPERTY_PARENT,
-				TreeNode.PROPERTY_VALUE, TreeNode.PROPERTY_ENABLED, TreeNode.PROPERTY_VISIBLE);
+		tree.bindToModel(roots, TreeNode.class, TreeNode.PROPERTY_CHILDREN, TreeNode.PROPERTY_PARENT, TreeNode.PROPERTY_VALUE, TreeNode.PROPERTY_ENABLED,
+				TreeNode.PROPERTY_VISIBLE);
 		tree.setSelection(roots[0].getChildren().get(0));
 	}
 
@@ -74,17 +74,17 @@ public class TreeSubModuleController extends SubModuleController {
 	@Override
 	public void configureRidgets() {
 
-		tree = getRidget("tree"); //$NON-NLS-1$
-		final IActionRidget buttonAddSibling = getRidget("buttonAddSibling"); //$NON-NLS-1$
-		final IActionRidget buttonAddChild = getRidget("buttonAddChild"); //$NON-NLS-1$
-		buttonRename = getRidget("buttonRename"); //$NON-NLS-1$
-		final IActionRidget buttonDelete = getRidget("buttonDelete"); //$NON-NLS-1$
-		final IActionRidget buttonExpand = getRidget("buttonExpand"); //$NON-NLS-1$
-		final IActionRidget buttonCollapse = getRidget("buttonCollapse"); //$NON-NLS-1$
-		final IActionRidget buttonDisable = getRidget("buttonDisable"); //$NON-NLS-1$
-		final IActionRidget buttonEnable = getRidget("buttonEnable"); //$NON-NLS-1$
-		final IActionRidget buttonHide = getRidget("buttonHide"); //$NON-NLS-1$
-		final IActionRidget buttonShow = getRidget("buttonShow"); //$NON-NLS-1$
+		tree = getRidget(ITreeRidget.class, "tree"); //$NON-NLS-1$
+		final IActionRidget buttonAddSibling = getRidget(IActionRidget.class, "buttonAddSibling"); //$NON-NLS-1$
+		final IActionRidget buttonAddChild = getRidget(IActionRidget.class, "buttonAddChild"); //$NON-NLS-1$
+		buttonRename = getRidget(IActionRidget.class, "buttonRename"); //$NON-NLS-1$
+		final IActionRidget buttonDelete = getRidget(IActionRidget.class, "buttonDelete"); //$NON-NLS-1$
+		final IActionRidget buttonExpand = getRidget(IActionRidget.class, "buttonExpand"); //$NON-NLS-1$
+		final IActionRidget buttonCollapse = getRidget(IActionRidget.class, "buttonCollapse"); //$NON-NLS-1$
+		final IActionRidget buttonDisable = getRidget(IActionRidget.class, "buttonDisable"); //$NON-NLS-1$
+		final IActionRidget buttonEnable = getRidget(IActionRidget.class, "buttonEnable"); //$NON-NLS-1$
+		final IActionRidget buttonHide = getRidget(IActionRidget.class, "buttonHide"); //$NON-NLS-1$
+		final IActionRidget buttonShow = getRidget(IActionRidget.class, "buttonShow"); //$NON-NLS-1$
 
 		buttonAddSibling.setText("Add &Sibling"); //$NON-NLS-1$
 		buttonAddSibling.addListener(new IActionListener() {
