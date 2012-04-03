@@ -60,9 +60,9 @@ public class MarkerHidingSubModuleView extends SubModuleView {
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(btnError);
 
 		UIControlsFactory.createLabel(group, ""); //$NON-NLS-1$
-		final Button btnHM = UIControlsFactory.createButton(group, "Show/Hide ErrorMarker ", "btnHideMandatory"); //$NON-NLS-1$ //$NON-NLS-2$
+		final Button btnHM = UIControlsFactory.createButton(group, "Show/Hide MandatoryMarker ", "btnHideMandatory"); //$NON-NLS-1$ //$NON-NLS-2$
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(btnHM);
-		final Button btnHE = UIControlsFactory.createButton(group, "Show/Hide MandatoryMarker", "btnHideError"); //$NON-NLS-1$ //$NON-NLS-2$
+		final Button btnHE = UIControlsFactory.createButton(group, "Show/Hide ErrorMarker", "btnHideError"); //$NON-NLS-1$ //$NON-NLS-2$
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(btnHE);
 
 		return group;
