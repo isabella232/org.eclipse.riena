@@ -54,8 +54,7 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 public class NumericTextRidget extends TextRidget implements INumericTextRidget {
 
 	/**
-	 * This is not API and should not be called by clients. Public for testing
-	 * only.
+	 * This is not API and should not be called by clients. Public for testing only.
 	 */
 	public static String group(final String input, final boolean isGrouping, final boolean isDecimal) {
 		String result = input;
@@ -72,8 +71,7 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 	}
 
 	/**
-	 * This is not API and should not be called by clients. Public for testing
-	 * only.
+	 * This is not API and should not be called by clients. Public for testing only.
 	 */
 	public static String ungroup(final String input) {
 		final StringBuilder result = new StringBuilder(input.length());
@@ -88,8 +86,7 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 	}
 
 	/**
-	 * This is not API and should not be called by clients. Public for testing
-	 * only.
+	 * This is not API and should not be called by clients. Public for testing only.
 	 */
 	public static String removeLeadingCruft(final String input) {
 		if (Pattern.matches("0+.", input) && input.endsWith(String.valueOf(DECIMAL_SEPARATOR))) { //$NON-NLS-1$
@@ -224,8 +221,7 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 	/**
 	 * Checks that given String value is a valid number.
 	 * <p>
-	 * Subclasses should override and adjust to their needs without calling
-	 * super().
+	 * Subclasses should override and adjust to their needs without calling super().
 	 * 
 	 * @param number
 	 *            a String value; "" is used for the empty value
@@ -274,8 +270,7 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 	/**
 	 * Converts text to BigInteger and checks if it is less than zero.
 	 * <p>
-	 * Subclasses may override and adjust to their needs without calling
-	 * super().
+	 * Subclasses may override and adjust to their needs without calling super().
 	 * 
 	 * @param text
 	 *            a String representing a numeric value; never null
@@ -396,9 +391,7 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * If decimal and/or grouping separators are contained in the given
-	 * {@code text} value, they must follow the convention of the current
-	 * locale.
+	 * If decimal and/or grouping separators are contained in the given {@code text} value, they must follow the convention of the current locale.
 	 * <p>
 	 * Examples:
 	 * <ul>
@@ -422,9 +415,7 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 	 * <p>
 	 * 
 	 * @throws RuntimeException
-	 *             if the value obtain from model exceeds the specified maximum
-	 *             length or precision. It is responsibility of application to
-	 *             handle this.
+	 *             if the value obtain from model exceeds the specified maximum length or precision. It is responsibility of application to handle this.
 	 */
 	@Override
 	public synchronized void updateFromModel() {
@@ -571,16 +562,15 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 
 	private synchronized String createPattern(final String input) {
 		String result;
+		// -1 => no length limit
+		final int length = getMaxLength() == INumericTextRidget.MAX_LENGTH_UNBOUNDED ? input.length() : getMaxLength();
 		if (isDecimal() && getPrecision() > 0) {
 			final String decSep = DECIMAL_SEPARATOR == '.' ? "\\." : String.valueOf(DECIMAL_SEPARATOR); //$NON-NLS-1$
-			result = String.format("\\d{0,%d}%s\\d{0,%d}", getMaxLength(), decSep, getPrecision()); //$NON-NLS-1$
+			result = String.format("\\d{0,%d}%s\\d{0,%d}", length, decSep, getPrecision()); //$NON-NLS-1$
 			if (isSigned) {
 				result = String.format("%c?", MINUS_SIGN) + result; //$NON-NLS-1$
 			}
 		} else {
-			// -1 => no length limit
-			final int length = getMaxLength() == INumericTextRidget.MAX_LENGTH_UNBOUNDED ? input.length()
-					: getMaxLength();
 			if (isSigned) {
 				result = String.format("%c?\\d{0,%d}", MINUS_SIGN, length); //$NON-NLS-1$
 			} else {
@@ -614,9 +604,7 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 	}
 
 	/*
-	 * No decimal separator, if precision is 0 (i.e. no faction to show). If
-	 * precision > 0 and no decimal separator present, append decimal separator
-	 * to text.
+	 * No decimal separator, if precision is 0 (i.e. no faction to show). If precision > 0 and no decimal separator present, append decimal separator to text.
 	 * 
 	 * @param text the original text string
 	 * 
@@ -677,12 +665,9 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 	//////////////////
 
 	/**
-	 * This listener handles addition, deletion and replacement of text in the
-	 * Text control. When the text in the control is modified, it will compute
-	 * the new value and match it against a pattern. The pattern is computed
-	 * based on the maxLength, precision and signed settings of this ridget. If
-	 * the new value does not match against the pattern, e.doit is set to false
-	 * and the modification is canceled.
+	 * This listener handles addition, deletion and replacement of text in the Text control. When the text in the control is modified, it will compute the new
+	 * value and match it against a pattern. The pattern is computed based on the maxLength, precision and signed settings of this ridget. If the new value does
+	 * not match against the pattern, e.doit is set to false and the modification is canceled.
 	 */
 	private final class NumericVerifyListener implements VerifyListener {
 
@@ -775,13 +760,11 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 			return length;
 		}
 
-		private void setTextAndCursor(final Text control, final String text, final int cursorPos, final VerifyEvent e,
-				final int end) {
+		private void setTextAndCursor(final Text control, final String text, final int cursorPos, final VerifyEvent e, final int end) {
 			final String oldText = control.getText();
 			final int oldCursorPos = control.getCaretPosition();
 			control.setText(text);
-			if (text.length() > 0 && text.charAt(0) == DECIMAL_SEPARATOR
-					&& control.getText().startsWith(String.valueOf(ZERO))) {
+			if (text.length() > 0 && text.charAt(0) == DECIMAL_SEPARATOR && control.getText().startsWith(String.valueOf(ZERO))) {
 				control.setSelection(1);
 			} else if (oldCursorPos != 0 && text.length() == 1 && text.charAt(0) == DECIMAL_SEPARATOR) {
 				control.setSelection(0);
@@ -797,10 +780,8 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 	}
 
 	/**
-	 * When the user types a key in the text control that modifies it's content
-	 * this listener is invoked. It will replace the string in the text control,
-	 * by the a formatted equivalent, according to the settings in this ridget
-	 * (precision, maxlength, etc.).
+	 * When the user types a key in the text control that modifies it's content this listener is invoked. It will replace the string in the text control, by the
+	 * a formatted equivalent, according to the settings in this ridget (precision, maxlength, etc.).
 	 */
 	private final class NumericModifyListener implements ModifyListener {
 
@@ -838,20 +819,16 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 	}
 
 	/**
-	 * This listener controls which key strokes are allowed by the text control.
-	 * Additionally some keystrokes replaced with special behavior. Currently
-	 * those key strokes are:
+	 * This listener controls which key strokes are allowed by the text control. Additionally some keystrokes replaced with special behavior. Currently those
+	 * key strokes are:
 	 * <ol>
 	 * <li>Left & Right arrow - will jump over grouping separators</li>
 	 * <li>
 	 * Shift - ddisables jumping over grouping separators when pressed down</li>
-	 * <li>Decimal separator - will cause the cursor to jump over the decimal
-	 * separator if directly to the right of it. Otherwise ignored</li>
+	 * <li>Decimal separator - will cause the cursor to jump over the decimal separator if directly to the right of it. Otherwise ignored</li>
 	 * <li>
-	 * minus ('-') - for signed widgets, it adds the '-' character to the left
-	 * of the widget. Otherwise ignored</li>
-	 * <li>CR ('\r') - for decimal ridgets, it will pad the fractional digits by
-	 * adding '0's until the maximum number of fractional digits is reached (as
+	 * minus ('-') - for signed widgets, it adds the '-' character to the left of the widget. Otherwise ignored</li>
+	 * <li>CR ('\r') - for decimal ridgets, it will pad the fractional digits by adding '0's until the maximum number of fractional digits is reached (as
 	 * specified by the ridgets precision value)
 	 * </ol>
 	 */
@@ -930,9 +907,8 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 	}
 
 	/**
-	 * For decimal ridgets: this focus listener will pad the fractional digits
-	 * by adding '0's until the maximum number of fractional digits is reached
-	 * (as specified by the ridgets precision value)
+	 * For decimal ridgets: this focus listener will pad the fractional digits by adding '0's until the maximum number of fractional digits is reached (as
+	 * specified by the ridgets precision value)
 	 */
 	private final class NumericFocusListener extends FocusAdapter {
 		@Override
