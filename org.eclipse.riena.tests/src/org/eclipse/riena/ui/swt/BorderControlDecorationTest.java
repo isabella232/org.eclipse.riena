@@ -13,6 +13,7 @@ package org.eclipse.riena.ui.swt;
 import junit.framework.TestCase;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.nebula.widgets.compositetable.AbsoluteLayout;
 import org.eclipse.swt.widgets.Display;
@@ -24,7 +25,7 @@ import org.eclipse.riena.internal.core.test.collect.UITestCase;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
- * Test the class {@link BorderControlDecoration}.
+ * Test the classes {@link BorderControlDecoration} and {@link BorderDrawer}
  */
 @UITestCase
 public class BorderControlDecorationTest extends TestCase {
@@ -54,24 +55,24 @@ public class BorderControlDecorationTest extends TestCase {
 	 * Tests the <i>private</i> method {@code shouldShowDecoration()}.
 	 */
 	public void testShouldShowDecoration() {
-
 		BorderControlDecoration deco = new BorderControlDecoration(text, 2);
-		boolean ret = ReflectionUtils.invokeHidden(deco, "shouldShowDecoration");
+		final BorderDrawer borderDrawer = ReflectionUtils.getHidden(deco, "borderDrawer");
+		boolean ret = ReflectionUtils.invokeHidden(borderDrawer, "shouldShowDecoration");
 		assertFalse(ret);
 
 		shell.setVisible(true);
 		deco.show();
-		ret = ReflectionUtils.invokeHidden(deco, "shouldShowDecoration");
+		ret = ReflectionUtils.invokeHidden(borderDrawer, "shouldShowDecoration");
 		assertTrue(ret);
 
 		deco.hide();
-		ret = ReflectionUtils.invokeHidden(deco, "shouldShowDecoration");
+		ret = ReflectionUtils.invokeHidden(borderDrawer, "shouldShowDecoration");
 		assertFalse(ret);
 
 		deco.dispose();
 		deco = new BorderControlDecoration(text, 0);
 		deco.show();
-		ret = ReflectionUtils.invokeHidden(deco, "shouldShowDecoration");
+		ret = ReflectionUtils.invokeHidden(borderDrawer, "shouldShowDecoration");
 		assertFalse(ret);
 
 		deco.dispose();
@@ -79,16 +80,19 @@ public class BorderControlDecorationTest extends TestCase {
 
 	}
 
-	/**
-	 * Tests the <i>private</i> method {@code getDecorationRectangle(Control)}.
-	 */
-	public void testGetDecorationRectangle() {
-
+	public void testDecorationRectangle() {
+		final int borderWidth = 3;
+		final BorderControlDecoration deco = new BorderControlDecoration(text, borderWidth);
+		deco.show();
 		shell.setVisible(true);
+		final BorderDrawer borderDrawer = ReflectionUtils.getHidden(deco, "borderDrawer");
+		final Rectangle decoRect = ReflectionUtils.getHidden(borderDrawer, "visibleControlAreaOnDisplay");
 
-		final BorderControlDecoration deco = new BorderControlDecoration(text, 2);
-		final Rectangle decoRect = ReflectionUtils.invokeHidden(deco, "getDecorationRectangle", shell);
-		assertEquals(new Rectangle(2, 4, 43, 23), decoRect);
+		final Point onDisplay = text.toDisplay(0, 0);
+		final int border = borderWidth + text.getBorderWidth();
+		final int expectedWidth = text.getBounds().width - 1 + 2 * borderWidth;
+		final int expectedHeight = text.getBounds().height - 1 + 2 * borderWidth;
+		assertEquals(new Rectangle(onDisplay.x - border, onDisplay.y - border, expectedWidth, expectedHeight), decoRect);
 
 		shell.setVisible(false);
 

@@ -75,7 +75,7 @@ public class BorderDrawer implements Listener {
 		public void handleEvent(final Event event) {
 			update(false);
 		}
-	};;
+	};
 
 	/**
 	 * @param control
@@ -126,6 +126,31 @@ public class BorderDrawer implements Listener {
 			registerToControl(parent, SWT.Resize, SWT.Move);
 			registerToControl(parent, updateListener, SWTFacade.Paint);
 		} while ((parent = parent.getParent()) != null);
+
+		registerMnemonicsListener();
+	}
+
+	/**
+	 * Needed for the mnemonics handling in windows:
+	 * <p>
+	 * Pressing the ALT key causes the mnemonics to appear -> all mnemonic-able controls will be redrawn. This redraw causes the borders on non-mnemonic-able
+	 * widgets to disappear. This happens only the first time the mnemonics are triggered (the first time ALT is pressed).
+	 */
+	private void registerMnemonicsListener() {
+		final Listener altListener = new Listener() {
+			public void handleEvent(final Event event) {
+				if (event.keyCode == SWT.ALT) {
+					update(true);
+					control.getDisplay().removeFilter(SWT.KeyDown, this);
+				}
+			}
+		};
+		control.getDisplay().addFilter(SWT.KeyDown, altListener);
+		toUnregister.add(new Runnable() {
+			public void run() {
+				control.getDisplay().removeFilter(SWT.KeyDown, altListener);
+			}
+		});
 	}
 
 	/**
