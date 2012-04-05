@@ -80,6 +80,74 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 	// test methods
 	///////////////
 
+	public void testCreatePatternEmpty() throws Exception {
+		final String input = "";
+
+		// trying all configuration possibilities
+		final INumericTextRidget r = getRidget();
+		String pattern;
+
+		r.setMaxLength(INumericTextRidget.MAX_LENGTH_UNBOUNDED);
+		r.setSigned(true);
+		pattern = ReflectionUtils.invokeHidden(r, "createPattern", input);
+		assertTrue(input.matches(pattern));
+
+		r.setSigned(false);
+		pattern = ReflectionUtils.invokeHidden(r, "createPattern", input);
+		assertTrue(input.matches(pattern));
+
+		r.setMaxLength(3);
+		pattern = ReflectionUtils.invokeHidden(r, "createPattern", input);
+		assertTrue(input.matches(pattern));
+
+		r.setSigned(true);
+		pattern = ReflectionUtils.invokeHidden(r, "createPattern", input);
+		assertTrue(input.matches(pattern));
+	}
+
+	public void testCreatePattern() throws Exception {
+		final String input = "-123";
+
+		// trying all configuration possibilities
+		final INumericTextRidget r = getRidget();
+		String pattern;
+
+		r.setMaxLength(INumericTextRidget.MAX_LENGTH_UNBOUNDED);
+		r.setSigned(true);
+		pattern = ReflectionUtils.invokeHidden(r, "createPattern", input);
+		assertTrue(input.matches(pattern));
+
+		r.setSigned(false);
+		pattern = ReflectionUtils.invokeHidden(r, "createPattern", input);
+		assertFalse(input.matches(pattern));
+
+		r.setMaxLength(3);
+		pattern = ReflectionUtils.invokeHidden(r, "createPattern", input);
+		assertFalse(input.matches(pattern));
+
+		r.setSigned(true);
+		pattern = ReflectionUtils.invokeHidden(r, "createPattern", input);
+		assertTrue(input.matches(pattern));
+	}
+
+	public void testCreatePatternMaxLengthSigned() throws Exception {
+		final INumericTextRidget r = getRidget();
+		r.setMaxLength(3);
+		r.setSigned(true);
+		String pattern;
+		String input;
+
+		input = "-123";
+
+		pattern = ReflectionUtils.invokeHidden(r, "createPattern", input);
+		assertTrue(input.matches(pattern));
+
+		input = "1234";
+
+		pattern = ReflectionUtils.invokeHidden(r, "createPattern", input);
+		assertFalse(input.matches(pattern));
+	}
+
 	@Override
 	public void testRidgetMapping() {
 		final SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
@@ -404,8 +472,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		assertEquals("0", ridget.getText());
 		assertEquals(Integer.valueOf(0), bean.getValue());
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "0", "47"), new PropertyChangeEvent(
-				ridget, "text", "0", "47"));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "0", "47"), new PropertyChangeEvent(ridget, "text", "0", "47"));
 
 		UITestHelper.sendString(display, "\r");
 		UITestHelper.readAndDispatch(control);
@@ -424,8 +491,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		assertEquals("47", ridget.getText());
 		assertEquals(Integer.valueOf(47), bean.getValue());
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "47", "471"),
-				new PropertyChangeEvent(ridget, "text", "47", "471"));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "47", "471"), new PropertyChangeEvent(ridget, "text", "47", "471"));
 
 		UITestHelper.sendString(display, "\t");
 
@@ -457,8 +523,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		assertEquals("4", ridget.getText());
 		assertEquals(Integer.valueOf(4), bean.getValue());
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "4", "47"), new PropertyChangeEvent(
-				ridget, "text", "4", "47"));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "4", "47"), new PropertyChangeEvent(ridget, "text", "4", "47"));
 
 		UITestHelper.sendString(display, "7");
 
@@ -467,8 +532,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		assertEquals("47", ridget.getText());
 		assertEquals(Integer.valueOf(47), bean.getValue());
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "47", "471"),
-				new PropertyChangeEvent(ridget, "text", "47", "471"));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "47", "471"), new PropertyChangeEvent(ridget, "text", "47", "471"));
 
 		UITestHelper.sendString(display, "1");
 
@@ -477,8 +541,8 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		assertEquals("471", ridget.getText());
 		assertEquals(Integer.valueOf(471), bean.getValue());
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "471", localize("4.711")),
-				new PropertyChangeEvent(ridget, "text", "471", localize("4.711")));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "471", localize("4.711")), new PropertyChangeEvent(ridget, "text", "471",
+				localize("4.711")));
 
 		UITestHelper.sendString(display, "1");
 
@@ -487,8 +551,8 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		assertEquals(localize("4.711"), ridget.getText());
 		assertEquals(Integer.valueOf(4711), bean.getValue());
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", localize("4.711"), "471"),
-				new PropertyChangeEvent(ridget, "text", localize("4.711"), "471"));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", localize("4.711"), "471"), new PropertyChangeEvent(ridget, "text",
+				localize("4.711"), "471"));
 
 		UITestHelper.sendKeyAction(display, SWT.ARROW_LEFT);
 		UITestHelper.sendString(display, "\b");
@@ -498,8 +562,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		assertEquals("471", ridget.getText());
 		assertEquals(Integer.valueOf("471"), bean.getValue());
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "471", "47"),
-				new PropertyChangeEvent(ridget, "text", "471", "47"));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "471", "47"), new PropertyChangeEvent(ridget, "text", "471", "47"));
 
 		UITestHelper.sendString(display, String.valueOf(SWT.DEL));
 
@@ -517,8 +580,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		assertEquals("47", ridget.getText());
 		assertEquals(Integer.valueOf(4711), bean.getValue());
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "47", "4"), new PropertyChangeEvent(
-				ridget, "text", "47", "4"));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "47", "4"), new PropertyChangeEvent(ridget, "text", "47", "4"));
 
 		UITestHelper.sendString(display, "\b");
 
@@ -771,8 +833,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 			final IMarker next = iterator.next();
 			assertTrue(next instanceof IMessageMarker);
 			final IMessageMarker marker = (IMessageMarker) next;
-			assertTrue(marker.getMessage().equals("ValidationErrorMessage")
-					|| marker.getMessage().equals("Odd number of characters."));
+			assertTrue(marker.getMessage().equals("ValidationErrorMessage") || marker.getMessage().equals("Odd number of characters."));
 		}
 
 		UITestHelper.sendString(control.getDisplay(), "2");
@@ -1525,8 +1586,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 				}
 				return ValidationRuleStatus.error(false, "Odd number of characters.");
 			}
-			throw new ValidationFailure(getClass().getName() + " can only validate objects of type "
-					+ String.class.getName());
+			throw new ValidationFailure(getClass().getName() + " can only validate objects of type " + String.class.getName());
 		}
 
 	}
