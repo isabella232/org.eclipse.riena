@@ -31,16 +31,14 @@ import org.eclipse.riena.ui.swt.IEmbeddedTitleBarListener;
  * Ridget for {@link EmbeddedTitleBar}.
  */
 public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IEmbeddedTitleBarRidget {
-
-	private static final String EMPTY_STRING = ""; //$NON-NLS-1$
-
-	private String text = EMPTY_STRING;
+	private String text = StringUtils.EMPTY_STRING;
 	private String icon;
 	private final ListenerList<IWindowRidgetListener> windowRidgetListeners;
 	private boolean closeable;
 	private boolean active;
 	private final IEmbeddedTitleBarListener titleBarListener;
 	private DefaultActionManager actionManager;
+	private boolean blocked;
 
 	/**
 	 * Creates a new instance of {@code EmbeddedTitleBarRidget}.
@@ -177,7 +175,7 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IEmbedd
 	}
 
 	public void setActive(final boolean active) {
-		if (this.active == active) {
+		if (this.active != active) {
 			this.active = active;
 			updateActive();
 		}
@@ -187,6 +185,18 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IEmbedd
 		if (this.closeable != closeable) {
 			this.closeable = closeable;
 			updateCloseable();
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.ui.ridgets.IWindowRidget#setBlocked(boolean)
+	 */
+	public void setBlocked(final boolean blocked) {
+		if (this.blocked != blocked) {
+			this.blocked = blocked;
+			updateBlocked();
 		}
 	}
 
@@ -241,6 +251,13 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IEmbedd
 		}
 	}
 
+	private void updateBlocked() {
+		final EmbeddedTitleBar control = getUIControl();
+		if (control != null) {
+			control.setBlocked(blocked);
+		}
+	}
+
 	/**
 	 * Listener of the title bar.
 	 */
@@ -257,5 +274,4 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IEmbedd
 			}
 		}
 	}
-
 }

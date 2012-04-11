@@ -198,9 +198,8 @@ public class SonarController extends SubModuleController {
 	}
 
 	/**
-	 * Called if a TreeNode is selected. It shows the failure message of the
-	 * selected node (if there is one) and updates the state of the
-	 * next/previous failure buttons.
+	 * Called if a TreeNode is selected. It shows the failure message of the selected node (if there is one) and updates the state of the next/previous failure
+	 * buttons.
 	 */
 	protected void treeNodeSelected() {
 		boolean hasFailure = false;
@@ -216,8 +215,7 @@ public class SonarController extends SubModuleController {
 	}
 
 	/**
-	 * Updates the enabled state of the next/previous failure button, depending
-	 * on whether there is a next/previous failure to show.
+	 * Updates the enabled state of the next/previous failure button, depending on whether there is a next/previous failure to show.
 	 */
 	protected void updateNextPreviousButtons() {
 		nextErrorAction.setEnabled(getFailureNode(SearchDirection.next) != null);
@@ -258,12 +256,10 @@ public class SonarController extends SubModuleController {
 	}
 
 	/**
-	 * Returns the next/previous node that has a failure message, starting the
-	 * search from the currently selected node.
+	 * Returns the next/previous node that has a failure message, starting the search from the currently selected node.
 	 * 
 	 * @param searchDirection
-	 *            if <code>true</code> the next failure will searched, otherwise
-	 *            the
+	 *            if <code>true</code> the next failure will searched, otherwise the
 	 * @return the failure node if there is one.
 	 */
 	private PingResultTreeNode getFailureNode(final SearchDirection searchDirection) {
@@ -272,15 +268,12 @@ public class SonarController extends SubModuleController {
 	}
 
 	/**
-	 * Returns the next/previous node that has a failure message, starting the
-	 * search from the given node.
+	 * Returns the next/previous node that has a failure message, starting the search from the given node.
 	 * 
 	 * @param searchDirection
-	 *            if <code>true</code> the next failure will searched, otherwise
-	 *            the
+	 *            if <code>true</code> the next failure will searched, otherwise the
 	 * @param startFrom
-	 *            the node to start the search from. If <code>null</code>, the
-	 *            search is started from root.
+	 *            the node to start the search from. If <code>null</code>, the search is started from root.
 	 * @return the failure node if there is one.
 	 */
 	private PingResultTreeNode getFailureNode(final SearchDirection searchDirection, final PingResultTreeNode startFrom) {
@@ -358,8 +351,7 @@ public class SonarController extends SubModuleController {
 	 */
 	protected void setRootNodes(final PingableTreeNode[] nodes) {
 		this.rootNodes = nodes;
-		treeRidget.bindToModel(nodes, PingResultTreeNode.class, ITreeNode.PROPERTY_CHILDREN, ITreeNode.PROPERTY_PARENT,
-				"label", null, null, "icon", "icon"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		treeRidget.bindToModel(nodes, PingResultTreeNode.class, ITreeNode.PROPERTY_CHILDREN, ITreeNode.PROPERTY_PARENT, "label", null, null, "icon", "icon"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		treeRidget.updateFromModel();
 	}
 
@@ -423,7 +415,7 @@ public class SonarController extends SubModuleController {
 	}
 
 	protected void setShowHourGlassCursor(final boolean show) {
-		final Control uiControl = (Control) getWindowRidget().getUIControl();
+		final Control uiControl = (Control) getTitleBarRidget().getUIControl();
 		if (show) {
 			oldCursor = uiControl.getCursor();
 			final Cursor waitCursor = uiControl.getDisplay().getSystemCursor(SWT.CURSOR_WAIT);
@@ -437,8 +429,7 @@ public class SonarController extends SubModuleController {
 	}
 
 	/**
-	 * The {@link UIProcess} that pings all
-	 * {@link SonarController#getRootNodes() IPingables}.
+	 * The {@link UIProcess} that pings all {@link SonarController#getRootNodes() IPingables}.
 	 */
 	private class SonarUIProcess extends UIProcess {
 
@@ -522,8 +513,7 @@ public class SonarController extends SubModuleController {
 		}
 
 		/**
-		 * Calls {@link #createChildNodes(PingResultTreeNode)} using a
-		 * {@link UISynchronizer}.
+		 * Calls {@link #createChildNodes(PingResultTreeNode)} using a {@link UISynchronizer}.
 		 * 
 		 * @param parent
 		 *            the node for which to create the child nodes.
@@ -537,8 +527,7 @@ public class SonarController extends SubModuleController {
 		}
 
 		/**
-		 * Recursively creates child nodes for the given node based on its
-		 * {@link PingResult}.
+		 * Recursively creates child nodes for the given node based on its {@link PingResult}.
 		 * 
 		 * @param parent
 		 *            the node for which to create the child nodes.
@@ -607,9 +596,7 @@ public class SonarController extends SubModuleController {
 		}
 
 		/**
-		 * En-/disables all actions as appropriate and selects first failure
-		 * node. The code is run just once, so any subsequent calls have not
-		 * effect.
+		 * En-/disables all actions as appropriate and selects first failure node. The code is run just once, so any subsequent calls have not effect.
 		 */
 		protected void end() {
 			if (endRun) {

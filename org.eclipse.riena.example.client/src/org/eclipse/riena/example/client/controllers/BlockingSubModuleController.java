@@ -115,7 +115,7 @@ public class BlockingSubModuleController extends SubModuleController {
 	/**
 	 * Blocks the given {@link INavigationNode} for a number of seconds.
 	 */
-	private static class BlockerUIProcess extends UIProcess {
+	private class BlockerUIProcess extends UIProcess {
 
 		private final INavigationNode<?> node;
 		private final ILabelRidget labelRidget;
@@ -129,9 +129,9 @@ public class BlockingSubModuleController extends SubModuleController {
 			this.labelRidget = labelRidget;
 		}
 
-		private ISubApplicationNode getSubApplication() {
-			return node.getParentOfType(ISubApplicationNode.class);
-		}
+		//		private ISubApplicationNode getSubApplication() {
+		//			return node.getParentOfType(ISubApplicationNode.class);
+		//		}
 
 		public void setBlock(final boolean doBlock) {
 			this.block = doBlock;
@@ -143,8 +143,8 @@ public class BlockingSubModuleController extends SubModuleController {
 
 		@Override
 		public void initialUpdateUI(final int totalWork) {
-			subAppToolTip = getSubApplication().getToolTipText();
-			getSubApplication().setToolTipText(String.format("Node '%s' is blocked", node.getLabel())); //$NON-NLS-1$
+			subAppToolTip = getSubApplicationNode().getToolTipText();
+			getSubApplicationNode().setToolTipText(String.format("Node '%s' is blocked", node.getLabel())); //$NON-NLS-1$
 			labelRidget.setText(String.format("Changing '%s' for 10s", node.getLabel())); //$NON-NLS-1$
 			if (block) {
 				node.setBlocked(true);
@@ -164,7 +164,7 @@ public class BlockingSubModuleController extends SubModuleController {
 				node.setEnabled(true);
 				node.activate();
 			}
-			getSubApplication().setToolTipText(subAppToolTip);
+			getSubApplicationNode().setToolTipText(subAppToolTip);
 		}
 
 		@Override

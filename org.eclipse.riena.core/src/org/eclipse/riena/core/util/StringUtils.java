@@ -20,6 +20,12 @@ import java.util.List;
  */
 public final class StringUtils {
 
+	/**
+	 * An empty string.
+	 * @since 4.1
+	 */
+	public static final String EMPTY_STRING = ""; //$NON-NLS-1$
+
 	private StringUtils() {
 		// Utility class
 	}
@@ -29,8 +35,7 @@ public final class StringUtils {
 	 * 
 	 * @param input
 	 *            the input; may be null or empty
-	 * @return the input with the first character converted to upper case, or
-	 *         null (if input is null), or "" if input is ""
+	 * @return the input with the first character converted to upper case, or null (if input is null), or "" if input is ""
 	 * 
 	 */
 	public static String capitalize(final String input) {
@@ -84,8 +89,7 @@ public final class StringUtils {
 	}
 
 	/**
-	 * Tests ´deep´ emptiness. A string is empty if it is either null or its
-	 * trimmed version has a zero length.
+	 * Tests ´deep´ emptiness. A string is empty if it is either null or its trimmed version has a zero length.
 	 * 
 	 * @param string
 	 * @return
@@ -95,8 +99,7 @@ public final class StringUtils {
 	}
 
 	/**
-	 * Tests ´simple´ emptiness. A character sequence is empty either if it is
-	 * null or it has a zero length.
+	 * Tests ´simple´ emptiness. A character sequence is empty either if it is null or it has a zero length.
 	 * 
 	 * @param sequence
 	 * @return
@@ -106,8 +109,7 @@ public final class StringUtils {
 	}
 
 	/**
-	 * Tests whether the char sequence has content. A character sequence is
-	 * given either if it is not null and it has a none zero length.
+	 * Tests whether the char sequence has content. A character sequence is given either if it is not null and it has a none zero length.
 	 * 
 	 * @param sequence
 	 * @return
@@ -117,9 +119,8 @@ public final class StringUtils {
 	}
 
 	/**
-	 * Joins the string representations of an {@link Iterable} collection of
-	 * objects to one continues string while separating the entities with the
-	 * provided separator.
+	 * Joins the string representations of an {@link Iterable} collection of objects to one continues string while separating the entities with the provided
+	 * separator.
 	 * <p>
 	 * The string representation will be retrieved by String.valueOf()
 	 * 
@@ -144,9 +145,7 @@ public final class StringUtils {
 	/**
 	 * Split the {@code separator} separated string.
 	 * <p>
-	 * That could also be made with {@code String.split()} but this
-	 * implementation avoids creating a regExp and because of that it is a
-	 * little bit faster.
+	 * That could also be made with {@code String.split()} but this implementation avoids creating a regExp and because of that it is a little bit faster.
 	 * 
 	 * @param string
 	 * @param separator

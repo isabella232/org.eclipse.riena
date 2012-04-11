@@ -22,30 +22,21 @@ import org.eclipse.riena.ui.ridgets.listener.IWindowRidgetListener;
 public interface IWindowRidget extends IRidget {
 
 	/**
-	 * Make {@code action} the default action while the focus is within
-	 * {@code focusRidget} including it's children.
+	 * Make {@code action} the default action while the focus is within {@code focusRidget} including it's children.
 	 * <p>
-	 * If a default action is available and enabled, it will be invoked whenever
-	 * the user presses ENTER within the window.
+	 * If a default action is available and enabled, it will be invoked whenever the user presses ENTER within the window.
 	 * <p>
-	 * Activation / deactivation of the mapping can be changed via the
-	 * life-cycle methods of the returned {@link IDefaultActionManager}
-	 * instance. The caller (typically the controller) may be responsible for
-	 * activation, deactivation and disposal of the returned
-	 * {@link IDefaultActionManager} instance. <b>The exact requirements may
-	 * vary between implementations</b>. Consult the javadoc of the
-	 * implementation.
+	 * Activation / deactivation of the mapping can be changed via the life-cycle methods of the returned {@link IDefaultActionManager} instance. The caller
+	 * (typically the controller) may be responsible for activation, deactivation and disposal of the returned {@link IDefaultActionManager} instance. <b>The
+	 * exact requirements may vary between implementations</b>. Consult the javadoc of the implementation.
 	 * <p>
-	 * Note: the algorithm stops at the first match. It will check the most
-	 * specific (innermost) ridget first and check the most general (outermost)
-	 * ridget last.
+	 * Note: the algorithm stops at the first match. It will check the most specific (innermost) ridget first and check the most general (outermost) ridget
+	 * last.
 	 * 
 	 * @param focusRidget
-	 *            the ridget that needs to have the focus to activate this rule.
-	 *            Never null.
+	 *            the ridget that needs to have the focus to activate this rule. Never null.
 	 * @param actionRidget
-	 *            this ridget will become the default action, while focusRidget
-	 *            has the focus. Never null.
+	 *            this ridget will become the default action, while focusRidget has the focus. Never null.
 	 * @return an {@link IDefaultActionManager} instance; never null.
 	 * 
 	 * @since 2.0
@@ -53,8 +44,7 @@ public interface IWindowRidget extends IRidget {
 	IDefaultActionManager addDefaultAction(IRidget focusRidget, IActionRidget actionRidget);
 
 	/**
-	 * Adds a {@link IWindowRidgetListener} for receiving window events from
-	 * this ridget.
+	 * Adds a {@link IWindowRidgetListener} for receiving window events from this ridget.
 	 * <p>
 	 * Adding the same listener several times has no effect.
 	 * 
@@ -71,8 +61,7 @@ public interface IWindowRidget extends IRidget {
 	void dispose();
 
 	/**
-	 * Re-layout all contents of this window. Calls to this method will be
-	 * ignored if no control is bound.
+	 * Re-layout all contents of this window. Calls to this method will be ignored if no control is bound.
 	 * 
 	 * @since 1.2
 	 */
@@ -89,16 +78,14 @@ public interface IWindowRidget extends IRidget {
 	void removeWindowRidgetListener(IWindowRidgetListener pListener);
 
 	/**
-	 * Changes the active-state of the WindowRidget depending of the underlying
-	 * implementation for example enables the shell.
+	 * Changes the active-state of the WindowRidget depending of the underlying implementation for example enables the shell.
 	 * 
 	 * @param active
 	 */
 	void setActive(boolean active);
 
 	/**
-	 * Sets the closeable flag if supported by the implementation, otherwise
-	 * nothing will happen.
+	 * Sets the closeable flag if supported by the implementation, otherwise nothing will happen.
 	 * 
 	 * @param closeable
 	 */
@@ -137,4 +124,5 @@ public interface IWindowRidget extends IRidget {
 	 * @since 4.0
 	 */
 	String getTitle();
+
 }

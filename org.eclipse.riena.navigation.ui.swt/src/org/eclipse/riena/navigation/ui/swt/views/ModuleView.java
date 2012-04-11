@@ -239,8 +239,7 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 	}
 
 	/**
-	 * Returns if the module item is highlighted, because the mouse hovers over
-	 * the item.
+	 * Returns if the module item is highlighted, because the mouse hovers over the item.
 	 * 
 	 * @return true, if mouse over the module; otherwise false.
 	 */
@@ -271,10 +270,8 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 	}
 
 	/**
-	 * Sets if the module item is highlighted, because the mouse hovers over the
-	 * item.<br>
-	 * If the given hover state differs from the current state, the parent of
-	 * item is redrawn.
+	 * Sets if the module item is highlighted, because the mouse hovers over the item.<br>
+	 * If the given hover state differs from the current state, the parent of item is redrawn.
 	 * 
 	 * @param hover
 	 *            true, if mouse over the module; otherwise false.
@@ -290,8 +287,7 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 
 	/**
 	 * Sets if the module item is pressed or not.<br>
-	 * If the given state differs from the current state, the parent of item is
-	 * redrawn.
+	 * If the given state differs from the current state, the parent of item is redrawn.
 	 * 
 	 * @param pressed
 	 *            true, if mouse over the module and pressed; otherwise false.
@@ -318,8 +314,7 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 	}
 
 	/**
-	 * Updates the enabled flag of the title and the sub-module tree and and
-	 * redraws them.
+	 * Updates the enabled flag of the title and the sub-module tree and and redraws them.
 	 * 
 	 * @since 3.0
 	 */
@@ -373,8 +368,7 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 	}
 
 	/**
-	 * Creates the content of the module body (default: the tree for the
-	 * sub-modules).
+	 * Creates the content of the module body (default: the tree for the sub-modules).
 	 * 
 	 * @param parent
 	 *            body of the module
@@ -558,8 +552,7 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 	 * @param gc
 	 * @param item
 	 *            tree item
-	 * @return {@code true}: text of the item changed; {@code false}: text not
-	 *         changed
+	 * @return {@code true}: text of the item changed; {@code false}: text not changed
 	 */
 	private boolean clipSubModuleText(final GC gc, final TreeItem item) {
 		boolean clipped = false;
@@ -601,8 +594,7 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 	}
 
 	/**
-	 * Returns the text of the given item. If the data of the item is a node, so
-	 * the label of the node is returned.
+	 * Returns the text of the given item. If the data of the item is a node, so the label of the node is returned.
 	 * 
 	 * @param item
 	 *            tree item
@@ -623,8 +615,7 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 	 * @return renderer
 	 */
 	private ModuleGroupRenderer getModuleGroupRenderer() {
-		ModuleGroupRenderer renderer = (ModuleGroupRenderer) LnfManager.getLnf().getRenderer(
-				LnfKeyConstants.MODULE_GROUP_RENDERER);
+		ModuleGroupRenderer renderer = (ModuleGroupRenderer) LnfManager.getLnf().getRenderer(LnfKeyConstants.MODULE_GROUP_RENDERER);
 		if (renderer == null) {
 			renderer = new ModuleGroupRenderer();
 		}
@@ -646,8 +637,7 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 	}
 
 	/**
-	 * After a node has been expanded or collapsed the size of the module must
-	 * be updated.
+	 * After a node has been expanded or collapsed the size of the module must be updated.
 	 * 
 	 * @param event
 	 *            the event which occurred
@@ -671,11 +661,10 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 		if (index == 0) {
 			formData.top = new FormAttachment(0, 0);
 		} else if (index < 0) {
-			formData.top = new FormAttachment(getModuleViewBody(getModuleGroupNode().getChild(
-					getModuleGroupNode().getChildren().size() - 1)), getModuleGroupRenderer().getModuleModuleGap());
-		} else {
-			formData.top = new FormAttachment(getModuleViewBody(getModuleGroupNode().getChild(index - 1)),
+			formData.top = new FormAttachment(getModuleViewBody(getModuleGroupNode().getChild(getModuleGroupNode().getChildren().size() - 1)),
 					getModuleGroupRenderer().getModuleModuleGap());
+		} else {
+			formData.top = new FormAttachment(getModuleViewBody(getModuleGroupNode().getChild(index - 1)), getModuleGroupRenderer().getModuleModuleGap());
 		}
 		formData.left = new FormAttachment(0, 0);
 		formData.right = new FormAttachment(100, 0);
@@ -722,14 +711,12 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 	}
 
 	/**
-	 * Returns all (IIconizableMarker) markers of the given node and all of its
-	 * child nodes (if deep is true).
+	 * Returns all (IIconizableMarker) markers of the given node and all of its child nodes (if deep is true).
 	 * 
 	 * @param node
 	 *            sub-module node
 	 * @param deep
-	 *            {@code true} return also the markers of the child nodes;
-	 *            {@code false} only markers of the given node
+	 *            {@code true} return also the markers of the child nodes; {@code false} only markers of the given node
 	 * @return all markers, that can be displayed in the navigation tree
 	 */
 	//	private Collection<? extends IMarker> getAllMarkers(ISubModuleNode node, boolean deep) {
@@ -803,8 +790,7 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 	//////////////////
 
 	/**
-	 * After adding of removing a sub-module from this module, the module view
-	 * must be resized.
+	 * After adding of removing a sub-module from this module, the module view must be resized.
 	 */
 	private class ModuleListener extends ModuleNodeListener {
 		@Override
@@ -841,8 +827,7 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 	}
 
 	/**
-	 * After adding of removing a sub-module from another sub-module, the module
-	 * view must be resized.
+	 * After adding of removing a sub-module from another sub-module, the module view must be resized.
 	 */
 	private class SubModuleListener extends SubModuleNodeListener {
 
@@ -850,14 +835,10 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 		public void beforeActivated(final ISubModuleNode source) {
 
 			/*
-			 * SWT feature: when tree.setFocus() is called below, it will fire a
-			 * selection event in ADDITION of setting the focus. This will
-			 * trigger activation of the selected node, which may be different
-			 * than the 'source' node.
+			 * SWT feature: when tree.setFocus() is called below, it will fire a selection event in ADDITION of setting the focus. This will trigger activation
+			 * of the selected node, which may be different than the 'source' node.
 			 * 
-			 * Workaround: we make sure the tree has already a selection before
-			 * we go into the activated(...) method, to avoid this selection
-			 * event.
+			 * Workaround: we make sure the tree has already a selection before we go into the activated(...) method, to avoid this selection event.
 			 */
 			final Tree tree = getTree();
 			if (tree.getSelectionCount() == 0 && tree.getItemCount() > 0) {
@@ -940,8 +921,7 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 	}
 
 	/**
-	 * Blocks and unblocks widgets in this view. Before blocking it saves the
-	 * current widget state and restores it when unblocking.
+	 * Blocks and unblocks widgets in this view. Before blocking it saves the current widget state and restores it when unblocking.
 	 */
 	private final class BlockManager {
 		private Cursor titleOldCursor;
@@ -954,6 +934,7 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 				titleOldCursor = title.getCursor();
 				title.setCursor(getWaitCursor());
 				title.setCloseable(false);
+				title.setBlocked(true);
 				if (disableTitle()) {
 					title.setEnabled(false);
 				}
@@ -969,6 +950,7 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 			isBlocked = false;
 			title.setCursor(titleOldCursor);
 			title.setCloseable(getNavigationNode().isClosable());
+			title.setBlocked(false);
 			title.setEnabled(getNavigationNode().isEnabled());
 			body.setCursor(bodyOldCursor);
 			subModuleTree.setEnabled(true);

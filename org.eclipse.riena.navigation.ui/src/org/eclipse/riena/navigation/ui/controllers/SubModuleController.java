@@ -19,7 +19,7 @@ import org.eclipse.core.databinding.BindingException;
 import org.eclipse.equinox.log.Logger;
 
 import org.eclipse.riena.core.Log4r;
-import org.eclipse.riena.internal.ui.ridgets.Activator;
+import org.eclipse.riena.internal.navigation.ui.Activator;
 import org.eclipse.riena.navigation.ApplicationNodeManager;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.IModuleNode;
@@ -86,10 +86,10 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	 * @since 2.0
 	 */
 	public void addDefaultAction(final IRidget focusRidget, final IActionRidget action) {
-		actionManager = getWindowRidget().addDefaultAction(focusRidget, action);
+		actionManager = getTitleBarRidget().addDefaultAction(focusRidget, action);
 
 		// activate() can only be called, if the shell is present
-		if (actionManager != null && getWindowRidget().getUIControl() != null) {
+		if (actionManager != null && getTitleBarRidget().getUIControl() != null) {
 			actionManager.deactivate();
 			actionManager.activate();
 		}
@@ -102,8 +102,9 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 		updateWindowTitle();
 		updateCloseable();
 		updateActive();
-		if (getWindowRidget() != null) {
-			getWindowRidget().addWindowRidgetListener(windowListener);
+		updateBlocked();
+		if (getTitleBarRidget() != null) {
+			getTitleBarRidget().addWindowRidgetListener(windowListener);
 		}
 	}
 
@@ -165,7 +166,7 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	/**
 	 * @return the windowRidget
 	 */
-	public IWindowRidget getWindowRidget() {
+	public IEmbeddedTitleBarRidget getTitleBarRidget() {
 		return getRidget(IEmbeddedTitleBarRidget.class, WINDOW_RIDGET);
 	}
 
@@ -197,7 +198,7 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 
 	@Override
 	public void setBlocked(final boolean blocked) {
-		super.setBlocked(blocked);
+		updateBlocked();
 		restoreFocusRequestFromRidget(getRidgets());
 	}
 
@@ -264,6 +265,16 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 					actionManager = null;
 				}
 			}
+
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#block(org.eclipse.riena.navigation.INavigationNode, boolean)
+			 */
+			@Override
+			public void block(final ISubModuleNode source, final boolean block) {
+				setBlocked(block);
+			}
 		});
 	}
 
@@ -272,7 +283,7 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	 *            the windowRidget to set
 	 */
 	public void setWindowRidget(final IWindowRidget windowRidget) {
-		if (getWindowRidget() != windowRidget) {
+		if (getTitleBarRidget() != windowRidget) {
 			addRidget(WINDOW_RIDGET, windowRidget);
 		}
 	}
@@ -377,25 +388,32 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	}
 
 	private void updateActive() {
-		final IWindowRidget windowRidget = getWindowRidget();
+		final IWindowRidget windowRidget = getTitleBarRidget();
 		if (windowRidget != null) {
 			windowRidget.setActive(getNavigationNode().isActivated());
 		}
 	}
 
 	private void updateCloseable() {
-		final IWindowRidget windowRidget = getWindowRidget();
+		final IWindowRidget windowRidget = getTitleBarRidget();
 		if (windowRidget != null) {
 			windowRidget.setCloseable(getNavigationNode().isClosable());
 		}
 	}
 
+	private void updateBlocked() {
+		final IEmbeddedTitleBarRidget titleBarRidget = getTitleBarRidget();
+		if (titleBarRidget != null) {
+			titleBarRidget.setBlocked(getNavigationNode().isBlocked());
+		}
+	}
+
 	private void updateIcon() {
-		updateIcon(getWindowRidget());
+		updateIcon(getTitleBarRidget());
 	}
 
 	void updateWindowTitle() {
-		final IWindowRidget windowRidget = getWindowRidget();
+		final IWindowRidget windowRidget = getTitleBarRidget();
 		if (getNavigationNode().isActivated()) {
 			if (windowRidget != null) {
 				windowRidget.setTitle(getFullTitle());

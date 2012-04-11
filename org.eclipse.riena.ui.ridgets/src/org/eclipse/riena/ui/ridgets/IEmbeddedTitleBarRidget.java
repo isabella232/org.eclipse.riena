@@ -11,10 +11,18 @@
 package org.eclipse.riena.ui.ridgets;
 
 /**
- * Ridget for an embedded title bat.
+ * Ridget for an embedded title bar.
  * 
  * @since 4.0
  */
 public interface IEmbeddedTitleBarRidget extends IWindowRidget {
 
+	/**
+	 * Sets the blocked state for this ridget.
+	 * 
+	 * @param blocked
+	 *            the blocked state for this ridget
+	 * @since 4.1
+	 */
+	void setBlocked(boolean blocked);
 }

@@ -25,30 +25,62 @@ import org.eclipse.riena.ui.swt.lnf.LnfManager;
  */
 @UITestCase
 public class EmbeddedTitlebarRendererTest extends TestCase {
+	private EmbeddedTitlebarRenderer renderer;
+	private Shell shell;
+	private GC gc;
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see junit.framework.TestCase#setUp()
+	 */
+	@Override
+	protected void setUp() throws Exception {
+		super.setUp();
+		renderer = new EmbeddedTitlebarRenderer();
+		renderer.setBounds(0, 0, 100, 24);
+		shell = new Shell();
+		gc = new GC(shell);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see junit.framework.TestCase#tearDown()
+	 */
+	@Override
+	protected void tearDown() throws Exception {
+		gc.dispose();
+		shell.dispose();
+		renderer.dispose();
+		super.tearDown();
+	}
 
 	/**
 	 * Tests of the method <code>computeSize(GC, int, int) </code>
 	 */
 	public void testComputeSize() {
-		final EmbeddedTitlebarRenderer renderer = new EmbeddedTitlebarRenderer();
-		final Shell shell = new Shell();
-		final GC gc = new GC(shell);
+		final int wHint = 12;
+		final int hHint = 24;
+		final Point size = renderer.computeSize(gc, wHint, hHint);
 
-		try {
-			final int wHint = 12;
-			final int hHint = 24;
-			final Point size = renderer.computeSize(gc, wHint, hHint);
+		assertEquals(wHint, size.x);
 
-			assertEquals(wHint, size.x);
+		gc.setFont(LnfManager.getLnf().getFont(LnfKeyConstants.EMBEDDED_TITLEBAR_FONT));
+		final int expectedHeight = gc.getFontMetrics().getHeight() + 8;
 
-			gc.setFont(LnfManager.getLnf().getFont(LnfKeyConstants.EMBEDDED_TITLEBAR_FONT));
-			final int expectedHeight = gc.getFontMetrics().getHeight() + 8;
+		assertEquals(expectedHeight, size.y);
+	}
 
-			assertEquals(expectedHeight, size.y);
-		} finally {
-			gc.dispose();
-			shell.dispose();
-		}
+	public void testComputeTextBoundsOnlyText() throws Exception {
+		renderer.setImage(null);
+		renderer.setCloseable(false);
+		renderer.setBlocked(false);
+
+		System.out.println(renderer.computeTextBounds(gc));
+
+		renderer.setCloseable(true);
+		System.out.println(renderer.computeTextBounds(gc));
 	}
 
 }

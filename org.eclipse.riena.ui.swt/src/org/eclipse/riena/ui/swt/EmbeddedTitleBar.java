@@ -47,6 +47,7 @@ public class EmbeddedTitleBar extends Canvas {
 	private boolean closeButtonPressed;
 	private boolean closeButtonHover;
 	private boolean closeable;
+	private boolean blocked;
 	private Image image;
 	private String title;
 	private String toolTipText;
@@ -57,12 +58,10 @@ public class EmbeddedTitleBar extends Canvas {
 	private TitlebarMouseListener mouseListener;
 
 	/**
-	 * Constructs a new instance of {@code EmbeddedTitleBar} given its parent
-	 * and a style value describing its behavior and appearance.
+	 * Constructs a new instance of {@code EmbeddedTitleBar} given its parent and a style value describing its behavior and appearance.
 	 * 
 	 * @param parent
-	 *            a composite control which will be the parent of the new
-	 *            instance (cannot be null)
+	 *            a composite control which will be the parent of the new instance (cannot be null)
 	 * @param style
 	 *            the style of control to construct
 	 */
@@ -124,6 +123,7 @@ public class EmbeddedTitleBar extends Canvas {
 		getLnfTitlebarRenderer().setCloseable(isCloseable());
 		getLnfTitlebarRenderer().setPressed(isPressed());
 		getLnfTitlebarRenderer().setHover(isHover());
+		getLnfTitlebarRenderer().setBlocked(isBlocked());
 		getLnfTitlebarRenderer().setCloseButtonPressed(isCloseButtonPressed());
 		getLnfTitlebarRenderer().setCloseButtonHover(isCloseButtonHover());
 		getLnfTitlebarRenderer().setImage(getImage());
@@ -143,8 +143,7 @@ public class EmbeddedTitleBar extends Canvas {
 	 */
 	protected EmbeddedTitlebarRenderer getLnfTitlebarRenderer() {
 
-		EmbeddedTitlebarRenderer renderer = (EmbeddedTitlebarRenderer) LnfManager.getLnf().getRenderer(
-				LnfKeyConstants.SUB_MODULE_VIEW_TITLEBAR_RENDERER);
+		EmbeddedTitlebarRenderer renderer = (EmbeddedTitlebarRenderer) LnfManager.getLnf().getRenderer(LnfKeyConstants.SUB_MODULE_VIEW_TITLEBAR_RENDERER);
 		if (renderer == null) {
 			renderer = new EmbeddedTitlebarRenderer();
 		}
@@ -254,6 +253,24 @@ public class EmbeddedTitleBar extends Canvas {
 	public void setCloseable(final boolean closeable) {
 		if (hasChanged(this.closeable, closeable)) {
 			this.closeable = closeable;
+			redraw();
+		}
+	}
+
+	/**
+	 * @return the blocked
+	 */
+	public boolean isBlocked() {
+		return blocked;
+	}
+
+	/**
+	 * @param blocked
+	 *            the blocked to set
+	 */
+	public void setBlocked(final boolean blocked) {
+		if (hasChanged(this.blocked, blocked)) {
+			this.blocked = blocked;
 			redraw();
 		}
 	}
@@ -390,8 +407,7 @@ public class EmbeddedTitleBar extends Canvas {
 	}
 
 	/**
-	 * After any mouse operation a method of this listener is called. The item
-	 * under the current mouse position is selected, pressed or "hovered".
+	 * After any mouse operation a method of this listener is called. The item under the current mouse position is selected, pressed or "hovered".
 	 */
 	private class TitlebarMouseListener implements MouseListener, MouseTrackListener, MouseMoveListener {
 
@@ -467,8 +483,7 @@ public class EmbeddedTitleBar extends Canvas {
 		}
 
 		/**
-		 * Ignore mouse events if the component is null, not enabled, or the
-		 * event is not associated with the left mouse button.
+		 * Ignore mouse events if the component is null, not enabled, or the event is not associated with the left mouse button.
 		 */
 		protected boolean shouldIgnore(final MouseEvent e) {
 			return e.button != 1;
