@@ -101,9 +101,8 @@ public class ValidRangeTest extends RienaTestCase {
 
 	public void testRangeArabLocale() {
 		if (!TestUtils.isArabLocaleAvailable()) {
-			System.err
-					.println(getClass().getName()
-							+ ".testRangeArabLocale(): Skipping test because no Arab locale is available. Use international JRE to run all tests.");
+			System.err.println(getClass().getName()
+					+ ".testRangeArabLocale(): Skipping test because no Arab locale is available. Use international JRE to run all tests.");
 			return;
 		}
 
@@ -261,6 +260,24 @@ public class ValidRangeTest extends RienaTestCase {
 		max = 5000.55;
 		rule = createRange(min, max);
 		value = TestUtils.getLocalizedNumber("5000,55");
+
+		assertTrue(rule.validate(value).isOK());
+	}
+
+	public void testDoubleValuesWithNegativeNumbers() {
+		final Double min = -5000D;
+		final Double max = -5000D;
+		final ValidRange rule = createRange(min, max);
+		final String value = TestUtils.getLocalizedNumber("-5000");
+
+		assertTrue(rule.validate(value).isOK());
+	}
+
+	public void testDoubleValuesWithMinMaxEqualThreeDecimalPlaces() {
+		final Double min = 5000.555;
+		final Double max = 5000.555;
+		final ValidRange rule = new ValidRange(min, max, Locale.getDefault(), null, 3, 15);
+		final String value = TestUtils.getLocalizedNumber("5000,555");
 
 		assertTrue(rule.validate(value).isOK());
 	}
