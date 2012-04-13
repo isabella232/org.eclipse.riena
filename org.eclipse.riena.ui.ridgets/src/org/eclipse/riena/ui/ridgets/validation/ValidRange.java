@@ -37,8 +37,7 @@ import org.eclipse.riena.ui.ridgets.nls.Messages;
 /**
  * A range check rule for a Number.
  * <p>
- * Checks if a given string could be safely converted to a given number type and
- * if the input is in a given range. A value of <tt>null</tt> or an empty String
+ * Checks if a given string could be safely converted to a given number type and if the input is in a given range. A value of <tt>null</tt> or an empty String
  * is treated as zero.
  * <p>
  * This rule does not support partial correctness checking.
@@ -53,16 +52,14 @@ public class ValidRange extends ValidDecimal implements IExecutableExtension {
 	private final IConverter converter;
 
 	/**
-	 * Constructs a range check rule for the default locate, with the range set
-	 * to (0, 0).
+	 * Constructs a range check rule for the default locate, with the range set to (0, 0).
 	 */
 	public ValidRange() {
 		this(0, 0);
 	}
 
 	/**
-	 * Constructs a range check rule for the default locale, with the range set
-	 * to (min, max).
+	 * Constructs a range check rule for the default locale, with the range set to (min, max).
 	 * 
 	 * @param min
 	 *            the minimum value
@@ -74,16 +71,14 @@ public class ValidRange extends ValidDecimal implements IExecutableExtension {
 	 * @throws some_kind_of_runtime_exception
 	 *             if a parameter is <tt>null</tt>.
 	 * @throws some_kind_of_runtime_exception
-	 *             if a parameter <tt>min</tt> and <tt>max</tt> do not belong to
-	 *             the same class.
+	 *             if a parameter <tt>min</tt> and <tt>max</tt> do not belong to the same class.
 	 */
 	public ValidRange(final Number min, final Number max) {
 		this(min, max, Locale.getDefault());
 	}
 
 	/**
-	 * Constructs a range check rule for the given locale, with the range set to
-	 * (min, max).
+	 * Constructs a range check rule for the given locale, with the range set to (min, max).
 	 * 
 	 * @param min
 	 *            the minimum value
@@ -97,32 +92,28 @@ public class ValidRange extends ValidDecimal implements IExecutableExtension {
 	 * @throws some_kind_of_runtime_exception
 	 *             if a parameter is <tt>null</tt>.
 	 * @throws some_kind_of_runtime_exception
-	 *             if a parameter <tt>min</tt> and <tt>max</tt> do not belong to
-	 *             the same class.
+	 *             if a parameter <tt>min</tt> and <tt>max</tt> do not belong to the same class.
 	 */
 	public ValidRange(final Number min, final Number max, final Locale locale) {
 		this(min, max, locale, null);
 	}
 
 	/**
-	 * Constructs a range check rule for the given locale, with the range set to
-	 * (min, max).
+	 * Constructs a range check rule for the given locale, with the range set to (min, max).
 	 * 
 	 * @param min
 	 *            the minimum value
 	 * @param max
 	 *            the maximum value
 	 * @param converter
-	 *            a IConverter capable of converting the range min and max
-	 *            numbers to a string (only used for the error reporting)
+	 *            a IConverter capable of converting the range min and max numbers to a string (only used for the error reporting)
 	 * 
 	 * @throws some_kind_of_runtime_exception
 	 *             if <tt>min &gt;= max</tt>.
 	 * @throws some_kind_of_runtime_exception
 	 *             if a parameter is <tt>null</tt>.
 	 * @throws some_kind_of_runtime_exception
-	 *             if a parameter <tt>min</tt> and <tt>max</tt> do not belong to
-	 *             the same class.
+	 *             if a parameter <tt>min</tt> and <tt>max</tt> do not belong to the same class.
 	 * 
 	 * @since 4.0
 	 */
@@ -131,8 +122,7 @@ public class ValidRange extends ValidDecimal implements IExecutableExtension {
 	}
 
 	/**
-	 * Constructs a range check rule for the given locale, with the range set to
-	 * (min, max).
+	 * Constructs a range check rule for the given locale, with the range set to (min, max).
 	 * 
 	 * @param min
 	 *            the minimum value
@@ -141,30 +131,56 @@ public class ValidRange extends ValidDecimal implements IExecutableExtension {
 	 * @param locale
 	 *            the Locale to use for number formatting; never null.
 	 * @param converter
-	 *            a IConverter capable of converting the range min and max
-	 *            numbers to a string (only used for the error reporting)
+	 *            a IConverter capable of converting the range min and max numbers to a string (only used for the error reporting)
 	 * 
 	 * @throws some_kind_of_runtime_exception
 	 *             if <tt>min &gt;= max</tt>.
 	 * @throws some_kind_of_runtime_exception
 	 *             if a parameter is <tt>null</tt>.
 	 * @throws some_kind_of_runtime_exception
-	 *             if a parameter <tt>min</tt> and <tt>max</tt> do not belong to
-	 *             the same class.
+	 *             if a parameter <tt>min</tt> and <tt>max</tt> do not belong to the same class.
 	 * 
 	 * @since 4.0
 	 */
 	public ValidRange(final Number min, final Number max, final Locale locale, final IConverter converter) {
-		super(true, locale);
+		this(min, max, locale, converter, DEFAULT_NUMBER_OF_FRACTION_DIGITS, DEFAULT_MAX_LENGTH);
+	}
+
+	/**
+	 * Constructs a range check rule for the given locale, with the range set to (min, max).
+	 * 
+	 * @param min
+	 *            the minimum value
+	 * @param max
+	 *            the maximum value
+	 * @param locale
+	 *            the Locale to use for number formatting; never null.
+	 * @param converter
+	 *            a IConverter capable of converting the range min and max numbers to a string (only used for the error reporting)
+	 * @param numberOfFractionDigits
+	 *            number of fraction digits.
+	 * @param maxLength
+	 *            number of integer digits.
+	 * 
+	 * @throws some_kind_of_runtime_exception
+	 *             if <tt>min &gt;= max</tt>.
+	 * @throws some_kind_of_runtime_exception
+	 *             if a parameter is <tt>null</tt>.
+	 * @throws some_kind_of_runtime_exception
+	 *             if a parameter <tt>min</tt> and <tt>max</tt> do not belong to the same class.
+	 * 
+	 * @since 4.0
+	 */
+	public ValidRange(final Number min, final Number max, final Locale locale, final IConverter converter, final int numberOfFractionDigits, final int maxLength) {
+		super(true, numberOfFractionDigits, maxLength, true, locale);
 		Assert.isNotNull(min, "parameter min must not be null"); //$NON-NLS-1$
 		Assert.isNotNull(max, "parameter max must not be null"); //$NON-NLS-1$
 		Assert.isLegal(min.getClass().equals(max.getClass()), "min and max must be of the same class. (min =  " //$NON-NLS-1$
 				+ min.getClass().getName() + ", max = " + max.getClass().getName()); //$NON-NLS-1$		
 		this.min = min;
 		this.max = max;
-		Assert.isLegal(toBigDecimal(this.min).compareTo(toBigDecimal(this.max)) <= 0,
-				"min " + this.min + " must be smaller or equal max " //$NON-NLS-1$ //$NON-NLS-2$
-						+ this.max);
+		Assert.isLegal(toBigDecimal(this.min).compareTo(toBigDecimal(this.max)) <= 0, "min " + this.min + " must be smaller or equal max " //$NON-NLS-1$ //$NON-NLS-2$
+				+ this.max);
 		this.converter = converter;
 	}
 
@@ -172,8 +188,7 @@ public class ValidRange extends ValidDecimal implements IExecutableExtension {
 	 * Returns an IStatus instance; never null.
 	 * 
 	 * @param value
-	 *            a <tt>String</tt> instance or <tt>null</tt>, where
-	 *            <tt>null</tt> is treated as zero.
+	 *            a <tt>String</tt> instance or <tt>null</tt>, where <tt>null</tt> is treated as zero.
 	 * 
 	 * @see org.eclipse.riena.ui.ridgets.validation.ValidDecimal#validate(java.lang.Object)
 	 */
@@ -205,8 +220,7 @@ public class ValidRange extends ValidDecimal implements IExecutableExtension {
 			}
 		}
 		if (validateRange(currentValue)) {
-			final String message = NLS.bind(Messages.ValidRange_error_outOfRange, new Object[] { convert(currentValue),
-					convert(min), convert(max) });
+			final String message = NLS.bind(Messages.ValidRange_error_outOfRange, new Object[] { convert(currentValue), convert(min), convert(max) });
 			return ValidationRuleStatus.error(true, message);
 		}
 		return ValidationRuleStatus.ok();
@@ -261,10 +275,8 @@ public class ValidRange extends ValidDecimal implements IExecutableExtension {
 	 *            a number.
 	 * 
 	 * @param precision
-	 *            The number of digits to be used for an operation. A value of 0
-	 *            indicates that unlimited precision (as many digits as are
-	 *            required) will be used. Note that leading zeros (in the
-	 *            coefficient of a number) are never significant.
+	 *            The number of digits to be used for an operation. A value of 0 indicates that unlimited precision (as many digits as are required) will be
+	 *            used. Note that leading zeros (in the coefficient of a number) are never significant.
 	 * 
 	 * @return a BigDecimal instance.
 	 * @since 3.0
@@ -282,23 +294,18 @@ public class ValidRange extends ValidDecimal implements IExecutableExtension {
 	}
 
 	/**
-	 * This method is called on a newly constructed extension for validation.
-	 * After creating a new instance of {@code ValidRange} this method is called
-	 * to initialize the instance. The arguments for initialization are in the
-	 * parameter {@code data}. Is the data a string the arguments are separated
-	 * with ','. The order of the arguments in data is equivalent to the order
-	 * of the parameters of one of the constructors.<br>
-	 * If data has more than two arguments. The last arguments are used to set
-	 * the Local for this validator.
+	 * This method is called on a newly constructed extension for validation. After creating a new instance of {@code ValidRange} this method is called to
+	 * initialize the instance. The arguments for initialization are in the parameter {@code data}. Is the data a string the arguments are separated with ','.
+	 * The order of the arguments in data is equivalent to the order of the parameters of one of the constructors.<br>
+	 * If data has more than two arguments. The last arguments are used to set the Local for this validator.
 	 * 
 	 * 
-	 * @see org.eclipse.core.runtime.IExecutableExtension#setInitializationData(org.eclipse.core.runtime.IConfigurationElement,
-	 *      java.lang.String, java.lang.Object)
+	 * @see org.eclipse.core.runtime.IExecutableExtension#setInitializationData(org.eclipse.core.runtime.IConfigurationElement, java.lang.String,
+	 *      java.lang.Object)
 	 * @see org.eclipse.riena.ui.ridgets.validation.ValidDecimal#setLocale(java.lang.String[])
 	 */
 	@Override
-	public void setInitializationData(final IConfigurationElement config, final String propertyName, final Object data)
-			throws CoreException {
+	public void setInitializationData(final IConfigurationElement config, final String propertyName, final Object data) throws CoreException {
 
 		if (data instanceof String) {
 			final String[] args = PropertiesUtils.asArray(data);
