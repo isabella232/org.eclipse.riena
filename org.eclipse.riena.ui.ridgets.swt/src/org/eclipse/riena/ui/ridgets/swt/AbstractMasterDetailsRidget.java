@@ -47,12 +47,10 @@ import org.eclipse.riena.ui.ridgets.annotation.processor.RidgetContainerAnnotati
 import org.eclipse.riena.ui.swt.AbstractMasterDetailsComposite;
 
 /**
- * Common functionality that is shared between implementations of the
- * {@link IMasterDetailsRidget}.
+ * Common functionality that is shared between implementations of the {@link IMasterDetailsRidget}.
  * <p>
- * This class defines several widget-specific abstract methods, which must be
- * implemented by clients. It is expected that clients will write
- * widget-specific subclass of {@link AbstractMasterDetailsComposite}.
+ * This class defines several widget-specific abstract methods, which must be implemented by clients. It is expected that clients will write widget-specific
+ * subclass of {@link AbstractMasterDetailsComposite}.
  * 
  * @since 1.2
  */
@@ -65,8 +63,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	private DataBindingContext dbc;
 
 	/**
-	 * A blank model entry for clearing the details area. Will be initialized
-	 * lazily.
+	 * A blank model entry for clearing the details area. Will be initialized lazily.
 	 */
 	private Object blankEntry;
 	/**
@@ -82,13 +79,11 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	 */
 	private boolean applyRequiresNoErrors;
 	/**
-	 * If true, Apply can only complete when there are no enabled mandatory
-	 * markers in the details.
+	 * If true, Apply can only complete when there are no enabled mandatory markers in the details.
 	 */
 	private boolean applyRequiresNoMandatories;
 	/**
-	 * If true, successful completion of an 'Apply' action will trigger creating
-	 * a new entry.
+	 * If true, successful completion of an 'Apply' action will trigger creating a new entry.
 	 */
 	private boolean applyTriggersNew;
 	/**
@@ -100,15 +95,12 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	 */
 	private boolean ignoreChanges;
 	/**
-	 * True when direct writing is on. In that case any value change will be
-	 * immediately be applied back to the (master) editable.
+	 * True when direct writing is on. In that case any value change will be immediately be applied back to the (master) editable.
 	 */
 	private boolean isDirectWriting;
 	/**
-	 * True when mandatory and error markers should be hidden when the user
-	 * invokes the 'New' action or an entry is suggested programmatically. The
-	 * global mandatory marker is excluded from hiding. The markers will
-	 * re-enable as soon as the user changes a value in the details area.
+	 * True when mandatory and error markers should be hidden when the user invokes the 'New' action or an entry is suggested programmatically. The global
+	 * mandatory marker is excluded from hiding. The markers will re-enable as soon as the user changes a value in the details area.
 	 * <p>
 	 * This is the user preference for this ridget not the current state.
 	 */
@@ -124,24 +116,19 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	 */
 	private boolean isShowingGlobalMarker;
 	/**
-	 * True when the editable was suggested via #suggestNewEntry. Suggested
-	 * editables are always considered modified.
+	 * True when the editable was suggested via #suggestNewEntry. Suggested editables are always considered modified.
 	 */
 	private boolean isSuggestedEditable;
 	/**
-	 * If true, the 'Remove' action will be enabled while editing a new entry.
-	 * Hitting Remove will abort editing the new entry and restore the last
-	 * selection.
+	 * If true, the 'Remove' action will be enabled while editing a new entry. Hitting Remove will abort editing the new entry and restore the last selection.
 	 */
 	private boolean removeCancelsNew;
 	/**
-	 * If true, successful completion of an 'Remove' action will trigger
-	 * creating a new entry.
+	 * If true, successful completion of an 'Remove' action will trigger creating a new entry.
 	 */
 	private boolean removeTriggersNew;
 	/**
-	 * If removeCancelsNew is enabled, this variable stores the element that was
-	 * selected before pressing 'New'. Null if no selection is stored.
+	 * If removeCancelsNew is enabled, this variable stores the element that was selected before pressing 'New'. Null if no selection is stored.
 	 */
 	private StoredSelection preNewSelection;
 
@@ -155,20 +142,14 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		addPropertyChangeListener(null, new PropertyChangeListener() {
 			public void propertyChange(final PropertyChangeEvent evt) {
 				final String propertyName = evt.getPropertyName();
-				if (!hasApplyButton()
-						|| isDirectWriting
-						|| ignoreChanges
-						|| delegate == null
+				if (!hasApplyButton() || isDirectWriting || ignoreChanges || delegate == null
 						|| editable == null
 						// ignore these events:
-						|| (!applyRequiresNoErrors && !applyRequiresNoMandatories && IBasicMarkableRidget.PROPERTY_MARKER
-								.equals(propertyName))
+						|| (!applyRequiresNoErrors && !applyRequiresNoMandatories && IBasicMarkableRidget.PROPERTY_MARKER.equals(propertyName))
 						|| IRidget.PROPERTY_ENABLED.equals(propertyName)
 						|| "textInternal".equals(propertyName) //$NON-NLS-1$
-						|| IMarkableRidget.PROPERTY_OUTPUT_ONLY.equals(propertyName)
-						|| IBasicMarkableRidget.PROPERTY_MARKER_HIDING.equals(propertyName)
-						|| (IBasicMarkableRidget.PROPERTY_MARKER.equals(propertyName) && getApplyButtonRidget() == evt
-								.getSource())) {
+						|| IMarkableRidget.PROPERTY_OUTPUT_ONLY.equals(propertyName) || IBasicMarkableRidget.PROPERTY_MARKER_HIDING.equals(propertyName)
+						|| (IBasicMarkableRidget.PROPERTY_MARKER.equals(propertyName) && getApplyButtonRidget() == evt.getSource())) {
 					return;
 				}
 				// traceEvent(evt);
@@ -178,14 +159,14 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		});
 	}
 
-	public final void bindToModel(final IObservableList rowObservables, final Class<? extends Object> rowClass,
-			final String[] columnPropertyNames, final String[] columnHeaders) {
+	public final void bindToModel(final IObservableList rowObservables, final Class<? extends Object> rowClass, final String[] columnPropertyNames,
+			final String[] columnHeaders) {
 		this.rowObservables = rowObservables;
 		bindTableToModel(rowObservables, rowClass, columnPropertyNames, columnHeaders);
 	}
 
-	public final void bindToModel(final Object listHolder, final String listPropertyName,
-			final Class<? extends Object> rowClass, final String[] columnPropertyNames, final String[] headerNames) {
+	public final void bindToModel(final Object listHolder, final String listPropertyName, final Class<? extends Object> rowClass,
+			final String[] columnPropertyNames, final String[] headerNames) {
 		IObservableList rowObservableList;
 		if (AbstractSWTWidgetRidget.isBean(rowClass)) {
 			rowObservableList = BeansObservables.observeList(listHolder, listPropertyName);
@@ -245,7 +226,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 			});
 		}
 
-		setEnabled(false, false);
+		setEnabled(false, detailsEnabled);
 
 		final IObservableValue viewerSelection = getSelectionObservable();
 
@@ -472,8 +453,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		if (applyRequiresNoErrors || applyRequiresNoMandatories) {
 			// inlined for performance
 			// isEnabled = areDetailsChanged() && noErrors && noMandatories
-			final boolean isEnabled = areDetailsChanged()
-					&& (applyRequiresNoErrors ? !hasErrors(getDetailRidgetContainer()) : true)
+			final boolean isEnabled = areDetailsChanged() && (applyRequiresNoErrors ? !hasErrors(getDetailRidgetContainer()) : true)
 					&& (applyRequiresNoMandatories ? !hasMandatories(getDetailRidgetContainer()) : true);
 			getApplyButtonRidget().setEnabled(isEnabled);
 		} else {
@@ -498,8 +478,8 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		checkType(uiControl, AbstractMasterDetailsComposite.class);
 	}
 
-	protected abstract void bindTableToModel(IObservableList rowObservables, Class<? extends Object> rowClass,
-			String[] columnPropertyNames, String[] columnHeaders);
+	protected abstract void bindTableToModel(IObservableList rowObservables, Class<? extends Object> rowClass, String[] columnPropertyNames,
+			String[] columnHeaders);
 
 	protected abstract void configureTableRidget();
 
@@ -1032,17 +1012,12 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	}
 
 	/**
-	 * IRidgetContainer exposing the 'detail' ridgets only (instead of all
-	 * ridgets).
+	 * IRidgetContainer exposing the 'detail' ridgets only (instead of all ridgets).
 	 */
 	private final class DetailRidgetContainer implements IRidgetContainer {
 
-		private final List<IRidget> detailRidgets;
+		private List<IRidget> detailRidgets;
 		private boolean configured = false;
-
-		public DetailRidgetContainer() {
-			detailRidgets = getDetailRidgets();
-		}
 
 		public void addRidget(final String id, final IRidget ridget) {
 			throw new UnsupportedOperationException("not supported"); //$NON-NLS-1$
@@ -1061,6 +1036,9 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		}
 
 		public Collection<? extends IRidget> getRidgets() {
+			if (detailRidgets == null || detailRidgets.isEmpty()) {
+				detailRidgets = getDetailRidgets();
+			}
 			return detailRidgets;
 		}
 
@@ -1092,17 +1070,11 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	private final class DirectWritingPropertyChangeListener implements PropertyChangeListener {
 		public void propertyChange(final PropertyChangeEvent evt) {
 			final String propertyName = evt.getPropertyName();
-			if (!isDirectWriting
-					|| ignoreChanges
-					|| delegate == null
-					|| editable == null
+			if (!isDirectWriting || ignoreChanges || delegate == null || editable == null
 					// ignore these events:
-					|| (!applyRequiresNoErrors && !applyRequiresNoMandatories && IBasicMarkableRidget.PROPERTY_MARKER
-							.equals(propertyName))
-					|| IRidget.PROPERTY_ENABLED.equals(propertyName)
-					|| "textInternal".equals(propertyName) //$NON-NLS-1$
-					|| IMarkableRidget.PROPERTY_OUTPUT_ONLY.equals(propertyName)
-					|| IBasicMarkableRidget.PROPERTY_MARKER_HIDING.equals(propertyName)) {
+					|| (!applyRequiresNoErrors && !applyRequiresNoMandatories && IBasicMarkableRidget.PROPERTY_MARKER.equals(propertyName))
+					|| IRidget.PROPERTY_ENABLED.equals(propertyName) || "textInternal".equals(propertyName) //$NON-NLS-1$
+					|| IMarkableRidget.PROPERTY_OUTPUT_ONLY.equals(propertyName) || IBasicMarkableRidget.PROPERTY_MARKER_HIDING.equals(propertyName)) {
 				return;
 			}
 			// traceEvent(evt);
@@ -1121,11 +1093,8 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	}
 
 	/**
-	 * This {@link MandatoryMarker} is always enabled and is shared with all
-	 * ridgets in the details area. It is added to the ridgets in the details
-	 * when the result of
-	 * {@link IMasterDetailsDelegate#isValidMaster(IMasterDetailsRidget)} is
-	 * false.
+	 * This {@link MandatoryMarker} is always enabled and is shared with all ridgets in the details area. It is added to the ridgets in the details when the
+	 * result of {@link IMasterDetailsDelegate#isValidMaster(IMasterDetailsRidget)} is false.
 	 */
 	private static final class GlobalMandatoryMarker extends MandatoryMarker {
 
