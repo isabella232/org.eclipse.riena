@@ -8,7 +8,9 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.ridgets;
+package org.eclipse.riena.ui.ridgets.swt.optional;
+
+import org.eclipse.riena.ui.ridgets.ITableRidget;
 
 /**
  * Ridget for a Scale.

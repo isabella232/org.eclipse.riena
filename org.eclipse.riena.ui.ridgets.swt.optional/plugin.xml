@@ -3,7 +3,7 @@
 
 <plugin>
    <extension point="org.eclipse.riena.core.startups">
-      <startup activateSelf="false">
+      <startup activateSelf="true">
       </startup>
    </extension>
 
