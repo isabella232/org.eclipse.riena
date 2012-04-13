@@ -45,13 +45,11 @@ import org.eclipse.riena.navigation.extension.INode2Extension;
 import org.eclipse.riena.ui.core.uiprocess.UIExecutor;
 
 /**
- * This class provides navigation nodes that are defined by assemlies2
- * extensions.
+ * This class provides navigation nodes that are defined by assemlies2 extensions.
  */
 public abstract class AbstractSimpleNavigationNodeProvider implements INavigationNodeProvider, IAssemblerProvider {
 
-	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(),
-			AbstractSimpleNavigationNodeProvider.class);
+	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), AbstractSimpleNavigationNodeProvider.class);
 	private static Random random = null;
 
 	private final Map<String, INavigationAssembler> assemblyId2AssemblerCache = new HashMap<String, INavigationAssembler>();
@@ -120,14 +118,12 @@ public abstract class AbstractSimpleNavigationNodeProvider implements INavigatio
 	/**
 	 * {@inheritDoc}
 	 */
-	public INavigationNode<?> provideNode(final INavigationNode<?> sourceNode, final NavigationNodeId targetId,
-			final NavigationArgument argument) {
+	public INavigationNode<?> provideNode(final INavigationNode<?> sourceNode, final NavigationNodeId targetId, final NavigationArgument argument) {
 		return provideNodeHook(sourceNode, targetId, argument);
 	}
 
 	/**
-	 * Returns a navigationNode identified by the given navigationNodeId. The
-	 * node is created if it not yet exists.
+	 * Returns a navigationNode identified by the given navigationNodeId. The node is created if it not yet exists.
 	 * 
 	 * @param sourceNode
 	 *            an existing node in the navigation model
@@ -139,8 +135,7 @@ public abstract class AbstractSimpleNavigationNodeProvider implements INavigatio
 	 * @return target node
 	 */
 	@SuppressWarnings("rawtypes")
-	protected INavigationNode<?> provideNodeHook(final INavigationNode<?> sourceNode, final NavigationNodeId targetId,
-			final NavigationArgument argument) {
+	protected INavigationNode<?> provideNodeHook(final INavigationNode<?> sourceNode, final NavigationNodeId targetId, final NavigationArgument argument) {
 		INavigationNode<?> targetNode = findNode(getRootNode(sourceNode), targetId);
 		if (targetNode == null) {
 			if (LOGGER.isLoggable(LogService.LOG_DEBUG)) {
@@ -150,22 +145,18 @@ public abstract class AbstractSimpleNavigationNodeProvider implements INavigatio
 			final INavigationAssembler assembler = getNavigationAssembler(targetId, argument);
 			if (assembler != null) {
 				final NavigationNodeId parentTypeId = getParentTypeId(argument, assembler);
-				// Call of findNode() on the result of method provideNodeHook() fixes problem for the case when the result
-				// is not the node with typeId parentTypeId but one of the nodes parents (i.e. when the nodes assembler also
-				// builds some of its parent nodes).
-				final INavigationNode parentNode = findNode(provideNodeHook(sourceNode, parentTypeId, null),
-						parentTypeId);
-				prepareNavigationAssembler(targetId, assembler, parentNode);
-
-				INavigationNode<?>[] targetNodes;
+				// ensure parent nodes
+				final INavigationNode parentNode = findNode(provideNodeHook(sourceNode, parentTypeId, null), parentTypeId);
+				INavigationNode<?>[] targetNodes = null;
+				final BuildNodeWrapper buildNodeCallable = new BuildNodeWrapper(assembler, targetId, argument, parentNode);
 				if ((null != argument && argument.isCreateNodesAsync()) || shouldRunAsync(assembler)) {
-					targetNodes = UIExecutor.executeLively(new Callable<INavigationNode<?>[]>() {
-						public INavigationNode<?>[] call() throws Exception {
-							return assembler.buildNode(targetId, argument);
-						}
-					});
+					targetNodes = UIExecutor.executeLively(buildNodeCallable);
 				} else {
-					targetNodes = assembler.buildNode(targetId, argument);
+					try {
+						targetNodes = buildNodeCallable.call();
+					} catch (final Exception e) {
+						LOGGER.log(LogService.LOG_ERROR, "Error calling assembler " + assembler + " while building node " + targetId); //$NON-NLS-1$ //$NON-NLS-2$
+					}
 				}
 				if ((targetNodes != null) && (targetNodes.length > 0)) {
 					prepareNodesAfterBuild(targetNodes, argument, parentNode, assembler, targetId, sourceNode);
@@ -190,33 +181,46 @@ public abstract class AbstractSimpleNavigationNodeProvider implements INavigatio
 	}
 
 	/**
+	 * This {@link Callable} is executed on the same {@link Thread} as {@link INavigationAssembler#buildNode(NavigationNodeId, NavigationArgument)} so that
+	 * {@link ThreadLocal}s set in
+	 * {@link AbstractSimpleNavigationNodeProvider#prepareNavigationAssembler(NavigationNodeId, INavigationAssembler, INavigationNode)} are available in
+	 * {@link INavigationAssembler#buildNode(NavigationNodeId, NavigationArgument)}.
+	 */
+	private class BuildNodeWrapper implements Callable<INavigationNode<?>[]> {
+
+		private final INavigationAssembler assembler;
+		private final NavigationNodeId targetId;
+		private final NavigationArgument argument;
+		private final INavigationNode<?> parentNode;
+
+		public BuildNodeWrapper(final INavigationAssembler assembler, final NavigationNodeId targetId, final NavigationArgument argument,
+				final INavigationNode<?> parentNode) {
+			this.assembler = assembler;
+			this.targetId = targetId;
+			this.argument = argument;
+			this.parentNode = parentNode;
+		}
+
+		public INavigationNode<?>[] call() throws Exception {
+			prepareNavigationAssembler(targetId, assembler, parentNode);
+			return assembler.buildNode(targetId, argument);
+		}
+
+	}
+
+	/**
 	 * @param assembler
-	 * @return <code>true</code> if the given assembler has a {@link RunAsync}
-	 *         annotation, otherwise <code>false</code>
+	 * @return <code>true</code> if the given assembler has a {@link RunAsync} annotation, otherwise <code>false</code>
 	 */
 	private boolean shouldRunAsync(final INavigationAssembler assembler) {
 		return assembler.getClass().isAnnotationPresent(RunAsync.class);
 	}
 
-	//	private void printNodeTree(final INavigationNode<?> root, final int depth) {
-	//		final StringBuffer b = new StringBuffer();
-	//		for (int i = 0; i < depth; i++) {
-	//			b.append("   ");
-	//		}
-	//
-	//		System.err.println(b.toString() + root.getNodeId());
-	//
-	//		for (final INavigationNode<?> c : root.getChildren()) {
-	//			printNodeTree(c, depth + 1);
-	//		}
-	//	}
-
 	/**
 	 * @since 3.0
 	 */
-	protected void prepareNodesAfterBuild(final INavigationNode<?>[] targetNodes, final NavigationArgument argument,
-			final INavigationNode<?> parentNode, final INavigationAssembler assembler, final NavigationNodeId targetId,
-			final INavigationNode<?> sourceNode) {
+	protected void prepareNodesAfterBuild(final INavigationNode<?>[] targetNodes, final NavigationArgument argument, final INavigationNode<?> parentNode,
+			final INavigationAssembler assembler, final NavigationNodeId targetId, final INavigationNode<?> sourceNode) {
 		final NodePositioner nodePositioner = argument != null ? argument.getNodePositioner() : NodePositioner.ADD_END;
 		for (final INavigationNode<?> node : targetNodes) {
 			prepareNodeAfterBuild(node, argument, parentNode, assembler, targetId, nodePositioner);
@@ -226,9 +230,8 @@ public abstract class AbstractSimpleNavigationNodeProvider implements INavigatio
 	/**
 	 * @since 3.0
 	 */
-	protected void prepareNodeAfterBuild(final INavigationNode<?> node, final NavigationArgument argument,
-			final INavigationNode<?> parentNode, final INavigationAssembler assembler, final NavigationNodeId targetId,
-			final NodePositioner nodePositioner) {
+	protected void prepareNodeAfterBuild(final INavigationNode<?> node, final NavigationArgument argument, final INavigationNode<?> parentNode,
+			final INavigationAssembler assembler, final NavigationNodeId targetId, final NodePositioner nodePositioner) {
 		storeNavigationArgument(node, argument);
 		nodePositioner.addChildToParent(parentNode, node);
 		if (node.getNodeId() == null && assembler.getId().equals(targetId.getTypeId())) {
@@ -239,8 +242,7 @@ public abstract class AbstractSimpleNavigationNodeProvider implements INavigatio
 	/**
 	 * @since 3.0
 	 */
-	protected void prepareExistingNode(final INavigationNode<?> sourceNode, final INavigationNode<?> targetNode,
-			final NavigationArgument argument) {
+	protected void prepareExistingNode(final INavigationNode<?> sourceNode, final INavigationNode<?> targetNode, final NavigationArgument argument) {
 		storeNavigationArgument(targetNode, argument);
 	}
 
@@ -259,8 +261,7 @@ public abstract class AbstractSimpleNavigationNodeProvider implements INavigatio
 	}
 
 	/**
-	 * Creates the assembler ({@link INavigationAssembler}) for the given
-	 * assembly and registers it.
+	 * Creates the assembler ({@link INavigationAssembler}) for the given assembly and registers it.
 	 * 
 	 * @param assembly
 	 *            assembly to register
@@ -319,8 +320,7 @@ public abstract class AbstractSimpleNavigationNodeProvider implements INavigatio
 	}
 
 	/**
-	 * Searches for a node that has the given ID and it's a child of the given
-	 * node.
+	 * Searches for a node that has the given ID and it's a child of the given node.
 	 * 
 	 * @param node
 	 *            the node form that the search is started
@@ -361,12 +361,9 @@ public abstract class AbstractSimpleNavigationNodeProvider implements INavigatio
 	 * Returns the ID of the parent node.
 	 * 
 	 * @param argument
-	 *            contains information passed used for providing the target
-	 *            node. One information can be a parent node
+	 *            contains information passed used for providing the target node. One information can be a parent node
 	 * @param assembler
-	 *            navigation assembler. If the navigation argument has no parent
-	 *            node information the parent node ID of the assembler is
-	 *            returned.
+	 *            navigation assembler. If the navigation argument has no parent node information the parent node ID of the assembler is returned.
 	 * @return ID of the parent node
 	 */
 	private NavigationNodeId getParentTypeId(final NavigationArgument argument, final INavigationAssembler assembler) {
@@ -420,11 +417,9 @@ public abstract class AbstractSimpleNavigationNodeProvider implements INavigatio
 	}
 
 	/**
-	 * Registers the given assembler and associates it with the given assembly
-	 * ID.
+	 * Registers the given assembler and associates it with the given assembly ID.
 	 * <p>
-	 * If another assembler is already registered with the same ID an exception
-	 * ({@link IllegalStateException}) is thrown.
+	 * If another assembler is already registered with the same ID an exception ({@link IllegalStateException}) is thrown.
 	 * 
 	 * @param id
 	 *            ID of the assembly
@@ -448,8 +443,7 @@ public abstract class AbstractSimpleNavigationNodeProvider implements INavigatio
 	 * @param assembler
 	 * @param parentNode
 	 */
-	protected void prepareNavigationAssembler(final NavigationNodeId targetId, final INavigationAssembler assembler,
-			final INavigationNode<?> parentNode) {
+	protected void prepareNavigationAssembler(final NavigationNodeId targetId, final INavigationAssembler assembler, final INavigationNode<?> parentNode) {
 		if (assembler instanceof IGenericNavigationAssembler) {
 			((IGenericNavigationAssembler) assembler).setAssemblerProvider(this);
 		}
@@ -457,8 +451,7 @@ public abstract class AbstractSimpleNavigationNodeProvider implements INavigatio
 	}
 
 	/**
-	 * Creates a generic assembler that is used if the assembly has no
-	 * assembler.
+	 * Creates a generic assembler that is used if the assembly has no assembler.
 	 * 
 	 * @return default assembler
 	 */
