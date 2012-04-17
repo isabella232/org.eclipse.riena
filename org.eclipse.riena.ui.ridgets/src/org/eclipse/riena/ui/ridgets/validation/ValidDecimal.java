@@ -35,8 +35,13 @@ import org.eclipse.riena.ui.ridgets.nls.Messages;
  * means there no fraction digit.
  */
 public class ValidDecimal implements IValidator, IExecutableExtension {
-
+	/**
+	 * @since 4.0
+	 */
 	protected static final int DEFAULT_MAX_LENGTH = 15;
+	/**
+	 * @since 4.0
+	 */
 	protected static final int DEFAULT_NUMBER_OF_FRACTION_DIGITS = 2;
 
 	private static final char FRENCH_GROUPING_SEPARATOR = (char) 0xA0;
