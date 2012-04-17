@@ -30,6 +30,7 @@ import org.eclipse.riena.ui.ridgets.swt.MarkerSupport;
 public class ListRidget extends AbstractListRidget {
 
 	private ListViewer viewer;
+	private StructuredViewerFilterHolder filterHolder;
 
 	public ListRidget() {
 		selectionTypeEnforcer = new SelectionTypeEnforcer();
@@ -73,12 +74,14 @@ public class ListRidget extends AbstractListRidget {
 			updateEnabled(isEnabled());
 
 			control.addSelectionListener(selectionTypeEnforcer);
+			getFilterHolder().activate(viewer);
 		}
 	}
 
 	@Override
 	protected void unbindUIControl() {
 		super.unbindUIControl();
+		getFilterHolder().deactivate(viewer);
 
 		final List control = getUIControl();
 		if (control != null) {
@@ -118,6 +121,14 @@ public class ListRidget extends AbstractListRidget {
 		updateMarkers();
 	}
 
+	@Override
+	protected StructuredViewerFilterHolder getFilterHolder() {
+		if (filterHolder == null) {
+			filterHolder = new StructuredViewerFilterHolder();
+		}
+		return filterHolder;
+	}
+
 	// helping classes
 	// ////////////////
 
@@ -125,8 +136,7 @@ public class ListRidget extends AbstractListRidget {
 	 * Enforces selection in the control:
 	 * <ul>
 	 * <li>disallows selection changes when the ridget is "output only"</li>
-	 * <li>disallows multiple selection is the selection type of the ridget is
-	 * {@link ISelectableRidget.SelectionType#SINGLE}</li>
+	 * <li>disallows multiple selection is the selection type of the ridget is {@link ISelectableRidget.SelectionType#SINGLE}</li>
 	 * </ul>
 	 */
 	private final class SelectionTypeEnforcer extends SelectionAdapter {
@@ -170,8 +180,7 @@ public class ListRidget extends AbstractListRidget {
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * This Ridget only supports native tool tips (SWT tool tips). Because of
-	 * this the method has no effect.
+	 * This Ridget only supports native tool tips (SWT tool tips). Because of this the method has no effect.
 	 */
 	public void setNativeToolTip(final boolean nativeToolTip) {
 		// do nothing

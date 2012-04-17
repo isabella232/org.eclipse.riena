@@ -99,10 +99,8 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 	private final TableKeyListener keyListener;
 
 	/*
-	 * Binds the viewer's multiple selection to the multiple selection
-	 * observable. This binding has to be disposed when the ridget is set to
-	 * output-only, to avoid updating the model. It has to be recreated when the
-	 * ridget is set to not-output-only.
+	 * Binds the viewer's multiple selection to the multiple selection observable. This binding has to be disposed when the ridget is set to output-only, to
+	 * avoid updating the model. It has to be recreated when the ridget is set to not-output-only.
 	 */
 	private Binding viewerMSB;
 	/*
@@ -110,12 +108,12 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 	 */
 	private IObservableList modelObservables;
 	/*
-	 * Data the viewer is bound to. It is updated from modelObservables on
-	 * updateFromModel().
+	 * Data the viewer is bound to. It is updated from modelObservables on updateFromModel().
 	 */
 	protected IObservableList viewerObservables;
 	private Class<?> rowClass;
 	private boolean moveableColumns;
+	private StructuredViewerFilterHolder filterHolder;
 
 	/**
 	 * @return the viewConfigured
@@ -149,8 +147,7 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 	/**
 	 * Returns the number of columns in the table widget.
 	 * 
-	 * @return number of columns; -1 if the number of columns can't be
-	 *         determined
+	 * @return number of columns; -1 if the number of columns can't be determined
 	 */
 	public int getColumnCount() {
 		if (tableWrapper == null) {
@@ -179,8 +176,7 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 	}
 
 	/**
-	 * Returns the item at the given point in the table or null if no such item
-	 * exists. The point is in the coordinate system of the table.
+	 * Returns the item at the given point in the table or null if no such item exists. The point is in the coordinate system of the table.
 	 * 
 	 * @param point
 	 *            the point used to locate the item
@@ -213,8 +209,7 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 	// protected abstract int getUiSelectionIndex();
 
 	/**
-	 * Creates columns for every given column property. (see:
-	 * {@link #bindToModel(Object, String, Class, String[], String[])}).
+	 * Creates columns for every given column property. (see: {@link #bindToModel(Object, String, Class, String[], String[])}).
 	 */
 	protected abstract void applyColumns();
 
@@ -229,18 +224,15 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 	protected abstract void applyColumnsMovable();
 
 	/**
-	 * Sets the comparator for the column that is sorted. Form the other columns
-	 * the comparator is removed.
+	 * Sets the comparator for the column that is sorted. Form the other columns the comparator is removed.
 	 * 
 	 * @param comparatorMap
-	 *            map with all comparators of every column that has a
-	 *            comparator.
+	 *            map with all comparators of every column that has a comparator.
 	 */
 	protected abstract void applyComparator(final Map<Integer, Comparator<?>> comparatorMap);
 
 	/**
-	 * Adds a support for tool tips to display tool tips for single cell, error
-	 * marker texts etc..
+	 * Adds a support for tool tips to display tool tips for single cell, error marker texts etc..
 	 */
 	protected abstract void updateToolTipSupport();
 
@@ -258,8 +250,7 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * Implementation note: if the array is non-null, its elements must be
-	 * {@link ColumnPixelData} or {@link ColumnWeightData} instances.
+	 * Implementation note: if the array is non-null, its elements must be {@link ColumnPixelData} or {@link ColumnWeightData} instances.
 	 * 
 	 * @throws RuntimeException
 	 *             if an unsupported array element is encountered
@@ -383,9 +374,8 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 			}
 			// viewer to single selection binding
 			final IObservableValue viewerSelection = ViewersObservables.observeSingleSelection(viewer);
-			dbc.bindValue(viewerSelection, getSingleSelectionObservable(), new UpdateValueStrategy(
-					UpdateValueStrategy.POLICY_UPDATE).setAfterGetValidator(new OutputAwareValidator(this)),
-					new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
+			dbc.bindValue(viewerSelection, getSingleSelectionObservable(), new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE)
+					.setAfterGetValidator(new OutputAwareValidator(this)), new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
 			control.addKeyListener(keyListener);
 			updateToolTipSupport();
 			// viewer to to multi-selection binding
@@ -394,11 +384,13 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 				createMultipleSelectionBinding();
 			}
 		}
+		getFilterHolder().activate(viewer);
 	}
 
 	@Override
 	protected void unbindUIControl() {
 		super.unbindUIControl();
+		getFilterHolder().deactivate(viewer);
 		if (dbc != null) {
 			dbc.dispose();
 			dbc = null;
@@ -448,6 +440,14 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 		viewer.setInput(viewerObservables);
 		applyComparator(comparatorMap);
 		viewConfigured = true;
+	}
+
+	@Override
+	protected StructuredViewerFilterHolder getFilterHolder() {
+		if (filterHolder == null) {
+			filterHolder = new StructuredViewerFilterHolder();
+		}
+		return filterHolder;
 	}
 
 	/**
@@ -501,8 +501,8 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 		}
 	}
 
-	public void bindToModel(final IObservableList rowObservables, final Class<? extends Object> aRowClass,
-			final String[] columnPropertyNames, final String[] columnHeaders) {
+	public void bindToModel(final IObservableList rowObservables, final Class<? extends Object> aRowClass, final String[] columnPropertyNames,
+			final String[] columnHeaders) {
 		if (columnHeaders != null) {
 			final String msg = "Mismatch between number of columnPropertyNames and columnHeaders"; //$NON-NLS-1$
 			Assert.isLegal(columnPropertyNames.length == columnHeaders.length, msg);
@@ -525,8 +525,8 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 		bindUIControl();
 	}
 
-	public void bindToModel(final Object listHolder, final String listPropertyName,
-			final Class<? extends Object> rowClass, final String[] columnPropertyNames, final String[] columnHeaders) {
+	public void bindToModel(final Object listHolder, final String listPropertyName, final Class<? extends Object> rowClass, final String[] columnPropertyNames,
+			final String[] columnHeaders) {
 		IObservableList rowValues;
 		if (AbstractSWTWidgetRidget.isBean(rowClass)) {
 			rowValues = BeansObservables.observeList(listHolder, listPropertyName);
@@ -665,8 +665,7 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 	}
 
 	/**
-	 * Always returns true because mandatory markers do not make sense for this
-	 * ridget.
+	 * Always returns true because mandatory markers do not make sense for this ridget.
 	 */
 	@Override
 	public boolean isDisableMandatoryMarker() {
@@ -688,8 +687,8 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 		if (viewerMSB == null && dbc != null && viewer != null) {
 			final StructuredSelection currentSelection = new StructuredSelection(getSelection());
 			final IViewerObservableList viewerSelections = ViewersObservables.observeMultiSelection(viewer);
-			viewerMSB = dbc.bindList(viewerSelections, getMultiSelectionObservable(), new UpdateListStrategy(
-					UpdateListStrategy.POLICY_UPDATE), new UpdateListStrategy(UpdateListStrategy.POLICY_UPDATE));
+			viewerMSB = dbc.bindList(viewerSelections, getMultiSelectionObservable(), new UpdateListStrategy(UpdateListStrategy.POLICY_UPDATE),
+					new UpdateListStrategy(UpdateListStrategy.POLICY_UPDATE));
 			viewer.setSelection(currentSelection);
 		}
 	}
@@ -709,8 +708,7 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 	 * Enforces selection in the control:
 	 * <ul>
 	 * <li>disallows selection changes when the ridget is "output only"</li>
-	 * <li>disallows multiple selection is the selection type of the ridget is
-	 * {@link ISelectableRidget.SelectionType#SINGLE}</li>
+	 * <li>disallows multiple selection is the selection type of the ridget is {@link ISelectableRidget.SelectionType#SINGLE}</li>
 	 * </ul>
 	 */
 	private final class SelectionTypeEnforcer extends SelectionAdapter {
@@ -740,8 +738,7 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 	}
 
 	/**
-	 * Notifies the double-click listeners when either a space or CR has been
-	 * pressed.
+	 * Notifies the double-click listeners when either a space or CR has been pressed.
 	 */
 	private final class TableKeyListener extends KeyAdapter {
 
@@ -753,81 +750,5 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 			}
 		}
 	}
-
-	//	private static class InlineEditingSupport0 extends TableRidgetEditingSupport0 {
-	//
-	//		private final CellEditor cellEditor;
-	//		private final PropertyDescriptor property;
-	//
-	//		/**
-	//		 * @param viewer
-	//		 * @param dbc
-	//		 */
-	//		public InlineEditingSupport0(final AbstractTableRidget ridget, final DataBindingContext dbc,
-	//				final PropertyDescriptor property, final int columnStyle) {
-	//			super(ridget, ridget.getTableViewer(), dbc);
-	//			this.property = property;
-	//			cellEditor = createCellEditort(columnStyle);
-	//		}
-	//
-	//		private CellEditor createCellEditort(final int style) {
-	//			if (property == null) {
-	//				return null;
-	//			}
-	//			final Composite table = (Composite) getViewer().getControl();
-	//			final Class<?> type = property.getPropertyType();
-	//
-	//			if (Boolean.class.equals(type) || Boolean.TYPE.equals(type)) {
-	//				final BooleanCellEditor editor = new BooleanCellEditor(table, style);
-	//				editor.setChangeOnActivation(true);
-	//				return editor;
-	//			} else {
-	//				final TextCellEditor editor = new TextCellEditor(table, style);
-	//				if (Integer.class.equals(type) || Integer.TYPE.equals(type)) {
-	//					editor.getControl().setData(UIControlsFactory.KEY_TYPE, UIControlsFactory.TYPE_NUMERIC);
-	//				} else if (Short.class.equals(type) || Short.TYPE.equals(type)) {
-	//					editor.getControl().setData(UIControlsFactory.KEY_TYPE, UIControlsFactory.TYPE_NUMERIC);
-	//				} else if (Long.class.equals(type) || Long.TYPE.equals(type)) {
-	//					editor.getControl().setData(UIControlsFactory.KEY_TYPE, UIControlsFactory.TYPE_NUMERIC);
-	//				} else if (BigInteger.class.equals(type)) {
-	//					editor.getControl().setData(UIControlsFactory.KEY_TYPE, UIControlsFactory.TYPE_NUMERIC);
-	//				} else if (Float.class.equals(type) || Float.TYPE.equals(type)) {
-	//					editor.getControl().setData(UIControlsFactory.KEY_TYPE, UIControlsFactory.TYPE_DECIMAL);
-	//				} else if (Double.class.equals(type) || Double.TYPE.equals(type)) {
-	//					editor.getControl().setData(UIControlsFactory.KEY_TYPE, UIControlsFactory.TYPE_DECIMAL);
-	//				} else if (BigDecimal.class.equals(type)) {
-	//					editor.getControl().setData(UIControlsFactory.KEY_TYPE, UIControlsFactory.TYPE_DECIMAL);
-	//				} else if (Date.class.equals(type)) {
-	//					editor.getControl().setData(UIControlsFactory.KEY_TYPE, UIControlsFactory.TYPE_DECIMAL);
-	//				}
-	//				return editor;
-	//
-	//			}
-	//
-	//		}
-	//
-	//		@Override
-	//		protected CellEditor getCellEditor(final Object element) {
-	//			return cellEditor;
-	//		}
-	//
-	//		@Override
-	//		protected IObservableValue doCreateCellEditorObservable(final CellEditor cellEditor) {
-	//			if (cellEditor instanceof BooleanCellEditor) {
-	//				return SWTObservables.observeSelection(cellEditor.getControl());
-	//			} else {
-	//				return SWTObservables.observeText(cellEditor.getControl(), SWT.Modify);
-	//			}
-	//		}
-	//
-	//		@Override
-	//		protected IObservableValue doCreateElementObservable(final Object valueHolder, final ViewerCell cell) {
-	//			if (isBean(valueHolder.getClass())) {
-	//				return BeansObservables.observeValue(valueHolder, property.getName());
-	//			} else {
-	//				return PojoObservables.observeValue(valueHolder, property.getName());
-	//			}
-	//		}
-	//	}
 
 }

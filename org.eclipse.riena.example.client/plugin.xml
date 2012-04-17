@@ -434,6 +434,13 @@
             name="org.eclipse.riena.example.client.views.MarkerSubModuleWithAlternativeBackgroundView"
             restorable="true">
       </view>
+      <view
+            allowMultiple="true"
+            class="org.eclipse.riena.example.client.views.ContentFilterSubModuleView"
+            id="org.eclipse.riena.example.client.view.contentFilter"
+            name="org.eclipse.riena.example.client.view.contentFilter"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -1123,6 +1130,22 @@
                </subModule>
             </module>
          </moduleGroup>
+      </assembly2>
+      <assembly2
+            id="org.eclipse.riena.example.client.assembly2.contentFilter"
+            parentNodeId="playgroundModule"
+            startOrder="1">
+         <subModule
+               closable="false"
+               controller="org.eclipse.riena.example.client.controllers.ContentFilterSubModuleController"
+               expanded="false"
+               name="Content Filter"
+               nodeId="org.eclipse.riena.example.client.subModule.contentFilter"
+               selectable="true"
+               sharedView="false"
+               viewId="org.eclipse.riena.example.client.view.contentFilter"
+               visible="true">
+         </subModule>
       </assembly2>
    </extension>
    <extension

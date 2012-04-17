@@ -45,6 +45,7 @@ import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.util.Nop;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.core.wire.Wire;
+import org.eclipse.riena.internal.ui.ridgets.swt.StructuredViewerFilterHolder;
 import org.eclipse.riena.ui.common.IComplexComponent;
 import org.eclipse.riena.ui.common.ISortableByColumn;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
@@ -63,8 +64,7 @@ import org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 
 /**
- * A ridget for nebula's {@link CompositeTable} - this is a table with an
- * instance of an arbitrary composite in each row.
+ * A ridget for nebula's {@link CompositeTable} - this is a table with an instance of an arbitrary composite in each row.
  */
 public class CompositeTableRidget extends AbstractSelectableIndexedRidget implements ICompositeTableRidget {
 
@@ -77,20 +77,16 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 	private final SelectionListener sortListener;
 
 	/**
-	 * An observable list supplied via bindToModel(...). May be null. May change
-	 * at any time.
+	 * An observable list supplied via bindToModel(...). May be null. May change at any time.
 	 */
 	private IObservableList modelObservables;
 	/**
-	 * A copy of rowObservables as an array. This is used to feed the rows /
-	 * rowRidgets in the table. Will be updated when #updateFromModel() is
-	 * called. The array will be re-ordered if sorting is applied. Never null.
+	 * A copy of rowObservables as an array. This is used to feed the rows / rowRidgets in the table. Will be updated when #updateFromModel() is called. The
+	 * array will be re-ordered if sorting is applied. Never null.
 	 */
 	private Object[] rowValues;
 	/**
-	 * A copy of the <b>unsorted</b> rowValues. It provides the ability to
-	 * restore the unsorted state of rowValues. This array is null if rowValues
-	 * is unsorted.
+	 * A copy of the <b>unsorted</b> rowValues. It provides the ability to restore the unsorted state of rowValues. This array is null if rowValues is unsorted.
 	 */
 	private Object[] rowValuesUnsorted;
 	private Class<? extends Object> rowBeanClass;
@@ -184,14 +180,13 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 		return rowValues[index];
 	}
 
-	public void bindToModel(final IObservableList rowObservables, final Class<? extends Object> rowClass,
-			final Class<? extends Object> rowRidgetClass) {
+	public void bindToModel(final IObservableList rowObservables, final Class<? extends Object> rowClass, final Class<? extends Object> rowRidgetClass) {
 		Assert.isLegal(IRowRidget.class.isAssignableFrom(rowRidgetClass));
 		bindToModel(rowObservables, rowClass, rowRidgetClass, null);
 	}
 
-	public void bindToModel(final IObservableList rowObservables, final Class<? extends Object> rowClass,
-			final Class<? extends Object> rowRidgetClass, final String[] columnHeaders) {
+	public void bindToModel(final IObservableList rowObservables, final Class<? extends Object> rowClass, final Class<? extends Object> rowRidgetClass,
+			final String[] columnHeaders) {
 		Assert.isLegal(IRowRidget.class.isAssignableFrom(rowRidgetClass));
 
 		unbindUIControl();
@@ -211,9 +206,8 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 		bindUIControl();
 	}
 
-	public void bindToModel(final Object listHolder, final String listPropertyName,
-			final Class<? extends Object> rowClass, final Class<? extends Object> rowRidgetClass,
-			final String[] columnHeaders) {
+	public void bindToModel(final Object listHolder, final String listPropertyName, final Class<? extends Object> rowClass,
+			final Class<? extends Object> rowRidgetClass, final String[] columnHeaders) {
 		IObservableList rowBeansObservables;
 		if (AbstractSWTWidgetRidget.isBean(rowClass)) {
 			rowBeansObservables = BeansObservables.observeList(listHolder, listPropertyName);
@@ -223,8 +217,8 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 		bindToModel(rowBeansObservables, rowClass, rowRidgetClass, columnHeaders);
 	}
 
-	public void bindToModel(final Object listHolder, final String listPropertyName,
-			final Class<? extends Object> rowClass, final Class<? extends Object> rowRidgetClass) {
+	public void bindToModel(final Object listHolder, final String listPropertyName, final Class<? extends Object> rowClass,
+			final Class<? extends Object> rowRidgetClass) {
 		bindToModel(listHolder, listPropertyName, rowClass, rowRidgetClass, null);
 	}
 
@@ -304,15 +298,18 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 		}
 	}
 
+	@Override
+	protected StructuredViewerFilterHolder getFilterHolder() {
+		return null; // filtering is not supported
+	}
+
 	// methods of ISortableByColumn
 	///////////////////////////////
 
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * Implementation note: there is no API to query the sorted column on
-	 * CompositeTable. The returned value is computed with information held in
-	 * the ridget.
+	 * Implementation note: there is no API to query the sorted column on CompositeTable. The returned value is computed with information held in the ridget.
 	 */
 	public int getSortedColumn() {
 		int result = -1;
@@ -326,10 +323,8 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * Implementation notes: to have columns that are sortable by the user, the
-	 * CompositeTable bound to this ridget must have an
-	 * {@link AbstractNativeHeader}. In any other case this method will return
-	 * false.
+	 * Implementation notes: to have columns that are sortable by the user, the CompositeTable bound to this ridget must have an {@link AbstractNativeHeader}.
+	 * In any other case this method will return false.
 	 */
 	public boolean isColumnSortable(final int columnIndex) {
 		checkColumnRange(columnIndex);
@@ -347,9 +342,7 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * Implementation note: there is no API to query the sorted column on
-	 * CompositeTable. The returned value is computed with information held in
-	 * the ridget.
+	 * Implementation note: there is no API to query the sorted column on CompositeTable. The returned value is computed with information held in the ridget.
 	 */
 	public boolean isSortedAscending() {
 		boolean result = false;
@@ -416,8 +409,7 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 	}
 
 	/**
-	 * {@link CompositeTableRidget} does currently not support this operation,
-	 * because the CompositeTable dosn't fire mouse events.
+	 * {@link CompositeTableRidget} does currently not support this operation, because the CompositeTable dosn't fire mouse events.
 	 * 
 	 * @throws UnsupportedOperationException
 	 *             when invoked
@@ -428,8 +420,7 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 	}
 
 	/**
-	 * {@link CompositeTableRidget} does currently not support this operation,
-	 * because the CompositeTable dosn't fire mouse events.
+	 * {@link CompositeTableRidget} does currently not support this operation, because the CompositeTable dosn't fire mouse events.
 	 * 
 	 * @throws UnsupportedOperationException
 	 *             when invoked
@@ -485,14 +476,11 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 	}
 
 	/**
-	 * CompositeTable.setSelection(x,y) is asynchronous. This means that: - we
-	 * have to fully process the event-queue before, to avoid pending events
-	 * adding selection changes after our call, via asyncexec(op)). - we have to
-	 * fully process the event-queue afterwards, to make sure the selection is
-	 * applied to the widget.
+	 * CompositeTable.setSelection(x,y) is asynchronous. This means that: - we have to fully process the event-queue before, to avoid pending events adding
+	 * selection changes after our call, via asyncexec(op)). - we have to fully process the event-queue afterwards, to make sure the selection is applied to the
+	 * widget.
 	 * <p>
-	 * Typically this method will be called before AND after
-	 * ct.setSelection(x,y);
+	 * Typically this method will be called before AND after ct.setSelection(x,y);
 	 */
 	private void readAndDispatch() {
 		final CompositeTable control = getUIControl();
@@ -504,8 +492,7 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 		}
 	}
 
-	private void refreshRowStyle(final Control rowControl, final boolean isEnabled, final boolean isOutput,
-			final Color bgColor) {
+	private void refreshRowStyle(final Control rowControl, final boolean isEnabled, final boolean isOutput, final Color bgColor) {
 		rowControl.setBackground(bgColor);
 		if (MarkerSupport.isHideDisabledRidgetContent()) {
 			rowControl.setVisible(isEnabled);
@@ -533,8 +520,7 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 			final Control[] children = table.getChildren();
 			final Control contentPane = children[children.length - 1];
 			final Display display = table.getDisplay();
-			final Color cpBgColor = enabled ? table.getBackground() : display
-					.getSystemColor(SWT.COLOR_WIDGET_BACKGROUND);
+			final Color cpBgColor = enabled ? table.getBackground() : display.getSystemColor(SWT.COLOR_WIDGET_BACKGROUND);
 			contentPane.setBackground(cpBgColor);
 		}
 	}
@@ -597,8 +583,7 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 	//////////////////
 
 	/**
-	 * Re-applies ridget selection to control (if selection exists), otherwise
-	 * clears ridget selection
+	 * Re-applies ridget selection to control (if selection exists), otherwise clears ridget selection
 	 */
 	private void updateSelection() {
 		final CompositeTable control = getUIControl();
@@ -640,8 +625,7 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 					ridget.setController(rowRidget);
 					rowRidget.addRidget(bindingProperty, ridget);
 				} else {
-					final String message = String.format(
-							"widget without binding property: %s : %s", rowControl.getClass(), //$NON-NLS-1$
+					final String message = String.format("widget without binding property: %s : %s", rowControl.getClass(), //$NON-NLS-1$
 							control);
 					LOGGER.log(LogService.LOG_WARNING, message);
 				}
@@ -672,8 +656,7 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 	}
 
 	/**
-	 * Updates the selection in a CompositeTable control, when the value of the
-	 * (single selection) observable changes and vice versa.
+	 * Updates the selection in a CompositeTable control, when the value of the (single selection) observable changes and vice versa.
 	 */
 	private final class SelectionSynchronizer implements IRowFocusListener, IValueChangeListener {
 
@@ -717,8 +700,7 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 	}
 
 	/**
-	 * Selection listener for table headers that changes the sort order of a
-	 * column according to the information stored in the ridget.
+	 * Selection listener for table headers that changes the sort order of a column according to the information stored in the ridget.
 	 */
 	private final class ColumnSortListener extends SelectionAdapter {
 		@Override
