@@ -17,6 +17,8 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.Locale;
 
+import com.ibm.icu.text.NumberFormat;
+
 import org.osgi.service.log.LogService;
 
 import org.eclipse.core.databinding.conversion.IConverter;
@@ -227,10 +229,12 @@ public class ValidRange extends ValidDecimal implements IExecutableExtension {
 	}
 
 	private String convert(final Number number) {
-		if (converter == null) {
-			return (String) NumberToStringConverter.fromBigDecimal().convert(toBigDecimal(number));
+		if (converter != null) {
+			return (String) converter.convert(number);
 		}
-		return (String) converter.convert(number);
+		final NumberFormat numberInstance = NumberFormat.getNumberInstance(getLocale());
+		numberInstance.setGroupingUsed(isGroupingInMessage());
+		return (String) NumberToStringConverter.fromBigDecimal(numberInstance).convert(toBigDecimal(number));
 	}
 
 	/**

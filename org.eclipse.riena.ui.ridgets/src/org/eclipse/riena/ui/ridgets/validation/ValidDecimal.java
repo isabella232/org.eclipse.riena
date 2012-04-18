@@ -51,6 +51,7 @@ public class ValidDecimal implements IValidator, IExecutableExtension {
 	private int numberOfFractionDigits;
 	private int maxLength;
 	private Locale locale;
+	private boolean groupingInMessage = true;
 
 	/**
 	 * Constructs a decimal type check rule with no partialChecking and the default {@code Locale}.
@@ -104,6 +105,35 @@ public class ValidDecimal implements IValidator, IExecutableExtension {
 		this.maxLength = maxLength;
 		// TODO: Configure format with withSign?!
 		this.locale = locale;
+	}
+
+	/**
+	 * Configure whether the numbers, cited in the validation status messages should be grouped or not.
+	 * <p>
+	 * The default for this setting is <code>true</code>.
+	 * 
+	 * @param groupingInMessage
+	 *            the groupingInMessage to set
+	 * @since 4.0
+	 */
+	public void setGroupingInMessage(final boolean groupingInMessage) {
+		this.groupingInMessage = groupingInMessage;
+	}
+
+	/**
+	 * @return the groupingInMessage <code>true</code> if this validator will use grouping in its status messages.
+	 * @since 4.0
+	 */
+	protected boolean isGroupingInMessage() {
+		return groupingInMessage;
+	}
+
+	/**
+	 * @return the locale that is used in this validator
+	 * @since 4.0
+	 */
+	protected Locale getLocale() {
+		return locale;
 	}
 
 	/**

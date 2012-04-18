@@ -48,6 +48,16 @@ public class ValidRangeTest extends RienaTestCase {
 		return new ValidRange(min, max, locale);
 	}
 
+	public void testGrouping() throws Exception {
+		final double min = 1000D;
+		final double max = 10000000D;
+		final ValidRange rule = createRange(min, max);
+		assertEquals("Value '10.000.000,01' out of range: [1.000..10.000.000].", rule.validate("10.000.000,01").getMessage());
+
+		rule.setGroupingInMessage(false);
+		assertEquals("Value '10000000,01' out of range: [1000..10000000].", rule.validate("10000000,01").getMessage());
+	}
+
 	public void testRangeUSlocale() {
 		ValidRange rule = createRange(0, 10, Locale.US);
 		assertTrue(rule.validate(null).isOK());
