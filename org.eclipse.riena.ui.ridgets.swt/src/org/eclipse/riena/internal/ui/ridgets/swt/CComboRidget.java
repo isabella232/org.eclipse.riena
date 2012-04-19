@@ -102,6 +102,26 @@ public class CComboRidget extends AbstractComboRidget implements ICComboRidget {
 	}
 
 	@Override
+	public void setSelection(final Object newSelection) {
+		// Workaround for Bug 372221
+		// we put this call to the end of the event queue since
+		// there may be other selection events pending
+		if (getUIControl() != null) {
+			getUIControl().getDisplay().asyncExec(new Runnable() {
+				public void run() {
+					superSetSelection(newSelection);
+				}
+			});
+		} else {
+			superSetSelection(newSelection);
+		}
+	}
+
+	private void superSetSelection(final Object newSelection) {
+		super.setSelection(newSelection);
+	}
+
+	@Override
 	protected String[] getUIControlItems() {
 		return getUIControl().getItems();
 	}
@@ -167,9 +187,7 @@ public class CComboRidget extends AbstractComboRidget implements ICComboRidget {
 	/**
 	 * This was introduced as to address Bug 323449.
 	 * <p>
-	 * The Text/CCombo widgets will not change their background to gray when
-	 * disabled, once a non-null background color has been used in the enabled
-	 * state.
+	 * The Text/CCombo widgets will not change their background to gray when disabled, once a non-null background color has been used in the enabled state.
 	 */
 	private void updateBgColor(final boolean isEnabled) {
 		// pre-condition: control is known to be != null
