@@ -37,16 +37,18 @@ import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.core.runtime.Assert;
 
 import org.eclipse.riena.core.util.ListenerList;
+import org.eclipse.riena.ui.ridgets.IFilterableContentRidget;
+import org.eclipse.riena.ui.ridgets.IRidgetContentFilter;
+import org.eclipse.riena.ui.ridgets.IRidgetContentFilterHolder;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.listener.ISelectionListener;
 import org.eclipse.riena.ui.ridgets.listener.SelectionEvent;
 
 /**
- * Default implementation of an {@link ISelectableRidget}. This ridget than can
- * observe single and multiple selection of a widget and bind the selection
- * state to model elements.
+ * Default implementation of an {@link ISelectableRidget}. This ridget than can observe single and multiple selection of a widget and bind the selection state
+ * to model elements.
  */
-public abstract class AbstractSelectableRidget extends AbstractSWTRidget implements ISelectableRidget {
+public abstract class AbstractSelectableRidget extends AbstractSWTRidget implements ISelectableRidget, IFilterableContentRidget {
 
 	/** The selected option (single-selection). */
 	private final WritableValue singleSelectionObservable;
@@ -89,9 +91,8 @@ public abstract class AbstractSelectableRidget extends AbstractSWTRidget impleme
 			multiSelectionBinding.dispose();
 		}
 		final DataBindingContext dbc = new DataBindingContext();
-		multiSelectionBinding = (ListBinding) dbc.bindList(multiSelectionObservable, observableList,
-				new UpdateListStrategy(UpdateListStrategy.POLICY_UPDATE), new UpdateListStrategy(
-						UpdateListStrategy.POLICY_ON_REQUEST));
+		multiSelectionBinding = (ListBinding) dbc.bindList(multiSelectionObservable, observableList, new UpdateListStrategy(UpdateListStrategy.POLICY_UPDATE),
+				new UpdateListStrategy(UpdateListStrategy.POLICY_ON_REQUEST));
 	}
 
 	public final void bindMultiSelectionToModel(final Object selectionHolder, final String selectionPropertyName) {
@@ -109,8 +110,8 @@ public abstract class AbstractSelectableRidget extends AbstractSWTRidget impleme
 			singleSelectionBinding.dispose();
 		}
 		final DataBindingContext dbc = new DataBindingContext();
-		singleSelectionBinding = dbc.bindValue(singleSelectionObservable, selectionValue, new UpdateValueStrategy(
-				UpdateValueStrategy.POLICY_UPDATE), new UpdateValueStrategy(UpdateValueStrategy.POLICY_ON_REQUEST));
+		singleSelectionBinding = dbc.bindValue(singleSelectionObservable, selectionValue, new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE),
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_ON_REQUEST));
 	}
 
 	public final void bindSingleSelectionToModel(final Object selectionHolder, final String selectionPropertyName) {
@@ -158,8 +159,7 @@ public abstract class AbstractSelectableRidget extends AbstractSWTRidget impleme
 		if (!hasSelection()) {
 			return null;
 		}
-		Assert.isLegal(getSelectionType() == SelectionType.SINGLE,
-				"A single selection is only provided if selection type is SelectionType.SINGLE. "); //$NON-NLS-1$
+		Assert.isLegal(getSelectionType() == SelectionType.SINGLE, "A single selection is only provided if selection type is SelectionType.SINGLE. "); //$NON-NLS-1$
 
 		final List<Object> selection = getSelection();
 		if (selection.size() != 1) {
@@ -176,8 +176,7 @@ public abstract class AbstractSelectableRidget extends AbstractSWTRidget impleme
 		if (!hasSelection()) {
 			return null;
 		}
-		Assert.isLegal(getSelectionType() == SelectionType.MULTI,
-				"A multi selection is only provided if selection type is SelectionType.MULTI. "); //$NON-NLS-1$
+		Assert.isLegal(getSelectionType() == SelectionType.MULTI, "A multi selection is only provided if selection type is SelectionType.MULTI. "); //$NON-NLS-1$
 
 		final List<Object> selection = getSelection();
 		if (selection.size() < 0) {
@@ -262,21 +261,51 @@ public abstract class AbstractSelectableRidget extends AbstractSWTRidget impleme
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @since 4.0
+	 */
+	public void addFilter(final IRidgetContentFilter filter) {
+		final IRidgetContentFilterHolder<?> filterHolder = getFilterHolder();
+		if (filterHolder == null) {
+			throw new UnsupportedOperationException("This ridget type does not support filtering: " + getClass().getSimpleName()); //$NON-NLS-1$
+		}
+		filterHolder.add(filter);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @since 4.0
+	 */
+	public void removeFilter(final IRidgetContentFilter filter) {
+		final IRidgetContentFilterHolder<?> filterHolder = getFilterHolder();
+		if (filterHolder != null) {
+			filterHolder.remove(filter);
+		}
+	}
+
 	// protected methods
 	// //////////////////
 
 	/**
-	 * Return an observable list of objects which can be selected through this
-	 * ridget.
+	 * Retrieves the {@link IRidgetContentFilterHolder} for this ridget.
 	 * 
-	 * @return a List instance or null, if the ridget has not been bound to a
-	 *         model
+	 * @return the filter holder for this ridget
+	 * @since 4.0
+	 */
+	protected abstract IRidgetContentFilterHolder<?> getFilterHolder();
+
+	/**
+	 * Return an observable list of objects which can be selected through this ridget.
+	 * 
+	 * @return a List instance or null, if the ridget has not been bound to a model
 	 */
 	abstract protected List<?> getRowObservables();
 
 	/**
-	 * Throws an exception if no model observables are available (i.e.
-	 * getRowObservables() == null).
+	 * Throws an exception if no model observables are available (i.e. getRowObservables() == null).
 	 */
 	protected final void assertIsBoundToModel() {
 		if (getRowObservables() == null) {
@@ -285,14 +314,12 @@ public abstract class AbstractSelectableRidget extends AbstractSWTRidget impleme
 	}
 
 	/**
-	 * Updates the current selection to ensure that all selected items are still
-	 * available in the ridget's model.
+	 * Updates the current selection to ensure that all selected items are still available in the ridget's model.
 	 * <p>
 	 * Subclasses should call this from their {@link #updateFromModel()} method.
 	 * <p>
-	 * Implementation note: the method computes the subset of the current
-	 * selection that is available. If the subset is smaller that the current
-	 * selection, it will be applied and become the new current selection.
+	 * Implementation note: the method computes the subset of the current selection that is available. If the subset is smaller that the current selection, it
+	 * will be applied and become the new current selection.
 	 * 
 	 * @since 2.0
 	 */
@@ -342,8 +369,7 @@ public abstract class AbstractSelectableRidget extends AbstractSWTRidget impleme
 	// ////////////////
 
 	/**
-	 * Observable value for single selection. This class is used by this ridget
-	 * to monitor and maintain the selection state for single selection and fire
+	 * Observable value for single selection. This class is used by this ridget to monitor and maintain the selection state for single selection and fire
 	 * appropriate events.
 	 */
 	private final class SingleSelectionObservable extends WritableValue {
@@ -358,8 +384,7 @@ public abstract class AbstractSelectableRidget extends AbstractSWTRidget impleme
 			final Object oldValue = diff.getOldValue();
 			if (oldValue != newValue && getSelectionType() == SelectionType.SINGLE) {
 				final String key = ISelectableRidget.PROPERTY_SELECTION;
-				AbstractSelectableRidget.this.propertyChangeSupport.firePropertyChange(key, toList(oldValue),
-						toList(newValue));
+				AbstractSelectableRidget.this.propertyChangeSupport.firePropertyChange(key, toList(oldValue), toList(newValue));
 			}
 		}
 
@@ -369,9 +394,8 @@ public abstract class AbstractSelectableRidget extends AbstractSWTRidget impleme
 	}
 
 	/**
-	 * Observable list for multiple selection. This class is used by this ridget
-	 * to monitor and maintain the selection state for multiple selection and
-	 * fire appropriate events.
+	 * Observable list for multiple selection. This class is used by this ridget to monitor and maintain the selection state for multiple selection and fire
+	 * appropriate events.
 	 */
 	private final class MultiSelectionObservable extends WritableList {
 		MultiSelectionObservable() {
@@ -379,8 +403,7 @@ public abstract class AbstractSelectableRidget extends AbstractSWTRidget impleme
 		}
 
 		/**
-		 * Only the MultiSelectionObservable is firing selection property change
-		 * events to avoid duplicate events (bug 268897)
+		 * Only the MultiSelectionObservable is firing selection property change events to avoid duplicate events (bug 268897)
 		 */
 		@Override
 		protected void fireListChange(final ListDiff diff) {

@@ -44,14 +44,13 @@ import org.eclipse.riena.ui.ridgets.SubModuleUtils;
 import org.eclipse.riena.ui.ridgets.controller.IController;
 
 /**
- * An abstract controller superclass that manages the navigation node of a
- * controller.
+ * An abstract controller superclass that manages the navigation node of a controller.
  * 
  * @param <N>
  *            Type of the navigation node
  */
-public abstract class NavigationNodeController<N extends INavigationNode<?>> extends TypecastingObject implements
-		INavigationNodeController, IController, IContext {
+public abstract class NavigationNodeController<N extends INavigationNode<?>> extends TypecastingObject implements INavigationNodeController, IController,
+		IContext {
 
 	private N navigationNode;
 	private Map<String, IRidget> ridgets;
@@ -60,17 +59,14 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	private boolean configured = false;
 
 	/**
-	 * Create a new Navigation Node view Controller. Set the navigation node
-	 * later.
+	 * Create a new Navigation Node view Controller. Set the navigation node later.
 	 */
 	public NavigationNodeController() {
 		this(null);
 	}
 
 	/**
-	 * Create a new Navigation Node view Controller on the specified
-	 * navigationNode. Register this controller as the presentation of the
-	 * Navigation node.
+	 * Create a new Navigation Node view Controller on the specified navigationNode. Register this controller as the presentation of the Navigation node.
 	 * 
 	 * @param navigationNode
 	 *            the node to work on
@@ -132,8 +128,7 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * All methods that overrides this method must call
-	 * <code>super.afterBind()</code>.
+	 * All methods that overrides this method must call <code>super.afterBind()</code>.
 	 */
 	public void afterBind() {
 		NavigationNodeControllerAnnotationProcessor.getInstance().processAnnotations(this);
@@ -195,10 +190,8 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * Implementation note: for ridgets of the type IRidgetContainer, this
-	 * method supports two-part ids (i.e. nested ids). For example, if the
-	 * ridget "searchComposite" containts the ridget "txtName", you can request:
-	 * "searchComposite.txtName":
+	 * Implementation note: for ridgets of the type IRidgetContainer, this method supports two-part ids (i.e. nested ids). For example, if the ridget
+	 * "searchComposite" containts the ridget "txtName", you can request: "searchComposite.txtName":
 	 * 
 	 * <pre>
 	 * ITextRidget txtName = getRidget(&quot;searchComposite.txtName&quot;);
@@ -232,13 +225,11 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 		if (!SubModuleUtils.isPrepareView() || RienaStatus.isTest()) {
 			try {
 				if (ridgetClazz.isInterface() || Modifier.isAbstract(ridgetClazz.getModifiers())) {
-					final Class<R> mappedRidgetClazz = (Class<R>) ClassRidgetMapper.getInstance().getRidgetClass(
-							ridgetClazz);
+					final Class<R> mappedRidgetClazz = (Class<R>) ClassRidgetMapper.getInstance().getRidgetClass(ridgetClazz);
 					if (mappedRidgetClazz != null) {
 						ridget = mappedRidgetClazz.newInstance();
 					}
-					Assert.isNotNull(
-							ridget,
+					Assert.isNotNull(ridget,
 							"Could not find a corresponding implementation for " + ridgetClazz.getName() + " in " + ClassRidgetMapper.class.getName()); //$NON-NLS-1$ //$NON-NLS-2$
 				} else {
 					ridget = ridgetClazz.newInstance();
@@ -260,8 +251,7 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	}
 
 	private void addRidgetMarkers(final IRidget ridget, final List<IMarker> combinedMarkers) {
-		if (ridget instanceof IBasicMarkableRidget && ((IBasicMarkableRidget) ridget).isVisible()
-				&& ((IBasicMarkableRidget) ridget).isEnabled()) {
+		if (ridget instanceof IBasicMarkableRidget && ((IBasicMarkableRidget) ridget).isVisible() && ((IBasicMarkableRidget) ridget).isEnabled()) {
 			addRidgetMarkers((IBasicMarkableRidget) ridget, combinedMarkers);
 		} else if (ridget instanceof IRidgetContainer) {
 			addRidgetMarkers((IRidgetContainer) ridget, combinedMarkers);
@@ -293,42 +283,48 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	}
 
 	protected void updateNavigationNodeMarkers() {
-		final Collection<ErrorMarker> errorMarkers = getNavigationNode().getMarkersOfType(ErrorMarker.class);
-		final Collection<MandatoryMarker> mandatoryMarkers = getNavigationNode()
-				.getMarkersOfType(MandatoryMarker.class);
-		final Collection<ErrorMarker> currentErrors = new ArrayList<ErrorMarker>();
-		final Collection<MandatoryMarker> currentMandatory = new ArrayList<MandatoryMarker>();
+		final Collection<ErrorMarker> errorInRidgets = new ArrayList<ErrorMarker>();
+		final Collection<MandatoryMarker> mandatoryInRidgets = new ArrayList<MandatoryMarker>();
 
 		// add error and/or mandatory marker, if a Ridget has an error marker and/or a (enabled) mandatory marker
 		for (final IMarker marker : getRidgetMarkers()) {
 			if (marker instanceof ErrorMarker) {
-				currentErrors.add(ErrorMarker.class.cast(marker));
+				errorInRidgets.add((ErrorMarker) marker);
 			} else if (marker instanceof MandatoryMarker) {
 				final MandatoryMarker mandatoryMarker = (MandatoryMarker) marker;
 				if (!mandatoryMarker.isDisabled()) {
-					currentMandatory.add(MandatoryMarker.class.cast(marker));
+					mandatoryInRidgets.add(mandatoryMarker);
 				}
 			}
 		}
 
-		for (final IMarker marker : errorMarkers) {
-			if (!currentErrors.contains(marker)) {
-				getNavigationNode().removeMarker(marker);
-			}
-		}
-		for (final IMarker marker : mandatoryMarkers) {
-			if (!currentMandatory.contains(marker)) {
-				getNavigationNode().removeMarker(marker);
-			}
+		final Collection<ErrorMarker> errorInNode = getNavigationNode().getMarkersOfType(ErrorMarker.class);
+		final Collection<MandatoryMarker> mandatoryInNode = getNavigationNode().getMarkersOfType(MandatoryMarker.class);
+
+		// error in node    - no
+		// error in ridgets - yes
+		// => we have to add an error marker to the node
+		if (errorInNode.isEmpty() && !errorInRidgets.isEmpty()) {
+			// error markers are unique, so just add the first one
+			getNavigationNode().addMarker(errorInRidgets.iterator().next());
 		}
 
-		for (final IMarker marker : currentErrors) {
-			getNavigationNode().addMarker(marker);
+		// error in node    - yes
+		// error in ridgets - no
+		// => we have to remove the error marker from the node
+		if (!errorInNode.isEmpty() && errorInRidgets.isEmpty()) {
+			getNavigationNode().removeMarker(errorInNode.iterator().next());
 		}
 
-		for (final IMarker marker : currentMandatory) {
-			getNavigationNode().addMarker(marker);
+		// now we repeat the same for the mandatory markers
+		if (mandatoryInNode.isEmpty() && !mandatoryInRidgets.isEmpty()) {
+			getNavigationNode().addMarker(mandatoryInRidgets.iterator().next());
 		}
+
+		if (!mandatoryInNode.isEmpty() && mandatoryInRidgets.isEmpty()) {
+			getNavigationNode().removeMarker(mandatoryInNode.iterator().next());
+		}
+
 	}
 
 	private List<IMarker> getRidgetMarkers() {

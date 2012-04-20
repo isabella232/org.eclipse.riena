@@ -19,6 +19,7 @@ import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.beans.common.PersonFactory;
 import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
+import org.eclipse.riena.ui.ridgets.IRidgetContentFilterHolder;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSelectableRidget;
 
@@ -60,8 +61,7 @@ public class AbstractSelectableRidgetTest extends RienaTestCase {
 	public void testGeMultiSelection() throws Exception {
 		ridget.setSelectionType(ISelectableRidget.SelectionType.MULTI);
 		assertNull(ridget.getMultiSelection());
-		final List<Person> value = Arrays.asList(new Person[] { PersonFactory.createPersonList().get(0),
-				PersonFactory.createPersonList().get(1) });
+		final List<Person> value = Arrays.asList(new Person[] { PersonFactory.createPersonList().get(0), PersonFactory.createPersonList().get(1) });
 		ridget.getMultiSelectionObservable().addAll(value);
 		assertEquals(2, ridget.getMultiSelection().size());
 		ridget.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
@@ -89,6 +89,17 @@ public class AbstractSelectableRidgetTest extends RienaTestCase {
 		@Override
 		public boolean isDisableMandatoryMarker() {
 			return false;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see org.eclipse.riena.ui.ridgets.swt.AbstractSelectableRidget#getFilterHolder()
+		 */
+		@Override
+		protected IRidgetContentFilterHolder<?> getFilterHolder() {
+			// TODO Auto-generated method stub
+			return null;
 		}
 
 	}

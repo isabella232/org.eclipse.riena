@@ -122,6 +122,7 @@ public final class ApplicationNodeManager {
 	 * @param node
 	 *            - module node
 	 * @return active sub-module or {@code null} if no active child exists
+	 * @since 4.0
 	 */
 	public static ISubModuleNode getActiveSubModule(final IModuleNode node) {
 
@@ -142,6 +143,7 @@ public final class ApplicationNodeManager {
 	 * @param node
 	 *            parent sub-module
 	 * @return active sub-module or {@code null} if no active sub-module exists
+	 * @since 4.0
 	 */
 	public static ISubModuleNode getActiveSubModule(final ISubModuleNode node) {
 

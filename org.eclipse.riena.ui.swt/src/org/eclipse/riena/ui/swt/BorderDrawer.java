@@ -40,7 +40,7 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
  * </ul>
  * The registration/unregistration is implemented in the <tt>register()</tt> and <tt>unregister()</tt> methods, which must be called by clients.
  * 
- * @since 4.1
+ * @since 4.0
  */
 public class BorderDrawer implements Listener {
 

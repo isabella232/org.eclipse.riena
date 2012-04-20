@@ -28,6 +28,7 @@ import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
+import org.eclipse.riena.ui.ridgets.IRidgetContentFilter;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ITreeRidget;
 import org.eclipse.riena.ui.ridgets.tree2.ITreeNode;
@@ -41,6 +42,7 @@ public class TreeSubModuleController extends SubModuleController {
 	private int nodeCount = 0;
 	private IActionRidget buttonRename;
 	private ITreeRidget tree;
+	private final OneContentFilter contentFilter = new OneContentFilter();
 
 	public TreeSubModuleController() {
 		this(null);
@@ -66,6 +68,16 @@ public class TreeSubModuleController extends SubModuleController {
 		tree.bindToModel(roots, TreeNode.class, TreeNode.PROPERTY_CHILDREN, TreeNode.PROPERTY_PARENT, TreeNode.PROPERTY_VALUE, TreeNode.PROPERTY_ENABLED,
 				TreeNode.PROPERTY_VISIBLE);
 		tree.setSelection(roots[0].getChildren().get(0));
+	}
+
+	private class OneContentFilter implements IRidgetContentFilter {
+		public boolean isElementVisible(final Object parentElement, final Object element) {
+			if (element instanceof ITreeNode) {
+				final String content = (String) ((ITreeNode) element).getValue();
+				return !(null != content && content.contains("1")); //$NON-NLS-1$
+			}
+			return true;
+		}
 	}
 
 	/**
@@ -174,25 +186,17 @@ public class TreeSubModuleController extends SubModuleController {
 			}
 		});
 
-		buttonHide.setText("&Hide"); //$NON-NLS-1$
+		buttonHide.setText("Apply filter"); //$NON-NLS-1$
 		buttonHide.addListener(new IActionListener() {
 			public void callback() {
-				final TreeNode node = (TreeNode) tree.getSingleSelectionObservable().getValue();
-				if (node != null) {
-					node.setVisible(false);
-				}
+				tree.addFilter(contentFilter);
 			}
 		});
 
-		buttonShow.setText("Sho&w children"); //$NON-NLS-1$
+		buttonShow.setText("Remove filter"); //$NON-NLS-1$
 		buttonShow.addListener(new IActionListener() {
 			public void callback() {
-				final TreeNode node = (TreeNode) tree.getSingleSelectionObservable().getValue();
-				if (node != null) {
-					for (final ITreeNode child : node.getChildren()) {
-						((TreeNode) child).setVisible(true);
-					}
-				}
+				tree.removeFilter(contentFilter);
 			}
 		});
 

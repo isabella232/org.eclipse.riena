@@ -19,7 +19,7 @@ import org.eclipse.riena.ui.common.ISortableByColumn;
 /**
  * Ridget for a table.
  */
-public interface ITableRidget extends ISelectableIndexedRidget, ISortableByColumn {
+public interface ITableRidget extends ISelectableIndexedRidget, ISortableByColumn, IFilterableContentRidget {
 
 	/**
 	 * Binds the table to the model data.
@@ -29,22 +29,15 @@ public interface ITableRidget extends ISelectableIndexedRidget, ISortableByColum
 	 * @param rowClass
 	 *            The class of the objects in the list.
 	 * @param columnPropertyNames
-	 *            The list of property names that are to be displayed in the
-	 *            columns. One property per column. Each object in
-	 *            rowObservables must have a corresponding getter. This
-	 *            parameter must be a non-null String array.
+	 *            The list of property names that are to be displayed in the columns. One property per column. Each object in rowObservables must have a
+	 *            corresponding getter. This parameter must be a non-null String array.
 	 * @param columnHeaders
-	 *            The titles of the columns to be displayed in the table header.
-	 *            May be null if no headers should be shown for this table.
-	 *            Individual array entries may be null, which will show an empty
-	 *            title in the header of that column.
+	 *            The titles of the columns to be displayed in the table header. May be null if no headers should be shown for this table. Individual array
+	 *            entries may be null, which will show an empty title in the header of that column.
 	 * @throws RuntimeException
-	 *             when columnHeaders is non-null and the the number of
-	 *             columnHeaders does not match the number of
-	 *             columnPropertyNames
+	 *             when columnHeaders is non-null and the the number of columnHeaders does not match the number of columnPropertyNames
 	 */
-	void bindToModel(IObservableList rowObservables, Class<? extends Object> rowClass, String[] columnPropertyNames,
-			String[] columnHeaders);
+	void bindToModel(IObservableList rowObservables, Class<? extends Object> rowClass, String[] columnPropertyNames, String[] columnHeaders);
 
 	/**
 	 * Binds the table to the model data.
@@ -56,35 +49,25 @@ public interface ITableRidget extends ISelectableIndexedRidget, ISortableByColum
 	 * @param rowClass
 	 *            The class of the objects in the list.
 	 * @param columnPropertyNames
-	 *            The list of property names that are to be displayed in the
-	 *            columns. One property per column. Each object in
-	 *            rowObservables must have a corresponding getter. This
-	 *            parameter must be a non-null String array.
+	 *            The list of property names that are to be displayed in the columns. One property per column. Each object in rowObservables must have a
+	 *            corresponding getter. This parameter must be a non-null String array.
 	 * @param columnHeaders
-	 *            The titles of the columns to be displayed in the header. May
-	 *            be null if no headers should be shown for this table.
-	 *            Individual array entries may be null, which will show an empty
-	 *            title in the header of that column.
+	 *            The titles of the columns to be displayed in the header. May be null if no headers should be shown for this table. Individual array entries
+	 *            may be null, which will show an empty title in the header of that column.
 	 * @throws RuntimeException
-	 *             when columnHeaders is non-null and the the number of
-	 *             columnHeaders does not match the number of
-	 *             columnPropertyNames
+	 *             when columnHeaders is non-null and the the number of columnHeaders does not match the number of columnPropertyNames
 	 */
-	void bindToModel(Object listHolder, String listPropertyName, Class<? extends Object> rowClass,
-			String[] columnPropertyNames, String[] columnHeaders);
+	void bindToModel(Object listHolder, String listPropertyName, Class<? extends Object> rowClass, String[] columnPropertyNames, String[] columnHeaders);
 
 	/**
-	 * Return an observable list of objects which can be selected through this
-	 * ridget.
+	 * Return an observable list of objects which can be selected through this ridget.
 	 * 
-	 * @return an IObservableList instance or null, if the ridget has not been
-	 *         bound to a model
+	 * @return an IObservableList instance or null, if the ridget has not been bound to a model
 	 */
 	IObservableList getObservableList();
 
 	/**
-	 * Return true, if this table allows columns to be re-arranged by the user.
-	 * The default value is false.
+	 * Return true, if this table allows columns to be re-arranged by the user. The default value is false.
 	 * 
 	 * @return true if table allows columns to be re-arranged; otherwise false
 	 */
@@ -93,32 +76,25 @@ public interface ITableRidget extends ISelectableIndexedRidget, ISortableByColum
 	/**
 	 * Refresh the given row or rows in the control.
 	 * <p>
-	 * This is useful when the values shown by the ridget do not fire property
-	 * change notifications when they are changed (pojos).
+	 * This is useful when the values shown by the ridget do not fire property change notifications when they are changed (pojos).
 	 * <p>
 	 * Does not have an effect when no control is bound.
 	 * 
 	 * @param node
-	 *            the row value that should be refreshed or null to refresh all
-	 *            rows
+	 *            the row value that should be refreshed or null to refresh all rows
 	 * @since 2.0
 	 */
 	void refresh(Object node);
 
 	/**
-	 * Set the {@link IColumnFormatter} to be used for the column at
-	 * columnIndex.
+	 * Set the {@link IColumnFormatter} to be used for the column at columnIndex.
 	 * <p>
-	 * Note: changing column formatters on a table ridget that is already bound
-	 * to a model, requires calling {@link #updateFromModel()} to apply the new
-	 * format.
+	 * Note: changing column formatters on a table ridget that is already bound to a model, requires calling {@link #updateFromModel()} to apply the new format.
 	 * 
 	 * @param columnIndex
-	 *            a columnIndex in the allowed range ( 0 &lt;= columnIndex &lt;
-	 *            numColumns )
+	 *            a columnIndex in the allowed range ( 0 &lt;= columnIndex &lt; numColumns )
 	 * @param formatter
-	 *            an IColumnFormatter instance; null removes the previously used
-	 *            formatter from the selected column
+	 *            an IColumnFormatter instance; null removes the previously used formatter from the selected column
 	 */
 	void setColumnFormatter(int columnIndex, IColumnFormatter formatter);
 
@@ -131,18 +107,14 @@ public interface ITableRidget extends ISelectableIndexedRidget, ISortableByColum
 	void clearColumnFormatters();
 
 	/**
-	 * Adjust the column widths of the ridget's table control according to the
-	 * information in the {@code widths} array.
+	 * Adjust the column widths of the ridget's table control according to the information in the {@code widths} array.
 	 * <p>
-	 * When running on SWT: {@code widths} may only contain subclasses of
-	 * ColumnLayoutData. The following layout managers are supported:
-	 * TableLayout, TableColumnLayout, other. See ColumnUtils for implementation
-	 * details.
+	 * When running on SWT: {@code widths} may only contain subclasses of ColumnLayoutData. The following layout managers are supported: TableLayout,
+	 * TableColumnLayout, other. See ColumnUtils for implementation details.
 	 * 
 	 * @param widths
-	 *            an Array with width information, one instance per column. The
-	 *            array may be null, in that case the available width is
-	 *            distributed equally to all columns
+	 *            an Array with width information, one instance per column. The array may be null, in that case the available width is distributed equally to
+	 *            all columns
 	 * @since 1.2
 	 */
 	void setColumnWidths(Object[] widths);
@@ -151,12 +123,10 @@ public interface ITableRidget extends ISelectableIndexedRidget, ISortableByColum
 	 * Sets whether the cells of the given column are editable or not.
 	 * 
 	 * @param editable
-	 *            {@code true} if the cells are editable; otherwise
-	 *            {@code false}
+	 *            {@code true} if the cells are editable; otherwise {@code false}
 	 * 
 	 * @param columnIndex
-	 *            a columnIndex in the allowed range: ( 0 &lt;= columnIndex &lt;
-	 *            numColumns )
+	 *            a columnIndex in the allowed range: ( 0 &lt;= columnIndex &lt; numColumns )
 	 * 
 	 * @throws RuntimeException
 	 *             if columnIndex is out of range
@@ -169,8 +139,7 @@ public interface ITableRidget extends ISelectableIndexedRidget, ISortableByColum
 	 * Set the {@link Comparator} to be used when sorting column at columnIndex.
 	 * 
 	 * @param columnIndex
-	 *            a columnIndex in the allowed range: ( 0 &lt;= columnIndex &lt;
-	 *            numColumns )
+	 *            a columnIndex in the allowed range: ( 0 &lt;= columnIndex &lt; numColumns )
 	 * @param comparator
 	 *            a Comparator instance; may be null
 	 * @throws RuntimeException
@@ -179,12 +148,10 @@ public interface ITableRidget extends ISelectableIndexedRidget, ISortableByColum
 	void setComparator(int columnIndex, Comparator<?> comparator);
 
 	/**
-	 * Set to true, if this table should allow columns to be re-arranged by the
-	 * user.
+	 * Set to true, if this table should allow columns to be re-arranged by the user.
 	 * 
 	 * @param moveableColumns
-	 *            true, if column should be rearrangeable by the user; false
-	 *            otherwise.
+	 *            true, if column should be rearrangeable by the user; false otherwise.
 	 */
 	void setMoveableColumns(boolean moveableColumns);
 
@@ -194,8 +161,7 @@ public interface ITableRidget extends ISelectableIndexedRidget, ISortableByColum
 	 * The JFace tool tips can be customized with {@link IColumnFormatter}.
 	 * 
 	 * @param nativeToolTip
-	 *            {@code true} (default) native/SWT tool tip; {@code false} none
-	 *            native/JFace tool tip
+	 *            {@code true} (default) native/SWT tool tip; {@code false} none native/JFace tool tip
 	 * @since 4.0
 	 */
 	void setNativeToolTip(final boolean nativeToolTip);

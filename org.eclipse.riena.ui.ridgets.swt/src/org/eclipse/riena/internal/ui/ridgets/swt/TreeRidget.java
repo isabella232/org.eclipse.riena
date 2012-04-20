@@ -102,10 +102,8 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 
 	private DataBindingContext dbc;
 	/*
-	 * Binds the viewer's multiple selection to the multiple selection
-	 * observable. This binding has to be disposed when the ridget is set to
-	 * output-only, to avoid updating the model. It has to be recreated when the
-	 * ridget is set to not-output-only.
+	 * Binds the viewer's multiple selection to the multiple selection observable. This binding has to be disposed when the ridget is set to output-only, to
+	 * avoid updating the model. It has to be recreated when the ridget is set to not-output-only.
 	 */
 	private Binding viewerMSB;
 
@@ -114,12 +112,10 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	private TreeItem[] savedSelection;
 
 	/*
-	 * The original array of elements given as input to the ridget via the
-	 * #bindToModel method. The ridget however works with the copy (treeRoots)
-	 * in order to be independent of modification to the original array.
+	 * The original array of elements given as input to the ridget via the #bindToModel method. The ridget however works with the copy (treeRoots) in order to
+	 * be independent of modification to the original array.
 	 * 
-	 * Calling #updateFromModel will synchronize the treeRoots array with the
-	 * model array.
+	 * Calling #updateFromModel will synchronize the treeRoots array with the model array.
 	 */
 	private Object[] model;
 	private Object[] treeRoots;
@@ -134,6 +130,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	private String openNodeImageAccessor;
 	private String checkExpandedMethod;
 	private boolean showRoots = true;
+	private StructuredViewerFilterHolder filterHolder;
 
 	public TreeRidget() {
 		selectionTypeEnforcer = new SelectionTypeEnforcer();
@@ -168,6 +165,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 			updateExpansionState();
 			applyEraseListener();
 			applyTableColumnHeaders(control);
+			getFilterHolder().activate(viewer);
 		}
 	}
 
@@ -179,6 +177,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	@Override
 	protected void unbindUIControl() {
 		super.unbindUIControl();
+		getFilterHolder().deactivate(viewer);
 		if (viewer != null) {
 			final Object[] elements = viewer.getExpandedElements();
 			final ExpansionCommand cmd = new ExpansionCommand(ExpansionState.RESTORE, elements);
@@ -211,8 +210,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	protected final List<?> getRowObservables() {
 		List<?> result = null;
 		if (viewer != null) { // have roots and control
-			final ObservableListTreeContentProvider cp = (ObservableListTreeContentProvider) viewer
-					.getContentProvider();
+			final ObservableListTreeContentProvider cp = (ObservableListTreeContentProvider) viewer.getContentProvider();
 			result = new ArrayList<Object>(cp.getKnownElements());
 		} else if (treeRoots != null) { // have roots only
 			result = collectAllElements();
@@ -220,19 +218,17 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		return result;
 	}
 
-	protected void bindToModel(final Object[] treeRoots, final Class<? extends Object> treeElementClass,
-			final String childrenAccessor, final String parentAccessor, final String[] valueAccessors,
-			final String[] columnHeaders, final String enablementAccessor, final String visibilityAccessor,
-			final String imageAccessor, final String openNodeImageAccessor) {
+	protected void bindToModel(final Object[] treeRoots, final Class<? extends Object> treeElementClass, final String childrenAccessor,
+			final String parentAccessor, final String[] valueAccessors, final String[] columnHeaders, final String enablementAccessor,
+			final String visibilityAccessor, final String imageAccessor, final String openNodeImageAccessor) {
 
-		this.bindToModel(treeRoots, treeElementClass, childrenAccessor, parentAccessor, valueAccessors, columnHeaders,
-				enablementAccessor, visibilityAccessor, imageAccessor, openNodeImageAccessor, null);
+		this.bindToModel(treeRoots, treeElementClass, childrenAccessor, parentAccessor, valueAccessors, columnHeaders, enablementAccessor, visibilityAccessor,
+				imageAccessor, openNodeImageAccessor, null);
 	}
 
-	protected void bindToModel(final Object[] treeRoots, final Class<? extends Object> treeElementClass,
-			final String childrenAccessor, final String parentAccessor, final String[] valueAccessors,
-			final String[] columnHeaders, final String enablementAccessor, final String visibilityAccessor,
-			final String imageAccessor, final String openNodeImageAccessor, final String expandedAccessor) {
+	protected void bindToModel(final Object[] treeRoots, final Class<? extends Object> treeElementClass, final String childrenAccessor,
+			final String parentAccessor, final String[] valueAccessors, final String[] columnHeaders, final String enablementAccessor,
+			final String visibilityAccessor, final String imageAccessor, final String openNodeImageAccessor, final String expandedAccessor) {
 		Assert.isNotNull(treeRoots);
 		Assert.isLegal(treeRoots.length > 0, "treeRoots must have at least one entry"); //$NON-NLS-1$
 		Assert.isNotNull(treeElementClass);
@@ -285,8 +281,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	}
 
 	/**
-	 * Adds commands for expansion AND collapsion for all descendants of the
-	 * given root element to the <code>expansionStack</code> .
+	 * Adds commands for expansion AND collapsion for all descendants of the given root element to the <code>expansionStack</code> .
 	 * 
 	 * @param element
 	 *            root element
@@ -333,14 +328,11 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	}
 
 	/**
-	 * Returns the column formatters for this ridget. Each entry in the array
-	 * corresponds to a column (i.e. 0 for the 1st column, 1 for the 2nd, etc).
-	 * If a column has no formatter associated, the array entry will be null.
-	 * The array has the length {@code numColumns}.
+	 * Returns the column formatters for this ridget. Each entry in the array corresponds to a column (i.e. 0 for the 1st column, 1 for the 2nd, etc). If a
+	 * column has no formatter associated, the array entry will be null. The array has the length {@code numColumns}.
 	 * <p>
-	 * Implementation note: This ridget does not support columns, so this array
-	 * will be filled with null entries. Subclasses that support column
-	 * formatters must override to return an appropriate array.
+	 * Implementation note: This ridget does not support columns, so this array will be filled with null entries. Subclasses that support column formatters must
+	 * override to return an appropriate array.
 	 * 
 	 * @param numColumns
 	 *            return the number of columns, an integer >= 0.
@@ -353,8 +345,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	/**
 	 * This method changes the width of the Tree's columns.
 	 * <p>
-	 * Does nothing by default. Subclasses implementing {@link ITreeTableRidget}
-	 * must override.
+	 * Does nothing by default. Subclasses implementing {@link ITreeTableRidget} must override.
 	 * 
 	 * @param control
 	 *            the Tree control; never null
@@ -371,6 +362,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		return (Tree) super.getUIControl();
 	}
 
+	@Override
 	public void addDoubleClickListener(final IActionListener listener) {
 		Assert.isNotNull(listener, "listener is null"); //$NON-NLS-1$
 		if (doubleClickListeners == null) {
@@ -382,8 +374,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * This implementation will try to expand the path to the give option, to
-	 * ensure that the corresponding tree element exists.
+	 * This implementation will try to expand the path to the give option, to ensure that the corresponding tree element exists.
 	 */
 	@Override
 	public boolean containsOption(final Object option) {
@@ -391,8 +382,8 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		return super.containsOption(option);
 	}
 
-	public void bindToModel(final Object[] treeRoots, final Class<? extends Object> treeElementClass,
-			final String childrenAccessor, final String parentAccessor, final String valueAccessor) {
+	public void bindToModel(final Object[] treeRoots, final Class<? extends Object> treeElementClass, final String childrenAccessor,
+			final String parentAccessor, final String valueAccessor) {
 		Assert.isNotNull(valueAccessor);
 		final String[] myValueAccessors = new String[] { valueAccessor };
 		final String[] noColumnHeaders = null;
@@ -400,54 +391,50 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		final String noVisibilityAccessor = null;
 		final String noImageAccessor = null;
 		final String noOpenNodeImageAccessor = null;
-		this.bindToModel(treeRoots, treeElementClass, childrenAccessor, parentAccessor, myValueAccessors,
-				noColumnHeaders, noEnablementAccessor, noVisibilityAccessor, noImageAccessor, noOpenNodeImageAccessor);
+		this.bindToModel(treeRoots, treeElementClass, childrenAccessor, parentAccessor, myValueAccessors, noColumnHeaders, noEnablementAccessor,
+				noVisibilityAccessor, noImageAccessor, noOpenNodeImageAccessor);
 	}
 
-	public void bindToModel(final Object[] treeRoots, final Class<? extends Object> treeElementClass,
-			final String childrenAccessor, final String parentAccessor, final String valueAccessor,
-			final String enablementAccessor, final String visibilityAccessor) {
+	public void bindToModel(final Object[] treeRoots, final Class<? extends Object> treeElementClass, final String childrenAccessor,
+			final String parentAccessor, final String valueAccessor, final String enablementAccessor, final String visibilityAccessor) {
 		Assert.isNotNull(valueAccessor);
 		final String[] myValueAccessors = new String[] { valueAccessor };
 		final String[] noColumnHeaders = null;
 		final String noImageAccessor = null;
 		final String noOpenNodeImageAccessor = null;
-		this.bindToModel(treeRoots, treeElementClass, childrenAccessor, parentAccessor, myValueAccessors,
-				noColumnHeaders, enablementAccessor, visibilityAccessor, noImageAccessor, noOpenNodeImageAccessor);
+		this.bindToModel(treeRoots, treeElementClass, childrenAccessor, parentAccessor, myValueAccessors, noColumnHeaders, enablementAccessor,
+				visibilityAccessor, noImageAccessor, noOpenNodeImageAccessor);
 	}
 
-	public void bindToModel(final Object[] treeRoots, final Class<? extends Object> treeElementClass,
-			final String childrenAccessor, final String parentAccessor, final String valueAccessor,
-			final String enablementAccessor, final String visibilityAccessor, final String imageAccessor) {
+	public void bindToModel(final Object[] treeRoots, final Class<? extends Object> treeElementClass, final String childrenAccessor,
+			final String parentAccessor, final String valueAccessor, final String enablementAccessor, final String visibilityAccessor,
+			final String imageAccessor) {
 		Assert.isNotNull(valueAccessor);
 		final String[] myValueAccessors = new String[] { valueAccessor };
 		final String[] noColumnHeaders = null;
 		final String noOpenNodeImageAccessor = null;
-		this.bindToModel(treeRoots, treeElementClass, childrenAccessor, parentAccessor, myValueAccessors,
-				noColumnHeaders, enablementAccessor, visibilityAccessor, imageAccessor, noOpenNodeImageAccessor);
+		this.bindToModel(treeRoots, treeElementClass, childrenAccessor, parentAccessor, myValueAccessors, noColumnHeaders, enablementAccessor,
+				visibilityAccessor, imageAccessor, noOpenNodeImageAccessor);
 	}
 
-	public void bindToModel(final Object[] treeRoots, final Class<? extends Object> treeElementClass,
-			final String childrenAccessor, final String parentAccessor, final String valueAccessor,
-			final String enablementAccessor, final String visibilityAccessor, final String imageAccessor,
-			final String openNodeImageAccessor) {
+	public void bindToModel(final Object[] treeRoots, final Class<? extends Object> treeElementClass, final String childrenAccessor,
+			final String parentAccessor, final String valueAccessor, final String enablementAccessor, final String visibilityAccessor,
+			final String imageAccessor, final String openNodeImageAccessor) {
 		Assert.isNotNull(valueAccessor);
 		final String[] myValueAccessors = new String[] { valueAccessor };
 		final String[] noColumnHeaders = null;
-		this.bindToModel(treeRoots, treeElementClass, childrenAccessor, parentAccessor, myValueAccessors,
-				noColumnHeaders, enablementAccessor, visibilityAccessor, imageAccessor, openNodeImageAccessor);
+		this.bindToModel(treeRoots, treeElementClass, childrenAccessor, parentAccessor, myValueAccessors, noColumnHeaders, enablementAccessor,
+				visibilityAccessor, imageAccessor, openNodeImageAccessor);
 	}
 
-	public void bindToModel(final Object[] treeRoots, final Class<? extends Object> treeElementClass,
-			final String childrenAccessor, final String parentAccessor, final String valueAccessor,
-			final String enablementAccessor, final String visibilityAccessor, final String imageAccessor,
-			final String openNodeImageAccessor, final String expandedAccessor) {
+	public void bindToModel(final Object[] treeRoots, final Class<? extends Object> treeElementClass, final String childrenAccessor,
+			final String parentAccessor, final String valueAccessor, final String enablementAccessor, final String visibilityAccessor,
+			final String imageAccessor, final String openNodeImageAccessor, final String expandedAccessor) {
 		Assert.isNotNull(valueAccessor);
 		final String[] myValueAccessors = new String[] { valueAccessor };
 		final String[] noColumnHeaders = null;
-		this.bindToModel(treeRoots, treeElementClass, childrenAccessor, parentAccessor, myValueAccessors,
-				noColumnHeaders, enablementAccessor, visibilityAccessor, imageAccessor, openNodeImageAccessor,
-				expandedAccessor);
+		this.bindToModel(treeRoots, treeElementClass, childrenAccessor, parentAccessor, myValueAccessors, noColumnHeaders, enablementAccessor,
+				visibilityAccessor, imageAccessor, openNodeImageAccessor, expandedAccessor);
 	}
 
 	public void collapse(final Object element) {
@@ -479,8 +466,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	}
 
 	/**
-	 * Always returns true because mandatory markers do not make sense for this
-	 * ridget.
+	 * Always returns true because mandatory markers do not make sense for this ridget.
 	 */
 	@Override
 	public boolean isDisableMandatoryMarker() {
@@ -493,6 +479,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		}
 	}
 
+	@Override
 	public void removeDoubleClickListener(final IActionListener listener) {
 		if (doubleClickListeners != null) {
 			doubleClickListeners.remove(listener);
@@ -502,9 +489,8 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * For each selection candidate in the List <tt>newSelection</tt>, this
-	 * implementation will try to expand the path to the corresponding tree
-	 * node, to ensure that the corresponding tree element is selectable.
+	 * For each selection candidate in the List <tt>newSelection</tt>, this implementation will try to expand the path to the corresponding tree node, to ensure
+	 * that the corresponding tree element is selectable.
 	 */
 	@Override
 	public final void setSelection(final List<?> newSelection) {
@@ -518,11 +504,9 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	 * <p>
 	 * Implementation notes:
 	 * <ul>
-	 * <li>If showRoots is false, the children of the first entry in the array
-	 * of treeRoots will be shown at level-0 of the tree</li>
-	 * <li>This method must be ivoked before calling bindToModel(...). If
-	 * changed afterwards it requires a call to bindToModel() or
-	 * updateFromModel() to take effect.</li>
+	 * <li>If showRoots is false, the children of the first entry in the array of treeRoots will be shown at level-0 of the tree</li>
+	 * <li>This method must be ivoked before calling bindToModel(...). If changed afterwards it requires a call to bindToModel() or updateFromModel() to take
+	 * effect.</li>
 	 * </ul>
 	 */
 	public void setRootsVisible(final boolean showRoots) {
@@ -620,9 +604,8 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 
 		// labels
 		final IColumnFormatter[] formatters = getColumnFormatters(valueAccessors.length);
-		final ILabelProvider viewerLP = TreeRidgetLabelProvider.createLabelProvider(viewer, treeElementClass,
-				viewerCP.getKnownElements(), valueAccessors, enablementAccessor, imageAccessor, openNodeImageAccessor,
-				formatters);
+		final ILabelProvider viewerLP = TreeRidgetLabelProvider.createLabelProvider(viewer, treeElementClass, viewerCP.getKnownElements(), valueAccessors,
+				enablementAccessor, imageAccessor, openNodeImageAccessor, formatters);
 		viewer.setLabelProvider(viewerLP);
 
 		// input
@@ -645,9 +628,8 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		dbc = new DataBindingContext();
 		// viewer to single selection binding
 		final IObservableValue viewerSelection = ViewersObservables.observeSingleSelection(viewer);
-		dbc.bindValue(viewerSelection, getSingleSelectionObservable(), new UpdateValueStrategy(
-				UpdateValueStrategy.POLICY_UPDATE).setAfterGetValidator(new OutputAwareValidator(this)),
-				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
+		dbc.bindValue(viewerSelection, getSingleSelectionObservable(), new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE)
+				.setAfterGetValidator(new OutputAwareValidator(this)), new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
 		// viewer to multi selection binding
 		viewerMSB = null;
 		if (!isOutputOnly()) {
@@ -670,11 +652,9 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	}
 
 	/**
-	 * Collects all children of the given parent and adds them to the given
-	 * list.
+	 * Collects all children of the given parent and adds them to the given list.
 	 * <p>
-	 * <b>Note</b>: First the leaf of a sub-tree is added, than the parent of
-	 * the leaf, etc. till the root of the sub-tree.
+	 * <b>Note</b>: First the leaf of a sub-tree is added, than the parent of the leaf, etc. till the root of the sub-tree.
 	 * 
 	 * @param parent
 	 *            parent element
@@ -728,14 +708,13 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		if (viewerMSB == null && dbc != null && viewer != null) {
 			final StructuredSelection currentSelection = new StructuredSelection(getSelection());
 			final IViewerObservableList viewerSelections = ViewersObservables.observeMultiSelection(viewer);
-			viewerMSB = dbc.bindList(viewerSelections, getMultiSelectionObservable(), new UpdateListStrategy(
-					UpdateListStrategy.POLICY_UPDATE), new UpdateListStrategy(UpdateListStrategy.POLICY_UPDATE));
+			viewerMSB = dbc.bindList(viewerSelections, getMultiSelectionObservable(), new UpdateListStrategy(UpdateListStrategy.POLICY_UPDATE),
+					new UpdateListStrategy(UpdateListStrategy.POLICY_UPDATE));
 			viewer.setSelection(currentSelection);
 		}
 	}
 
-	private IObservableMap createObservableAttribute(final ObservableListTreeContentProvider viewerCP,
-			final String accessor) {
+	private IObservableMap createObservableAttribute(final ObservableListTreeContentProvider viewerCP, final String accessor) {
 		IObservableMap result = null;
 		if (accessor != null) {
 			if (AbstractSWTWidgetRidget.isBean(treeElementClass)) {
@@ -761,11 +740,9 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	}
 
 	/**
-	 * Filters out elements that are not visible. Monitors element visibility
-	 * and updates the tree ridget.
+	 * Filters out elements that are not visible. Monitors element visibility and updates the tree ridget.
 	 */
-	private void monitorVisibility(final TreeViewer viewer, final TreeStructureAdvisor structureAdvisor,
-			final IObservableMap visibilityAttr) {
+	private void monitorVisibility(final TreeViewer viewer, final TreeStructureAdvisor structureAdvisor, final IObservableMap visibilityAttr) {
 		if (visibilityAttr != null) {
 			viewer.addFilter(new ViewerFilter() {
 				@Override
@@ -792,8 +769,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	}
 
 	/**
-	 * Prevent disabled items from being selected. This listener is executed
-	 * before the SelectionTypeEnforcer.
+	 * Prevent disabled items from being selected. This listener is executed before the SelectionTypeEnforcer.
 	 */
 	private void preventDisabledItemSelection(final IObservableMap enablementAttr) {
 		if (enablementAttr != null) {
@@ -814,8 +790,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 					}
 					if (changed) {
 						/*
-						 * If the current selection is empty after rejecting
-						 * disabled elements, restore the last selection.
+						 * If the current selection is empty after rejecting disabled elements, restore the last selection.
 						 */
 						if (newSel.isEmpty() && lastSel != null) {
 							viewer.setSelection(new StructuredSelection(lastSel));
@@ -834,8 +809,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	}
 
 	/**
-	 * Expand tree paths to candidates before selecting them. This ensures the
-	 * tree items to the candidates are created and the candidates become
+	 * Expand tree paths to candidates before selecting them. This ensures the tree items to the candidates are created and the candidates become
 	 * "known elements" (if they exist).
 	 */
 	private void reveal(final Object[] candidates) {
@@ -879,8 +853,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	}
 
 	/**
-	 * Updates the expand / collapse state of the viewers model, based on a FIFO
-	 * queue of {@link ExpansionCommand}s.
+	 * Updates the expand / collapse state of the viewers model, based on a FIFO queue of {@link ExpansionCommand}s.
 	 */
 	private void updateExpansionState() {
 		if (viewer != null) {
@@ -917,6 +890,14 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 				viewer.getControl().setRedraw(true);
 			}
 		}
+	}
+
+	@Override
+	protected StructuredViewerFilterHolder getFilterHolder() {
+		if (filterHolder == null) {
+			filterHolder = new StructuredViewerFilterHolder();
+		}
+		return filterHolder;
 	}
 
 	// helping classes
@@ -970,8 +951,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		 * @param state
 		 *            an expansion modification
 		 * @param element
-		 *            the element to expand / collapse (null for FULLY_EXPAND /
-		 *            FULLY_COLLAPSE)
+		 *            the element to expand / collapse (null for FULLY_EXPAND / FULLY_COLLAPSE)
 		 */
 		ExpansionCommand(final ExpansionState state, final Object element) {
 			this.state = state;
@@ -980,8 +960,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	}
 
 	/**
-	 * Disallows multiple selection is the selection type of the ridget is
-	 * {@link ISelectableRidget.SelectionType#SINGLE}.
+	 * Disallows multiple selection is the selection type of the ridget is {@link ISelectableRidget.SelectionType#SINGLE}.
 	 */
 	private final class SelectionTypeEnforcer extends SelectionAdapter {
 		@Override
@@ -1025,11 +1004,8 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	/**
 	 * This class is used as the tree viewer's input when showRoots is false.
 	 * <p>
-	 * It uses reflection to obtain the current list of children from the real
-	 * root of the model, while keeping the input element (i.e. this instance)
-	 * int the tree all the time. This workaround allows us to update the
-	 * level-0 of the tree without having to call setInput(...) on the tree
-	 * viewer:
+	 * It uses reflection to obtain the current list of children from the real root of the model, while keeping the input element (i.e. this instance) int the
+	 * tree all the time. This workaround allows us to update the level-0 of the tree without having to call setInput(...) on the tree viewer:
 	 * 
 	 * <pre>
 	 * FakeRoot fakeRoot;
@@ -1039,8 +1015,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	 * viewer.refresh(fakeRoot);
 	 * </pre>
 	 * 
-	 * It uses reflection to obtain a n update list of children from the real
-	 * root of the model.
+	 * It uses reflection to obtain a n update list of children from the real root of the model.
 	 * 
 	 * @see TreeRidget#bindToModel(Object[], Class, String, String, String)
 	 * @see TreeContentProvider
@@ -1065,14 +1040,11 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	}
 
 	/**
-	 * Advisor class for the Eclipse 3.4 tree databinding framework. See {link
-	 * TreeStructureAdvisor}.
+	 * Advisor class for the Eclipse 3.4 tree databinding framework. See {link TreeStructureAdvisor}.
 	 * <p>
-	 * This advisor uses the supplied property name and elementClass to invoke
-	 * an appropriate accessor (get/isXXX method) on a element in the tree.
+	 * This advisor uses the supplied property name and elementClass to invoke an appropriate accessor (get/isXXX method) on a element in the tree.
 	 * <p>
-	 * This functionality is used by the databinding framework to perform expand
-	 * operations.
+	 * This functionality is used by the databinding framework to perform expand operations.
 	 * 
 	 * @see TreeStructureAdvisor
 	 */
@@ -1125,14 +1097,11 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	}
 
 	/**
-	 * This change listener reacts to additions / removals of objects from the
-	 * tree and is responsible for updating the image of the <b>parent</b>
-	 * element. Specifically:
+	 * This change listener reacts to additions / removals of objects from the tree and is responsible for updating the image of the <b>parent</b> element.
+	 * Specifically:
 	 * <ul>
-	 * <li>if B gets added to A we have to refresh the icon of A, if A did not
-	 * have any children beforehand</li>
-	 * <li>if B gets removed to A we have to refresh the icon of A, if B was the
-	 * last child underneath A</li>
+	 * <li>if B gets added to A we have to refresh the icon of A, if A did not have any children beforehand</li>
+	 * <li>if B gets removed to A we have to refresh the icon of A, if B was the last child underneath A</li>
 	 * <ul>
 	 */
 	private static final class TreeContentChangeListener implements ISetChangeListener {
@@ -1174,5 +1143,4 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 			}
 		}
 	}
-
 }

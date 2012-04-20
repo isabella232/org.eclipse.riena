@@ -8,13 +8,14 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.ridgets;
+package org.eclipse.riena.ui.ridgets.swt.optional;
 
 import java.util.Comparator;
 
 import org.eclipse.core.databinding.observable.list.IObservableList;
 
 import org.eclipse.riena.ui.common.ISortableByColumn;
+import org.eclipse.riena.ui.ridgets.ISelectableIndexedRidget;
 
 /**
  * Ridget for a complex table.

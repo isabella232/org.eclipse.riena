@@ -38,11 +38,12 @@ import org.eclipse.riena.internal.ui.ridgets.swt.TableRidgetLabelProvider;
 import org.eclipse.riena.ui.ridgets.IColumnFormatter;
 import org.eclipse.riena.ui.ridgets.listener.ClickEvent;
 import org.eclipse.riena.ui.ridgets.swt.SortableComparator;
+import org.eclipse.riena.ui.ridgets.swt.optional.IGridRidget;
 
 /**
  * Ridget for SWT/Nebula {@link Grid} widgets.
  */
-public class GridRidget extends AbstractTableRidget {
+public class GridRidget extends AbstractTableRidget implements IGridRidget {
 
 	private final GridCellRenderer cellRenderer;
 	private final GridCellRenderer emptyCellRenderer;
@@ -257,11 +258,9 @@ public class GridRidget extends AbstractTableRidget {
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * Sets for every item the tool tip text. The text can be configured with
-	 * the {@link IColumnFormatter}.
+	 * Sets for every item the tool tip text. The text can be configured with the {@link IColumnFormatter}.
 	 * <p>
-	 * <i>note: The tool tip of a grid is only shown, if in a cell not the
-	 * complete text can be displayed.</i>
+	 * <i>note: The tool tip of a grid is only shown, if in a cell not the complete text can be displayed.</i>
 	 */
 	@Override
 	protected final void updateToolTipSupport() {
@@ -321,12 +320,10 @@ public class GridRidget extends AbstractTableRidget {
 	}
 
 	/**
-	 * Returns the 0 based index of the column at {@code pt}. The code can
-	 * handle re-ordered columns. The index refers to the original ordering (as
-	 * used by SWT API).
+	 * Returns the 0 based index of the column at {@code pt}. The code can handle re-ordered columns. The index refers to the original ordering (as used by SWT
+	 * API).
 	 * <p>
-	 * Will return -1 if no column could be computed -- this is the case when
-	 * all columns are resized to have width 0.
+	 * Will return -1 if no column could be computed -- this is the case when all columns are resized to have width 0.
 	 */
 	private int findColumn(final Grid grid, final Point pt) {
 		int width = 0;
@@ -349,8 +346,7 @@ public class GridRidget extends AbstractTableRidget {
 	}
 
 	/**
-	 * Selection listener for table headers that changes the sort order of a
-	 * column according to the information stored in the ridget.
+	 * Selection listener for table headers that changes the sort order of a column according to the information stored in the ridget.
 	 */
 	private final class ColumnSortListener extends SelectionAdapter {
 		@Override

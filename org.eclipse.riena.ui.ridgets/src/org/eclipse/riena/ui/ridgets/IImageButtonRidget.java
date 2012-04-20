@@ -12,6 +12,8 @@ package org.eclipse.riena.ui.ridgets;
 
 /**
  * A ridget for a tool item.
+ * 
+ * @since 4.0
  */
 public interface IImageButtonRidget extends IActionRidget {
 

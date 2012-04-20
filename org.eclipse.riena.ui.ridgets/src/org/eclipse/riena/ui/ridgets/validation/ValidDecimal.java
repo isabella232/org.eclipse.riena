@@ -28,15 +28,21 @@ import org.eclipse.riena.core.util.PropertiesUtils;
 import org.eclipse.riena.ui.ridgets.nls.Messages;
 
 /**
- * Checks if a given string could be safely converted to a decimal number, that
- * is a number with a fraction part. <br>
+ * Checks if a given string could be safely converted to a decimal number, that is a number with a fraction part. <br>
  * <br>
  * 
- * This rule supports partial correctness checking. Partial correct means that
- * we do not treat missing fraction as error, where &quot;missing fraction&quot;
+ * This rule supports partial correctness checking. Partial correct means that we do not treat missing fraction as error, where &quot;missing fraction&quot;
  * means there no fraction digit.
  */
 public class ValidDecimal implements IValidator, IExecutableExtension {
+	/**
+	 * @since 4.0
+	 */
+	protected static final int DEFAULT_MAX_LENGTH = 15;
+	/**
+	 * @since 4.0
+	 */
+	protected static final int DEFAULT_NUMBER_OF_FRACTION_DIGITS = 2;
 
 	private static final char FRENCH_GROUPING_SEPARATOR = (char) 0xA0;
 	private boolean partialCheckSupported;
@@ -45,10 +51,10 @@ public class ValidDecimal implements IValidator, IExecutableExtension {
 	private int numberOfFractionDigits;
 	private int maxLength;
 	private Locale locale;
+	private boolean groupingInMessage = true;
 
 	/**
-	 * Constructs a decimal type check rule with no partialChecking and the
-	 * default {@code Locale}.
+	 * Constructs a decimal type check rule with no partialChecking and the default {@code Locale}.
 	 * 
 	 */
 	public ValidDecimal() {
@@ -56,10 +62,8 @@ public class ValidDecimal implements IValidator, IExecutableExtension {
 	}
 
 	/**
-	 * Constructs a decimal type check rule with no partialChecking and the
-	 * given {@code Locale}.<br>
-	 * <b>Note:</b> this constructor sets {@code maxLength} to 15 and
-	 * {@code numberOfFractionDigits} to 2
+	 * Constructs a decimal type check rule with no partialChecking and the given {@code Locale}.<br>
+	 * <b>Note:</b> this constructor sets {@code maxLength} to 15 and {@code numberOfFractionDigits} to 2
 	 * 
 	 * @param locale
 	 *            the {@code Locale} to use for number formatting; never null.
@@ -77,7 +81,7 @@ public class ValidDecimal implements IValidator, IExecutableExtension {
 	 *            the {@code Locale} to use for number formatting; never null
 	 */
 	public ValidDecimal(final boolean partialCheckSupported, final Locale locale) {
-		this(partialCheckSupported, 2, 15, false, locale);
+		this(partialCheckSupported, DEFAULT_NUMBER_OF_FRACTION_DIGITS, DEFAULT_MAX_LENGTH, false, locale);
 	}
 
 	/**
@@ -94,8 +98,7 @@ public class ValidDecimal implements IValidator, IExecutableExtension {
 	 * @param locale
 	 *            the {@code Locale} to use for number formatting; never null
 	 */
-	public ValidDecimal(final boolean partialCheckSupported, final int numberOfFractionDigits, final int maxLength,
-			final boolean withSign, final Locale locale) {
+	public ValidDecimal(final boolean partialCheckSupported, final int numberOfFractionDigits, final int maxLength, final boolean withSign, final Locale locale) {
 		Assert.isNotNull(locale);
 		this.partialCheckSupported = partialCheckSupported;
 		this.numberOfFractionDigits = numberOfFractionDigits;
@@ -105,10 +108,37 @@ public class ValidDecimal implements IValidator, IExecutableExtension {
 	}
 
 	/**
-	 * Validates the given object. If the object is no String instance, a
-	 * {@link ValidationFailure} will be thrown. The rule validates if the given
-	 * object is a string, a well formed decimal according to the rule's
-	 * {@linkplain Locale}.
+	 * Configure whether the numbers, cited in the validation status messages should be grouped or not.
+	 * <p>
+	 * The default for this setting is <code>true</code>.
+	 * 
+	 * @param groupingInMessage
+	 *            the groupingInMessage to set
+	 * @since 4.0
+	 */
+	public void setGroupingInMessage(final boolean groupingInMessage) {
+		this.groupingInMessage = groupingInMessage;
+	}
+
+	/**
+	 * @return the groupingInMessage <code>true</code> if this validator will use grouping in its status messages.
+	 * @since 4.0
+	 */
+	protected boolean isGroupingInMessage() {
+		return groupingInMessage;
+	}
+
+	/**
+	 * @return the locale that is used in this validator
+	 * @since 4.0
+	 */
+	protected Locale getLocale() {
+		return locale;
+	}
+
+	/**
+	 * Validates the given object. If the object is no String instance, a {@link ValidationFailure} will be thrown. The rule validates if the given object is a
+	 * string, a well formed decimal according to the rule's {@linkplain Locale}.
 	 * 
 	 * @param object
 	 *            the object to validate, must be of type String.
@@ -132,15 +162,13 @@ public class ValidDecimal implements IValidator, IExecutableExtension {
 					if (scanned.groupingSeparatorIndex > scanned.decimalSeparatorIndex) {
 						final Character groupSep = Character.valueOf(getSymbols().getGroupingSeparator());
 						final Character decSep = Character.valueOf(getSymbols().getDecimalSeparator());
-						final String message = NLS.bind(Messages.ValidDecimal_error_trailingGroupSep, new Object[] {
-								groupSep, decSep, string });
+						final String message = NLS.bind(Messages.ValidDecimal_error_trailingGroupSep, new Object[] { groupSep, decSep, string });
 						return ValidationRuleStatus.error(true, message);
 					}
 				}
 				// test if alien character present:
 				if (scanned.lastAlienCharIndex > -1) {
-					final String message = NLS.bind(Messages.ValidDecimal_error_alienChar,
-							Character.valueOf(scanned.lastAlienCharacter), string);
+					final String message = NLS.bind(Messages.ValidDecimal_error_alienChar, Character.valueOf(scanned.lastAlienCharacter), string);
 					return ValidationRuleStatus.error(true, message);
 				}
 				try {
@@ -156,8 +184,7 @@ public class ValidDecimal implements IValidator, IExecutableExtension {
 					return ValidationRuleStatus.error(true, message);
 				}
 				if (scanned.fractionDigits > numberOfFractionDigits) {
-					final String message = NLS.bind(Messages.ValidDecimal_error_numberOfFractionDigits, string,
-							numberOfFractionDigits);
+					final String message = NLS.bind(Messages.ValidDecimal_error_numberOfFractionDigits, string, numberOfFractionDigits);
 					return ValidationRuleStatus.error(true, message);
 				}
 			}
@@ -170,8 +197,7 @@ public class ValidDecimal implements IValidator, IExecutableExtension {
 	 */
 	protected static final class ScanResult {
 		/**
-		 * The index of the decimal-separator character. If more than one is
-		 * present, this will hold the last index.
+		 * The index of the decimal-separator character. If more than one is present, this will hold the last index.
 		 */
 		protected int decimalSeparatorIndex = -1;
 		/**
@@ -184,10 +210,8 @@ public class ValidDecimal implements IValidator, IExecutableExtension {
 		protected int minusSignIndex = -1;
 
 		/**
-		 * The last alien character found. Where &quot;alien&quot; means no
-		 * digit, minus-sign, decimal-separator or grouping-separator. In case
-		 * the grouping-character is <tt>(char)0xa0</tt>, like for the French
-		 * locale's NumberFormat, whitespace is not considered alien either.
+		 * The last alien character found. Where &quot;alien&quot; means no digit, minus-sign, decimal-separator or grouping-separator. In case the
+		 * grouping-character is <tt>(char)0xa0</tt>, like for the French locale's NumberFormat, whitespace is not considered alien either.
 		 * 
 		 * @see Character#isDigit(char)
 		 * @see Character#isWhitespace(char)
@@ -195,11 +219,8 @@ public class ValidDecimal implements IValidator, IExecutableExtension {
 		 */
 		protected char lastAlienCharacter;
 		/**
-		 * The index of the last alien character found. Where &quot;alien&quot;
-		 * means no digit, minus-sign, decimal-separator or grouping-separator.
-		 * In case the grouping-character is <tt>(char)0xa0</tt>, like for the
-		 * French locale's NumberFormat, whitespace is not considered alien
-		 * either.
+		 * The index of the last alien character found. Where &quot;alien&quot; means no digit, minus-sign, decimal-separator or grouping-separator. In case the
+		 * grouping-character is <tt>(char)0xa0</tt>, like for the French locale's NumberFormat, whitespace is not considered alien either.
 		 * 
 		 * @see Character#isDigit(char)
 		 * @see Character#isWhitespace(char)
@@ -219,8 +240,7 @@ public class ValidDecimal implements IValidator, IExecutableExtension {
 	}
 
 	/**
-	 * Scans the parameter's String instance and returns Information about
-	 * indexes of different characters.
+	 * Scans the parameter's String instance and returns Information about indexes of different characters.
 	 * 
 	 * @param string
 	 *            the string
@@ -235,8 +255,7 @@ public class ValidDecimal implements IValidator, IExecutableExtension {
 			final char currentChar = string.charAt(t);
 			if (currentChar == getSymbols().getDecimalSeparator()) {
 				result.decimalSeparatorIndex = t;
-			} else if (currentChar == getSymbols().getGroupingSeparator()
-					|| (Character.isWhitespace(currentChar) && acceptWhitespaceAsGroupingSeparator)) {
+			} else if (currentChar == getSymbols().getGroupingSeparator() || (Character.isWhitespace(currentChar) && acceptWhitespaceAsGroupingSeparator)) {
 				result.groupingSeparatorIndex = t;
 			} else if (currentChar == minusSign) {
 				result.minusSignIndex = t;
@@ -255,8 +274,7 @@ public class ValidDecimal implements IValidator, IExecutableExtension {
 	}
 
 	/**
-	 * Gets this rule's NumberFormat to parse a string. Accessing the format
-	 * must be synchronized, as it is not thread safe.
+	 * Gets this rule's NumberFormat to parse a string. Accessing the format must be synchronized, as it is not thread safe.
 	 * 
 	 * @see DecimalFormatSymbols
 	 * @return a {@linkplain DecimalFormat} instance
@@ -271,10 +289,8 @@ public class ValidDecimal implements IValidator, IExecutableExtension {
 	}
 
 	/**
-	 * Gets the s DecimalFormatSymbols of this rule's {@link #format}. Changes
-	 * on the symbols will change the rule's format accordingly. As
-	 * DecimalFormat is not thread safe, changes to the symbols must be properly
-	 * synchronized with accessing the format.
+	 * Gets the s DecimalFormatSymbols of this rule's {@link #format}. Changes on the symbols will change the rule's format accordingly. As DecimalFormat is not
+	 * thread safe, changes to the symbols must be properly synchronized with accessing the format.
 	 * 
 	 * @see #getFormat()
 	 */
@@ -306,20 +322,16 @@ public class ValidDecimal implements IValidator, IExecutableExtension {
 	}
 
 	/**
-	 * This method is called on a newly constructed extension for validation.
-	 * After creating a new instance of {@code ValidDecimal} this method is
-	 * called to initialize the instance. The arguments for initialization are
-	 * in the parameter {@code data}. Is the data a string the arguments are
-	 * separated with ','. The order of the arguments in data is equivalent to
-	 * the order of the parameters of one of the constructors.
+	 * This method is called on a newly constructed extension for validation. After creating a new instance of {@code ValidDecimal} this method is called to
+	 * initialize the instance. The arguments for initialization are in the parameter {@code data}. Is the data a string the arguments are separated with ','.
+	 * The order of the arguments in data is equivalent to the order of the parameters of one of the constructors.
 	 * 
 	 * 
-	 * @see org.eclipse.core.runtime.IExecutableExtension#setInitializationData(org.eclipse.core.runtime.IConfigurationElement,
-	 *      java.lang.String, java.lang.Object)
+	 * @see org.eclipse.core.runtime.IExecutableExtension#setInitializationData(org.eclipse.core.runtime.IConfigurationElement, java.lang.String,
+	 *      java.lang.Object)
 	 * @see org.eclipse.riena.ui.ridgets.validation.ValidDecimal#setLocale(java.lang.String[])
 	 */
-	public void setInitializationData(final IConfigurationElement config, final String propertyName, final Object data)
-			throws CoreException {
+	public void setInitializationData(final IConfigurationElement config, final String propertyName, final Object data) throws CoreException {
 
 		if (data instanceof String) {
 			final String[] args = PropertiesUtils.asArray(data);

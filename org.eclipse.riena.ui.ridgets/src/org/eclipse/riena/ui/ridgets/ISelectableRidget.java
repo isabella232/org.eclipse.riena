@@ -23,11 +23,9 @@ public interface ISelectableRidget extends IMarkableRidget, ISelectionObservable
 	/**
 	 * Property name of the selection property.
 	 * <p>
-	 * This property will be fired every time the selection changes. If the
-	 * selection type is single selection, the selection will contain zero or
-	 * one values. If the selection type is multiple selection, the selection
-	 * will contain zero or more values. In both cases the old and new value of
-	 * the PropertyChangeEvent are collections.
+	 * This property will be fired every time the selection changes. If the selection type is single selection, the selection will contain zero or one values.
+	 * If the selection type is multiple selection, the selection will contain zero or more values. In both cases the old and new value of the
+	 * PropertyChangeEvent are collections.
 	 */
 	String PROPERTY_SELECTION = "selection"; //$NON-NLS-1$
 
@@ -54,17 +52,15 @@ public interface ISelectableRidget extends IMarkableRidget, ISelectionObservable
 	 * @param selectionType
 	 *            The new selection type. Never null.
 	 * @throws RuntimeException
-	 *             (a) if the given selectionType is not supported by the
-	 *             ridget; (b) if selectionType is null
+	 *             (a) if the given selectionType is not supported by the ridget; (b) if selectionType is null
 	 */
 	void setSelectionType(SelectionType selectionType);
 
 	/**
 	 * Returns the value that holds the selection of this Ridget.
 	 * 
-	 * @return An observable value that holds the single selection of this
-	 *         ridget. If the selection type is set to multiple selection the
-	 *         single selection will contain one of the selected values.
+	 * @return An observable value that holds the single selection of this ridget. If the selection type is set to multiple selection the single selection will
+	 *         contain one of the selected values.
 	 */
 	IObservableValue getSingleSelectionObservable();
 
@@ -78,8 +74,7 @@ public interface ISelectableRidget extends IMarkableRidget, ISelectionObservable
 	void bindSingleSelectionToModel(IObservableValue selectionValue);
 
 	/**
-	 * Binds a property of selectionHolder to the single selection of this
-	 * ridget.
+	 * Binds a property of selectionHolder to the single selection of this ridget.
 	 * 
 	 * @param selectionHolder
 	 *            An object holding the single selection.
@@ -100,10 +95,8 @@ public interface ISelectableRidget extends IMarkableRidget, ISelectionObservable
 	/**
 	 * Returns the list that holds the selection(s) of this Ridget.
 	 * 
-	 * @return An observable list that holds the multiple selection of this
-	 *         ridget. If the selection type is set to single selection the
-	 *         multiple selection will be either empty or contain the single
-	 *         selected values.
+	 * @return An observable list that holds the multiple selection of this ridget. If the selection type is set to single selection the multiple selection will
+	 *         be either empty or contain the single selected values.
 	 */
 	IObservableList getMultiSelectionObservable();
 
@@ -117,8 +110,7 @@ public interface ISelectableRidget extends IMarkableRidget, ISelectionObservable
 	void bindMultiSelectionToModel(IObservableList observableList);
 
 	/**
-	 * Binds a property of selection holder to the multiple selection of this
-	 * ridget. The property must be a Collection.
+	 * Binds a property of selection holder to the multiple selection of this ridget. The property must be a Collection.
 	 * 
 	 * @param selectionHolder
 	 *            An object holding a list of selections.
@@ -150,35 +142,30 @@ public interface ISelectableRidget extends IMarkableRidget, ISelectionObservable
 
 	/**
 	 * 
-	 * @return the single selection if {@link #getSelectionType()} ==
-	 *         {@link SelectionType#SINGLE}. Otherwise return null.
+	 * @return the single selection if {@link #getSelectionType()} == {@link SelectionType#SINGLE}. Otherwise return null.
 	 * @since 4.0
 	 */
 	<T> T getSingleSelection();
 
 	/**
 	 * 
-	 * @return the multi selection if {@link #getSelectionType()} ==
-	 *         {@link SelectionType#MULTI}. Otherwise return null.
+	 * @return the multi selection if {@link #getSelectionType()} == {@link SelectionType#MULTI}. Otherwise return null.
 	 * @since 4.0
 	 */
 	<T> List<T> getMultiSelection();
 
 	/**
-	 * Selects the given values. Values that are not in the set of selectable
-	 * options will be ignored.
+	 * Selects the given values. Values that are not in the set of selectable options will be ignored.
 	 * 
 	 * @param newSelection
 	 *            a List of values to select. Never null. May be empty.
 	 * @throws RuntimeException
-	 *             (a) when there is no bound model to select from; (b) if
-	 *             newSelection is null.
+	 *             (a) when there is no bound model to select from; (b) if newSelection is null.
 	 */
 	void setSelection(List<?> newSelection);
 
 	/**
-	 * Selects the given value. If the value is not in the set of selectable
-	 * options it will be ignored.
+	 * Selects the given value. If the value is not in the set of selectable options it will be ignored.
 	 * 
 	 * @param newSelection
 	 *            value to select
@@ -195,13 +182,11 @@ public interface ISelectableRidget extends IMarkableRidget, ISelectionObservable
 	boolean hasSelection();
 
 	/**
-	 * Indicates whether the specified option is one of the options among which
-	 * to select.
+	 * Indicates whether the specified option is one of the options among which to select.
 	 * 
 	 * @param option
 	 *            An option.
-	 * @return true if the options is one of the selectable options, false
-	 *         otherwise.
+	 * @return true if the options is one of the selectable options, false otherwise.
 	 */
 	boolean containsOption(Object option);
 }
