@@ -51,8 +51,9 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	}
 
 	public void addRidget(final String id, final IRidget ridget) {
-		ridget.addPropertyChangeListener(propertyChangeListener);
-		ridgets.put(id, ridget);
+		if (null == ridgets.put(id, ridget)) {
+			ridget.addPropertyChangeListener(propertyChangeListener);
+		}
 	}
 
 	/**
@@ -70,8 +71,7 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * The default implementation is empty. Implementors may extend to configure
-	 * (sub)-ridgets injected into this {@link IComplexRidget}.
+	 * The default implementation is empty. Implementors may extend to configure (sub)-ridgets injected into this {@link IComplexRidget}.
 	 */
 	public void configureRidgets() {
 		// implementors may extend
@@ -102,13 +102,11 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 		if (allowRidgetCreation()) {
 			try {
 				if (ridgetClazz.isInterface() || Modifier.isAbstract(ridgetClazz.getModifiers())) {
-					final Class<R> mappedRidgetClazz = (Class<R>) ClassRidgetMapper.getInstance().getRidgetClass(
-							ridgetClazz);
+					final Class<R> mappedRidgetClazz = (Class<R>) ClassRidgetMapper.getInstance().getRidgetClass(ridgetClazz);
 					if (mappedRidgetClazz != null) {
 						ridget = mappedRidgetClazz.newInstance();
 					}
-					Assert.isNotNull(
-							ridget,
+					Assert.isNotNull(ridget,
 							"Could not find a corresponding implementation for " + ridgetClazz.getName() + " in " + ClassRidgetMapper.class.getName()); //$NON-NLS-1$ //$NON-NLS-2$
 				} else {
 					ridget = ridgetClazz.newInstance();
@@ -256,9 +254,8 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	/**
 	 * Bind the current <tt>uiControl</tt> to the ridget.
 	 * <p>
-	 * Implementors must call {@link #getUIControl()} to obtain the current
-	 * control. If the control is non-null they must do whatever necessary to
-	 * bind it to the ridget.
+	 * Implementors must call {@link #getUIControl()} to obtain the current control. If the control is non-null they must do whatever necessary to bind it to
+	 * the ridget.
 	 * 
 	 * @since 1.2
 	 */
@@ -269,8 +266,7 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	/**
 	 * Performs checks on the control about to be bound by this ridget.
 	 * <p>
-	 * Implementors must make sure the given <tt>uiControl</tt> has the expected
-	 * type.
+	 * Implementors must make sure the given <tt>uiControl</tt> has the expected type.
 	 * 
 	 * @param uiControl
 	 *            a {@link Widget} instance or null
@@ -292,9 +288,8 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	}
 
 	/**
-	 * Returns true if the ridget is marked as hidden (visible = false). Note:
-	 * this reflects the ridget state, not the control state. The ridget may not
-	 * have control yet.
+	 * Returns true if the ridget is marked as hidden (visible = false). Note: this reflects the ridget state, not the control state. The ridget may not have
+	 * control yet.
 	 * 
 	 * @since 2.0
 	 */
@@ -303,12 +298,10 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	}
 
 	/**
-	 * Returns true if the control of this ridget is visible, false otherwise.
-	 * This default implementation always returns true and should be overridden
-	 * by subclasses.
+	 * Returns true if the control of this ridget is visible, false otherwise. This default implementation always returns true and should be overridden by
+	 * subclasses.
 	 * <p>
-	 * Note: this will only be called when the UI control is know to be
-	 * non-null.
+	 * Note: this will only be called when the UI control is know to be non-null.
 	 */
 	protected boolean isUIControlVisible() {
 		return true;
@@ -326,8 +319,7 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	/**
 	 * Unbind the current <tt>uiControl</tt> from the ridget.
 	 * <p>
-	 * Implementors ensure they dispose the control-to-ridget binding and
-	 * dispose any data structures that are not necessary in an unbound state.
+	 * Implementors ensure they dispose the control-to-ridget binding and dispose any data structures that are not necessary in an unbound state.
 	 * 
 	 * @since 1.2
 	 */
@@ -336,9 +328,8 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	}
 
 	/**
-	 * Updates the enabled state of the complex UI control (and of the UI
-	 * controls it contains). This default implementation does nothing and
-	 * should be overridden by subclasses.
+	 * Updates the enabled state of the complex UI control (and of the UI controls it contains). This default implementation does nothing and should be
+	 * overridden by subclasses.
 	 */
 	protected void updateEnabled() {
 		// empty default implementation
@@ -347,17 +338,15 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	/**
 	 * Does nothing by default.
 	 * <p>
-	 * Subclasses should override to update the tooltip(s) of their controls in
-	 * an appropriate way.
+	 * Subclasses should override to update the tooltip(s) of their controls in an appropriate way.
 	 */
 	protected void updateToolTipText() {
 		// does nothing
 	}
 
 	/**
-	 * Updates the visibility of the complex UI control (and of the UI controls
-	 * it contains). This default implementation does nothing and should be
-	 * overridden by subclasses.
+	 * Updates the visibility of the complex UI control (and of the UI controls it contains). This default implementation does nothing and should be overridden
+	 * by subclasses.
 	 */
 	protected void updateVisible() {
 		// empty default implementation
@@ -367,11 +356,11 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	//////////////////
 
 	/**
-	 * Forwards a property change event fired by a (sub) ridget contained in
-	 * this composite ridget, to the listeners of the composite ridget.
+	 * Forwards a property change event fired by a (sub) ridget contained in this composite ridget, to the listeners of the composite ridget.
 	 */
 	private class PropertyChangeHandler implements PropertyChangeListener {
 		public void propertyChange(final PropertyChangeEvent evt) {
+			System.out.println("AbstractCompositeRidget.PropertyChangeHandler.propertyChange()");
 			propertyChangeSupport.firePropertyChange(evt);
 		}
 	}
