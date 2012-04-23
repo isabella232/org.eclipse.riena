@@ -102,26 +102,6 @@ public class CComboRidget extends AbstractComboRidget implements ICComboRidget {
 	}
 
 	@Override
-	public void setSelection(final Object newSelection) {
-		// Workaround for Bug 372221
-		// we put this call to the end of the event queue since
-		// there may be other selection events pending
-		if (getUIControl() != null) {
-			getUIControl().getDisplay().asyncExec(new Runnable() {
-				public void run() {
-					superSetSelection(newSelection);
-				}
-			});
-		} else {
-			superSetSelection(newSelection);
-		}
-	}
-
-	private void superSetSelection(final Object newSelection) {
-		super.setSelection(newSelection);
-	}
-
-	@Override
 	protected String[] getUIControlItems() {
 		return getUIControl().getItems();
 	}
