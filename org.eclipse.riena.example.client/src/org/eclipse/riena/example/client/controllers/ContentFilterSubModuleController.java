@@ -74,18 +74,18 @@ public class ContentFilterSubModuleController extends SubModuleController {
 	 */
 	@Override
 	public void configureRidgets() {
-		final IListRidget list = getRidget("list");
+		final IListRidget list = getRidget(IListRidget.class, "list");
 		list.bindToModel(new ListBean(DAYS), ListBean.PROPERTY_VALUES, Something.class, "name");
 
-		final ITableRidget table = getRidget("table");
+		final ITableRidget table = getRidget(ITableRidget.class, "table");
 		table.bindToModel(new ListBean(DAYS), ListBean.PROPERTY_VALUES, Something.class, new String[] { "name" }, new String[] { "day" });
 
-		final ITreeRidget tree = getRidget("tree");
+		final ITreeRidget tree = getRidget(ITreeRidget.class, "tree");
 		tree.bindToModel(new Object[] { new Something("Week", DAYS) }, Something.class, "children", "name", "name");
 
 		updateAllRidgetsFromModel();
 
-		final IToggleButtonRidget hideWeekdays = getRidget("hideWeekdays");
+		final IToggleButtonRidget hideWeekdays = getRidget(IToggleButtonRidget.class, "hideWeekdays");
 		hideWeekdays.addListener(new IActionListener() {
 			public void callback() {
 				if (hideWeekdays.isSelected()) {
@@ -95,7 +95,7 @@ public class ContentFilterSubModuleController extends SubModuleController {
 				}
 			}
 		});
-		final IToggleButtonRidget hideWeekend = getRidget("hideWeekend");
+		final IToggleButtonRidget hideWeekend = getRidget(IToggleButtonRidget.class, "hideWeekend");
 		hideWeekend.addListener(new IActionListener() {
 			public void callback() {
 				if (hideWeekend.isSelected()) {
