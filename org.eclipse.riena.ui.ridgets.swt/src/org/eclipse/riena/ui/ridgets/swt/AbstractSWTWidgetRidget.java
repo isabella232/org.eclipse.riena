@@ -42,6 +42,7 @@ import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
 import org.eclipse.riena.ui.ridgets.AbstractRidget;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;
+import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.listener.ClickEvent;
 import org.eclipse.riena.ui.ridgets.listener.IClickListener;
 import org.eclipse.riena.ui.ridgets.uibinding.IBindingPropertyLocator;
@@ -309,7 +310,15 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 		uninstallListeners();
 		unbindUIControl();
 		unbindMarkerSupport();
+		if (this.uiControl != null) {
+			// clean up the old UI control data
+			this.uiControl.setData(IRidget.class.getName(), null);
+		}
 		this.uiControl = (Widget) uiControl;
+		if (this.uiControl != null) {
+			// set ridget as UI control data
+			this.uiControl.setData(IRidget.class.getName(), this);
+		}
 		bindMarkerSupport();
 		updateEnabled();
 		updateMarkers();

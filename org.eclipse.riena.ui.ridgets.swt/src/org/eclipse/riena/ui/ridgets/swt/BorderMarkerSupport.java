@@ -17,6 +17,7 @@ import org.eclipse.swt.widgets.Control;
 
 import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IControlDecoration;
+import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.swt.BorderControlDecoration;
 import org.eclipse.riena.ui.swt.IDecorationActivationStrategy;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
@@ -24,8 +25,7 @@ import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 
 /**
- * This class decorates a UI control that has an {@code ErrorMarker} with a
- * border around the UI control.
+ * This class decorates a UI control that has an {@code ErrorMarker} with a border around the UI control.
  * 
  * @since 2.0
  */
@@ -65,9 +65,9 @@ public class BorderMarkerSupport extends MarkerSupport {
 		final int width = lnf.getIntegerSetting(LnfKeyConstants.ERROR_MARKER_BORDER_WIDTH, 1);
 		final Color borderColor = lnf.getColor(LnfKeyConstants.ERROR_MARKER_BORDER_COLOR);
 		return new BorderControlDecoration(control, width, borderColor, new IDecorationActivationStrategy() {
-
 			public boolean isActive() {
-				return getRidget().getUIControl() != null;
+				final Object data = control.getData(IRidget.class.getName());
+				return data instanceof IRidget && ((IRidget) data).getUIControl() != null;
 			}
 		});
 	}
