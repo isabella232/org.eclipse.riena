@@ -19,6 +19,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.ScrollBar;
@@ -54,6 +55,8 @@ public class BorderDrawer implements Listener {
 
 	/**
 	 * collect all listener registrations so they can be unregistered when unregister() is called
+	 * <p>
+	 * IMPORTANT: these runnables must be capable to handle the case when the control is already disposed
 	 */
 	private final List<Runnable> toUnregister = new ArrayList<Runnable>();
 
@@ -128,6 +131,12 @@ public class BorderDrawer implements Listener {
 		} while ((parent = parent.getParent()) != null);
 
 		registerMnemonicsListener();
+
+		registerToControl(control, new Listener() {
+			public void handleEvent(final Event event) {
+				unregister();
+			}
+		}, SWT.Dispose);
 	}
 
 	/**
@@ -145,10 +154,11 @@ public class BorderDrawer implements Listener {
 				}
 			}
 		};
-		control.getDisplay().addFilter(SWT.KeyDown, altListener);
+		final Display display = control.getDisplay();
+		display.addFilter(SWT.KeyDown, altListener);
 		toUnregister.add(new Runnable() {
 			public void run() {
-				control.getDisplay().removeFilter(SWT.KeyDown, altListener);
+				display.removeFilter(SWT.KeyDown, altListener);
 			}
 		});
 	}
@@ -172,8 +182,10 @@ public class BorderDrawer implements Listener {
 		}
 		toUnregister.add(new Runnable() {
 			public void run() {
-				for (final int eventType : eventTypes) {
-					control.removeListener(eventType, listener);
+				if (!control.isDisposed()) {
+					for (final int eventType : eventTypes) {
+						control.removeListener(eventType, listener);
+					}
 				}
 			}
 		});
