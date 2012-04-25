@@ -70,6 +70,7 @@ public class ValueBindingSupport {
 
 	private final ValidatorCollection afterGetValidators;
 	private final ValidatorCollection onEditValidators;
+	private final ValidatorCollection afterModelUpdateValidators;
 
 	private Map<IValidator, Set<ValidationMessageMarker>> rule2messages;
 	private Map<IValidator, IStatus> rule2status;
@@ -91,6 +92,7 @@ public class ValueBindingSupport {
 		bindToTarget(target);
 		afterGetValidators = new ValidatorCollection();
 		onEditValidators = new ValidatorCollection();
+		afterModelUpdateValidators = new ValidatorCollection();
 	}
 
 	public ValueBindingSupport(final IObservableValue target, final IObservableValue model) {
@@ -117,6 +119,7 @@ public class ValueBindingSupport {
 	public Collection<IValidator> getValidationRules() {
 		final List<IValidator> allValidationRules = new ArrayList<IValidator>(onEditValidators.getValidators());
 		allValidationRules.addAll(afterGetValidators.getValidators());
+		allValidationRules.addAll(afterModelUpdateValidators.getValidators());
 		return allValidationRules;
 	}
 
@@ -129,12 +132,9 @@ public class ValueBindingSupport {
 	 */
 	public ValidatorCollection getAllValidators() {
 		final ValidatorCollection result = new ValidatorCollection();
-		for (final IValidator validationRule : onEditValidators) {
-			result.add(validationRule);
-		}
-		for (final IValidator validationRule : afterGetValidators) {
-			result.add(validationRule);
-		}
+		addAll(onEditValidators, result);
+		addAll(afterGetValidators, result);
+		addAll(afterModelUpdateValidators, result);
 		return result;
 	}
 
@@ -157,29 +157,42 @@ public class ValueBindingSupport {
 	}
 
 	/**
+	 * Return all 'on update' validation rules kept by this instance.
+	 * 
+	 * @return a ValidatorCollection; never null; may be empty.
+	 * @since 4.0
+	 */
+	public ValidatorCollection getAfterModelUpdateValidators() {
+		return afterModelUpdateValidators;
+	}
+
+	/**
 	 * Adds a validation rule.
 	 * 
 	 * @param validationRule
 	 *            The validation rule to add (non null)
 	 * @param validationTime
-	 *            a value specifying when to evalute the validationRule (non
-	 *            null)
+	 *            a value specifying when to evalute the validationRule (non null)
 	 * @return true, if the onEditValidators were changed, false otherwise
 	 * @see #getOnEditValidators()
 	 * @throws RuntimeException
-	 *             if validationRule is null, or an unsupported ValidationTime
-	 *             is used
+	 *             if validationRule is null, or an unsupported ValidationTime is used
 	 */
 	public boolean addValidationRule(final IValidator validationRule, final ValidationTime validationTime) {
 		Assert.isNotNull(validationRule);
-		if (validationTime == ValidationTime.ON_UI_CONTROL_EDIT) {
+		Assert.isNotNull(validationTime);
+		switch (validationTime) {
+		case ON_UI_CONTROL_EDIT:
 			onEditValidators.add(validationRule);
 			return true;
-		} else if (validationTime == ValidationTime.ON_UPDATE_TO_MODEL) {
+		case ON_UPDATE_TO_MODEL:
 			afterGetValidators.add(validationRule);
 			return false;
-		} else {
-			throw new UnsupportedOperationException();
+		case AFTER_UPDATE_TO_MODEL:
+			afterModelUpdateValidators.add(validationRule);
+			return false;
+		default:
+			throw new UnsupportedOperationException("Unknown validationTime: " + validationTime); //$NON-NLS-1$
 		}
 	}
 
@@ -215,8 +228,7 @@ public class ValueBindingSupport {
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.IValueRidget#bindToModel(org.eclipse.core
-	 *      .databinding.observable.value.IObservableValue)
+	 * @see org.eclipse.riena.ui.ridgets.IValueRidget#bindToModel(org.eclipse.core .databinding.observable.value.IObservableValue)
 	 */
 	public void bindToModel(final IObservableValue observableValue) {
 		this.valuePropertyName = null;
@@ -226,8 +238,7 @@ public class ValueBindingSupport {
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.IValueRidget#bindToModel(java.lang.Object,
-	 *      java.lang.String)
+	 * @see org.eclipse.riena.ui.ridgets.IValueRidget#bindToModel(java.lang.Object, java.lang.String)
 	 */
 	public void bindToModel(final Object valueHolder, final String valuePropertyName) {
 		this.valueHolder = valueHolder;
@@ -241,26 +252,31 @@ public class ValueBindingSupport {
 	}
 
 	/**
+	 * @return the targetOV
+	 * @since 4.0
+	 */
+	public IObservableValue getTargetOV() {
+		return targetOV;
+	}
+
+	/**
 	 * Binds (first time or again) the model to the control.
 	 */
 	public void rebindToModel() {
 		if (modelOV == null || targetOV == null) {
 			return;
 		}
-		final UpdateValueStrategy uiControlToModelStrategy = new RidgetUpdateValueStrategy(
-				UpdateValueStrategy.POLICY_UPDATE);
-		final UpdateValueStrategy modelToUIControlStrategy = new RidgetUpdateValueStrategy(
-				UpdateValueStrategy.POLICY_ON_REQUEST);
+		final RidgetUpdateValueStrategy uiControlToModelStrategy = new RidgetUpdateValueStrategy(this, UpdateValueStrategy.POLICY_UPDATE);
+		final RidgetUpdateValueStrategy modelToUIControlStrategy = new RidgetUpdateValueStrategy(this, UpdateValueStrategy.POLICY_ON_REQUEST);
 		uiControlToModelStrategy.setAfterGetValidator(afterGetValidators);
+		uiControlToModelStrategy.setAfterModelUpdateValidator(afterModelUpdateValidators);
 		if (uiControlToModelConverter != null) {
-			if ((targetOV.getValueType() == uiControlToModelConverter.getFromType())
-					&& (modelOV.getValueType() == uiControlToModelConverter.getToType())) {
+			if ((targetOV.getValueType() == uiControlToModelConverter.getFromType()) && (modelOV.getValueType() == uiControlToModelConverter.getToType())) {
 				uiControlToModelStrategy.setConverter(uiControlToModelConverter);
 			}
 		}
 		if (modelToUIControlConverter != null) {
-			if ((targetOV.getValueType() == modelToUIControlConverter.getToType())
-					&& (modelOV.getValueType() == modelToUIControlConverter.getFromType())) {
+			if ((targetOV.getValueType() == modelToUIControlConverter.getToType()) && (modelOV.getValueType() == modelToUIControlConverter.getFromType())) {
 				modelToUIControlStrategy.setConverter(modelToUIControlConverter);
 			}
 		}
@@ -279,8 +295,7 @@ public class ValueBindingSupport {
 		}
 
 		modelBinding = getContext().bindValue(targetOV, modelOV, uiControlToModelStrategy, modelToUIControlStrategy);
-		validationStatus = new AggregateValidationStatus(getContext().getBindings(),
-				AggregateValidationStatus.MAX_SEVERITY);
+		validationStatus = new AggregateValidationStatus(getContext().getBindings(), AggregateValidationStatus.MAX_SEVERITY);
 		validationStatus.addValueChangeListener(new IValueChangeListener() {
 			public void handleValueChange(final ValueChangeEvent event) {
 				final IStatus newStatus = (IStatus) ((ComputedValue) event.getSource()).getValue();
@@ -292,6 +307,9 @@ public class ValueBindingSupport {
 					final Object value = targetOV.getValue();
 					updateValidationStatus(noErrorsRule, newStatus);
 					for (final IValidator rule : getAfterGetValidators()) {
+						updateValidationStatus(rule, rule.validate(value));
+					}
+					for (final IValidator rule : getAfterModelUpdateValidators()) {
 						updateValidationStatus(rule, rule.validate(value));
 					}
 				}
@@ -308,8 +326,7 @@ public class ValueBindingSupport {
 	}
 
 	/**
-	 * Get the value property name that has been specified with the
-	 * <i>bindToModel</i> method.
+	 * Get the value property name that has been specified with the <i>bindToModel</i> method.
 	 * 
 	 * @return the value property name
 	 * 
@@ -335,14 +352,11 @@ public class ValueBindingSupport {
 	}
 
 	/**
-	 * Returns whether the given name for the property is a conjunction of
-	 * properties. The nested properties must be separated with a dot (e.g.
-	 * "parent.name").
+	 * Returns whether the given name for the property is a conjunction of properties. The nested properties must be separated with a dot (e.g. "parent.name").
 	 * 
 	 * @param propertyName
 	 *            the property name
-	 * @return {@code true} if the property name contains nested properties;
-	 *         otherwise {@code false}
+	 * @return {@code true} if the property name contains nested properties; otherwise {@code false}
 	 */
 	private boolean isNestedProperty(final String propertyName) {
 		return StringUtils.isGiven(propertyName) && (propertyName.indexOf('.') != -1);
@@ -376,8 +390,7 @@ public class ValueBindingSupport {
 	public void addValidationMessage(final IMessageMarker messageMarker, final IValidator validationRule) {
 		Assert.isNotNull(messageMarker, "messageMarker cannot be null"); //$NON-NLS-1$
 		Assert.isNotNull(validationRule, "validationRule cannot be null"); //$NON-NLS-1$
-		final ValidationMessageMarker validationMessageMarker = new ValidationMessageMarker(messageMarker,
-				validationRule);
+		final ValidationMessageMarker validationMessageMarker = new ValidationMessageMarker(messageMarker, validationRule);
 		if (rule2messages == null) {
 			rule2messages = new HashMap<IValidator, Set<ValidationMessageMarker>>();
 		}
@@ -403,8 +416,7 @@ public class ValueBindingSupport {
 	}
 
 	public void removeValidationMessage(final IMessageMarker messageMarker, final IValidator validationRule) {
-		final ValidationMessageMarker validationMessageMarker = new ValidationMessageMarker(messageMarker,
-				validationRule);
+		final ValidationMessageMarker validationMessageMarker = new ValidationMessageMarker(messageMarker, validationRule);
 		if (rule2messages != null) {
 			final Set<ValidationMessageMarker> messages = rule2messages.get(validationRule);
 			messages.remove(validationMessageMarker);
@@ -416,12 +428,10 @@ public class ValueBindingSupport {
 	}
 
 	/**
-	 * Updates the aggregate error status (i.e. the sum of all rules). This will
-	 * update the error state and messages attached to the aggregate error
-	 * status -- see {@link #addValidationMessage(String)}.
+	 * Updates the aggregate error status (i.e. the sum of all rules). This will update the error state and messages attached to the aggregate error status --
+	 * see {@link #addValidationMessage(String)}.
 	 * <p>
-	 * Implementation note: This should be invoked when the aggregate state of
-	 * 'on_edit' rules has changed, since the status of such rules is not
+	 * Implementation note: This should be invoked when the aggregate state of 'on_edit' rules has changed, since the status of such rules is not
 	 * 
 	 * @param status
 	 *            an IStatus instance with the aggregate status; never null
@@ -433,8 +443,7 @@ public class ValueBindingSupport {
 	}
 
 	/**
-	 * Update the status of a specific rule. This will update the error state
-	 * and messages attached to that rule -- see
+	 * Update the status of a specific rule. This will update the error state and messages attached to that rule -- see
 	 * {@link #addValidationMessage(String, IValidator)}.
 	 * 
 	 * @param validationRule
@@ -458,6 +467,12 @@ public class ValueBindingSupport {
 
 	// helping methods
 	//////////////////
+
+	private void addAll(final ValidatorCollection source, final ValidatorCollection target) {
+		for (final IValidator validationRule : source) {
+			target.add(validationRule);
+		}
+	}
 
 	private void addErrorMarker(final IValidator validationRule, final IStatus status) {
 		if (isBlocked(validationRule, status) || validationRule == noErrorsRule) {
@@ -510,8 +525,7 @@ public class ValueBindingSupport {
 	}
 
 	private boolean isBlocked(final IValidator validationRule, final IStatus status) {
-		return status.getCode() == ValidationRuleStatus.ERROR_BLOCK_WITH_FLASH
-				&& onEditValidators.contains(validationRule);
+		return status.getCode() == ValidationRuleStatus.ERROR_BLOCK_WITH_FLASH && onEditValidators.contains(validationRule);
 	}
 
 	private void storeStatus(final IValidator validationRule, final IStatus status) {
