@@ -67,6 +67,7 @@ public class ValidationSubModuleController extends SubModuleController {
 		final ITextRidget txtLength5to10 = getRidget(ITextRidget.class, "txtLength5to10"); //$NON-NLS-1$
 		final ITextRidget txtDate = getRidget(ITextRidget.class, "txtDate"); //$NON-NLS-1$
 		final ITextRidget txtEmail = getRidget(ITextRidget.class, "txtEmail"); //$NON-NLS-1$
+		final ITextRidget txtEmailValidateAfterSet = getRidget(ITextRidget.class, "txtEmailValidateAfterSet"); //$NON-NLS-1$
 
 		final ITextRidget lblNumbersOnly = getRidget(ITextRidget.class, "lblNumbersOnly"); //$NON-NLS-1$
 		final ITextRidget lblNumbersOnlyDW = getRidget(ITextRidget.class, "lblNumbersOnlyDW"); //$NON-NLS-1$
@@ -78,6 +79,7 @@ public class ValidationSubModuleController extends SubModuleController {
 		final ITextRidget lblLength5to10 = getRidget(ITextRidget.class, "lblLength5to10"); //$NON-NLS-1$
 		final ITextRidget lblDate = getRidget(ITextRidget.class, "lblDate"); //$NON-NLS-1$
 		final ITextRidget lblEmail = getRidget(ITextRidget.class, "lblEmail"); //$NON-NLS-1$
+		final ITextRidget lblEmailValidateAfterSet = getRidget(ITextRidget.class, "lblEmailValidateAfterSet"); //$NON-NLS-1$
 
 		makeOutputOnly(lblNumbersOnly, lblNumbersOnlyDW, lblCharactersOnly, lblExpression, lblLengthLessThan5, lblRequiredLowercase, lblRange18to80,
 				lblLength5to10, lblDate, lblEmail);
@@ -131,6 +133,10 @@ public class ValidationSubModuleController extends SubModuleController {
 		txtEmail.addValidationRule(new ValidEmailAddress(), ValidationTime.ON_UI_CONTROL_EDIT);
 		txtEmail.bindToModel(getTextValue(lblEmail));
 		txtEmail.setText("elmer@foo.bar"); //$NON-NLS-1$
+
+		txtEmailValidateAfterSet.addValidationRule(new ValidEmailAddress(), ValidationTime.AFTER_UPDATE_TO_MODEL);
+		txtEmailValidateAfterSet.bindToModel(getTextValue(lblEmailValidateAfterSet));
+		txtEmailValidateAfterSet.setText("invalid@email");
 
 		// show validation messages in statusline and tooltip
 

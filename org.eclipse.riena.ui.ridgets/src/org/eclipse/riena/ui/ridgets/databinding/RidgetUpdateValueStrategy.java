@@ -15,17 +15,18 @@ import java.util.GregorianCalendar;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.conversion.IConverter;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.core.databinding.validation.IValidator;
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IStatus;
 
 import org.eclipse.riena.ui.ridgets.ValueBindingSupport;
-import org.eclipse.riena.ui.ridgets.validation.ValidatorCollection;
 
 /**
  * 
  */
 public class RidgetUpdateValueStrategy extends UpdateValueStrategy {
 
-	private ValidatorCollection afterModelUpdateValidators;
+	private IValidator afterSetValidator;
 	private final ValueBindingSupport valueBindingSupport;
 
 	/**
@@ -34,6 +35,7 @@ public class RidgetUpdateValueStrategy extends UpdateValueStrategy {
 	 */
 	public RidgetUpdateValueStrategy(final ValueBindingSupport valueBindingSupport) {
 		super();
+		Assert.isNotNull(valueBindingSupport);
 		this.valueBindingSupport = valueBindingSupport;
 	}
 
@@ -44,6 +46,7 @@ public class RidgetUpdateValueStrategy extends UpdateValueStrategy {
 	 */
 	public RidgetUpdateValueStrategy(final ValueBindingSupport valueBindingSupport, final int updatePolicy) {
 		super(updatePolicy);
+		Assert.isNotNull(valueBindingSupport);
 		this.valueBindingSupport = valueBindingSupport;
 	}
 
@@ -55,6 +58,7 @@ public class RidgetUpdateValueStrategy extends UpdateValueStrategy {
 	 */
 	public RidgetUpdateValueStrategy(final ValueBindingSupport valueBindingSupport, final boolean provideDefaults, final int updatePolicy) {
 		super(provideDefaults, updatePolicy);
+		Assert.isNotNull(valueBindingSupport);
 		this.valueBindingSupport = valueBindingSupport;
 	}
 
@@ -87,11 +91,11 @@ public class RidgetUpdateValueStrategy extends UpdateValueStrategy {
 	}
 
 	/**
-	 * @param afterModelUpdateValidators
+	 * @param validator
 	 * @since 4.0
 	 */
-	public void setAfterModelUpdateValidator(final ValidatorCollection afterModelUpdateValidators) {
-		this.afterModelUpdateValidators = afterModelUpdateValidators;
+	public void setAfterSetValidator(final IValidator validator) {
+		afterSetValidator = validator;
 	}
 
 	/*
@@ -102,10 +106,13 @@ public class RidgetUpdateValueStrategy extends UpdateValueStrategy {
 	@Override
 	protected IStatus doSet(final IObservableValue destination, final Object convertedValue) {
 		final IStatus status = super.doSet(destination, convertedValue);
+		return validateAfterSet(status);
+	}
 
-		if (status.isOK() && afterModelUpdateValidators != null) {
+	private IStatus validateAfterSet(final IStatus status) {
+		if (status.isOK() && afterSetValidator != null) {
 			final IObservableValue targetOV = valueBindingSupport.getTargetOV();
-			return afterModelUpdateValidators.validate(targetOV.getValue());
+			return afterSetValidator.validate(targetOV.getValue());
 		}
 		return status;
 	}

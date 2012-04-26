@@ -70,7 +70,7 @@ public class ValueBindingSupport {
 
 	private final ValidatorCollection afterGetValidators;
 	private final ValidatorCollection onEditValidators;
-	private final ValidatorCollection afterModelUpdateValidators;
+	private final ValidatorCollection afterSetValidators;
 
 	private Map<IValidator, Set<ValidationMessageMarker>> rule2messages;
 	private Map<IValidator, IStatus> rule2status;
@@ -92,7 +92,7 @@ public class ValueBindingSupport {
 		bindToTarget(target);
 		afterGetValidators = new ValidatorCollection();
 		onEditValidators = new ValidatorCollection();
-		afterModelUpdateValidators = new ValidatorCollection();
+		afterSetValidators = new ValidatorCollection();
 	}
 
 	public ValueBindingSupport(final IObservableValue target, final IObservableValue model) {
@@ -119,7 +119,7 @@ public class ValueBindingSupport {
 	public Collection<IValidator> getValidationRules() {
 		final List<IValidator> allValidationRules = new ArrayList<IValidator>(onEditValidators.getValidators());
 		allValidationRules.addAll(afterGetValidators.getValidators());
-		allValidationRules.addAll(afterModelUpdateValidators.getValidators());
+		allValidationRules.addAll(afterSetValidators.getValidators());
 		return allValidationRules;
 	}
 
@@ -134,7 +134,7 @@ public class ValueBindingSupport {
 		final ValidatorCollection result = new ValidatorCollection();
 		addAll(onEditValidators, result);
 		addAll(afterGetValidators, result);
-		addAll(afterModelUpdateValidators, result);
+		addAll(afterSetValidators, result);
 		return result;
 	}
 
@@ -157,13 +157,13 @@ public class ValueBindingSupport {
 	}
 
 	/**
-	 * Return all 'on update' validation rules kept by this instance.
+	 * Return all 'after update' validation rules kept by this instance.
 	 * 
 	 * @return a ValidatorCollection; never null; may be empty.
 	 * @since 4.0
 	 */
-	public ValidatorCollection getAfterModelUpdateValidators() {
-		return afterModelUpdateValidators;
+	public ValidatorCollection getAfterSetValidators() {
+		return afterSetValidators;
 	}
 
 	/**
@@ -189,7 +189,7 @@ public class ValueBindingSupport {
 			afterGetValidators.add(validationRule);
 			return false;
 		case AFTER_UPDATE_TO_MODEL:
-			afterModelUpdateValidators.add(validationRule);
+			afterSetValidators.add(validationRule);
 			return false;
 		default:
 			throw new UnsupportedOperationException("Unknown validationTime: " + validationTime); //$NON-NLS-1$
@@ -269,7 +269,7 @@ public class ValueBindingSupport {
 		final RidgetUpdateValueStrategy uiControlToModelStrategy = new RidgetUpdateValueStrategy(this, UpdateValueStrategy.POLICY_UPDATE);
 		final RidgetUpdateValueStrategy modelToUIControlStrategy = new RidgetUpdateValueStrategy(this, UpdateValueStrategy.POLICY_ON_REQUEST);
 		uiControlToModelStrategy.setAfterGetValidator(afterGetValidators);
-		uiControlToModelStrategy.setAfterModelUpdateValidator(afterModelUpdateValidators);
+		uiControlToModelStrategy.setAfterSetValidator(afterSetValidators);
 		if (uiControlToModelConverter != null) {
 			if ((targetOV.getValueType() == uiControlToModelConverter.getFromType()) && (modelOV.getValueType() == uiControlToModelConverter.getToType())) {
 				uiControlToModelStrategy.setConverter(uiControlToModelConverter);
@@ -309,7 +309,7 @@ public class ValueBindingSupport {
 					for (final IValidator rule : getAfterGetValidators()) {
 						updateValidationStatus(rule, rule.validate(value));
 					}
-					for (final IValidator rule : getAfterModelUpdateValidators()) {
+					for (final IValidator rule : getAfterSetValidators()) {
 						updateValidationStatus(rule, rule.validate(value));
 					}
 				}

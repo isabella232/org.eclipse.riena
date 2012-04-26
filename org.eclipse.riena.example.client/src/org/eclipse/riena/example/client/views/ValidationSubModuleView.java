@@ -12,6 +12,7 @@ package org.eclipse.riena.example.client.views;
 
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
@@ -133,6 +134,10 @@ public class ValidationSubModuleView extends SubModuleView {
 		final Text lblEmail = UIControlsFactory.createText(group);
 		addUIControl(lblEmail, "lblEmail"); //$NON-NLS-1$
 		fillFactory.applyTo(lblEmail);
+
+		UIControlsFactory.createLabel(group, "Validate After Set:"); //$NON-NLS-1$
+		fillFactory.applyTo(UIControlsFactory.createText(group, SWT.BORDER, "txtEmailValidateAfterSet")); //$NON-NLS-1$
+		fillFactory.applyTo(UIControlsFactory.createText(group, SWT.BORDER, "lblEmailValidateAfterSet")); //$NON-NLS-1$
 
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(lbl);
 

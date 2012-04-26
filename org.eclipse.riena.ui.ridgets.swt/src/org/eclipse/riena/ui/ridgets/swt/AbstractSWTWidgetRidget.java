@@ -310,7 +310,7 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 		uninstallListeners();
 		unbindUIControl();
 		unbindMarkerSupport();
-		if (this.uiControl != null) {
+		if (!SwtUtilities.isDisposed(this.uiControl)) {
 			// clean up the old UI control data
 			this.uiControl.setData(IRidget.class.getName(), null);
 		}
