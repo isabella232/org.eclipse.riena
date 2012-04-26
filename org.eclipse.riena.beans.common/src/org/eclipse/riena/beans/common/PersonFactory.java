@@ -71,4 +71,17 @@ public final class PersonFactory {
 		return newList;
 	}
 
+	public static List<Person> createSportsIdolList() {
+		final List<Person> idols = new ArrayList<Person>();
+		Person person = new Person("Jordan", "Michael"); //$NON-NLS-1$ //$NON-NLS-2$
+		idols.add(person);
+		person = new Person("Lemieux", "Mario"); //$NON-NLS-1$//$NON-NLS-2$
+		idols.add(person);
+		person = new Person("Messi", "Lionel"); //$NON-NLS-1$ //$NON-NLS-2$
+		idols.add(person);
+		person = new Person("Ronaldo", "Christiano"); //$NON-NLS-1$//$NON-NLS-2$
+		idols.add(person);
+		return idols;
+	}
+
 }
