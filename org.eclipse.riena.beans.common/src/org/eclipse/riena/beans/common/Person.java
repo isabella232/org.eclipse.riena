@@ -32,6 +32,10 @@ public class Person extends AbstractBean {
 	 * Property name of the number property ("number").
 	 */
 	public static final String PROPERTY_NUMBER = "number"; //$NON-NLS-1$
+
+	public static final String PROPERTY_HOBBY = "hobby"; //$NON-NLS-1$
+
+	public static final String PROPERTY_SPORTS_IDOL = "sportsIdol"; //$NON-NLS-1$
 	/**
 	 * Property name of the birthday property ("birthday").
 	 */
@@ -84,6 +88,8 @@ public class Person extends AbstractBean {
 	private String birthplace;
 	private Address address;
 	private int eyeColor;
+	private Hobby hobby;
+	private Person sportsIdol;
 
 	/**
 	 * constructor.
@@ -101,6 +107,7 @@ public class Person extends AbstractBean {
 		birthplace = ""; //$NON-NLS-1$
 		gender = MALE;
 		address = new Address();
+		hobby = new HobbyProvider().getHobbies().get(1);
 	}
 
 	/**
@@ -354,6 +361,29 @@ public class Person extends AbstractBean {
 		return number;
 	}
 
+	public Hobby getHobby() {
+		return hobby;
+	}
+
+	public void setHobby(final Hobby hobby) {
+		final Object oldValue = this.hobby;
+		this.hobby = hobby;
+		firePropertyChanged(PROPERTY_HOBBY, oldValue, hobby);
+	}
+
+	public Person getSportsIdol() {
+		if (null == sportsIdol) {
+			sportsIdol = PersonFactory.createSportsIdolList().get(0);
+		}
+		return sportsIdol;
+	}
+
+	public void setSportsIdol(final Person sportsIdol) {
+		final Object oldValue = this.sportsIdol;
+		this.sportsIdol = sportsIdol;
+		firePropertyChanged(PROPERTY_SPORTS_IDOL, oldValue, sportsIdol);
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -368,6 +398,8 @@ public class Person extends AbstractBean {
 		result = prime * result + (hasDog ? 1231 : 1237);
 		result = prime * result + (hasFish ? 1231 : 1237);
 		result = prime * result + ((lastname == null) ? 0 : lastname.hashCode());
+		result = prime * result + ((hobby == null) ? 0 : hobby.hashCode());
+		result = prime * result + ((sportsIdol == null) ? 0 : sportsIdol.hashCode());
 		return result;
 	}
 
@@ -412,6 +444,21 @@ public class Person extends AbstractBean {
 				return false;
 			}
 		} else if (!firstname.equals(other.firstname)) {
+			return false;
+		}
+
+		if (hobby == null) {
+			if (other.hobby != null) {
+				return false;
+			}
+		} else if (!hobby.equals(other.hobby)) {
+			return false;
+		}
+		if (sportsIdol == null) {
+			if (other.sportsIdol != null) {
+				return false;
+			}
+		} else if (!sportsIdol.equals(other.sportsIdol)) {
 			return false;
 		}
 		if (gender == null) {
