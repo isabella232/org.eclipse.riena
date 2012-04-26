@@ -47,6 +47,7 @@ public class BorderDrawer implements Listener {
 
 	public static final int DEFAULT_BORDER_WIDTH = 1;
 	private static final String GC_KEY = BorderDrawer.class.getName() + ".GC"; //$NON-NLS-1$
+	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), BorderDrawer.class);
 
 	private final IDecorationActivationStrategy activationStrategy;
 	private final Control control;
@@ -71,7 +72,7 @@ public class BorderDrawer implements Listener {
 	private Rectangle updateArea;
 
 	private int specialWidgetWidthAdjustment;
-	private boolean needRedraw = true;
+	private boolean computeBorderArea = true;
 	private Event lastMoveEvent;
 
 	private final Listener updateListener = new Listener() {
@@ -232,7 +233,7 @@ public class BorderDrawer implements Listener {
 	}
 
 	public void paintControl(final Event event) {
-		if (needRedraw) {
+		if (computeBorderArea) {
 			Rectangle visibleControlArea;
 			if (control instanceof CCombo) {
 				visibleControlArea = ((Composite) control).getClientArea();
@@ -240,7 +241,7 @@ public class BorderDrawer implements Listener {
 				visibleControlArea = getVisibleControlArea(event);
 			}
 			visibleControlAreaOnDisplay = includeBorder(toVisibleControlAreaOnDisplay(visibleControlArea));
-			needRedraw = false;
+			computeBorderArea = false;
 		}
 		if (shouldShowDecoration()) {
 			Composite someParent = control instanceof Composite ? (Composite) control : control.getParent();
@@ -256,6 +257,10 @@ public class BorderDrawer implements Listener {
 	 * Updates the area where the border is normally drawn
 	 */
 	public void update(final boolean redraw) {
+		if (SwtUtilities.isDisposed(control)) {
+			LOGGER.log(LogService.LOG_ERROR, "Control with border is disposed", new Exception()); //$NON-NLS-1$
+			return;
+		}
 		final Shell shell = control.getShell();
 		if (updateArea != null && redraw) {
 			shell.redraw(updateArea.x, updateArea.y, updateArea.width, updateArea.height, true);
@@ -273,11 +278,6 @@ public class BorderDrawer implements Listener {
 
 	// helping methods
 	//////////////////
-
-	private static void logWarning(final String message) {
-		final Logger logger = Log4r.getLogger(Activator.getDefault(), BorderDrawer.class);
-		logger.log(LogService.LOG_WARNING, message);
-	}
 
 	/**
 	 * Returns whether the decoration should be shown or it should not.
@@ -338,7 +338,7 @@ public class BorderDrawer implements Listener {
 		if (borderColor != null) {
 			gc.setForeground(borderColor);
 		} else {
-			logWarning("BorderColor is null!"); //$NON-NLS-1$
+			LOGGER.log(LogService.LOG_WARNING, "BorderColor is null!"); //$NON-NLS-1$
 		}
 		for (int i = 0; i < borderWidth; i++) {
 			gc.drawRectangle(rect.x + i, rect.y + i, rect.width - 2 * i, rect.height - 2 * i);
@@ -439,19 +439,24 @@ public class BorderDrawer implements Listener {
 	public void handleEvent(final Event event) {
 		switch (event.type) {
 		case SWT.Move:
-			needRedraw = true;
+			computeBorderArea = true;
 			lastMoveEvent = event;
+			if (SwtUtilities.isDisposed(control)) {
+				break;
+			}
 			update(false);
 			control.getDisplay().timerExec(200, new Runnable() {
 				public void run() {
 					if (event == lastMoveEvent) {
-						control.redraw();
+						if (!SwtUtilities.isDisposed(control)) {
+							control.redraw();
+						}
 					}
 				}
 			});
 			break;
 		case SWT.Resize:
-			needRedraw = true;
+			computeBorderArea = true;
 			update(true);
 			break;
 
