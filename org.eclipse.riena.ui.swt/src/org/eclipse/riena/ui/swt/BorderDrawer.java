@@ -262,7 +262,8 @@ public class BorderDrawer implements Listener {
 			return;
 		}
 		final Shell shell = control.getShell();
-		if (updateArea != null && redraw) {
+		final boolean redrawLater = updateArea == null;
+		if (redraw && !redrawLater) {
 			shell.redraw(updateArea.x, updateArea.y, updateArea.width, updateArea.height, true);
 		}
 		Rectangle bounds = control.getBounds();
@@ -274,6 +275,9 @@ public class BorderDrawer implements Listener {
 		updateArea.y = updateArea.y - 1;
 		updateArea.width = updateArea.width + 2;
 		updateArea.height = updateArea.height + 2;
+		if (redraw && redrawLater) {
+			shell.redraw(updateArea.x, updateArea.y, updateArea.width, updateArea.height, true);
+		}
 	}
 
 	// helping methods

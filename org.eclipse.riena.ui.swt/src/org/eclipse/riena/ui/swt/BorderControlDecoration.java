@@ -149,7 +149,7 @@ public class BorderControlDecoration implements IControlDecoration {
 	public void show() {
 		if (!visible) {
 			visible = true;
-			borderDrawer.update(false);
+			borderDrawer.update(true);
 		}
 	}
 
