@@ -31,6 +31,7 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.internal.ui.swt.Activator;
 import org.eclipse.riena.ui.swt.facades.SWTFacade;
+import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
@@ -50,7 +51,7 @@ public class BorderDrawer implements Listener {
 	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), BorderDrawer.class);
 
 	private final IDecorationActivationStrategy activationStrategy;
-	private final Control control;
+	private Control control;
 	private Color borderColor;
 	private int borderWidth;
 
@@ -80,6 +81,8 @@ public class BorderDrawer implements Listener {
 			update(false);
 		}
 	};
+	private boolean isMasterDetails;
+	private boolean disposed;
 
 	/**
 	 * @param control
@@ -111,6 +114,9 @@ public class BorderDrawer implements Listener {
 	 * Registers the {@link PaintListener} to the control and {@link ControlListener} to all parents from the hierarchy (including the {@link Shell}).
 	 */
 	public void register() {
+		if (disposed) {
+			throw new IllegalStateException("A BorderDrawer instance can be registered only once. This instance has already been registered"); //$NON-NLS-1$
+		}
 		if (control instanceof DatePickerComposite || control instanceof CompletionCombo) {
 			specialWidgetWidthAdjustment = 16;
 			final Control[] children = ((Composite) control).getChildren();
@@ -125,6 +131,11 @@ public class BorderDrawer implements Listener {
 			registerToControl(control, SWTFacade.Paint);
 		}
 
+		if (MasterDetailsComposite.BIND_ID_TABLE.equals(SWTBindingPropertyLocator.getInstance().locateBindingProperty(control))) {
+			control = control.getParent().getParent();
+			isMasterDetails = true;
+		}
+
 		Composite parent = control.getParent();
 		do {
 			registerToControl(parent, SWT.Resize, SWT.Move);
@@ -135,10 +146,102 @@ public class BorderDrawer implements Listener {
 
 		registerToControl(control, new Listener() {
 			public void handleEvent(final Event event) {
-				unregister();
+				dispose();
 			}
 		}, SWT.Dispose);
 	}
+
+	/**
+	 * Unregisters the {@link PaintListener} and {@link ControlListener} from the control and all parents.
+	 */
+	public void dispose() {
+		for (final Runnable r : toUnregister) {
+			r.run();
+		}
+		toUnregister.clear();
+		disposed = true;
+	}
+
+	/**
+	 * @param borderColor
+	 *            the borderColor to set
+	 */
+	public void setBorderColor(final Color borderColor) {
+		this.borderColor = borderColor;
+	}
+
+	/**
+	 * @return the borderColor
+	 */
+	public Color getBorderColor() {
+		return borderColor;
+	}
+
+	/**
+	 * @param borderWidth
+	 *            the borderWidth to set
+	 */
+	public void setBorderWidth(final int borderWidth) {
+		this.borderWidth = borderWidth;
+	}
+
+	/**
+	 * @return the borderWidth
+	 */
+	public int getBorderWidth() {
+		return borderWidth;
+	}
+
+	public void paintControl(final Event event) {
+		if (computeBorderArea) {
+			Rectangle visibleControlArea;
+			if (control instanceof CCombo || isMasterDetails) {
+				visibleControlArea = ((Composite) control).getClientArea();
+			} else {
+				visibleControlArea = getVisibleControlArea(event);
+			}
+			visibleControlAreaOnDisplay = includeBorder(toVisibleControlAreaOnDisplay(visibleControlArea));
+			computeBorderArea = false;
+		}
+		if (shouldShowDecoration()) {
+			Composite someParent = control instanceof Composite ? (Composite) control : control.getParent();
+			boolean fullyPainted = false;
+			while (someParent != null && !fullyPainted) {
+				fullyPainted = includeAndDrawBorder(someParent);
+				someParent = someParent.getParent();
+			}
+		}
+	}
+
+	/**
+	 * Updates the area where the border is normally drawn
+	 */
+	public void update(final boolean redraw) {
+		if (SwtUtilities.isDisposed(control)) {
+			LOGGER.log(LogService.LOG_ERROR, "Control with border is disposed", new Exception()); //$NON-NLS-1$
+			return;
+		}
+		final Shell shell = control.getShell();
+		final boolean redrawLater = updateArea == null;
+		if (redraw && !redrawLater) {
+			shell.redraw(updateArea.x, updateArea.y, updateArea.width, updateArea.height, true);
+		}
+		Rectangle bounds = control.getBounds();
+		bounds.x = bounds.y = 0;
+		bounds = getVisibleControlAreaStartingWith(bounds, null);
+		final Rectangle onDisplay = toVisibleControlAreaOnDisplay(bounds);
+		updateArea = includeBorder(toAreaOnControl(onDisplay, shell));
+		updateArea.x = updateArea.x - 1;
+		updateArea.y = updateArea.y - 1;
+		updateArea.width = updateArea.width + 2;
+		updateArea.height = updateArea.height + 2;
+		if (redraw && redrawLater) {
+			shell.redraw(updateArea.x, updateArea.y, updateArea.width, updateArea.height, true);
+		}
+	}
+
+	// helping methods
+	//////////////////
 
 	/**
 	 * Needed for the mnemonics handling in windows:
@@ -191,97 +294,6 @@ public class BorderDrawer implements Listener {
 			}
 		});
 	}
-
-	/**
-	 * Unregisters the {@link PaintListener} and {@link ControlListener} from the control and all parents.
-	 */
-	public void unregister() {
-		for (final Runnable r : toUnregister) {
-			r.run();
-		}
-		toUnregister.clear();
-	}
-
-	/**
-	 * @param borderColor
-	 *            the borderColor to set
-	 */
-	public void setBorderColor(final Color borderColor) {
-		this.borderColor = borderColor;
-	}
-
-	/**
-	 * @return the borderColor
-	 */
-	public Color getBorderColor() {
-		return borderColor;
-	}
-
-	/**
-	 * @param borderWidth
-	 *            the borderWidth to set
-	 */
-	public void setBorderWidth(final int borderWidth) {
-		this.borderWidth = borderWidth;
-	}
-
-	/**
-	 * @return the borderWidth
-	 */
-	public int getBorderWidth() {
-		return borderWidth;
-	}
-
-	public void paintControl(final Event event) {
-		if (computeBorderArea) {
-			Rectangle visibleControlArea;
-			if (control instanceof CCombo) {
-				visibleControlArea = ((Composite) control).getClientArea();
-			} else {
-				visibleControlArea = getVisibleControlArea(event);
-			}
-			visibleControlAreaOnDisplay = includeBorder(toVisibleControlAreaOnDisplay(visibleControlArea));
-			computeBorderArea = false;
-		}
-		if (shouldShowDecoration()) {
-			Composite someParent = control instanceof Composite ? (Composite) control : control.getParent();
-			boolean fullyPainted = false;
-			while (someParent != null && !fullyPainted) {
-				fullyPainted = includeAndDrawBorder(someParent);
-				someParent = someParent.getParent();
-			}
-		}
-	}
-
-	/**
-	 * Updates the area where the border is normally drawn
-	 */
-	public void update(final boolean redraw) {
-		if (SwtUtilities.isDisposed(control)) {
-			LOGGER.log(LogService.LOG_ERROR, "Control with border is disposed", new Exception()); //$NON-NLS-1$
-			return;
-		}
-		final Shell shell = control.getShell();
-		final boolean redrawLater = updateArea == null;
-		if (redraw && !redrawLater) {
-			shell.redraw(updateArea.x, updateArea.y, updateArea.width, updateArea.height, true);
-		}
-		Rectangle bounds = control.getBounds();
-		bounds.x = bounds.y = 0;
-		bounds = getVisibleControlAreaStartingWith(bounds, null);
-		final Rectangle onDisplay = toVisibleControlAreaOnDisplay(bounds);
-		updateArea = includeBorder(toAreaOnControl(onDisplay, shell));
-		updateArea.x = updateArea.x - 1;
-		updateArea.y = updateArea.y - 1;
-		updateArea.width = updateArea.width + 2;
-		updateArea.height = updateArea.height + 2;
-		if (redraw && redrawLater) {
-			shell.redraw(updateArea.x, updateArea.y, updateArea.width, updateArea.height, true);
-		}
-	}
-
-	// helping methods
-	//////////////////
 
 	/**
 	 * Returns whether the decoration should be shown or it should not.

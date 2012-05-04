@@ -482,7 +482,7 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	}
 
 	private void createMaster(final Composite parent) {
-		GridLayoutFactory.fillDefaults().numColumns(2).equalWidth(false).spacing(0, 0).margins(2, 2).applyTo(parent);
+		GridLayoutFactory.fillDefaults().numColumns(2).equalWidth(false).spacing(0, 0).applyTo(parent);
 		final Composite compTable = createTableComposite(parent);
 		buttonComposite = createButtons(parent);
 		if (buttonComposite != null) {
