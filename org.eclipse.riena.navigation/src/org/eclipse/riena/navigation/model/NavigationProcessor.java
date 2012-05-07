@@ -79,9 +79,7 @@ public class NavigationProcessor implements INavigationProcessor {
 
 			if (toActivate.isActivated()) {
 				if (DEBUG_NAVIGATION_PROCESSOR) {
-					LOGGER.log(
-							LogService.LOG_DEBUG,
-							"NaviProc: - activate triggered for Node " + toActivate.getNodeId() + "but is already activated --> NOP"); //$NON-NLS-1$//$NON-NLS-2$
+					LOGGER.log(LogService.LOG_DEBUG, "NaviProc: - activate triggered for Node " + toActivate.getNodeId() + "but is already activated --> NOP"); //$NON-NLS-1$//$NON-NLS-2$
 				}
 				Nop.reason("see comment below."); //$NON-NLS-1$
 				// do nothing
@@ -90,13 +88,11 @@ public class NavigationProcessor implements INavigationProcessor {
 				// the toActivate, in any case there is nothing to do
 			} else {
 				if (DEBUG_NAVIGATION_PROCESSOR) {
-					LOGGER.log(LogService.LOG_DEBUG,
-							"NaviProc: - activate triggered for Node " + toActivate.getNodeId()); //$NON-NLS-1$
+					LOGGER.log(LogService.LOG_DEBUG, "NaviProc: - activate triggered for Node " + toActivate.getNodeId()); //$NON-NLS-1$
 				}
 				if (!toActivate.isVisible() || !toActivate.isEnabled()) {
 					if (DEBUG_NAVIGATION_PROCESSOR) {
-						LOGGER.log(
-								LogService.LOG_DEBUG,
+						LOGGER.log(LogService.LOG_DEBUG,
 								"NaviProc: - activate triggered for Node " + toActivate.getNodeId() + "but is not visible or not enabled --> NOP"); //$NON-NLS-1$//$NON-NLS-2$
 					}
 
@@ -232,9 +228,7 @@ public class NavigationProcessor implements INavigationProcessor {
 	}
 
 	/**
-	 * Remembers the node to push onto the navigation history stack. A maximum
-	 * of MAX_STACKSIZE elements are stored. Older elements are removed from the
-	 * stack.
+	 * Remembers the node to push onto the navigation history stack. A maximum of MAX_STACKSIZE elements are stored. Older elements are removed from the stack.
 	 * 
 	 * @param toActivate
 	 */
@@ -334,8 +328,7 @@ public class NavigationProcessor implements INavigationProcessor {
 				if (nodeToHide != null) {
 					final List<INavigationNode<?>> toDeactivateList = getNodesToDeactivateOnDispose(nodeToHide);
 					final List<INavigationNode<?>> toActivateList = getNodesToActivateOnDispose(nodeToHide);
-					final INavigationContext navigationContext = new NavigationContext(null, toActivateList,
-							toDeactivateList);
+					final INavigationContext navigationContext = new NavigationContext(null, toActivateList, toDeactivateList);
 					if (allowsDeactivate(navigationContext) && allowsActivate(navigationContext)) {
 						deactivate(navigationContext);
 						activate(navigationContext);
@@ -395,8 +388,7 @@ public class NavigationProcessor implements INavigationProcessor {
 	/**
 	 * @since 2.0
 	 */
-	public INavigationNode<?> create(final INavigationNode<?> sourceNode, final NavigationNodeId targetId,
-			final NavigationArgument argument) {
+	public INavigationNode<?> create(final INavigationNode<?> sourceNode, final NavigationNodeId targetId, final NavigationArgument argument) {
 		return provideNode(sourceNode, targetId, argument);
 	}
 
@@ -445,8 +437,7 @@ public class NavigationProcessor implements INavigationProcessor {
 	/**
 	 * @since 2.0
 	 */
-	public INavigationNode<?> navigate(final INavigationNode<?> sourceNode, final NavigationNodeId targetId,
-			final NavigationArgument navigation) {
+	public INavigationNode<?> navigate(final INavigationNode<?> sourceNode, final NavigationNodeId targetId, final NavigationArgument navigation) {
 		// TODO see https://bugs.eclipse.org/bugs/show_bug.cgi?id=261832
 		//		if (navigation != null && navigation.isNavigateAsync()) {
 		//			navigateAsync(sourceNode, targetId, navigation);
@@ -459,8 +450,8 @@ public class NavigationProcessor implements INavigationProcessor {
 		DEFAULT, JUMP;
 	}
 
-	private INavigationNode<?> navigateSync(final INavigationNode<?> sourceNode, final NavigationNodeId targetId,
-			final NavigationArgument navigation, final NavigationType navigationType) {
+	private INavigationNode<?> navigateSync(final INavigationNode<?> sourceNode, final NavigationNodeId targetId, final NavigationArgument navigation,
+			final NavigationType navigationType) {
 		INavigationNode<?> targetNode = null;
 		try {
 			targetNode = provideNode(sourceNode, targetId, navigation);
@@ -527,11 +518,9 @@ public class NavigationProcessor implements INavigationProcessor {
 	}
 
 	/*
-	 * saves the current JumpTargetState for all nodes of the subtree starting
-	 * at the root node recursively
+	 * saves the current JumpTargetState for all nodes of the subtree starting at the root node recursively
 	 */
-	private void saveJumpState(final INavigationNode<?> root,
-			final Map<INavigationNode<?>, JumpTargetState> savedJumpState) {
+	private void saveJumpState(final INavigationNode<?> root, final Map<INavigationNode<?>, JumpTargetState> savedJumpState) {
 		savedJumpState.put(root, isJumpTarget(root) ? JumpTargetState.ENABLED : JumpTargetState.DISABLED);
 		for (final INavigationNode<?> child : root.getChildren()) {
 			saveJumpState(child, savedJumpState);
@@ -539,11 +528,9 @@ public class NavigationProcessor implements INavigationProcessor {
 	}
 
 	/*
-	 * Calculates the JumpTargetState changes for the given nodes and notifies
-	 * observers
+	 * Calculates the JumpTargetState changes for the given nodes and notifies observers
 	 */
-	private void notifyJumpStateChanged(final INavigationNode<?> node,
-			final Map<INavigationNode<?>, JumpTargetState> oldJumpState) {
+	private void notifyJumpStateChanged(final INavigationNode<?> node, final Map<INavigationNode<?>, JumpTargetState> oldJumpState) {
 		final Map<INavigationNode<?>, JumpTargetState> savedJumpState = saveJumpState(node);
 		final Iterator<Entry<INavigationNode<?>, JumpTargetState>> iterator = savedJumpState.entrySet().iterator();
 		while (iterator.hasNext()) {
@@ -555,8 +542,7 @@ public class NavigationProcessor implements INavigationProcessor {
 	}
 
 	/*
-	 * Notifies all jumpTargetState observers for the given node about the state
-	 * change
+	 * Notifies all jumpTargetState observers for the given node about the state change
 	 */
 	private void notifyJumpStateChanged(final INavigationNode<?> node, final JumpTargetState jumpTargetState) {
 		final List<IJumpTargetListener> listeners = jumpTargetListeners.get(node);
@@ -582,8 +568,7 @@ public class NavigationProcessor implements INavigationProcessor {
 	}
 
 	/*
-	 * unregisters the given node as and all of it�s children as jump targets
-	 * and sources recursively
+	 * unregisters the given node as and all of it�s children as jump targets and sources recursively
 	 */
 	private void handleJumpsOnDispose(final INavigationNode<?> node) {
 		runObserved(node, new Runnable() {
@@ -628,8 +613,7 @@ public class NavigationProcessor implements INavigationProcessor {
 	/**
 	 * @since 2.0
 	 */
-	public void jump(final INavigationNode<?> sourceNode, final NavigationNodeId targetId,
-			final NavigationArgument argument) {
+	public void jump(final INavigationNode<?> sourceNode, final NavigationNodeId targetId, final NavigationArgument argument) {
 		navigateSync(sourceNode, targetId, argument, NavigationType.JUMP);
 	}
 
@@ -675,13 +659,11 @@ public class NavigationProcessor implements INavigationProcessor {
 	}
 
 	/**
-	 * If the node is a child of / or an {@link ModuleGroupNode} locates the
-	 * latest target node inside the {@link ModuleGroupNode}. Else return the
-	 * given node itself.
+	 * If the node is a child of / or an {@link ModuleGroupNode} locates the latest target node inside the {@link ModuleGroupNode}. Else return the given node
+	 * itself.
 	 */
 	private INavigationNode<?> getLastJump(final INavigationNode<?> node) {
-		final ModuleGroupNode moduleGroupNode = (ModuleGroupNode) (node instanceof ModuleGroupNode ? node : node
-				.getParentOfType(ModuleGroupNode.class));
+		final ModuleGroupNode moduleGroupNode = (ModuleGroupNode) (node instanceof ModuleGroupNode ? node : node.getParentOfType(ModuleGroupNode.class));
 		if (moduleGroupNode == null) {
 			return node;
 		}
@@ -773,16 +755,14 @@ public class NavigationProcessor implements INavigationProcessor {
 	}
 
 	/**
-	 * Requests focus on given ridget. If the ridget is not found a
-	 * {@link RuntimeException} is thrown
+	 * Requests focus on given ridget. If the ridget is not found a {@link RuntimeException} is thrown
 	 * 
 	 * @param activateNode
 	 * @param navigation
 	 */
 	private void setFocusOnRidget(final INavigationNode<?> activateNode, final NavigationArgument navigation) {
 		if (null != navigation && null != navigation.getRidgetId()) {
-			final IRidgetContainer ridgetContainer = activateNode.getNavigationNodeController().getTypecastedAdapter(
-					IRidgetContainer.class);
+			final IRidgetContainer ridgetContainer = activateNode.getNavigationNodeController().getTypecastedAdapter(IRidgetContainer.class);
 			final IRidget ridget = ridgetContainer.getRidget(navigation.getRidgetId());
 			if (null != ridget) {
 				ridget.requestFocus();
@@ -867,8 +847,7 @@ public class NavigationProcessor implements INavigationProcessor {
 	//		p.start();
 	//	}
 
-	private INavigationNode<?> provideNode(final INavigationNode<?> sourceNode, final NavigationNodeId targetId,
-			final NavigationArgument argument) {
+	private INavigationNode<?> provideNode(final INavigationNode<?> sourceNode, final NavigationNodeId targetId, final NavigationArgument argument) {
 
 		try {
 			return getNavigationNodeProvider().provideNode(sourceNode, targetId, argument);
@@ -882,8 +861,7 @@ public class NavigationProcessor implements INavigationProcessor {
 	}
 
 	/**
-	 * Ascertain the correct node to dispose. If e.g. the first module in a
-	 * Group is disposed, then the whole group has to be disposed
+	 * Ascertain the correct node to dispose. If e.g. the first module in a Group is disposed, then the whole group has to be disposed
 	 * 
 	 * @param toDispose
 	 * @return the correct node to dispose
@@ -904,8 +882,7 @@ public class NavigationProcessor implements INavigationProcessor {
 	}
 
 	/**
-	 * Find all nodes which have to deactivated and disposed with the passed
-	 * node. These are all children and its children, in backward order
+	 * Find all nodes which have to deactivated and disposed with the passed node. These are all children and its children, in backward order
 	 * 
 	 * @param toDispose
 	 *            the node to dispose
@@ -932,8 +909,7 @@ public class NavigationProcessor implements INavigationProcessor {
 	}
 
 	/**
-	 * Find a node or list of nodes which have to activated when a specified
-	 * node is disposed
+	 * Find a node or list of nodes which have to activated when a specified node is disposed
 	 * 
 	 * @param toDispose
 	 *            the node to dispose
@@ -1038,8 +1014,7 @@ public class NavigationProcessor implements INavigationProcessor {
 	}
 
 	/**
-	 * Removes all not activatable nodes (e.g. hidden nodes) from the given
-	 * list.
+	 * Removes all not activatable nodes (e.g. hidden nodes) from the given list.
 	 * 
 	 * @param nodes
 	 *            list of node
@@ -1075,8 +1050,7 @@ public class NavigationProcessor implements INavigationProcessor {
 		return nodesToActivate;
 	}
 
-	private void addParentsToActivate(final List<INavigationNode<?>> nodesToActivate,
-			final INavigationNode<?> toActivate) {
+	private void addParentsToActivate(final List<INavigationNode<?>> nodesToActivate, final INavigationNode<?> toActivate) {
 		// go up to the next active parent
 		final INavigationNode<?> parent = getActivationParent(toActivate);
 		if (parent != null) {
@@ -1119,8 +1093,7 @@ public class NavigationProcessor implements INavigationProcessor {
 
 	}
 
-	private void addChildrenToActivate(final List<INavigationNode<?>> nodesToActivate,
-			final INavigationNode<?> toActivate) {
+	private void addChildrenToActivate(final List<INavigationNode<?>> nodesToActivate, final INavigationNode<?> toActivate) {
 		final INavigationNode<?> childToActivate = getChildToActivate(toActivate);
 		if (childToActivate != null) {
 			nodesToActivate.add(childToActivate);
@@ -1147,8 +1120,7 @@ public class NavigationProcessor implements INavigationProcessor {
 
 	}
 
-	private void addChildrenToDeactivate(final List<INavigationNode<?>> nodesToDeactivate,
-			final INavigationNode<?> toAdd) {
+	private void addChildrenToDeactivate(final List<INavigationNode<?>> nodesToDeactivate, final INavigationNode<?> toAdd) {
 		final INavigationNode<?> activeChild = getActiveChild(toAdd);
 		if (activeChild != null) {
 			addChildrenToDeactivate(nodesToDeactivate, activeChild);
@@ -1252,13 +1224,11 @@ public class NavigationProcessor implements INavigationProcessor {
 	}
 
 	/**
-	 * Checks if only one kind of navigation node (e.g. ISubModuleNode) is
-	 * activated.
+	 * Checks if only one kind of navigation node (e.g. ISubModuleNode) is activated.
 	 * 
 	 * @param someChild
 	 *            some child in the tree of the navigation model
-	 * @return {@code true} all active nodes are correct, otherwise
-	 *         {@code false}
+	 * @return {@code true} all active nodes are correct, otherwise {@code false}
 	 */
 	private boolean checkActiveNodes(final INavigationNode<?> someChild) {
 		boolean ok = true;
@@ -1269,8 +1239,8 @@ public class NavigationProcessor implements INavigationProcessor {
 		final List<INavigationNode<?>> activeNodes = new LinkedList<INavigationNode<?>>();
 		addChildren(application, activeNodes, State.ACTIVATED);
 		for (int i = 0; i < activeNodes.size(); i++) {
+			final INavigationNode<?> iNode = activeNodes.get(i);
 			for (int j = i + 1; j < activeNodes.size(); j++) {
-				final INavigationNode<?> iNode = activeNodes.get(i);
 				final INavigationNode<?> jNode = activeNodes.get(j);
 				if (iNode instanceof IApplicationNode && jNode instanceof IApplicationNode) {
 					LOGGER.log(LogService.LOG_ERROR, "Two active IApplicationNodes"); //$NON-NLS-1$
@@ -1293,8 +1263,7 @@ public class NavigationProcessor implements INavigationProcessor {
 		return ok;
 	}
 
-	private void addChildren(final INavigationNode<?> parent, final List<INavigationNode<?>> nodes,
-			final State nodeState) {
+	private void addChildren(final INavigationNode<?> parent, final List<INavigationNode<?>> nodes, final State nodeState) {
 		if (parent != null) {
 			for (final INavigationNode<?> child : parent.getChildren()) {
 				if (child.getState() == nodeState) {
@@ -1370,8 +1339,7 @@ public class NavigationProcessor implements INavigationProcessor {
 		private List<INavigationNode<?>> toPrepare;
 
 		/**
-		 * Creates a context with nodes to be prepared, activated and
-		 * deactivated.
+		 * Creates a context with nodes to be prepared, activated and deactivated.
 		 * 
 		 * @param toPrepare
 		 *            nodes to be prepared
@@ -1528,13 +1496,9 @@ public class NavigationProcessor implements INavigationProcessor {
 	}
 
 	/**
-	 * since the navigation processor decides, who is the next child to
-	 * activate: so the processor can jump over nodes and decides which nodes
-	 * are deactivated, the navigation processor also must set the selected
-	 * chain. While activation the navigation processor works with the selected
-	 * chain to find which nodes have to be activated an which to be
-	 * deactivated. The selected chain must always show the way from the to
-	 * element to the active one
+	 * since the navigation processor decides, who is the next child to activate: so the processor can jump over nodes and decides which nodes are deactivated,
+	 * the navigation processor also must set the selected chain. While activation the navigation processor works with the selected chain to find which nodes
+	 * have to be activated an which to be deactivated. The selected chain must always show the way from the to element to the active one
 	 * 
 	 * @param pNode
 	 *            the node to set the selected chain for.
@@ -1565,8 +1529,7 @@ public class NavigationProcessor implements INavigationProcessor {
 	}
 
 	/**
-	 * this navigation processor allows only one selected child, so it resets
-	 * the flag in all children before marking the one
+	 * this navigation processor allows only one selected child, so it resets the flag in all children before marking the one
 	 * 
 	 * @param parent
 	 *            the parent to reset in
@@ -1637,8 +1600,7 @@ public class NavigationProcessor implements INavigationProcessor {
 		if (navigationListener.size() == 0) {
 			return;
 		}
-		final INavigationHistoryEvent event = new NavigationHistoryEvent(histBack.subList(0,
-				Math.max(0, histBack.size() - 1)));
+		final INavigationHistoryEvent event = new NavigationHistoryEvent(histBack.subList(0, Math.max(0, histBack.size() - 1)));
 		for (final INavigationHistoryListener listener : navigationListener) {
 			listener.backHistoryChanged(event);
 		}
@@ -1685,8 +1647,7 @@ public class NavigationProcessor implements INavigationProcessor {
 	/**
 	 * Answers the currently selected navigation node in the NavigationTree
 	 * 
-	 * @return the currently selected SubModuleNode in the NavigationTree or
-	 *         null
+	 * @return the currently selected SubModuleNode in the NavigationTree or null
 	 */
 	public INavigationNode<?> getSelectedNode() {
 		//always the top most histback item is the currently selected
@@ -1704,10 +1665,8 @@ public class NavigationProcessor implements INavigationProcessor {
 	}
 
 	/**
-	 * Navigates to the caller (the source node) of the given targetNode. If
-	 * there is no previous caller, no navigation is performed. If the
-	 * targetNode itself has no caller in the navigationMap, the tree hierarchy
-	 * is searched up to the tree root.
+	 * Navigates to the caller (the source node) of the given targetNode. If there is no previous caller, no navigation is performed. If the targetNode itself
+	 * has no caller in the navigationMap, the tree hierarchy is searched up to the tree root.
 	 * 
 	 * @param targetNode
 	 *            The node where we have navigate to and return from
@@ -1730,8 +1689,7 @@ public class NavigationProcessor implements INavigationProcessor {
 	public synchronized void addNavigationHistoryListener(final INavigationHistoryListener listener) {
 		if (!navigationListener.contains(listener)) {
 			navigationListener.add(listener);
-			INavigationHistoryEvent event = new NavigationHistoryEvent(histBack.subList(0,
-					(histBack.size() > 0 ? histBack.size() - 1 : 0)));
+			INavigationHistoryEvent event = new NavigationHistoryEvent(histBack.subList(0, (histBack.size() > 0 ? histBack.size() - 1 : 0)));
 			listener.backHistoryChanged(event);
 			event = new NavigationHistoryEvent(histForward.subList(0, histForward.size()));
 			listener.forwardHistoryChanged(event);
