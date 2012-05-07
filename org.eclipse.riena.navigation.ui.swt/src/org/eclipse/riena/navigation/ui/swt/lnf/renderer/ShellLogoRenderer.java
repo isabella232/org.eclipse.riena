@@ -32,15 +32,14 @@ public class ShellLogoRenderer extends AbstractLnfRenderer {
 	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), ShellLogoRenderer.class);
 
 	/**
-	 * @see org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer#paint(org.eclipse.swt.graphics.GC,
-	 *      java.lang.Object)
+	 * @see org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer#paint(org.eclipse.swt.graphics.GC, java.lang.Object)
 	 */
 	@Override
 	public void paint(final GC gc, final Object value) {
 
 		super.paint(gc, value);
 
-		final Image logo = getLogoImage();
+		final Image logo = value instanceof Image ? (Image) value : getLogoImage();
 		if (logo == null) {
 			return;
 		}
@@ -153,8 +152,7 @@ public class ShellLogoRenderer extends AbstractLnfRenderer {
 	/**
 	 * Returns the image of the logo.
 	 * 
-	 * @return logo image or the default missing image, if the logo image of the
-	 *         L&F wasn't found.
+	 * @return logo image or the default missing image, if the logo image of the L&F wasn't found.
 	 */
 	private Image getLogoImage() {
 		Image logoImage = LnfManager.getLnf().getImage(LnfKeyConstants.TITLELESS_SHELL_LOGO);

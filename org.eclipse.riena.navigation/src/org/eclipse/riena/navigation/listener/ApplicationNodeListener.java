@@ -16,7 +16,13 @@ import org.eclipse.riena.navigation.ISubApplicationNode;
 /**
  * Default implementation for IApplicationNodeListener
  */
-public class ApplicationNodeListener extends NavigationNodeListener<IApplicationNode, ISubApplicationNode> implements
-		IApplicationNodeListener {
+public class ApplicationNodeListener extends NavigationNodeListener<IApplicationNode, ISubApplicationNode> implements IApplicationNodeListener {
+
+	/**
+	 * @see org.eclipse.riena.navigation.listener.IApplicationNodeListener#logoChanged(org.eclipse.riena.navigation.IApplicationNode)
+	 * @since 4.0
+	 */
+	public void logoChanged(final IApplicationNode node, final String newLogoPath) {
+	}
 
 }

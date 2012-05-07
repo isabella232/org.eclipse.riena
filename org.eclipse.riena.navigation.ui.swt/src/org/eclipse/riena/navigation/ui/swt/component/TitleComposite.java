@@ -36,8 +36,7 @@ import org.eclipse.riena.ui.swt.lnf.renderer.AbstractTitleBarRenderer;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 
 /**
- * This composite contains parts of the title of a Riena application: e.g. logo
- * or sub-application switcher. Also the renderer of this composite draws some
+ * This composite contains parts of the title of a Riena application: e.g. logo or sub-application switcher. Also the renderer of this composite draws some
  * other parts: e.g. minimize, maximize and close button
  */
 public class TitleComposite extends Composite {
@@ -45,13 +44,13 @@ public class TitleComposite extends Composite {
 	private TitlelessShellMouseListener mouseListener;
 	private final ApplicationNode node;
 	private IApplicationNodeListener appNodeListener;
+	private LogoComposite logoComposite;
 
 	/**
 	 * Creates a new instance of {@code TitleComposite} and initializes it.
 	 * 
 	 * @param parentShell
-	 *            a shell which will be the parent of the new instance (cannot
-	 *            be null)
+	 *            a shell which will be the parent of the new instance (cannot be null)
 	 * @param node
 	 *            node of the application
 	 */
@@ -77,8 +76,7 @@ public class TitleComposite extends Composite {
 		setBackgroundImage(image);
 
 		setLayout(new FormLayout());
-		final ShellBorderRenderer borderRenderer = (ShellBorderRenderer) LnfManager.getLnf().getRenderer(
-				LnfKeyConstants.TITLELESS_SHELL_BORDER_RENDERER);
+		final ShellBorderRenderer borderRenderer = (ShellBorderRenderer) LnfManager.getLnf().getRenderer(LnfKeyConstants.TITLELESS_SHELL_BORDER_RENDERER);
 		final int borderWidth = borderRenderer.getBorderWidth();
 		final FormData data = new FormData();
 		data.top = new FormAttachment(parentShell, borderWidth);
@@ -86,7 +84,8 @@ public class TitleComposite extends Composite {
 		data.right = new FormAttachment(100, -borderWidth);
 		setLayoutData(data);
 
-		new LogoComposite(this, SWT.NONE);
+		logoComposite = new LogoComposite(this, SWT.NONE);
+		logoComposite.setLogo(node.getLogo());
 		new SwitcherComposite(this, node);
 
 		addListeners();
@@ -112,8 +111,7 @@ public class TitleComposite extends Composite {
 	 * @return renderer
 	 */
 	private ShellRenderer getShellRenderer() {
-		final ShellRenderer shellRenderer = (ShellRenderer) LnfManager.getLnf().getRenderer(
-				LnfKeyConstants.TITLELESS_SHELL_RENDERER);
+		final ShellRenderer shellRenderer = (ShellRenderer) LnfManager.getLnf().getRenderer(LnfKeyConstants.TITLELESS_SHELL_RENDERER);
 		return shellRenderer;
 	}
 
@@ -142,8 +140,7 @@ public class TitleComposite extends Composite {
 	}
 
 	/**
-	 * If the label of the application has changed, redraw the composite so that
-	 * the correct label is displayed.
+	 * If the label of the application has changed, redraw the composite so that the correct label is displayed.
 	 */
 	private class ApplicationLabelListener extends ApplicationNodeListener {
 
@@ -151,6 +148,13 @@ public class TitleComposite extends Composite {
 		public void labelChanged(final IApplicationNode source) {
 			super.labelChanged(source);
 			redraw();
+		}
+
+		@Override
+		public void logoChanged(final IApplicationNode node, final String newLogoPath) {
+			super.logoChanged(node, newLogoPath);
+			logoComposite.setLogo(newLogoPath);
+			layout(true, true);
 		}
 
 	}
