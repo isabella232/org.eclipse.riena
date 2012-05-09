@@ -131,6 +131,7 @@ public class ApplicationNode extends NavigationNode<IApplicationNode, ISubApplic
 	@SuppressWarnings("rawtypes")
 	private void notifyLogoChanged(final String logoPath) {
 		for (final INavigationNodeListener next : getListeners()) {
+			// avoid ClassCastException when listener is NavigationUIFilterApplier
 			if (next instanceof IApplicationNodeListener) {
 				((IApplicationNodeListener) next).logoChanged(ApplicationNode.this, logoPath);
 			}

@@ -51,7 +51,7 @@ public class BorderDrawer implements Listener {
 	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), BorderDrawer.class);
 
 	private final IDecorationActivationStrategy activationStrategy;
-	private Control control;
+	private final Control control;
 	private Color borderColor;
 	private int borderWidth;
 
@@ -82,7 +82,7 @@ public class BorderDrawer implements Listener {
 		}
 	};
 	private boolean isMasterDetails;
-	private boolean disposed;
+	private Control controlToDecorate;
 
 	/**
 	 * @param control
@@ -114,9 +114,6 @@ public class BorderDrawer implements Listener {
 	 * Registers the {@link PaintListener} to the control and {@link ControlListener} to all parents from the hierarchy (including the {@link Shell}).
 	 */
 	public void register() {
-		if (disposed) {
-			throw new IllegalStateException("A BorderDrawer instance can be registered only once. This instance has already been registered"); //$NON-NLS-1$
-		}
 		if (control instanceof DatePickerComposite || control instanceof CompletionCombo) {
 			specialWidgetWidthAdjustment = 16;
 			final Control[] children = ((Composite) control).getChildren();
@@ -131,12 +128,13 @@ public class BorderDrawer implements Listener {
 			registerToControl(control, SWTFacade.Paint);
 		}
 
-		if (MasterDetailsComposite.BIND_ID_TABLE.equals(SWTBindingPropertyLocator.getInstance().locateBindingProperty(control))) {
-			control = control.getParent().getParent();
+		controlToDecorate = control;
+		if (MasterDetailsComposite.BIND_ID_TABLE.equals(SWTBindingPropertyLocator.getInstance().locateBindingProperty(getControlToDecorate()))) {
+			controlToDecorate = getControlToDecorate().getParent().getParent();
 			isMasterDetails = true;
 		}
 
-		Composite parent = control.getParent();
+		Composite parent = getControlToDecorate().getParent();
 		do {
 			registerToControl(parent, SWT.Resize, SWT.Move);
 			registerToControl(parent, updateListener, SWTFacade.Paint);
@@ -144,7 +142,7 @@ public class BorderDrawer implements Listener {
 
 		registerMnemonicsListener();
 
-		registerToControl(control, new Listener() {
+		registerToControl(getControlToDecorate(), new Listener() {
 			public void handleEvent(final Event event) {
 				dispose();
 			}
@@ -159,7 +157,6 @@ public class BorderDrawer implements Listener {
 			r.run();
 		}
 		toUnregister.clear();
-		disposed = true;
 	}
 
 	/**
@@ -195,8 +192,8 @@ public class BorderDrawer implements Listener {
 	public void paintControl(final Event event) {
 		if (computeBorderArea) {
 			Rectangle visibleControlArea;
-			if (control instanceof CCombo || isMasterDetails) {
-				visibleControlArea = ((Composite) control).getClientArea();
+			if (getControlToDecorate() instanceof CCombo || isMasterDetails) {
+				visibleControlArea = ((Composite) getControlToDecorate()).getClientArea();
 			} else {
 				visibleControlArea = getVisibleControlArea(event);
 			}
@@ -204,7 +201,7 @@ public class BorderDrawer implements Listener {
 			computeBorderArea = false;
 		}
 		if (shouldShowDecoration()) {
-			Composite someParent = control instanceof Composite ? (Composite) control : control.getParent();
+			Composite someParent = getControlToDecorate() instanceof Composite ? (Composite) getControlToDecorate() : getControlToDecorate().getParent();
 			boolean fullyPainted = false;
 			while (someParent != null && !fullyPainted) {
 				fullyPainted = includeAndDrawBorder(someParent);
@@ -217,16 +214,16 @@ public class BorderDrawer implements Listener {
 	 * Updates the area where the border is normally drawn
 	 */
 	public void update(final boolean redraw) {
-		if (SwtUtilities.isDisposed(control)) {
+		if (SwtUtilities.isDisposed(getControlToDecorate())) {
 			LOGGER.log(LogService.LOG_ERROR, "Control with border is disposed", new Exception()); //$NON-NLS-1$
 			return;
 		}
-		final Shell shell = control.getShell();
+		final Shell shell = getControlToDecorate().getShell();
 		final boolean redrawLater = updateArea == null;
 		if (redraw && !redrawLater) {
 			shell.redraw(updateArea.x, updateArea.y, updateArea.width, updateArea.height, true);
 		}
-		Rectangle bounds = control.getBounds();
+		Rectangle bounds = getControlToDecorate().getBounds();
 		bounds.x = bounds.y = 0;
 		bounds = getVisibleControlAreaStartingWith(bounds, null);
 		final Rectangle onDisplay = toVisibleControlAreaOnDisplay(bounds);
@@ -254,11 +251,11 @@ public class BorderDrawer implements Listener {
 			public void handleEvent(final Event event) {
 				if (event.keyCode == SWT.ALT) {
 					update(true);
-					control.getDisplay().removeFilter(SWT.KeyDown, this);
+					getControlToDecorate().getDisplay().removeFilter(SWT.KeyDown, this);
 				}
 			}
 		};
-		final Display display = control.getDisplay();
+		final Display display = getControlToDecorate().getDisplay();
 		display.addFilter(SWT.KeyDown, altListener);
 		toUnregister.add(new Runnable() {
 			public void run() {
@@ -301,10 +298,10 @@ public class BorderDrawer implements Listener {
 	 * @return {@code true} if the decoration should be shown, {@code false} if it should not.
 	 */
 	private boolean shouldShowDecoration() {
-		if (SwtUtilities.isDisposed(control)) {
+		if (SwtUtilities.isDisposed(getControlToDecorate())) {
 			return false;
 		}
-		if (!control.isVisible()) {
+		if (!getControlToDecorate().isVisible()) {
 			return false;
 		}
 		if (borderWidth <= 0) {
@@ -380,20 +377,20 @@ public class BorderDrawer implements Listener {
 	 */
 	private Rectangle getVisibleControlAreaStartingWith(final Rectangle visibleControlArea, final Event event) {
 		// if some scroll bars are visible, their size must be also included
-		if (control instanceof Scrollable) {
-			final ScrollBar horizontalBar = ((Scrollable) control).getHorizontalBar();
+		if (getControlToDecorate() instanceof Scrollable) {
+			final ScrollBar horizontalBar = ((Scrollable) getControlToDecorate()).getHorizontalBar();
 			if (horizontalBar != null && horizontalBar.isVisible()) {
 				visibleControlArea.height += horizontalBar.getSize().y;
 			}
-			final ScrollBar verticalBar = ((Scrollable) control).getVerticalBar();
+			final ScrollBar verticalBar = ((Scrollable) getControlToDecorate()).getVerticalBar();
 			if (verticalBar != null && verticalBar.isVisible()) {
 				visibleControlArea.width += verticalBar.getSize().x;
 			}
 		}
 
 		// some special handling for the tree widget
-		if (control instanceof Tree) {
-			final Tree t = (Tree) control;
+		if (getControlToDecorate() instanceof Tree) {
+			final Tree t = (Tree) getControlToDecorate();
 			if (t.getColumnCount() > 0 && event != null) {
 				visibleControlArea.x = event.x;
 				visibleControlArea.width -= event.x;
@@ -403,15 +400,16 @@ public class BorderDrawer implements Listener {
 				visibleControlArea.height += t.getHeaderHeight();
 			}
 			//			System.out.println(visibleControlArea);
-		} else if (control instanceof DatePickerComposite
-				&& visibleControlArea.width + specialWidgetWidthAdjustment + 2 * control.getBorderWidth() == control.getBounds().width) {
+		} else if (getControlToDecorate() instanceof DatePickerComposite
+				&& visibleControlArea.width + specialWidgetWidthAdjustment + 2 * getControlToDecorate().getBorderWidth() == getControlToDecorate().getBounds().width) {
 			visibleControlArea.width += specialWidgetWidthAdjustment;
-		} else if (control instanceof CompletionCombo) {
-			if (((Composite) control).getChildren().length == 3) {
+		} else if (getControlToDecorate() instanceof CompletionCombo) {
+			if (((Composite) getControlToDecorate()).getChildren().length == 3) {
 				// we also have a label
 				visibleControlArea.x -= 16;
 				visibleControlArea.width += 16;
-			} else if (visibleControlArea.width + specialWidgetWidthAdjustment + 2 * control.getBorderWidth() + 1 == control.getBounds().width) {
+			} else if (visibleControlArea.width + specialWidgetWidthAdjustment + 2 * getControlToDecorate().getBorderWidth() + 1 == getControlToDecorate()
+					.getBounds().width) {
 				visibleControlArea.width += specialWidgetWidthAdjustment + 1;
 			}
 		}
@@ -430,7 +428,7 @@ public class BorderDrawer implements Listener {
 	 * @return include the border size on each side of the given rectangle
 	 */
 	private Rectangle includeBorder(final Rectangle visibleControlArea) {
-		final int controlBorder = control.getBorderWidth();
+		final int controlBorder = getControlToDecorate().getBorderWidth();
 		final int border = controlBorder + borderWidth;
 		final int x = visibleControlArea.x - border;
 		final int y = visibleControlArea.y - border;
@@ -443,7 +441,7 @@ public class BorderDrawer implements Listener {
 	 * @return the visible control area relative to its display
 	 */
 	private Rectangle toVisibleControlAreaOnDisplay(final Rectangle visibleControlArea) {
-		final Point onDisplay = control.toDisplay(visibleControlArea.x, visibleControlArea.y);
+		final Point onDisplay = getControlToDecorate().toDisplay(visibleControlArea.x, visibleControlArea.y);
 		return new Rectangle(onDisplay.x, onDisplay.y, visibleControlArea.width, visibleControlArea.height);
 	}
 
@@ -457,15 +455,15 @@ public class BorderDrawer implements Listener {
 		case SWT.Move:
 			computeBorderArea = true;
 			lastMoveEvent = event;
-			if (SwtUtilities.isDisposed(control)) {
+			if (SwtUtilities.isDisposed(getControlToDecorate())) {
 				break;
 			}
 			update(false);
-			control.getDisplay().timerExec(200, new Runnable() {
+			getControlToDecorate().getDisplay().timerExec(200, new Runnable() {
 				public void run() {
 					if (event == lastMoveEvent) {
-						if (!SwtUtilities.isDisposed(control)) {
-							control.redraw();
+						if (!SwtUtilities.isDisposed(getControlToDecorate())) {
+							getControlToDecorate().redraw();
 						}
 					}
 				}
@@ -483,5 +481,12 @@ public class BorderDrawer implements Listener {
 		default:
 			break;
 		}
+	}
+
+	/**
+	 * @return the control
+	 */
+	private Control getControlToDecorate() {
+		return controlToDecorate;
 	}
 }
