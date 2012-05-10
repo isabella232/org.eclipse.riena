@@ -183,8 +183,9 @@ public class TitlelessStackPresentation extends StackPresentation {
 			if (current != null) {
 				placeHolder.setBounds(calcPlaceHolderBounds());
 				placeHolder.setVisible(true);
-				placeHolder.moveAbove(current != null ? current.getControl() : null);
+				placeHolder.moveAbove(null); // move to the top of the drawing order
 				placeHolder.update();
+				current.getControl().update();
 			}
 		}
 
@@ -197,7 +198,8 @@ public class TitlelessStackPresentation extends StackPresentation {
 			}
 			hideComposite(placeHolder);
 			redrawSubModuleTitle();
-			current.getControl().moveAbove(placeHolder != null ? placeHolder : null);
+			current.getControl().moveAbove(null); // move to the top of the drawing order
+			current.getControl().update();
 		}
 
 		@Override
@@ -221,8 +223,7 @@ public class TitlelessStackPresentation extends StackPresentation {
 	private Rectangle calcPlaceHolderBounds() {
 		final Rectangle tmp = calcSubModuleInnerBounds();
 		Rectangle placeHolderBounds = null;
-		final EmbeddedTitleBar tb = (EmbeddedTitleBar) locateControl(current.getControl(),
-				StackPresentationControlFilter.TITLE_BAR_FILTER);
+		final EmbeddedTitleBar tb = (EmbeddedTitleBar) locateControl(current.getControl(), StackPresentationControlFilter.TITLE_BAR_FILTER);
 		if (tb != null) {
 			placeHolderBounds = new Rectangle(tmp.x, tmp.y + tb.getBounds().height, tmp.width, tmp.height);
 		} else {
@@ -308,8 +309,7 @@ public class TitlelessStackPresentation extends StackPresentation {
 	 * This is called when the window is resized.
 	 * <ol>
 	 * <li>compute new size for navigation</li>
-	 * <li>all non-current views are set to size zero (until they become current
-	 * and are shown)</li>
+	 * <li>all non-current views are set to size zero (until they become current and are shown)</li>
 	 * <li>the current view is resized</li>
 	 * </ol>
 	 */
@@ -352,8 +352,7 @@ public class TitlelessStackPresentation extends StackPresentation {
 	/**
 	 * This presentation does not support drag and drop.
 	 * 
-	 * @see org.eclipse.ui.presentations.StackPresentation#dragOver(org.eclipse.swt.widgets.Control,
-	 *      org.eclipse.swt.graphics.Point)
+	 * @see org.eclipse.ui.presentations.StackPresentation#dragOver(org.eclipse.swt.widgets.Control, org.eclipse.swt.graphics.Point)
 	 */
 	@Override
 	public StackDropResult dragOver(final Control currentControl, final Point location) {
@@ -366,8 +365,7 @@ public class TitlelessStackPresentation extends StackPresentation {
 	}
 
 	/**
-	 * Return the control of the active part, so that the correct TAB-ordering
-	 * can be set.
+	 * Return the control of the active part, so that the correct TAB-ordering can be set.
 	 */
 	@Override
 	public Control[] getTabList(final IPresentablePart part) {
@@ -380,15 +378,13 @@ public class TitlelessStackPresentation extends StackPresentation {
 	@Override
 	public void setActive(final int newState) {
 		/*
-		 * Be very care careful what you do here, to avoid causing flicker. This
-		 * method may be called with AS_INACTIVE and AS_ACTIVE states repeatedly
-		 * for the same part.
+		 * Be very care careful what you do here, to avoid causing flicker. This method may be called with AS_INACTIVE and AS_ACTIVE states repeatedly for the
+		 * same part.
 		 */
 	}
 
 	/**
-	 * The state (minimized, maximized or restored) is not relevant for the
-	 * <code>TitlelessStackPresentation</code>.
+	 * The state (minimized, maximized or restored) is not relevant for the <code>TitlelessStackPresentation</code>.
 	 * 
 	 * @see org.eclipse.ui.presentations.StackPresentation#setState(int)
 	 */
@@ -434,8 +430,7 @@ public class TitlelessStackPresentation extends StackPresentation {
 	private Rectangle calcSubModuleOuterBounds() {
 		final Rectangle naviBounds = calcNavigationBounds(parent);
 
-		final int x = isNavigationFastViewEnabled() ? getShellSubModuleGap() : naviBounds.x + naviBounds.width
-				+ getNavigationSubModuleGap();
+		final int x = isNavigationFastViewEnabled() ? getShellSubModuleGap() : naviBounds.x + naviBounds.width + getNavigationSubModuleGap();
 		final int y = naviBounds.y;
 		final int width = parent.getBounds().width - x - getShellSubModuleGap();
 		final int height = naviBounds.height;
@@ -454,10 +449,8 @@ public class TitlelessStackPresentation extends StackPresentation {
 		try {
 			final Point size = getModuleGroupRenderer().computeSize(gc, SWT.DEFAULT, SWT.DEFAULT);
 			final int x = getShellNavigationGap();
-			final int width = size.x
-					+ (isNavigationFastViewEnabled() ? 2 * AbstractNavigationCompositeDeligation.BORDER_MARGIN : 0);
-			final int height = parent.getBounds().height - PADDING_BOTTOM
-					- LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.STATUSLINE_HEIGHT);
+			final int width = size.x + (isNavigationFastViewEnabled() ? 2 * AbstractNavigationCompositeDeligation.BORDER_MARGIN : 0);
+			final int height = parent.getBounds().height - PADDING_BOTTOM - LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.STATUSLINE_HEIGHT);
 			return new Rectangle(x, 0, width, height);
 		} finally {
 			gc.dispose();
@@ -469,8 +462,7 @@ public class TitlelessStackPresentation extends StackPresentation {
 	}
 
 	/**
-	 * Creates the area within witch the view of the current active sub-module
-	 * is displayed.
+	 * Creates the area within witch the view of the current active sub-module is displayed.
 	 */
 	private void createSubModuleViewArea() {
 		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
@@ -501,8 +493,7 @@ public class TitlelessStackPresentation extends StackPresentation {
 
 	/**
 	 * Returns the renderer of the sub-module view.<br>
-	 * Renderer renders the border of the sub-module view and not the content of
-	 * the view.
+	 * Renderer renders the border of the sub-module view and not the content of the view.
 	 * 
 	 * @return renderer of sub-module view
 	 */
@@ -528,13 +519,10 @@ public class TitlelessStackPresentation extends StackPresentation {
 	}
 
 	/**
-	 * Install a sub module change listener with the navigation tree, that will
-	 * repaint the sub module title when the node has changed.
+	 * Install a sub module change listener with the navigation tree, that will repaint the sub module title when the node has changed.
 	 * <p>
-	 * This is necessary because when "shared" nodes (i.e. parts) are selected,
-	 * we do <b>not</b> receive a {@link #selectPart(IPresentablePart)}
-	 * notification if the part is <b>already</b> selected. However the shared
-	 * parts may still have different titles.
+	 * This is necessary because when "shared" nodes (i.e. parts) are selected, we do <b>not</b> receive a {@link #selectPart(IPresentablePart)} notification if
+	 * the part is <b>already</b> selected. However the shared parts may still have different titles.
 	 */
 	private synchronized void initializeSubModuleChangeListener() {
 		if (hasListener) {
@@ -564,8 +552,7 @@ public class TitlelessStackPresentation extends StackPresentation {
 		final IWorkbenchPage page = getActivePage();
 		if (page != null) {
 			final String id = page.getPerspective().getId();
-			final ISubApplicationNode subApplication = SwtViewProvider.getInstance().getNavigationNode(id,
-					ISubApplicationNode.class);
+			final ISubApplicationNode subApplication = SwtViewProvider.getInstance().getNavigationNode(id, ISubApplicationNode.class);
 			result = (SubApplicationController) subApplication.getNavigationNodeController();
 		}
 		return result;
@@ -588,8 +575,7 @@ public class TitlelessStackPresentation extends StackPresentation {
 	}
 
 	/**
-	 * Returns the gap between the right side of the navigation and the left
-	 * side of the active sub module.
+	 * Returns the gap between the right side of the navigation and the left side of the active sub module.
 	 * 
 	 * @return gap
 	 */
@@ -599,10 +585,8 @@ public class TitlelessStackPresentation extends StackPresentation {
 	}
 
 	/**
-	 * Returns the gap between the border of the shell and the left side of the
-	 * navigation.<br>
-	 * <i>Note: The shell has also a padding (
-	 * {@linkplain LnfKeyConstants.TITLELESS_SHELL_PADDING}).</i>
+	 * Returns the gap between the border of the shell and the left side of the navigation.<br>
+	 * <i>Note: The shell has also a padding ( {@linkplain LnfKeyConstants.TITLELESS_SHELL_PADDING}).</i>
 	 * 
 	 * @return gap
 	 */
@@ -612,10 +596,8 @@ public class TitlelessStackPresentation extends StackPresentation {
 	}
 
 	/**
-	 * Returns the gap between right side of the active sub module and the
-	 * border of the shell.<br>
-	 * <i>Note: The shell has also a padding (
-	 * {@linkplain LnfKeyConstants.TITLELESS_SHELL_PADDING}).</i>
+	 * Returns the gap between right side of the active sub module and the border of the shell.<br>
+	 * <i>Note: The shell has also a padding ( {@linkplain LnfKeyConstants.TITLELESS_SHELL_PADDING}).</i>
 	 * 
 	 * @return gap
 	 */
@@ -625,8 +607,7 @@ public class TitlelessStackPresentation extends StackPresentation {
 	}
 
 	/**
-	 * Sets the visibility of the navigation, if the Property
-	 * {@link LnfKeyConstants#NAVIGATION_FAST_VIEW} is set to true.
+	 * Sets the visibility of the navigation, if the Property {@link LnfKeyConstants#NAVIGATION_FAST_VIEW} is set to true.
 	 * 
 	 * @since 4.0
 	 */
@@ -639,8 +620,7 @@ public class TitlelessStackPresentation extends StackPresentation {
 	/**
 	 * Returns the visibility of the navigation.
 	 * 
-	 * @return the visibility of the navigation. Always false if the property
-	 *         {@link LnfKeyConstants#NAVIGATION_FAST_VIEW} is set to false.
+	 * @return the visibility of the navigation. Always false if the property {@link LnfKeyConstants#NAVIGATION_FAST_VIEW} is set to false.
 	 * 
 	 * @since 4.0
 	 */
@@ -653,15 +633,13 @@ public class TitlelessStackPresentation extends StackPresentation {
 
 	private final class CloseNavigationMouseListener implements Listener {
 		public void handleEvent(final Event event) {
-			if (event.button == 1 && navigation != null && isNavigationVisible()
-					&& isSelectedWidgetAllowedToCloseNavigation(event.widget)) {
+			if (event.button == 1 && navigation != null && isNavigationVisible() && isSelectedWidgetAllowedToCloseNavigation(event.widget)) {
 				final Point widgetLocationOnDisplay = ((Control) event.widget).toDisplay(new Point(0, 0));
 				final Rectangle mouseLocation = event.getBounds();
 				final Control navigationControl = navigation.getControl();
 				final Rectangle navigationBounds = navigationControl.getBounds();
 				final Point navigationLocationOnDisplay = navigationControl.toDisplay(0, 0);
-				final Point mousePositionOnDisplay = new Point(mouseLocation.x + widgetLocationOnDisplay.x,
-						mouseLocation.y + widgetLocationOnDisplay.y);
+				final Point mousePositionOnDisplay = new Point(mouseLocation.x + widgetLocationOnDisplay.x, mouseLocation.y + widgetLocationOnDisplay.y);
 				// TODO cleanup
 				if (mousePositionOnDisplay.x > navigationLocationOnDisplay.x + navigationBounds.width
 						|| mousePositionOnDisplay.y > navigationLocationOnDisplay.y + navigationBounds.height
@@ -672,8 +650,7 @@ public class TitlelessStackPresentation extends StackPresentation {
 		}
 
 		private boolean isSelectedWidgetAllowedToCloseNavigation(final Widget widget) {
-			return widget instanceof Control && !(widget instanceof ToolBar)
-					&& !(widget instanceof SubApplicationSwitcherWidget);
+			return widget instanceof Control && !(widget instanceof ToolBar) && !(widget instanceof SubApplicationSwitcherWidget);
 		}
 	}
 }
