@@ -18,4 +18,15 @@ import org.eclipse.riena.navigation.ISubApplicationNode;
  */
 public interface IApplicationNodeListener extends INavigationNodeListener<IApplicationNode, ISubApplicationNode> {
 
+	/**
+	 * This method is called when the logo has changed.
+	 * 
+	 * @param source
+	 *            the application node whose logo has changed
+	 * @param newLogoPath
+	 *            the new logo path
+	 * 
+	 * @since 4.0
+	 */
+	void logoChanged(IApplicationNode source, String newLogoPath);
 }

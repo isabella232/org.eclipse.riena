@@ -50,8 +50,7 @@ import org.eclipse.riena.ui.filter.impl.UIFilterable;
 import org.eclipse.riena.ui.ridgets.tree2.ITreeNode2;
 
 /**
- * Default implementation of all features common to all navigation node objects
- * The parent-child relations are not included!
+ * Default implementation of all features common to all navigation node objects The parent-child relations are not included!
  * 
  * @param <S>
  *            the type of implemented node
@@ -60,9 +59,13 @@ import org.eclipse.riena.ui.ridgets.tree2.ITreeNode2;
  * @param <L>
  *            the type of the listener
  */
-public abstract class NavigationNode<S extends INavigationNode<C>, C extends INavigationNode<?>, L extends INavigationNodeListener<S, C>>
-		extends TypecastingObject implements INavigationNode<C>, INavigationNodeListenerable<S, C, L>, IContext {
+public abstract class NavigationNode<S extends INavigationNode<C>, C extends INavigationNode<?>, L extends INavigationNodeListener<S, C>> extends
+		TypecastingObject implements INavigationNode<C>, INavigationNodeListenerable<S, C, L>, IContext {
 
+	/**
+	 * @since 4.0
+	 */
+	protected final PropertyChangeSupport propertyChangeSupport;
 	private NavigationNodeId nodeId;
 
 	private State state;
@@ -80,7 +83,6 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	private final IUIFilterable filterable;
 	private Map<String, Object> context;
 	private final Set<IAction> actions;
-	private final PropertyChangeSupport propertyChangeSupport;
 	private IMarker hiddenMarker;
 	private IMarker disabledMarker;
 	private Boolean cachedVisible;
@@ -272,8 +274,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	}
 
 	/**
-	 * Checks if the given class (or a superclass) implements the correct type
-	 * of children.
+	 * Checks if the given class (or a superclass) implements the correct type of children.
 	 * 
 	 * @param childClass
 	 *            class of child
@@ -363,8 +364,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	 * 
 	 * @param nodeId
 	 *            ID of a navigation node
-	 * @return {@code true} child with the given ID exists; otherwise
-	 *         {@code false}
+	 * @return {@code true} child with the given ID exists; otherwise {@code false}
 	 * @since 3.0
 	 */
 	protected boolean hasChild(final NavigationNodeId nodeId) {
@@ -393,8 +393,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 			throw new NavigationModelFailure("Cannot remove null!"); //$NON-NLS-1$
 		}
 		if (!hasChild(child)) {
-			throw new NavigationModelFailure(
-					"Node \"" + child.toString() + "\" isn't a child of \"" + this.toString() + "\"!"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			throw new NavigationModelFailure("Node \"" + child.toString() + "\" isn't a child of \"" + this.toString() + "\"!"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 		if (child.isActivated()) {
 			throw new NavigationModelFailure("Cannot remove active child \"" + child.toString() + "\"!"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -547,8 +546,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	}
 
 	/**
-	 * Look for the navigation processor in the hierarchy. The navigation
-	 * processor can be set at any level
+	 * Look for the navigation processor in the hierarchy. The navigation processor can be set at any level
 	 */
 	public INavigationProcessor getNavigationProcessor() {
 		if (navigationProcessor != null) {
@@ -620,8 +618,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	}
 
 	/**
-	 * Creates the markable, can return null, then will be the markable from the
-	 * parent used
+	 * Creates the markable, can return null, then will be the markable from the parent used
 	 * 
 	 * @return a Markable or null
 	 */
@@ -953,8 +950,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	}
 
 	/**
-	 * If the node (and no parent node) hasn't a {@link DisabledMarker} the node
-	 * is enabled; otherwise the node is disabled.
+	 * If the node (and no parent node) hasn't a {@link DisabledMarker} the node is enabled; otherwise the node is disabled.
 	 */
 	public boolean isEnabled() {
 		return isEnabled(this);
@@ -973,8 +969,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	}
 
 	/**
-	 * Adds {@link DisabledMarker} if {@code enabled} is {@code false}. Removes
-	 * {@link DisabledMarker} if {@code enabled} is {@code true}.
+	 * Adds {@link DisabledMarker} if {@code enabled} is {@code false}. Removes {@link DisabledMarker} if {@code enabled} is {@code true}.
 	 */
 	public void setEnabled(final boolean enabled) {
 
@@ -991,8 +986,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	}
 
 	/**
-	 * If the node (and no parent) hasn't a {@link HiddenMarker} the node is
-	 * visible; otherwise the node is hidden.
+	 * If the node (and no parent) hasn't a {@link HiddenMarker} the node is visible; otherwise the node is hidden.
 	 */
 	public boolean isVisible() {
 		return isVisible(this);
@@ -1011,8 +1005,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	}
 
 	/**
-	 * Adds {@link HiddenMarker} if {@code visible} is {@code false}. Removes
-	 * {@link HiddenMarker} if {@code visible} is {@code true}.
+	 * Adds {@link HiddenMarker} if {@code visible} is {@code false}. Removes {@link HiddenMarker} if {@code visible} is {@code true}.
 	 */
 	public final void setVisible(final boolean visible) {
 

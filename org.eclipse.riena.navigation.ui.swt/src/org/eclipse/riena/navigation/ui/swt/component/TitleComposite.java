@@ -42,6 +42,7 @@ public class TitleComposite extends Composite {
 	private TitlelessShellMouseListener mouseListener;
 	private final IApplicationNode node;
 	private IApplicationNodeListener appNodeListener;
+	private LogoComposite logoComposite;
 
 	/**
 	 * Creates a new instance of {@code TitleComposite} and initializes it.
@@ -81,7 +82,8 @@ public class TitleComposite extends Composite {
 		data.right = new FormAttachment(100, -borderWidth);
 		setLayoutData(data);
 
-		new LogoComposite(this, SWT.NONE);
+		logoComposite = new LogoComposite(this, SWT.NONE);
+		logoComposite.setLogo(node.getLogo());
 		new SwitcherComposite(this, node);
 
 		addListeners();
@@ -144,6 +146,13 @@ public class TitleComposite extends Composite {
 		public void labelChanged(final IApplicationNode source) {
 			super.labelChanged(source);
 			redraw();
+		}
+
+		@Override
+		public void logoChanged(final IApplicationNode node, final String newLogoPath) {
+			super.logoChanged(node, newLogoPath);
+			logoComposite.setLogo(newLogoPath);
+			layout(true, true);
 		}
 
 	}

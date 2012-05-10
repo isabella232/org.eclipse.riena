@@ -441,6 +441,13 @@
             name="org.eclipse.riena.example.client.view.contentFilter"
             restorable="true">
       </view>
+      <view
+            allowMultiple="true"
+            class="org.eclipse.riena.example.client.views.ChangeLogoSubModuleView"
+            id="org.eclipse.riena.example.client.view.changeLogo"
+            name="org.eclipse.riena.example.client.view.changeLogo"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -1144,6 +1151,17 @@
                selectable="true"
                sharedView="false"
                viewId="org.eclipse.riena.example.client.view.contentFilter"
+               visible="true">
+         </subModule>
+         <subModule
+               closable="false"
+               controller="org.eclipse.riena.example.client.controllers.ChangeLogoSubModuleController"
+               expanded="false"
+               name="Change Logo"
+               nodeId="org.eclipse.riena.example.client.subModule.changeLogo"
+               selectable="true"
+               sharedView="false"
+               viewId="org.eclipse.riena.example.client.view.changeLogo"
                visible="true">
          </subModule>
       </assembly2>
