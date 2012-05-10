@@ -29,7 +29,7 @@ public class Application extends SwtApplication {
 	public static final String ID_GROUP_MBOXES = "rcp.mail.groupMailboxes"; //$NON-NLS-1$
 
 	@Override
-	protected IApplicationNode createModel() {
+	public IApplicationNode createModel() {
 
 		final ApplicationNode app = new ApplicationNode("Riena Mail"); //$NON-NLS-1$
 
@@ -40,15 +40,13 @@ public class Application extends SwtApplication {
 		final IModuleGroupNode groupMailboxes = new ModuleGroupNode(new NavigationNodeId(Application.ID_GROUP_MBOXES));
 		subApp.addChild(groupMailboxes);
 
-		final IModuleNode moduleAccount1 = NodeFactory.createModule(
-				new NavigationNodeId("account1"), "me@this.com", groupMailboxes); //$NON-NLS-1$ //$NON-NLS-2$
+		final IModuleNode moduleAccount1 = NodeFactory.createModule(new NavigationNodeId("account1"), "me@this.com", groupMailboxes); //$NON-NLS-1$ //$NON-NLS-2$
 		moduleAccount1.setClosable(false);
 		NodeFactory.createSubModule(new NavigationNodeId("inbox"), "Inbox", moduleAccount1, View.ID); //$NON-NLS-1$ //$NON-NLS-2$
 		NodeFactory.createSubModule(new NavigationNodeId("drafts"), "Drafts", moduleAccount1, View.ID); //$NON-NLS-1$ //$NON-NLS-2$
 		NodeFactory.createSubModule(new NavigationNodeId("sent"), "Sent", moduleAccount1, View.ID); //$NON-NLS-1$ //$NON-NLS-2$
 
-		final IModuleNode moduleAccount2 = NodeFactory.createModule(
-				new NavigationNodeId("account2"), "other@aol.com", groupMailboxes); //$NON-NLS-1$ //$NON-NLS-2$
+		final IModuleNode moduleAccount2 = NodeFactory.createModule(new NavigationNodeId("account2"), "other@aol.com", groupMailboxes); //$NON-NLS-1$ //$NON-NLS-2$
 		NodeFactory.createSubModule(new NavigationNodeId("inbox2"), "Inbox", moduleAccount2, View.ID); //$NON-NLS-1$ //$NON-NLS-2$
 
 		return app;

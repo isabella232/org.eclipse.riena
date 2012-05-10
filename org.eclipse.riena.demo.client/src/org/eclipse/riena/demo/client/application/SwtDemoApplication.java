@@ -30,10 +30,9 @@ public class SwtDemoApplication extends SwtApplication {
 	}
 
 	@Override
-	protected IApplicationNode createModel() {
+	public IApplicationNode createModel() {
 		final String bundleVersion = Activator.getDefault().getBundle().getHeaders().get("Bundle-Version"); //$NON-NLS-1$
-		final IApplicationNode applicationNode = new ApplicationNode(
-				new NavigationNodeId("application"), "Riena Demo - " + bundleVersion); //$NON-NLS-1$ //$NON-NLS-2$
+		final IApplicationNode applicationNode = new ApplicationNode(new NavigationNodeId("application"), "Riena Demo - " + bundleVersion); //$NON-NLS-1$ //$NON-NLS-2$
 		return applicationNode;
 	}
 

@@ -19,7 +19,7 @@ import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Widget;
 
-import org.eclipse.riena.navigation.model.ApplicationNode;
+import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellBorderRenderer;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -30,18 +30,17 @@ import org.eclipse.riena.ui.swt.utils.WidgetIdentificationSupport;
  */
 public class SwitcherComposite extends Composite {
 
-	private final ApplicationNode node;
+	private final IApplicationNode node;
 
 	/**
 	 * Creates a new instance of {@code SwitcherComposite} and initializes it.
 	 * 
 	 * @param parent
-	 *            a composite which will be the parent of the new instance
-	 *            (cannot be null)
+	 *            a composite which will be the parent of the new instance (cannot be null)
 	 * @param node
 	 *            node of the application
 	 */
-	public SwitcherComposite(final Composite parent, final ApplicationNode node) {
+	public SwitcherComposite(final Composite parent, final IApplicationNode node) {
 		super(parent, SWT.DOUBLE_BUFFERED);
 		this.node = node;
 		init(parent);
@@ -73,8 +72,7 @@ public class SwitcherComposite extends Composite {
 	}
 
 	/**
-	 * Returns the margin between the top of the shell and the widget with the
-	 * sub-application switchers.
+	 * Returns the margin between the top of the shell and the widget with the sub-application switchers.
 	 * 
 	 * @return margin
 	 */
@@ -104,8 +102,7 @@ public class SwitcherComposite extends Composite {
 	 */
 	private int getShellPadding() {
 
-		final ShellBorderRenderer borderRenderer = (ShellBorderRenderer) LnfManager.getLnf().getRenderer(
-				LnfKeyConstants.TITLELESS_SHELL_BORDER_RENDERER);
+		final ShellBorderRenderer borderRenderer = (ShellBorderRenderer) LnfManager.getLnf().getRenderer(LnfKeyConstants.TITLELESS_SHELL_BORDER_RENDERER);
 		return borderRenderer.getCompleteBorderWidth();
 
 	}

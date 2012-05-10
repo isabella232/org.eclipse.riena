@@ -25,7 +25,6 @@ import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.PlatformUI;
 
 import org.eclipse.riena.beans.common.SingleSelectionListBean;
 import org.eclipse.riena.beans.common.StringBean;
@@ -49,8 +48,7 @@ public class TextDateSubModuleController extends SubModuleController {
 	 */
 	@Override
 	public void configureRidgets() {
-		final String[] ids = {
-				"dd.MM.yyyy", "dd.MM.yy", "dd.MM", "MM.yyyy", "yyyy", "HH:mm:ss", "HH:mm", "dd.MM.yyyy_HH:mm", "dd.MM.yyyyPicker" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$
+		final String[] ids = { "dd.MM.yyyy", "dd.MM.yy", "dd.MM", "MM.yyyy", "yyyy", "HH:mm:ss", "HH:mm", "dd.MM.yyyy_HH:mm", "dd.MM.yyyyPicker" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$
 		final DataBindingContext dbc = new DataBindingContext();
 		for (final String id : ids) {
 			bind(dbc, id);
@@ -89,16 +87,14 @@ public class TextDateSubModuleController extends SubModuleController {
 		justSpaces.bindToModel(new StringBean("  .  .    "), StringBean.PROP_VALUE); //$NON-NLS-1$
 		justSpaces.updateFromModel();
 
-		fontManager = new FontManager(PlatformUI.getWorkbench().getDisplay());
+		fontManager = new FontManager(Display.getCurrent());
 		fontManager.addRidget(justEights);
 		fontManager.addRidget(justSpaces);
 
 		final IComboRidget comboFonts = getRidget(IComboRidget.class, "comboFonts"); //$NON-NLS-1$
-		final SingleSelectionListBean fonts = new SingleSelectionListBean(new Object[] {
-				"Arial", "Courier New", "Verdana" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		final SingleSelectionListBean fonts = new SingleSelectionListBean(new Object[] { "Arial", "Courier New", "Verdana" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		fonts.setSelection("Arial"); //$NON-NLS-1$
-		comboFonts.bindToModel(fonts, SingleSelectionListBean.PROPERTY_VALUES, String.class, null, fonts,
-				SingleSelectionListBean.PROPERTY_SELECTION);
+		comboFonts.bindToModel(fonts, SingleSelectionListBean.PROPERTY_VALUES, String.class, null, fonts, SingleSelectionListBean.PROPERTY_SELECTION);
 		comboFonts.addPropertyChangeListener(IComboRidget.PROPERTY_SELECTION, new PropertyChangeListener() {
 			public void propertyChange(final PropertyChangeEvent evt) {
 				final String name = (String) evt.getNewValue();
@@ -107,12 +103,10 @@ public class TextDateSubModuleController extends SubModuleController {
 		});
 		comboFonts.updateFromModel();
 
-		final SingleSelectionListBean sizes = new SingleSelectionListBean(new Object[] {
-				"6", "7", "8", "9", "10", "11", "12" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+		final SingleSelectionListBean sizes = new SingleSelectionListBean(new Object[] { "6", "7", "8", "9", "10", "11", "12" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
 		sizes.setSelection("9"); //$NON-NLS-1$
 		final IComboRidget comboSizes = getRidget(IComboRidget.class, "comboSizes"); //$NON-NLS-1$
-		comboSizes.bindToModel(sizes, SingleSelectionListBean.PROPERTY_VALUES, String.class, null, sizes,
-				SingleSelectionListBean.PROPERTY_SELECTION);
+		comboSizes.bindToModel(sizes, SingleSelectionListBean.PROPERTY_VALUES, String.class, null, sizes, SingleSelectionListBean.PROPERTY_SELECTION);
 		comboSizes.addPropertyChangeListener(IComboRidget.PROPERTY_SELECTION, new PropertyChangeListener() {
 			public void propertyChange(final PropertyChangeEvent evt) {
 				final String size = (String) evt.getNewValue();
@@ -145,9 +139,9 @@ public class TextDateSubModuleController extends SubModuleController {
 		final IDateTextRidget inputRidget = getRidget(IDateTextRidget.class, "in" + id); //$NON-NLS-1$
 		final ITextRidget outputRidget = getRidget(ITextRidget.class, "out" + id); //$NON-NLS-1$
 		outputRidget.setOutputOnly(true);
-		dbc.bindValue(BeansObservables.observeValue(inputRidget, ITextRidget.PROPERTY_TEXT), BeansObservables
-				.observeValue(outputRidget, ITextRidget.PROPERTY_TEXT), new UpdateValueStrategy(
-				UpdateValueStrategy.POLICY_UPDATE), new UpdateValueStrategy(UpdateValueStrategy.POLICY_NEVER));
+		dbc.bindValue(BeansObservables.observeValue(inputRidget, ITextRidget.PROPERTY_TEXT),
+				BeansObservables.observeValue(outputRidget, ITextRidget.PROPERTY_TEXT), new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE),
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_NEVER));
 	}
 
 	private void bindToModel(final String id, final StringBean value) {

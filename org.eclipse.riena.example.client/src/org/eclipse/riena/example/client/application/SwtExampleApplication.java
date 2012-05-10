@@ -75,21 +75,19 @@ public class SwtExampleApplication extends SwtApplication {
 		subjectHolder.setSubject(subject);
 		final Permissions p = new Permissions();
 		/*
-		 * sample for Permission controlled UIFilters. Disable code to add
-		 * filter to Buttons-Demo in Playground
+		 * sample for Permission controlled UIFilters. Disable code to add filter to Buttons-Demo in Playground
 		 */
 		p.add(new RuntimePermission("navi", "newx")); //$NON-NLS-1$ //$NON-NLS-2$
 		pmCache.putPermissions(principal, p);
 	}
 
 	@Override
-	protected IApplicationNode createModel() {
+	public IApplicationNode createModel() {
 		ISubApplicationNode subApplication = null;
 
 		final String bundleVersion = Activator.getDefault().getBundle().getHeaders().get("Bundle-Version"); //$NON-NLS-1$
 
-		final IApplicationNode applicationNode = new ApplicationNode(
-				new NavigationNodeId("application"), "Example & Playground - " + bundleVersion); //$NON-NLS-1$ //$NON-NLS-2$
+		final IApplicationNode applicationNode = new ApplicationNode(new NavigationNodeId("application"), "Example & Playground - " + bundleVersion); //$NON-NLS-1$ //$NON-NLS-2$
 		applicationNode.setIcon(ExampleIcons.ICON_APPLICATION);
 
 		// Navigation SubApplication

@@ -51,62 +51,55 @@ public class Statusline extends Composite implements IComplexComponent {
 	 * Creates a new instance of <code>Statusline</code>.
 	 * 
 	 * @param parent
-	 *            a widget which will be the parent of the new instance (cannot
-	 *            be null)
+	 *            a widget which will be the parent of the new instance (cannot be null)
 	 * @param style
 	 *            the style of widget to construct
 	 */
 	public Statusline(final Composite parent, final int style) {
-		this(parent, style | SWT.NO_SCROLL, (Class<? extends Control>) null);
+		this(parent, style, (Class<? extends Control>) null);
 	}
 
 	/**
 	 * Creates a new instance of <code>Statusline</code>.
 	 * 
 	 * @param parent
-	 *            a widget which will be the parent of the new instance (cannot
-	 *            be null)
+	 *            a widget which will be the parent of the new instance (cannot be null)
 	 * @param style
 	 *            the style of widget to construct
 	 * @since 1.2
 	 */
 	public Statusline(final Composite parent, final int style, final IStatusLineContentFactory contentFactory) {
-		this(parent, style | SWT.NO_SCROLL, null, contentFactory);
+		this(parent, style, null, contentFactory);
 	}
 
 	/**
 	 * 
 	 * @param parent
-	 *            a widget which will be the parent of the new instance (cannot
-	 *            be null)
+	 *            a widget which will be the parent of the new instance (cannot be null)
 	 * @param style
 	 *            the style of widget to construct
 	 * @param pSpacer
 	 *            class to create spacer
 	 * @param contentFactory
-	 *            factory for the creation of the contents of the
-	 *            <code>Statusline</code>
+	 *            factory for the creation of the contents of the <code>Statusline</code>
 	 */
 	public Statusline(final Composite parent, final int style, final Class<? extends Control> pSpacer) {
-		this(parent, style | SWT.NO_SCROLL, pSpacer, new DefaultStatuslineContentFactory());
+		this(parent, style, pSpacer, new DefaultStatuslineContentFactory());
 	}
 
 	/**
 	 * Creates a new instance of <code>Statusline</code>.
 	 * 
 	 * @param parent
-	 *            a widget which will be the parent of the new instance (cannot
-	 *            be null)
+	 *            a widget which will be the parent of the new instance (cannot be null)
 	 * @param style
 	 *            the style of widget to construct
 	 * @param pSpacer
 	 *            class to create spacer
 	 * @param contentFactory
-	 *            factory for the creation of the contents of the
-	 *            <code>Statusline</code>
+	 *            factory for the creation of the contents of the <code>Statusline</code>
 	 */
-	public Statusline(final Composite parent, final int style, final Class<? extends Control> pSpacer,
-			final IStatusLineContentFactory contentFactory) {
+	public Statusline(final Composite parent, final int style, final Class<? extends Control> pSpacer, final IStatusLineContentFactory contentFactory) {
 		super(parent, style | SWT.NO_SCROLL);
 		spacer = pSpacer;
 		this.contentFactory = contentFactory;

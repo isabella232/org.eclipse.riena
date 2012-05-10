@@ -45,11 +45,10 @@ import org.eclipse.riena.ui.core.uiprocess.ProgressProviderBridge;
  * Abstract application defining the basic structure of a Riena application
  */
 @SuppressWarnings("restriction")
-public abstract class AbstractApplication implements IApplication {
+public abstract class AbstractApplication implements IApplication, IApplicationModelCreator {
 
 	/**
-	 * The result code EXIT_ABORT can be used to indicate that the login process
-	 * was aborted. As a result the application has to be terminated.
+	 * The result code EXIT_ABORT can be used to indicate that the login process was aborted. As a result the application has to be terminated.
 	 * 
 	 * @since 3.0
 	 */
@@ -67,16 +66,24 @@ public abstract class AbstractApplication implements IApplication {
 		}
 		initializeUI();
 		final IApplicationNode applicationNode = createModel();
+		initApplicationNode(applicationNode);
+		return createView(context, applicationNode);
+	}
+
+	/**
+	 * Important: This method is NOT API. It is used for the 3.x/e4 split.
+	 * 
+	 * @since 4.0
+	 */
+	public void initApplicationNode(final IApplicationNode applicationNode) {
 		if (applicationNode == null) {
-			throw new RuntimeException(
-					"Application did not return an ApplicationModel in method 'createModel' but returned NULL. Cannot continue"); //$NON-NLS-1$
+			throw new RuntimeException("Application did not return an ApplicationModel in method 'createModel' but returned NULL. Cannot continue"); //$NON-NLS-1$
 		}
 		applyUserInterfaceFilters(applicationNode);
 		ApplicationNodeManager.registerApplicationNode(applicationNode);
 		createStartupNodes(applicationNode);
 		initializeNode(applicationNode);
 		installProgressProviderBridge();
-		return createView(context, applicationNode);
 	}
 
 	private void applyUserInterfaceFilters(final IApplicationNode applicationNode) {
@@ -87,10 +94,8 @@ public abstract class AbstractApplication implements IApplication {
 	}
 
 	/**
-	 * Returns the exit Object or code of the application. May be overridden by
-	 * subclasses. By default the login return code <code>EXIT_ABORT</code> is
-	 * converted to application result code <code>EXIT_OK</code>, because
-	 * aborting the login process is a normal way to terminate the application.
+	 * Returns the exit Object or code of the application. May be overridden by subclasses. By default the login return code <code>EXIT_ABORT</code> is
+	 * converted to application result code <code>EXIT_OK</code>, because aborting the login process is a normal way to terminate the application.
 	 * 
 	 * @param result
 	 *            the login result code to convert.
@@ -116,9 +121,8 @@ public abstract class AbstractApplication implements IApplication {
 	private void installProgressProviderBridge() {
 		disableEclipseProgressManager();
 		/**
-		 * install the riena ProgressProvider which handles creation of
-		 * IProgressMontitor instances for scheduled jobs. riena provides a
-		 * special monitor for background processing.
+		 * install the riena ProgressProvider which handles creation of IProgressMontitor instances for scheduled jobs. riena provides a special monitor for
+		 * background processing.
 		 */
 		final ProgressProviderBridge instance = ProgressProviderBridge.instance();
 		Job.getJobManager().setProgressProvider(instance);
@@ -141,12 +145,11 @@ public abstract class AbstractApplication implements IApplication {
 	/**
 	 * Overwrite to create own application model
 	 * 
-	 * @return IApplicationModelProvider - root of the configured application
-	 *         model
+	 * @return IApplicationModelProvider - root of the configured application model
+	 * @since 4.0
 	 */
-	protected IApplicationNode createModel() {
-		final IApplicationNode applicationModel = new ApplicationNode(new NavigationNodeId(
-				ApplicationNode.DEFAULT_APPLICATION_TYPEID));
+	public IApplicationNode createModel() {
+		final IApplicationNode applicationModel = new ApplicationNode(new NavigationNodeId(ApplicationNode.DEFAULT_APPLICATION_TYPEID));
 		return applicationModel;
 	}
 

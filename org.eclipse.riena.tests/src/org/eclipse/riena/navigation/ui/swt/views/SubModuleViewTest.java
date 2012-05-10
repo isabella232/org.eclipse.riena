@@ -50,10 +50,10 @@ public class SubModuleViewTest extends RienaTestCase {
 	private SubModuleNode node;
 	private SubModuleNode anotherNode;
 	private SubModuleNode anotherNodeSameView;
-	private List<SubModuleNode> nodesBoundToView;
+	private List<ISubModuleNode> nodesBoundToView;
 	private ApplicationNode appNode;
 	private IModuleNode moduleNode;
-	private ArrayList<SubModuleNode> nodesBoundToSharedView;
+	private ArrayList<ISubModuleNode> nodesBoundToSharedView;
 
 	private Shell shell;
 	private Composite parentComposite;
@@ -77,8 +77,8 @@ public class SubModuleViewTest extends RienaTestCase {
 		moduleNode.addChild(anotherNode);
 		anotherNodeSameView = new SubModuleNode(new NavigationNodeId("testId", "1"), "TestSubModuleLabel3");
 		moduleNode.addChild(anotherNodeSameView);
-		nodesBoundToView = new ArrayList<SubModuleNode>();
-		nodesBoundToSharedView = new ArrayList<SubModuleNode>();
+		nodesBoundToView = new ArrayList<ISubModuleNode>();
+		nodesBoundToSharedView = new ArrayList<ISubModuleNode>();
 
 		subModuleNodeView = new TestView();
 		node = new SubModuleNode(new NavigationNodeId("testId", "0"), "TestSubModuleLabel");
@@ -246,7 +246,7 @@ public class SubModuleViewTest extends RienaTestCase {
 		private boolean unbindActiveCalled;
 
 		@Override
-		public void bind(final SubModuleNode node) {
+		public void bind(final ISubModuleNode node) {
 			if (node.getNavigationNodeController() == null) {
 				node.setNavigationNodeController(createController(node));
 			}
@@ -327,7 +327,7 @@ public class SubModuleViewTest extends RienaTestCase {
 
 	private final class TestView extends SubModuleView {
 		@Override
-		public void bind(final SubModuleNode node) {
+		public void bind(final ISubModuleNode node) {
 			nodesBoundToView.add(node);
 		}
 

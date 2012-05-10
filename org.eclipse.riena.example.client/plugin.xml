@@ -1598,4 +1598,10 @@
             navigatorClass="org.eclipse.riena.example.client.views.ExampleWindowNavigator">
       </navigator>
    </extension>
+   <extension
+         point="org.eclipse.riena.navigation.ui.e4.applicationModelCreators">
+      <modelCreator
+            class="org.eclipse.riena.example.client.application.SwtExampleApplication">
+      </modelCreator>
+   </extension>
 </plugin>

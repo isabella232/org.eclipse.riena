@@ -75,7 +75,7 @@ import org.eclipse.riena.ui.workarea.WorkareaManager;
 /**
  * Abstract implementation for a sub module view
  */
-public abstract class SubModuleView extends ViewPart implements INavigationNodeView<SubModuleNode> {
+public abstract class SubModuleView extends ViewPart implements INavigationNodeView<ISubModuleNode> {
 	/**
 	 * @since 3.0
 	 */
@@ -85,8 +85,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	private final static Map<SubModuleView, SubModuleNode> FALLBACK_NODES = new HashMap<SubModuleView, SubModuleNode>();
 
 	/**
-	 * The key of the SWT data property that identifies the (top) composite of a
-	 * sub-module view.
+	 * The key of the SWT data property that identifies the (top) composite of a sub-module view.
 	 */
 	private static final String IS_SUB_MODULE_VIEW_COMPOSITE = "isSubModuleViewComposite"; //$NON-NLS-1$
 
@@ -97,8 +96,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	private SubModuleController currentController;
 
 	/**
-	 * This node is used when creating this ViewPart inside an RCP application.
-	 * It is created with information from the extension registry, instead being
+	 * This node is used when creating this ViewPart inside an RCP application. It is created with information from the extension registry, instead being
 	 * obtained from the navigation tree.
 	 * 
 	 * @see #getRCPSubModuleNode()
@@ -113,8 +111,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	private boolean isBlocked;
 
 	/**
-	 * Keep a reference to the control that was last focused for a given
-	 * controller id.
+	 * Keep a reference to the control that was last focused for a given controller id.
 	 * 
 	 * @see #getControllerId()
 	 * @see #canRestoreFocus()
@@ -126,6 +123,13 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	private NavigationSourceProvider navigationSourceProvider;
 	private SubModuleNodesListener subModuleNodeListener;
 	private Cursor oldCursor;
+	/**
+	 * used for the e4 migration
+	 * <p>
+	 * Setting this field to something not <code>null</code> ensures that the getNavigationNode() method returns this value. If this value is <code>null</code>
+	 * the method behaves like implemented in Riena for Eclipse 3.x
+	 */
+	private ISubModuleNode navigationNode;
 
 	/**
 	 * Creates a new instance of {@code SubModuleView}.
@@ -140,7 +144,10 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 		throw new UnsupportedOperationException();
 	}
 
-	public void bind(final SubModuleNode node) {
+	/**
+	 * @since 4.0
+	 */
+	public void bind(final ISubModuleNode node) {
 
 		// create new controller if not existent for new node
 		if ((getNavigationNode() != null) && (getController() == null)) {
@@ -194,8 +201,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	}
 
 	private NavigationSourceProvider getNavigationSourceProvider() {
-		final ISourceProviderService sourceProviderService = (ISourceProviderService) getSite().getService(
-				ISourceProviderService.class);
+		final ISourceProviderService sourceProviderService = (ISourceProviderService) getSite().getService(ISourceProviderService.class);
 		if (sourceProviderService == null) {
 			return null;
 		}
@@ -240,8 +246,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 
 		if (getViewSite() != null) {
 			if (getViewSite().getSecondaryId() != null) {
-				WidgetIdentificationSupport.setIdentification(contentComposite,
-						"subModuleView", getViewSite().getId(), getViewSite().getSecondaryId()); //$NON-NLS-1$
+				WidgetIdentificationSupport.setIdentification(contentComposite, "subModuleView", getViewSite().getId(), getViewSite().getSecondaryId()); //$NON-NLS-1$
 			}
 		}
 
@@ -287,14 +292,19 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	 * @return the controller
 	 */
 	public SubModuleController getController() {
-		if (getNavigationNode() != null
-				&& getNavigationNode().getNavigationNodeController() instanceof SubModuleController) {
+		if (getNavigationNode() != null && getNavigationNode().getNavigationNodeController() instanceof SubModuleController) {
 			return (SubModuleController) getNavigationNode().getNavigationNodeController();
 		}
 		return null;
 	}
 
-	public SubModuleNode getNavigationNode() {
+	/**
+	 * @since 4.0
+	 */
+	public ISubModuleNode getNavigationNode() {
+		if (navigationNode != null) {
+			return navigationNode;
+		}
 
 		if (getViewSite() == null) {
 			return getFallbackNavigationNode();
@@ -313,12 +323,21 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	}
 
 	/**
-	 * This implementation will automatically focus on the control that had
-	 * previously the focus, or, the first focusable control.
+	 * Important: This method is NOT API. It is used for the e4 migration only.
+	 * 
+	 * @param node
+	 * @since 4.0
+	 * @see SubModuleView#navigationNode
+	 */
+	public void setNavigationNode(final ISubModuleNode navigationNode) {
+		this.navigationNode = navigationNode;
+	}
+
+	/**
+	 * This implementation will automatically focus on the control that had previously the focus, or, the first focusable control.
 	 * <p>
-	 * You may overwrite it, but it typically is not necessary to do so. If you
-	 * still want to use the 'restore focus to last control' functionality,
-	 * check {@link #canRestoreFocus()} and the invoke this method.
+	 * You may overwrite it, but it typically is not necessary to do so. If you still want to use the 'restore focus to last control' functionality, check
+	 * {@link #canRestoreFocus()} and the invoke this method.
 	 */
 	@Override
 	public void setFocus() {
@@ -379,8 +398,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	}
 
 	/**
-	 * Is called by the SubModuleView after
-	 * {@link #basicCreatePartControl(Composite)}
+	 * Is called by the SubModuleView after {@link #basicCreatePartControl(Composite)}
 	 * 
 	 * @param parent
 	 * @since 1.2
@@ -452,8 +470,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	}
 
 	/**
-	 * Returns true if {@link #setFocus()} can restore the focus to the control
-	 * that last had the focus in this view; false otherwise.
+	 * Returns true if {@link #setFocus()} can restore the focus to the control that last had the focus in this view; false otherwise.
 	 * 
 	 * @since 1.2
 	 */
@@ -501,8 +518,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 				try {
 					controller = (SubModuleController) def.createController();
 				} catch (final Exception ex) {
-					final String message = String.format(
-							"cannnot create controller for class %s", def.getControllerClass()); //$NON-NLS-1$ 
+					final String message = String.format("cannnot create controller for class %s", def.getControllerClass()); //$NON-NLS-1$ 
 					LOGGER.log(LogService.LOG_ERROR, message, ex);
 					throw new InvocationTargetFailure(message, ex);
 				}
@@ -529,8 +545,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	}
 
 	/**
-	 * Creates the workarea. Subclasses can override this method to get full
-	 * control over the workarea layout.
+	 * Creates the workarea. Subclasses can override this method to get full control over the workarea layout.
 	 * 
 	 * @param parent
 	 * @since 1.2
@@ -550,10 +565,8 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	}
 
 	/**
-	 * Find the navigation node corresponding to the passed ids. If the view is
-	 * shared the {@link INavigationNode#isActivated()} state has to be
-	 * considered because there can be multiple nodes matching the nodeId and
-	 * secondaryId. Only the active node counts!
+	 * Find the navigation node corresponding to the passed ids. If the view is shared the {@link INavigationNode#isActivated()} state has to be considered
+	 * because there can be multiple nodes matching the nodeId and secondaryId. Only the active node counts!
 	 * 
 	 * @param nodeId
 	 *            the id of the node
@@ -562,8 +575,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	 * @return the subModule node if found
 	 */
 	protected ISubModuleNode getSubModuleNode(final String nodeId, final String secondaryId) {
-		return SwtViewProvider.getInstance().getNavigationNode(nodeId, secondaryId, ISubModuleNode.class,
-				!SHARED_ID.equals(secondaryId));
+		return SwtViewProvider.getInstance().getNavigationNode(nodeId, secondaryId, ISubModuleNode.class, !SHARED_ID.equals(secondaryId));
 	}
 
 	// helping methods
@@ -605,8 +617,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	}
 
 	/**
-	 * Creates the composite for the content of the view. Its a container that
-	 * holds the UI controls of the view.<br>
+	 * Creates the composite for the content of the view. Its a container that holds the UI controls of the view.<br>
 	 * Above this container the title bar of the view is located.
 	 * 
 	 * @param parent
@@ -674,8 +685,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	}
 
 	/**
-	 * @return a fallback navigation node for views that are not associated with
-	 *         a node in the navigation tree.
+	 * @return a fallback navigation node for views that are not associated with a node in the navigation tree.
 	 */
 	private SubModuleNode getFallbackNavigationNode() {
 		SubModuleNode fallbackNode = FALLBACK_NODES.get(this);
@@ -688,8 +698,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 
 	private SubModuleNode getRCPSubModuleNode() {
 		final IExtensionRegistry registry = Platform.getExtensionRegistry();
-		final IConfigurationElement[] elements = registry
-				.getConfigurationElementsFor("org.eclipse.riena.navigation.assemblies"); //$NON-NLS-1$
+		final IConfigurationElement[] elements = registry.getConfigurationElementsFor("org.eclipse.riena.navigation.assemblies"); //$NON-NLS-1$
 		final String viewId = getViewSite().getId();
 
 		return getRCPSubModuleNode(viewId, elements);
@@ -790,8 +799,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	}
 
 	/**
-	 * A listener for all submodules in the navigation tree! Needed i.e. to
-	 * support shared views. When adding a method be sure to check the node.
+	 * A listener for all submodules in the navigation tree! Needed i.e. to support shared views. When adding a method be sure to check the node.
 	 */
 	private final class SubModuleNodesListener extends SubModuleNodeListener {
 
@@ -800,8 +808,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 			if (source.equals(getNavigationNode())) {
 				if (SwtUtilities.isDisposed(parentComposite)) {
 					/*
-					 * Do not bind disposed views. TODO For disposed views this
-					 * listener should be unregistered.
+					 * Do not bind disposed views. TODO For disposed views this listener should be unregistered.
 					 */
 					return;
 				}
@@ -812,10 +819,8 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 		@Override
 		public void beforeDisposed(final ISubModuleNode source) {
 			/*
-			 * If source is the current bound node then unbind the controller.
-			 * If the node is not bound (not the current) we do not have to
-			 * unbind anything. In the case of detached views there�s no
-			 * viewSite available!
+			 * If source is the current bound node then unbind the controller. If the node is not bound (not the current) we do not have to unbind anything. In
+			 * the case of detached views there�s no viewSite available!
 			 */
 			if (getViewSite() != null && disposingBoundNode(source)) {
 				unbindActiveController();
@@ -824,11 +829,9 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 
 		protected boolean disposingBoundNode(final ISubModuleNode source) {
 			/*
-			 * First check if typeId fits. Then check if source is the current
-			 * node.
+			 * First check if typeId fits. Then check if source is the current node.
 			 */
-			return getSecondaryId().equals(SHARED_ID) && currentController != null
-					&& source.equals(currentController.getNavigationNode());
+			return getSecondaryId().equals(SHARED_ID) && currentController != null && source.equals(currentController.getNavigationNode());
 		}
 
 		@Override
@@ -848,12 +851,11 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	}
 
 	/**
-	 * Triggered by "prepareNode" for nodes to be prepared which already have an
-	 * instantiated view. In those cases createPartControl is not called.
+	 * Triggered by "prepareNode" for nodes to be prepared which already have an instantiated view. In those cases createPartControl is not called.
 	 * 
-	 * @since 3.0
+	 * @since 4.0
 	 */
-	public void prepareNode(final SubModuleNode node) {
+	public void prepareNode(final ISubModuleNode node) {
 		binding.injectRidgets(createController(node));
 	}
 }

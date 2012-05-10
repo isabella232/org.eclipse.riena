@@ -20,12 +20,10 @@ import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.listener.ApplicationNodeListener;
 import org.eclipse.riena.navigation.listener.IApplicationNodeListener;
-import org.eclipse.riena.navigation.model.ApplicationNode;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellBorderRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellRenderer;
 import org.eclipse.riena.ui.swt.AbstractTitleBarMouseListener;
@@ -36,26 +34,24 @@ import org.eclipse.riena.ui.swt.lnf.renderer.AbstractTitleBarRenderer;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 
 /**
- * This composite contains parts of the title of a Riena application: e.g. logo
- * or sub-application switcher. Also the renderer of this composite draws some
+ * This composite contains parts of the title of a Riena application: e.g. logo or sub-application switcher. Also the renderer of this composite draws some
  * other parts: e.g. minimize, maximize and close button
  */
 public class TitleComposite extends Composite {
 
 	private TitlelessShellMouseListener mouseListener;
-	private final ApplicationNode node;
+	private final IApplicationNode node;
 	private IApplicationNodeListener appNodeListener;
 
 	/**
 	 * Creates a new instance of {@code TitleComposite} and initializes it.
 	 * 
 	 * @param parentShell
-	 *            a shell which will be the parent of the new instance (cannot
-	 *            be null)
+	 *            a shell which will be the parent of the new instance (cannot be null)
 	 * @param node
 	 *            node of the application
 	 */
-	public TitleComposite(final Shell parentShell, final ApplicationNode node) {
+	public TitleComposite(final Composite parentShell, final IApplicationNode node) {
 		super(parentShell, SWT.NONE);
 
 		this.node = node;
@@ -69,7 +65,7 @@ public class TitleComposite extends Composite {
 	 * 
 	 * @param parentShell
 	 */
-	private void init(final Shell parentShell) {
+	private void init(final Composite parentShell) {
 		// force result's background into logo and switcher
 		setBackgroundMode(SWT.INHERIT_FORCE);
 		// sets the background of the composite
@@ -77,8 +73,7 @@ public class TitleComposite extends Composite {
 		setBackgroundImage(image);
 
 		setLayout(new FormLayout());
-		final ShellBorderRenderer borderRenderer = (ShellBorderRenderer) LnfManager.getLnf().getRenderer(
-				LnfKeyConstants.TITLELESS_SHELL_BORDER_RENDERER);
+		final ShellBorderRenderer borderRenderer = (ShellBorderRenderer) LnfManager.getLnf().getRenderer(LnfKeyConstants.TITLELESS_SHELL_BORDER_RENDERER);
 		final int borderWidth = borderRenderer.getBorderWidth();
 		final FormData data = new FormData();
 		data.top = new FormAttachment(parentShell, borderWidth);
@@ -112,8 +107,7 @@ public class TitleComposite extends Composite {
 	 * @return renderer
 	 */
 	private ShellRenderer getShellRenderer() {
-		final ShellRenderer shellRenderer = (ShellRenderer) LnfManager.getLnf().getRenderer(
-				LnfKeyConstants.TITLELESS_SHELL_RENDERER);
+		final ShellRenderer shellRenderer = (ShellRenderer) LnfManager.getLnf().getRenderer(LnfKeyConstants.TITLELESS_SHELL_RENDERER);
 		return shellRenderer;
 	}
 
@@ -142,8 +136,7 @@ public class TitleComposite extends Composite {
 	}
 
 	/**
-	 * If the label of the application has changed, redraw the composite so that
-	 * the correct label is displayed.
+	 * If the label of the application has changed, redraw the composite so that the correct label is displayed.
 	 */
 	private class ApplicationLabelListener extends ApplicationNodeListener {
 
