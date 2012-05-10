@@ -45,15 +45,11 @@ import org.eclipse.riena.ui.swt.utils.SWTControlFinder;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
- * This composite contains a table-like widget (the "master") of n columns, as
- * well as new, remove and update buttons. It also contains an arbitrary
- * composite (the "details"), which is updated automatically when the selected
- * row in the table changes.
+ * This composite contains a table-like widget (the "master") of n columns, as well as new, remove and update buttons. It also contains an arbitrary composite
+ * (the "details"), which is updated automatically when the selected row in the table changes.
  * <p>
- * Subclasses must override the {@link #createDetails(Composite)} method, to
- * populate the details composite with additional widgets. Widgets in the
- * details composite that should be bound to ridgets, must be registered by
- * invoking the {@link #addUIControl(Object, String)} method.
+ * Subclasses must override the {@link #createDetails(Composite)} method, to populate the details composite with additional widgets. Widgets in the details
+ * composite that should be bound to ridgets, must be registered by invoking the {@link #addUIControl(Object, String)} method.
  * 
  * @see IMasterDetailsRidget
  * 
@@ -86,17 +82,14 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	private Composite buttonComposite;
 
 	/**
-	 * Create an instance of MasterDetailsComposite with the details area at the
-	 * top or bottom.
+	 * Create an instance of MasterDetailsComposite with the details area at the top or bottom.
 	 * 
 	 * @param parent
 	 *            the parent Composite; not null
 	 * @param style
-	 *            the style bits; values are restricted to those supported by
-	 *            {@link Composite}
+	 *            the style bits; values are restricted to those supported by {@link Composite}
 	 * @param orientation
-	 *            SWT.TOP or SWT.BOTTOM, to create the details area at the top
-	 *            or bottom part of the composite
+	 *            SWT.TOP or SWT.BOTTOM, to create the details area at the top or bottom part of the composite
 	 */
 	public AbstractMasterDetailsComposite(final Composite parent, final int style, final int orientation) {
 		super(parent, style);
@@ -117,14 +110,12 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	}
 
 	/**
-	 * Add a control to the list of 'bound' controls. These controls will be
-	 * bound to ridgets by the framework.
+	 * Add a control to the list of 'bound' controls. These controls will be bound to ridgets by the framework.
 	 * 
 	 * @param uiControl
 	 *            the UI control to bind; never null
 	 * @param bindingId
-	 *            a non-empty non-null bindind id for the control. Must be
-	 *            unique within this composite
+	 *            a non-empty non-null bindind id for the control. Must be unique within this composite
 	 * @see #getUIControls()
 	 */
 	public final void addUIControl(final Object uiControl, final String bindingId) {
@@ -137,10 +128,8 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	/**
 	 * Asks the user to confirm discarding a dirty "details" area.
 	 * <p>
-	 * This implementation will show a blocking dialog. Subclasses may overwrite
-	 * this method without calling super, to change the standard behavior.
-	 * Examples: (a) opening a customized dialog, (b) returning true without
-	 * asking the user.
+	 * This implementation will show a blocking dialog. Subclasses may overwrite this method without calling super, to change the standard behavior. Examples:
+	 * (a) opening a customized dialog, (b) returning true without asking the user.
 	 * 
 	 * @return true to discard changes, false to keep changes
 	 * @since 1.2
@@ -169,8 +158,7 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	/**
 	 * Return the 'Apply' control.
 	 * 
-	 * @return a Button or ImageButton instance; may be null if 'Apply' is
-	 *         unsupported.
+	 * @return a Button or ImageButton instance; may be null if 'Apply' is unsupported.
 	 */
 	public final Control getButtonApply() {
 		final Control result = getUIControl(BIND_ID_APPLY);
@@ -181,8 +169,7 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	/**
 	 * Return the 'New' control.
 	 * 
-	 * @return a Button or ImageButton instance; may be null if 'New' is
-	 *         unsupported.
+	 * @return a Button or ImageButton instance; may be null if 'New' is unsupported.
 	 */
 	public final Control getButtonNew() {
 		final Control result = getUIControl(BIND_ID_NEW);
@@ -193,8 +180,7 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	/**
 	 * Return the 'Remove' control.
 	 * 
-	 * @return a Button or ImageButton instance; may be null if 'Remove' is
-	 *         unsupported.
+	 * @return a Button or ImageButton instance; may be null if 'Remove' is unsupported.
 	 */
 	public final Control getButtonRemove() {
 		final Control result = getUIControl(BIND_ID_REMOVE);
@@ -212,11 +198,9 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	}
 
 	/**
-	 * Return the margins, in pixels, for the top/bottom, left/right edges of
-	 * the widget.
+	 * Return the margins, in pixels, for the top/bottom, left/right edges of the widget.
 	 * 
-	 * @return a Point; never null. The x value corresponds to the top/bottom
-	 *         margin. The y value corresponds to the left/right margin.
+	 * @return a Point; never null. The x value corresponds to the top/bottom margin. The y value corresponds to the left/right margin.
 	 * @since 2.0
 	 */
 	public Point getMargins() {
@@ -226,11 +210,9 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	}
 
 	/**
-	 * Return the spacing, in pixels, for the right/left and top/bottom edgets
-	 * of the cells within the widget.
+	 * Return the spacing, in pixels, for the right/left and top/bottom edgets of the cells within the widget.
 	 * 
-	 * @return a Point; never null. The x value corresponds to the right/left
-	 *         spacing. The y value corresponds to the top/bottom spacing.
+	 * @return a Point; never null. The x value corresponds to the right/left spacing. The y value corresponds to the top/bottom spacing.
 	 * @since 2.0
 	 */
 	public Point getSpacing() {
@@ -287,11 +269,9 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	 * Sets the margin for the top/bottom, left/right edges of the widget.
 	 * 
 	 * @param marginHeight
-	 *            the margin, in pixels, that will be placed along the top and
-	 *            bottom edges of the widget. The default value is 0.
+	 *            the margin, in pixels, that will be placed along the top and bottom edges of the widget. The default value is 0.
 	 * @param marginWidth
-	 *            the margin, in pixels, that will be placed along the left and
-	 *            right edges of the widget. The default value is 0.
+	 *            the margin, in pixels, that will be placed along the left and right edges of the widget. The default value is 0.
 	 * @since 2.0
 	 */
 	public void setMargins(final int marginHeight, final int marginWidth) {
@@ -302,15 +282,12 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	}
 
 	/**
-	 * Sets the spacing for the right/left and top/bottom edges of the cells
-	 * within the widget.
+	 * Sets the spacing for the right/left and top/bottom edges of the cells within the widget.
 	 * 
 	 * @param hSpacing
-	 *            the space, in pixels, between the right edge of a cell and the
-	 *            left edge of the cell to the left. The default value is 0.
+	 *            the space, in pixels, between the right edge of a cell and the left edge of the cell to the left. The default value is 0.
 	 * @param vSpacing
-	 *            the space, in pixels, between the bottom edge of a cell and
-	 *            the top edge of the cell underneath. The default value is 5.
+	 *            the space, in pixels, between the bottom edge of a cell and the top edge of the cell underneath. The default value is 5.
 	 * @since 2.0
 	 */
 	public void setSpacing(final int hSpacing, final int vSpacing) {
@@ -324,8 +301,7 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	/**
 	 * Informs the user that apply failed for the given {@code reason}.
 	 * <p>
-	 * This implementation will show a blocking dialog. Subclasses may overwrite
-	 * this method without calling super, to change the standard behavior.
+	 * This implementation will show a blocking dialog. Subclasses may overwrite this method without calling super, to change the standard behavior.
 	 * 
 	 * @param reason
 	 *            A string describing why apply failed; never null
@@ -341,8 +317,7 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	/**
 	 * Informs the user that removal failed for the given {@code reason}.
 	 * <p>
-	 * This implementation will show a blocking dialog. Subclasses may overwrite
-	 * this method without calling super, to change the standard behavior.
+	 * This implementation will show a blocking dialog. Subclasses may overwrite this method without calling super, to change the standard behavior.
 	 * 
 	 * @param reason
 	 *            A string describing why removal is not possible; never null
@@ -363,9 +338,8 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	 * @param compButton
 	 *            the parent composite; never null
 	 * 
-	 * @return a Control or null. If this returns null you are responsible for
-	 *         adding a button with the binding id {@link #BIND_ID_APPLY} to
-	 *         this control elsewhere.
+	 * @return a Control or null. If this returns null you are responsible for adding a button with the binding id {@link #BIND_ID_APPLY} to this control
+	 *         elsewhere.
 	 */
 	protected Control createButtonApply(final Composite compButton) {
 		return UIControlsFactory.createButton(compButton, Messages.MasterDetailsComposite_buttonApply);
@@ -377,10 +351,8 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	 * @param compButton
 	 *            the parent composite; never null
 	 * 
-	 * @return a Control or null. If this returns null you are responsible for
-	 *         adding a button with the binding id {@link #BIND_ID_NEW} to this
-	 *         composite elsewhere &ndash; otherwise 'New' will not be
-	 *         available.
+	 * @return a Control or null. If this returns null you are responsible for adding a button with the binding id {@link #BIND_ID_NEW} to this composite
+	 *         elsewhere &ndash; otherwise 'New' will not be available.
 	 */
 	protected Control createButtonNew(final Composite compButton) {
 		return UIControlsFactory.createButton(compButton, Messages.MasterDetailsComposite_buttonNew);
@@ -392,10 +364,8 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	 * @param compButton
 	 *            the parent composite; never null
 	 * 
-	 * @return a Control or null. If this returns null you are responsible for
-	 *         adding a button with the binding id {@link #BIND_ID_REMOVE} to
-	 *         this composite elsewhere &ndash; otherwise 'Remove' will not be
-	 *         available.
+	 * @return a Control or null. If this returns null you are responsible for adding a button with the binding id {@link #BIND_ID_REMOVE} to this composite
+	 *         elsewhere &ndash; otherwise 'Remove' will not be available.
 	 */
 	protected Control createButtonRemove(final Composite compButton) {
 		return UIControlsFactory.createButton(compButton, Messages.MasterDetailsComposite_buttonRemove);
@@ -404,12 +374,9 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	/**
 	 * Create the composite containing the buttons. Subclasses may override.
 	 * <p>
-	 * Implementation note: it is appropriate to return null and create the
-	 * Buttons somewhere else. In that case the methods createButtonNew,
-	 * createButtonRemove, createButtonApply will not be called (unless you call
-	 * them) and you are responsible to add three buttons widgets with the ids:
-	 * BIND_ID_NEW, BIND_ID_REMOVE, BIND_ID_APPLY, by invoking
-	 * {@link #addUIControl(Object, String)}.
+	 * Implementation note: it is appropriate to return null and create the Buttons somewhere else. In that case the methods createButtonNew,
+	 * createButtonRemove, createButtonApply will not be called (unless you call them) and you are responsible to add three buttons widgets with the ids:
+	 * BIND_ID_NEW, BIND_ID_REMOVE, BIND_ID_APPLY, by invoking {@link #addUIControl(Object, String)}.
 	 * 
 	 * @param parent
 	 * @return a Composite or null
@@ -452,35 +419,25 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	}
 
 	/**
-	 * Creates a widget for displaying the available rows. This is a table- /
-	 * grid- / matrix-like Control.
+	 * Creates a widget for displaying the available rows. This is a table- / grid- / matrix-like Control.
 	 * <p>
 	 * Subclasses should override and return an appropriate Control.
 	 * 
 	 * @param tableComposite
-	 *            a parent Composite; never null. It already has a
-	 *            TableColumnLayout, which should be used if you are creating a
-	 *            Table. If you are creating another type of widget you should
-	 *            set an appropriate layout to the {@code tableComposite}.
+	 *            a parent Composite; never null. It already has a TableColumnLayout, which should be used if you are creating a Table. If you are creating
+	 *            another type of widget you should set an appropriate layout to the {@code tableComposite}.
 	 * @param layout
-	 *            the TableColumnLayout for the widget; never null. Add
-	 *            information about the columns as necessary. Can be ignored, if
-	 *            you are creating a widget of a different type (i.e. other than
-	 *            Table).
-	 * @return a Table-like control; never null; must have the SWT.SINGLE
-	 *         style-bit (i.e. single selection only). If the returned widget is
-	 *         a Table and has too few or too many columns, the columns will be
-	 *         re-created. If you care about the specific configuration/layout
-	 *         of the Table columns, make sure the Table has as many columns a
-	 *         needed by the ridget.
+	 *            the TableColumnLayout for the widget; never null. Add information about the columns as necessary. Can be ignored, if you are creating a widget
+	 *            of a different type (i.e. other than Table).
+	 * @return a Table-like control; never null; must have the SWT.SINGLE style-bit (i.e. single selection only). If the returned widget is a Table and has too
+	 *         few or too many columns, the columns will be re-created. If you care about the specific configuration/layout of the Table columns, make sure the
+	 *         Table has as many columns a needed by the ridget.
 	 * @see {@code IMasterDetailsRidget#bindToModel(...)}
 	 */
 	abstract protected Control createTable(Composite tableComposite, TableColumnLayout layout);
 
 	/**
-	 * Returns the style bits for the 'details' composite. Subclasses may
-	 * override, but has to return a value that is supported by
-	 * {@link Composite}.
+	 * Returns the style bits for the 'details' composite. Subclasses may override, but has to return a value that is supported by {@link Composite}.
 	 * 
 	 * @return {@code SWT.NONE}
 	 */
@@ -489,9 +446,7 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	}
 
 	/**
-	 * Returns the style bits for the 'master' composite. Subclasses may
-	 * override, but has to return a value that is supported by
-	 * {@link Composite}.
+	 * Returns the style bits for the 'master' composite. Subclasses may override, but has to return a value that is supported by {@link Composite}.
 	 * 
 	 * @return {@code SWT.BORDER} (since 2.0)
 	 */

@@ -38,13 +38,13 @@ import org.eclipse.riena.ui.swt.utils.ImageStore;
 public class LogoComposite extends Composite {
 
 	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), LogoComposite.class);
+	private String logo;
 
 	/**
 	 * Creates a new instance of {@code LogoComposite} and initializes it.
 	 * 
 	 * @param parent
-	 *            a composite which will be the parent of the new instance
-	 *            (cannot be null)
+	 *            a composite which will be the parent of the new instance (cannot be null)
 	 * @param style
 	 *            the style of widget to construct
 	 */
@@ -97,17 +97,28 @@ public class LogoComposite extends Composite {
 	/**
 	 * Returns the image of the logo.
 	 * 
-	 * @return logo image or the default missing image, if the logo image of the
-	 *         L&F wasn't found.
+	 * @return logo image or the default missing image, if the logo image of the L&F wasn't found.
 	 */
 	private Image getLogoImage() {
-		Image logoImage = LnfManager.getLnf().getImage(LnfKeyConstants.TITLELESS_SHELL_LOGO);
-		if (logoImage == null) {
+		Image result = null;
+
+		// check configuration via IApplicationNode.setLogo()
+		if (logo != null) {
+			result = ImageStore.getInstance().getImage(logo);
+		}
+
+		// if nothing found so far, check the LnF
+		if (result == null) {
+			result = LnfManager.getLnf().getImage(LnfKeyConstants.TITLELESS_SHELL_LOGO);
+		}
+
+		// if nothing found so far, fall back to the "missing" image
+		if (result == null) {
 			final String message = "The image of the logo wasn't found! A dummy image is used."; //$NON-NLS-1$
 			LOGGER.log(LogService.LOG_WARNING, message);
-			logoImage = ImageStore.getInstance().getMissingImage();
+			result = ImageStore.getInstance().getMissingImage();
 		}
-		return logoImage;
+		return result;
 	}
 
 	/**
@@ -124,8 +135,7 @@ public class LogoComposite extends Composite {
 	}
 
 	/**
-	 * Returns the margin between the top of the shell and the widget with the
-	 * sub-application switchers.
+	 * Returns the margin between the top of the shell and the widget with the sub-application switchers.
 	 * 
 	 * @return margin
 	 */
@@ -147,7 +157,7 @@ public class LogoComposite extends Composite {
 	/**
 	 * This listener paints the logo.
 	 */
-	private static class LogoPaintListener implements PaintListener {
+	private class LogoPaintListener implements PaintListener {
 		/**
 		 * @see org.eclipse.swt.events.PaintListener#paintControl(org.eclipse.swt.events.PaintEvent)
 		 */
@@ -164,10 +174,16 @@ public class LogoComposite extends Composite {
 		private void onPaint(final PaintEvent e) {
 			final Composite logoComposite = (Composite) e.getSource();
 			final Rectangle compositeBounds = logoComposite.getBounds();
-			final ShellLogoRenderer renderer = (ShellLogoRenderer) LnfManager.getLnf().getRenderer(
-					LnfKeyConstants.TITLELESS_SHELL_LOGO_RENDERER);
+			final ShellLogoRenderer renderer = (ShellLogoRenderer) LnfManager.getLnf().getRenderer(LnfKeyConstants.TITLELESS_SHELL_LOGO_RENDERER);
 			renderer.setBounds(compositeBounds);
-			renderer.paint(e.gc, null);
+			renderer.paint(e.gc, getLogoImage());
 		}
+	}
+
+	/**
+	 * @param logo
+	 */
+	public void setLogo(final String logo) {
+		this.logo = logo;
 	}
 }
