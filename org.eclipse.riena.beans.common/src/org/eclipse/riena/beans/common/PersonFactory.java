@@ -71,6 +71,9 @@ public final class PersonFactory {
 		return newList;
 	}
 
+	/**
+	 * @since 4.0
+	 */
 	public static List<Person> createSportsIdolList() {
 		final List<Person> idols = new ArrayList<Person>();
 		Person person = new Person("Jordan", "Michael"); //$NON-NLS-1$ //$NON-NLS-2$

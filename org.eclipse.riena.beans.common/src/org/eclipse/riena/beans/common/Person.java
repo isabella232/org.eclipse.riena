@@ -33,8 +33,14 @@ public class Person extends AbstractBean {
 	 */
 	public static final String PROPERTY_NUMBER = "number"; //$NON-NLS-1$
 
+	/**
+	 * @since 4.0
+	 */
 	public static final String PROPERTY_HOBBY = "hobby"; //$NON-NLS-1$
 
+	/**
+	 * @since 4.0
+	 */
 	public static final String PROPERTY_SPORTS_IDOL = "sportsIdol"; //$NON-NLS-1$
 	/**
 	 * Property name of the birthday property ("birthday").
@@ -361,16 +367,25 @@ public class Person extends AbstractBean {
 		return number;
 	}
 
+	/**
+	 * @since 4.0
+	 */
 	public Hobby getHobby() {
 		return hobby;
 	}
 
+	/**
+	 * @since 4.0
+	 */
 	public void setHobby(final Hobby hobby) {
 		final Object oldValue = this.hobby;
 		this.hobby = hobby;
 		firePropertyChanged(PROPERTY_HOBBY, oldValue, hobby);
 	}
 
+	/**
+	 * @since 4.0
+	 */
 	public Person getSportsIdol() {
 		if (null == sportsIdol) {
 			sportsIdol = PersonFactory.createSportsIdolList().get(0);
@@ -378,6 +393,9 @@ public class Person extends AbstractBean {
 		return sportsIdol;
 	}
 
+	/**
+	 * @since 4.0
+	 */
 	public void setSportsIdol(final Person sportsIdol) {
 		final Object oldValue = this.sportsIdol;
 		this.sportsIdol = sportsIdol;
