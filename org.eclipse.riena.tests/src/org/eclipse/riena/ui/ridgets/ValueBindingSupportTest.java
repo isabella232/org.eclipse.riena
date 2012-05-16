@@ -75,6 +75,39 @@ public class ValueBindingSupportTest extends RienaTestCase {
 		super.tearDown();
 	}
 
+	public void testAddRemoveAfterGetValidator() throws Exception {
+		assertTrue(valueBindingSupport.getAllValidators().getValidators().isEmpty());
+
+		final MinLength validator = new MinLength(5);
+		assertFalse(valueBindingSupport.addValidationRule(validator, ValidationTime.ON_UPDATE_TO_MODEL));
+		assertEquals(1, valueBindingSupport.getAllValidators().getValidators().size());
+
+		assertFalse(valueBindingSupport.removeValidationRule(validator));
+		assertTrue(valueBindingSupport.getAllValidators().getValidators().isEmpty());
+	}
+
+	public void testAddRemoveAfterSetValidator() throws Exception {
+		assertTrue(valueBindingSupport.getAllValidators().getValidators().isEmpty());
+
+		final MinLength validator = new MinLength(5);
+		assertFalse(valueBindingSupport.addValidationRule(validator, ValidationTime.AFTER_UPDATE_TO_MODEL));
+		assertEquals(1, valueBindingSupport.getAllValidators().getValidators().size());
+
+		assertFalse(valueBindingSupport.removeValidationRule(validator));
+		assertTrue(valueBindingSupport.getAllValidators().getValidators().isEmpty());
+	}
+
+	public void testAddRemoveOnEditValidator() throws Exception {
+		assertTrue(valueBindingSupport.getAllValidators().getValidators().isEmpty());
+
+		final MinLength validator = new MinLength(5);
+		assertTrue(valueBindingSupport.addValidationRule(validator, ValidationTime.ON_UI_CONTROL_EDIT));
+		assertEquals(1, valueBindingSupport.getAllValidators().getValidators().size());
+
+		assertTrue(valueBindingSupport.removeValidationRule(validator));
+		assertTrue(valueBindingSupport.getAllValidators().getValidators().isEmpty());
+	}
+
 	public void testUpdateFromModelOnRequest() throws Exception {
 		assertNull(target.getValue());
 
