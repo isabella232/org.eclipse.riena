@@ -211,15 +211,11 @@ public class ValueBindingSupport {
 		removeErrorMarker(validationRule);
 		removeMessages(validationRule);
 		clearStatus(validationRule);
-		// first remove in the list of afterGetValidators
+		// first remove in the list of afterGetValidators and afterGetValidators
 		afterGetValidators.remove(validationRule);
+		afterSetValidators.remove(validationRule);
 		// if it is in the list of On_edit validators, also remove and return true
-		if (onEditValidators.contains(validationRule)) {
-			onEditValidators.remove(validationRule);
-			return true;
-		} else {
-			return false;
-		}
+		return onEditValidators.remove(validationRule);
 	}
 
 	public void bindToTarget(final IObservableValue observableValue) {

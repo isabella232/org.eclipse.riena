@@ -21,30 +21,25 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IStatus;
 
 /**
- * A joined validator, which is a collection of rules to be invoked in the order
- * they are added to this rule.
+ * A joined validator, which is a collection of rules to be invoked in the order they are added to this rule.
  */
 public class ValidatorCollection implements IValidator, Iterable<IValidator> {
 
 	private final Collection<IValidator> validators = new HashSet<IValidator>(2);
 
 	/**
-	 * Gets an unmodifiable copy of the validators used by this
-	 * ValidatorCollection. Adding and removing single validators must be done
-	 * through this class' methods {@link #add(IValidator)} and
-	 * {@link #remove(IValidator)}.
+	 * Gets an unmodifiable copy of the validators used by this ValidatorCollection. Adding and removing single validators must be done through this class'
+	 * methods {@link #add(IValidator)} and {@link #remove(IValidator)}.
 	 * 
-	 * @return a new unmodifiable collection, which contains all validators uses
-	 *         in this collection.
+	 * @return a new unmodifiable collection, which contains all validators uses in this collection.
 	 */
 	public Collection<IValidator> getValidators() {
 		return Collections.unmodifiableCollection(new ArrayList<IValidator>(validators));
 	}
 
 	/**
-	 * Returns an unmodifiable iterator which iterates over the used validators.
-	 * Removing a rule must be done through this class'
-	 * {@link #remove(IValidator)} method.
+	 * Returns an unmodifiable iterator which iterates over the used validators. Removing a rule must be done through this class' {@link #remove(IValidator)}
+	 * method.
 	 * 
 	 * @see java.lang.Iterable#iterator()
 	 */
@@ -58,13 +53,15 @@ public class ValidatorCollection implements IValidator, Iterable<IValidator> {
 	 * Adding the same validator several times has no effect.
 	 * 
 	 * @param validator
-	 *            The validator to add (non-null).
+	 *            The validator to add (non-null).,
+	 * @return <code>true</code> if this collection changed as a result of the call
 	 * @throws RuntimeException
-	 *             if validator is null
+	 *             if validator is <code>null</code>
+	 * @since 4.0
 	 */
-	public void add(final IValidator validator) {
+	public boolean add(final IValidator validator) {
 		Assert.isNotNull(validator);
-		validators.add(validator);
+		return validators.add(validator);
 	}
 
 	/**
@@ -72,17 +69,18 @@ public class ValidatorCollection implements IValidator, Iterable<IValidator> {
 	 * 
 	 * @param validator
 	 *            The validator to remove.
+	 * @return <code>true</code> if this collection changed as a result of the call
 	 * @throws RuntimeException
-	 *             if validator is null
+	 *             if validator is <code>null</code>
+	 * @since 4.0
 	 */
-	public void remove(final IValidator validator) {
+	public boolean remove(final IValidator validator) {
 		Assert.isNotNull(validator);
-		validators.remove(validator);
+		return validators.remove(validator);
 	}
 
 	/**
-	 * Returns true if the given validator is contained in this collection;
-	 * false otherwise.
+	 * Returns true if the given validator is contained in this collection; false otherwise.
 	 * 
 	 * @param validator
 	 *            a IValidator instance (may be null)
@@ -104,8 +102,7 @@ public class ValidatorCollection implements IValidator, Iterable<IValidator> {
 	}
 
 	/**
-	 * Validates the value using all validators, notified the supplied
-	 * {@link IValidationCallback} instance and returns a joined status.
+	 * Validates the value using all validators, notified the supplied {@link IValidationCallback} instance and returns a joined status.
 	 * 
 	 * @param value
 	 *            the value to validate
