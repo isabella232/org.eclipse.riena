@@ -49,6 +49,11 @@ public class UIProcessDemoSubModuleView extends SubModuleView {
 		GridDataFactory.fillDefaults().hint(xHint, SWT.DEFAULT).applyTo(startJob);
 		addUIControl(startJob, "actionRidgetJob"); //$NON-NLS-1$
 
+		final Button startWithListener = UIControlsFactory.createButton(group);
+		xHint = UIControlsFactory.getWidthHint(startWithListener);
+		GridDataFactory.fillDefaults().hint(xHint, SWT.DEFAULT).applyTo(startWithListener);
+		addUIControl(startWithListener, "actionRidgetListener"); //$NON-NLS-1$
+
 		return group;
 	}
 

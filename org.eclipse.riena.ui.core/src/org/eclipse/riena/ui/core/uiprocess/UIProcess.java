@@ -12,14 +12,17 @@ package org.eclipse.riena.ui.core.uiprocess;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.eclipse.core.internal.jobs.JobManager;
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.PlatformObject;
 import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.IJobManager;
 import org.eclipse.core.runtime.jobs.Job;
 
 import org.eclipse.riena.core.exception.IExceptionHandlerManager;
@@ -27,11 +30,12 @@ import org.eclipse.riena.core.service.Service;
 import org.eclipse.riena.internal.ui.core.Activator;
 
 public class UIProcess extends PlatformObject implements IUIMonitor {
-
 	public final static QualifiedName PROPERTY_CONTEXT = new QualifiedName("uiProcess", "context"); //$NON-NLS-1$//$NON-NLS-2$
 
 	private final UICallbackDispatcher callbackDispatcher;
 	private final Job job;
+	private final ListenerMapper listenerMapper = new ListenerMapper();
+	private final List<IUIProcessChangeListener> listeners = new ArrayList<IUIProcessChangeListener>();
 
 /**
 	 * Creates a new UIProcess.
@@ -255,8 +259,7 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 
 	/**
 	 * 
-	 * @return the job wrapped by the {@link UIProcess}. This job is run by the
-	 *         {@link JobManager} on a worker {@link Thread}
+	 * @return the job wrapped by the {@link UIProcess}. This job is run by the {@link IJobManager} on a worker {@link Thread}
 	 * @since 3.0
 	 */
 	public Job getJob() {
@@ -324,8 +327,7 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 	/**
 	 * starts the {@link UIProcess} using jobs API
 	 * 
-	 * @return true if the UIProces could be scheduled false if the UIProcess is
-	 *         already scheduled.
+	 * @return true if the UIProces could be scheduled false if the UIProcess is already scheduled.
 	 * @since 3.0
 	 */
 	public boolean start() {
@@ -407,16 +409,14 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 	}
 
 	/**
-	 * @return the {@link ProcessInfo} object holding meta information of this
-	 *         {@link UIProcess}
+	 * @return the {@link ProcessInfo} object holding meta information of this {@link UIProcess}
 	 */
 	private ProcessInfo getProcessInfo() {
 		return getCallbackDispatcher().getProcessInfo();
 	}
 
 	/**
-	 * call this method to get a "ui thread serialized run" of
-	 * {@link #updateUi()}
+	 * call this method to get a "ui thread serialized run" of {@link #updateUi()}
 	 */
 	protected void notifyUpdateUI() {
 		// serialize on ui thread
@@ -434,8 +434,7 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 	}
 
 	/**
-	 * called on the user interface thread as the result of a call to
-	 * {@link #notifyUpdateUI()}
+	 * called on the user interface thread as the result of a call to {@link #notifyUpdateUI()}
 	 * 
 	 * @deprecated use {@link updateUI} instead.
 	 */
@@ -444,13 +443,41 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 	}
 
 	/**
-	 * called on the user interface thread as the result of a call to
-	 * {@link #notifyUpdateUI()}
+	 * called on the user interface thread as the result of a call to {@link #notifyUpdateUI()}
 	 * 
 	 * @since 4.0
 	 */
 	protected void updateUI() {
 		updateUi();
+	}
+
+	/**
+	 * Registers an execution listener to this UI process. If the given listener is already added, the call has no effect.
+	 * 
+	 * @param listener
+	 *            the listener to add, must be not <code>null</code>
+	 * @since 4.0
+	 */
+	public void addUIProcessChangedListener(final IUIProcessChangeListener listener) {
+		if (listeners.contains(listener)) {
+			return;
+		}
+		Assert.isNotNull(listener);
+		listeners.add(listener);
+		job.addJobChangeListener(listenerMapper.getWrapperFor(listener));
+	}
+
+	/**
+	 * Removes the given listener from the registered listeners list. The call has no effect if the given listener is not registered.
+	 * 
+	 * @since 4.0
+	 */
+	public void removeUIProcessChangedListener(final IUIProcessChangeListener listener) {
+		if (!listeners.contains(listener)) {
+			return;
+		}
+		listeners.remove(listener);
+		job.removeJobChangeListener(listenerMapper.getWrapperFor(listener));
 	}
 
 }
