@@ -104,8 +104,11 @@ public class ListRidget extends AbstractListRidget {
 				disposeSelectionBindings();
 				createSelectionBindings();
 				final List list = viewer.getList();
-				list.setBackground((Color) list.getData(savedBackgroundKey));
-				list.setData(savedBackgroundKey, null);
+				final Color oldBackground = (Color) list.getData(savedBackgroundKey);
+				if (oldBackground != null) {
+					list.setBackground(oldBackground);
+					list.setData(savedBackgroundKey, null);
+				}
 			}
 		} else {
 			disposeSelectionBindings();
