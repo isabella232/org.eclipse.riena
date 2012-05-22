@@ -211,7 +211,7 @@ public class ValueBindingSupport {
 		removeErrorMarker(validationRule);
 		removeMessages(validationRule);
 		clearStatus(validationRule);
-		// first remove in the list of afterGetValidators and afterGetValidators
+		// first remove in the list of afterGetValidators and afterSetValidators
 		afterGetValidators.remove(validationRule);
 		afterSetValidators.remove(validationRule);
 		// if it is in the list of On_edit validators, also remove and return true
