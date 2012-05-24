@@ -492,13 +492,13 @@ public class RienaWBWRenderer extends SWTPartRenderer {
 	}
 
 	/**
-	 * The given {@link TrimmedPartLayout} holds the window "client area" which is a composite with a {@link FillLayout}. We need to set another layout so that
-	 * the header appears at the top (and has a fixed size), and the "client area" fills the window below the header.
+	 * The given {@link TrimmedPartLayout} holds the window "client area" which is a composite with a {@link RienaWindowLayout}. We need to set another layout
+	 * so that the header appears at the top (and has a fixed size), and the "client area" fills the window below the header.
 	 * 
 	 * @param tl
 	 */
 	private void rienaModifyTl(final TrimmedPartLayout tl) {
-		tl.clientArea.setLayout(new RienaWindowLayout(SWT.VERTICAL, 200, 20));
+		tl.clientArea.setLayout(new RienaWindowLayout(SWT.VERTICAL, 100, 20));
 	}
 
 	private void setCloseHandler(final MWindow window) {
