@@ -1,0 +1,167 @@
+### Eclipse Workspace Patch 1.0
+#P org.eclipse.riena.navigation.ui.swt
+Index: src/org/eclipse/riena/navigation/ui/swt/views/SubApplicationView.java
+===================================================================
+RCS file: /cvsroot/rt/org.eclipse.riena/org.eclipse.riena.navigation.ui.swt/src/org/eclipse/riena/navigation/ui/swt/views/SubApplicationView.java,v
+retrieving revision 1.74
+diff -u -r1.74 SubApplicationView.java
+--- src/org/eclipse/riena/navigation/ui/swt/views/SubApplicationView.java	24 Oct 2011 14:38:17 -0000	1.74
++++ src/org/eclipse/riena/navigation/ui/swt/views/SubApplicationView.java	6 Dec 2011 09:13:50 -0000
+@@ -713,7 +713,8 @@
+ 		final IWorkbenchPage page = getActivePage();
+ 		final IViewReference viewRef = page.findViewReference(id, secondary);
+ 		if (viewRef != null) {
+-			((WorkbenchPage) page).getActivePerspective().bringToTop(viewRef);
++			//((WorkbenchPage) page).getActivePerspective().bringToTop(viewRef);
++			((WorkbenchPage) page).bringToTop(viewRef.getPart(true));
+ 		}
+ 	}
+ 
+#P org.eclipse.riena.ui.swt
+Index: src/org/eclipse/riena/internal/ui/swt/utils/ShellHelper.java
+===================================================================
+RCS file: /cvsroot/rt/org.eclipse.riena/org.eclipse.riena.ui.swt/src/org/eclipse/riena/internal/ui/swt/utils/ShellHelper.java,v
+retrieving revision 1.6
+diff -u -r1.6 ShellHelper.java
+--- src/org/eclipse/riena/internal/ui/swt/utils/ShellHelper.java	17 Nov 2011 08:33:25 -0000	1.6
++++ src/org/eclipse/riena/internal/ui/swt/utils/ShellHelper.java	6 Dec 2011 09:13:51 -0000
+@@ -36,14 +36,14 @@
+ 	/**
+ 	 * Maximizes or restores the shell of the active workbench.
+ 	 */
+-	public void maximizeRestore() {
+-		final Shell shell = RcpUtilities.getWorkbenchShell();
++	public void maximizeRestore(final Shell shell) {
++		// = RcpUtilities.getWorkbenchShell();
+ 		if (shell == null) {
+ 			LOGGER.log(LogService.LOG_WARNING, "No shell of the application found! Maximize/restore of shell canceled."); //$NON-NLS-1$
+ 			return;
+ 		}
+-		if (isShellTitleless()) {
+-			if (isShellMaximzed()) {
++		if (isShellTitleless(shell)) {
++			if (isShellMaximzed(shell)) {
+ 				if (restoreBounds != null) {
+ 					shell.setBounds(restoreBounds);
+ 					shell.redraw(restoreBounds.x, restoreBounds.y, restoreBounds.width, restoreBounds.height, true);
+@@ -75,7 +75,7 @@
+ 		final Rectangle clientBounds = shell.getMonitor().getClientArea();
+ 		final Rectangle newBounds = new Rectangle(clientBounds.x, clientBounds.y, clientBounds.width,
+ 				clientBounds.height);
+-		if (isTaskbarHidden()) {
++		if (isTaskbarHidden(shell)) {
+ 			newBounds.x += 1;
+ 			newBounds.y += 1;
+ 			newBounds.width -= 2;
+@@ -94,11 +94,11 @@
+ 	 * 
+ 	 * @return {@code true} if task bar is hidden; otherwise {@code false}
+ 	 */
+-	private static boolean isTaskbarHidden() {
++	private static boolean isTaskbarHidden(final Shell shell) {
+ 		if (!Util.isWindows()) {
+ 			return false;
+ 		}
+-		final Shell shell = RcpUtilities.getWorkbenchShell();
++		//final Shell shell = RcpUtilities.getWorkbenchShell();
+ 		if (shell == null) {
+ 			LOGGER.log(LogService.LOG_WARNING, "No shell of the application found!"); //$NON-NLS-1$
+ 			return false;
+@@ -114,8 +114,8 @@
+ 	 * @return {@code true} if the shell is maximized; {@code false} if the
+ 	 *         shell isn't maximized.
+ 	 */
+-	public static boolean isShellMaximzed() {
+-		final Shell shell = RcpUtilities.getWorkbenchShell();
++	public static boolean isShellMaximzed(final Shell shell) {
++		//final Shell shell = RcpUtilities.getWorkbenchShell();
+ 		if (shell == null) {
+ 			LOGGER.log(LogService.LOG_WARNING, "No shell of the application found!"); //$NON-NLS-1$
+ 			return false;
+@@ -136,7 +136,7 @@
+ 			LOGGER.log(LogService.LOG_WARNING, "shell equals null or is disposed!"); //$NON-NLS-1$
+ 			return false;
+ 		}
+-		if (isShellTitleless()) {
++		if (isShellTitleless(shell)) {
+ 			Rectangle clientBounds = shell.getMonitor().getClientArea();
+ 			if (clientBounds.equals(shell.getBounds())) {
+ 				return true;
+@@ -174,8 +174,8 @@
+ 	 * @return {@code true} not default shell style (no title bar etc.);
+ 	 *         {@code false] default shell style
+ 	 */
+-	private static boolean isShellTitleless() {
+-		final Shell shell = RcpUtilities.getWorkbenchShell();
++	private static boolean isShellTitleless(final Shell shell) {
++		//final Shell shell = RcpUtilities.getWorkbenchShell();
+ 		if (shell == null) {
+ 			LOGGER.log(LogService.LOG_WARNING, "No shell of the application found!"); //$NON-NLS-1$
+ 			return false;
+Index: src/org/eclipse/riena/ui/swt/AbstractTitleBarMouseListener.java
+===================================================================
+RCS file: /cvsroot/rt/org.eclipse.riena/org.eclipse.riena.ui.swt/src/org/eclipse/riena/ui/swt/AbstractTitleBarMouseListener.java,v
+retrieving revision 1.15
+diff -u -r1.15 AbstractTitleBarMouseListener.java
+--- src/org/eclipse/riena/ui/swt/AbstractTitleBarMouseListener.java	23 May 2011 11:18:24 -0000	1.15
++++ src/org/eclipse/riena/ui/swt/AbstractTitleBarMouseListener.java	6 Dec 2011 09:13:51 -0000
+@@ -245,7 +245,7 @@
+ 					}
+ 				} else if (getTitleBarRenderer().isInsideMaximizeButton(pointer)) {
+ 					if (btnStates[MAX_BTN_INDEX] == BtnState.HOVER_SELECTED) {
+-						SHELL_HELPER.maximizeRestore();
++						SHELL_HELPER.maximizeRestore(shell);
+ 					}
+ 				} else if (getTitleBarRenderer().isInsideMinimizeButton(pointer)) {
+ 					if (btnStates[MIN_BTN_INDEX] == BtnState.HOVER_SELECTED) {
+@@ -288,16 +288,16 @@
+ 	}
+ 
+ 	private void move(final MouseEvent e) {
+-		final boolean wasMaximized = ShellHelper.isShellMaximzed();
+ 		final Point moveEndPoint = new Point(e.x, e.y);
+ 		final Control control = (Control) e.getSource();
+ 		final Shell shell = getShell(control);
++		final boolean wasMaximized = ShellHelper.isShellMaximzed(shell);
+ 		final int xMove = moveStartPoint.x - moveEndPoint.x;
+ 		final int yMove = moveStartPoint.y - moveEndPoint.y;
+ 		final int x = shell.getLocation().x - xMove;
+ 		final int y = shell.getLocation().y - yMove;
+ 		shell.setLocation(x, y);
+-		if (wasMaximized != ShellHelper.isShellMaximzed()) {
++		if (wasMaximized != ShellHelper.isShellMaximzed(shell)) {
+ 			redrawButtons(e);
+ 		}
+ 	}
+Index: src/org/eclipse/riena/ui/swt/lnf/renderer/AbstractTitleBarRenderer.java
+===================================================================
+RCS file: /cvsroot/rt/org.eclipse.riena/org.eclipse.riena.ui.swt/src/org/eclipse/riena/ui/swt/lnf/renderer/AbstractTitleBarRenderer.java,v
+retrieving revision 1.10
+diff -u -r1.10 AbstractTitleBarRenderer.java
+--- src/org/eclipse/riena/ui/swt/lnf/renderer/AbstractTitleBarRenderer.java	23 May 2011 11:18:25 -0000	1.10
++++ src/org/eclipse/riena/ui/swt/lnf/renderer/AbstractTitleBarRenderer.java	6 Dec 2011 09:13:51 -0000
+@@ -102,7 +102,7 @@
+ 		}
+ 
+ 		setActive(true);
+-		setMaximized(ShellHelper.isShellMaximzed());
++		setMaximized(ShellHelper.isShellMaximzed(shell));
+ 		resetBounds();
+ 
+ 		paintBackground(gc);
+Index: src/org/eclipse/riena/ui/swt/uiprocess/SwtUISynchronizer.java
+===================================================================
+RCS file: /cvsroot/rt/org.eclipse.riena/org.eclipse.riena.ui.swt/src/org/eclipse/riena/ui/swt/uiprocess/SwtUISynchronizer.java,v
+retrieving revision 1.24
+diff -u -r1.24 SwtUISynchronizer.java
+--- src/org/eclipse/riena/ui/swt/uiprocess/SwtUISynchronizer.java	5 Oct 2011 11:16:11 -0000	1.24
++++ src/org/eclipse/riena/ui/swt/uiprocess/SwtUISynchronizer.java	6 Dec 2011 09:13:51 -0000
+@@ -202,7 +202,7 @@
+ 			return display;
+ 		}
+ 
+-		return PlatformUI.getWorkbench().getDisplay();
++		return Display.getDefault();
+ 	}
+ 
+ 	private Logger getLogger() {

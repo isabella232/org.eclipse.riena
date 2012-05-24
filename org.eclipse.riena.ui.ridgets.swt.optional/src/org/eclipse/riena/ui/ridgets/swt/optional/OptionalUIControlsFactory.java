@@ -10,19 +10,17 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.swt.optional;
 
+import org.eclipse.nebula.widgets.compositetable.CompositeTable;
 import org.eclipse.nebula.widgets.grid.Grid;
-import org.eclipse.swt.nebula.widgets.compositetable.CompositeTable;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
- * Convenience class for creating optional SWT controls. These controls may not
- * be available for platforms other than RCP/SWT. *
+ * Convenience class for creating optional SWT controls. These controls may not be available for platforms other than RCP/SWT. *
  * <p>
- * Will apply consistent style settings and an optional binding id. Can create
- * special instances of certain generic controls, such as numeric or date Text
+ * Will apply consistent style settings and an optional binding id. Can create special instances of certain generic controls, such as numeric or date Text
  * fields.
  * <p>
  * Factory methods are annotated for compatibility with the SWT Designer tool.
@@ -42,8 +40,7 @@ public final class OptionalUIControlsFactory extends UIControlsFactory {
 	 * @param parent
 	 *            The parent composite; never null
 	 * @param style
-	 *            A combination of style bits that is legal for {@link Canvas}.
-	 *            The suggested default is SWT.NONE
+	 *            A combination of style bits that is legal for {@link Canvas}. The suggested default is SWT.NONE
 	 * 
 	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.NONE
 	 */
@@ -57,8 +54,7 @@ public final class OptionalUIControlsFactory extends UIControlsFactory {
 	 * @param parent
 	 *            The parent composite; never null
 	 * @param style
-	 *            A combination of style bits that is legal for {@link Canvas}.
-	 *            The suggested default is SWT.NONE
+	 *            A combination of style bits that is legal for {@link Canvas}. The suggested default is SWT.NONE
 	 * @return Grid control
 	 * 
 	 * @since 4.0

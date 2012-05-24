@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+	<extension id="product" point="org.eclipse.core.runtime.products">
+		<product application="org.eclipse.riena.navigation.ui.swt.e4.application" name="Riena Demo App">
+			<property name="applicationXMI" value="org.eclipse.riena.navigation.ui.swt.e4/Application.e4xmi"/>
+		     <property name="rendererFactoryUri" value="platform:/plugin/org.eclipse.riena.navigation.ui.swt.e4/org.eclipse.riena.navigation.ui.swt.e4.RienaWorkbenchRendererFactory">
+			</property>
+		</product>		
+	</extension>
+	<extension id="application" point="org.eclipse.core.runtime.applications">
+      <application>
+         <!-- run class="org.eclipse.riena.navigation.ui.swt.e4.application.RienaE4Application" -->
+         <run class="org.eclipse.riena.navigation.ui.swt.e4.application.example.ExampleRienaE4Application">
+         </run>
+      </application>
+   </extension>
+     <extension
+           id="id1"
+           point="org.eclipse.e4.workbench.model">
+        <processor
+              beforefragment="true"
+              class="org.eclipse.ui.internal.CommandToModelProcessor">
+        </processor>
+        <processor
+              beforefragment="true"
+              class="org.eclipse.ui.internal.ContextToModelProcessor">
+        </processor>
+         <processor
+              beforefragment="true"
+              class="org.eclipse.ui.internal.BindingToModelProcessor">
+        </processor>
+     </extension>
+   
+   <!--extension point="org.eclipse.riena.navigation.ui.swt.statusLine">
+      <contentFactory factory="org.eclipse.riena.navigation.ui.swt.e4.application.StatusLineContentFactory"/>
+   </extension-->   
+</plugin>

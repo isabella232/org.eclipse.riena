@@ -14,13 +14,13 @@ import java.util.Arrays;
 
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
+import org.eclipse.nebula.widgets.compositetable.AbstractNativeHeader;
+import org.eclipse.nebula.widgets.compositetable.CompositeTable;
+import org.eclipse.nebula.widgets.compositetable.ResizableGridRowLayout;
 import org.eclipse.nebula.widgets.grid.Grid;
 import org.eclipse.nebula.widgets.grid.GridColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.nebula.widgets.compositetable.AbstractNativeHeader;
-import org.eclipse.swt.nebula.widgets.compositetable.CompositeTable;
-import org.eclipse.swt.nebula.widgets.compositetable.ResizableGridRowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
@@ -87,8 +87,7 @@ public class OptionalMarkerSubModuleView extends SubModuleView {
 
 		final Group group = UIControlsFactory.createGroup(parent, "UI-Controls:"); //$NON-NLS-1$
 		final int defaultVSpacing = new GridLayout().verticalSpacing;
-		GridLayoutFactory.swtDefaults().numColumns(2).equalWidth(false).margins(20, 20).spacing(10, defaultVSpacing)
-				.applyTo(group);
+		GridLayoutFactory.swtDefaults().numColumns(2).equalWidth(false).margins(20, 20).spacing(10, defaultVSpacing).applyTo(group);
 
 		// CompositeTable
 
@@ -111,8 +110,7 @@ public class OptionalMarkerSubModuleView extends SubModuleView {
 		GridLayoutFactory.fillDefaults().numColumns(3).equalWidth(false).applyTo(gridComposite);
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(gridComposite);
 
-		final Grid grid = OptionalUIControlsFactory.createGrid(gridComposite, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL
-				| SWT.H_SCROLL, "grid"); //$NON-NLS-1$
+		final Grid grid = OptionalUIControlsFactory.createGrid(gridComposite, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL, "grid"); //$NON-NLS-1$
 		grid.setHeaderVisible(true);
 		GridDataFactory.fillDefaults().grab(true, false).hint(SWT.DEFAULT, 150).span(3, 1).applyTo(grid);
 		final GridColumn columnWord = new GridColumn(grid, SWT.LEFT);
@@ -125,8 +123,7 @@ public class OptionalMarkerSubModuleView extends SubModuleView {
 		final Button markBtn = UIControlsFactory.createButton(gridComposite, "Mark", "markRowBtn");
 		GridDataFactory.fillDefaults().grab(false, false).hint(80, SWT.DEFAULT).applyTo(markBtn);
 		final Button unmarkBtn = UIControlsFactory.createButton(gridComposite, "Unmark", "unmarkRowBtn");
-		GridDataFactory.fillDefaults().grab(false, false).hint(80, SWT.DEFAULT).indent(15, SWT.DEFAULT)
-				.applyTo(unmarkBtn);
+		GridDataFactory.fillDefaults().grab(false, false).hint(80, SWT.DEFAULT).indent(15, SWT.DEFAULT).applyTo(unmarkBtn);
 
 		return group;
 
