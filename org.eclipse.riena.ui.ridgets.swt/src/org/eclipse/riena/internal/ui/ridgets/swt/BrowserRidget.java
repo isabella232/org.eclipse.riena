@@ -31,18 +31,16 @@ import org.eclipse.riena.ui.swt.facades.BrowserFacade;
 /**
  * Ridget for an SWT {@link Browser} widget.
  * <p>
- * Implementation note: because of SWT <a
- * href="http://bugs.eclipse.org/84532">Bug 84532</a> the
- * {@link #setFocusable(boolean)} methods has no effect.
+ * Implementation note: because of SWT <a href="http://bugs.eclipse.org/84532">Bug 84532</a> the {@link #setFocusable(boolean)} methods has no effect.
  * 
  * @since 1.2
  */
 public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget {
+	private static final String ABOUT_BLANK = "about:blank"; //$NON-NLS-1$
 
 	/**
-	 * This property is used by the databinding to sync ridget and model. It is
-	 * always fired before its sibling {@link IBrowserRidget#PROPERTY_URL} to
-	 * ensure that the model is updated before any listeners try accessing it.
+	 * This property is used by the databinding to sync ridget and model. It is always fired before its sibling {@link IBrowserRidget#PROPERTY_URL} to ensure
+	 * that the model is updated before any listeners try accessing it.
 	 * <p>
 	 * This property is not API. Do not use in client code.
 	 */
@@ -117,8 +115,7 @@ public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget
 	}
 
 	/**
-	 * Always returns true because mandatory markers do not make sense for this
-	 * ridget.
+	 * Always returns true because mandatory markers do not make sense for this ridget.
 	 */
 	@Override
 	public boolean isDisableMandatoryMarker() {
@@ -165,8 +162,12 @@ public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget
 	// helping methods
 	//////////////////
 
-	private String convertNullToEmpty(final String string) {
-		return string != null ? string : ""; //$NON-NLS-1$
+	/**
+	 * Note that this method does not guarantee the result validity. If an invalid (URL) and non-empty parameter is passed, then it will simply be returned and
+	 * remain invalid.
+	 */
+	private String convertBlankToValid(final String string) {
+		return StringUtils.isDeepEmpty(string) ? ABOUT_BLANK : string;
 	}
 
 	private void updateUIControl() {
@@ -179,10 +180,10 @@ public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget
 					browser.setText(text);
 				}
 			} else {
-				final String notNullUrl = convertNullToEmpty(url);
-				if (!notNullUrl.equals(browser.getUrl())) {
+				final String urlToSet = convertBlankToValid(url);
+				if (!urlToSet.equals(browser.getUrl())) {
 					internalLocationListener.unblock();
-					browser.setUrl(notNullUrl);
+					browser.setUrl(urlToSet);
 				}
 			}
 		}
@@ -192,8 +193,7 @@ public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget
 	//////////////////
 
 	/**
-	 * Listens to location changes in the Browser widget and update's the
-	 * Ridget's URL if necessary.
+	 * Listens to location changes in the Browser widget and update's the Ridget's URL if necessary.
 	 */
 	private final class InternalLocationListener implements LocationListener {
 
@@ -221,18 +221,13 @@ public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget
 		/**
 		 * Allow the next url-change, even if output-only marker is set.
 		 * <p>
-		 * This is used by updateUIControl() to permit updating a widget on
-		 * rebind, setText, setUrl.
+		 * This is used by updateUIControl() to permit updating a widget on rebind, setText, setUrl.
 		 * <p>
-		 * Implementation notes: {@link #changing(LocationEvent)} is invoked an
-		 * undefined time after {@link #unblock()}, since the page load happens
-		 * asynchronously. Currently there is no synchronisation build in - we
-		 * simply allow the next change. This is not likely to cause problems,
-		 * however it could allow another change to happen, if it is processed
-		 * before the intended LocationEvent. The event.location value is
-		 * formatted by the browser and may have things added (parameters,
-		 * http://www prefix) so checking for BrowserRidget.url equality is not
-		 * an option for identifying which url to unblock.
+		 * Implementation notes: {@link #changing(LocationEvent)} is invoked an undefined time after {@link #unblock()}, since the page load happens
+		 * asynchronously. Currently there is no synchronisation build in - we simply allow the next change. This is not likely to cause problems, however it
+		 * could allow another change to happen, if it is processed before the intended LocationEvent. The event.location value is formatted by the browser and
+		 * may have things added (parameters, http://www prefix) so checking for BrowserRidget.url equality is not an option for identifying which url to
+		 * unblock.
 		 */
 		void unblock() {
 			canBlock = false;

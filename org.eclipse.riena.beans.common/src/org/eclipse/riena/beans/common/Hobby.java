@@ -12,6 +12,8 @@ package org.eclipse.riena.beans.common;
 
 /**
  * Simple demo bean
+ * 
+ * @since 4.0
  */
 public class Hobby extends AbstractBean {
 

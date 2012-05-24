@@ -881,7 +881,8 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 					event.text = String.valueOf(MINUS_SIGN);
 					control.notifyListeners(SWT.Verify, event);
 					if (event.doit) {
-						final int caret = control.getCaretPosition() + 1;
+						final boolean selectedAll = control.getSelection().x == 0 && control.getSelection().y == control.getText().length();
+						final int caret = selectedAll ? 1 : control.getCaretPosition() + 1;
 						stopVerifyListener();
 						control.setText(MINUS_SIGN + text);
 						control.setSelection(caret);
