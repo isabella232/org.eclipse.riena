@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 compeople AG and others.
+ * Copyright (c) 2007, 2011 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -23,8 +23,6 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.PlatformUI;
 
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
@@ -253,7 +251,7 @@ public abstract class AbstractScrollingSupport {
 			// 282089: check this window is has the focus, to avoid scrolling when
 			// the mouse pointer happens to be over another overlapping window
 			final Control control = (Control) event.widget;
-			final boolean isActive = control.getShell() == getActiveShell();
+			final boolean isActive = true;//control.getShell() == getActiveShell();
 			// 282091: check that this navigation component is visible. Since
 			// we are using a display filter the navigation componentes of _each_
 			// subapplicatio are notified when scrolling!
@@ -262,8 +260,9 @@ public abstract class AbstractScrollingSupport {
 		}
 
 		private Shell getActiveShell() {
-			final IWorkbenchWindow activeWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-			return activeWindow != null ? activeWindow.getShell() : null;
+			return Display.getDefault().getShells()[0];
+			//			final IWorkbenchWindow activeWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+			//			return activeWindow != null ? activeWindow.getShell() : null;
 		}
 	}
 
