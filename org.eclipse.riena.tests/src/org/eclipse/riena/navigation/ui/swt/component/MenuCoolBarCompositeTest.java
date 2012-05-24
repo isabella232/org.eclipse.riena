@@ -25,6 +25,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.swt.widgets.TypedListener;
+import org.eclipse.ui.IWorkbenchWindow;
 
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.collect.UITestCase;
@@ -54,7 +55,7 @@ public class MenuCoolBarCompositeTest extends TestCase {
 	 */
 	public void testMenuCoolBarComposite() {
 
-		final MenuCoolBarComposite composite = new MenuCoolBarComposite(shell, SWT.NONE, null);
+		final MenuCoolBarComposite composite = new MenuCoolBarComposite(shell, SWT.NONE, (IWorkbenchWindow) null);
 		final ToolBar toolBar = ReflectionUtils.getHidden(composite, "menuToolBar");
 		checkListenerCountAndType(toolBar, SWT.MouseDown);
 		checkListenerCountAndType(toolBar, SWT.MouseEnter);
@@ -88,7 +89,7 @@ public class MenuCoolBarCompositeTest extends TestCase {
 	public void testCreateAndAddMenu() {
 
 		final SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
-		final MenuCoolBarComposite composite = new MenuCoolBarComposite(shell, SWT.NONE, null);
+		final MenuCoolBarComposite composite = new MenuCoolBarComposite(shell, SWT.NONE, (IWorkbenchWindow) null);
 
 		final MenuManager manager = getMenuManager("TestMenu", "0815");
 		final ToolItem topItem = ReflectionUtils.invokeHidden(composite, "createAndAddMenu", manager, new ToolBarMenuListener());
@@ -106,7 +107,7 @@ public class MenuCoolBarCompositeTest extends TestCase {
 	 */
 	public void testGetTopLevelItems() {
 
-		final MenuCoolBarComposite composite = new MenuCoolBarComposite(shell, SWT.NONE, null);
+		final MenuCoolBarComposite composite = new MenuCoolBarComposite(shell, SWT.NONE, (IWorkbenchWindow)  null);
 
 		final MenuManager manager = getMenuManager("TestMenu", "0815");
 		final ToolItem topItem = ReflectionUtils.invokeHidden(composite, "createAndAddMenu", manager, new ToolBarMenuListener());

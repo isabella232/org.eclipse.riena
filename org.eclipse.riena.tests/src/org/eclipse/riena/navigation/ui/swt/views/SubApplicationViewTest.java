@@ -24,6 +24,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.ui.IPageLayout;
+import org.eclipse.ui.IWorkbenchWindow;
 
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.collect.UITestCase;
@@ -118,7 +119,7 @@ public class SubApplicationViewTest extends TestCase {
 		assertNotNull(composites);
 		assertTrue(composites.isEmpty());
 
-		final MenuCoolBarComposite menuComposite = new MenuCoolBarComposite(comp1, SWT.NONE, null);
+		final MenuCoolBarComposite menuComposite = new MenuCoolBarComposite(comp1, SWT.NONE,(IWorkbenchWindow)  null);
 
 		composites = ReflectionUtils.invokeHidden(view, "getMenuCoolBarComposites", shell);
 		assertNotNull(composites);
@@ -139,7 +140,7 @@ public class SubApplicationViewTest extends TestCase {
 		assertNotNull(coolBars);
 		assertTrue(coolBars.isEmpty());
 
-		new MenuCoolBarComposite(comp1, SWT.NONE, null);
+		new MenuCoolBarComposite(comp1, SWT.NONE,(IWorkbenchWindow)  null);
 		coolBars = ReflectionUtils.invokeHidden(view, "getCoolBars", shell);
 		assertNotNull(coolBars);
 		assertTrue(coolBars.isEmpty());
