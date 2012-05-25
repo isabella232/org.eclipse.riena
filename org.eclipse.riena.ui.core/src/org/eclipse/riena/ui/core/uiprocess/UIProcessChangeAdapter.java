@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.core.uiprocess;
 
-import org.eclipse.core.runtime.jobs.IJobChangeEvent;
-
 /**
  * A convenience implementation of {@link IUIProcessChangeListener} which allows to implement (override) only relevant listener methods.
  * 
@@ -23,41 +21,17 @@ public abstract class UIProcessChangeAdapter implements IUIProcessChangeListener
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.riena.ui.core.uiprocess.IUIProcessChangeListener#sleeping(org.eclipse.core.runtime.jobs.IJobChangeEvent)
+	 * @see org.eclipse.riena.ui.core.uiprocess.IUIProcessChangeListener#onInitialUpdateUI(int)
 	 */
-	public void sleeping(final IJobChangeEvent event) {
+	public void onInitialUpdateUI(final int totalWork) {
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.riena.ui.core.uiprocess.IUIProcessChangeListener#scheduled(org.eclipse.core.runtime.jobs.IJobChangeEvent)
+	 * @see org.eclipse.riena.ui.core.uiprocess.IUIProcessChangeListener#onFinalUpdateUI()
 	 */
-	public void scheduled(final IJobChangeEvent event) {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.ui.core.uiprocess.IUIProcessChangeListener#done(org.eclipse.core.runtime.jobs.IJobChangeEvent)
-	 */
-	public void done(final IJobChangeEvent event) {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.ui.core.uiprocess.IUIProcessChangeListener#awake(org.eclipse.core.runtime.jobs.IJobChangeEvent)
-	 */
-	public void awake(final IJobChangeEvent event) {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.ui.core.uiprocess.IUIProcessChangeListener#aboutToRun(org.eclipse.core.runtime.jobs.IJobChangeEvent)
-	 */
-	public void aboutToRun(final IJobChangeEvent event) {
+	public void onFinalUpdateUI() {
 	}
 
 }
