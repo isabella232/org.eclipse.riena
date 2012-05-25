@@ -92,28 +92,12 @@ public class UIProcessDemoSubModuleController extends SubModuleController {
 				}
 			};
 			processWithListener.addUIProcessChangedListener(new IUIProcessChangeListener() {
-				public void sleeping() {
-					System.out.println("UIProcessDemoSubModuleController.runWithListener().new IUIProcessChangeListener() {...}.sleeping()");
+				public void onInitialUpdateUI(final int totalWork) {
+					System.out.println("UIProcessDemoSubModuleController.runWithListener().new IUIProcessChangeListener() {...}.onInitialUpdateUI()");
 				}
 
-				public void scheduled(final long delay) {
-					System.out.println("UIProcessDemoSubModuleController.runWithListener().new IUIProcessChangeListener() {...}.scheduled()");
-				}
-
-				public void done(final IStatus result) {
-					System.out.println("UIProcessDemoSubModuleController.runWithListener().new IUIProcessChangeListener() {...}.done()");
-				}
-
-				public void awake() {
-					System.out.println("UIProcessDemoSubModuleController.runWithListener().new IUIProcessChangeListener() {...}.awake()");
-				}
-
-				public void aboutToRun() {
-					System.out.println("UIProcessDemoSubModuleController.runWithListener().new IUIProcessChangeListener() {...}.aboutToRun()");
-				}
-
-				public void running() {
-					System.out.println("UIProcessDemoSubModuleController.runWithListener().new IUIProcessChangeListener() {...}.running()");
+				public void onFinalUpdateUI() {
+					System.out.println("UIProcessDemoSubModuleController.runWithListener().new IUIProcessChangeListener() {...}.onFinalUpdateUI()");
 				}
 			});
 			processWithListener.setNote("check sysout for listener events");

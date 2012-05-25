@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.core.uiprocess;
 
-import org.eclipse.core.runtime.IStatus;
-
 /**
  * Callback interface that can be to {@link UIProcess} instances to listen for notifications when the UI process state changes.
  * 
@@ -21,41 +19,16 @@ import org.eclipse.core.runtime.IStatus;
 public interface IUIProcessChangeListener {
 
 	/**
-	 * Notification that a UI process was waiting to run and has now been put in the sleeping state.
-	 */
-	void sleeping();
-
-	/**
-	 * Notification that a UI process (its underlying job) is being added to the queue of scheduled jobs. The parameter value includes the scheduling delay
-	 * before the job should start running.
+	 * The first update of the UI. Synchronized with UI-Thread
 	 * 
-	 * @param delay
-	 *            the delay in milliseconds
+	 * @param totalWork
+	 *            the total number of work units into which the main task is been subdivided.
 	 */
-	void scheduled(long delay);
+	void onInitialUpdateUI(int totalWork);
 
 	/**
-	 * Notification that a UI process has completed execution, either due to cancelation, successful completion, or failure. The result status object indicates
-	 * how the UI process finished, and the reason for failure, if applicable.
-	 * 
-	 * @param result
-	 *            the execution result
+	 * Called when the process has finished. Synchronized with UI-Thread
 	 */
-	void done(IStatus result);
-
-	/**
-	 * Notification that a UI process was previously sleeping and has now been rescheduled to run.
-	 */
-	void awake();
-
-	/**
-	 * Notification that a UI process is about to be run.
-	 */
-	void aboutToRun();
-
-	/**
-	 * Notification that a UI process has started running.
-	 */
-	void running();
+	void onFinalUpdateUI();
 
 }

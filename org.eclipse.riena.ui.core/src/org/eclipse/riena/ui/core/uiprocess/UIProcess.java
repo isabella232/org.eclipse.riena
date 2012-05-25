@@ -12,8 +12,6 @@ package org.eclipse.riena.ui.core.uiprocess;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -35,7 +33,6 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 	private final UICallbackDispatcher callbackDispatcher;
 	private final Job job;
 	private final ListenerMapper listenerMapper = new ListenerMapper();
-	private final List<IUIProcessChangeListener> listeners = new ArrayList<IUIProcessChangeListener>();
 
 /**
 	 * Creates a new UIProcess.
@@ -459,12 +456,8 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 	 * @since 4.0
 	 */
 	public void addUIProcessChangedListener(final IUIProcessChangeListener listener) {
-		if (listeners.contains(listener)) {
-			return;
-		}
 		Assert.isNotNull(listener);
-		listeners.add(listener);
-		job.addJobChangeListener(listenerMapper.getWrapperFor(listener));
+		callbackDispatcher.addUIMonitor(listenerMapper.getWrapperFor(listener));
 	}
 
 	/**
@@ -473,11 +466,7 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 	 * @since 4.0
 	 */
 	public void removeUIProcessChangedListener(final IUIProcessChangeListener listener) {
-		if (!listeners.contains(listener)) {
-			return;
-		}
-		listeners.remove(listener);
-		job.removeJobChangeListener(listenerMapper.getWrapperFor(listener));
+		callbackDispatcher.removeUIMonitor(listenerMapper.getWrapperFor(listener));
 	}
 
 }

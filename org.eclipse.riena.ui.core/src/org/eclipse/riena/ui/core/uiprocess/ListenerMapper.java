@@ -12,14 +12,13 @@ package org.eclipse.riena.ui.core.uiprocess;
 
 import java.util.HashMap;
 
-import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.IJobChangeListener;
 
 /**
- * Holds a map of {@link IUIProcessChangeListener}s and their wrappers of type {@link IJobChangeListener}.
+ * Holds a map of {@link IUIProcessChangeListener}s and their wrappers of type {@link IUIMonitor}.
  */
 class ListenerMapper {
-	private final HashMap<IUIProcessChangeListener, IJobChangeListener> map = new HashMap<IUIProcessChangeListener, IJobChangeListener>();
+	private final HashMap<IUIProcessChangeListener, IUIMonitor> map = new HashMap<IUIProcessChangeListener, IUIMonitor>();
 
 	/**
 	 * Retrieves a wrapper for the given listener. If no such wrapper exists, an instance is created and stored in the map for further requests. This ensures
@@ -29,8 +28,8 @@ class ListenerMapper {
 	 *            the {@link IUIProcessChangeListener} instance which should be wrapped
 	 * @return a wrapper of type {@link IJobChangeListener}, never <code>null</code>
 	 */
-	IJobChangeListener getWrapperFor(final IUIProcessChangeListener listener) {
-		IJobChangeListener result = map.get(listener);
+	IUIMonitor getWrapperFor(final IUIProcessChangeListener listener) {
+		IUIMonitor result = map.get(listener);
 		if (result == null) {
 			result = createWrapperFor(listener);
 			map.put(listener, result);
@@ -39,35 +38,34 @@ class ListenerMapper {
 	}
 
 	/**
-	 * Creates an {@link IJobChangeListener} implementation that wraps all calls to the given {@link IUIProcessChangeListener}.
+	 * Creates an {@link IUIMonitor} implementation that wraps all calls to the given {@link IUIProcessChangeListener}.
 	 */
-	private IJobChangeListener createWrapperFor(final IUIProcessChangeListener listener) {
-		return new IJobChangeListener() {
-			public void sleeping(final IJobChangeEvent event) {
-				listener.sleeping();
+	private IUIMonitor createWrapperFor(final IUIProcessChangeListener listener) {
+		return new IUIMonitor() {
+			public Object getAdapter(final Class adapter) {
+				if (adapter == null) {
+					return null;
+				}
+				if (adapter.isInstance(this)) {
+					return this;
+				}
+				if (adapter.isInstance(listener)) {
+					return listener;
+				}
+				return null;
 			}
 
-			public void scheduled(final IJobChangeEvent event) {
-				listener.scheduled(event.getDelay());
-
+			public void updateProgress(final int progress) {
+				// do nothing
 			}
 
-			public void running(final IJobChangeEvent event) {
-				listener.running();
+			public void initialUpdateUI(final int totalWork) {
+				listener.onInitialUpdateUI(totalWork);
 			}
 
-			public void done(final IJobChangeEvent event) {
-				listener.done(event.getResult());
-			}
-
-			public void awake(final IJobChangeEvent event) {
-				listener.awake();
-			}
-
-			public void aboutToRun(final IJobChangeEvent event) {
-				listener.aboutToRun();
+			public void finalUpdateUI() {
+				listener.onFinalUpdateUI();
 			}
 		};
 	}
-
 }
