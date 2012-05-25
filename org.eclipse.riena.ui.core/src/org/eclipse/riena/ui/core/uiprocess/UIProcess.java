@@ -32,7 +32,7 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 
 	private final UICallbackDispatcher callbackDispatcher;
 	private final Job job;
-	private final ListenerMapper listenerMapper = new ListenerMapper();
+	private final ListenerWrapper listenerWrapper = new ListenerWrapper();
 
 /**
 	 * Creates a new UIProcess.
@@ -285,6 +285,7 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 	private void register() {
 		// registers itself as a monitor
 		callbackDispatcher.addUIMonitor(this);
+		callbackDispatcher.addUIMonitor(listenerWrapper);
 		ProgressProviderBridge.instance().registerMapping(job, this);
 	}
 
@@ -457,7 +458,7 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 	 */
 	public void addUIProcessChangedListener(final IUIProcessChangeListener listener) {
 		Assert.isNotNull(listener);
-		callbackDispatcher.addUIMonitor(listenerMapper.getWrapperFor(listener));
+		listenerWrapper.add(listener);
 	}
 
 	/**
@@ -466,7 +467,7 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 	 * @since 4.0
 	 */
 	public void removeUIProcessChangedListener(final IUIProcessChangeListener listener) {
-		callbackDispatcher.removeUIMonitor(listenerMapper.getWrapperFor(listener));
+		listenerWrapper.remove(listener);
 	}
 
 }

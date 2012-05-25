@@ -23,7 +23,7 @@ public abstract class UIProcessChangeAdapter implements IUIProcessChangeListener
 	 * 
 	 * @see org.eclipse.riena.ui.core.uiprocess.IUIProcessChangeListener#onInitialUpdateUI(int)
 	 */
-	public void onInitialUpdateUI(final int totalWork) {
+	public void afterInitialUpdateUI(final int totalWork) {
 	}
 
 	/*
@@ -31,7 +31,7 @@ public abstract class UIProcessChangeAdapter implements IUIProcessChangeListener
 	 * 
 	 * @see org.eclipse.riena.ui.core.uiprocess.IUIProcessChangeListener#onFinalUpdateUI()
 	 */
-	public void onFinalUpdateUI() {
+	public void afterFinalUpdateUI() {
 	}
 
 }

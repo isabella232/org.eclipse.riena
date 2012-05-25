@@ -23,13 +23,4 @@ public interface IUIMonitorContainer {
 	 */
 	void addUIMonitor(IUIMonitor uiMonitor);
 
-	/**
-	 * Removes the {@link IUIMonitor} from the container.
-	 * 
-	 * @param uiMonitor
-	 *            the monitor to add
-	 * @since 4.0
-	 */
-	void removeUIMonitor(IUIMonitor uiMonitor);
-
 }

@@ -79,7 +79,9 @@ public class UIProcessDemoSubModuleController extends SubModuleController {
 	}
 
 	void runWithListener() {
+		boolean addListenerAfterProcessStart = false;
 		if (processWithListener == null) {
+			addListenerAfterProcessStart = true;
 			processWithListener = new UIProcess("sample uiProcess with listener", true, getNavigationNode()) {
 				@Override
 				public boolean runJob(final IProgressMonitor monitor) {
@@ -90,20 +92,46 @@ public class UIProcessDemoSubModuleController extends SubModuleController {
 				protected int getTotalWork() {
 					return 10;
 				}
-			};
-			processWithListener.addUIProcessChangedListener(new IUIProcessChangeListener() {
-				public void onInitialUpdateUI(final int totalWork) {
-					System.out.println("UIProcessDemoSubModuleController.runWithListener().new IUIProcessChangeListener() {...}.onInitialUpdateUI()");
+
+				@Override
+				public void initialUpdateUI(final int totalWork) {
+					System.out.println("UIProcessDemoSubModuleController.runWithListener().new UIProcess() {...}.initialUpdateUI()");
 				}
 
-				public void onFinalUpdateUI() {
-					System.out.println("UIProcessDemoSubModuleController.runWithListener().new IUIProcessChangeListener() {...}.onFinalUpdateUI()");
+				@Override
+				public void finalUpdateUI() {
+					System.out.println("UIProcessDemoSubModuleController.runWithListener().new UIProcess() {...}.finalUpdateUI()");
+				}
+			};
+			processWithListener.addUIProcessChangedListener(new IUIProcessChangeListener() {
+				public void afterInitialUpdateUI(final int totalWork) {
+					System.out
+							.println("UIProcessDemoSubModuleController.runWithListener().new IUIProcessChangeListener() {...}.afterInitialUpdateUI()  - added before process start");
+				}
+
+				public void afterFinalUpdateUI() {
+					System.out
+							.println("UIProcessDemoSubModuleController.runWithListener().new IUIProcessChangeListener() {...}.afterFinalUpdateUI() - added before process start");
 				}
 			});
 			processWithListener.setNote("check sysout for listener events");
 		}
 
 		processWithListener.start();
+
+		if (addListenerAfterProcessStart) {
+			processWithListener.addUIProcessChangedListener(new IUIProcessChangeListener() {
+				public void afterInitialUpdateUI(final int totalWork) {
+					System.out
+							.println("UIProcessDemoSubModuleController.runWithListener().new IUIProcessChangeListener() {...}.afterInitialUpdateUI() - added after process start");
+				}
+
+				public void afterFinalUpdateUI() {
+					System.out
+							.println("UIProcessDemoSubModuleController.runWithListener().new IUIProcessChangeListener() {...}.afterFinalUpdateUI() - added after process start");
+				}
+			});
+		}
 	}
 
 	void runUIProcess() {

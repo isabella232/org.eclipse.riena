@@ -24,11 +24,11 @@ public interface IUIProcessChangeListener {
 	 * @param totalWork
 	 *            the total number of work units into which the main task is been subdivided.
 	 */
-	void onInitialUpdateUI(int totalWork);
+	void afterInitialUpdateUI(int totalWork);
 
 	/**
 	 * Called when the process has finished. Synchronized with UI-Thread
 	 */
-	void onFinalUpdateUI();
+	void afterFinalUpdateUI();
 
 }

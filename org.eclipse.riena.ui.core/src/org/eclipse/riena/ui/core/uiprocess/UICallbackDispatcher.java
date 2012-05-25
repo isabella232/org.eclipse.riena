@@ -69,14 +69,6 @@ public class UICallbackDispatcher extends ProgressProvider implements IUIMonitor
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.core.uiprocess.IUIMonitorContainer#removeUIMonitor(org.eclipse.riena.ui.core.uiprocess.IUIMonitor)
-	 * @since 4.0
-	 */
-	public void removeUIMonitor(final IUIMonitor uiMonitor) {
-		uiMonitors.remove(uiMonitor);
-	}
-
-	/**
 	 * @return the synchronizer that serializes to the UI-Thread
 	 */
 	protected final IUISynchronizer getSyncher() {
