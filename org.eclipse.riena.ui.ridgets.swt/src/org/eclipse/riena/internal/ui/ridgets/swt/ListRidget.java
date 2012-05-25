@@ -98,27 +98,29 @@ public class ListRidget extends AbstractListRidget {
 	@Override
 	protected void updateEnabled(final boolean isEnabled) {
 		final String savedBackgroundKey = "oldbg"; //$NON-NLS-1$
+		final List list = viewer.getList();
+		// only the first time we come here, we remember THE (enabled) background color
+		// this is a kind "final" field
+		if (list.getData(savedBackgroundKey) == null) {
+			list.setData(savedBackgroundKey, list.getBackground());
+		}
+
 		if (isEnabled) {
 			if (hasViewer()) {
 				refreshViewer();
 				disposeSelectionBindings();
 				createSelectionBindings();
-				final List list = viewer.getList();
-				final Color oldBackground = (Color) list.getData(savedBackgroundKey);
-				if (oldBackground != null) {
-					list.setBackground(oldBackground);
-					list.setData(savedBackgroundKey, null);
-				}
+
+				// set the background color we remembered at the beginning of this method
+				list.setBackground((Color) list.getData(savedBackgroundKey));
 			}
 		} else {
 			disposeSelectionBindings();
 			if (hasViewer()) {
 				refreshViewer();
-				final List list = viewer.getList();
 				if (MarkerSupport.isHideDisabledRidgetContent()) {
 					list.deselectAll();
 				}
-				list.setData(savedBackgroundKey, list.getBackground());
 			}
 		}
 		updateMarkers();
