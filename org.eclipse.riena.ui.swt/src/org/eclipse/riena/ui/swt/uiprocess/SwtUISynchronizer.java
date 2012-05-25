@@ -45,7 +45,7 @@ public class SwtUISynchronizer implements IUISynchronizer {
 
 	public SwtUISynchronizer() {
 		// we try to remember the display. This is a hack for Riena on RAP.
-		this.display = Display.getCurrent();
+		this.display = Display.getDefault();
 	}
 
 	/**
@@ -63,8 +63,7 @@ public class SwtUISynchronizer implements IUISynchronizer {
 	}
 
 	/*
-	 * Executes the given runnable using the executor. First checks if there is
-	 * a display available.
+	 * Executes the given runnable using the executor. First checks if there is a display available.
 	 */
 	private void execute(final Executor executor, final Runnable runnable) {
 		if (isWorkbenchShutdown()) {
@@ -114,8 +113,7 @@ public class SwtUISynchronizer implements IUISynchronizer {
 			//   (a) getDisplay().isDisposed() will NPE when getDisplay() == null
 			//   (b) if the display is disposed, we won't get another one. What happens with
 			//       the things that need to run?
-			while (PlatformUI.isWorkbenchRunning() && getDisplay() == null
-					|| (getDisplay() != null && getDisplay().isDisposed())) {
+			while (PlatformUI.isWorkbenchRunning() && getDisplay() == null || (getDisplay() != null && getDisplay().isDisposed())) {
 				try {
 					Thread.sleep(50);
 				} catch (final InterruptedException e) {

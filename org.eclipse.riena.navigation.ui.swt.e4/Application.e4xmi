@@ -1,10 +1,8 @@
-<?xml version="1.0" encoding="ASCII"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <application:Application xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:application="http://www.eclipse.org/ui/2010/UIModel/application" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmi:id="_2oTcwP8DEeCCONZgz1tjYg" elementId="org.eclipse.riena.navigation.ui.swt.e4.application">
-  <children xsi:type="basic:TrimmedWindow" xmi:id="__P0sMP8DEeCCONZgz1tjYg" label="Riena Application" width="1024" height="768"/>
+  <children xsi:type="basic:TrimmedWindow" xmi:id="__P0sMP8DEeCCONZgz1tjYg" label="Riena Application" width="803" height="642"/>
   <bindingTables xmi:id="_SeXUEO8EEd6FC9cDb6iV7x" bindingContext="_SeXUHO8EEd6BC9cDb6iV7y"/>
-  <rootContext xmi:id="_SeXUHO8EEd6BC9cDb6iV7y" elementId="org.eclipse.ui.contexts.dialogAndWindow" name="In Dialog and Windows"/>
-  <commands xmi:id="_jR5mUAFSEd-Z8rQksLwRYw" elementId="org.eclipse.e4.ui.saveCommands" commandName="Save"/>
-  <commands xmi:id="_jR5mUAFSEd-Z8rQksLwRYx" elementId="org.eclipse.e4.ui.saveAllCommands" commandName="Save All"/>
+  <rootContext xmi:id="_SeXUHO8EEd6BC9cDb6iV7y" elementId="org.eclipse.ui.contexts.dialogAndWindow" name="RienaApplicationContext"/>
   <addons xmi:id="_XGB3wPZlEd-XstlTZ6nTXg" elementId="org.eclipse.e4.core.commands.service" contributionURI="platform:/plugin/org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_XGB3wPZlEd-XstlTZ6nTXh" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="platform:/plugin/org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
   <addons xmi:id="_XGB3wPZlEd-XstlTZ6nTXi" elementId="org.eclipse.e4.ui.bindings.service" contributionURI="platform:/plugin/org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>

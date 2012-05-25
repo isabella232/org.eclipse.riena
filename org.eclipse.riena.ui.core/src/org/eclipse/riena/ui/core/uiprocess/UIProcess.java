@@ -255,8 +255,7 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 
 	/**
 	 * 
-	 * @return the job wrapped by the {@link UIProcess}. This job is run by the
-	 *         {@link JobManager} on a worker {@link Thread}
+	 * @return the job wrapped by the {@link UIProcess}. This job is run by the {@link JobManager} on a worker {@link Thread}
 	 * @since 3.0
 	 */
 	public Job getJob() {
@@ -285,6 +284,7 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 	private void register() {
 		// registers itself as a monitor
 		callbackDispatcher.addUIMonitor(this);
+
 		ProgressProviderBridge.instance().registerMapping(job, this);
 	}
 
@@ -324,8 +324,7 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 	/**
 	 * starts the {@link UIProcess} using jobs API
 	 * 
-	 * @return true if the UIProces could be scheduled false if the UIProcess is
-	 *         already scheduled.
+	 * @return true if the UIProces could be scheduled false if the UIProcess is already scheduled.
 	 * @since 3.0
 	 */
 	public boolean start() {
@@ -407,16 +406,14 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 	}
 
 	/**
-	 * @return the {@link ProcessInfo} object holding meta information of this
-	 *         {@link UIProcess}
+	 * @return the {@link ProcessInfo} object holding meta information of this {@link UIProcess}
 	 */
 	private ProcessInfo getProcessInfo() {
 		return getCallbackDispatcher().getProcessInfo();
 	}
 
 	/**
-	 * call this method to get a "ui thread serialized run" of
-	 * {@link #updateUi()}
+	 * call this method to get a "ui thread serialized run" of {@link #updateUi()}
 	 */
 	protected void notifyUpdateUI() {
 		// serialize on ui thread
@@ -434,8 +431,7 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 	}
 
 	/**
-	 * called on the user interface thread as the result of a call to
-	 * {@link #notifyUpdateUI()}
+	 * called on the user interface thread as the result of a call to {@link #notifyUpdateUI()}
 	 * 
 	 * @deprecated use {@link updateUI} instead.
 	 */
@@ -444,8 +440,7 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 	}
 
 	/**
-	 * called on the user interface thread as the result of a call to
-	 * {@link #notifyUpdateUI()}
+	 * called on the user interface thread as the result of a call to {@link #notifyUpdateUI()}
 	 * 
 	 * @since 4.0
 	 */

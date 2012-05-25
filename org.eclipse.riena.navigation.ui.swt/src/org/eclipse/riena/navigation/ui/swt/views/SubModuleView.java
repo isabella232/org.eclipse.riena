@@ -598,29 +598,30 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 			title.setWindowActive(true);
 			final FormData formData = new FormData();
 			// don't show the top border of the title => -1
-			formData.top = new FormAttachment(0, -1);
+			formData.top = new FormAttachment(0, 1);
 			// don't show the left border of the title => -1
-			formData.left = new FormAttachment(0, -1);
+			formData.left = new FormAttachment(0, 2);
 			// don't show the top border of the title, but show the bottom
 			// border => -1
 			formData.bottom = new FormAttachment(0, title.getSize().y - 1);
 			// don't show the right border of the title => 1
-			formData.right = new FormAttachment(100, 1);
+			formData.right = new FormAttachment(100, -2);
 			title.setLayoutData(formData);
 			SWTFacade.getDefault().createEmbeddedTitleBarToolTip(title);
 		}
 
 		final Composite composite = new Composite(parent, SWT.DOUBLE_BUFFERED);
-		composite.setBackground(bgColor);
 		final FormData formData = new FormData();
+
 		if (title != null) {
 			formData.top = new FormAttachment(title, 0, 0);
 		} else {
 			formData.top = new FormAttachment(0, -1);
 		}
-		formData.left = new FormAttachment(0, 0);
-		formData.bottom = new FormAttachment(100);
-		formData.right = new FormAttachment(100);
+		formData.left = new FormAttachment(0, 2);
+		formData.bottom = new FormAttachment(93, -2);
+		formData.right = new FormAttachment(100, -2);
+		formData.width = 60;
 		composite.setLayoutData(formData);
 
 		return composite;
@@ -693,8 +694,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	 */
 	private boolean isRCP() {
 		//TODO: refactor testing for RCP
-		getNavigationNode();
-		return rcpSubModuleNode != null;
+		return false;
 	}
 
 	private void observeRoot() {

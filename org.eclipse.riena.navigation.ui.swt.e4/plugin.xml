@@ -4,8 +4,8 @@
 	<extension id="product" point="org.eclipse.core.runtime.products">
 		<product application="org.eclipse.riena.navigation.ui.swt.e4.application" name="Riena Demo App">
 			<property name="applicationXMI" value="org.eclipse.riena.navigation.ui.swt.e4/Application.e4xmi"/>
-		     <property name="rendererFactoryUri" value="platform:/plugin/org.eclipse.riena.navigation.ui.swt.e4/org.eclipse.riena.navigation.ui.swt.e4.RienaWorkbenchRendererFactory">
-			</property>
+		    <property name="rendererFactoryUri" value="platform:/plugin/org.eclipse.riena.navigation.ui.swt.e4/org.eclipse.riena.navigation.ui.swt.e4.RienaWorkbenchRendererFactory"/>
+		    <property name="lifeCycleURI" value="bundleclass://org.eclipse.riena.navigation.ui.swt.e4/org.eclipse.riena.navigation.ui.swt.e4.LifeCycleHandler"/>
 		</product>		
 	</extension>
 	<extension id="application" point="org.eclipse.core.runtime.applications">
@@ -31,6 +31,7 @@
               class="org.eclipse.ui.internal.BindingToModelProcessor">
         </processor>
      </extension>
+     
    
    <!--extension point="org.eclipse.riena.navigation.ui.swt.statusLine">
       <contentFactory factory="org.eclipse.riena.navigation.ui.swt.e4.application.StatusLineContentFactory"/>

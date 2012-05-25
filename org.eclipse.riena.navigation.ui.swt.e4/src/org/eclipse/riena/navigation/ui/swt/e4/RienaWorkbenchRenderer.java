@@ -149,7 +149,8 @@ public class RienaWorkbenchRenderer extends WBWRenderer {
 	protected Shell createShell(final MWindow window, final ApplicationController controller) {
 		final Shell shell = new Shell(SWT.NO_TRIM);
 		initShell(shell, controller);
-
+		final Rectangle bounds = shell.getBounds();
+		shell.setBounds(bounds.x, bounds.y, window.getWidth(), window.getHeight());
 		window.setWidget(shell);
 		bindWidget(window, shell);
 

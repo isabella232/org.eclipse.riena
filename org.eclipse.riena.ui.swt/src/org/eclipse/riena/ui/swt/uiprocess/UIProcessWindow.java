@@ -34,9 +34,7 @@ import org.eclipse.riena.ui.swt.lnf.LnFUpdater;
 import org.eclipse.riena.ui.swt.nls.Messages;
 
 /**
- * The window visualizing the progress of an {@link UIProcess}. Have a look at
- * {@link ApplicationWindow} to get more detailed information about window
- * handling.
+ * The window visualizing the progress of an {@link UIProcess}. Have a look at {@link ApplicationWindow} to get more detailed information about window handling.
  */
 public class UIProcessWindow extends ApplicationWindow implements IUIProcessWindow {
 
@@ -102,8 +100,7 @@ public class UIProcessWindow extends ApplicationWindow implements IUIProcessWind
 
 		// percent
 		percent = new Label(centerComposite, SWT.NONE);
-		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.BEGINNING).indent(0, 5).minSize(50, 13).grab(true, false)
-				.applyTo(percent);
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.BEGINNING).indent(0, 5).minSize(50, 13).grab(true, false).applyTo(percent);
 		// progressBar
 		progressBar = new ProgressBar(centerComposite, SWT.HORIZONTAL);
 		progressBar.setMinimum(0);
@@ -121,8 +118,7 @@ public class UIProcessWindow extends ApplicationWindow implements IUIProcessWind
 			}
 		});
 		cancelButton.setText(Messages.UIProcessWindow_cancel);
-		GridDataFactory.fillDefaults().align(SWT.CENTER, SWT.BEGINNING).indent(0, 10).minSize(CANCEL_BUTTON_WIDTH, 0)
-				.grab(true, false).applyTo(cancelButton);
+		GridDataFactory.fillDefaults().align(SWT.CENTER, SWT.BEGINNING).indent(0, 10).minSize(CANCEL_BUTTON_WIDTH, 0).grab(true, false).applyTo(cancelButton);
 
 		lnfUpdater.updateUIControls(centerComposite.getParent(), true);
 		description.setBackground(centerComposite.getBackground());
@@ -185,8 +181,7 @@ public class UIProcessWindow extends ApplicationWindow implements IUIProcessWind
 	}
 
 	/**
-	 * This method does nothing, because this window has no menu, not cool or
-	 * tool bar and no status line.
+	 * This method does nothing, because this window has no menu, not cool or tool bar and no status line.
 	 * 
 	 * @see org.eclipse.jface.window.ApplicationWindow#createTrimWidgets(org.eclipse.swt.widgets.Shell)
 	 */

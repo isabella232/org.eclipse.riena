@@ -16,6 +16,8 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import org.osgi.service.event.Event;
+import org.osgi.service.event.EventHandler;
 import org.osgi.service.log.LogService;
 
 import org.eclipse.core.commands.Command;
@@ -26,9 +28,9 @@ import org.eclipse.core.commands.contexts.IContextManagerListener;
 import org.eclipse.core.runtime.IProduct;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.e4.core.contexts.ContextFunction;
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.internal.workbench.E4Workbench;
 import org.eclipse.e4.ui.internal.workbench.swt.E4Application;
 import org.eclipse.e4.ui.model.application.MApplication;
@@ -49,44 +51,20 @@ import org.eclipse.equinox.log.Logger;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.osgi.service.datalocation.Location;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.IDecoratorManager;
-import org.eclipse.ui.IEditorRegistry;
-import org.eclipse.ui.IPerspectiveRegistry;
-import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.commands.ICommandService;
 import org.eclipse.ui.contexts.IContextService;
-import org.eclipse.ui.internal.SharedImages;
 import org.eclipse.ui.internal.StartupThreading;
 import org.eclipse.ui.internal.WorkbenchMessages;
 import org.eclipse.ui.internal.WorkbenchPlugin;
-import org.eclipse.ui.internal.WorkingSetManager;
 import org.eclipse.ui.internal.commands.CommandService;
 import org.eclipse.ui.internal.contexts.ContextService;
-import org.eclipse.ui.internal.decorators.DecoratorManager;
-import org.eclipse.ui.internal.dialogs.WorkbenchPreferenceManager;
-import org.eclipse.ui.internal.intro.IIntroRegistry;
-import org.eclipse.ui.internal.intro.IntroRegistry;
 import org.eclipse.ui.internal.misc.Policy;
-import org.eclipse.ui.internal.operations.WorkbenchOperationSupport;
 import org.eclipse.ui.internal.progress.ProgressManager;
-import org.eclipse.ui.internal.registry.ActionSetRegistry;
-import org.eclipse.ui.internal.registry.EditorRegistry;
-import org.eclipse.ui.internal.registry.PerspectiveRegistry;
-import org.eclipse.ui.internal.registry.ViewRegistry;
-import org.eclipse.ui.internal.registry.WorkingSetRegistry;
 import org.eclipse.ui.internal.services.IServiceLocatorCreator;
 import org.eclipse.ui.internal.services.ServiceLocator;
 import org.eclipse.ui.internal.services.ServiceLocatorCreator;
-import org.eclipse.ui.internal.themes.IThemeRegistry;
-import org.eclipse.ui.internal.themes.ThemeRegistry;
-import org.eclipse.ui.internal.themes.ThemeRegistryReader;
-import org.eclipse.ui.internal.wizards.ExportWizardRegistry;
-import org.eclipse.ui.internal.wizards.ImportWizardRegistry;
-import org.eclipse.ui.internal.wizards.NewWizardRegistry;
-import org.eclipse.ui.operations.IWorkbenchOperationSupport;
 import org.eclipse.ui.services.IDisposable;
-import org.eclipse.ui.views.IViewRegistry;
 
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.service.Service;
@@ -107,12 +85,11 @@ import org.eclipse.riena.navigation.model.ApplicationNode;
 import org.eclipse.riena.navigation.model.NavigationNodeProvider;
 import org.eclipse.riena.navigation.ui.application.ProgressVisualizerLocator;
 import org.eclipse.riena.navigation.ui.controllers.ApplicationController;
-import org.eclipse.riena.navigation.ui.swt.e4.RienaPerspectiveRegistry;
 import org.eclipse.riena.ui.core.uiprocess.ProgressProviderBridge;
 import org.eclipse.riena.ui.swt.uiprocess.SwtUISynchronizer;
 
 @SuppressWarnings("restriction")
-public class RienaE4Application extends E4Application {
+public class RienaE4Application extends E4Application implements EventHandler {
 	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), RienaE4Application.class);
 	private ApplicationController controller;
 	private IApplicationNode applicationNode;
@@ -122,27 +99,12 @@ public class RienaE4Application extends E4Application {
 	private ContextManager contextManager;
 	private final Map<String, MBindingContext> bindingContexts = new HashMap<String, MBindingContext>();
 
-	private EditorRegistry editorRegistry;
-	private WorkbenchPreferenceManager preferenceManager;
-	private ViewRegistry viewRegistry;
-	private PerspectiveRegistry perspRegistry;
-	private ActionSetRegistry actionSetRegistry;
-	private SharedImages sharedImages;
-	private IntroRegistry introRegistry;
-	private WorkbenchOperationSupport operationSupport;
-	private DecoratorManager decoratorManager;
-
 	@Inject
 	private EPartService ePartService;
 
-	// Theme registry
-	private ThemeRegistry themeRegistry;
-
-	// Manager for working sets (IWorkingSet)
-	private WorkingSetManager workingSetManager;
-
-	// Working set registry, stores working set dialogs
-	private WorkingSetRegistry workingSetRegistry;
+	@Inject
+	private IEventBroker eventBroker;
+	private IApplicationNode applicationModel;
 
 	@Override
 	public Object start(final IApplicationContext applicationContext) throws Exception {
@@ -167,32 +129,20 @@ public class RienaE4Application extends E4Application {
 
 		final Location instanceLocation = (Location) workbench.getContext().get(E4Workbench.INSTANCE_LOCATION);
 		try {
-			// TODO
-			// if (!checkInstanceLocation(instanceLocation, shell))
-			// return EXIT_OK;
-
 			final IEclipseContext e4Context = workbench.getContext();
 			e4Context.set(Display.class, display);
 
 			e4Context.set(IWorkbench.class, new DummyWorkbench());
-
+			e4Context.set(IApplicationNode.class, applicationNode);
+			e4Context
+					.set(E4Workbench.PRESENTATION_URI_ARG,
+							"bundleclass://org.eclipse.riena.navigation.ui.swt.e4/org.eclipse.riena.navigation.ui.swt.e4.RienaPartRenderingEngine"); //$NON-NLS-1$
 			createServiceLocator(display, e4Context);
-
-			initializeContext(e4Context);
-
 			create3xCompatServices(e4Context, display);
 
 			installDefaultBinding(e4Context);
-
 			// Create and run the UI (if any)
 			workbench.createAndRunUI(application);
-
-			// Save the model into the targetURI
-			// TODO
-			// if (lcManager != null) {
-			// ContextInjectionFactory.invoke(lcManager, PreSave.class,
-			// workbenchContext, null);
-			// }
 			saveModel();
 			workbench.close();
 			return EXIT_OK;
@@ -235,24 +185,15 @@ public class RienaE4Application extends E4Application {
 				if (display != null && !display.isDisposed()) {
 					MessageDialog.openInformation(null, WorkbenchMessages.Workbench_NeedsClose_Title,
 							WorkbenchMessages.Workbench_NeedsClose_Message);
-					// close(PlatformUI.RETURN_RESTART, true);
 				}
 			}
 		});
 		serviceLocator.setContext(workbenchContext);
 		serviceLocator.registerService(IServiceLocatorCreator.class, slc);
-		// serviceLocator.registerService(IWorkbenchLocationService.class,
-		// new WorkbenchLocationService(IServiceScopes.WORKBENCH_SCOPE,
-		// this, null, null, null, null, 0));
 
 	}
 
 	private void preStart() {
-		// TODO login
-		// final Object result = initializePerformLogin(context);
-		// if (!EXIT_OK.equals(result)) {
-		// return convertLoginToApplicationResult(result);
-		// }
 		applicationNode = createModel();
 		if (applicationNode == null) {
 			throw new RuntimeException(
@@ -363,149 +304,6 @@ public class RienaE4Application extends E4Application {
 
 	}
 
-	// copied from WorkbenchPlugin
-	protected void initializeContext(final IEclipseContext e4Context) {
-		e4Context.set(IPerspectiveRegistry.class.getName(), new ContextFunction() {
-
-			@Override
-			public Object compute(final IEclipseContext context) {
-				if (perspRegistry == null) {
-					perspRegistry = ContextInjectionFactory.make(RienaPerspectiveRegistry.class, e4Context);
-				}
-				return perspRegistry;
-			}
-		});
-		e4Context.set(IViewRegistry.class.getName(), new ContextFunction() {
-
-			@Override
-			public Object compute(final IEclipseContext context) {
-				if (viewRegistry == null) {
-					viewRegistry = ContextInjectionFactory.make(ViewRegistry.class, e4Context);
-				}
-				return viewRegistry;
-			}
-		});
-		e4Context.set(ActionSetRegistry.class.getName(), new ContextFunction() {
-			@Override
-			public Object compute(final IEclipseContext context) {
-				if (actionSetRegistry == null) {
-					actionSetRegistry = new ActionSetRegistry();
-				}
-				return actionSetRegistry;
-			}
-		});
-		e4Context.set(IDecoratorManager.class.getName(), new ContextFunction() {
-			@Override
-			public Object compute(final IEclipseContext context) {
-				if (decoratorManager == null) {
-					decoratorManager = new DecoratorManager();
-				}
-				return decoratorManager;
-			}
-		});
-		e4Context.set(ExportWizardRegistry.class.getName(), new ContextFunction() {
-			@Override
-			public Object compute(final IEclipseContext context) {
-				return ExportWizardRegistry.getInstance();
-			}
-		});
-		e4Context.set(ImportWizardRegistry.class.getName(), new ContextFunction() {
-			@Override
-			public Object compute(final IEclipseContext context) {
-				return ImportWizardRegistry.getInstance();
-			}
-		});
-		e4Context.set(IIntroRegistry.class.getName(), new ContextFunction() {
-			@Override
-			public Object compute(final IEclipseContext context) {
-				if (introRegistry == null) {
-					introRegistry = new IntroRegistry();
-				}
-				return introRegistry;
-			}
-		});
-		e4Context.set(NewWizardRegistry.class.getName(), new ContextFunction() {
-			@Override
-			public Object compute(final IEclipseContext context) {
-				return NewWizardRegistry.getInstance();
-			}
-		});
-		e4Context.set(IWorkbenchOperationSupport.class.getName(), new ContextFunction() {
-			@Override
-			public Object compute(final IEclipseContext context) {
-				if (operationSupport == null) {
-					operationSupport = new WorkbenchOperationSupport();
-				}
-				return operationSupport;
-			}
-		});
-		//		e4Context.set(PreferenceManager.class.getName(), new ContextFunction() {
-		//			@Override
-		//			public Object compute(final IEclipseContext context) {
-		//				if (preferenceManager == null) {
-		//					preferenceManager = new WorkbenchPreferenceManager(PREFERENCE_PAGE_CATEGORY_SEPARATOR);
-		//
-		//					// Get the pages from the registry
-		//					final PreferencePageRegistryReader registryReader = new PreferencePageRegistryReader(getWorkbench());
-		//					registryReader.loadFromRegistry(Platform.getExtensionRegistry());
-		//					preferenceManager.addPages(registryReader.getTopLevelNodes());
-		//
-		//				}
-		//				return preferenceManager;
-		//			}
-		//		});
-		e4Context.set(ISharedImages.class.getName(), new ContextFunction() {
-			@Override
-			public Object compute(final IEclipseContext context) {
-				if (sharedImages == null) {
-					sharedImages = new SharedImages();
-				}
-				return sharedImages;
-			}
-		});
-
-		e4Context.set(IThemeRegistry.class.getName(), new ContextFunction() {
-			@Override
-			public Object compute(final IEclipseContext context) {
-				if (themeRegistry == null) {
-					themeRegistry = new ThemeRegistry();
-					final ThemeRegistryReader reader = new ThemeRegistryReader();
-					reader.readThemes(Platform.getExtensionRegistry(), themeRegistry);
-				}
-				return themeRegistry;
-			}
-		});
-		//		e4Context.set(IWorkingSetManager.class.getName(), new ContextFunction() {
-		//			@Override
-		//			public Object compute(final IEclipseContext context) {
-		//				if (workingSetManager == null) {
-		//					workingSetManager = new WorkingSetManager(bundleContext);
-		//					workingSetManager.restoreState();
-		//				}
-		//				return workingSetManager;
-		//			}
-		//		});
-		e4Context.set(WorkingSetRegistry.class.getName(), new ContextFunction() {
-			@Override
-			public Object compute(final IEclipseContext context) {
-				if (workingSetRegistry == null) {
-					workingSetRegistry = new WorkingSetRegistry();
-					workingSetRegistry.load();
-				}
-				return workingSetRegistry;
-			}
-		});
-		e4Context.set(IEditorRegistry.class.getName(), new ContextFunction() {
-			@Override
-			public Object compute(final IEclipseContext context) {
-				if (editorRegistry == null) {
-					editorRegistry = new EditorRegistry();
-				}
-				return editorRegistry;
-			}
-		});
-	}
-
 	protected CommandService createCommandService(final IEclipseContext e4Context, final Display display) {
 		runWithoutExceptions(display, new StartupThreading.StartupRunnable() {
 
@@ -564,20 +362,6 @@ public class RienaE4Application extends E4Application {
 
 	protected void createBindingService(final IEclipseContext e4Context, final CommandService commandService,
 			final Display display) {
-		//		final IBindingService[] bindingService = new BindingService[1];
-		//		runWithoutExceptions(display, new StartupThreading.StartupRunnable() {
-		//
-		//			@Override
-		//			public void runWithException() {
-		//				BindingManager.DEBUG = Policy.DEBUG_KEY_BINDINGS;
-		//				final BindingManager bindingManager = new BindingManager(contextManager, commandManager);
-		//				serviceLocator.registerService(BindingManager.class, bindingManager);
-		//				bindingService[0] = ContextInjectionFactory.make(BindingService.class, e4Context);
-		//			}
-		//		});
-		//
-		//		bindingService[0].readRegistryAndPreferences(commandService);
-		//		serviceLocator.registerService(IBindingService.class, bindingService[0]);
 	}
 
 	public static void runWithoutExceptions(final Display display, final StartupThreading.StartupRunnable r)
@@ -599,16 +383,6 @@ public class RienaE4Application extends E4Application {
 		final CommandService service = new CommandService(commandManager, e4Context);
 		e4Context.set(ICommandService.class.getName(), service);
 		service.readRegistry();
-
-		// TODO howto solve this?
-		// MakeHandlersGo allHandlers = new MakeHandlersGo(this);
-		//
-		// Command[] cmds = commandManager.getAllCommands();
-		// for (int i = 0; i < cmds.length; i++) {
-		// Command cmd = cmds[i];
-		// cmd.setHandler(allHandlers);
-		// }
-
 		return service;
 	}
 
@@ -712,13 +486,18 @@ public class RienaE4Application extends E4Application {
 	 *         model
 	 */
 	protected IApplicationNode createModel() {
-		final IApplicationNode applicationModel = new ApplicationNode(new NavigationNodeId(
-				ApplicationNode.DEFAULT_APPLICATION_TYPEID));
+		if (null == applicationModel) {
+			applicationModel = new ApplicationNode(new NavigationNodeId(ApplicationNode.DEFAULT_APPLICATION_TYPEID));
+		}
 		return applicationModel;
 	}
 
 	protected String getKeyScheme() {
 		return "org.eclipse.riena.ui.defaultBindings"; //$NON-NLS-1$
+	}
+
+	public void handleEvent(final Event event) {
+
 	}
 
 }
