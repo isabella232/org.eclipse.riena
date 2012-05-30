@@ -12,6 +12,7 @@ import javax.inject.Inject;
 import org.eclipse.core.commands.ParameterizedCommand;
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.e4.ui.internal.workbench.ContributionsAnalyzer;
 import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.basic.MWindow;
@@ -20,6 +21,7 @@ import org.eclipse.e4.ui.model.application.ui.menu.MMenu;
 import org.eclipse.e4.ui.model.application.ui.menu.MMenuContribution;
 import org.eclipse.e4.ui.model.application.ui.menu.MMenuElement;
 import org.eclipse.e4.ui.model.application.ui.menu.MMenuSeparator;
+import org.eclipse.e4.ui.workbench.modeling.ExpressionContext;
 import org.eclipse.e4.ui.workbench.renderers.swt.HandledContributionItem;
 import org.eclipse.jface.action.AbstractGroupMarker;
 import org.eclipse.jface.action.IContributionItem;
@@ -66,9 +68,8 @@ public class HeaderPart {
 
 		// this must run once to create application model elements for all contributions to
 		// org.eclipse.ui.menus
-		new MenuPersistence(application, eclipseContext).reRead();
-		eclipseContext.set(IEvaluationService.class, new EvaluationService(eclipseContext));
-		new LegacyHandlerService(eclipseContext).readRegistry();
+		copyLegacyExtensionsToModel();
+
 		final MenuCoolBarComposite menuCoolBarComposite = new MenuCoolBarComposite(c, SWT.NONE, new IEntriesProvider() {
 
 			public IContributionItem[] getTopLevelMenuEntries() {
@@ -79,9 +80,11 @@ public class HeaderPart {
 				//				fill(window.getMainMenu().getChildren(), idToElement, parentIdToElement, "org.eclipse.ui.main.menu");
 
 				// 3.x specific menus
+				final ExpressionContext eContext = new ExpressionContext(eclipseContext.getParent());
 				for (final MMenuContribution c : application.getMenuContributions()) {
-					//					System.err.println(c.getParentId());
-					fill(c.getChildren(), parentIdToElement, c.getParentId());
+					if (ContributionsAnalyzer.isVisible(c, eContext)) {
+						fill(c.getChildren(), parentIdToElement, c.getParentId());
+					}
 				}
 
 				setParentChildRelation(parentIdToElement);
@@ -95,6 +98,12 @@ public class HeaderPart {
 
 		//		menuCoolBarComposite.setBackground(c.getDisplay().getSystemColor(SWT.COLOR_BLACK));
 		//		final Composite coolBarComposite = createCoolBarComposite(shell, menuBarComposite);
+	}
+
+	private void copyLegacyExtensionsToModel() {
+		new MenuPersistence(application, eclipseContext).reRead();
+		eclipseContext.set(IEvaluationService.class, new EvaluationService(eclipseContext));
+		new LegacyHandlerService(eclipseContext).readRegistry();
 	}
 
 	private void setParentChildRelation(final Map<String, Collection<IContributionItem>> parentIdToElement) {
@@ -128,6 +137,7 @@ public class HeaderPart {
 				getOrCreateMapElement(parentIdToElement, parentId).add(new MenuManager(label, image, id));
 				//				fill(((MMenu) e).getChildren(), idToElement, parentIdToElement, e.getElementId());
 			} else if (e instanceof MHandledItem) {
+				// => CommandContributionItem/ActionContributionItem
 				final MHandledItem m = (MHandledItem) e;
 				final ParameterizedCommand c = m.getWbCommand();
 
@@ -135,30 +145,6 @@ public class HeaderPart {
 				ContextInjectionFactory.inject(item, eclipseContext);
 				item.setModel(m);
 
-				// => CommandContributionItem/ActionContributionItem
-
-				//				final IServiceLocator sl = new IServiceLocator() {
-				//					public boolean hasService(final Class api) {
-				//						return getService(api) != null;
-				//					}
-				//
-				//					public Object getService(final Class api) {
-				//						return eclipseContext.get(api);
-				//					}
-				//				};
-				//				final CommandContributionItemParameter parameter = new CommandContributionItemParameter(sl, COMMAND_ID, COMMAND_ID, null,
-				//						WorkbenchImages.getImageDescriptor(IWorkbenchGraphicConstants.IMG_ETOOL_PIN_EDITOR),
-				//						WorkbenchImages.getImageDescriptor(IWorkbenchGraphicConstants.IMG_ETOOL_PIN_EDITOR_DISABLED), null, null, null, null,
-				//						CommandContributionItem.STYLE_CHECK, null, false);
-				//				new CommandContributionItem(parameter);
-
-				//				final ActionContributionItem item = new ActionContributionItem(new Action(label, image) {
-				//					@Override
-				//					public void run() {
-				//						System.out.println("HeaderPart.fill(...).new Action() {...}.run()");
-				//					}
-				//				});
-				//				item.setId(id);
 				getOrCreateMapElement(parentIdToElement, parentId).add(item);
 			} else if (e instanceof MMenuSeparator) {
 				// => AbstractGroupMarker
