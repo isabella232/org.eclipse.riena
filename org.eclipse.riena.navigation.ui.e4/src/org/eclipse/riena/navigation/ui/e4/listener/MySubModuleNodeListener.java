@@ -2,6 +2,7 @@ package org.eclipse.riena.navigation.ui.e4.listener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -16,6 +17,7 @@ import org.eclipse.e4.ui.model.application.ui.basic.MPartStack;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.swt.widgets.ToolItem;
 
+import org.eclipse.riena.internal.navigation.ui.swt.handlers.NavigationSourceProvider;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
@@ -38,6 +40,8 @@ public class MySubModuleNodeListener extends SubModuleNodeListener {
 	private static final String CLASS = "class"; //$NON-NLS-1$
 	private static final String ID = "id"; //$NON-NLS-1$
 
+	private final NavigationSourceProvider navigationSourceProvider = new NavigationSourceProvider();
+
 	private final IEclipseContext context;
 
 	public MySubModuleNodeListener(final IEclipseContext context) {
@@ -52,6 +56,11 @@ public class MySubModuleNodeListener extends SubModuleNodeListener {
 	@Override
 	public void activated(final ISubModuleNode source) {
 		MySubApplicationNodeListener.prepare(source);
+		showPart(source);
+		updateNavigationSourceProvider(source);
+	}
+
+	private void showPart(final ISubModuleNode source) {
 		final String partId = SwtViewProvider.getInstance().getSwtViewId(source).getId();
 		final EModelService modelService = context.get(EModelService.class);
 		final MApplication searchRoot = context.get(MApplication.class);
@@ -99,6 +108,13 @@ public class MySubModuleNodeListener extends SubModuleNodeListener {
 			throw new IllegalStateException("Part not found, partId: " + partId);
 		}
 		partToActivate.getParent().setSelectedElement(partToActivate);
+	}
+
+	private void updateNavigationSourceProvider(final ISubModuleNode source) {
+		navigationSourceProvider.activeNodeChanged(source);
+		for (final Entry<String, Object> e : navigationSourceProvider.getCurrentState().entrySet()) {
+			context.set(e.getKey(), e.getValue());
+		}
 	}
 
 	/**

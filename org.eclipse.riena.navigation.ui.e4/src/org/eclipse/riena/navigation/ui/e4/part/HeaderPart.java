@@ -9,7 +9,6 @@ import java.util.Map.Entry;
 
 import javax.inject.Inject;
 
-import org.eclipse.core.commands.ParameterizedCommand;
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.ui.internal.workbench.ContributionsAnalyzer;
@@ -49,6 +48,7 @@ import org.eclipse.riena.navigation.ui.swt.component.TitleComposite;
  * @author jdu
  * 
  */
+@SuppressWarnings("restriction")
 public class HeaderPart {
 	public static final String MENU_COMPOSITE_KEY = HeaderPart.class.getName() + ".rienaMenuCoolBarComposite"; //$NON-NLS-1$
 
@@ -139,7 +139,6 @@ public class HeaderPart {
 			} else if (e instanceof MHandledItem) {
 				// => CommandContributionItem/ActionContributionItem
 				final MHandledItem m = (MHandledItem) e;
-				final ParameterizedCommand c = m.getWbCommand();
 
 				final HandledContributionItem item = new HandledContributionItem();
 				ContextInjectionFactory.inject(item, eclipseContext);
