@@ -1,19 +1,29 @@
 package org.eclipse.riena.navigation.ui.e4.part;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import javax.inject.Inject;
 
+import org.eclipse.core.commands.ParameterizedCommand;
+import org.eclipse.e4.core.contexts.ContextInjectionFactory;
+import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.basic.MWindow;
+import org.eclipse.e4.ui.model.application.ui.menu.MHandledItem;
 import org.eclipse.e4.ui.model.application.ui.menu.MMenu;
+import org.eclipse.e4.ui.model.application.ui.menu.MMenuContribution;
 import org.eclipse.e4.ui.model.application.ui.menu.MMenuElement;
-import org.eclipse.e4.ui.model.application.ui.menu.MMenuItem;
 import org.eclipse.e4.ui.model.application.ui.menu.MMenuSeparator;
+import org.eclipse.e4.ui.workbench.renderers.swt.HandledContributionItem;
 import org.eclipse.jface.action.AbstractGroupMarker;
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IContributionItem;
-import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.IContributionManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.layout.GridDataFactory;
@@ -21,6 +31,10 @@ import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.internal.handlers.LegacyHandlerService;
+import org.eclipse.ui.internal.menus.MenuPersistence;
+import org.eclipse.ui.internal.services.EvaluationService;
+import org.eclipse.ui.services.IEvaluationService;
 
 import org.eclipse.riena.navigation.ApplicationNodeManager;
 import org.eclipse.riena.navigation.ui.swt.component.MenuCoolBarComposite;
@@ -40,6 +54,9 @@ public class HeaderPart {
 	private MApplication application;
 
 	@Inject
+	private IEclipseContext eclipseContext;
+
+	@Inject
 	public void create(final Composite parent, final MWindow window, final MPart part) {
 		final Composite c = new Composite(parent, SWT.NONE);
 		GridLayoutFactory.fillDefaults().spacing(0, 0).applyTo(c);
@@ -47,16 +64,30 @@ public class HeaderPart {
 		final TitleComposite titleComposite = new TitleComposite(c, ApplicationNodeManager.getApplicationNode());
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(titleComposite);
 
+		// this must run once to create application model elements for all contributions to
+		// org.eclipse.ui.menus
+		new MenuPersistence(application, eclipseContext).reRead();
+		eclipseContext.set(IEvaluationService.class, new EvaluationService(eclipseContext));
+		new LegacyHandlerService(eclipseContext).readRegistry();
 		final MenuCoolBarComposite menuCoolBarComposite = new MenuCoolBarComposite(c, SWT.NONE, new IEntriesProvider() {
+
 			public IContributionItem[] getTopLevelMenuEntries() {
-				final MMenu mainMenu = window.getMainMenu();
+				final Map<String, Collection<IContributionItem>> parentIdToElement = new HashMap<String, Collection<IContributionItem>>();
+				//				final Map<String, IContributionItem> idToElement = new HashMap<String, IContributionItem>();
 
-				final MenuManager menuManager = new MenuManager();
-				fill(mainMenu, menuManager);
+				// e4 specific menus
+				//				fill(window.getMainMenu().getChildren(), idToElement, parentIdToElement, "org.eclipse.ui.main.menu");
 
-				final IContributionItem[] items = menuManager.getItems();
-				System.err.println("HeaderPart.create(...).new IEntriesProvider() {...}.getTopLevelMenuEntries(): " + items.length);
-				return items;
+				// 3.x specific menus
+				for (final MMenuContribution c : application.getMenuContributions()) {
+					//					System.err.println(c.getParentId());
+					fill(c.getChildren(), parentIdToElement, c.getParentId());
+				}
+
+				setParentChildRelation(parentIdToElement);
+
+				final Collection<IContributionItem> c = getOrCreateMapElement(parentIdToElement, "org.eclipse.ui.main.menu");
+				return c.toArray(new IContributionItem[parentIdToElement.size()]);
 			}
 		});
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(menuCoolBarComposite);
@@ -66,78 +97,101 @@ public class HeaderPart {
 		//		final Composite coolBarComposite = createCoolBarComposite(shell, menuBarComposite);
 	}
 
-	/**
-	 * Fill the given {@link MenuManager} with the {@link MMenu} items
-	 */
-	private void fill(final MMenu source, final IMenuManager target) {
-		for (final MMenuElement c : source.getChildren()) {
-			final String label = c.getLabel();
-			final String id = c.getElementId();
-			final ImageDescriptor image = getImage(c.getIconURI());
-			if (c instanceof MMenu) {
-				// => MenuManager
-				final MenuManager subMenu = new MenuManager(label, image, id);
-				fill((MMenu) c, subMenu);
-				target.add(subMenu);
-			} else if (c instanceof MMenuItem) {
-				// => CommandContributionItem/ActionContributionItem
-				final ActionContributionItem item = new ActionContributionItem(new Action(label, image) {
-					@Override
-					public void run() {
-						System.out.println("HeaderPart.fill(...).new Action() {...}.run()");
+	private void setParentChildRelation(final Map<String, Collection<IContributionItem>> parentIdToElement) {
+
+		for (final Entry<String, Collection<IContributionItem>> entry : new HashMap<String, Collection<IContributionItem>>(parentIdToElement).entrySet()) {
+			for (final IContributionItem e : entry.getValue()) {
+				//				System.err.println(entry.getKey() + " <<< " + e.getId());
+				if (e instanceof IContributionManager) {
+					for (final IContributionItem child : getOrCreateMapElement(parentIdToElement, e.getId())) {
+						((IContributionManager) e).add(child);
 					}
-				});
-				item.setId(id);
-				target.add(item);
-			} else if (c instanceof MMenuSeparator) {
+				}
+			}
+		}
+	}
+
+	/**
+	 * fill the given {@link MenuManager} with the {@link MMenu} items
+	 * 
+	 * @param idToElement
+	 */
+	private void fill(final List<MMenuElement> elements, final Map<String, Collection<IContributionItem>> parentIdToElement, final String parentId) {
+		//		final List<MMenuElement> elements = source.getChildren();
+		for (final MMenuElement e : elements) {
+			final String label = e.getLabel();
+			final String id = e.getElementId();
+			final ImageDescriptor image = getImage(e.getIconURI());
+			//			final String parentId = e.getParent().getElementId() != null ? e.getParent().getElementId() : "";
+			if (e instanceof MMenu) {
+				// => MenuManager
+				getOrCreateMapElement(parentIdToElement, parentId).add(new MenuManager(label, image, id));
+				//				fill(((MMenu) e).getChildren(), idToElement, parentIdToElement, e.getElementId());
+			} else if (e instanceof MHandledItem) {
+				final MHandledItem m = (MHandledItem) e;
+				final ParameterizedCommand c = m.getWbCommand();
+
+				final HandledContributionItem item = new HandledContributionItem();
+				ContextInjectionFactory.inject(item, eclipseContext);
+				item.setModel(m);
+
+				// => CommandContributionItem/ActionContributionItem
+
+				//				final IServiceLocator sl = new IServiceLocator() {
+				//					public boolean hasService(final Class api) {
+				//						return getService(api) != null;
+				//					}
+				//
+				//					public Object getService(final Class api) {
+				//						return eclipseContext.get(api);
+				//					}
+				//				};
+				//				final CommandContributionItemParameter parameter = new CommandContributionItemParameter(sl, COMMAND_ID, COMMAND_ID, null,
+				//						WorkbenchImages.getImageDescriptor(IWorkbenchGraphicConstants.IMG_ETOOL_PIN_EDITOR),
+				//						WorkbenchImages.getImageDescriptor(IWorkbenchGraphicConstants.IMG_ETOOL_PIN_EDITOR_DISABLED), null, null, null, null,
+				//						CommandContributionItem.STYLE_CHECK, null, false);
+				//				new CommandContributionItem(parameter);
+
+				//				final ActionContributionItem item = new ActionContributionItem(new Action(label, image) {
+				//					@Override
+				//					public void run() {
+				//						System.out.println("HeaderPart.fill(...).new Action() {...}.run()");
+				//					}
+				//				});
+				//				item.setId(id);
+				getOrCreateMapElement(parentIdToElement, parentId).add(item);
+			} else if (e instanceof MMenuSeparator) {
 				// => AbstractGroupMarker
 				final AbstractGroupMarker separator = new Separator();
 				separator.setId(id);
-				target.add(separator);
+				getOrCreateMapElement(parentIdToElement, parentId).add(separator);
 			}
 		}
-
-		//		for (final IContributionItem item : target.getItems()) {
-		//			if (item instanceof MenuManager) {
-		//				final MenuManager menuManager = (MenuManager) item;
-		//				final MMenu subMenu = MenuHelper.createMenu(menuManager);
-		//				if (subMenu != null) {
-		//					renderer.linkModelToContribution(subMenu, item);
-		//					renderer.linkModelToManager(subMenu, menuManager);
-		//					fill(renderer, subMenu, menuManager);
-		//					source.getChildren().add(subMenu);
-		//				}
-		//			} else if (item instanceof CommandContributionItem) {
-		//				final CommandContributionItem cci = (CommandContributionItem) item;
-		//				final MMenuItem menuItem = MenuHelper.createItem(application, cci);
-		//				target.remove(item);
-		//				if (menuItem != null) {
-		//					source.getChildren().add(menuItem);
-		//				}
-		//			} else if (item instanceof ActionContributionItem) {
-		//				final MMenuItem menuItem = MenuHelper.createItem(application, (ActionContributionItem) item);
-		//				target.remove(item);
-		//				if (menuItem != null) {
-		//					source.getChildren().add(menuItem);
-		//				}
-		//			} else if (item instanceof AbstractGroupMarker) {
-		//				final MMenuSeparator separator = MenuFactoryImpl.eINSTANCE.createMenuSeparator();
-		//				separator.setVisible(item.isVisible());
-		//				separator.setElementId(item.getId());
-		//				if (item instanceof GroupMarker) {
-		//					separator.getTags().add(MenuManagerRenderer.GROUP_MARKER);
-		//				}
-		//				source.getChildren().add(separator);
-		//				target.remove(item);
-		//			} else {
-		//				final MOpaqueMenuItem menuItem = MenuFactoryImpl.eINSTANCE.createOpaqueMenuItem();
-		//				menuItem.setElementId(item.getId());
-		//				menuItem.setVisible(item.isVisible());
-		//				source.getChildren().add(menuItem);
-		//				renderer.linkModelToContribution(menuItem, item);
-		//			}
-		//		}
 	}
+
+	private Collection<IContributionItem> getOrCreateMapElement(final Map<String, Collection<IContributionItem>> parentIdToElement, final String parentId) {
+		Collection<IContributionItem> elements = parentIdToElement.get(parentId);
+		if (elements == null) {
+			elements = new ArrayList<IContributionItem>();
+			parentIdToElement.put(parentId, elements);
+		}
+		return elements;
+	}
+
+	//	/**
+	//	 * @param idToElement
+	//	 * @param target
+	//	 * @param parentId
+	//	 * @param menuManager
+	//	 */
+	//	private void put(final Map<String, Collection<IContributionItem>> parentToElement, final String parentId, final IContributionItem element) {
+	//		Collection<IContributionItem> elements = parentToElement.get(parentId);
+	//		if (elements == null) {
+	//			elements = new ArrayList<IContributionItem>();
+	//			parentToElement.put(parentId, elements);
+	//		}
+	//		elements.add(element);
+	//	}
 
 	/**
 	 * @param iconURI
