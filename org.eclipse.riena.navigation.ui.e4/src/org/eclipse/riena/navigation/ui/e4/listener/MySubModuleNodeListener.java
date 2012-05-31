@@ -1,6 +1,5 @@
 package org.eclipse.riena.navigation.ui.e4.listener;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -15,7 +14,6 @@ import org.eclipse.e4.ui.model.application.ui.basic.MBasicFactory;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.basic.MPartStack;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
-import org.eclipse.swt.widgets.ToolItem;
 
 import org.eclipse.riena.internal.navigation.ui.swt.handlers.NavigationSourceProvider;
 import org.eclipse.riena.navigation.ISubApplicationNode;
@@ -24,11 +22,11 @@ import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.ui.e4.Activator;
 import org.eclipse.riena.navigation.ui.e4.part.HeaderPart;
 import org.eclipse.riena.navigation.ui.e4.part.PartWrapper;
+import org.eclipse.riena.navigation.ui.e4.part.uielements.CoolBarComposite;
 import org.eclipse.riena.navigation.ui.swt.component.MenuCoolBarComposite;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProvider;
 import org.eclipse.riena.navigation.ui.swt.views.SubApplicationView;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
-import org.eclipse.riena.ui.ridgets.controller.IController;
 
 /**
  * This listener of a sub module ensures the preparation of nodes (if necessary).
@@ -162,29 +160,24 @@ public class MySubModuleNodeListener extends SubModuleNodeListener {
 	 */
 	@Override
 	public void afterActivated(final ISubModuleNode source) {
-		final List<MenuCoolBarComposite> menuCoolBarComposites = getMenuCoolBarComposites();
-		for (final MenuCoolBarComposite menuBarComp : menuCoolBarComposites) {
-			final List<ToolItem> changedItems = menuBarComp.updateMenuItems();
+		final EModelService modelService = context.get(EModelService.class);
+		final MPart headerPart = (MPart) modelService.find(HEADER_PART_ID, context.get(MApplication.class));
+
+		// update main menu items
+		final Object m = headerPart.getTransientData().get(HeaderPart.MENU_COMPOSITE_KEY);
+		if (m instanceof MenuCoolBarComposite) {
+			((MenuCoolBarComposite) m).updateMenuItems();
 			//				if (!changedItems.isEmpty()) {
-			final IController controller = (IController) source.getParentOfType(ISubApplicationNode.class).getNavigationNodeController();
+			//			final IController controller = (IController) source.getParentOfType(ISubApplicationNode.class).getNavigationNodeController();
 			//			createRidgets(controller);
 			//			menuItemBindingManager.bind(controller, getUIControls());
 			//				}
 		}
-	}
 
-	/**
-	 * @param mWindow
-	 * @return
-	 */
-	private List<MenuCoolBarComposite> getMenuCoolBarComposites() {
-		final EModelService modelService = context.get(EModelService.class);
-		final MPart headerPart = (MPart) modelService.find(HEADER_PART_ID, context.get(MApplication.class));
-		final List<MenuCoolBarComposite> result = new ArrayList<MenuCoolBarComposite>();
-		final Object value = headerPart.getTransientData().get(HeaderPart.MENU_COMPOSITE_KEY);
-		if (value instanceof MenuCoolBarComposite) {
-			result.add((MenuCoolBarComposite) value);
+		// update coolbar items
+		final Object c = headerPart.getTransientData().get(HeaderPart.COOLBAR_COMPOSITE_KEY);
+		if (c instanceof CoolBarComposite) {
+			((CoolBarComposite) c).updateItems();
 		}
-		return result;
 	}
 }
