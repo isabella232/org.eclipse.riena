@@ -35,7 +35,7 @@ public class CoolBarComposite extends Composite {
 		layout.marginHeight = 0;
 		layout.marginWidth = 0;
 		setLayout(layout);
-		manager = new ToolBarManager2();
+		manager = new ToolBarManager2(SWT.NONE);
 	}
 
 	public List<ToolItem> updateItems() {
@@ -47,7 +47,6 @@ public class CoolBarComposite extends Composite {
 			manager.add(i);
 		}
 		toolBar = manager.createControl(this);
-		//		toolBar.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, false, false));
 		return Collections.EMPTY_LIST;
 	}
 }

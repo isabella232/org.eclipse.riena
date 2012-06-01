@@ -13,6 +13,7 @@ import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.ui.internal.workbench.ContributionsAnalyzer;
 import org.eclipse.e4.ui.model.application.MApplication;
+import org.eclipse.e4.ui.model.application.ui.MCoreExpression;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.basic.MTrimElement;
 import org.eclipse.e4.ui.model.application.ui.basic.MTrimmedWindow;
@@ -25,6 +26,7 @@ import org.eclipse.e4.ui.model.application.ui.menu.MMenuSeparator;
 import org.eclipse.e4.ui.model.application.ui.menu.MToolBar;
 import org.eclipse.e4.ui.model.application.ui.menu.MToolBarContribution;
 import org.eclipse.e4.ui.model.application.ui.menu.MToolBarElement;
+import org.eclipse.e4.ui.model.application.ui.menu.MToolBarSeparator;
 import org.eclipse.e4.ui.model.application.ui.menu.MTrimContribution;
 import org.eclipse.e4.ui.workbench.modeling.ExpressionContext;
 import org.eclipse.e4.ui.workbench.renderers.swt.HandledContributionItem;
@@ -82,7 +84,7 @@ public class HeaderPart {
 	}
 
 	private CoolBarComposite createCoolBarComposite(final Composite c, final MTrimmedWindow window) {
-		return new CoolBarComposite(c, new IEntriesProvider() {
+		final CoolBarComposite coolBarComposite = new CoolBarComposite(c, new IEntriesProvider() {
 			public IContributionItem[] getTopLevelEntries() {
 				final ExpressionContext eContext = new ExpressionContext(eclipseContext.getParent());
 				final ArrayList<IContributionItem> items = new ArrayList<IContributionItem>();
@@ -105,13 +107,22 @@ public class HeaderPart {
 				for (final MToolBarContribution c : application.getToolBarContributions()) {
 					if (ContributionsAnalyzer.isVisible(c, eContext) && parents.contains(c.getParentId())) {
 						for (final MToolBarElement e : c.getChildren()) {
+							if (e.getVisibleWhen() instanceof MCoreExpression
+									&& !ContributionsAnalyzer.isVisible((MCoreExpression) e.getVisibleWhen(), eContext)) {
+								// this element is filtered out
+								continue;
+							}
 							if (e instanceof MHandledItem) {
+								// => HandledContributionItem
 								final HandledContributionItem item = new HandledContributionItem();
 								ContextInjectionFactory.inject(item, eclipseContext);
 								item.setModel((MHandledItem) e);
 								items.add(item);
-							} else {
-								System.out.println(e.getClass());
+							} else if (e instanceof MToolBarSeparator) {
+								// => Separator
+								final Separator separator = new Separator();
+								separator.setId(e.getElementId());
+								items.add(separator);
 							}
 						}
 					}
@@ -119,6 +130,8 @@ public class HeaderPart {
 				return items.toArray(new IContributionItem[items.size()]);
 			}
 		});
+		GridDataFactory.fillDefaults().grab(true, false).applyTo(coolBarComposite);
+		return coolBarComposite;
 	}
 
 	private MenuCoolBarComposite createMainMenu(final Composite c, final MWindow window) {
