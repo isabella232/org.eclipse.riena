@@ -1,19 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<application:Application xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:application="http://www.eclipse.org/ui/2010/UIModel/application" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="__ZZNYJQ8EeG59bq66SmkvQ" elementId="org.eclipse.e4.ide.application">
+<application:Application xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:application="http://www.eclipse.org/ui/2010/UIModel/application" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmi:id="__ZZNYJQ8EeG59bq66SmkvQ" elementId="org.eclipse.e4.ide.application">
   <children xsi:type="basic:TrimmedWindow" xmi:id="__ZZNd5Q8EeG59bq66SmkvQ" elementId="" label="org.eclipse.riena.navigation.ui.e4">
     <children xsi:type="basic:Part" xmi:id="_2-_TQJREEeG59bq66SmkvQ" elementId="org.eclipse.riena.navigation.ui.e4.headerPart" contributionURI="bundleclass://org.eclipse.riena.navigation.ui.e4/org.eclipse.riena.navigation.ui.e4.part.HeaderPart" label=""/>
     <children xsi:type="advanced:PerspectiveStack" xmi:id="__ZZ0dJQ8EeG59bq66SmkvQ" elementId="org.eclipse.riena.navigation.ui.e4.perspectiveStack"/>
     <children xsi:type="basic:Part" xmi:id="_Z2Hl0Jt6EeGrg9jvc5pekw" contributionURI="bundleclass://org.eclipse.riena.navigation.ui.e4/org.eclipse.riena.navigation.ui.e4.part.StatusLinePart"/>
-    <mainMenu xmi:id="_TMbYQJq6EeGVuultUs4K-g" toBeRendered="false">
-      <children xsi:type="menu:Menu" xmi:id="_ULMGkJq6EeGVuultUs4K-g" label="File">
-        <children xsi:type="menu:DirectMenuItem" xmi:id="_Vmj4YJq6EeGVuultUs4K-g" label="Exit"/>
-      </children>
-      <children xsi:type="menu:MenuSeparator" xmi:id="_aZmwoJq6EeGVuultUs4K-g"/>
-      <children xsi:type="menu:Menu" xmi:id="_axLjIJq6EeGVuultUs4K-g" label="Edit">
-        <children xsi:type="menu:DirectMenuItem" xmi:id="_cC0KIJq6EeGVuultUs4K-g" label="Copy"/>
-        <children xsi:type="menu:DirectMenuItem" xmi:id="_dIAQkJq6EeGVuultUs4K-g" label="Paste"/>
-      </children>
-    </mainMenu>
   </children>
   <addons xmi:id="__ZZNZJQ8EeG59bq66SmkvQ" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="__ZZNZZQ8EeG59bq66SmkvQ" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>

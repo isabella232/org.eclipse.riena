@@ -40,10 +40,6 @@ import org.eclipse.riena.ui.swt.lnf.LnfManager;
  * This composites has a list of the top-level menus of the Riena menu bar (a cool bar with an item for every top-level menu).
  */
 public class MenuCoolBarComposite extends Composite {
-	public interface IEntriesProvider {
-		IContributionItem[] getTopLevelMenuEntries();
-	}
-
 	static final String MENU_DATA_KEY = "Menu"; //$NON-NLS-1$
 
 	//	private final IWorkbenchWindow window;
@@ -74,7 +70,7 @@ public class MenuCoolBarComposite extends Composite {
 			 * Returns the top-level menu entries.
 			 */
 			@SuppressWarnings("restriction")
-			public IContributionItem[] getTopLevelMenuEntries() {
+			public IContributionItem[] getTopLevelEntries() {
 				if (window instanceof WorkbenchWindow) {
 					final MenuManager menuManager = ((WorkbenchWindow) window).getMenuManager();
 					return menuManager.getItems();
@@ -170,7 +166,7 @@ public class MenuCoolBarComposite extends Composite {
 	}
 
 	private void fillMenuBar(final ToolBarMenuListener listener) {
-		for (final IContributionItem contribItem : provider.getTopLevelMenuEntries()) {
+		for (final IContributionItem contribItem : provider.getTopLevelEntries()) {
 			if (contribItem instanceof MenuManager) {
 				createAndAddMenu((MenuManager) contribItem, listener);
 			}
