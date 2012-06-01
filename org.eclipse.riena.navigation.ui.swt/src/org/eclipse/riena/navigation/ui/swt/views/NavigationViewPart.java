@@ -65,8 +65,7 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 public class NavigationViewPart extends ViewPart implements IModuleNavigationComponentProvider {
 
 	public final static String ID = "org.eclipse.riena.navigation.ui.swt.views.navigationViewPart"; //$NON-NLS-1$
-	private static final Color NAVIGATION_BACKGROUND = LnfManager.getLnf().getColor(
-			LnfKeyConstants.NAVIGATION_BACKGROUND);
+	private static final Color NAVIGATION_BACKGROUND = LnfManager.getLnf().getColor(LnfKeyConstants.NAVIGATION_BACKGROUND);
 
 	private IViewFactory viewFactory;
 	private Composite parent;
@@ -134,8 +133,7 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 			SWTFacade.getDefault().addPaintListener(parent, new PaintListener() {
 				public void paintControl(final PaintEvent e) {
 
-					final SubModuleViewRenderer viewRenderer = (SubModuleViewRenderer) LnfManager.getLnf().getRenderer(
-							"SubModuleView.renderer"); //$NON-NLS-1$
+					final SubModuleViewRenderer viewRenderer = (SubModuleViewRenderer) LnfManager.getLnf().getRenderer("SubModuleView.renderer"); //$NON-NLS-1$
 					if (viewRenderer != null) {
 						final Rectangle bounds = parent.getBounds();
 						viewRenderer.setBounds(bounds);
@@ -160,8 +158,16 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 		if (scrollBar) {
 			return new ScrollBarNavigationCompositeDeligation(parent.getParent(), parent, this);
 		} else {
-			return new ScrollButtonsNavigationCompositeDeligation(parent.getParent(), parent, this);
+			return createButtonsNavigationCompositeDelegation(parent);
 		}
+	}
+
+	/**
+	 * @param parent
+	 * @return
+	 */
+	protected INavigationCompositeDelegation createButtonsNavigationCompositeDelegation(final Composite parent) {
+		return new ScrollButtonsNavigationCompositeDeligation(parent.getParent(), parent, this);
 	}
 
 	/**
@@ -194,8 +200,7 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 	}
 
 	/**
-	 * Update the size of the navigation area when the application is resized
-	 * (fix for bug 270620).
+	 * Update the size of the navigation area when the application is resized (fix for bug 270620).
 	 */
 	private final class ResizeListener extends ControlAdapter {
 		@Override
@@ -206,8 +211,7 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 	}
 
 	/**
-	 * The Listener updates the size of the navigation, if a child is added or
-	 * removed.
+	 * The Listener updates the size of the navigation, if a child is added or removed.
 	 */
 	private class SubApplicationListener extends SubApplicationNodeListener {
 
@@ -299,8 +303,7 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 		}
 
 		@Override
-		public void nodeIdChange(final IModuleGroupNode source, final NavigationNodeId oldId,
-				final NavigationNodeId newId) {
+		public void nodeIdChange(final IModuleGroupNode source, final NavigationNodeId oldId, final NavigationNodeId newId) {
 			super.nodeIdChange(source, oldId, newId);
 			replaceNavigationNodeId(source, oldId, newId);
 		}
@@ -337,8 +340,7 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 
 	private void createModuleGroupView(final IModuleGroupNode moduleGroupNode) {
 		// ModuleGroupView are directly rendered into the bodyComposite
-		final ModuleGroupView moduleGroupView = getViewFactory().createModuleGroupView(
-				navigationCompositeDelegation.getNavigationComposite());
+		final ModuleGroupView moduleGroupView = getViewFactory().createModuleGroupView(navigationCompositeDelegation.getNavigationComposite());
 		NodeIdentificationSupport.setIdentification(moduleGroupView, "moduleGroupView", moduleGroupNode); //$NON-NLS-1$
 		moduleGroupNodesToViews.put(moduleGroupNode, moduleGroupView);
 		moduleGroupView.addUpdateListener(new ModuleGroupViewObserver());
@@ -376,8 +378,7 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 	}
 
 	/**
-	 * Adds the give view to the list of the module views that are belonging to
-	 * the sub-application of this navigation.
+	 * Adds the give view to the list of the module views that are belonging to the sub-application of this navigation.
 	 * 
 	 * @param moduleView
 	 *            view to register
@@ -393,15 +394,13 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 		public int compare(final ModuleGroupView moduleGroupView1, final ModuleGroupView moduleGroupView2) {
 			final ModuleGroupNode moduleGroupNode1 = moduleGroupView1.getNavigationNode();
 			final ModuleGroupNode moduleGroupNode2 = moduleGroupView2.getNavigationNode();
-			return getSubApplicationNode().getIndexOfChild(moduleGroupNode1) < getSubApplicationNode().getIndexOfChild(
-					moduleGroupNode2) ? -1 : 1;
+			return getSubApplicationNode().getIndexOfChild(moduleGroupNode1) < getSubApplicationNode().getIndexOfChild(moduleGroupNode2) ? -1 : 1;
 		}
 
 	}
 
 	/**
-	 * Removes that view that is belonging to the given node from the list of
-	 * the module group views.
+	 * Removes that view that is belonging to the given node from the list of the module group views.
 	 * 
 	 * @param moduleGroupNode
 	 *            node whose according view should be unregistered
@@ -426,8 +425,7 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 		moduleGroupViews.remove(moduleGroupView);
 	}
 
-	private void replaceNavigationNodeId(final IModuleGroupNode node, final NavigationNodeId oldId,
-			final NavigationNodeId newId) {
+	private void replaceNavigationNodeId(final IModuleGroupNode node, final NavigationNodeId oldId, final NavigationNodeId newId) {
 		node.setNodeId(oldId);
 		final ModuleGroupView view = moduleGroupNodesToViews.remove(node);
 		if (view != null) {
@@ -436,8 +434,7 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 		}
 	}
 
-	private void replaceNavigationNodeId(final IModuleNode node, final NavigationNodeId oldId,
-			final NavigationNodeId newId) {
+	private void replaceNavigationNodeId(final IModuleNode node, final NavigationNodeId oldId, final NavigationNodeId newId) {
 		node.setNodeId(oldId);
 		final ModuleView view = moduleNodesToViews.remove(node);
 		if (view != null) {
@@ -497,8 +494,7 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 	}
 
 	/**
-	 * If a vertical scroll bar exists, the width of the module groups must be
-	 * updated.
+	 * If a vertical scroll bar exists, the width of the module groups must be updated.
 	 * 
 	 * @param height
 	 *            height of the scrolled composite
@@ -558,8 +554,7 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 	 */
 	private ModuleGroupRenderer getModuleGroupRenderer() {
 
-		ModuleGroupRenderer renderer = (ModuleGroupRenderer) LnfManager.getLnf().getRenderer(
-				LnfKeyConstants.MODULE_GROUP_RENDERER);
+		ModuleGroupRenderer renderer = (ModuleGroupRenderer) LnfManager.getLnf().getRenderer(LnfKeyConstants.MODULE_GROUP_RENDERER);
 		if (renderer == null) {
 			renderer = new ModuleGroupRenderer();
 		}
@@ -574,8 +569,7 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 	 */
 	private EmbeddedBorderRenderer getLnfBorderRenderer() {
 
-		EmbeddedBorderRenderer renderer = (EmbeddedBorderRenderer) LnfManager.getLnf().getRenderer(
-				LnfKeyConstants.SUB_MODULE_VIEW_BORDER_RENDERER);
+		EmbeddedBorderRenderer renderer = (EmbeddedBorderRenderer) LnfManager.getLnf().getRenderer(LnfKeyConstants.SUB_MODULE_VIEW_BORDER_RENDERER);
 		if (renderer == null) {
 			renderer = new EmbeddedBorderRenderer();
 		}
