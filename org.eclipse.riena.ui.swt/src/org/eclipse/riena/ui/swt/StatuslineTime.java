@@ -48,8 +48,7 @@ public class StatuslineTime extends AbstractStatuslineComposite {
 	 * Creates a new instance of <code>StatuslineTime</code>.
 	 * 
 	 * @param parent
-	 *            a widget which will be the parent of the new instance (cannot
-	 *            be null)
+	 *            a widget which will be the parent of the new instance (cannot be null)
 	 * @param style
 	 *            the style of widget to construct
 	 */
@@ -96,7 +95,7 @@ public class StatuslineTime extends AbstractStatuslineComposite {
 		if ((timeLabel != null) && (!timeLabel.isDisposed())) {
 			timeLabel.setText(timeStrg);
 		}
-		updateJob.schedule(A_SECOND);
+		//		updateJob.schedule(A_SECOND);
 
 	}
 

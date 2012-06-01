@@ -5,12 +5,11 @@ import javax.inject.Inject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.e4.core.services.log.Logger;
 import org.eclipse.e4.ui.workbench.lifecycle.PostContextCreate;
 import org.eclipse.e4.ui.workbench.lifecycle.ProcessAdditions;
-import org.eclipse.e4.ui.workbench.modeling.EModelService;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.riena.navigation.ApplicationNodeManager;
 import org.eclipse.riena.navigation.IApplicationNode;
@@ -25,14 +24,15 @@ import org.eclipse.riena.navigation.ui.e4.listener.MySubModuleNodeListener;
 import org.eclipse.riena.navigation.ui.swt.application.SwtApplication;
 import org.eclipse.riena.navigation.ui.swt.binding.InjectSwtViewBindingDelegate;
 
+@SuppressWarnings("restriction")
 public class ApplicationLifeCycle {
-	private static final String MODEL_CREATORS_EXT_POINT_SUFFIX = ".applicationModelCreators";
+	private static final String MODEL_CREATORS_EXT_POINT_SUFFIX = ".applicationModelCreators"; //$NON-NLS-1$
 
 	@Inject
 	private IExtensionRegistry extensionRegistry;
 
 	@Inject
-	private EModelService modelService;
+	private Logger logger;
 
 	/**
 	 * called very early (application model is not created)
@@ -49,6 +49,7 @@ public class ApplicationLifeCycle {
 		final SwtApplication legacyHelper = new SwtApplication();
 		final IApplicationModelCreator c = getModelCreatorFromExtension();
 		final IApplicationNode applicationNode = c != null ? c.createModel() : legacyHelper.createModel();
+		context.set(IApplicationNode.class, applicationNode);
 		legacyHelper.initApplicationNode(applicationNode);
 
 		/** SwtApplication */
@@ -65,17 +66,13 @@ public class ApplicationLifeCycle {
 		initializeListener(controller, context);
 	}
 
-	/**
-	 * @return
-	 */
 	private IApplicationModelCreator getModelCreatorFromExtension() {
 		final String pluginId = Activator.getDefault().getBundleContext().getBundle().getSymbolicName();
 		for (final IConfigurationElement e : extensionRegistry.getConfigurationElementsFor(pluginId + MODEL_CREATORS_EXT_POINT_SUFFIX)) {
 			try {
-				return (IApplicationModelCreator) e.createExecutableExtension("class");
+				return (IApplicationModelCreator) e.createExecutableExtension("class"); //$NON-NLS-1$
 			} catch (final CoreException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				logger.error(e1);
 			}
 		}
 		return null;
@@ -91,20 +88,17 @@ public class ApplicationLifeCycle {
 
 	private void initializeListener(final ApplicationController controller, final IEclipseContext context) {
 		final NavigationTreeObserver navigationTreeObserver = new NavigationTreeObserver();
-		navigationTreeObserver.addListener(new MyApplicationNodeListener(controller.getNavigationNode(), context));
-		navigationTreeObserver.addListener(new MySubApplicationNodeListener(context));
-		navigationTreeObserver.addListener(new MyModuleGroupNodeListener());
-		navigationTreeObserver.addListener(new MyModuleNodeListener());
-		navigationTreeObserver.addListener(new MySubModuleNodeListener(context));
+		navigationTreeObserver.addListener(createInstance(MyApplicationNodeListener.class, context));
+		navigationTreeObserver.addListener(createInstance(MySubApplicationNodeListener.class, context));
+		navigationTreeObserver.addListener(createInstance(MyModuleGroupNodeListener.class, context));
+		navigationTreeObserver.addListener(createInstance(MyModuleNodeListener.class, context));
+		navigationTreeObserver.addListener(createInstance(MySubModuleNodeListener.class, context));
+
 		navigationTreeObserver.addListenerTo(controller.getNavigationNode());
 	}
 
-	private Shell getShell() {
-		final Display display = Display.getCurrent();
-		Shell activeShell = display.getActiveShell();
-		if (activeShell == null) {
-			activeShell = new Shell(display);
-		}
-		return activeShell;
+	private <T> T createInstance(final Class<T> clazz, final IEclipseContext context) {
+		return ContextInjectionFactory.make(clazz, context);
 	}
+
 }

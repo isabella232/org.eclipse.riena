@@ -3,8 +3,11 @@ package org.eclipse.riena.navigation.ui.e4.listener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.MElementContainer;
@@ -20,6 +23,7 @@ import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.listener.SubApplicationNodeListener;
+import org.eclipse.riena.navigation.ui.controllers.SubApplicationController;
 import org.eclipse.riena.navigation.ui.e4.Activator;
 import org.eclipse.riena.navigation.ui.e4.binder.SubApplicationBinder;
 import org.eclipse.riena.navigation.ui.e4.part.NavigationPart;
@@ -28,6 +32,7 @@ import org.eclipse.riena.navigation.ui.swt.views.NavigationViewPart;
 import org.eclipse.riena.ui.workarea.IWorkareaDefinition;
 import org.eclipse.riena.ui.workarea.WorkareaManager;
 
+@SuppressWarnings("restriction")
 public class MySubApplicationNodeListener extends SubApplicationNodeListener {
 	private static final String PERSPECTIVES_EXT_POINT = "org.eclipse.ui.perspectives"; //$NON-NLS-1$
 	/**
@@ -35,14 +40,8 @@ public class MySubApplicationNodeListener extends SubApplicationNodeListener {
 	 */
 	private static final String PERSPECTIVE_STACK_ID = "org.eclipse.riena.navigation.ui.e4.perspectiveStack"; //$NON-NLS-1$
 
-	private final IEclipseContext context;
-
-	/**
-	 * @param context
-	 */
-	public MySubApplicationNodeListener(final IEclipseContext context) {
-		this.context = context;
-	}
+	@Inject
+	private IEclipseContext context;
 
 	/**
 	 * {@inheritDoc}
@@ -53,19 +52,21 @@ public class MySubApplicationNodeListener extends SubApplicationNodeListener {
 	public void activated(final ISubApplicationNode source) {
 		if (source != null) {
 			showPerspective(source);
-			//			if (titleComposite != null) {
-			//				// Redraw so that the active tab is displayed correct
-			//				titleComposite.setRedraw(false);
-			//				titleComposite.setRedraw(true);
-			//			}
-
 			if (source.getNavigationNodeController() == null) {
-				/** code from {@link SubApplicationView} */
-				new SubApplicationBinder(source, context);
+				createNodeController(source);
 			}
 
 			prepare(source);
 		}
+	}
+
+	/**
+	 * Creates the {@link SubApplicationController} and binds it to {@link ISubApplicationNode}
+	 */
+	private void createNodeController(final ISubApplicationNode source) {
+		final SubApplicationBinder binder = new SubApplicationBinder(source);
+		ContextInjectionFactory.inject(binder, context);
+		binder.bind();
 	}
 
 	private void showPerspective(final ISubApplicationNode source) {
