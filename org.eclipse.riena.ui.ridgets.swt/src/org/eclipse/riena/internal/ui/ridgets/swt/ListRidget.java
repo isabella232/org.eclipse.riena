@@ -98,11 +98,13 @@ public class ListRidget extends AbstractListRidget {
 	@Override
 	protected void updateEnabled(final boolean isEnabled) {
 		final String savedBackgroundKey = "oldbg"; //$NON-NLS-1$
-		final List list = viewer.getList();
-		// only the first time we come here, we remember THE (enabled) background color
-		// this is a kind "final" field
-		if (list.getData(savedBackgroundKey) == null) {
-			list.setData(savedBackgroundKey, list.getBackground());
+		final List list = getUIControl();
+		if (list != null) {
+			// only the first time we come here, we remember THE (enabled) background color
+			// this is a kind "final" field
+			if (list.getData(savedBackgroundKey) == null) {
+				list.setData(savedBackgroundKey, list.getBackground());
+			}
 		}
 
 		if (isEnabled) {
