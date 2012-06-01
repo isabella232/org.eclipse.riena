@@ -261,10 +261,11 @@ public abstract class AbstractScrollingSupport {
 			return isCurrent && isActive && isVisible;
 		}
 
-		private Shell getActiveShell() {
-			final IWorkbenchWindow activeWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-			return activeWindow != null ? activeWindow.getShell() : null;
-		}
+	}
+
+	protected Shell getActiveShell() {
+		final IWorkbenchWindow activeWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+		return activeWindow != null ? activeWindow.getShell() : null;
 	}
 
 }

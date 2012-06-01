@@ -13,8 +13,7 @@ package org.eclipse.riena.navigation.ui.swt.views;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * Delegation of a composite for scrolling in the navigation with scroll
- * buttons.
+ * Delegation of a composite for scrolling in the navigation with scroll buttons.
  * 
  * @since 3.0
  */
@@ -39,14 +38,17 @@ public class ScrollButtonsNavigationCompositeDeligation extends AbstractNavigati
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * Create the support with the scrolling logic (also the composite for
-	 * scrolling with buttons).
+	 * Create the support with the scrolling logic (also the composite for scrolling with buttons).
 	 */
 	@Override
 	protected Composite createNavigationComposite(final Composite parent) {
 		final Composite naviComp = super.createNavigationComposite(parent);
-		setScrollingSupport(new ScrollButtonsSupport(getSuperParent(), getNavigationProvider()));
+		setScrollingSupport(createScrollingSupport());
 		return naviComp;
+	}
+
+	protected ScrollButtonsSupport createScrollingSupport() {
+		return new ScrollButtonsSupport(getSuperParent(), getNavigationProvider());
 	}
 
 	/**
