@@ -1,5 +1,6 @@
 package org.eclipse.riena.navigation.ui.e4.listener;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -9,6 +10,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.e4.core.services.log.Logger;
 import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.MElementContainer;
 import org.eclipse.e4.ui.model.application.ui.advanced.MPerspective;
@@ -16,6 +18,7 @@ import org.eclipse.e4.ui.model.application.ui.basic.MBasicFactory;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.basic.MPartStack;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
+import org.eclipse.swt.widgets.ToolItem;
 
 import org.eclipse.riena.internal.navigation.ui.swt.handlers.NavigationSourceProvider;
 import org.eclipse.riena.navigation.ISubApplicationNode;
@@ -24,11 +27,11 @@ import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.ui.e4.Activator;
 import org.eclipse.riena.navigation.ui.e4.part.HeaderPart;
 import org.eclipse.riena.navigation.ui.e4.part.PartWrapper;
-import org.eclipse.riena.navigation.ui.e4.part.uielements.CoolBarComposite;
 import org.eclipse.riena.navigation.ui.swt.component.MenuCoolBarComposite;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProvider;
 import org.eclipse.riena.navigation.ui.swt.views.SubApplicationView;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
+import org.eclipse.riena.ui.ridgets.controller.IController;
 
 /**
  * This listener of a sub module ensures the preparation of nodes (if necessary).
@@ -44,6 +47,9 @@ public class MySubModuleNodeListener extends SubModuleNodeListener {
 
 	@Inject
 	private IEclipseContext context;
+
+	@Inject
+	private Logger logger;
 
 	/**
 	 * {@inheritDoc}
@@ -82,14 +88,13 @@ public class MySubModuleNodeListener extends SubModuleNodeListener {
 
 				// construct the String as in Application.e4xmi
 				final String pluginId = Activator.getDefault().getBundleContext().getBundle().getSymbolicName();
-				partToActivate.setContributionURI("bundleclass://" + pluginId + "/" + PartWrapper.class.getName());
+				partToActivate.setContributionURI("bundleclass://" + pluginId + "/" + PartWrapper.class.getName()); //$NON-NLS-1$ //$NON-NLS-2$
 
 				// set parent and add as child
 				parent.getChildren().add(partToActivate);
 				partToActivate.setParent(parent);
 			} catch (final CoreException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.error(e);
 			}
 		} else {
 			partToActivate = parts.get(0);
@@ -102,7 +107,7 @@ public class MySubModuleNodeListener extends SubModuleNodeListener {
 			}
 		}
 		if (partToActivate == null) {
-			throw new IllegalStateException("Part not found, partId: " + partId);
+			throw new IllegalStateException("Part not found, partId: " + partId); //$NON-NLS-1$
 		}
 		partToActivate.getParent().setSelectedElement(partToActivate);
 	}
@@ -114,18 +119,12 @@ public class MySubModuleNodeListener extends SubModuleNodeListener {
 		}
 	}
 
-	/**
-	 * @param partId
-	 * @return
-	 * @throws CoreException
-	 */
 	private MPart createFromPluginXmlContribution(final String partId) throws CoreException {
 		final IExtensionRegistry extensionRegistry = context.get(IExtensionRegistry.class);
 		for (final IConfigurationElement e : extensionRegistry.getConfigurationElementsFor(VIEWS_EXT_POINT)) {
 			if (partId.equals(e.getAttribute(ID))) {
 				final MPart part = MBasicFactory.INSTANCE.createPart();
 				part.setElementId(partId);
-				//				part.setObject(e.createExecutableExtension(CLASS));
 				return part;
 			}
 		}
@@ -142,41 +141,30 @@ public class MySubModuleNodeListener extends SubModuleNodeListener {
 		MySubApplicationNodeListener.prepare(source);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#disposed(org.eclipse.riena.navigation.INavigationNode)
-	 */
-	@Override
-	public void disposed(final ISubModuleNode source) {
-		System.err.println("MySubModuleNodeListener.disposed()");
-		// TODO Auto-generated method stub
-		super.disposed(source);
-	}
-
 	/**
 	 * Code from {@link SubApplicationView}
 	 */
 	@Override
 	public void afterActivated(final ISubModuleNode source) {
-		final EModelService modelService = context.get(EModelService.class);
-		final MPart headerPart = (MPart) modelService.find(HEADER_PART_ID, context.get(MApplication.class));
-
-		// update main menu items
-		final Object m = headerPart.getTransientData().get(HeaderPart.MENU_COMPOSITE_KEY);
-		if (m instanceof MenuCoolBarComposite) {
-			((MenuCoolBarComposite) m).updateMenuItems();
+		final List<MenuCoolBarComposite> menuCoolBarComposites = getMenuCoolBarComposites();
+		for (final MenuCoolBarComposite menuBarComp : menuCoolBarComposites) {
+			final List<ToolItem> changedItems = menuBarComp.updateMenuItems();
 			//				if (!changedItems.isEmpty()) {
-			//			final IController controller = (IController) source.getParentOfType(ISubApplicationNode.class).getNavigationNodeController();
+			final IController controller = (IController) source.getParentOfType(ISubApplicationNode.class).getNavigationNodeController();
 			//			createRidgets(controller);
 			//			menuItemBindingManager.bind(controller, getUIControls());
 			//				}
 		}
+	}
 
-		// update coolbar items
-		final Object c = headerPart.getTransientData().get(HeaderPart.COOLBAR_COMPOSITE_KEY);
-		if (c instanceof CoolBarComposite) {
-			((CoolBarComposite) c).updateItems();
+	private List<MenuCoolBarComposite> getMenuCoolBarComposites() {
+		final EModelService modelService = context.get(EModelService.class);
+		final MPart headerPart = (MPart) modelService.find(HEADER_PART_ID, context.get(MApplication.class));
+		final List<MenuCoolBarComposite> result = new ArrayList<MenuCoolBarComposite>();
+		final Object value = headerPart.getTransientData().get(HeaderPart.MENU_COMPOSITE_KEY);
+		if (value instanceof MenuCoolBarComposite) {
+			result.add((MenuCoolBarComposite) value);
 		}
+		return result;
 	}
 }
