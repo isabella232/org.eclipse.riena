@@ -3,6 +3,8 @@ package org.eclipse.riena.navigation.ui.e4.listener;
 import java.util.List;
 import java.util.Map.Entry;
 
+import javax.inject.Inject;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
@@ -31,20 +33,17 @@ import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 /**
  * This listener of a sub module ensures the preparation of nodes (if necessary).
  */
+@SuppressWarnings("restriction")
 public class MySubModuleNodeListener extends SubModuleNodeListener {
 	private static final String HEADER_PART_ID = "org.eclipse.riena.navigation.ui.e4.headerPart"; //$NON-NLS-1$
 
 	private static final String VIEWS_EXT_POINT = "org.eclipse.ui.views"; //$NON-NLS-1$
-	private static final String CLASS = "class"; //$NON-NLS-1$
 	private static final String ID = "id"; //$NON-NLS-1$
 
 	private final NavigationSourceProvider navigationSourceProvider = new NavigationSourceProvider();
 
-	private final IEclipseContext context;
-
-	public MySubModuleNodeListener(final IEclipseContext context) {
-		this.context = context;
-	}
+	@Inject
+	private IEclipseContext context;
 
 	/**
 	 * {@inheritDoc}
@@ -70,11 +69,11 @@ public class MySubModuleNodeListener extends SubModuleNodeListener {
 			final String perspectiveId = SwtViewProvider.getInstance().getSwtViewId(subApplicationNode).getId();
 			final List<MPerspective> perspectives = modelService.findElements(searchRoot, perspectiveId, MPerspective.class, null);
 			if (perspectives.isEmpty()) {
-				throw new IllegalStateException("Parent perspective not found. partId: " + partId + ", perspectiveId: " + perspectiveId);
+				throw new IllegalStateException("Parent perspective not found. partId: " + partId + ", perspectiveId: " + perspectiveId); //$NON-NLS-1$ //$NON-NLS-2$
 			}
-			final List<MPartStack> stacks = modelService.findElements(perspectives.get(0), "contentPartStack", MPartStack.class, null);
+			final List<MPartStack> stacks = modelService.findElements(perspectives.get(0), "contentPartStack", MPartStack.class, null); //$NON-NLS-1$
 			if (stacks.isEmpty()) {
-				throw new IllegalStateException("Part stack not found on parent perspective. partId: " + partId + ", perspectiveId: " + perspectiveId);
+				throw new IllegalStateException("Part stack not found on parent perspective. partId: " + partId + ", perspectiveId: " + perspectiveId); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 
 			final MElementContainer parent = stacks.get(0);
@@ -126,7 +125,7 @@ public class MySubModuleNodeListener extends SubModuleNodeListener {
 			if (partId.equals(e.getAttribute(ID))) {
 				final MPart part = MBasicFactory.INSTANCE.createPart();
 				part.setElementId(partId);
-				part.setObject(e.createExecutableExtension(CLASS));
+				//				part.setObject(e.createExecutableExtension(CLASS));
 				return part;
 			}
 		}

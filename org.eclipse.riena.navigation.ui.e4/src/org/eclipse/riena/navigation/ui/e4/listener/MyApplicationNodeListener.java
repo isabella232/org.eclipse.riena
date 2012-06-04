@@ -1,19 +1,16 @@
 package org.eclipse.riena.navigation.ui.e4.listener;
 
-import org.eclipse.e4.core.contexts.IEclipseContext;
+import javax.inject.Inject;
 
 import org.eclipse.riena.navigation.IApplicationNode;
-import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.listener.ApplicationNodeListener;
 import org.eclipse.riena.ui.filter.IUIFilter;
 
 public class MyApplicationNodeListener extends ApplicationNodeListener {
-	private final INavigationNode<?> navigationNode;
-	private final IEclipseContext context;
+	@Inject
+	private IApplicationNode navigationNode;
 
-	public MyApplicationNodeListener(final INavigationNode<?> navigationNode, final IEclipseContext context) {
-		this.navigationNode = navigationNode;
-		this.context = context;
+	public MyApplicationNodeListener() {
 	}
 
 	@Override

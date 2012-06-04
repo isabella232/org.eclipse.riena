@@ -39,7 +39,6 @@ import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.internal.WorkbenchPage;
 
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.util.StringUtils;
@@ -56,7 +55,6 @@ import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
 import org.eclipse.riena.navigation.listener.SubApplicationNodeListener;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.model.SubApplicationNode;
-import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubApplicationController;
 import org.eclipse.riena.navigation.ui.swt.binding.DelegatingRidgetMapper;
 import org.eclipse.riena.navigation.ui.swt.binding.InjectSwtViewBindingDelegate;
@@ -103,8 +101,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 		binding = createBinding();
 		uiControls = new ArrayList<Object>();
 		if (menuItemBindingManager == null) {
-			menuItemBindingManager = createMenuItemBindingManager(SWTBindingPropertyLocator.getInstance(),
-					SwtControlRidgetMapper.getInstance());
+			menuItemBindingManager = createMenuItemBindingManager(SWTBindingPropertyLocator.getInstance(), SwtControlRidgetMapper.getInstance());
 		}
 	}
 
@@ -114,8 +111,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 	}
 
 	/**
-	 * Binds the navigation node to the view. Creates the widgets and the
-	 * controller if necessary.<br>
+	 * Binds the navigation node to the view. Creates the widgets and the controller if necessary.<br>
 	 * Also the menus and the tool bar items are binded.
 	 * 
 	 * @see org.eclipse.riena.navigation.ui.swt.views.INavigationNodeView#bind(org.eclipse.riena.navigation.INavigationNode)
@@ -169,8 +165,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 	}
 
 	/**
-	 * Creates controller of the sub-application view and create and set the
-	 * some ridgets.
+	 * Creates controller of the sub-application view and create and set the some ridgets.
 	 * 
 	 * @param subApplication
 	 *            sub-application node
@@ -201,8 +196,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 		menuItemBindingManager.bind(controller, getUIControls());
 	}
 
-	private IBindingManager createMenuItemBindingManager(final IBindingPropertyLocator propertyStrategy,
-			final IControlRidgetMapper<Object> mapper) {
+	private IBindingManager createMenuItemBindingManager(final IBindingPropertyLocator propertyStrategy, final IControlRidgetMapper<Object> mapper) {
 		return new DefaultBindingManager(propertyStrategy, mapper);
 	}
 
@@ -320,8 +314,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 	}
 
 	/**
-	 * Returns all cool bars below the given composite (except cool bar of
-	 * menu).
+	 * Returns all cool bars below the given composite (except cool bar of menu).
 	 * 
 	 * @param composite
 	 * @return list of cool bars
@@ -506,8 +499,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 	 * @since 3.0
 	 */
 	protected ISubApplicationNode locateSubApplication(final IPageLayout layout) {
-		return SwtViewProvider.getInstance().getNavigationNode(layout.getDescriptor().getId(),
-				ISubApplicationNode.class);
+		return SwtViewProvider.getInstance().getNavigationNode(layout.getDescriptor().getId(), ISubApplicationNode.class);
 	}
 
 	// helping classes
@@ -530,8 +522,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 		}
 
 		@Override
-		public void nodeIdChange(final ISubApplicationNode source, final NavigationNodeId oldId,
-				final NavigationNodeId newId) {
+		public void nodeIdChange(final ISubApplicationNode source, final NavigationNodeId oldId, final NavigationNodeId newId) {
 			if (source.equals(getNavigationNode())) {
 				SwtViewProvider.getInstance().replaceNavigationNodeId(source, oldId, newId);
 			}
@@ -539,8 +530,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 	}
 
 	/*
-	 * Delegates to the SwtViewProvider to locate all View users for the given
-	 * SetViewId
+	 * Delegates to the SwtViewProvider to locate all View users for the given SetViewId
 	 */
 	/**
 	 * @since 3.0
@@ -599,12 +589,9 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 			try {
 				final SwtViewId id = getViewId(source);
 				/*
-				 * hideView internally disposes(RCP) a view if ref count is 0.
-				 * For shared views this behavior is critical as RCP doesn�t
-				 * know if a View is reused the Riena way. We just hide it if
-				 * Riena has no more references. For a list of references we use
-				 * the SwtViewProvider#getViewUsers API. We cannot set parts
-				 * invisible as this collides with the marker concept.
+				 * hideView internally disposes(RCP) a view if ref count is 0. For shared views this behavior is critical as RCP doesn�t know if a View is
+				 * reused the Riena way. We just hide it if Riena has no more references. For a list of references we use the SwtViewProvider#getViewUsers API.
+				 * We cannot set parts invisible as this collides with the marker concept.
 				 */
 				if (/* Allways hide "unshared" views */!SubModuleView.SHARED_ID.equals(id.getSecondary())
 						|| /* no more instances needed of the given shared view */getViewUserCount(id) < 1) {
@@ -625,8 +612,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 		}
 
 		/**
-		 * At the very first time (a sub-module was activated), the view parts
-		 * of the sub-application switcher and the navigation tree are shown.
+		 * At the very first time (a sub-module was activated), the view parts of the sub-application switcher and the navigation tree are shown.
 		 */
 		private void checkBaseStructure() {
 			if (!navigationUp) {
@@ -716,7 +702,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 		final IWorkbenchPage page = getActivePage();
 		final IViewReference viewRef = page.findViewReference(id, secondary);
 		if (viewRef != null) {
-			((WorkbenchPage) page).getActivePerspective().bringToTop(viewRef);
+			//			((WorkbenchPage) page).getActivePerspective().bringToTop(viewRef);
 		}
 	}
 
@@ -729,15 +715,13 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 	 * 
 	 * @param subApp
 	 *            node of the sub-application
-	 * @return perspective of sub-application or {@code null} if no perspective
-	 *         was found
+	 * @return perspective of sub-application or {@code null} if no perspective was found
 	 */
 	private IPerspectiveDescriptor getPerspectiveOfSubApplication(final ISubApplicationNode subApp) {
 
 		final Object subAppIdObject = WorkareaManager.getInstance().getDefinition(getNavigationNode()).getViewId();
 		final String subAppId = String.valueOf(subAppIdObject);
-		final IPerspectiveDescriptor[] perspectives = PlatformUI.getWorkbench().getPerspectiveRegistry()
-				.getPerspectives();
+		final IPerspectiveDescriptor[] perspectives = PlatformUI.getWorkbench().getPerspectiveRegistry().getPerspectives();
 		for (final IPerspectiveDescriptor perspective : perspectives) {
 			if (StringUtils.equals(subAppId, perspective.getId())) {
 				return perspective;
@@ -783,15 +767,12 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 			}
 
 			/*
-			 * Shared views are only created once. All binding logic is done in
-			 * createPartControl of the view. Prepared Nodes initially need a
-			 * controller with all ridgets injected. If showView did not
-			 * instantiate a new instance we need to trigger node preparation
-			 * for controller/ridget binding manually.
+			 * Shared views are only created once. All binding logic is done in createPartControl of the view. Prepared Nodes initially need a controller with
+			 * all ridgets injected. If showView did not instantiate a new instance we need to trigger node preparation for controller/ridget binding manually.
 			 */
 			if (currentPrepared != null && currentPrepared.getNavigationNodeController() == null) {
 				if (viewPart instanceof SubModuleView) {
-					((SubModuleView) viewPart).prepareNode((SubModuleNode) currentPrepared);
+					((SubModuleView) viewPart).prepareNode(currentPrepared);
 				}
 			}
 			return page.findViewReference(id, secondary);

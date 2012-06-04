@@ -80,6 +80,7 @@ import org.eclipse.riena.internal.ui.swt.utils.RcpUtilities;
  */
 public class RienaWBWRenderer extends SWTPartRenderer {
 
+	public static final String SHELL_CREATED = "shellCreated"; //$NON-NLS-1$
 	private static String ShellMinimizedTag = "shellMinimized"; //$NON-NLS-1$
 	private static String ShellMaximizedTag = "shellMaximized"; //$NON-NLS-1$
 
@@ -488,6 +489,7 @@ public class RienaWBWRenderer extends SWTPartRenderer {
 	private Shell rienaCreateShell(final int rtlStyle) {
 		final Shell shell = new Shell(Display.getCurrent(), SWT.NO_TRIM | rtlStyle);
 		RcpUtilities.setShell(shell);
+		eventBroker.send(SHELL_CREATED, shell);
 		return shell;
 	}
 
