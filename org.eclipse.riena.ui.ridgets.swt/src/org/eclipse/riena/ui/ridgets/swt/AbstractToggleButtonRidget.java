@@ -24,6 +24,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.graphics.Image;
 
 import org.eclipse.riena.internal.ui.ridgets.swt.ActionObserver;
+import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.core.resource.IIconManager;
 import org.eclipse.riena.ui.core.resource.IconManagerProvider;
 import org.eclipse.riena.ui.core.resource.IconSize;
@@ -39,10 +40,8 @@ import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
 public abstract class AbstractToggleButtonRidget extends AbstractValueRidget implements IToggleButtonRidget {
 
 	/**
-	 * This property is used by the databinding to sync ridget and model. It is
-	 * always fired before its sibling
-	 * {@link IToggleButtonRidget#PROPERTY_SELECTED} to ensure that the model is
-	 * updated before any listeners try accessing it.
+	 * This property is used by the databinding to sync ridget and model. It is always fired before its sibling {@link IToggleButtonRidget#PROPERTY_SELECTED} to
+	 * ensure that the model is updated before any listeners try accessing it.
 	 * <p>
 	 * This property is not API. Do not use in client code.
 	 */
@@ -59,6 +58,8 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 	private boolean textAlreadyInitialized;
 	private boolean useRidgetIcon;
 
+	private DisabledMarker outputAndDeselected;
+
 	public AbstractToggleButtonRidget() {
 		super();
 		actionObserver = new ActionObserver(this);
@@ -72,12 +73,12 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 		});
 		addPropertyChangeListener(IMarkableRidget.PROPERTY_OUTPUT_ONLY, new PropertyChangeListener() {
 			public void propertyChange(final PropertyChangeEvent evt) {
-				updateEnabled();
+				updateEnabledMarker();
 			}
 		});
 		addPropertyChangeListener(IToggleButtonRidget.PROPERTY_SELECTED, new PropertyChangeListener() {
 			public void propertyChange(final PropertyChangeEvent evt) {
-				updateEnabled();
+				updateEnabledMarker();
 			}
 		});
 	}
@@ -146,8 +147,7 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 			this.selected = selected;
 			actionObserver.widgetSelected(null);
 			firePropertyChange(PROPERTY_SELECTED_INTERNAL, Boolean.valueOf(oldValue), Boolean.valueOf(selected));
-			firePropertyChange(IToggleButtonRidget.PROPERTY_SELECTED, Boolean.valueOf(oldValue),
-					Boolean.valueOf(selected));
+			firePropertyChange(IToggleButtonRidget.PROPERTY_SELECTED, Boolean.valueOf(oldValue), Boolean.valueOf(selected));
 			updateMandatoryMarkers();
 		}
 	}
@@ -175,10 +175,9 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 	protected void bindUIControl() {
 		final DataBindingContext context = getValueBindingSupport().getContext();
 		if (getUIControl() != null) {
-			controlBinding = context.bindValue(getUIControlSelectionObservable(), getRidgetObservable(),
-					new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE), new UpdateValueStrategy(
-							UpdateValueStrategy.POLICY_UPDATE)
-							.setBeforeSetValidator(new CancelControlUpdateWhenDisabled()));
+			controlBinding = context.bindValue(getUIControlSelectionObservable(), getRidgetObservable(), new UpdateValueStrategy(
+					UpdateValueStrategy.POLICY_UPDATE), new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE)
+					.setBeforeSetValidator(new CancelControlUpdateWhenDisabled()));
 			initText();
 			updateUIText();
 			updateSelection(isEnabled());
@@ -196,18 +195,20 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 	 * <p>
 	 * Will return false if any of the following conditions are true:
 	 * <ul>
-	 * <li>the ridget is not enabled &ndash; via
-	 * {@code ridget.setEnabled(false)}</li>
+	 * <li>the ridget is not enabled &ndash; via {@code ridget.setEnabled(false)}</li>
 	 * <li>the ridget is output only and not selected</li>
 	 * </ul>
 	 */
-	@Override
-	public boolean isEnabled() {
-		boolean isEnabled = super.isEnabled();
-		if (isEnabled && isOutputOnly() && !isSelected()) {
-			isEnabled = false;
+	private void updateEnabledMarker() {
+		if (outputAndDeselected == null) {
+			outputAndDeselected = new DisabledMarker(false);
+			outputAndDeselected.setAttribute("reason", "output-only and not-selected"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
-		return isEnabled;
+		if (isOutputOnly() && !isSelected()) {
+			addMarker(outputAndDeselected);
+		} else {
+			removeMarker(outputAndDeselected);
+		}
 	}
 
 	@Override
@@ -236,8 +237,7 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 	protected abstract void setUIControlText(String text);
 
 	/**
-	 * Updates the mandatory marker state in this ridget and it's siblings (i.e.
-	 * other ToggleButtonRidgets for Buttons in the same composite).
+	 * Updates the mandatory marker state in this ridget and it's siblings (i.e. other ToggleButtonRidgets for Buttons in the same composite).
 	 * 
 	 * @since 3.0
 	 */
@@ -247,8 +247,7 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 	//////////////////
 
 	/**
-	 * If the text of the ridget has no value, initialize it with the text of
-	 * the UI control.
+	 * If the text of the ridget has no value, initialize it with the text of the UI control.
 	 */
 	private void initText() {
 		if ((text == null) && (!textAlreadyInitialized)) {
@@ -303,8 +302,7 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 	//////////////////
 
 	/**
-	 * When the ridget is disabled, this validator will prevent the selected
-	 * attribute of a control (Button) from changing -- unless
+	 * When the ridget is disabled, this validator will prevent the selected attribute of a control (Button) from changing -- unless
 	 * HIDE_DISABLED_RIDGET_CONTENT is {@code false}.
 	 */
 	private final class CancelControlUpdateWhenDisabled implements IValidator {
