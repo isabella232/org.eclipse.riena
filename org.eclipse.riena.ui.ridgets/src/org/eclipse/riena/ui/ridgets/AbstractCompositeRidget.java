@@ -360,7 +360,6 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	 */
 	private class PropertyChangeHandler implements PropertyChangeListener {
 		public void propertyChange(final PropertyChangeEvent evt) {
-			//			System.out.println("AbstractCompositeRidget.PropertyChangeHandler.propertyChange()");
 			propertyChangeSupport.firePropertyChange(evt);
 		}
 	}
