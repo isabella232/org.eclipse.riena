@@ -28,6 +28,7 @@ import org.eclipse.riena.ui.ridgets.controller.AbstractWindowController;
 import org.eclipse.riena.ui.ridgets.listener.IWindowRidgetListener;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTWidgetRidget;
 import org.eclipse.riena.ui.ridgets.swt.BasicMarkerSupport;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
  * The ridget for a Shell control.
@@ -60,10 +61,8 @@ public class ShellRidget extends AbstractSWTWidgetRidget implements IShellRidget
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * <b>Implementation note:</b> activation of the
-	 * {@link IDefaultActionManager} must be handled by the Controller &ndash;
-	 * see {@link AbstractWindowController#afterBind()}. Deactivation and
-	 * disposal is handled by this ridget.
+	 * <b>Implementation note:</b> activation of the {@link IDefaultActionManager} must be handled by the Controller &ndash; see
+	 * {@link AbstractWindowController#afterBind()}. Deactivation and disposal is handled by this ridget.
 	 */
 	public IDefaultActionManager addDefaultAction(final IRidget focusRidget, final IActionRidget actionRidget) {
 		if (actionManager == null) {
@@ -79,7 +78,8 @@ public class ShellRidget extends AbstractSWTWidgetRidget implements IShellRidget
 
 	public void dispose() {
 		final Shell control = getUIControl();
-		if (control != null) {
+		if (!SwtUtilities.isDisposed(control)) {
+			control.close();
 			control.dispose();
 		}
 		if (actionManager != null) {
