@@ -79,7 +79,6 @@ public class ShellRidget extends AbstractSWTWidgetRidget implements IShellRidget
 	public void dispose() {
 		final Shell control = getUIControl();
 		if (!SwtUtilities.isDisposed(control)) {
-			control.close();
 			control.dispose();
 		}
 		if (actionManager != null) {

@@ -10,8 +10,6 @@ import org.eclipse.equinox.log.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.ControlListener;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
@@ -47,7 +45,6 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 public class BorderDrawer implements Listener {
 
 	public static final int DEFAULT_BORDER_WIDTH = 1;
-	private static final String GC_KEY = BorderDrawer.class.getName() + ".GC"; //$NON-NLS-1$
 	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), BorderDrawer.class);
 
 	private final IDecorationActivationStrategy activationStrategy;
@@ -319,25 +316,10 @@ public class BorderDrawer implements Listener {
 	private boolean includeAndDrawBorder(final Composite someParent) {
 		final Rectangle areaOnControl = toAreaOnControl(visibleControlAreaOnDisplay, someParent);
 		final Rectangle clientArea = someParent.getClientArea();
-		drawBorder(areaOnControl, getGC(someParent));
+		final GC gc = new GC(someParent);
+		drawBorder(areaOnControl, gc);
+		gc.dispose();
 		return areaOnControl.x + areaOnControl.width < clientArea.width && areaOnControl.y + areaOnControl.width < clientArea.height;
-	}
-
-	/**
-	 * @param someParent
-	 * @return
-	 */
-	private GC getGC(final Composite someParent) {
-		if (someParent.getData(GC_KEY) == null) {
-			final GC gc = new GC(someParent);
-			someParent.setData(GC_KEY, gc);
-			someParent.addDisposeListener(new DisposeListener() {
-				public void widgetDisposed(final DisposeEvent e) {
-					gc.dispose();
-				}
-			});
-		}
-		return (GC) someParent.getData(GC_KEY);
 	}
 
 	/**
