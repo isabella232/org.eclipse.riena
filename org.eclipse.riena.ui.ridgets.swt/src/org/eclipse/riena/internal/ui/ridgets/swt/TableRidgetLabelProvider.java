@@ -38,23 +38,19 @@ import org.eclipse.riena.ui.ridgets.IColumnFormatter;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
- * Label provider that formats the columns of a {@link TableRidget}.
- * {@link IColumnFormatter}s can be used to modify the text, image, foreground
- * color, background color or font of a particular column.
+ * Label provider that formats the columns of a {@link TableRidget}. {@link IColumnFormatter}s can be used to modify the text, image, foreground color,
+ * background color or font of a particular column.
  * <p>
  * The appropriate image for a column is computed in the following fashion:
  * <ul>
- * <li>if a column has a formatter, use the image from the formatter, if not
- * null</li>
- * <li>if the column has a boolean or Boolean value, use the default image for
- * boolean values (i.e. checked / unchecked box)</li>
+ * <li>if a column has a formatter, use the image from the formatter, if not null</li>
+ * <li>if the column has a boolean or Boolean value, use the default image for boolean values (i.e. checked / unchecked box)</li>
  * <li>otherwise no image is shown</li>
  * </ul>
  * 
  * @see TableRidget
  */
-public class TableRidgetLabelProvider extends ObservableMapLabelProvider implements ITableColorProvider,
-		ITableFontProvider {
+public class TableRidgetLabelProvider extends ObservableMapLabelProvider implements ITableColorProvider, ITableFontProvider {
 
 	private final static Logger LOGGER = Log4r.getLogger(TableRidgetLabelProvider.class);
 
@@ -62,6 +58,7 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 	private final IObservableMap[] attributeMap;
 	private IColumnFormatter[] formatters;
 	private Map<Object, Image> imageMap;
+	private boolean checkBoxInFirstColumn;
 
 	/**
 	 * Create a new instance
@@ -71,19 +68,16 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 	 * @param attributeMap
 	 *            a non-null {@link IObservableMap} instance
 	 * @param formatters
-	 *            an array of objects that implement {@link IColumnFormatter}.
-	 *            The array must have the same number of entries as
-	 *            attributeMap, however individual entries can be null.
+	 *            an array of objects that implement {@link IColumnFormatter}. The array must have the same number of entries as attributeMap, however
+	 *            individual entries can be null.
 	 * @throws RuntimeException
-	 *             if attributeMap and labelProviders have not the same number
-	 *             of entries
+	 *             if attributeMap and labelProviders have not the same number of entries
 	 */
 	public TableRidgetLabelProvider(final IObservableMap[] attributeMap, final IColumnFormatter[] formatters) {
 		this(attributeMap, formatters, attributeMap.length);
 	}
 
-	protected TableRidgetLabelProvider(final IObservableMap[] attributeMap, final IColumnFormatter[] formatters,
-			final int numColumns) {
+	protected TableRidgetLabelProvider(final IObservableMap[] attributeMap, final IColumnFormatter[] formatters, final int numColumns) {
 		super(attributeMap);
 		Assert.isLegal(numColumns == formatters.length, String.format("expected %d formatters, got %d", numColumns, //$NON-NLS-1$
 				formatters.length));
@@ -93,6 +87,7 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 		this.formatters = new IColumnFormatter[formatters.length];
 		System.arraycopy(formatters, 0, this.formatters, 0, this.formatters.length);
 		imageMap = new HashMap<Object, Image>();
+		checkBoxInFirstColumn = false;
 	}
 
 	@Override
@@ -125,8 +120,10 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 			if (result == null) {
 				final Object value = attributeMap[columnIndex].get(element);
 				if (value instanceof Boolean) {
-					final String key = ((Boolean) value).booleanValue() ? SharedImages.IMG_CHECKED
-							: SharedImages.IMG_UNCHECKED;
+					if ((columnIndex == 0) && isCheckBoxInFirstColumn()) {
+						return null;
+					}
+					final String key = ((Boolean) value).booleanValue() ? SharedImages.IMG_CHECKED : SharedImages.IMG_UNCHECKED;
 					result = Activator.getSharedImage(key);
 				}
 			}
@@ -155,8 +152,7 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 	}
 
 	/**
-	 * Disposes the image of the given element if the image was create from this
-	 * label provider.
+	 * Disposes the image of the given element if the image was create from this label provider.
 	 * 
 	 * @param element
 	 *            an element that was deleted
@@ -189,6 +185,12 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 		}
 		if (result == null) {
 			result = super.getColumnText(element, columnIndex);
+		}
+		final Object value = getColumnValue(element, columnIndex);
+		if (value instanceof Boolean) {
+			if ((columnIndex == 0) && isCheckBoxInFirstColumn()) {
+				return null;
+			}
 		}
 		return result;
 	}
@@ -236,17 +238,14 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 	 * Get the text displayed in the tool tip for object.
 	 * 
 	 * <p>
-	 * <b>If {@link #getToolTipText(Object)} and
-	 * {@link #getToolTipImage(Object)} both return <code>null</code> the
-	 * control is set back to standard behavior</b>
+	 * <b>If {@link #getToolTipText(Object)} and {@link #getToolTipImage(Object)} both return <code>null</code> the control is set back to standard behavior</b>
 	 * </p>
 	 * 
 	 * @param element
 	 *            the element for which the tool tip is shown
 	 * @param columnIndex
 	 *            column index for which the tool tip is shown
-	 * @return the {@link String} or <code>null</code> if there is not text to
-	 *         display
+	 * @return the {@link String} or <code>null</code> if there is not text to display
 	 */
 	public String getToolTipText(final Object element, final int columnIndex) {
 		final IColumnFormatter formatter = getFormatter(columnIndex);
@@ -260,9 +259,7 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 	 * Get the image displayed in the tool tip for object.
 	 * 
 	 * <p>
-	 * <b>If {@link #getToolTipText(Object)} and
-	 * {@link #getToolTipImage(Object)} both return <code>null</code> the
-	 * control is set back to standard behavior</b>
+	 * <b>If {@link #getToolTipText(Object)} and {@link #getToolTipImage(Object)} both return <code>null</code> the control is set back to standard behavior</b>
 	 * </p>
 	 * 
 	 * @param object
@@ -291,8 +288,7 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 	 * @param columnIndex
 	 *            column index for which the tool tip is shown
 	 * 
-	 * @return the {@link Color} used or <code>null</code> if you want to use
-	 *         the default color {@link SWT#COLOR_INFO_BACKGROUND}
+	 * @return the {@link Color} used or <code>null</code> if you want to use the default color {@link SWT#COLOR_INFO_BACKGROUND}
 	 * @see SWT#COLOR_INFO_BACKGROUND
 	 */
 	public Color getToolTipBackgroundColor(final Object object, final int columnIndex) {
@@ -313,8 +309,7 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 	 *            the {@link Object} for which the tool tip is shown
 	 * @param columnIndex
 	 *            column index for which the tool tip is shown
-	 * @return the {@link Color} used or <code>null</code> if you want to use
-	 *         the default color {@link SWT#COLOR_INFO_FOREGROUND}
+	 * @return the {@link Color} used or <code>null</code> if you want to use the default color {@link SWT#COLOR_INFO_FOREGROUND}
 	 * @see SWT#COLOR_INFO_FOREGROUND
 	 */
 	public Color getToolTipForegroundColor(final Object object, final int columnIndex) {
@@ -335,8 +330,7 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 	 *            the element for which the tool tip is shown
 	 * @param columnIndex
 	 *            column index for which the tool tip is shown
-	 * @return {@link Font} or <code>null</code> if the default font is to be
-	 *         used.
+	 * @return {@link Font} or <code>null</code> if the default font is to be used.
 	 */
 	public Font getToolTipFont(final Object object, final int columnIndex) {
 		final IColumnFormatter formatter = getFormatter(columnIndex);
@@ -350,18 +344,15 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 	}
 
 	/**
-	 * Return the amount of pixels in x and y direction you want the tool tip to
-	 * pop up from the mouse pointer. The default shift is 10px right and 0px
-	 * below your mouse cursor. Be aware of the fact that you should at least
-	 * position the tool tip 1px right to your mouse cursor else click events
-	 * may not get propagated properly.
+	 * Return the amount of pixels in x and y direction you want the tool tip to pop up from the mouse pointer. The default shift is 10px right and 0px below
+	 * your mouse cursor. Be aware of the fact that you should at least position the tool tip 1px right to your mouse cursor else click events may not get
+	 * propagated properly.
 	 * 
 	 * @param object
 	 *            the element for which the tool tip is shown
 	 * @param columnIndex
 	 *            column index for which the tool tip is shown
-	 * @return {@link Point} to shift of the tool tip or <code>null</code> if
-	 *         the default shift should be used.
+	 * @return {@link Point} to shift of the tool tip or <code>null</code> if the default shift should be used.
 	 */
 	public Point getToolTipShift(final Object object, final int columnIndex) {
 		final IColumnFormatter formatter = getFormatter(columnIndex);
@@ -409,8 +400,7 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 	}
 
 	/**
-	 * The {@link SWT} style used to create the {@link CLabel} (see there for
-	 * supported styles). By default {@link SWT#SHADOW_NONE} is used.
+	 * The {@link SWT} style used to create the {@link CLabel} (see there for supported styles). By default {@link SWT#SHADOW_NONE} is used.
 	 * 
 	 * @param object
 	 *            the element for which the tool tip is shown
@@ -446,6 +436,14 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 				formatters.length));
 		this.formatters = new IColumnFormatter[formatters.length];
 		System.arraycopy(formatters, 0, this.formatters, 0, this.formatters.length);
+	}
+
+	public boolean isCheckBoxInFirstColumn() {
+		return checkBoxInFirstColumn;
+	}
+
+	public void setCheckBoxInFirstColumn(final boolean checkBoxInFirstColumn) {
+		this.checkBoxInFirstColumn = checkBoxInFirstColumn;
 	}
 
 }

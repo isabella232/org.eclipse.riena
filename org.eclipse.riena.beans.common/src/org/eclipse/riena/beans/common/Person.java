@@ -25,7 +25,7 @@ public class Person extends AbstractBean {
 	 */
 	public static final String PROPERTY_FIRSTNAME = "firstname"; //$NON-NLS-1$
 	/**
-	 * Property name of the first name property ("lastname").
+	 * Property name of the last name property ("lastname").
 	 */
 	public static final String PROPERTY_LASTNAME = "lastname"; //$NON-NLS-1$
 	/**
