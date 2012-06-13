@@ -155,7 +155,7 @@ public abstract class AbstractSimpleNavigationNodeProvider implements INavigatio
 					try {
 						targetNodes = buildNodeCallable.call();
 					} catch (final Exception e) {
-						LOGGER.log(LogService.LOG_ERROR, "Error calling assembler " + assembler + " while building node " + targetId); //$NON-NLS-1$ //$NON-NLS-2$
+						LOGGER.log(LogService.LOG_ERROR, "Error calling assembler " + assembler + " while building node " + targetId, e); //$NON-NLS-1$ //$NON-NLS-2$
 					}
 				}
 				if ((targetNodes != null) && (targetNodes.length > 0)) {

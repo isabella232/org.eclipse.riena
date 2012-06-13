@@ -17,18 +17,13 @@ import java.util.Map;
 import org.eclipse.riena.navigation.model.NavigationModelFailure;
 
 /**
- * A NodePositioner object is responsible to add a NavigationNode as a child to
- * another NavigationNode at a specified index. NodePositioner is for example
- * used by the SimpleNavigationNodeProvider to add a subtree to a parent node.
- * You can add a NodePositioner to a NavigationArgument. Then, whenever new
- * nodes are created the NodePositioner will handle the addition of the new
- * subtree to the root node. Usually it should not be necessary to subclass
- * NodePositioner.
+ * A NodePositioner object is responsible to add a NavigationNode as a child to another NavigationNode at a specified index. NodePositioner is for example used
+ * by the SimpleNavigationNodeProvider to add a subtree to a parent node. You can add a NodePositioner to a NavigationArgument. Then, whenever new nodes are
+ * created the NodePositioner will handle the addition of the new subtree to the root node. Usually it should not be necessary to subclass NodePositioner.
  */
 public abstract class NodePositioner {
 
-	public final static String POSITIONING_ORDINALITY_KEY = NodePositioner.class.getName()
-			+ "positioning-ordinality-key"; //$NON-NLS-1$
+	public final static String POSITIONING_ORDINALITY_KEY = NodePositioner.class.getName() + "positioning-ordinality-key"; //$NON-NLS-1$
 
 	protected Map<String, Object> context = new HashMap<String, Object>();
 
@@ -88,8 +83,7 @@ public abstract class NodePositioner {
 	}
 
 	/**
-	 * Adds a node to another as a child with the specified ordinality(relative
-	 * index). Note that you may not add different children with fixed index and
+	 * Adds a node to another as a child with the specified ordinality(relative index). Note that you may not add different children with fixed index and
 	 * ordinality to the same parent node.
 	 */
 	public final static NodePositioner ordinal(final int ordinality) {
@@ -105,12 +99,21 @@ public abstract class NodePositioner {
 					return;
 				}
 
-				final List<INavigationNode> oldChildren = parent.getChildren();
+				final List<INavigationNode<?>> oldChildren = parent.getChildren();
 				int ix = 0;
-				while (ix < oldChildren.size()
-						&& ordinality >= (Integer) oldChildren.get(ix).getContext(POSITIONING_ORDINALITY_KEY)) {
+				for (final INavigationNode<?> n : oldChildren) {
+					final Integer curOrdinality = (Integer) n.getContext(POSITIONING_ORDINALITY_KEY);
+					if (curOrdinality == null) {
+						throw new IllegalArgumentException("The node '" + n.getNodeId() + "' has no ordinality index. " //$NON-NLS-1$ //$NON-NLS-2$
+								+ "You can not combine ordinal with fixed children for the same parent."); //$NON-NLS-1$
+					}
+
+					if (ordinality < curOrdinality) {
+						break;
+					}
 					ix++;
 				}
+
 				if (ix == oldChildren.size()) {
 					parent.addChild(child);
 				} else {
