@@ -559,8 +559,7 @@ public class TableRidgetTest extends AbstractTableListRidgetTest {
 
 		ridget.setSortedAscending(true);
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_SORT_ASCENDING,
-				Boolean.TRUE, Boolean.FALSE));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_SORT_ASCENDING, Boolean.TRUE, Boolean.FALSE));
 
 		ridget.setSortedAscending(false);
 
@@ -570,8 +569,7 @@ public class TableRidgetTest extends AbstractTableListRidgetTest {
 		ridget.setSortedAscending(false);
 
 		verifyPropertyChangeEvents();
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_SORT_ASCENDING,
-				Boolean.FALSE, Boolean.TRUE));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_SORT_ASCENDING, Boolean.FALSE, Boolean.TRUE));
 
 		ridget.setSortedAscending(true);
 
@@ -588,8 +586,7 @@ public class TableRidgetTest extends AbstractTableListRidgetTest {
 
 		assertEquals(-1, ridget.getSortedColumn());
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_SORTED_COLUMN,
-				Integer.valueOf(-1), Integer.valueOf(0)));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_SORTED_COLUMN, Integer.valueOf(-1), Integer.valueOf(0)));
 
 		ridget.setSortedColumn(0);
 
@@ -599,8 +596,7 @@ public class TableRidgetTest extends AbstractTableListRidgetTest {
 		ridget.setSortedColumn(0);
 
 		verifyPropertyChangeEvents();
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_SORTED_COLUMN,
-				Integer.valueOf(0), Integer.valueOf(1)));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_SORTED_COLUMN, Integer.valueOf(0), Integer.valueOf(1)));
 
 		ridget.setSortedColumn(1);
 
@@ -615,8 +611,7 @@ public class TableRidgetTest extends AbstractTableListRidgetTest {
 		ridget.setColumnSortable(0, true);
 
 		verifyPropertyChangeEvents();
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_COLUMN_SORTABILITY, null,
-				Integer.valueOf(0)));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_COLUMN_SORTABILITY, null, Integer.valueOf(0)));
 
 		ridget.setColumnSortable(0, false);
 
@@ -626,8 +621,7 @@ public class TableRidgetTest extends AbstractTableListRidgetTest {
 		ridget.setColumnSortable(0, false);
 
 		verifyPropertyChangeEvents();
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_COLUMN_SORTABILITY, null,
-				Integer.valueOf(0)));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_COLUMN_SORTABILITY, null, Integer.valueOf(0)));
 
 		ridget.setColumnSortable(0, true);
 
@@ -699,9 +693,7 @@ public class TableRidgetTest extends AbstractTableListRidgetTest {
 	}
 
 	/**
-	 * Tests that for single selection, the ridget selection state and the ui
-	 * selection state cannot be changed by the user when ridget is set to
-	 * "output only".
+	 * Tests that for single selection, the ridget selection state and the ui selection state cannot be changed by the user when ridget is set to "output only".
 	 */
 	public void testOutputSingleSelectionCannotBeChangedFromUI() {
 		final TableRidget ridget = getRidget();
@@ -732,8 +724,7 @@ public class TableRidgetTest extends AbstractTableListRidgetTest {
 	}
 
 	/**
-	 * Tests that for multiple selection, the ridget selection state and the ui
-	 * selection state cannot be changed by the user when ridget is set to
+	 * Tests that for multiple selection, the ridget selection state and the ui selection state cannot be changed by the user when ridget is set to
 	 * "output only".
 	 */
 	public void testOutputMultipleSelectionCannotBeChangedFromUI() {
@@ -846,8 +837,7 @@ public class TableRidgetTest extends AbstractTableListRidgetTest {
 
 		ridget.setColumnFormatter(1, formatter);
 
-		IColumnFormatter[] retFormatters = ReflectionUtils.invokeHidden(ridget,
-				"getColumnFormatters", ridget.getColumnCount()); //$NON-NLS-1$
+		IColumnFormatter[] retFormatters = ReflectionUtils.invokeHidden(ridget, "getColumnFormatters", ridget.getColumnCount()); //$NON-NLS-1$
 		assertNotNull(retFormatters);
 		assertEquals(ridget.getColumnCount(), retFormatters.length);
 		assertNull(retFormatters[0]);
@@ -1187,6 +1177,49 @@ public class TableRidgetTest extends AbstractTableListRidgetTest {
 
 		assertEquals(0, ridget.getSelectionIndex());
 		assertEquals(person1, ridget.getSelection().get(0));
+	}
+
+	public void testIsCheckBoxInFirstColumn() throws Exception {
+
+		final TableRidget ridget = getRidget();
+		TableViewer tableViewer = ReflectionUtils.invokeHidden(ridget, "getTableViewer"); //$NON-NLS-1$
+		assertFalse(ridget.isCheckBoxInFirstColumn(tableViewer)); // style != SWT.CHECK
+
+		final Table table = new Table(getShell(), SWT.CHECK);
+		table.setHeaderVisible(true);
+		new TableColumn(table, SWT.NONE);
+		new TableColumn(table, SWT.NONE);
+		ridget.setUIControl(table);
+		tableViewer = ReflectionUtils.invokeHidden(ridget, "getTableViewer"); //$NON-NLS-1$
+		assertFalse(ridget.isCheckBoxInFirstColumn(tableViewer)); // property of first column != boolean
+
+		final String[] properties1 = new String[] { "hasCat", "firstname" }; //$NON-NLS-1$ //$NON-NLS-2$
+		final String[] headers1 = new String[] { "Cat", "First Name" }; //$NON-NLS-1$ //$NON-NLS-2$
+		getRidget().bindToModel(manager, "persons", Person.class, properties1, headers1); //$NON-NLS-1$
+		tableViewer = ReflectionUtils.invokeHidden(ridget, "getTableViewer"); //$NON-NLS-1$
+		assertTrue(ridget.isCheckBoxInFirstColumn(tableViewer)); // property of first column == boolean
+
+	}
+
+	public void testIsChecked() throws Exception {
+
+		final TableRidget ridget = getRidget();
+		final Object provider = ReflectionUtils
+				.newInstanceHidden("org.eclipse.riena.internal.ui.ridgets.swt.TableRidget$TableRidgetCheckStateProvider", ridget); //$NON-NLS-1$
+
+		boolean ret = ReflectionUtils.invokeHidden(provider, "isChecked", person1); //$NON-NLS-1$
+		assertFalse(ret);
+
+		final String[] properties1 = new String[] { "hasCat", "firstname" }; //$NON-NLS-1$ //$NON-NLS-2$
+		final String[] headers1 = new String[] { "Cat", "First Name" }; //$NON-NLS-1$ //$NON-NLS-2$
+		getRidget().bindToModel(manager, "persons", Person.class, properties1, headers1); //$NON-NLS-1$
+		ret = ReflectionUtils.invokeHidden(provider, "isChecked", person1); //$NON-NLS-1$
+		assertFalse(ret);
+
+		person1.setHasCat(true);
+		ret = ReflectionUtils.invokeHidden(provider, "isChecked", person1); //$NON-NLS-1$
+		assertTrue(ret);
+
 	}
 
 	// helping methods

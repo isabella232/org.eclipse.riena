@@ -30,14 +30,14 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.riena.beans.common.WordNode;
 import org.eclipse.riena.core.util.Nop;
 import org.eclipse.riena.core.util.ReflectionUtils;
-import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
+import org.eclipse.riena.internal.core.test.collect.UITestCase;
 import org.eclipse.riena.ui.ridgets.IColumnFormatter;
 import org.eclipse.riena.ui.ridgets.swt.ColumnFormatter;
 
 /**
  * Tests for the class {@link TableRidgetLabelProvider}.
  */
-@NonUITestCase
+@UITestCase
 public class TableRidgetLabelProviderTest extends TestCase {
 
 	private WordNode elementA;
@@ -54,14 +54,14 @@ public class TableRidgetLabelProviderTest extends TestCase {
 	protected void setUp() throws Exception {
 		final Display display = Display.getDefault();
 		final Realm realm = SWTObservables.getRealm(display);
-		ReflectionUtils.invokeHidden(realm, "setDefault", realm);
+		ReflectionUtils.invokeHidden(realm, "setDefault", realm); //$NON-NLS-1$
 		colorA = display.getSystemColor(SWT.COLOR_RED);
 		colorB = display.getSystemColor(SWT.COLOR_GREEN);
-		fontA = new Font(display, "Arial", 12, SWT.NORMAL);
-		fontB = new Font(display, "Courier", 12, SWT.NORMAL);
+		fontA = new Font(display, "Arial", 12, SWT.NORMAL); //$NON-NLS-1$
+		fontB = new Font(display, "Courier", 12, SWT.NORMAL); //$NON-NLS-1$
 
 		final IObservableSet elements = createElements();
-		final String[] columnProperties = { "word", "upperCase" };
+		final String[] columnProperties = { "word", "upperCase" }; //$NON-NLS-1$ //$NON-NLS-2$
 		attrMaps = BeansObservables.observeMaps(elements, WordNode.class, columnProperties);
 		formatters = new IColumnFormatter[] { null, new TestColumnFormatter() };
 		noFormatters = new IColumnFormatter[attrMaps.length];
@@ -76,20 +76,47 @@ public class TableRidgetLabelProviderTest extends TestCase {
 	public void testGetText() {
 		final TableRidgetLabelProvider labelProvider = new TableRidgetLabelProvider(attrMaps, noFormatters);
 
-		assertEquals("Alpha", labelProvider.getText(elementA));
-		assertEquals("BRAVO", labelProvider.getText(elementB));
+		assertEquals("Alpha", labelProvider.getText(elementA)); //$NON-NLS-1$
+		assertEquals("BRAVO", labelProvider.getText(elementB)); //$NON-NLS-1$
 	}
 
 	public void testGetColumnText() {
-		final TableRidgetLabelProvider labelProvider = new TableRidgetLabelProvider(attrMaps, noFormatters);
+		TableRidgetLabelProvider labelProvider = new TableRidgetLabelProvider(attrMaps, noFormatters);
 
-		assertEquals("Alpha", labelProvider.getColumnText(elementA, 0));
-		assertEquals("BRAVO", labelProvider.getColumnText(elementB, 0));
+		assertEquals("Alpha", labelProvider.getColumnText(elementA, 0)); //$NON-NLS-1$
+		assertEquals("BRAVO", labelProvider.getColumnText(elementB, 0)); //$NON-NLS-1$
 
-		assertEquals("false", labelProvider.getColumnText(elementA, 1));
-		assertEquals("true", labelProvider.getColumnText(elementB, 1));
+		assertEquals("false", labelProvider.getColumnText(elementA, 1)); //$NON-NLS-1$
+		assertEquals("true", labelProvider.getColumnText(elementB, 1)); //$NON-NLS-1$
 
 		assertEquals(null, labelProvider.getColumnText(elementA, 99));
+
+		labelProvider.setCheckBoxInFirstColumn(true);
+		assertEquals("Alpha", labelProvider.getColumnText(elementA, 0)); //$NON-NLS-1$
+		assertEquals("BRAVO", labelProvider.getColumnText(elementB, 0)); //$NON-NLS-1$
+
+		assertEquals("false", labelProvider.getColumnText(elementA, 1)); //$NON-NLS-1$
+		assertEquals("true", labelProvider.getColumnText(elementB, 1)); //$NON-NLS-1$
+
+		final IObservableSet elements = createElements();
+		final String[] columnProperties = { "upperCase", "word" }; //$NON-NLS-1$ //$NON-NLS-2$
+		final IObservableMap[] attrMap = BeansObservables.observeMaps(elements, WordNode.class, columnProperties);
+		labelProvider = new TableRidgetLabelProvider(attrMap, new IColumnFormatter[2]);
+
+		labelProvider.setCheckBoxInFirstColumn(false);
+		assertEquals("false", labelProvider.getColumnText(elementA, 0)); //$NON-NLS-1$
+		assertEquals("Alpha", labelProvider.getColumnText(elementA, 1)); //$NON-NLS-1$
+
+		assertEquals("true", labelProvider.getColumnText(elementB, 0)); //$NON-NLS-1$
+		assertEquals("BRAVO", labelProvider.getColumnText(elementB, 1)); //$NON-NLS-1$
+
+		labelProvider.setCheckBoxInFirstColumn(true);
+		assertNull(labelProvider.getColumnText(elementA, 0));
+		assertEquals("Alpha", labelProvider.getColumnText(elementA, 1)); //$NON-NLS-1$
+
+		assertNull(labelProvider.getColumnText(elementB, 0));
+		assertEquals("BRAVO", labelProvider.getColumnText(elementB, 1)); //$NON-NLS-1$
+
 	}
 
 	public void testGetImage() {
@@ -99,7 +126,7 @@ public class TableRidgetLabelProviderTest extends TestCase {
 		assertNull(labelProvider.getImage(elementB));
 
 		final IObservableSet elements = createElements();
-		final String[] columnProperties = { "upperCase" };
+		final String[] columnProperties = { "upperCase" }; //$NON-NLS-1$
 		final IObservableMap[] attrMap = BeansObservables.observeMaps(elements, WordNode.class, columnProperties);
 		labelProvider = new TableRidgetLabelProvider(attrMap, new IColumnFormatter[1]);
 
@@ -110,6 +137,9 @@ public class TableRidgetLabelProviderTest extends TestCase {
 		final Image siChecked = Activator.getSharedImage(SharedImages.IMG_CHECKED);
 		assertNotNull(siChecked);
 		assertEquals(siChecked, labelProvider.getImage(elementB));
+
+		labelProvider.setCheckBoxInFirstColumn(true);
+		assertNull(labelProvider.getImage(elementB));
 
 		assertNotSame(siChecked, siUnchecked);
 	}
@@ -136,45 +166,45 @@ public class TableRidgetLabelProviderTest extends TestCase {
 		final ColumnFormatter emptyFormatter = new ColumnFormatter() {
 			@Override
 			public String getText(final Object element) {
-				return "";
+				return ""; //$NON-NLS-1$
 			};
 		};
 		final IColumnFormatter[] emptyTextFormatters = new IColumnFormatter[] { emptyFormatter, emptyFormatter };
 		labelProvider = new TableRidgetLabelProvider(attrMaps, emptyTextFormatters);
 		assertEquals(siUnchecked, labelProvider.getColumnImage(elementA, 1));
-		assertEquals("", labelProvider.getColumnText(elementA, 1));
+		assertEquals("", labelProvider.getColumnText(elementA, 1)); //$NON-NLS-1$
 
 	}
 
 	public void testSetFormatters() {
 		final TableRidgetLabelProvider labelProvider = new TableRidgetLabelProvider(attrMaps, formatters);
 
-		assertEquals("no", labelProvider.getColumnText(elementA, 1));
-		assertEquals("yes", labelProvider.getColumnText(elementB, 1));
+		assertEquals("no", labelProvider.getColumnText(elementA, 1)); //$NON-NLS-1$
+		assertEquals("yes", labelProvider.getColumnText(elementB, 1)); //$NON-NLS-1$
 
 		final Object arg2 = new IColumnFormatter[] { null, null };
-		ReflectionUtils.invokeHidden(labelProvider, "setFormatters", arg2);
+		ReflectionUtils.invokeHidden(labelProvider, "setFormatters", arg2); //$NON-NLS-1$
 
-		assertEquals("false", labelProvider.getColumnText(elementA, 1));
-		assertEquals("true", labelProvider.getColumnText(elementB, 1));
+		assertEquals("false", labelProvider.getColumnText(elementA, 1)); //$NON-NLS-1$
+		assertEquals("true", labelProvider.getColumnText(elementB, 1)); //$NON-NLS-1$
 
 		try {
 			final Object arg3 = new IColumnFormatter[] { null, null, null };
-			ReflectionUtils.invokeHidden(labelProvider, "setFormatters", arg3);
+			ReflectionUtils.invokeHidden(labelProvider, "setFormatters", arg3); //$NON-NLS-1$
 			fail();
 		} catch (final RuntimeException rex) {
-			Nop.reason("ok");
+			Nop.reason("ok"); //$NON-NLS-1$
 		}
 	}
 
 	public void testGetColumnTextWithFormatter() {
 		final TableRidgetLabelProvider labelProvider = new TableRidgetLabelProvider(attrMaps, formatters);
 
-		assertEquals("Alpha", labelProvider.getColumnText(elementA, 0));
-		assertEquals("BRAVO", labelProvider.getColumnText(elementB, 0));
+		assertEquals("Alpha", labelProvider.getColumnText(elementA, 0)); //$NON-NLS-1$
+		assertEquals("BRAVO", labelProvider.getColumnText(elementB, 0)); //$NON-NLS-1$
 
-		assertEquals("no", labelProvider.getColumnText(elementA, 1));
-		assertEquals("yes", labelProvider.getColumnText(elementB, 1));
+		assertEquals("no", labelProvider.getColumnText(elementA, 1)); //$NON-NLS-1$
+		assertEquals("yes", labelProvider.getColumnText(elementB, 1)); //$NON-NLS-1$
 
 		assertEquals(null, labelProvider.getColumnText(elementA, 99));
 	}
@@ -239,8 +269,8 @@ public class TableRidgetLabelProviderTest extends TestCase {
 
 	private IObservableSet createElements() {
 		final Collection<WordNode> collection = new ArrayList<WordNode>();
-		elementA = new WordNode("Alpha");
-		elementB = new WordNode("Bravo");
+		elementA = new WordNode("Alpha"); //$NON-NLS-1$
+		elementB = new WordNode("Bravo"); //$NON-NLS-1$
 		elementB.setUpperCase(true);
 		collection.add(elementA);
 		collection.add(elementB);
@@ -252,33 +282,32 @@ public class TableRidgetLabelProviderTest extends TestCase {
 		@Override
 		public String getText(final Object element) {
 			final WordNode wordNode = (WordNode) element;
-			return wordNode.isUpperCase() ? "yes" : "no";
+			return wordNode.isUpperCase() ? "yes" : "no"; //$NON-NLS-1$ //$NON-NLS-2$
 		}
 
 		@Override
 		public Image getImage(final Object element) {
 			final WordNode wordNode = (WordNode) element;
-			final String key = "alpha".equalsIgnoreCase(wordNode.getWord()) ? SharedImages.IMG_NODE_COLLAPSED
-					: SharedImages.IMG_NODE_EXPANDED;
+			final String key = "alpha".equalsIgnoreCase(wordNode.getWord()) ? SharedImages.IMG_NODE_COLLAPSED : SharedImages.IMG_NODE_EXPANDED; //$NON-NLS-1$
 			return Activator.getSharedImage(key);
 		}
 
 		@Override
 		public Color getForeground(final Object element) {
 			final WordNode wordNode = (WordNode) element;
-			return "alpha".equalsIgnoreCase(wordNode.getWord()) ? colorA : colorB;
+			return "alpha".equalsIgnoreCase(wordNode.getWord()) ? colorA : colorB; //$NON-NLS-1$
 		}
 
 		@Override
 		public Color getBackground(final Object element) {
 			final WordNode wordNode = (WordNode) element;
-			return "alpha".equalsIgnoreCase(wordNode.getWord()) ? colorA : colorB;
+			return "alpha".equalsIgnoreCase(wordNode.getWord()) ? colorA : colorB; //$NON-NLS-1$
 		}
 
 		@Override
 		public Font getFont(final Object element) {
 			final WordNode wordNode = (WordNode) element;
-			return "alpha".equalsIgnoreCase(wordNode.getWord()) ? fontA : fontB;
+			return "alpha".equalsIgnoreCase(wordNode.getWord()) ? fontA : fontB; //$NON-NLS-1$
 		}
 	}
 
