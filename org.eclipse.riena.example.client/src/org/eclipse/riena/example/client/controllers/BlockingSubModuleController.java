@@ -13,6 +13,7 @@ package org.eclipse.riena.example.client.controllers;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import org.eclipse.riena.example.client.views.BlockingSubModuleView;
+import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
@@ -33,6 +34,7 @@ public class BlockingSubModuleController extends SubModuleController {
 	public static final String RIDGET_BLOCK_MODULE = "blockModule"; //$NON-NLS-1$
 	public static final String RIDGET_BLOCK_SUB_MODULE = "blockSubModule"; //$NON-NLS-1$
 	public static final String RIDGET_BLOCK_SUB_APP = "blockSubApplication"; //$NON-NLS-1$
+	public static final String RIDGET_BLOCK_APPLICATION = "blockApplication"; //$NON-NLS-1$
 	public static final String RIDGET_DISABLE_MODULE = "disableModule"; //$NON-NLS-1$
 	public static final String RIDGET_STATUS = "status"; //$NON-NLS-1$
 
@@ -78,8 +80,15 @@ public class BlockingSubModuleController extends SubModuleController {
 		disableModule.setText("Disable current Module = Playground"); //$NON-NLS-1$
 		disableModule.addListener(new IActionListener() {
 			public void callback() {
-				final INavigationNode<?> moduleNode = getModuleNode();
-				disableNode(moduleNode);
+				disableNode(getModuleNode());
+			}
+		});
+
+		final IActionRidget disableApplication = getRidget(IActionRidget.class, RIDGET_BLOCK_APPLICATION);
+		disableApplication.setText("Block application"); //$NON-NLS-1$
+		disableApplication.addListener(new IActionListener() {
+			public void callback() {
+				blockNode(getApplicationNode());
 			}
 		});
 
@@ -109,6 +118,10 @@ public class BlockingSubModuleController extends SubModuleController {
 		return getNavigationNode().getParentOfType(ISubApplicationNode.class);
 	}
 
+	private INavigationNode<?> getApplicationNode() {
+		return getNavigationNode().getParentOfType(IApplicationNode.class);
+	}
+
 	// helping classes
 	//////////////////
 
@@ -130,7 +143,7 @@ public class BlockingSubModuleController extends SubModuleController {
 		}
 
 		private ISubApplicationNode getSubApplication() {
-			return node.getParentOfType(ISubApplicationNode.class);
+			return node instanceof ISubApplicationNode ? (ISubApplicationNode) node : node.getParentOfType(ISubApplicationNode.class);
 		}
 
 		public void setBlock(final boolean doBlock) {
@@ -143,8 +156,11 @@ public class BlockingSubModuleController extends SubModuleController {
 
 		@Override
 		public void initialUpdateUI(final int totalWork) {
-			subAppToolTip = getSubApplication().getToolTipText();
-			getSubApplication().setToolTipText(String.format("Node '%s' is blocked", node.getLabel())); //$NON-NLS-1$
+			final ISubApplicationNode subApplication = getSubApplication();
+			if (subApplication != null) {
+				subAppToolTip = subApplication.getToolTipText();
+				subApplication.setToolTipText(String.format("Node '%s' is blocked", node.getLabel())); //$NON-NLS-1$
+			}
 			labelRidget.setText(String.format("Changing '%s' for 10s", node.getLabel())); //$NON-NLS-1$
 			if (block) {
 				node.setBlocked(true);
@@ -164,7 +180,10 @@ public class BlockingSubModuleController extends SubModuleController {
 				node.setEnabled(true);
 				node.activate();
 			}
-			getSubApplication().setToolTipText(subAppToolTip);
+			final ISubApplicationNode subApplication = getSubApplication();
+			if (subApplication != null) {
+				subApplication.setToolTipText(subAppToolTip);
+			}
 		}
 
 		@Override

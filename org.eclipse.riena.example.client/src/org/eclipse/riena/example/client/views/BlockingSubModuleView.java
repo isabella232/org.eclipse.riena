@@ -48,21 +48,20 @@ public class BlockingSubModuleView extends SubModuleView {
 
 		final GridDataFactory fillFactory = GridDataFactory.fillDefaults();
 
-		final Button button1 = UIControlsFactory.createButton(group,
-				"", BlockingSubModuleController.RIDGET_BLOCK_SUB_MODULE); //$NON-NLS-1$
+		final Button button1 = UIControlsFactory.createButton(group, "", BlockingSubModuleController.RIDGET_BLOCK_SUB_MODULE); //$NON-NLS-1$
 		fillFactory.applyTo(button1);
 
-		final Button button2 = UIControlsFactory.createButton(group,
-				"", BlockingSubModuleController.RIDGET_BLOCK_MODULE); //$NON-NLS-1$
+		final Button button2 = UIControlsFactory.createButton(group, "", BlockingSubModuleController.RIDGET_BLOCK_MODULE); //$NON-NLS-1$
 		fillFactory.applyTo(button2);
 
-		final Button button3 = UIControlsFactory.createButton(group,
-				"", BlockingSubModuleController.RIDGET_BLOCK_SUB_APP); //$NON-NLS-1$
+		final Button button3 = UIControlsFactory.createButton(group, "", BlockingSubModuleController.RIDGET_BLOCK_SUB_APP); //$NON-NLS-1$
 		fillFactory.applyTo(button3);
 
-		final Button button4 = UIControlsFactory.createButton(group,
-				"", BlockingSubModuleController.RIDGET_DISABLE_MODULE); //$NON-NLS-1$
+		final Button button4 = UIControlsFactory.createButton(group, "", BlockingSubModuleController.RIDGET_DISABLE_MODULE); //$NON-NLS-1$
 		fillFactory.applyTo(button4);
+
+		final Button button5 = UIControlsFactory.createButton(group, "", BlockingSubModuleController.RIDGET_BLOCK_APPLICATION); //$NON-NLS-1$
+		fillFactory.applyTo(button5);
 
 		final Label label = UIControlsFactory.createLabel(group, "", SWT.CENTER, //$NON-NLS-1$
 				BlockingSubModuleController.RIDGET_STATUS);
