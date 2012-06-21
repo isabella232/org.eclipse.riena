@@ -146,6 +146,7 @@ public class UICallbackDispatcher extends ProgressProvider implements IUIMonitor
 				for (final IUIMonitor monitor : getMonitors()) {
 					try {
 						monitor.finalUpdateUI();
+						uiMonitors.remove(monitor);
 					} catch (final Exception e) {
 						Service.get(Activator.getDefault().getContext(), IExceptionHandlerManager.class).handleException(e);
 					}
