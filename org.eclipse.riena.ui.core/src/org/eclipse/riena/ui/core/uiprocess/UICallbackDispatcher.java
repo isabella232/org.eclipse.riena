@@ -26,10 +26,8 @@ import org.eclipse.riena.core.service.Service;
 import org.eclipse.riena.internal.ui.core.Activator;
 
 /**
- * This class is used in conjunction with {@link UIProcess} and provides a
- * {@link IProgressMonitor} that just synchronizes and delegates to another
- * instance of {@link IProgressMonitor}. Serialization is done by a
- * {@link IUISynchronizer}.
+ * This class is used in conjunction with {@link UIProcess} and provides a {@link IProgressMonitor} that just synchronizes and delegates to another instance of
+ * {@link IProgressMonitor}. Serialization is done by a {@link IUISynchronizer}.
  * 
  */
 public class UICallbackDispatcher extends ProgressProvider implements IUIMonitorContainer {
@@ -109,16 +107,14 @@ public class UICallbackDispatcher extends ProgressProvider implements IUIMonitor
 	}
 
 	/**
-	 * Creates the wrapped {@link IProgressMonitor} which will by serialized to
-	 * the UI-Thread.
+	 * Creates the wrapped {@link IProgressMonitor} which will by serialized to the UI-Thread.
 	 * 
 	 * @return The wrapping monitor with a delegate inside
 	 */
 	protected IProgressMonitor createWrappedMonitor() {
 		/**
-		 * Default implementation of a monitor just delegating to the uiProcess
-		 * Methods. This monitor gets called on the ui-Thread as a delegate of
-		 * the ThreadSwitcher
+		 * Default implementation of a monitor just delegating to the uiProcess Methods. This monitor gets called on the ui-Thread as a delegate of the
+		 * ThreadSwitcher
 		 */
 		return new NullProgressMonitor() {
 			@Override
@@ -150,9 +146,9 @@ public class UICallbackDispatcher extends ProgressProvider implements IUIMonitor
 				for (final IUIMonitor monitor : getMonitors()) {
 					try {
 						monitor.finalUpdateUI();
+						uiMonitors.remove(monitor);
 					} catch (final Exception e) {
-						Service.get(Activator.getDefault().getContext(), IExceptionHandlerManager.class)
-								.handleException(e);
+						Service.get(Activator.getDefault().getContext(), IExceptionHandlerManager.class).handleException(e);
 					}
 				}
 			}
@@ -160,9 +156,7 @@ public class UICallbackDispatcher extends ProgressProvider implements IUIMonitor
 	}
 
 	/**
-	 * This implementation of the ProgressMonitor delegates to another
-	 * ProgressMonitor and serializes to the UI-Thread of the underlying ui
-	 * technology.
+	 * This implementation of the ProgressMonitor delegates to another ProgressMonitor and serializes to the UI-Thread of the underlying ui technology.
 	 */
 	private final class ThreadSwitcher extends NullProgressMonitor {
 
