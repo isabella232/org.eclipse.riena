@@ -28,7 +28,6 @@ import org.eclipse.riena.ui.ridgets.controller.AbstractWindowController;
 import org.eclipse.riena.ui.ridgets.listener.IWindowRidgetListener;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTWidgetRidget;
 import org.eclipse.riena.ui.ridgets.swt.BasicMarkerSupport;
-import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
  * The ridget for a Shell control.
@@ -78,7 +77,7 @@ public class ShellRidget extends AbstractSWTWidgetRidget implements IShellRidget
 
 	public void dispose() {
 		final Shell control = getUIControl();
-		if (!SwtUtilities.isDisposed(control)) {
+		if (control != null && !control.isDisposed()) {
 			control.dispose();
 		}
 		if (actionManager != null) {
