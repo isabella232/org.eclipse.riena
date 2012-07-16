@@ -80,6 +80,8 @@ public class BorderDrawer implements Listener {
 	};
 	private boolean isMasterDetails;
 	private Control controlToDecorate;
+	private Point lastControlSize;
+	private boolean layouting;
 
 	/**
 	 * @param control
@@ -307,7 +309,7 @@ public class BorderDrawer implements Listener {
 		if (activationStrategy != null && !activationStrategy.isActive()) {
 			return false;
 		}
-		return true;
+		return !layouting;
 	}
 
 	/**
@@ -436,6 +438,7 @@ public class BorderDrawer implements Listener {
 		switch (event.type) {
 		case SWT.Move:
 			computeBorderArea = true;
+			lastControlSize = getControlToDecorate().getSize();
 			lastMoveEvent = event;
 			if (SwtUtilities.isDisposed(getControlToDecorate())) {
 				break;
@@ -453,11 +456,29 @@ public class BorderDrawer implements Listener {
 			break;
 		case SWT.Resize:
 			computeBorderArea = true;
+			lastControlSize = getControlToDecorate().getSize();
 			update(true);
 			break;
 
 		case SWTFacade.Paint:
-			paintControl(event);
+			final Point controlSize = getControlToDecorate().getSize();
+			if (lastControlSize == null) {
+				lastControlSize = controlSize;
+			}
+			if (!controlSize.equals(lastControlSize) && !computeBorderArea) {
+				lastControlSize = controlSize;
+				layouting = true;
+				getControlToDecorate().getShell().redraw();
+				layouting = false;
+				computeBorderArea = true;
+				getControlToDecorate().getDisplay().asyncExec(new Runnable() {
+					public void run() {
+						getControlToDecorate().redraw();
+					}
+				});
+			} else {
+				paintControl(event);
+			}
 			break;
 
 		default:
