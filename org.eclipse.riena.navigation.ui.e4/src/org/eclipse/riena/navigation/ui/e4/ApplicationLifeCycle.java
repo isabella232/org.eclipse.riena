@@ -212,7 +212,7 @@ public class ApplicationLifeCycle {
 	 * called after the application model has been fully created
 	 */
 	@ProcessAdditions
-	public void initRienaNavigation(final IEclipseContext context) {
+	public void initRienaNavigation() {
 		ApplicationNodeManager.getApplicationNode().activate();
 	}
 

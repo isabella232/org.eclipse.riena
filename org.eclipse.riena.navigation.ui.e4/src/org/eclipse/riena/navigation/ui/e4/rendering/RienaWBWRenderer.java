@@ -500,7 +500,8 @@ public class RienaWBWRenderer extends SWTPartRenderer {
 	 * @param tl
 	 */
 	private void rienaModifyTl(final TrimmedPartLayout tl) {
-		tl.clientArea.setLayout(new RienaWindowLayout(SWT.VERTICAL, 100, 20));
+		//		tl.clientArea.setLayout(new RienaWindowLayout(SWT.VERTICAL, 100, 20));
+		tl.clientArea.setLayout(new RienaDynamicWindowLayout(SWT.VERTICAL, new int[] { 80, 26, 26, -1, 26 }));
 	}
 
 	private void setCloseHandler(final MWindow window) {

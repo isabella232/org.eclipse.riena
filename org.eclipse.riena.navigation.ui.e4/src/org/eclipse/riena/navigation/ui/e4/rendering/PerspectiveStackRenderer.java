@@ -1,8 +1,8 @@
 package org.eclipse.riena.navigation.ui.e4.rendering;
 
 import org.eclipse.e4.ui.model.application.ui.MUIElement;
-import org.eclipse.e4.ui.widgets.CTabFolder;
 import org.eclipse.e4.ui.workbench.renderers.swt.StackRenderer;
+import org.eclipse.swt.custom.CTabFolder;
 
 /**
  *

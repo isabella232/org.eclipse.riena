@@ -29,7 +29,8 @@ public class PerspectiveRenderer extends SWTPartRenderer {
 		}
 
 		final Composite perspArea = new Composite((Composite) parent, SWT.NONE);
-		perspArea.setLayout(new RienaWindowLayout(SWT.HORIZONTAL, 250, 0));
+		//		perspArea.setLayout(new RienaWindowLayout(SWT.HORIZONTAL, 250, 0));
+		perspArea.setLayout(new RienaDynamicWindowLayout(SWT.HORIZONTAL, new int[] { 250, -1 }));
 		final IStylingEngine stylingEngine = (IStylingEngine) getContext(element).get(IStylingEngine.SERVICE_NAME);
 		stylingEngine.setClassname(perspArea, "perspectiveLayout"); //$NON-NLS-1$
 
