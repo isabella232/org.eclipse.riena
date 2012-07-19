@@ -80,8 +80,8 @@ public class BorderDrawer implements Listener {
 	};
 	private boolean isMasterDetails;
 	private Control controlToDecorate;
-	private Point lastControlSize;
 	private boolean layouting;
+	private Rectangle boundsToDecorate;
 
 	/**
 	 * @param control
@@ -438,7 +438,7 @@ public class BorderDrawer implements Listener {
 		switch (event.type) {
 		case SWT.Move:
 			computeBorderArea = true;
-			lastControlSize = getControlToDecorate().getSize();
+			boundsToDecorate = getControlToDecorate().getDisplay().map(getControlToDecorate(), null, getControlToDecorate().getBounds());
 			lastMoveEvent = event;
 			if (SwtUtilities.isDisposed(getControlToDecorate())) {
 				break;
@@ -456,17 +456,16 @@ public class BorderDrawer implements Listener {
 			break;
 		case SWT.Resize:
 			computeBorderArea = true;
-			lastControlSize = getControlToDecorate().getSize();
+			boundsToDecorate = getControlToDecorate().getDisplay().map(getControlToDecorate(), null, getControlToDecorate().getBounds());
 			update(true);
 			break;
-
 		case SWTFacade.Paint:
-			final Point controlSize = getControlToDecorate().getSize();
-			if (lastControlSize == null) {
-				lastControlSize = controlSize;
+			final Rectangle onDisplay = getControlToDecorate().getDisplay().map(getControlToDecorate(), null, getControlToDecorate().getBounds());
+			if (boundsToDecorate == null) {
+				boundsToDecorate = onDisplay;
 			}
-			if (!controlSize.equals(lastControlSize) && !computeBorderArea) {
-				lastControlSize = controlSize;
+			if (!onDisplay.equals(boundsToDecorate) && !computeBorderArea) {
+				boundsToDecorate = onDisplay;
 				layouting = true;
 				getControlToDecorate().getShell().redraw();
 				layouting = false;
