@@ -67,7 +67,9 @@ public class DetachedViewsManager {
 	 * 
 	 * @param site
 	 *            the workbench site; never null
+	 * @deprecated This constructor will not work in e4. Use <tt>DetachedViewsManager(Shell s)</tt>
 	 */
+	@Deprecated
 	public DetachedViewsManager(final IWorkbenchSite site) {
 		this(site.getShell());
 	}
@@ -78,8 +80,7 @@ public class DetachedViewsManager {
 	 * Client code must {@link #dispose()} instances when no longer needed.
 	 * 
 	 * @param shell
-	 *            the main shell; never null; detached windows will use this
-	 *            shell as their parent shell
+	 *            the main shell; never null; detached windows will use this shell as their parent shell
 	 */
 	public DetachedViewsManager(final Shell shell) {
 		Assert.isNotNull(shell);
@@ -91,8 +92,7 @@ public class DetachedViewsManager {
 	 * Close (=dispose) thew view / shell with the given id.
 	 * 
 	 * @param id
-	 *            id of the view to show; must be unique within this instance;
-	 *            never null
+	 *            id of the view to show; must be unique within this instance; never null
 	 */
 	public void closeView(final String id) {
 		Assert.isNotNull(id);
@@ -105,8 +105,7 @@ public class DetachedViewsManager {
 	}
 
 	/**
-	 * Deallocate resources used by this class. Client code must
-	 * {@link #dispose()} instances when no longer needed.
+	 * Deallocate resources used by this class. Client code must {@link #dispose()} instances when no longer needed.
 	 */
 	public void dispose() {
 		final String[] keys = id2shell.keySet().toArray(new String[id2shell.size()]);
@@ -142,21 +141,16 @@ public class DetachedViewsManager {
 	}
 
 	/**
-	 * Show the view / shell with the given id. If the given id matches no
-	 * shell, then a new shell / view is created using the given viewClazz.
+	 * Show the view / shell with the given id. If the given id matches no shell, then a new shell / view is created using the given viewClazz.
 	 * 
 	 * @param id
-	 *            id of the view / shell to show; must be unique within this
-	 *            instance; not tied to the view-part id, since the view is
-	 *            created by reflection; never null
-	 * @param viewClazz
-	 *            the class of the view; must have parameterless constructor;
+	 *            id of the view / shell to show; must be unique within this instance; not tied to the view-part id, since the view is created by reflection;
 	 *            never null
+	 * @param viewClazz
+	 *            the class of the view; must have parameterless constructor; never null
 	 * @param position
-	 *            one of SWT.LEFT, SWT.RIGHT, SWT.TOP, SWT.BOTTOM. Will place
-	 *            the view to the specified edge of the main window. Note the
-	 *            position prefference is only applied if a new shell is
-	 *            created.
+	 *            one of SWT.LEFT, SWT.RIGHT, SWT.TOP, SWT.BOTTOM. Will place the view to the specified edge of the main window. Note the position preference is
+	 *            only applied if a new shell is created.
 	 */
 	public void showView(final String id, final Class<? extends ViewPart> viewClazz, final int position) {
 		Assert.isNotNull(id, "id"); //$NON-NLS-1$
@@ -202,20 +196,15 @@ public class DetachedViewsManager {
 	}
 
 	/**
-	 * Show the view / shell with the given id. If the given id matches no
-	 * shell, then a new shell / view is created using the given viewClazz.
+	 * Show the view / shell with the given id. If the given id matches no shell, then a new shell / view is created using the given viewClazz.
 	 * 
 	 * @param id
-	 *            id of the view / shell to show; must be unique within this
-	 *            instance; not tied to the view-part id, since the view is
-	 *            created by reflection
+	 *            id of the view / shell to show; must be unique within this instance; not tied to the view-part id, since the view is created by reflection
 	 * @param viewClazz
 	 *            the class of the view; must have parameterless constructor
 	 * @param bounds
-	 *            the desired size and location for the shell. The {@code x} and
-	 *            {@code y} values set the upper left corner of the shell,
-	 *            relative to the display. Note that this is applied only if a
-	 *            new shell is created.
+	 *            the desired size and location for the shell. The {@code x} and {@code y} values set the upper left corner of the shell, relative to the
+	 *            display. Note that this is applied only if a new shell is created.
 	 */
 	public void showView(final String viewId, final Class<? extends ViewPart> viewClazz, final Rectangle bounds) {
 		Shell shell = id2shell.get(viewId);
@@ -237,8 +226,7 @@ public class DetachedViewsManager {
 	 * <p>
 	 * Default value is: {@code SWT.NONE}
 	 * <p>
-	 * Implementors may override to use different style bits. Note that the
-	 * close button will be disabled even if you use {@link SWT#CLOSE}.
+	 * Implementors may override to use different style bits. Note that the close button will be disabled even if you use {@link SWT#CLOSE}.
 	 * 
 	 * @see http://dev.eclipse.org/newslists/news.eclipse.tools/msg07666.html
 	 */
@@ -307,8 +295,7 @@ public class DetachedViewsManager {
 	}
 
 	/**
-	 * Return the first Method matching {@code methodName} or null. Will start
-	 * at the most specific class and search upwards.
+	 * Return the first Method matching {@code methodName} or null. Will start at the most specific class and search upwards.
 	 */
 	private Method findMethod(final Class<?> viewClazz, final String methodName) {
 		Method result = null;

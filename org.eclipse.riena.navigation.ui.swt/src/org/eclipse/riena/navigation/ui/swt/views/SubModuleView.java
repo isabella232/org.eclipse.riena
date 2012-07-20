@@ -21,6 +21,7 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -35,6 +36,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.ISourceProvider;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.services.ISourceProviderService;
@@ -130,6 +132,10 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	 * the method behaves like implemented in Riena for Eclipse 3.x
 	 */
 	private ISubModuleNode navigationNode;
+	/**
+	 * used for the e4 migration
+	 */
+	private IShellProvider shellProvider;
 
 	/**
 	 * Creates a new instance of {@code SubModuleView}.
@@ -138,6 +144,11 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 		binding = createBinding();
 		focusListener = new FocusListener();
 		isBlocked = false;
+		setShellProvider(new IShellProvider() {
+			public Shell getShell() {
+				return getSite().getShell();
+			}
+		});
 	}
 
 	public void addUpdateListener(final IComponentUpdateListener listener) {
@@ -423,6 +434,17 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 				unBlockView();
 			}
 		}
+	}
+
+	/**
+	 * @since 4.0
+	 */
+	protected IShellProvider getShellProvider() {
+		return shellProvider;
+	}
+
+	private void setShellProvider(final IShellProvider shellProvider) {
+		this.shellProvider = shellProvider;
 	}
 
 	private void unBlockView() {

@@ -23,7 +23,8 @@ import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.ui.e4.Activator;
-import org.eclipse.riena.navigation.ui.e4.part.HeaderPart;
+import org.eclipse.riena.navigation.ui.e4.part.MainMenuPart;
+import org.eclipse.riena.navigation.ui.e4.part.MainToolBarPart;
 import org.eclipse.riena.navigation.ui.e4.part.PartWrapper;
 import org.eclipse.riena.navigation.ui.e4.part.uielements.CoolBarComposite;
 import org.eclipse.riena.navigation.ui.swt.component.MenuCoolBarComposite;
@@ -36,7 +37,8 @@ import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
  */
 @SuppressWarnings("restriction")
 public class MySubModuleNodeListener extends SubModuleNodeListener {
-	private static final String HEADER_PART_ID = "org.eclipse.riena.navigation.ui.e4.headerPart"; //$NON-NLS-1$
+	private static final String MAIN_MENU_PART_ID = "org.eclipse.riena.navigation.ui.e4.mainMenuPart"; //$NON-NLS-1$
+	private static final String MAIN_TOOL_BAR_PART_ID = "org.eclipse.riena.navigation.ui.e4.mainToolBarPart"; //$NON-NLS-1$
 
 	private static final String VIEWS_EXT_POINT = "org.eclipse.ui.views"; //$NON-NLS-1$
 	private static final String ID = "id"; //$NON-NLS-1$
@@ -145,21 +147,16 @@ public class MySubModuleNodeListener extends SubModuleNodeListener {
 	@Override
 	public void afterActivated(final ISubModuleNode source) {
 		final EModelService modelService = context.get(EModelService.class);
-		final MPart headerPart = (MPart) modelService.find(HEADER_PART_ID, context.get(MApplication.class));
-
 		// update main menu items
-		final Object m = headerPart.getTransientData().get(HeaderPart.MENU_COMPOSITE_KEY);
+		final Object m = ((MPart) modelService.find(MAIN_MENU_PART_ID, context.get(MApplication.class))).getTransientData()
+				.get(MainMenuPart.MENU_COMPOSITE_KEY);
 		if (m instanceof MenuCoolBarComposite) {
 			((MenuCoolBarComposite) m).updateMenuItems();
-			//				if (!changedItems.isEmpty()) {
-			//			final IController controller = (IController) source.getParentOfType(ISubApplicationNode.class).getNavigationNodeController();
-			//			createRidgets(controller);
-			//			menuItemBindingManager.bind(controller, getUIControls());
-			//				}
 		}
 
 		// update coolbar items
-		final Object c = headerPart.getTransientData().get(HeaderPart.COOLBAR_COMPOSITE_KEY);
+		final Object c = ((MPart) modelService.find(MAIN_TOOL_BAR_PART_ID, context.get(MApplication.class))).getTransientData().get(
+				MainToolBarPart.COOLBAR_COMPOSITE_KEY);
 		if (c instanceof CoolBarComposite) {
 			((CoolBarComposite) c).updateItems();
 		}

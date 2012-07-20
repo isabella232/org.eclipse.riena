@@ -51,12 +51,11 @@ public class DetachedSubModuleView extends SubModuleView {
 	//////////////////
 
 	/**
-	 * Listens to selection / de-selection / disposal of this view's navigation
-	 * node and shows / hides / disposes the detached views.
+	 * Listens to selection / de-selection / disposal of this view's navigation node and shows / hides / disposes the detached views.
 	 */
 	private final class NodeListener extends SimpleNavigationNodeAdapter {
 
-		private final DetachedViewsManager dvManager = new DetachedViewsManager(getSite());
+		private final DetachedViewsManager dvManager = new DetachedViewsManager(getShellProvider().getShell());
 
 		@Override
 		public void activated(final INavigationNode<?> source) {
