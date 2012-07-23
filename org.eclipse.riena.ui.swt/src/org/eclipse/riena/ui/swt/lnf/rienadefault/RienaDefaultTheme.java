@@ -408,7 +408,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 		lnf.putLnfSetting(LnfKeyConstants.NAVIGATION_MIN_WIDTH, 180);
 		lnf.putLnfSetting(LnfKeyConstants.NAVIGATION_MAX_WIDTH, 500);
 		lnf.putLnfSetting(LnfKeyConstants.NAVIGATION_SCROLL_BUTTON_HEIGHT, 14);
-		lnf.putLnfSetting(LnfKeyConstants.NAVIGATION_SCROLL_BAR, true);
+		lnf.putLnfSetting(LnfKeyConstants.NAVIGATION_SCROLL_BAR, false);
 		lnf.putLnfSetting(LnfKeyConstants.NAVIGATION_SCROLL_BAR_INCREMENT, 10);
 		lnf.putLnfSetting(LnfKeyConstants.NAVIGATION_FAST_VIEW, false);
 		lnf.putLnfSetting(LnfKeyConstants.NAVIGATION_RESIZEABLE, false);
