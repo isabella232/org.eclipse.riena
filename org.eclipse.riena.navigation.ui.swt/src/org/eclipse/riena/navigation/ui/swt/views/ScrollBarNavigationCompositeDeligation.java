@@ -16,6 +16,8 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 
 import org.eclipse.riena.ui.swt.facades.SWTFacade;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
@@ -24,6 +26,8 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
  * @since 3.0
  */
 public class ScrollBarNavigationCompositeDeligation extends AbstractNavigationCompositeDeligation {
+
+	private static final int DEFAULT_INCREMENT = 10;
 
 	private ScrolledComposite sc;
 
@@ -43,21 +47,21 @@ public class ScrollBarNavigationCompositeDeligation extends AbstractNavigationCo
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * Specify the minimum width and height at which the ScrolledComposite will
-	 * begin scrolling.
+	 * Specify the minimum width and height at which the ScrolledComposite will begin scrolling.
 	 */
 	@Override
 	public void updateSize(final int height) {
 		super.updateSize(height);
 		final int width = getNavigationComposite().getSize().x;
 		sc.setMinSize(width, height);
+		final int pageInc = sc.getClientArea().height;
+		sc.getVerticalBar().setPageIncrement(pageInc);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * Create the ScrolledComposite with the vertical scroll bar and the support
-	 * with the scrolling logic.
+	 * Create the ScrolledComposite with the vertical scroll bar and the support with the scrolling logic.
 	 */
 	@Override
 	protected Composite createNavigationComposite(final Composite parent) {
@@ -68,17 +72,19 @@ public class ScrollBarNavigationCompositeDeligation extends AbstractNavigationCo
 		sc.setExpandHorizontal(true);
 		sc.setExpandVertical(true);
 		sc.setShowFocusedControl(false);
-		SWTFacade.getDefault().setIncrement(sc.getVerticalBar(), 10); // TODO: LnF
+		int increment = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.NAVIGATION_SCROLL_BAR_INCREMENT, DEFAULT_INCREMENT);
+		if (increment <= 0) {
+			increment = DEFAULT_INCREMENT;
+		}
+		SWTFacade.getDefault().setIncrement(sc.getVerticalBar(), increment);
 		setScrollingSupport(new ScrollBarSupport(sc, getNavigationProvider()));
 		return naviComp;
 	}
 
 	/**
-	 * Returns the size of the vertical scroll bar of the given
-	 * {@code Composite}.
+	 * Returns the size of the vertical scroll bar of the given {@code Composite}.
 	 * 
-	 * @return size of scroll bar or zero size if scroll bar dosn't exists or
-	 *         isn't visible.
+	 * @return size of scroll bar or zero size if scroll bar dosn't exists or isn't visible.
 	 */
 	@Override
 	public Point getVerticalScrollBarSize() {

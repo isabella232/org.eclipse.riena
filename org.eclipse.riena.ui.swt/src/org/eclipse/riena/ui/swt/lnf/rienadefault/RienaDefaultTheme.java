@@ -24,8 +24,7 @@ import org.eclipse.riena.ui.swt.lnf.ImageLnfResource;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 
 /**
- * Default theme of Riena used by the default Look and Feel,
- * <code>RienaDefaultLnf</code>.
+ * Default theme of Riena used by the default Look and Feel, <code>RienaDefaultLnf</code>.
  */
 public class RienaDefaultTheme implements ILnfTheme {
 
@@ -91,10 +90,8 @@ public class RienaDefaultTheme implements ILnfTheme {
 		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_BACKGROUND, getPrimaryBackground());
 		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_BORDER_BOTTOM_RIGHT_COLOR, new ColorLnfResource(83, 85, 94));
 		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_BORDER_TOP_LEFT_COLOR, new ColorLnfResource(121, 124, 137));
-		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_INNER_BORDER_TOP_LEFT_COLOR, new ColorLnfResource(173, 180,
-				205));
-		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_INNER_BORDER_BOTTOM_RIGHT_COLOR, new ColorLnfResource(161,
-				168, 190));
+		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_INNER_BORDER_TOP_LEFT_COLOR, new ColorLnfResource(173, 180, 205));
+		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_INNER_BORDER_BOTTOM_RIGHT_COLOR, new ColorLnfResource(161, 168, 190));
 
 		lnf.putLnfResource(LnfKeyConstants.COOLBAR_BACKGROUND, getPrimaryBackground());
 
@@ -109,34 +106,24 @@ public class RienaDefaultTheme implements ILnfTheme {
 		lnf.putLnfResource(LnfKeyConstants.DIALOG_TITLEBAR_BACKGROUND_TOP_COLOR_1, new ColorLnfResource(188, 201, 229));
 		lnf.putLnfResource(LnfKeyConstants.DIALOG_TITLEBAR_BACKGROUND_TOP_COLOR_2, new ColorLnfResource(158, 178, 218));
 		lnf.putLnfResource(LnfKeyConstants.DIALOG_TITLEBAR_BACKGROUND_TOP_COLOR_3, new ColorLnfResource(139, 163, 210));
-		lnf.putLnfResource(LnfKeyConstants.DIALOG_TITLEBAR_BACKGROUND_BOTTOM_COLOR_1,
-				new ColorLnfResource(99, 126, 175));
-		lnf.putLnfResource(LnfKeyConstants.DIALOG_TITLEBAR_BACKGROUND_BOTTOM_COLOR_2, new ColorLnfResource(139, 163,
-				210));
-		lnf.putLnfResource(LnfKeyConstants.DIALOG_TITLEBAR_BACKGROUND_BOTTOM_COLOR_3, new ColorLnfResource(164, 183,
-				220));
+		lnf.putLnfResource(LnfKeyConstants.DIALOG_TITLEBAR_BACKGROUND_BOTTOM_COLOR_1, new ColorLnfResource(99, 126, 175));
+		lnf.putLnfResource(LnfKeyConstants.DIALOG_TITLEBAR_BACKGROUND_BOTTOM_COLOR_2, new ColorLnfResource(139, 163, 210));
+		lnf.putLnfResource(LnfKeyConstants.DIALOG_TITLEBAR_BACKGROUND_BOTTOM_COLOR_3, new ColorLnfResource(164, 183, 220));
 
 		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_DISABLED_FOREGROUND, new ColorLnfResource(170, 170, 170));
 		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_DISABLED_BORDER_COLOR, new ColorLnfResource(233, 233, 238));
 		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_FOREGROUND, getPrimaryForeground());
-		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BACKGROUND_START_COLOR, new ColorLnfResource(196,
-				225, 244));
-		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BACKGROUND_END_COLOR, new ColorLnfResource(100,
-				153, 186));
+		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BACKGROUND_START_COLOR, new ColorLnfResource(196, 225, 244));
+		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BACKGROUND_END_COLOR, new ColorLnfResource(100, 153, 186));
 		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BORDER_COLOR, new ColorLnfResource(171, 171, 174));
 		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_FOREGROUND, getPrimaryForeground());
-		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BACKGROUND_START_COLOR, new ColorLnfResource(244,
-				244, 245));
-		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BACKGROUND_END_COLOR, new ColorLnfResource(220,
-				220, 220));
+		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BACKGROUND_START_COLOR, new ColorLnfResource(244, 244, 245));
+		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BACKGROUND_END_COLOR, new ColorLnfResource(220, 220, 220));
 		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BORDER_COLOR, new ColorLnfResource(213, 213, 216));
 
-		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_HOVER_BORDER_TOP_COLOR,
-				new ColorLnfResource(251, 233, 168));
-		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_HOVER_BORDER_BOTTOM_COLOR, new ColorLnfResource(192, 151,
-				1));
-		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_HOVER_BORDER_START_COLOR, new ColorLnfResource(255, 207,
-				32));
+		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_HOVER_BORDER_TOP_COLOR, new ColorLnfResource(251, 233, 168));
+		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_HOVER_BORDER_BOTTOM_COLOR, new ColorLnfResource(192, 151, 1));
+		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_HOVER_BORDER_START_COLOR, new ColorLnfResource(255, 207, 32));
 		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_HOVER_BORDER_END_COLOR, new ColorLnfResource(255, 176, 1));
 
 		lnf.putLnfResource(LnfKeyConstants.NAVIGATION_BACKGROUND, getPrimaryBackground());
@@ -149,40 +136,23 @@ public class RienaDefaultTheme implements ILnfTheme {
 
 		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_ACTIVE_FOREGROUND, getPrimaryForeground());
 		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_PASSIVE_FOREGROUND, getPrimaryForeground());
-		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_DISABLED_FOREGROUND, new ColorLnfResource(170, 170,
-				170));
-		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_TOP_SELECTION_COLOR, new ColorLnfResource(64, 132,
-				191));
-		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_ACTIVE_BACKGROUND_START_COLOR,
-				new ColorLnfResource(255, 255, 255));
-		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_ACTIVE_BACKGROUND_END_COLOR, new ColorLnfResource(
-				255, 255, 255));
-		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_PROCESS_FINISHED_BACKGROUND_START_COLOR,
-				new ColorLnfResource(255, 255, 255));
-		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_PROCESS_FINISHED_BACKGROUND_END_COLOR,
-				new ColorLnfResource(255, 255, 255));
-		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_PASSIVE_BACKGROUND_START_COLOR,
-				new ColorLnfResource(245, 245, 245));
-		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_PASSIVE_BACKGROUND_END_COLOR, new ColorLnfResource(
-				229, 229, 229));
-		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_INNER_BORDER_COLOR, new ColorLnfResource(245, 245,
-				245));
-		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_BORDER_TOP_RIGHT_COLOR, new ColorLnfResource(206,
-				206, 206));
-		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_BORDER_TOP_RIGHT_SECONDARY_COLOR,
-				new ColorLnfResource(240, 240, 240));
-		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_BORDER_BOTTOM_LEFT_COLOR, new ColorLnfResource(183,
-				183, 183));
-		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_BORDER_BOTTOM_LEFT_SECONDARY_COLOR,
-				new ColorLnfResource(230, 230, 230));
-		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_INNER_DISABLED_BORDER_COLOR, new ColorLnfResource(
-				245, 245, 245));
-		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_INNER_PROCESS_FINISHED_BORDER_COLOR,
-				new ColorLnfResource(245, 245, 245));
-		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_DISABLED_BORDER_TOP_RIGHT_COLOR,
-				new ColorLnfResource(226, 226, 226));
-		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_DISABLED_BORDER_BOTTOM_LEFT_COLOR,
-				new ColorLnfResource(203, 203, 203));
+		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_DISABLED_FOREGROUND, new ColorLnfResource(170, 170, 170));
+		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_TOP_SELECTION_COLOR, new ColorLnfResource(64, 132, 191));
+		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_ACTIVE_BACKGROUND_START_COLOR, new ColorLnfResource(255, 255, 255));
+		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_ACTIVE_BACKGROUND_END_COLOR, new ColorLnfResource(255, 255, 255));
+		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_PROCESS_FINISHED_BACKGROUND_START_COLOR, new ColorLnfResource(255, 255, 255));
+		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_PROCESS_FINISHED_BACKGROUND_END_COLOR, new ColorLnfResource(255, 255, 255));
+		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_PASSIVE_BACKGROUND_START_COLOR, new ColorLnfResource(245, 245, 245));
+		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_PASSIVE_BACKGROUND_END_COLOR, new ColorLnfResource(229, 229, 229));
+		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_INNER_BORDER_COLOR, new ColorLnfResource(245, 245, 245));
+		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_BORDER_TOP_RIGHT_COLOR, new ColorLnfResource(206, 206, 206));
+		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_BORDER_TOP_RIGHT_SECONDARY_COLOR, new ColorLnfResource(240, 240, 240));
+		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_BORDER_BOTTOM_LEFT_COLOR, new ColorLnfResource(183, 183, 183));
+		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_BORDER_BOTTOM_LEFT_SECONDARY_COLOR, new ColorLnfResource(230, 230, 230));
+		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_INNER_DISABLED_BORDER_COLOR, new ColorLnfResource(245, 245, 245));
+		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_INNER_PROCESS_FINISHED_BORDER_COLOR, new ColorLnfResource(245, 245, 245));
+		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_DISABLED_BORDER_TOP_RIGHT_COLOR, new ColorLnfResource(226, 226, 226));
+		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_DISABLED_BORDER_BOTTOM_LEFT_COLOR, new ColorLnfResource(203, 203, 203));
 
 		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_ITEM_TOOLTIP_BACKGROUND, getPrimaryBackground());
 		lnf.putLnfResource(LnfKeyConstants.MODULE_ITEM_TOOLTIP_BACKGROUND, getPrimaryBackground());
@@ -202,17 +172,14 @@ public class RienaDefaultTheme implements ILnfTheme {
 
 		lnf.putLnfResource(LnfKeyConstants.DISABLED_BACKGROUND, getPrimaryBackground());
 
-		lnf.putLnfResource(LnfKeyConstants.MASTER_DETAILS_WIDGET_SEPARATOR_FOREGROUND, new ColorLnfResource(171, 173,
-				179));
+		lnf.putLnfResource(LnfKeyConstants.MASTER_DETAILS_WIDGET_SEPARATOR_FOREGROUND, new ColorLnfResource(171, 173, 179));
 
 		lnf.putLnfResource(LnfKeyConstants.INFO_FLYOUT_BACKGROUND_COLOR, new ColorLnfResource(222, 237, 244));
 
 		lnf.putLnfResource(LnfKeyConstants.INFO_FLYOUT_BORDER_COLOR, new ColorLnfResource(150, 165, 170));
 
-		lnf.putLnfResource(LnfKeyConstants.TITLEBAR_SEPARATOR_FIRST_LINE_FOREGROUND,
-				new ColorLnfResource(212, 208, 200));
-		lnf.putLnfResource(LnfKeyConstants.TITLEBAR_SEPARATOR_SECOND_LINE_FOREGROUND, new ColorLnfResource(245, 245,
-				245));
+		lnf.putLnfResource(LnfKeyConstants.TITLEBAR_SEPARATOR_FIRST_LINE_FOREGROUND, new ColorLnfResource(212, 208, 200));
+		lnf.putLnfResource(LnfKeyConstants.TITLEBAR_SEPARATOR_SECOND_LINE_FOREGROUND, new ColorLnfResource(245, 245, 245));
 
 		// StatusMeter
 		lnf.putLnfResource(LnfKeyConstants.STATUS_METER_BORDER_COLOR, new ColorLnfResource(128, 128, 128));
@@ -304,8 +271,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 
 		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_FONT, getPrimaryFont());
 
-		lnf.putLnfResource(LnfKeyConstants.INFO_FLYOUT_FONT, new FontLnfResource(getPrimaryFont().getFontData()
-				.getName(), 8, SWT.BOLD));
+		lnf.putLnfResource(LnfKeyConstants.INFO_FLYOUT_FONT, new FontLnfResource(getPrimaryFont().getFontData().getName(), 8, SWT.BOLD));
 
 		// Standard SWT controls
 		lnf.putLnfResource("Button.font", getPrimaryFont()); //$NON-NLS-1$
@@ -347,88 +313,67 @@ public class RienaDefaultTheme implements ILnfTheme {
 		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_LOGO, new ImageLnfResource(IMAGE_LOGO));
 		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_CLOSE_ICON, new ImageLnfResource(IMAGE_CLOSE));
 		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_CLOSE_HOVER_ICON, new ImageLnfResource(IMAGE_CLOSE_HOVER));
-		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_CLOSE_HOVER_SELECTED_ICON, new ImageLnfResource(
-				IMAGE_CLOSE_HOVER_SELECTED));
-		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_CLOSE_INACTIVE_ICON, new ImageLnfResource(
-				IMAGE_CLOSE_INACTIVE));
+		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_CLOSE_HOVER_SELECTED_ICON, new ImageLnfResource(IMAGE_CLOSE_HOVER_SELECTED));
+		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_CLOSE_INACTIVE_ICON, new ImageLnfResource(IMAGE_CLOSE_INACTIVE));
 		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_MAX_ICON, new ImageLnfResource(IMAGE_MAX));
 		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_MAX_HOVER_ICON, new ImageLnfResource(IMAGE_MAX_HOVER));
-		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_MAX_HOVER_SELECTED_ICON, new ImageLnfResource(
-				IMAGE_MAX_HOVER_SELECTED));
+		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_MAX_HOVER_SELECTED_ICON, new ImageLnfResource(IMAGE_MAX_HOVER_SELECTED));
 		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_MAX_INACTIVE_ICON, new ImageLnfResource(IMAGE_MAX_INACTIVE));
 		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_MIN_ICON, new ImageLnfResource(IMAGE_MIN));
 		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_MIN_HOVER_ICON, new ImageLnfResource(IMAGE_MIN_HOVER));
-		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_MIN_HOVER_SELECTED_ICON, new ImageLnfResource(
-				IMAGE_MIN_HOVER_SELECTED));
+		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_MIN_HOVER_SELECTED_ICON, new ImageLnfResource(IMAGE_MIN_HOVER_SELECTED));
 		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_MIN_INACTIVE_ICON, new ImageLnfResource(IMAGE_MIN_INACTIVE));
 		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_RESTORE_ICON, new ImageLnfResource(IMAGE_RESTORE));
-		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_RESTORE_HOVER_ICON,
-				new ImageLnfResource(IMAGE_RESTORE_HOVER));
-		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_RESTORE_HOVER_SELECTED_ICON, new ImageLnfResource(
-				IMAGE_RESTORE_HOVER_SELECTED));
-		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_RESTORE_INACTIVE_ICON, new ImageLnfResource(
-				IMAGE_RESTORE_INACTIVE_ICON));
+		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_RESTORE_HOVER_ICON, new ImageLnfResource(IMAGE_RESTORE_HOVER));
+		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_RESTORE_HOVER_SELECTED_ICON, new ImageLnfResource(IMAGE_RESTORE_HOVER_SELECTED));
+		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_RESTORE_INACTIVE_ICON, new ImageLnfResource(IMAGE_RESTORE_INACTIVE_ICON));
 		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_HAND_IMAGE, new ImageLnfResource(IMAGE_HAND));
 		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_GRAB_IMAGE, new ImageLnfResource(IMAGE_GRAB));
 		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_GRAB_CORNER_IMAGE, new ImageLnfResource(IMAGE_GRAB_CORNER));
 
 		lnf.putLnfResource(LnfKeyConstants.DIALOG_CLOSE_ICON, new ImageLnfResource(IMAGE_CLOSE));
 		lnf.putLnfResource(LnfKeyConstants.DIALOG_CLOSE_HOVER_ICON, new ImageLnfResource(IMAGE_CLOSE_HOVER));
-		lnf.putLnfResource(LnfKeyConstants.DIALOG_CLOSE_HOVER_SELECTED_ICON, new ImageLnfResource(
-				IMAGE_CLOSE_HOVER_SELECTED));
+		lnf.putLnfResource(LnfKeyConstants.DIALOG_CLOSE_HOVER_SELECTED_ICON, new ImageLnfResource(IMAGE_CLOSE_HOVER_SELECTED));
 		lnf.putLnfResource(LnfKeyConstants.DIALOG_CLOSE_INACTIVE_ICON, new ImageLnfResource(IMAGE_CLOSE_INACTIVE));
 		lnf.putLnfResource(LnfKeyConstants.DIALOG_MAX_ICON, new ImageLnfResource(IMAGE_MAX));
 		lnf.putLnfResource(LnfKeyConstants.DIALOG_MAX_HOVER_ICON, new ImageLnfResource(IMAGE_MAX_HOVER));
-		lnf.putLnfResource(LnfKeyConstants.DIALOG_MAX_HOVER_SELECTED_ICON, new ImageLnfResource(
-				IMAGE_MAX_HOVER_SELECTED));
+		lnf.putLnfResource(LnfKeyConstants.DIALOG_MAX_HOVER_SELECTED_ICON, new ImageLnfResource(IMAGE_MAX_HOVER_SELECTED));
 		lnf.putLnfResource(LnfKeyConstants.DIALOG_MAX_INACTIVE_ICON, new ImageLnfResource(IMAGE_MAX_INACTIVE));
 		lnf.putLnfResource(LnfKeyConstants.DIALOG_MIN_ICON, new ImageLnfResource(IMAGE_MIN));
 		lnf.putLnfResource(LnfKeyConstants.DIALOG_MIN_HOVER_ICON, new ImageLnfResource(IMAGE_MIN_HOVER));
-		lnf.putLnfResource(LnfKeyConstants.DIALOG_MIN_HOVER_SELECTED_ICON, new ImageLnfResource(
-				IMAGE_MIN_HOVER_SELECTED));
+		lnf.putLnfResource(LnfKeyConstants.DIALOG_MIN_HOVER_SELECTED_ICON, new ImageLnfResource(IMAGE_MIN_HOVER_SELECTED));
 		lnf.putLnfResource(LnfKeyConstants.DIALOG_MIN_INACTIVE_ICON, new ImageLnfResource(IMAGE_MIN_INACTIVE));
 		lnf.putLnfResource(LnfKeyConstants.DIALOG_RESTORE_ICON, new ImageLnfResource(IMAGE_RESTORE));
 		lnf.putLnfResource(LnfKeyConstants.DIALOG_RESTORE_HOVER_ICON, new ImageLnfResource(IMAGE_RESTORE_HOVER));
-		lnf.putLnfResource(LnfKeyConstants.DIALOG_RESTORE_HOVER_SELECTED_ICON, new ImageLnfResource(
-				IMAGE_RESTORE_HOVER_SELECTED));
-		lnf.putLnfResource(LnfKeyConstants.DIALOG_RESTORE_INACTIVE_ICON, new ImageLnfResource(
-				IMAGE_RESTORE_INACTIVE_ICON));
+		lnf.putLnfResource(LnfKeyConstants.DIALOG_RESTORE_HOVER_SELECTED_ICON, new ImageLnfResource(IMAGE_RESTORE_HOVER_SELECTED));
+		lnf.putLnfResource(LnfKeyConstants.DIALOG_RESTORE_INACTIVE_ICON, new ImageLnfResource(IMAGE_RESTORE_INACTIVE_ICON));
 		lnf.putLnfResource(LnfKeyConstants.DIALOG_GRAB_CORNER_IMAGE, new ImageLnfResource(DIALOG_IMAGE_GRAB_CORNER));
 
-		lnf.putLnfResource(LnfKeyConstants.SUB_MODULE_TREE_DOCUMENT_LEAF_ICON, new ImageLnfResource(
-				IMAGE_EMPTY_DOCUMENT));
+		lnf.putLnfResource(LnfKeyConstants.SUB_MODULE_TREE_DOCUMENT_LEAF_ICON, new ImageLnfResource(IMAGE_EMPTY_DOCUMENT));
 		lnf.putLnfResource(LnfKeyConstants.WORKAREA_TREE_DOCUMENT_LEAF_ICON, new ImageLnfResource(IMAGE_EMPTY_DOCUMENT));
 
-		lnf.putLnfResource(LnfKeyConstants.SUB_MODULE_TREE_FOLDER_CLOSED_ICON,
-				new ImageLnfResource(IMAGE_FOLDER_CLOSED));
+		lnf.putLnfResource(LnfKeyConstants.SUB_MODULE_TREE_FOLDER_CLOSED_ICON, new ImageLnfResource(IMAGE_FOLDER_CLOSED));
 
 		lnf.putLnfResource(LnfKeyConstants.WORKAREA_TREE_FOLDER_CLOSED_ICON, new ImageLnfResource(IMAGE_FOLDER_CLOSED));
 
 		lnf.putLnfResource(LnfKeyConstants.SUB_MODULE_TREE_ERROR_MARKER_ICON, new ImageLnfResource(IMAGE_ERROR_MARKER));
-		lnf.putLnfResource(LnfKeyConstants.SUB_MODULE_TREE_MANDATORY_MARKER_ICON, new ImageLnfResource(
-				IMAGE_MANDATORY_MARKER));
-		lnf.putLnfResource(LnfKeyConstants.SUB_MODULE_TREE_ATTENTION_MARKER_ICON, new ImageLnfResource(
-				IMAGE_ATTENTION_MARKER));
-		lnf.putLnfResource(LnfKeyConstants.SUB_MODULE_TREE_PROCESSED_FINISHED_MARKER_ICON, new ImageLnfResource(
-				IMAGE_PROCESS_FINISHED_MARKER));
+		lnf.putLnfResource(LnfKeyConstants.SUB_MODULE_TREE_MANDATORY_MARKER_ICON, new ImageLnfResource(IMAGE_MANDATORY_MARKER));
+		lnf.putLnfResource(LnfKeyConstants.SUB_MODULE_TREE_ATTENTION_MARKER_ICON, new ImageLnfResource(IMAGE_ATTENTION_MARKER));
+		lnf.putLnfResource(LnfKeyConstants.SUB_MODULE_TREE_PROCESSED_FINISHED_MARKER_ICON, new ImageLnfResource(IMAGE_PROCESS_FINISHED_MARKER));
 		// lnf.putLnfResource(LnfKeyConstants."treeFolderOpen.icon",
 		// getSharedImageResource(ISharedImages.IMG_OBJ_FOLDER));
 		lnf.putLnfResource(LnfKeyConstants.SUB_MODULE_TREE_FOLDER_OPEN_ICON, new ImageLnfResource(IMAGE_FOLDER));
 		lnf.putLnfResource(LnfKeyConstants.WORKAREA_TREE_FOLDER_OPEN_ICON, new ImageLnfResource(IMAGE_FOLDER));
 		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_CLOSE_ICON, new ImageLnfResource(IMAGE_CLOSE_MODULE));
-		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_CLOSE_HOVER_ICON, new ImageLnfResource(
-				IMAGE_CLOSE_MODULE_HOVER));
-		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_CLOSE_INACTIVE_ICON, new ImageLnfResource(
-				IMAGE_CLOSE_MODULE_INACTIVE));
-		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_CLOSE_HOVER_SELECTED_ICON, new ImageLnfResource(
-				IMAGE_CLOSE_MODULE_HOVER_SELECTED));
+		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_CLOSE_HOVER_ICON, new ImageLnfResource(IMAGE_CLOSE_MODULE_HOVER));
+		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_CLOSE_INACTIVE_ICON, new ImageLnfResource(IMAGE_CLOSE_MODULE_INACTIVE));
+		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_CLOSE_HOVER_SELECTED_ICON, new ImageLnfResource(IMAGE_CLOSE_MODULE_HOVER_SELECTED));
 
 		lnf.putLnfResource(LnfKeyConstants.STATUSLINE_SPACER_ICON, new ImageLnfResource(IMAGE_SPACER));
 		lnf.putLnfResource(LnfKeyConstants.STATUSLINE_ERROR_ICON, new ImageLnfResource(IMAGE_ERROR));
 		lnf.putLnfResource(LnfKeyConstants.STATUSLINE_WARNING_ICON, new ImageLnfResource(IMAGE_WARNING));
 		lnf.putLnfResource(LnfKeyConstants.STATUSLINE_INFO_ICON, new ImageLnfResource(IMAGE_INFO));
-		lnf.putLnfResource(LnfKeyConstants.STATUSLINE_UI_PROCESS_ICON, new ImageLnfResource(
-				IMAGE_STATUSLINE_UI_PROCESS_ICON));
+		lnf.putLnfResource(LnfKeyConstants.STATUSLINE_UI_PROCESS_ICON, new ImageLnfResource(IMAGE_STATUSLINE_UI_PROCESS_ICON));
 
 		lnf.putLnfResource(LnfKeyConstants.NAVIGATION_SCROLL_UP_ICON, new ImageLnfResource(IMAGE_SCROLL_UP));
 		lnf.putLnfResource(LnfKeyConstants.NAVIGATION_SCROLL_DOWN_ICON, new ImageLnfResource(IMAGE_SCROLL_DOWN));
@@ -463,7 +408,8 @@ public class RienaDefaultTheme implements ILnfTheme {
 		lnf.putLnfSetting(LnfKeyConstants.NAVIGATION_MIN_WIDTH, 180);
 		lnf.putLnfSetting(LnfKeyConstants.NAVIGATION_MAX_WIDTH, 500);
 		lnf.putLnfSetting(LnfKeyConstants.NAVIGATION_SCROLL_BUTTON_HEIGHT, 14);
-		lnf.putLnfSetting(LnfKeyConstants.NAVIGATION_SCROLL_BAR, false);
+		lnf.putLnfSetting(LnfKeyConstants.NAVIGATION_SCROLL_BAR, true);
+		lnf.putLnfSetting(LnfKeyConstants.NAVIGATION_SCROLL_BAR_INCREMENT, 10);
 		lnf.putLnfSetting(LnfKeyConstants.NAVIGATION_FAST_VIEW, false);
 		lnf.putLnfSetting(LnfKeyConstants.NAVIGATION_RESIZEABLE, false);
 
@@ -590,8 +536,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 	}
 
 	/**
-	 * Returns whether the border of the operation system should be used for the
-	 * shell and the dialog windows or the border of the Riena Look&Feel.
+	 * Returns whether the border of the operation system should be used for the shell and the dialog windows or the border of the Riena Look&Feel.
 	 * 
 	 * @return
 	 */
