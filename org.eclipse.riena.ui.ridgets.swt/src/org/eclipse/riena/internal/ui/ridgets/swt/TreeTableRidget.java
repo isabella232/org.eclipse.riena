@@ -20,9 +20,12 @@ import org.eclipse.jface.viewers.ColumnPixelData;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Item;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
@@ -31,13 +34,14 @@ import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.riena.ui.common.ISortableByColumn;
 import org.eclipse.riena.ui.ridgets.IColumnFormatter;
 import org.eclipse.riena.ui.ridgets.IGroupedTreeTableRidget;
+import org.eclipse.riena.ui.ridgets.listener.ClickEvent;
 import org.eclipse.riena.ui.ridgets.swt.ColumnFormatter;
 import org.eclipse.riena.ui.ridgets.swt.SortableComparator;
 import org.eclipse.riena.ui.swt.facades.SWTFacade;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
- * Ridget for SWT @link {@link Tree} widgets, that shows a tree with multiple
- * columns.
+ * Ridget for SWT @link {@link Tree} widgets, that shows a tree with multiple columns.
  */
 public class TreeTableRidget extends TreeRidget implements IGroupedTreeTableRidget {
 
@@ -77,6 +81,17 @@ public class TreeTableRidget extends TreeRidget implements IGroupedTreeTableRidg
 	}
 
 	@Override
+	protected ClickEvent createClickEvent(final MouseEvent e) {
+		final Tree tree = (Tree) e.widget;
+		final int colIndex = SwtUtilities.findColumn(tree, new Point(e.x, e.y));
+		// x = 0 gets us an item even not using SWT.FULL_SELECTION
+		final Item item = tree.getItem(new Point(0, e.y));
+		final Object rowData = item != null ? item.getData() : null;
+		final ClickEvent event = new ClickEvent(this, e.button, colIndex, rowData);
+		return event;
+	}
+
+	@Override
 	protected void unbindUIControl() {
 		super.unbindUIControl();
 		final Tree control = getUIControl();
@@ -110,15 +125,14 @@ public class TreeTableRidget extends TreeRidget implements IGroupedTreeTableRidg
 	// ITreeTableRidget methods
 	// /////////////////////////
 
-	public void bindToModel(final Object[] treeRoots, final Class<? extends Object> treeElementClass,
-			final String childrenAccessor, final String parentAccessor, final String[] valueAccessors,
-			final String[] columnHeaders) {
+	public void bindToModel(final Object[] treeRoots, final Class<? extends Object> treeElementClass, final String childrenAccessor,
+			final String parentAccessor, final String[] valueAccessors, final String[] columnHeaders) {
 		final String noEnablementAccessor = null;
 		final String noVisibilityAccessor = null;
 		final String noImageAccessor = null;
 		final String noOpenImageAccessor = null;
-		super.bindToModel(treeRoots, treeElementClass, childrenAccessor, parentAccessor, valueAccessors, columnHeaders,
-				noEnablementAccessor, noVisibilityAccessor, noImageAccessor, noOpenImageAccessor);
+		super.bindToModel(treeRoots, treeElementClass, childrenAccessor, parentAccessor, valueAccessors, columnHeaders, noEnablementAccessor,
+				noVisibilityAccessor, noImageAccessor, noOpenImageAccessor);
 	}
 
 	// IGroupedTableRidget methods
@@ -176,8 +190,7 @@ public class TreeTableRidget extends TreeRidget implements IGroupedTreeTableRidg
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * Implementation note: if the array is non-null, its elements must be
-	 * {@link ColumnPixelData} or {@link ColumnWeightData} instances.
+	 * Implementation note: if the array is non-null, its elements must be {@link ColumnPixelData} or {@link ColumnWeightData} instances.
 	 * 
 	 * @throws RuntimeException
 	 *             if an unsupported array element is encountered
@@ -296,8 +309,7 @@ public class TreeTableRidget extends TreeRidget implements IGroupedTreeTableRidg
 	// ////////////////
 
 	/**
-	 * Selection listener for table headers that changes the sort order of a
-	 * column according to the information stored in the ridget.
+	 * Selection listener for table headers that changes the sort order of a column according to the information stored in the ridget.
 	 */
 	private final class ColumnSortListener extends SelectionAdapter {
 		@Override
@@ -322,17 +334,13 @@ public class TreeTableRidget extends TreeRidget implements IGroupedTreeTableRidg
 	}
 
 	/**
-	 * Listener for EraseItem events that is responsible for greated the
-	 * "grouped" look in tree tables.
+	 * Listener for EraseItem events that is responsible for greated the "grouped" look in tree tables.
 	 * <p>
-	 * Implementation note: this works by registering this class an an
-	 * EraseEListener and indicating we will be repsonsible from drawing the
-	 * cells content. We do not register a PaintListener, meaning that we do NOT
-	 * paint anything.
+	 * Implementation note: this works by registering this class an an EraseEListener and indicating we will be repsonsible from drawing the cells content. We
+	 * do not register a PaintListener, meaning that we do NOT paint anything.
 	 * 
-	 * @see '<a href=
-	 *      "http://www.eclipse.org/articles/article.php?file=Article-CustomDrawingTableAndTreeItems/index.html"
-	 *      >Custom Drawing Table and Tree Items</a>'
+	 * @see '<a href= "http://www.eclipse.org/articles/article.php?file=Article-CustomDrawingTableAndTreeItems/index.html" >Custom Drawing Table and Tree
+	 *      Items</a>'
 	 */
 	private final static class GroupedTableEraseListener implements Listener {
 
@@ -342,8 +350,7 @@ public class TreeTableRidget extends TreeRidget implements IGroupedTreeTableRidg
 		public void handleEvent(final Event event) {
 			final TreeItem item = (TreeItem) event.item;
 			/*
-			 * let SWT draw the cell content if: (a) the item has no children or
-			 * (b) we are in the first column
+			 * let SWT draw the cell content if: (a) the item has no children or (b) we are in the first column
 			 */
 			if (item.getItemCount() == 0 || event.index == 0) {
 				return;
