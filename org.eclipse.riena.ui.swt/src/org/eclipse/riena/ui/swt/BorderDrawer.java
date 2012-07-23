@@ -201,9 +201,11 @@ public class BorderDrawer implements Listener {
 		}
 		if (shouldShowDecoration()) {
 			Composite someParent = getControlToDecorate() instanceof Composite ? (Composite) getControlToDecorate() : getControlToDecorate().getParent();
+			Control someChild = getControlToDecorate();
 			boolean fullyPainted = false;
 			while (someParent != null && !fullyPainted) {
-				fullyPainted = includeAndDrawBorder(someParent);
+				fullyPainted = includeAndDrawBorder(someParent, someChild);
+				someChild = someParent;
 				someParent = someParent.getParent();
 			}
 		}
@@ -313,15 +315,17 @@ public class BorderDrawer implements Listener {
 	}
 
 	/**
+	 * @param someChild
 	 * @return true if the border could be completely painted on the available client area
 	 */
-	private boolean includeAndDrawBorder(final Composite someParent) {
+	private boolean includeAndDrawBorder(final Composite someParent, final Control someChild) {
 		final Rectangle areaOnControl = toAreaOnControl(visibleControlAreaOnDisplay, someParent);
 		final Rectangle clientArea = someParent.getClientArea();
 		final GC gc = new GC(someParent);
 		drawBorder(areaOnControl, gc);
 		gc.dispose();
-		return areaOnControl.x + areaOnControl.width < clientArea.width && areaOnControl.y + areaOnControl.width < clientArea.height;
+		return someChild.getBounds().x > getBorderWidth() && someChild.getBounds().y > getBorderWidth()
+				&& areaOnControl.x + areaOnControl.width < clientArea.width && areaOnControl.y + areaOnControl.width < clientArea.height;
 	}
 
 	/**
