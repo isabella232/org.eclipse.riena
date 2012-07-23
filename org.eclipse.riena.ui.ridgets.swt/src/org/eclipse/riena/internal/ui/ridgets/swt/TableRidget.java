@@ -130,6 +130,7 @@ public class TableRidget extends AbstractTableRidget {
 				column.removeSelectionListener(sortListener);
 				column.removeControlListener(columnResizeListener);
 			}
+			control.removeSelectionListener(selectionTypeEnforcer);
 			final SWTFacade facade = SWTFacade.getDefault();
 			facade.removeEraseItemListener(control, itemEraser);
 			if (tooltipManager != null) {
