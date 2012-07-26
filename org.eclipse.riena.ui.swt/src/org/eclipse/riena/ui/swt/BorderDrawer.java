@@ -212,6 +212,17 @@ public class BorderDrawer implements Listener {
 	}
 
 	/**
+	 * request an update at the UI event queue end
+	 */
+	public void scheduleUpdate(final boolean redraw) {
+		getControlToDecorate().getDisplay().asyncExec(new Runnable() {
+			public void run() {
+				update(redraw);
+			}
+		});
+	}
+
+	/**
 	 * Updates the area where the border is normally drawn
 	 */
 	public void update(final boolean redraw) {
@@ -476,7 +487,9 @@ public class BorderDrawer implements Listener {
 				computeBorderArea = true;
 				getControlToDecorate().getDisplay().asyncExec(new Runnable() {
 					public void run() {
-						getControlToDecorate().redraw();
+						if (!SwtUtilities.isDisposed(getControlToDecorate())) {
+							getControlToDecorate().redraw();
+						}
 					}
 				});
 			} else {
