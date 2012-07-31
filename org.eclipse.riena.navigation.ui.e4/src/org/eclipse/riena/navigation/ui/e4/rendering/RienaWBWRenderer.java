@@ -72,6 +72,7 @@ import org.eclipse.swt.widgets.Widget;
 
 import org.eclipse.riena.internal.ui.swt.utils.RcpUtilities;
 import org.eclipse.riena.navigation.ui.e4.E4XMIConstants;
+import org.eclipse.riena.navigation.ui.e4.part.StatusLinePart;
 import org.eclipse.riena.navigation.ui.swt.component.SwitcherComposite;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -506,7 +507,14 @@ public class RienaWBWRenderer extends SWTPartRenderer {
 	 * @return
 	 */
 	private Shell rienaCreateShell(final int rtlStyle, final MWindow modelElement) {
-		final Shell shell = new Shell(Display.getCurrent(), SWT.NO_TRIM | rtlStyle);
+		int shellStyle = rtlStyle | SWT.DOUBLE_BUFFERED;
+		if (isHideOSBorder()) {
+			shellStyle = rtlStyle | SWT.NO_TRIM;
+		} else {
+			shellStyle = rtlStyle | SWT.SHELL_TRIM;
+		}
+
+		final Shell shell = new Shell(Display.getCurrent(), shellStyle);
 		RcpUtilities.setShell(shell);
 		final Rectangle shellBounds = applicationView.initShell(shell);
 		modelElement.setX(shellBounds.x);
@@ -517,9 +525,13 @@ public class RienaWBWRenderer extends SWTPartRenderer {
 		return shell;
 	}
 
+	private Boolean isHideOSBorder() {
+		return LnfManager.getLnf().getBooleanSetting(LnfKeyConstants.SHELL_HIDE_OS_BORDER);
+	}
+
 	private void rienaCreateContents(final Composite clientArea) {
 		final GridLayout layout = new GridLayout();
-		final Integer shellPadding = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.TITLELESS_SHELL_PADDING);
+		final Integer shellPadding = isHideOSBorder() ? LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.TITLELESS_SHELL_PADDING) : 0;
 		layout.marginWidth = shellPadding;
 		layout.marginHeight = shellPadding;
 		layout.horizontalSpacing = 0;
@@ -552,7 +564,7 @@ public class RienaWBWRenderer extends SWTPartRenderer {
 
 		statuLine = new Composite(clientArea, SWT.NONE);
 		final GridData statusLayoutData = new GridData(GridData.FILL_HORIZONTAL);
-		statusLayoutData.heightHint = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.STATUSLINE_HEIGHT);
+		statusLayoutData.heightHint = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.STATUSLINE_HEIGHT) + StatusLinePart.BOTTOM_OFFSET;
 		statuLine.setLayoutData(statusLayoutData);
 		statuLine.setLayout(new FillLayout());
 	}
