@@ -76,6 +76,7 @@ import org.eclipse.riena.navigation.ui.e4.part.StatusLinePart;
 import org.eclipse.riena.navigation.ui.swt.component.SwitcherComposite;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.lnf.renderer.DialogBorderRenderer;
 import org.eclipse.riena.ui.swt.separator.Separator;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
@@ -144,7 +145,7 @@ public class RienaWBWRenderer extends SWTPartRenderer {
 	private Composite header;
 	private Composite mainMenu;
 	private Composite mainToolBar;
-	private Composite statuLine;
+	private Composite statusLine;
 	private Composite perspectiveStack;
 
 	@Inject
@@ -531,9 +532,8 @@ public class RienaWBWRenderer extends SWTPartRenderer {
 
 	private void rienaCreateContents(final Composite clientArea) {
 		final GridLayout layout = new GridLayout();
-		final Integer shellPadding = isHideOSBorder() ? LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.TITLELESS_SHELL_PADDING) : 0;
-		layout.marginWidth = shellPadding;
-		layout.marginHeight = shellPadding;
+		layout.marginWidth = getShellBorderWidth();
+		layout.marginHeight = getShellBorderWidth();
 		layout.horizontalSpacing = 0;
 		layout.verticalSpacing = 0;
 		clientArea.setLayout(layout);
@@ -547,7 +547,10 @@ public class RienaWBWRenderer extends SWTPartRenderer {
 
 		mainMenu = new Composite(clientArea, SWT.NONE);
 		mainMenu.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		mainMenu.setLayout(new FillLayout());
+		final FillLayout mainMenuLayout = new FillLayout();
+		final Integer shellPadding = isHideOSBorder() ? LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.TITLELESS_SHELL_PADDING) : 0;
+		mainMenuLayout.marginWidth = shellPadding;
+		mainMenu.setLayout(mainMenuLayout);
 
 		final Separator separator = UIControlsFactory.createSeparator(clientArea, SWT.HORIZONTAL);
 		final GridData separatorLayoutData = new GridData(GridData.FILL_HORIZONTAL);
@@ -556,17 +559,32 @@ public class RienaWBWRenderer extends SWTPartRenderer {
 
 		mainToolBar = new Composite(clientArea, SWT.NONE);
 		mainToolBar.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		mainToolBar.setLayout(new FillLayout());
+		final FillLayout mainToolBarLayout = new FillLayout();
+		mainToolBarLayout.marginWidth = shellPadding;
+		mainToolBar.setLayout(mainToolBarLayout);
 
 		perspectiveStack = new Composite(clientArea, SWT.NONE);
 		perspectiveStack.setLayoutData(new GridData(GridData.FILL_BOTH));
-		perspectiveStack.setLayout(new FillLayout());
+		final FillLayout perspectiveStackLayout = new FillLayout();
+		perspectiveStackLayout.marginWidth = shellPadding;
+		perspectiveStack.setLayout(perspectiveStackLayout);
 
-		statuLine = new Composite(clientArea, SWT.NONE);
+		statusLine = new Composite(clientArea, SWT.NONE);
 		final GridData statusLayoutData = new GridData(GridData.FILL_HORIZONTAL);
+		statusLayoutData.verticalIndent = shellPadding;
 		statusLayoutData.heightHint = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.STATUSLINE_HEIGHT) + StatusLinePart.BOTTOM_OFFSET;
-		statuLine.setLayoutData(statusLayoutData);
-		statuLine.setLayout(new FillLayout());
+		statusLine.setLayoutData(statusLayoutData);
+		statusLine.setLayout(new FillLayout());
+	}
+
+	/**
+	 * Returns the width of the shell border.
+	 * 
+	 * @return border width
+	 */
+	private static int getShellBorderWidth() {
+		final DialogBorderRenderer borderRenderer = (DialogBorderRenderer) LnfManager.getLnf().getRenderer(LnfKeyConstants.TITLELESS_SHELL_BORDER_RENDERER);
+		return borderRenderer != null ? borderRenderer.getBorderWidth() : 0;
 	}
 
 	private void setCloseHandler(final MWindow window) {
@@ -748,7 +766,7 @@ public class RienaWBWRenderer extends SWTPartRenderer {
 			return mainToolBar;
 		}
 		if (E4XMIConstants.STATUSLINE_PART_ID.equals(element.getElementId())) {
-			return statuLine;
+			return statusLine;
 		}
 		if (E4XMIConstants.PERSPECTIVE_STACK_ID.equals(element.getElementId())) {
 			return perspectiveStack;
