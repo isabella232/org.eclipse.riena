@@ -23,6 +23,7 @@ import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.ui.e4.Activator;
+import org.eclipse.riena.navigation.ui.e4.E4XMIConstants;
 import org.eclipse.riena.navigation.ui.e4.part.MainMenuPart;
 import org.eclipse.riena.navigation.ui.e4.part.MainToolBarPart;
 import org.eclipse.riena.navigation.ui.e4.part.PartWrapper;
@@ -77,7 +78,7 @@ public class MySubModuleNodeListener extends SubModuleNodeListener {
 			if (perspectives.isEmpty()) {
 				throw new IllegalStateException("Parent perspective not found. partId: " + partId + ", perspectiveId: " + perspectiveId); //$NON-NLS-1$ //$NON-NLS-2$
 			}
-			final List<MPartStack> stacks = modelService.findElements(perspectives.get(0), "contentPartStack", MPartStack.class, null); //$NON-NLS-1$
+			final List<MPartStack> stacks = modelService.findElements(perspectives.get(0), E4XMIConstants.CONTENT_PART_STACK_ID, MPartStack.class, null);
 			if (stacks.isEmpty()) {
 				throw new IllegalStateException("Part stack not found on parent perspective. partId: " + partId + ", perspectiveId: " + perspectiveId); //$NON-NLS-1$ //$NON-NLS-2$
 			}

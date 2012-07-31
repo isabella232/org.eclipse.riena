@@ -25,6 +25,7 @@ import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.listener.SubApplicationNodeListener;
 import org.eclipse.riena.navigation.ui.controllers.SubApplicationController;
 import org.eclipse.riena.navigation.ui.e4.Activator;
+import org.eclipse.riena.navigation.ui.e4.E4XMIConstants;
 import org.eclipse.riena.navigation.ui.e4.binder.SubApplicationBinder;
 import org.eclipse.riena.navigation.ui.e4.part.NavigationPart;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProvider;
@@ -35,10 +36,6 @@ import org.eclipse.riena.ui.workarea.WorkareaManager;
 @SuppressWarnings("restriction")
 public class MySubApplicationNodeListener extends SubApplicationNodeListener {
 	private static final String PERSPECTIVES_EXT_POINT = "org.eclipse.ui.perspectives"; //$NON-NLS-1$
-	/**
-	 * the perspective stack id as specified in Application.e4xmi
-	 */
-	private static final String PERSPECTIVE_STACK_ID = "org.eclipse.riena.navigation.ui.e4.perspectiveStack"; //$NON-NLS-1$
 
 	@Inject
 	private IEclipseContext context;
@@ -79,7 +76,7 @@ public class MySubApplicationNodeListener extends SubApplicationNodeListener {
 		MPerspective perspective = null;
 		if (perspectives.isEmpty()) {
 			final IExtensionRegistry extensionRegistry = context.get(IExtensionRegistry.class);
-			final MElementContainer perspectiveStack = (MPerspectiveStack) modelService.find(PERSPECTIVE_STACK_ID, searchRoot);
+			final MElementContainer perspectiveStack = (MPerspectiveStack) modelService.find(E4XMIConstants.PERSPECTIVE_STACK_ID, searchRoot);
 			for (final IConfigurationElement e : extensionRegistry.getConfigurationElementsFor(PERSPECTIVES_EXT_POINT)) {
 				if (perspectiveId.equals(e.getAttribute("id"))) {
 					final MElementContainer p = MAdvancedFactory.INSTANCE.createPerspective();
@@ -97,7 +94,7 @@ public class MySubApplicationNodeListener extends SubApplicationNodeListener {
 					navigationPart.setParent(p);
 
 					final MPartStack partStack = MBasicFactory.INSTANCE.createPartStack();
-					partStack.setElementId("contentPartStack");
+					partStack.setElementId(E4XMIConstants.CONTENT_PART_STACK_ID);
 					p.getChildren().add(partStack);
 					partStack.setParent(p);
 

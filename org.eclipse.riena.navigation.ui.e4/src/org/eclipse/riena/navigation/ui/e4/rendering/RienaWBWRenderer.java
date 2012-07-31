@@ -41,7 +41,6 @@ import org.eclipse.e4.ui.workbench.modeling.ISaveHandler;
 import org.eclipse.e4.ui.workbench.modeling.IWindowCloseHandler;
 import org.eclipse.e4.ui.workbench.renderers.swt.CSSEngineHelper;
 import org.eclipse.e4.ui.workbench.renderers.swt.SWTPartRenderer;
-import org.eclipse.e4.ui.workbench.renderers.swt.TrimmedPartLayout;
 import org.eclipse.e4.ui.workbench.renderers.swt.WBWRenderer;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -59,7 +58,9 @@ import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.ShellAdapter;
 import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
@@ -70,6 +71,12 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Widget;
 
 import org.eclipse.riena.internal.ui.swt.utils.RcpUtilities;
+import org.eclipse.riena.navigation.ui.e4.E4XMIConstants;
+import org.eclipse.riena.navigation.ui.swt.component.SwitcherComposite;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.separator.Separator;
+import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
  * Render a Window or Workbench Window.
@@ -123,11 +130,21 @@ public class RienaWBWRenderer extends SWTPartRenderer {
 	private EventHandler sizeHandler;
 	private EventHandler childHandler;
 
+	/**
+	 * manages some Riena-specific window aspects
+	 */
+	private final ApplicationView applicationView = new ApplicationView();
+
 	public RienaWBWRenderer() {
 		super();
 	}
 
 	MPart activePart = null;
+	private Composite header;
+	private Composite mainMenu;
+	private Composite mainToolBar;
+	private Composite statuLine;
+	private Composite perspectiveStack;
 
 	@Inject
 	void trackActivePart(@Optional
@@ -376,7 +393,7 @@ public class RienaWBWRenderer extends SWTPartRenderer {
 
 		final Shell wbwShell;
 		if (parentShell == null) {
-			wbwShell = rienaCreateShell(rtlStyle);
+			wbwShell = rienaCreateShell(rtlStyle, wbwModel);
 			wbwModel.getTags().add("topLevel"); //$NON-NLS-1$
 		} else if (wbwModel.getTags().contains("dragHost")) { //$NON-NLS-1$
 			wbwShell = new Shell(parentShell, SWT.BORDER | rtlStyle);
@@ -421,15 +438,15 @@ public class RienaWBWRenderer extends SWTPartRenderer {
 
 		// We need to retrieve specific CSS properties for our layout.
 		final CSSEngineHelper helper = new CSSEngineHelper(localContext, wbwShell);
-		final TrimmedPartLayout tl = new TrimmedPartLayout(wbwShell);
-		tl.gutterTop = helper.getMarginTop(0);
-		tl.gutterBottom = helper.getMarginBottom(0);
-		tl.gutterLeft = helper.getMarginLeft(0);
-		tl.gutterRight = helper.getMarginRight(0);
+		//		final TrimmedPartLayout tl = new TrimmedPartLayout(wbwShell);
+		//		tl.gutterTop = helper.getMarginTop(0);
+		//		tl.gutterBottom = helper.getMarginBottom(0);
+		//		tl.gutterLeft = helper.getMarginLeft(0);
+		//		tl.gutterRight = helper.getMarginRight(0);
 
-		rienaModifyTl(tl);
+		rienaCreateContents(wbwShell);
 
-		wbwShell.setLayout(tl);
+		//		wbwShell.setLayout(tl);
 		newWidget = wbwShell;
 		bindWidget(element, newWidget);
 
@@ -477,6 +494,8 @@ public class RienaWBWRenderer extends SWTPartRenderer {
 		// TODO: This should be added to the model, see bug 308494
 		wbwShell.setImages(Window.getDefaultImages());
 
+		applicationView.doInitialBinding();
+
 		return newWidget;
 	}
 
@@ -486,22 +505,56 @@ public class RienaWBWRenderer extends SWTPartRenderer {
 	 * @param rtlStyle
 	 * @return
 	 */
-	private Shell rienaCreateShell(final int rtlStyle) {
+	private Shell rienaCreateShell(final int rtlStyle, final MWindow modelElement) {
 		final Shell shell = new Shell(Display.getCurrent(), SWT.NO_TRIM | rtlStyle);
 		RcpUtilities.setShell(shell);
+		final Rectangle shellBounds = applicationView.initShell(shell);
+		modelElement.setX(shellBounds.x);
+		modelElement.setY(shellBounds.y);
+		modelElement.setWidth(shellBounds.width);
+		modelElement.setHeight(shellBounds.height);
 		eventBroker.send(SHELL_CREATED, shell);
 		return shell;
 	}
 
-	/**
-	 * The given {@link TrimmedPartLayout} holds the window "client area" which is a composite with a {@link RienaWindowLayout}. We need to set another layout
-	 * so that the header appears at the top (and has a fixed size), and the "client area" fills the window below the header.
-	 * 
-	 * @param tl
-	 */
-	private void rienaModifyTl(final TrimmedPartLayout tl) {
-		//		tl.clientArea.setLayout(new RienaWindowLayout(SWT.VERTICAL, 100, 20));
-		tl.clientArea.setLayout(new RienaDynamicWindowLayout(SWT.VERTICAL, new int[] { 80, 26, 26, -1, 26 }));
+	private void rienaCreateContents(final Composite clientArea) {
+		final GridLayout layout = new GridLayout();
+		final Integer shellPadding = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.TITLELESS_SHELL_PADDING);
+		layout.marginWidth = shellPadding;
+		layout.marginHeight = shellPadding;
+		layout.horizontalSpacing = 0;
+		layout.verticalSpacing = 0;
+		clientArea.setLayout(layout);
+
+		header = new Composite(clientArea, SWT.NONE);
+		final GridData headerLayoutData = new GridData(GridData.FILL_HORIZONTAL);
+		final int headerPartHeight = SwitcherComposite.getShellPadding() + SwitcherComposite.getSwitchterHeight() + SwitcherComposite.getSwitchterTopMargin();
+		headerLayoutData.heightHint = headerPartHeight;
+		header.setLayoutData(headerLayoutData);
+		header.setLayout(new FillLayout());
+
+		mainMenu = new Composite(clientArea, SWT.NONE);
+		mainMenu.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		mainMenu.setLayout(new FillLayout());
+
+		final Separator separator = UIControlsFactory.createSeparator(clientArea, SWT.HORIZONTAL);
+		final GridData separatorLayoutData = new GridData(GridData.FILL_HORIZONTAL);
+		separatorLayoutData.heightHint = 2;
+		separator.setLayoutData(separatorLayoutData);
+
+		mainToolBar = new Composite(clientArea, SWT.NONE);
+		mainToolBar.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		mainToolBar.setLayout(new FillLayout());
+
+		perspectiveStack = new Composite(clientArea, SWT.NONE);
+		perspectiveStack.setLayoutData(new GridData(GridData.FILL_BOTH));
+		perspectiveStack.setLayout(new FillLayout());
+
+		statuLine = new Composite(clientArea, SWT.NONE);
+		final GridData statusLayoutData = new GridData(GridData.FILL_HORIZONTAL);
+		statusLayoutData.heightHint = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.STATUSLINE_HEIGHT);
+		statuLine.setLayoutData(statusLayoutData);
+		statuLine.setLayout(new FillLayout());
 	}
 
 	private void setCloseHandler(final MWindow window) {
@@ -673,9 +726,23 @@ public class RienaWBWRenderer extends SWTPartRenderer {
 			return parent == null ? null : parent.getWidget();
 		}
 
-		final Composite shellComp = (Composite) element.getParent().getWidget();
-		final TrimmedPartLayout tpl = (TrimmedPartLayout) shellComp.getLayout();
-		return tpl.clientArea;
+		if (E4XMIConstants.HEADER_PART_ID.equals(element.getElementId())) {
+			return header;
+		}
+		if (E4XMIConstants.MAIN_MENU_PART_ID.equals(element.getElementId())) {
+			return mainMenu;
+		}
+		if (E4XMIConstants.MAIN_TOOLBAR_PART_ID.equals(element.getElementId())) {
+			return mainToolBar;
+		}
+		if (E4XMIConstants.STATUSLINE_PART_ID.equals(element.getElementId())) {
+			return statuLine;
+		}
+		if (E4XMIConstants.PERSPECTIVE_STACK_ID.equals(element.getElementId())) {
+			return perspectiveStack;
+		}
+
+		return null;
 	}
 
 	/*

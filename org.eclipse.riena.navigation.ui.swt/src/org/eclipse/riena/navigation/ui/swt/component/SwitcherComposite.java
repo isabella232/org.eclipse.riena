@@ -76,7 +76,7 @@ public class SwitcherComposite extends Composite {
 	 * 
 	 * @return margin
 	 */
-	private int getSwitchterTopMargin() {
+	public static int getSwitchterTopMargin() {
 
 		final int margin = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.SUB_APPLICATION_SWITCHER_TOP_MARGIN);
 		return margin;
@@ -88,7 +88,7 @@ public class SwitcherComposite extends Composite {
 	 * 
 	 * @return height
 	 */
-	private int getSwitchterHeight() {
+	public static int getSwitchterHeight() {
 
 		final int margin = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.SUB_APPLICATION_SWITCHER_HEIGHT);
 		return margin;
@@ -100,7 +100,7 @@ public class SwitcherComposite extends Composite {
 	 * 
 	 * @return padding
 	 */
-	private int getShellPadding() {
+	public static int getShellPadding() {
 
 		final ShellBorderRenderer borderRenderer = (ShellBorderRenderer) LnfManager.getLnf().getRenderer(LnfKeyConstants.TITLELESS_SHELL_BORDER_RENDERER);
 		return borderRenderer.getCompleteBorderWidth();

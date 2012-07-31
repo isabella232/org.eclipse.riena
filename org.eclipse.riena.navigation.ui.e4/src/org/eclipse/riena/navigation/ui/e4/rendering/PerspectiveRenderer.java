@@ -7,20 +7,25 @@ import org.eclipse.e4.ui.model.application.ui.basic.MWindow;
 import org.eclipse.e4.ui.services.IStylingEngine;
 import org.eclipse.e4.ui.workbench.IPresentationEngine;
 import org.eclipse.e4.ui.workbench.renderers.swt.SWTPartRenderer;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Widget;
+
+import org.eclipse.riena.navigation.ui.e4.E4XMIConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
 
 /**
  *
  */
 public class PerspectiveRenderer extends SWTPartRenderer {
 
-	public PerspectiveRenderer() {
-		super();
-	}
+	private Composite navigationPart;
+	private Composite contents;
 
 	@Override
 	public Widget createWidget(final MUIElement element, final Object parent) {
@@ -28,13 +33,23 @@ public class PerspectiveRenderer extends SWTPartRenderer {
 			return null;
 		}
 
-		final Composite perspArea = new Composite((Composite) parent, SWT.NONE);
-		//		perspArea.setLayout(new RienaWindowLayout(SWT.HORIZONTAL, 250, 0));
-		perspArea.setLayout(new RienaDynamicWindowLayout(SWT.HORIZONTAL, new int[] { 250, -1 }));
-		final IStylingEngine stylingEngine = (IStylingEngine) getContext(element).get(IStylingEngine.SERVICE_NAME);
-		stylingEngine.setClassname(perspArea, "perspectiveLayout"); //$NON-NLS-1$
+		final Composite c = new Composite((Composite) parent, SWT.NONE);
+		c.setLayout(new GridLayout(2, false));
 
-		return perspArea;
+		navigationPart = new Composite(c, SWT.NONE);
+		final GridData navigationLayoutData = new GridData(GridData.FILL_VERTICAL);
+		navigationLayoutData.widthHint = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.NAVIGATION_WIDTH);
+		navigationPart.setLayoutData(navigationLayoutData);
+		navigationPart.setLayout(new FillLayout());
+
+		contents = new Composite(c, SWT.NONE);
+		contents.setLayoutData(new GridData(GridData.FILL_BOTH));
+		contents.setLayout(new FillLayout());
+
+		final IStylingEngine stylingEngine = (IStylingEngine) getContext(element).get(IStylingEngine.SERVICE_NAME);
+		stylingEngine.setClassname(c, "perspectiveLayout"); //$NON-NLS-1$
+
+		return c;
 	}
 
 	/*
@@ -63,14 +78,11 @@ public class PerspectiveRenderer extends SWTPartRenderer {
 	 */
 	@Override
 	public Object getUIContainer(final MUIElement element) {
-		if (!(element instanceof MWindow)) {
-			return super.getUIContainer(element);
+		if (E4XMIConstants.NAVIGATION_PART_ID.equals(element.getElementId())) {
+			return navigationPart;
 		}
-
-		final MPerspective persp = (MPerspective) ((EObject) element).eContainer();
-		if (persp.getWidget() instanceof Composite) {
-			final Composite comp = (Composite) persp.getWidget();
-			return comp.getShell();
+		if (E4XMIConstants.CONTENT_PART_STACK_ID.equals(element.getElementId())) {
+			return contents;
 		}
 
 		return null;
