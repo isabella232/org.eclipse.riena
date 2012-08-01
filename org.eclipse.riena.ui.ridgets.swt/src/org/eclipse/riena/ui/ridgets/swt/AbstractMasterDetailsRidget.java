@@ -504,7 +504,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	}
 
 	protected void handleSelectionChange(final Object newSelection) {
-		final ITableRidget table = getRidget(ITableRidget.class, MasterDetailsComposite.BIND_ID_TABLE);
+		final IMarkableRidget table = getRidget(IMarkableRidget.class, MasterDetailsComposite.BIND_ID_TABLE);
 		final Collection<ErrorMarker> errorMarkers = table.getMarkersOfType(ErrorMarker.class);
 		for (final ErrorMarker m : errorMarkers) {
 			table.removeMarker(m);
