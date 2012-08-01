@@ -546,7 +546,9 @@ public class RienaWBWRenderer extends SWTPartRenderer {
 		header.setLayout(new FillLayout());
 
 		mainMenu = new Composite(clientArea, SWT.NONE);
-		mainMenu.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		final GridData mainMenuLayoutData = new GridData(GridData.FILL_HORIZONTAL);
+		mainMenuLayoutData.verticalIndent = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.MENUBAR_TOP_MARGIN);
+		mainMenu.setLayoutData(mainMenuLayoutData);
 		final FillLayout mainMenuLayout = new FillLayout();
 		final Integer shellPadding = isHideOSBorder() ? LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.TITLELESS_SHELL_PADDING) : 0;
 		mainMenuLayout.marginWidth = shellPadding;
@@ -558,7 +560,9 @@ public class RienaWBWRenderer extends SWTPartRenderer {
 		separator.setLayoutData(separatorLayoutData);
 
 		mainToolBar = new Composite(clientArea, SWT.NONE);
-		mainToolBar.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		final GridData mainToolBarLayoutData = new GridData(GridData.FILL_HORIZONTAL);
+		mainToolBarLayoutData.verticalIndent = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.TOOLBAR_TOP_MARGIN);
+		mainToolBar.setLayoutData(mainToolBarLayoutData);
 		final FillLayout mainToolBarLayout = new FillLayout();
 		mainToolBarLayout.marginWidth = shellPadding;
 		mainToolBar.setLayout(mainToolBarLayout);

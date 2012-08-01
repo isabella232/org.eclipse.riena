@@ -165,6 +165,7 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 	/**
 	 * @param parent
 	 * @return
+	 * @since 4.0
 	 */
 	protected INavigationCompositeDelegation createButtonsNavigationCompositeDelegation(final Composite parent) {
 		return new ScrollButtonsNavigationCompositeDeligation(parent.getParent(), parent, this);

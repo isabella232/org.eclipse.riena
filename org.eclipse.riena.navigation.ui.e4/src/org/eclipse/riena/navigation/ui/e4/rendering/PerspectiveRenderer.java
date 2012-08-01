@@ -34,16 +34,25 @@ public class PerspectiveRenderer extends SWTPartRenderer {
 		}
 
 		final Composite c = new Composite((Composite) parent, SWT.NONE);
-		c.setLayout(new GridLayout(2, false));
+		final GridLayout layout = new GridLayout(2, false);
+		layout.marginWidth = 0;
+		layout.marginHeight = 0;
+		layout.horizontalSpacing = 0;
+		layout.marginRight = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.TITLELESS_SHELL_SUB_MODULE_HORIZONTAL_GAP);
+		layout.marginTop = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.TOOLBAR_WORK_AREA_VERTICAL_GAP);
+		c.setLayout(layout);
 
 		navigationPart = new Composite(c, SWT.NONE);
 		final GridData navigationLayoutData = new GridData(GridData.FILL_VERTICAL);
 		navigationLayoutData.widthHint = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.NAVIGATION_WIDTH);
+		navigationLayoutData.horizontalIndent = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.TITLELESS_SHELL_NAVIGATION_HORIZONTAL_GAP);
 		navigationPart.setLayoutData(navigationLayoutData);
 		navigationPart.setLayout(new FillLayout());
 
 		contents = new Composite(c, SWT.NONE);
-		contents.setLayoutData(new GridData(GridData.FILL_BOTH));
+		final GridData contentsLayoutData = new GridData(GridData.FILL_BOTH);
+		contentsLayoutData.horizontalIndent = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.NAVIGATION_SUB_MODULE_GAP);
+		contents.setLayoutData(contentsLayoutData);
 		contents.setLayout(new FillLayout());
 
 		final IStylingEngine stylingEngine = (IStylingEngine) getContext(element).get(IStylingEngine.SERVICE_NAME);
