@@ -2,6 +2,9 @@ package org.eclipse.riena.navigation.ui.e4.part;
 
 import javax.inject.Inject;
 
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -30,6 +33,9 @@ public class StatusLinePart {
 	public static final int BOTTOM_OFFSET = 3;
 
 	@Inject
+	private IExtensionRegistry extensionRegistry;
+
+	@Inject
 	public void create(final Composite parent) {
 		final Composite c = new Composite(parent, SWT.NONE);
 		c.setLayout(new FormLayout());
@@ -47,7 +53,7 @@ public class StatusLinePart {
 
 	private void createStatusLine(final Composite parent, final Composite grabCorner) {
 		//		final IStatusLineContentFactory statusLineFactory = getStatuslineContentFactory(); // TODO from extension point
-		final IStatusLineContentFactory statusLineFactory = new DefaultStatuslineContentFactory();
+		final IStatusLineContentFactory statusLineFactory = getStatusLineContentFactory();
 		final Statusline statusLine = new Statusline(parent, SWT.None, StatuslineSpacer.class, statusLineFactory);
 		final FormData fd = new FormData();
 		//		final Rectangle navigationBounds = TitlelessStackPresentation.calcNavigationBounds(parent);
@@ -69,5 +75,26 @@ public class StatusLinePart {
 		final InjectSwtViewBindingDelegate binding = new InjectSwtViewBindingDelegate();
 		binding.addUIControl(statusLine, bindingId);
 		binding.injectAndBind((ApplicationController) ApplicationNodeManager.getApplicationNode().getNavigationNodeController());
+	}
+
+	/**
+	 * TODO use riena injection mechanism
+	 * 
+	 * @return
+	 */
+	private IStatusLineContentFactory getStatusLineContentFactory() {
+		final IConfigurationElement[] extensions = extensionRegistry.getConfigurationElementsFor("org.eclipse.riena.navigation.ui.swt.statusLine");
+		if (extensions.length == 0) {
+			return new DefaultStatuslineContentFactory();
+		} else {
+			try {
+				return (IStatusLineContentFactory) extensions[0].createExecutableExtension("factory");
+			} catch (final CoreException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		return new DefaultStatuslineContentFactory();
 	}
 }

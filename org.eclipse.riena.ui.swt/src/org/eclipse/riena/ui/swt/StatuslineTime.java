@@ -95,7 +95,7 @@ public class StatuslineTime extends AbstractStatuslineComposite {
 		if ((timeLabel != null) && (!timeLabel.isDisposed())) {
 			timeLabel.setText(timeStrg);
 		}
-		//		updateJob.schedule(A_SECOND);
+		updateJob.schedule(A_SECOND);
 
 	}
 
