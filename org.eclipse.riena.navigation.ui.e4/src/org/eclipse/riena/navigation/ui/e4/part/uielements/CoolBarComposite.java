@@ -41,6 +41,8 @@ public class CoolBarComposite extends Composite {
 		layout.marginBottom = 0;
 		layout.spacing = 0;
 		setLayout(layout);
+
+		updateItems();
 	}
 
 	public List<ToolItem> updateItems() {
