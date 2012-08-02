@@ -12,8 +12,11 @@ import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 
 import org.eclipse.riena.navigation.ApplicationNodeManager;
+import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.ApplicationController;
 import org.eclipse.riena.navigation.ui.swt.binding.InjectSwtViewBindingDelegate;
+import org.eclipse.riena.ui.ridgets.IStatuslineNumberRidget;
+import org.eclipse.riena.ui.ridgets.IStatuslineRidget;
 import org.eclipse.riena.ui.swt.DefaultStatuslineContentFactory;
 import org.eclipse.riena.ui.swt.GrabCorner;
 import org.eclipse.riena.ui.swt.IStatusLineContentFactory;
@@ -48,10 +51,19 @@ public class StatusLinePart {
 			layoutData.right.offset = 0;
 			layoutData.bottom.offset = 0;
 		}
-		createStatusLine(c, grabCorner);
+		final Statusline statusLine = createStatusLine(c, grabCorner);
+		final IStatuslineRidget statusLineRidget = addUIControl(statusLine, "statusline"); //$NON-NLS-1$
+
+		// set the active node (if any) to the status line
+		// TODO is this really part of Riena? very similar code can be found in SwtExampleApplication
+		final ISubModuleNode activeSubModuleNode = ApplicationNodeManager.locateActiveSubModuleNode();
+		final IStatuslineNumberRidget numberRidget = statusLineRidget.getStatuslineNumberRidget();
+		if (activeSubModuleNode != null && numberRidget != null) {
+			numberRidget.setNumberString(activeSubModuleNode.getLabel());
+		}
 	}
 
-	private void createStatusLine(final Composite parent, final Composite grabCorner) {
+	private Statusline createStatusLine(final Composite parent, final Composite grabCorner) {
 		//		final IStatusLineContentFactory statusLineFactory = getStatuslineContentFactory(); // TODO from extension point
 		final IStatusLineContentFactory statusLineFactory = getStatusLineContentFactory();
 		final Statusline statusLine = new Statusline(parent, SWT.None, StatuslineSpacer.class, statusLineFactory);
@@ -66,15 +78,17 @@ public class StatusLinePart {
 		}
 		fd.bottom = new FormAttachment(100, -BOTTOM_OFFSET);
 		statusLine.setLayoutData(fd);
-		addUIControl(statusLine, "statusline"); //$NON-NLS-1$
 
 		LnFUpdater.getInstance().updateUIControls(statusLine, true);
+		return statusLine;
 	}
 
-	private void addUIControl(final Statusline statusLine, final String bindingId) {
+	private IStatuslineRidget addUIControl(final Statusline statusLine, final String bindingId) {
 		final InjectSwtViewBindingDelegate binding = new InjectSwtViewBindingDelegate();
 		binding.addUIControl(statusLine, bindingId);
-		binding.injectAndBind((ApplicationController) ApplicationNodeManager.getApplicationNode().getNavigationNodeController());
+		final ApplicationController applicationController = (ApplicationController) ApplicationNodeManager.getApplicationNode().getNavigationNodeController();
+		binding.injectAndBind(applicationController);
+		return applicationController.getStatusline();
 	}
 
 	/**
