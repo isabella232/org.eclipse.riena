@@ -573,6 +573,9 @@ public class RienaWBWRenderer extends SWTPartRenderer {
 		perspectiveStackLayout.marginWidth = shellPadding;
 		perspectiveStack.setLayout(perspectiveStackLayout);
 
+		applicationView.createInfoFlyout(perspectiveStack).setPositionCorrectionY(
+				LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.TOOLBAR_WORK_AREA_VERTICAL_GAP));
+
 		statusLine = new Composite(clientArea, SWT.NONE);
 		final GridData statusLayoutData = new GridData(GridData.FILL_HORIZONTAL);
 		statusLayoutData.verticalIndent = shellPadding;

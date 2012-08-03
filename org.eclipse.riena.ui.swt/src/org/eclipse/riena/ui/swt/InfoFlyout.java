@@ -16,8 +16,7 @@ import org.eclipse.riena.ui.swt.utils.IPropertyNameProvider;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
- * This widget implements a message that pops-up on top of the SubModuleView. No
- * user interaction is possible and it closes after a few seconds.
+ * This widget implements a message that pops-up on top of the SubModuleView. No user interaction is possible and it closes after a few seconds.
  * <p>
  * It is possible to set a message and an icon.
  * 
@@ -26,6 +25,10 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 public abstract class InfoFlyout implements IPropertyNameProvider {
 
 	private String bindingId;
+	/**
+	 * @since 4.0
+	 */
+	protected int positionCorrectionY;
 
 	/**
 	 * See {@link UIControlsFactory#createInfoFlyout(Composite)}.
@@ -48,6 +51,15 @@ public abstract class InfoFlyout implements IPropertyNameProvider {
 
 	public final String getPropertyName() {
 		return bindingId;
+	}
+
+	/**
+	 * @param positionCorrectionY
+	 *            the positionCorrectionY to set
+	 * @since 4.0
+	 */
+	public void setPositionCorrectionY(final int positionCorrectionY) {
+		this.positionCorrectionY = positionCorrectionY;
 	}
 
 	/**

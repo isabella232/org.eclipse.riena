@@ -23,10 +23,12 @@ import org.eclipse.riena.navigation.ApplicationNodeManager;
 import org.eclipse.riena.navigation.ui.controllers.ApplicationController;
 import org.eclipse.riena.navigation.ui.swt.binding.InjectSwtViewBindingDelegate;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellRenderer;
+import org.eclipse.riena.ui.swt.InfoFlyout;
 import org.eclipse.riena.ui.swt.lnf.ILnfRenderer;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.ImageStore;
+import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 import org.eclipse.riena.ui.swt.utils.WidgetIdentificationSupport;
 
 /**
@@ -153,8 +155,18 @@ public class ApplicationView {
 		return shellRenderer;
 	}
 
-	public void addUIControl(final Composite control, final String propertyName) {
-		binding.addUIControl(control, propertyName);
+	public void addUIControl(final Object uiElement, final String propertyName) {
+		binding.addUIControl(uiElement, propertyName);
+	}
+
+	/**
+	 * @param parent
+	 * @return
+	 */
+	public InfoFlyout createInfoFlyout(final Composite parent) {
+		final InfoFlyout infoFlyout = UIControlsFactory.createInfoFlyout(parent);
+		addUIControl(infoFlyout, "infoFlyout");
+		return infoFlyout;
 	}
 
 	private class ShellPaintListener implements PaintListener {
