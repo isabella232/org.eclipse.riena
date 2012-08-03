@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.swt.optional;
 
-import org.eclipse.nebula.widgets.compositetable.CompositeTable;
 import org.eclipse.nebula.widgets.grid.Grid;
+import org.eclipse.swt.nebula.widgets.compositetable.CompositeTable;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 
