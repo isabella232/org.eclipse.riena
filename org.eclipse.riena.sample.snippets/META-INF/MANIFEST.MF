@@ -2,8 +2,8 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Riena Snippets Plug-in 
 Bundle-SymbolicName: org.eclipse.riena.sample.snippets
-Bundle-Version: 4.0.0.qualifier
+Bundle-Version: 5.0.0.qualifier
 Bundle-Vendor: Eclipse.org - Riena
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.eclipse.riena.client.ridgets
 Import-Package: com.ibm.icu.text
