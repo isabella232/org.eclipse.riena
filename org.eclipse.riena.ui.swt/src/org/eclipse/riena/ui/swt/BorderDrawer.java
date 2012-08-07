@@ -213,6 +213,8 @@ public class BorderDrawer implements Listener {
 
 	/**
 	 * request an update at the UI event queue end
+	 * 
+	 * @since 5.0
 	 */
 	public void scheduleUpdate(final boolean redraw) {
 		getControlToDecorate().getDisplay().asyncExec(new Runnable() {
