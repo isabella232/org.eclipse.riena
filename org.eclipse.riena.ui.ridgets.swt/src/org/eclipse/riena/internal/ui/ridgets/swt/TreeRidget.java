@@ -18,6 +18,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -35,6 +36,7 @@ import org.eclipse.core.databinding.beans.PojoObservables;
 import org.eclipse.core.databinding.observable.IObservable;
 import org.eclipse.core.databinding.observable.Observables;
 import org.eclipse.core.databinding.observable.Realm;
+import org.eclipse.core.databinding.observable.list.ObservableList;
 import org.eclipse.core.databinding.observable.map.IMapChangeListener;
 import org.eclipse.core.databinding.observable.map.IObservableMap;
 import org.eclipse.core.databinding.observable.map.MapChangeEvent;
@@ -230,7 +232,6 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 			final String parentAccessor, final String[] valueAccessors, final String[] columnHeaders, final String enablementAccessor,
 			final String visibilityAccessor, final String imageAccessor, final String openNodeImageAccessor, final String expandedAccessor) {
 		Assert.isNotNull(treeRoots);
-		Assert.isLegal(treeRoots.length > 0, "treeRoots must have at least one entry"); //$NON-NLS-1$
 		Assert.isNotNull(treeElementClass);
 		Assert.isNotNull(childrenAccessor);
 		Assert.isNotNull(parentAccessor);
@@ -527,7 +528,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 				if (showRoots) {
 					viewer.setInput(treeRoots);
 				} else {
-					final FakeRoot fakeRoot = new FakeRoot(treeRoots[0], childrenAccessor);
+					final FakeRoot fakeRoot = new FakeRoot(treeRoots.length > 0 ? treeRoots[0] : null, childrenAccessor);
 					viewer.setInput(fakeRoot);
 				}
 				viewer.setExpandedElements(expandedElements);
@@ -612,7 +613,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		if (showRoots) {
 			viewer.setInput(treeRoots);
 		} else {
-			final FakeRoot fakeRoot = new FakeRoot(treeRoots[0], childrenAccessor);
+			final FakeRoot fakeRoot = new FakeRoot(treeRoots.length > 0 ? treeRoots[0] : null, childrenAccessor);
 			viewer.setInput(fakeRoot);
 		}
 		final IObservableMap enablementAttr = createObservableAttribute(viewerCP, enablementAccessor);
@@ -689,6 +690,11 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 				Object value;
 				if (target instanceof FakeRoot) {
 					value = ((FakeRoot) target).getRoot();
+					if (value == null) {
+						return new ObservableList(Collections.EMPTY_LIST, treeElementClass) {
+							// empty list
+						};
+					}
 				} else {
 					value = target;
 				}
@@ -756,7 +762,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 					final Set<?> affectedElements = event.diff.getChangedKeys();
 					for (final Object element : affectedElements) {
 						final Object parent = structureAdvisor.getParent(element);
-						if (parent == null || (parent == treeRoots[0] && !showRoots)) {
+						if (parent == null || treeRoots.length == 0 || (parent == treeRoots[0] && !showRoots)) {
 							viewer.refresh();
 						} else {
 							viewer.refresh(parent);
@@ -1022,16 +1028,17 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	 */
 	static final class FakeRoot extends ArrayList<Object> {
 		private static final long serialVersionUID = 1L;
-		private final String accessor;
 		private final Object root0;
+		private String accessor;
 
 		FakeRoot(final Object root0, final String childrenAccessor) {
-			Assert.isNotNull(root0);
 			Assert.isNotNull(childrenAccessor);
-			this.root0 = root0;
-			this.accessor = "get" + StringUtils.capitalize(childrenAccessor); //$NON-NLS-1$
 			clear();
-			addAll(ReflectionUtils.<List<Object>> invoke(root0, accessor));
+			this.root0 = root0;
+			if (root0 != null) {
+				this.accessor = "get" + StringUtils.capitalize(childrenAccessor); //$NON-NLS-1$
+				addAll(ReflectionUtils.<List<Object>> invoke(root0, accessor));
+			}
 		}
 
 		Object getRoot() {
