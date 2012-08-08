@@ -830,7 +830,7 @@ public final class LnfKeyConstants {
 	/**
 	 * The amount of pixel the will be moved by when the up/down arrows of the scroll bar are pressed.
 	 * 
-	 * @since 4.0
+	 * @since 5.0
 	 */
 	public static final String NAVIGATION_SCROLL_BAR_INCREMENT = "navigation.scroll.bar.increment"; //$NON-NLS-1$
 

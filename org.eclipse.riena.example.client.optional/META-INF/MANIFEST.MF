@@ -2,8 +2,8 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Riena Example Client - Optional Examples Plug-in
 Bundle-SymbolicName: org.eclipse.riena.example.client.optional;singleton:=true
-Bundle-Version: 4.0.0.qualifier
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-Version: 5.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.eclipse.nebula.widgets.compositetable,
  org.eclipse.riena.client,
  org.eclipse.nebula.widgets.grid;bundle-version="1.0.0"

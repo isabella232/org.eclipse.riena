@@ -150,7 +150,7 @@ public final class SwtUtilities {
 	 * <p>
 	 * Will return -1 if no column could be computed -- this is the case when all columns are resized to have width 0.
 	 * 
-	 * @since 4.0
+	 * @since 5.0
 	 */
 	public static int findColumn(final Tree tree, final Point pt) {
 		int width = 0;

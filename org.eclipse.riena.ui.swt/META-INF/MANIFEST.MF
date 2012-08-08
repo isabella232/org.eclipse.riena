@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Riena UI SWT Plug-in
 Bundle-SymbolicName: org.eclipse.riena.ui.swt;singleton:=true
-Bundle-Version: 4.0.0.qualifier
+Bundle-Version: 5.0.0.qualifier
 Bundle-Activator: org.eclipse.riena.internal.ui.swt.Activator
 Require-Bundle: org.eclipse.jface;resolution:=optional;visibility:=reexport,
  org.eclipse.rap.jface;resolution:=optional;visibility:=reexport,
@@ -27,7 +27,7 @@ Export-Package: org.eclipse.riena.internal.ui.swt;x-internal:=true,
  org.eclipse.riena.ui.swt.separator,
  org.eclipse.riena.ui.swt.uiprocess,
  org.eclipse.riena.ui.swt.utils
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: junit.framework;version="3.8.2";resolution:=optional,
  org.osgi.service.log;version="1.3.0"
 Eclipse-BuddyPolicy: registered

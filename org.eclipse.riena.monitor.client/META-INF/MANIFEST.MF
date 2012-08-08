@@ -2,13 +2,13 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Riena Monitor Client Plug-in
 Bundle-SymbolicName: org.eclipse.riena.monitor.client;singleton:=true
-Bundle-Version: 4.0.0.qualifier
+Bundle-Version: 5.0.0.qualifier
 Bundle-Activator: org.eclipse.riena.internal.monitor.client.Activator
 Eclipse-BuddyPolicy: registered
 Require-Bundle: org.eclipse.riena.core,
  org.eclipse.riena.monitor.common
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: org.osgi.service.log;version="1.3.0"
 Export-Package: org.eclipse.riena.internal.monitor.client;x-internal:=true,
  org.eclipse.riena.monitor.client
