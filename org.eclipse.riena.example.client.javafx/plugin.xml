@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?eclipse version="3.4"?>
+
+<plugin>
+    <extension point="org.eclipse.ui.views">
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.javafx.views.JavaFxAdditionView" id="org.eclipse.riena.example.client.javafx.views.JavaFxAdderView" name="org.eclipse.riena.example.client.javafx.views.NEWView"/>
+    </extension>
+    <extension point="org.eclipse.ui.perspectives">
+        <perspective class="org.eclipse.riena.navigation.ui.swt.views.SubApplicationView" id="org.eclipse.riena.example.client.javafx.JavaFX.perspective" name="org.eclipse.riena.example.client.javafx.JavaFX.perspective"/>
+    </extension>
+<extension point="org.eclipse.riena.navigation.assemblies2">
+        <assembly2 id="org.eclipse.riena.example.client.javafx" name="JavaFX Examples" parentNodeId="application" startOrder="1">
+            <subApplication name="JavaFX" nodeId="org.eclipse.riena.example.client.javafx.JavaFX.subapp" perspectiveId="org.eclipse.riena.example.client.javafx.JavaFX.perspective">
+                <moduleGroup name="Playground" nodeId="org.eclipse.riena.example.client.javafx.Playground.modulegroup">
+                    <module closable="true" name="Playground" nodeId="org.eclipse.riena.example.client.javafx.Playground.module">
+                        <subModule controller="org.eclipse.riena.example.client.javafx.controller.JavaFxAdderController" expanded="false" name="Adder" nodeId="org.eclipse.riena.example.client.javafx.Adder.submodule" requiresPreparation="false" selectable="true" sharedView="false" viewId="org.eclipse.riena.example.client.javafx.views.JavaFxAdderView" visible="true"/>
+                    </module>
+                </moduleGroup>
+            </subApplication>
+        </assembly2>
+    </extension>
+</plugin>

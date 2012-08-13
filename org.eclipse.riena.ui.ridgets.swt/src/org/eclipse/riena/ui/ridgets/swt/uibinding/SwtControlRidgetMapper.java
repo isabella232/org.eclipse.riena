@@ -10,12 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.swt.uibinding;
 
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.eclipse.core.databinding.BindingException;
-import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.custom.CCombo;
@@ -76,8 +70,8 @@ import org.eclipse.riena.internal.ui.ridgets.swt.ToolItemRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.TreeRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.TreeTableRidget;
 import org.eclipse.riena.ui.ridgets.ClassRidgetMapper;
-import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.swt.ImageButtonRidget;
+import org.eclipse.riena.ui.ridgets.uibinding.AbstractControlRidgetMapper;
 import org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper;
 import org.eclipse.riena.ui.ridgets.uibinding.IMappingCondition;
 import org.eclipse.riena.ui.swt.ChoiceComposite;
@@ -97,17 +91,11 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 /**
  * Default implementation of {@link IControlRidgetMapper} for SWT.
  * <p>
- * Note: for mappings between Interfaces and Ridget implementations see
- * {@link ClassRidgetMapper}
+ * Note: for mappings between Interfaces and Ridget implementations see {@link ClassRidgetMapper}
  */
-public final class SwtControlRidgetMapper implements IControlRidgetMapper<Object> {
+public final class SwtControlRidgetMapper extends AbstractControlRidgetMapper {
 
-	private static final SingletonProvider<SwtControlRidgetMapper> SCRM = new SingletonProvider<SwtControlRidgetMapper>(
-			SwtControlRidgetMapper.class);
-
-	private static final int IGNORE_SWT_STYLE = -99;
-
-	private final List<Mapping> mappings = new ArrayList<Mapping>();
+	private static final SingletonProvider<SwtControlRidgetMapper> SCRM = new SingletonProvider<SwtControlRidgetMapper>(SwtControlRidgetMapper.class);
 
 	/**
 	 * Answer the singleton <code>SwtControlRidgetMapper</code>
@@ -137,9 +125,9 @@ public final class SwtControlRidgetMapper implements IControlRidgetMapper<Object
 		addMapping(Label.class, LabelRidget.class);
 		addMapping(Table.class, TableRidget.class);
 		addMapping(Browser.class, BrowserRidget.class);
-		addMapping(Button.class, ToggleButtonRidget.class, SWT.CHECK);
-		addMapping(Button.class, ToggleButtonRidget.class, SWT.TOGGLE);
-		addMapping(Button.class, ToggleButtonRidget.class, SWT.RADIO);
+		addMapping(Button.class, ToggleButtonRidget.class, new StyleCondition(SWT.CHECK));
+		addMapping(Button.class, ToggleButtonRidget.class, new StyleCondition(SWT.TOGGLE));
+		addMapping(Button.class, ToggleButtonRidget.class, new StyleCondition(SWT.RADIO));
 		addMapping(ImageButton.class, ImageButtonRidget.class);
 		addMapping(Button.class, ActionRidget.class);
 		addMapping(ChoiceComposite.class, SingleChoiceRidget.class, new SingleChoiceCondition());
@@ -169,246 +157,27 @@ public final class SwtControlRidgetMapper implements IControlRidgetMapper<Object
 		addMapping(Shell.class, ShellRidget.class);
 	}
 
-	public void addMapping(final Class<? extends Object> controlClazz, final Class<? extends IRidget> ridgetClazz) {
-		final Mapping mapping = new Mapping(controlClazz, ridgetClazz);
-		mappings.add(mapping);
-		addMappingToClassRidgetMapper(ridgetClazz);
-	}
+	private final class StyleCondition implements IMappingCondition {
 
-	/**
-	 * Adds a mapping of a UI control-class to a ridget-class. The mapping will
-	 * only apply when the control has the specified swt style.
-	 * <p>
-	 * Example:
-	 * <p>
-	 * {@code addMapping(Button.class, ToggleButtonRidget.class, SWT.CHECK);}
-	 * <p>
-	 * Adding the same mapping twice has no effect (but is possible).
-	 * 
-	 * @param controlClazz
-	 *            the class of the UI control (<code>Object</code>)
-	 * @param ridgetClazz
-	 *            the class of the ridget
-	 * @param swtStyle
-	 *            SWT style of the UI control (<code>Object</code>)
-	 */
-	public void addMapping(final Class<? extends Object> controlClazz, final Class<? extends IRidget> ridgetClazz,
-			final int swtStyle) {
-		final Mapping mapping = new Mapping(controlClazz, ridgetClazz, swtStyle);
-		mappings.add(mapping);
-		addMappingToClassRidgetMapper(ridgetClazz);
-	}
-
-	/**
-	 * Adds a mapping of a UI control-class to a ridget-class. The mapping will
-	 * only apply when the given condition evaluates to true.
-	 * <p>
-	 * Example:
-	 * <p>
-	 * {@code addMapping(Tree.class, TreeRidget.class, new
-	 * TreeWithoutColumnsCondition());}
-	 * <p>
-	 * Adding the same mapping twice has no effect (but is possible).
-	 * 
-	 * @param controlClazz
-	 *            the class of the UI control (<code>Object</code>)
-	 * @param ridgetClazz
-	 *            the class of the ridget
-	 * @param condition
-	 *            the condition to evaluate (non-null)
-	 * @see IMappingCondition
-	 */
-	public void addMapping(final Class<? extends Object> controlClazz, final Class<? extends IRidget> ridgetClazz,
-			final IMappingCondition condition) {
-		final Mapping mapping = new Mapping(controlClazz, ridgetClazz, condition);
-		mappings.add(mapping);
-		addMappingToClassRidgetMapper(ridgetClazz);
-	}
-
-	private void addMappingToClassRidgetMapper(final Class<? extends IRidget> ridgetClazz) {
-		if (!Modifier.isAbstract(ridgetClazz.getModifiers())) {
-			ClassRidgetMapper.getInstance().addMapping(getPrimaryRidgetInterface(ridgetClazz), ridgetClazz);
-		}
-	}
-
-	public Class<? extends IRidget> getRidgetClass(final Class<? extends Object> controlClazz) {
-		for (final Mapping mapping : mappings) {
-			if (mapping.isMatching(controlClazz)) {
-				return mapping.getRidgetClazz();
-			}
-		}
-		throw new BindingException("No Ridget class defined for widget class " + controlClazz.getSimpleName()); //$NON-NLS-1$
-	}
-
-	public Class<? extends IRidget> getRidgetClass(final Object control) {
-		// first look for matching mappings with style or condition
-		// TODO: to optimize avoid double iteration over mappings
-		for (final Mapping mapping : mappings) {
-			if ((!mapping.isControlStyleIgnore() || mapping.hasCondition()) && mapping.isMatching(control)) {
-				return mapping.getRidgetClazz();
-			}
-		}
-		// then look for matching mappings without style and condition
-		for (final Mapping mapping : mappings) {
-			if (mapping.isControlStyleIgnore() && !mapping.hasCondition() && mapping.isMatching(control)) {
-				return mapping.getRidgetClazz();
-			}
-		}
-		return getRidgetClass(control.getClass());
-	}
-
-	/**
-	 * Finds the Primary-Interface for a given Ridget-Class. The
-	 * Primary-Interface is the one that is used to represent a specific Ridget
-	 * e.g. LabelRidget => ILabelRidget. This Method tries to find a Interface
-	 * that extends IRidget, if nothing was found in the current class, it
-	 * searches the superclasses recursively.
-	 * 
-	 * @param ridgetClass
-	 * @return the Primary-Interface extending IRidget or null if nothing was
-	 *         found
-	 */
-	@SuppressWarnings("unchecked")
-	public Class<? extends IRidget> getPrimaryRidgetInterface(final Class<? extends IRidget> ridgetClass) {
-		if (ridgetClass == null || ridgetClass.isInterface()) {
-			return null;
-		}
-
-		for (final Class<?> inf : ridgetClass.getInterfaces()) {
-			if (IRidget.class.isAssignableFrom(inf)) {
-				return (Class<? extends IRidget>) inf;
-			}
-		}
-		return getPrimaryRidgetInterface((Class<? extends IRidget>) ridgetClass.getSuperclass());
-	}
-
-	// helping classes
-	// ////////////////
-
-	/**
-	 * Mapping of UI control and ridget.
-	 */
-	public static final class Mapping {
-
-		private final Class<? extends Object> controlClazz;
-		private final Class<? extends IRidget> ridgetClazz;
 		private final int controlStyle;
-		private final IMappingCondition condition;
 
-		/**
-		 * Create a new mapping of UI control and ridget.
-		 * 
-		 * @param controlClazz
-		 *            the class of the UI control
-		 * @param ridgetClazz
-		 *            the class of the ridget
-		 */
-		public Mapping(final Class<? extends Object> controlClazz, final Class<? extends IRidget> ridgetClazz) {
-			this(controlClazz, ridgetClazz, IGNORE_SWT_STYLE, null);
+		public StyleCondition(final int style) {
+			controlStyle = style;
 		}
 
-		/**
-		 * Create a new mapping of UI control and ridget.
-		 * 
-		 * @param controlClazz
-		 *            the class of the UI control
-		 * @param ridgetClazz
-		 *            the class of the ridget
-		 * @param controlStyle
-		 *            the SWT style of the UI control
-		 */
-		public Mapping(final Class<? extends Object> controlClazz, final Class<? extends IRidget> ridgetClazz,
-				final int controlStyle) {
-			this(controlClazz, ridgetClazz, controlStyle, null);
-		}
-
-		/**
-		 * Create a new mapping of UI control and ridget.
-		 * 
-		 * @param controlClazz
-		 *            the class of the UI control
-		 * @param ridgetClazz
-		 *            the class of the ridget
-		 * @param condition
-		 *            a non-null {@link IMappingCondition} instance
-		 */
-		public Mapping(final Class<? extends Object> controlClazz, final Class<? extends IRidget> ridgetClazz,
-				final IMappingCondition condition) {
-			this(controlClazz, ridgetClazz, IGNORE_SWT_STYLE, condition);
-			Assert.isNotNull(condition);
-		}
-
-		private Mapping(final Class<? extends Object> controlClazz, final Class<? extends IRidget> ridgetClazz,
-				final int controlStyle, final IMappingCondition condition) {
-			this.controlClazz = controlClazz;
-			this.ridgetClazz = ridgetClazz;
-			this.controlStyle = controlStyle;
-			this.condition = condition;
-		}
-
-		/**
-		 * Checks if this mapping is for given UI control.
-		 * 
-		 * @param control
-		 *            the UI control-class
-		 * @return true, if the control matches; otherwise false
-		 */
-		public boolean isMatching(final Class<? extends Object> controlClazz) {
-			if (isControlStyleIgnore() && condition == null) {
-				return getControlClazz().isAssignableFrom(controlClazz);
-			} else {
-				return false;
-			}
-		}
-
-		/**
-		 * Checks if this mapping is for given UI control.
-		 * 
-		 * @param control
-		 *            the UI control
-		 * @return true, if the control matches; otherwise false
-		 */
-		public boolean isMatching(final Object control) {
-			if (control.getClass() != getControlClazz()) {
-				return false;
-			}
-			if (condition != null && !condition.isMatch(control)) {
-				return false;
-			}
-			if (control instanceof Widget && !isControlStyleIgnore()) {
-				if ((((Widget) control).getStyle() & getControlStyle()) != getControlStyle()) {
-					return false;
+		public boolean isMatch(final Object control) {
+			if (control instanceof Widget) {
+				if ((((Widget) control).getStyle() & getControlStyle()) == getControlStyle()) {
+					return true;
 				}
 			}
-			return true;
-
+			return false;
 		}
 
-		public Class<? extends IRidget> getRidgetClazz() {
-			return ridgetClazz;
-		}
-
-		// helping methods
-		// ////////////////
-
-		private boolean isControlStyleIgnore() {
-			return getControlStyle() == IGNORE_SWT_STYLE;
-		}
-
-		private boolean hasCondition() {
-			return getCondition() != null;
-		}
-
-		private Class<?> getControlClazz() {
-			return controlClazz;
-		}
-
-		private int getControlStyle() {
+		public int getControlStyle() {
 			return controlStyle;
 		}
 
-		public IMappingCondition getCondition() {
-			return condition;
-		}
 	}
+
 }
