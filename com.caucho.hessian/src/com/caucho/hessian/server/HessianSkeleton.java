@@ -175,7 +175,6 @@ public class HessianSkeleton extends AbstractSkeleton {
     for (int i = 0; i < args.length; i++) {
       values[i] = in.readObject(args[i]);
     }
-    if (true) throw new NullPointerException();
 
     Object result = null;
     
