@@ -32,10 +32,10 @@ import org.eclipse.riena.internal.ui.core.Activator;
  */
 public class UICallbackDispatcher extends ProgressProvider implements IUIMonitorContainer {
 
-	private final IUISynchronizer syncher;
+	private final IUISynchronizer synchronizer;
 	private final List<IUIMonitor> uiMonitors;
 	private final ProcessInfo pInfo;
-	private ThreadSwitcher threadSwitcher;
+	private IProgressMonitor progressMonitor;
 	private JobChangeAdapter jobListener;
 
 	/**
@@ -46,7 +46,7 @@ public class UICallbackDispatcher extends ProgressProvider implements IUIMonitor
 	 */
 	public UICallbackDispatcher(final IUISynchronizer syncher) {
 		this.uiMonitors = Collections.synchronizedList(new ArrayList<IUIMonitor>());
-		this.syncher = syncher;
+		this.synchronizer = syncher;
 		this.pInfo = new ProcessInfo();
 	}
 
@@ -72,17 +72,21 @@ public class UICallbackDispatcher extends ProgressProvider implements IUIMonitor
 	 * @return the synchronizer that serializes to the UI-Thread
 	 */
 	protected final IUISynchronizer getSyncher() {
-		return syncher;
+		return synchronizer;
 	}
 
 	@Override
 	public final IProgressMonitor createMonitor(final Job job) {
-		threadSwitcher = createThreadSwitcher();
+		progressMonitor = createThreadSwitcher();
 		observeJob(job);
-		return threadSwitcher;
+		return progressMonitor;
 	}
 
-	public ThreadSwitcher createThreadSwitcher() {
+	public IProgressMonitor createThreadSwitcher() {
+		if (null == getSyncher()) {
+			// no synchronizer available
+			return new NullProgressMonitor();
+		}
 		return new ThreadSwitcher(createWrappedMonitor());
 	}
 
@@ -193,7 +197,11 @@ public class UICallbackDispatcher extends ProgressProvider implements IUIMonitor
 	}
 
 	private void synchronize(final Runnable runnable) {
-		syncher.syncExec(runnable);
+		// check if synchronizer available
+		if (null == synchronizer) {
+			return;
+		}
+		synchronizer.syncExec(runnable);
 	}
 
 }

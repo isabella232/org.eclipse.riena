@@ -14,8 +14,7 @@ import org.eclipse.riena.core.singleton.SingletonProvider;
 import org.eclipse.riena.core.wire.InjectExtension;
 
 /**
- * The {@code UISynchronizer} creates {@code IUISynchronizer} instances which
- * can be used to perform execution of processes with in the UI.
+ * The {@code UISynchronizer} creates {@code IUISynchronizer} instances which can be used to perform execution of processes with in the UI.
  * 
  * <pre>
  * &lt;extension point=&quot;org.eclipse.riena.ui.core.uiSynchronizer&quot;&gt;
@@ -23,16 +22,13 @@ import org.eclipse.riena.core.wire.InjectExtension;
  * &lt;/extension&gt;
  * </pre>
  * 
- * In case multiple extension points exist, which define an implementation class
- * for the {@code IUISynchronizer}, there is no guarantee which one will be
- * used.
+ * In case multiple extension points exist, which define an implementation class for the {@code IUISynchronizer}, there is no guarantee which one will be used.
  * 
  * @since 1.2
  */
 public final class UISynchronizer {
 
-	private static final SingletonProvider<UISynchronizer> UIS = new SingletonProvider<UISynchronizer>(
-			UISynchronizer.class);
+	private static final SingletonProvider<UISynchronizer> UIS = new SingletonProvider<UISynchronizer>(UISynchronizer.class);
 
 	private IUISynchronizerExtension synchronizerExtension;
 
@@ -43,7 +39,7 @@ public final class UISynchronizer {
 	/**
 	 * Create a new configured {@code IUISynchronizer}.
 	 * 
-	 * @return a {@code IUISynchronizer}
+	 * @return a {@code IUISynchronizer}. Null if no {@link IUISynchronizer} instance available.
 	 */
 	public static IUISynchronizer createSynchronizer() {
 		return UIS.getInstance().create();
@@ -53,8 +49,7 @@ public final class UISynchronizer {
 		if (synchronizerExtension != null) {
 			return synchronizerExtension.createUISynchronizer();
 		}
-		throw new IllegalStateException(
-				"There is NO IUISynchronizer defined, but it must. Use extension point 'uiSynchronizer' to do this."); //$NON-NLS-1$
+		return null;
 	}
 
 	/**
