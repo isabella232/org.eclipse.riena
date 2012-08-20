@@ -121,7 +121,6 @@ public class JavaFxAdditionEclipseBindingView extends
 
 	public class CalcModel {
 
-		private int intValue1 = 11;
 		private String value1 = "1";
 		private String value2 = "2";
 		private String result = "3";
@@ -156,38 +155,26 @@ public class JavaFxAdditionEclipseBindingView extends
 
 		public void calc() {
 
-			double val1 = 0.0;
+			int val1 = 0;
 			try {
-				val1 = Double.parseDouble(getValue1());
+				val1 = Integer.parseInt(getValue1());
 			} catch (NumberFormatException e) {
 				e.printStackTrace();
 			}
-			double val2 = 0.0;
+			int val2 = 0;
 			try {
-				val2 = Double.parseDouble(getValue2());
+				val2 = Integer.parseInt(getValue2());
 			} catch (NumberFormatException e) {
 				e.printStackTrace();
 			}
-			// val1 = getIntValue1();
-			double res = val1 + val2;
-			setResult(Double.toString(res));
+			int res = val1 + val2;
+			setResult(Integer.toString(res));
 
-		}
-
-		public int getIntValue1() {
-			return intValue1;
-		}
-
-		public void setIntValue1(int intValue1) {
-			this.intValue1 = intValue1;
-			System.out.println("JavaFxAdditionView.CalcModel.setIntValue1(): "
-					+ this.intValue1);
 		}
 
 		public void clear() {
 			setValue1("");
 			setValue2("");
-			setIntValue1(0);
 			setResult("");
 		}
 
