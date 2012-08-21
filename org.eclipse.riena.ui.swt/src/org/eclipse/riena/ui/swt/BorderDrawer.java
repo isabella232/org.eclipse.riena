@@ -82,6 +82,7 @@ public class BorderDrawer implements Listener {
 	private Control controlToDecorate;
 	private boolean layouting;
 	private Rectangle boundsToDecorate;
+	private final boolean useVisibleControlArea;
 
 	/**
 	 * @param control
@@ -102,10 +103,29 @@ public class BorderDrawer implements Listener {
 	 *            the strategy that determines when the border should be drawn or <code>null</code> if the border should be always shown
 	 */
 	public BorderDrawer(final Control control, final int borderWidth, final Color borderColor, final IDecorationActivationStrategy activationStrategy) {
+		this(control, DEFAULT_BORDER_WIDTH, null, false, null);
+	}
+
+	/**
+	 * @param control
+	 *            the UI element for which the border will be drawn, not <code>null</code>
+	 * @param borderWidth
+	 *            the desired width of the border that will be drawn
+	 * @param borderColor
+	 *            the desired color of the border that will be drawn
+	 * @param useVisibleControlArea
+	 *            <code>true</code> if the border should be drawn according to the visible control area. This does not work for all control types.
+	 * @param activationStrategy
+	 *            the strategy that determines when the border should be drawn or <code>null</code> if the border should be always shown
+	 * @since 5.0
+	 */
+	public BorderDrawer(final Control control, final int borderWidth, final Color borderColor, final boolean useVisibleControlArea,
+			final IDecorationActivationStrategy activationStrategy) {
 		Assert.isNotNull(control);
 		this.control = control;
 		this.borderWidth = borderWidth;
 		this.borderColor = borderColor;
+		this.useVisibleControlArea = useVisibleControlArea;
 		this.activationStrategy = activationStrategy;
 	}
 
@@ -123,6 +143,8 @@ public class BorderDrawer implements Listener {
 			}
 		} else if (control instanceof CCombo) {
 			registerToControl(control.getParent(), SWTFacade.Paint);
+		} else if (!useVisibleControlArea) {
+			registerToControlAndChildren(control, SWTFacade.Paint);
 		} else {
 			registerToControl(control, SWTFacade.Paint);
 		}
@@ -146,6 +168,19 @@ public class BorderDrawer implements Listener {
 				dispose();
 			}
 		}, SWT.Dispose);
+	}
+
+	/**
+	 * @param children
+	 * @param paint
+	 */
+	private void registerToControlAndChildren(final Control control, final int... eventTypes) {
+		registerToControl(control, eventTypes);
+		if (control instanceof Composite) {
+			for (final Control child : ((Composite) control).getChildren()) {
+				registerToControlAndChildren(child, eventTypes);
+			}
+		}
 	}
 
 	/**
@@ -191,8 +226,14 @@ public class BorderDrawer implements Listener {
 	public void paintControl(final Event event) {
 		if (computeBorderArea) {
 			Rectangle visibleControlArea;
-			if (getControlToDecorate() instanceof CCombo || isMasterDetails) {
-				visibleControlArea = ((Composite) getControlToDecorate()).getClientArea();
+			if (!useVisibleControlArea || getControlToDecorate() instanceof CCombo || isMasterDetails) {
+				if (getControlToDecorate() instanceof Composite) {
+					visibleControlArea = ((Composite) getControlToDecorate()).getClientArea();
+				} else {
+					visibleControlArea = getControlToDecorate().getBounds();
+					visibleControlArea.x = 0;
+					visibleControlArea.y = 0;
+				}
 			} else {
 				visibleControlArea = getVisibleControlArea(event);
 			}
