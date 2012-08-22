@@ -55,6 +55,7 @@ import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
 import org.eclipse.riena.navigation.listener.SubApplicationNodeListener;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.model.SubApplicationNode;
+import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubApplicationController;
 import org.eclipse.riena.navigation.ui.swt.binding.DelegatingRidgetMapper;
 import org.eclipse.riena.navigation.ui.swt.binding.InjectSwtViewBindingDelegate;
@@ -286,10 +287,10 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 		for (final ToolItem toolItem : toolItems) {
 			if (!SWTBindingPropertyLocator.getInstance().hasBindingProperty(toolItem)) {
 				createRidget(controller, toolItem);
-				if (toolItem.getData() instanceof MenuManager) {
-					final MenuManager manager = (MenuManager) toolItem.getData();
-					createRidget(controller, manager.getMenu());
-				}
+			}
+			if (toolItem.getData() instanceof MenuManager) {
+				final MenuManager manager = (MenuManager) toolItem.getData();
+				createRidget(controller, manager.getMenu());
 			}
 		}
 	}
@@ -547,10 +548,13 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 
 		@Override
 		public void prepared(final ISubModuleNode source) {
-			if (SubModuleUtils.isPrepareView()) {
+			if (SubModuleUtils.isPrepareView() && source.isSelectable()) {
 				checkBaseStructure();
 
 				final SwtViewId id = getViewId(source);
+				if (id == null) {
+					return;
+				}
 				final SwtViewProvider viewProvider = SwtViewProvider.getInstance();
 				viewProvider.setCurrentPrepared(source);
 				prepareView(id, source);
@@ -772,7 +776,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 			 */
 			if (currentPrepared != null && currentPrepared.getNavigationNodeController() == null) {
 				if (viewPart instanceof SubModuleView) {
-					((SubModuleView) viewPart).prepareNode(currentPrepared);
+					((SubModuleView) viewPart).prepareNode((SubModuleNode) currentPrepared);
 				}
 			}
 			return page.findViewReference(id, secondary);

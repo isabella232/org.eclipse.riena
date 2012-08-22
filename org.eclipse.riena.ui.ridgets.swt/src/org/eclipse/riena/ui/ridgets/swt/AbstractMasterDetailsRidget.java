@@ -45,6 +45,7 @@ import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.annotation.processor.RidgetContainerAnnotationProcessor;
 import org.eclipse.riena.ui.swt.AbstractMasterDetailsComposite;
+import org.eclipse.riena.ui.swt.MasterDetailsComposite;
 
 /**
  * Common functionality that is shared between implementations of the {@link IMasterDetailsRidget}.
@@ -503,6 +504,12 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	}
 
 	protected void handleSelectionChange(final Object newSelection) {
+		final IMarkableRidget table = getRidget(IMarkableRidget.class, MasterDetailsComposite.BIND_ID_TABLE);
+		final Collection<ErrorMarker> errorMarkers = table.getMarkersOfType(ErrorMarker.class);
+		for (final ErrorMarker m : errorMarkers) {
+			table.removeMarker(m);
+		}
+
 		ignoreChanges = true;
 		try {
 			delegate.prepareItemSelected(newSelection);
@@ -526,6 +533,9 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 			clearPreNewSelection();
 		} finally {
 			ignoreChanges = false;
+			for (final ErrorMarker m : errorMarkers) {
+				table.addMarker(m);
+			}
 		}
 	}
 

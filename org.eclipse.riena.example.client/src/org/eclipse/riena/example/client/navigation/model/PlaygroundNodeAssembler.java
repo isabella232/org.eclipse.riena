@@ -18,6 +18,7 @@ import java.util.Set;
 import org.eclipse.riena.example.client.controllers.BlockingSubModuleController;
 import org.eclipse.riena.example.client.controllers.CComboSubModuleController;
 import org.eclipse.riena.example.client.controllers.CarCatalogSubModuleController;
+import org.eclipse.riena.example.client.controllers.CheckBoxTableSubModuleController;
 import org.eclipse.riena.example.client.controllers.ChoiceSubModuleController;
 import org.eclipse.riena.example.client.controllers.ComboAndChoiceSubModuleController;
 import org.eclipse.riena.example.client.controllers.ComboSubModuleController;
@@ -58,6 +59,7 @@ import org.eclipse.riena.example.client.controllers.ValidationSubModuleControlle
 import org.eclipse.riena.example.client.views.BlockingSubModuleView;
 import org.eclipse.riena.example.client.views.CComboSubModuleView;
 import org.eclipse.riena.example.client.views.CarCatalogSubModuleView;
+import org.eclipse.riena.example.client.views.CheckBoxTableSubModuleView;
 import org.eclipse.riena.example.client.views.ChoiceSubModuleView;
 import org.eclipse.riena.example.client.views.ComboAndChoiceSubModuleView;
 import org.eclipse.riena.example.client.views.ComboSubModuleView;
@@ -234,13 +236,8 @@ public class PlaygroundNodeAssembler extends AbstractNavigationAssembler {
 		workarea.registerDefinition(messageBoxSubModule, MessageBoxSubModuleController.class, MessageBoxSubModuleView.ID, false);
 		playgroundModule.addChild(messageBoxSubModule);
 
-		final ISubModuleNode tableSubModule = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.example.table"), "Table"); //$NON-NLS-1$ //$NON-NLS-2$
-		workarea.registerDefinition(tableSubModule, TableSubModuleController.class, TableSubModuleView.ID, false);
-		playgroundModule.addChild(tableSubModule);
-
-		final ISubModuleNode carCatalogSubModule = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.example.edtiableTable"), "Editable Table"); //$NON-NLS-1$ //$NON-NLS-2$
-		workarea.registerDefinition(carCatalogSubModule, CarCatalogSubModuleController.class, CarCatalogSubModuleView.ID, false);
-		playgroundModule.addChild(carCatalogSubModule);
+		final ISubModuleNode tableFolderSubModule = buildTableNodes();
+		playgroundModule.addChild(tableFolderSubModule);
 
 		final ISubModuleNode textFolderSubModule = buildTextNodes();
 		playgroundModule.addChild(textFolderSubModule);
@@ -319,23 +316,49 @@ public class PlaygroundNodeAssembler extends AbstractNavigationAssembler {
 	private ISubModuleNode buildTextNodes() {
 		final WorkareaManager workarea = WorkareaManager.getInstance();
 
-		final ISubModuleNode result = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.example.textFolder"), "Text"); //$NON-NLS-1$ //$NON-NLS-2$
-		result.setSelectable(false);
+		final ISubModuleNode textFolderSubModule = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.example.textFolder"), "Text"); //$NON-NLS-1$ //$NON-NLS-2$
+		textFolderSubModule.setSelectable(false);
 
 		final ISubModuleNode textSubModule = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.example.text"), "Text"); //$NON-NLS-1$ //$NON-NLS-2$
 		workarea.registerDefinition(textSubModule, TextSubModuleController.class, TextSubModuleView.ID, false).setRequiredPreparation(true);
-		result.addChild(textSubModule);
+		textFolderSubModule.addChild(textSubModule);
 
 		final ISubModuleNode textNumbersSubModule = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.example.text.numeric"), "Text (Numeric)"); //$NON-NLS-1$ //$NON-NLS-2$
 		workarea.registerDefinition(textNumbersSubModule, TextNumericSubModuleController.class, TextNumericSubModuleView.ID, false)
 				.setRequiredPreparation(true);
-		result.addChild(textNumbersSubModule);
+		textFolderSubModule.addChild(textNumbersSubModule);
 
 		final ISubModuleNode textDateSubModule = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.example.text.date"), "Text (Date)"); //$NON-NLS-1$ //$NON-NLS-2$
 		workarea.registerDefinition(textDateSubModule, TextDateSubModuleController.class, TextDateSubModuleView.ID, false).setRequiredPreparation(true);
-		result.addChild(textDateSubModule);
+		textFolderSubModule.addChild(textDateSubModule);
 
-		return result;
+		return textFolderSubModule;
+	}
+
+	/**
+	 * Creates a sub-module with child nodes that demonstrate the usage of TableRidgets.
+	 * 
+	 * @return folder sub-module
+	 */
+	private ISubModuleNode buildTableNodes() {
+		final WorkareaManager workarea = WorkareaManager.getInstance();
+
+		final ISubModuleNode tableFolderSubModule = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.example.tableFolder"), "Table"); //$NON-NLS-1$ //$NON-NLS-2$
+		tableFolderSubModule.setSelectable(false);
+
+		final ISubModuleNode tableSubModule = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.example.table"), "Table"); //$NON-NLS-1$ //$NON-NLS-2$
+		workarea.registerDefinition(tableSubModule, TableSubModuleController.class, TableSubModuleView.ID, false);
+		tableFolderSubModule.addChild(tableSubModule);
+
+		final ISubModuleNode carCatalogSubModule = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.example.edtiableTable"), "Editable Table"); //$NON-NLS-1$ //$NON-NLS-2$
+		workarea.registerDefinition(carCatalogSubModule, CarCatalogSubModuleController.class, CarCatalogSubModuleView.ID, false);
+		tableFolderSubModule.addChild(carCatalogSubModule);
+
+		final ISubModuleNode checkBoxTableSubModule = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.example.checkBoxTableSubModule"), "CheckBox"); //$NON-NLS-1$ //$NON-NLS-2$
+		workarea.registerDefinition(checkBoxTableSubModule, CheckBoxTableSubModuleController.class, CheckBoxTableSubModuleView.ID, false);
+		tableFolderSubModule.addChild(checkBoxTableSubModule);
+
+		return tableFolderSubModule;
 	}
 
 	/**

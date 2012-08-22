@@ -2,12 +2,12 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Riena Communication Console Plug-in
 Bundle-SymbolicName: org.eclipse.riena.communication.console
-Bundle-Version: 4.0.0.qualifier
+Bundle-Version: 5.0.0.qualifier
 Bundle-Activator: org.eclipse.riena.internal.communication.console.Activator
 Import-Package: org.osgi.framework;version="1.4.0"
 Require-Bundle: org.eclipse.riena.communication.core,
  org.eclipse.riena.core
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.riena.internal.communication.console;x-friends:="org.eclipse.riena.tests"
 Bundle-Vendor: Eclipse.org - Riena

@@ -10,15 +10,23 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import java.beans.PropertyDescriptor;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Map;
 
 import javax.swing.ToolTipManager;
 
+import org.osgi.service.log.LogService;
+
+import org.eclipse.core.databinding.beans.PojoObservables;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.equinox.log.Logger;
 import org.eclipse.jface.viewers.AbstractTableViewer;
+import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
+import org.eclipse.jface.viewers.ICheckStateProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.ViewerColumn;
@@ -44,6 +52,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Widget;
 
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.util.RAPDetector;
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.ui.core.marker.RowErrorMessageMarker;
@@ -61,6 +70,8 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
  * Ridget for SWT {@link Table} widgets.
  */
 public class TableRidget extends AbstractTableRidget {
+
+	private final static Logger LOGGER = Log4r.getLogger(TableRidget.class);
 
 	private TableTooltipManager tooltipManager;
 	private ControlListener columnResizeListener;
@@ -119,6 +130,7 @@ public class TableRidget extends AbstractTableRidget {
 				column.removeSelectionListener(sortListener);
 				column.removeControlListener(columnResizeListener);
 			}
+			control.removeSelectionListener(selectionTypeEnforcer);
 			final SWTFacade facade = SWTFacade.getDefault();
 			facade.removeEraseItemListener(control, itemEraser);
 			if (tooltipManager != null) {
@@ -276,12 +288,10 @@ public class TableRidget extends AbstractTableRidget {
 	 * <p>
 	 * This TableRidget provides two different tool tip supports.
 	 * <ul>
-	 * <li>native: The inner class {@link ToolTipManager} shows appropriate tool
-	 * tips (cell item text, error marker text, etc.) that looks like native
-	 * tool tips.</li>
-	 * <li>JFace: The class {@link TableRidgetToolTipSupportFacade} shows also
-	 * appropriate tool tips. But the look of the tool tips can be configured
-	 * (see {@link IColumnFormatter}). Also images can be displayed.</li>
+	 * <li>native: The inner class {@link ToolTipManager} shows appropriate tool tips (cell item text, error marker text, etc.) that looks like native tool
+	 * tips.</li>
+	 * <li>JFace: The class {@link TableRidgetToolTipSupportFacade} shows also appropriate tool tips. But the look of the tool tips can be configured (see
+	 * {@link IColumnFormatter}). Also images can be displayed.</li>
 	 * </ul>
 	 */
 	@Override
@@ -309,14 +319,10 @@ public class TableRidget extends AbstractTableRidget {
 	@Override
 	protected void configureViewer(final AbstractTableViewer viewer) {
 		/**
-		 * As the viewer can be shared between multiple ridgets,
-		 * super.configureViewer will partly work on a dirty viewer state till
-		 * the whole new model is transferred to the viewer. (labelprovider,
-		 * attributeMap, contentProvider, ..). In the meantime the viewer should
-		 * not be refreshed to prevent errors as the consequence of this
-		 * inconsistency. Therefore we set a flag on the viewer signaling to
-		 * ignore refresh events. After the update of the viewer the flag is
-		 * erased.
+		 * As the viewer can be shared between multiple ridgets, super.configureViewer will partly work on a dirty viewer state till the whole new model is
+		 * transferred to the viewer. (labelprovider, attributeMap, contentProvider, ..). In the meantime the viewer should not be refreshed to prevent errors
+		 * as the consequence of this inconsistency. Therefore we set a flag on the viewer signaling to ignore refresh events. After the update of the viewer
+		 * the flag is erased.
 		 */
 		if (viewer instanceof TableRidgetTableViewer) {
 			((TableRidgetTableViewer) viewer).setAllowRefresh(false);
@@ -325,7 +331,43 @@ public class TableRidget extends AbstractTableRidget {
 		if (viewer instanceof TableRidgetTableViewer) {
 			((TableRidgetTableViewer) viewer).setAllowRefresh(true);
 		}
+		if (isCheckBoxInFirstColumn(viewer)) {
+			((CheckboxTableViewer) viewer).setCheckStateProvider(new TableRidgetCheckStateProvider());
+		}
+		final IBaseLabelProvider labelProvider = viewer.getLabelProvider();
+		if (labelProvider instanceof TableRidgetLabelProvider) {
+			((TableRidgetLabelProvider) labelProvider).setCheckBoxInFirstColumn(isCheckBoxInFirstColumn(viewer));
+		}
 		viewer.refresh();
+	}
+
+	public boolean isCheckBoxInFirstColumn(final AbstractTableViewer viewer) {
+
+		if (SwtUtilities.isDisposed(viewer.getControl())) {
+			return false;
+		}
+		if (!(viewer.getControl() instanceof Table)) {
+			return false;
+		}
+		if ((viewer.getControl().getStyle() & SWT.CHECK) != SWT.CHECK) {
+			return false;
+		}
+		final Table table = (Table) viewer.getControl();
+		if (table.getColumnCount() <= 0) {
+			LOGGER.log(LogService.LOG_WARNING, "SWT table with style SWT.CHECK but no columns (column count <= 0)"); //$NON-NLS-1$
+			return false;
+		}
+		if (!(viewer instanceof CheckboxTableViewer)) {
+			LOGGER.log(LogService.LOG_WARNING, "SWT table with style SWT.CHECK but with wrong viewer (not CheckboxTableViewer)"); //$NON-NLS-1$
+			return false;
+		}
+		final PropertyDescriptor property = getPropertyDescriptor(renderingMethods[0]);
+		if (property.getPropertyType() != boolean.class) {
+			LOGGER.log(LogService.LOG_WARNING, "SWT table with style SWT.CHECK but wrong property type at first column (not boolean)"); //$NON-NLS-1$
+			return false;
+		}
+		return true;
+
 	}
 
 	@Override
@@ -380,8 +422,34 @@ public class TableRidget extends AbstractTableRidget {
 	// ////////////////
 
 	/**
-	 * Selection listener for table headers that changes the sort order of a
-	 * column according to the information stored in the ridget.
+	 * This class provides if the check box in the first column of the table is check or not.
+	 */
+	private final class TableRidgetCheckStateProvider implements ICheckStateProvider {
+
+		public boolean isGrayed(final Object element) {
+			return false;
+		}
+
+		public boolean isChecked(final Object element) {
+			if ((renderingMethods == null) || (renderingMethods.length <= 0)) {
+				LOGGER.log(LogService.LOG_WARNING, "No property found for first column!"); //$NON-NLS-1$
+				return false;
+			}
+			final String propertyName = renderingMethods[0];
+			final IObservableValue observableValue = PojoObservables.observeValue(element, propertyName);
+			final Object value = observableValue.getValue();
+			if (value instanceof Boolean) {
+				return (Boolean) value;
+			} else {
+				LOGGER.log(LogService.LOG_WARNING, "Unexpected property type of first column!"); //$NON-NLS-1$
+			}
+			return false;
+		}
+
+	}
+
+	/**
+	 * Selection listener for table headers that changes the sort order of a column according to the information stored in the ridget.
 	 */
 	private final class ColumnSortListener extends SelectionAdapter {
 		@Override
@@ -406,8 +474,7 @@ public class TableRidget extends AbstractTableRidget {
 	}
 
 	/**
-	 * Shows the appropriate tooltip (error tooltip / regular tooltip / no
-	 * tooltip) for the current hovered row.
+	 * Shows the appropriate tooltip (error tooltip / regular tooltip / no tooltip) for the current hovered row.
 	 */
 	private final class TableTooltipManager extends MouseTrackAdapter implements MouseMoveListener {
 
@@ -503,18 +570,14 @@ public class TableRidget extends AbstractTableRidget {
 	}
 
 	/**
-	 * Erase listener for custom painting of table cells. It is responsible
-	 * for:[
+	 * Erase listener for custom painting of table cells. It is responsible for:[
 	 * <ul>
-	 * <li>erasing (emptying) all cells when this ridget is disabled and
-	 * {@link LnfKeyConstants#DISABLED_MARKER_HIDE_CONTENT} is true</li>
-	 * <li>drawing a red border around cells that have been marked with a
-	 * {@link RowErrorMessageMarker} (unless disabled)</li>
+	 * <li>erasing (emptying) all cells when this ridget is disabled and {@link LnfKeyConstants#DISABLED_MARKER_HIDE_CONTENT} is true</li>
+	 * <li>drawing a red border around cells that have been marked with a {@link RowErrorMessageMarker} (unless disabled)</li>
 	 * </ul>
 	 * 
-	 * @see '<a href=
-	 *      "http://www.eclipse.org/articles/article.php?file=Article-CustomDrawingTableAndTreeItems/index.html"
-	 *      >Custom Drawing Table and Tree Items</a>'
+	 * @see '<a href= "http://www.eclipse.org/articles/article.php?file=Article-CustomDrawingTableAndTreeItems/index.html" >Custom Drawing Table and Tree
+	 *      Items</a>'
 	 */
 	private final class TableItemEraser implements Listener {
 
@@ -523,8 +586,7 @@ public class TableRidget extends AbstractTableRidget {
 
 		public TableItemEraser() {
 			borderColor = LnfManager.getLnf().getColor(LnfKeyConstants.ERROR_MARKER_BORDER_COLOR);
-			borderThickness = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.ROW_ERROR_MARKER_BORDER_THICKNESS,
-					1);
+			borderThickness = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.ROW_ERROR_MARKER_BORDER_THICKNESS, 1);
 		}
 
 		/*

@@ -21,7 +21,6 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
 import org.eclipse.riena.core.marker.IMarker;
@@ -32,10 +31,10 @@ import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
 import org.eclipse.riena.ui.swt.lnf.FlasherSupportForRenderer;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
- * Renderer of the markers (e.g. error or mandatory marker) of a item in the
- * navigation tree.
+ * Renderer of the markers (e.g. error or mandatory marker) of a item in the navigation tree.
  */
 public class SubModuleTreeItemMarkerRenderer extends AbstractLnfRenderer {
 
@@ -44,8 +43,7 @@ public class SubModuleTreeItemMarkerRenderer extends AbstractLnfRenderer {
 	private FlasherSupportForRenderer flasherSupport;
 
 	/**
-	 * Creates a new instance of the renderer for the markers of sub-modules in
-	 * a tree.
+	 * Creates a new instance of the renderer for the markers of sub-modules in a tree.
 	 */
 	public SubModuleTreeItemMarkerRenderer() {
 		super();
@@ -84,8 +82,7 @@ public class SubModuleTreeItemMarkerRenderer extends AbstractLnfRenderer {
 		Collections.sort(sortedMarkers, MARKER_COMPERATOR);
 
 		if (isPaintMarkersHierarchically() && sortedMarkers.size() > 0) {
-			final MarkerPosition position = (MarkerPosition) LnfManager.getLnf().getSetting(
-					LnfKeyConstants.SUB_MODULE_TREE_MARKER_HIERARCHIC_ORDER_POSITION);
+			final MarkerPosition position = (MarkerPosition) LnfManager.getLnf().getSetting(LnfKeyConstants.SUB_MODULE_TREE_MARKER_HIERARCHIC_ORDER_POSITION);
 			paintMarkerImage(gc, sortedMarkers.get(sortedMarkers.size() - 1), position, item);
 		} else {
 			for (final IIconizableMarker iconizableMarker : sortedMarkers) {
@@ -99,8 +96,7 @@ public class SubModuleTreeItemMarkerRenderer extends AbstractLnfRenderer {
 		return LnfManager.getLnf().getSetting(LnfKeyConstants.SUB_MODULE_TREE_MARKER_HIERARCHIC_ORDER_POSITION) instanceof MarkerPosition;
 	}
 
-	private void paintMarkerImage(final GC gc, final IIconizableMarker iconizableMarker,
-			final MarkerPosition markerPosition, final TreeItem item) {
+	private void paintMarkerImage(final GC gc, final IIconizableMarker iconizableMarker, final MarkerPosition markerPosition, final TreeItem item) {
 		if (!iconizableMarker.isVisible()) {
 			return;
 		}
@@ -132,8 +128,7 @@ public class SubModuleTreeItemMarkerRenderer extends AbstractLnfRenderer {
 	 *            position of the marker
 	 * @return x- and y-coordinates
 	 */
-	private Point calcMarkerCoordinates(final Image itemImage, final Image markerImage,
-			final IIconizableMarker.MarkerPosition position) {
+	private Point calcMarkerCoordinates(final Image itemImage, final Image markerImage, final IIconizableMarker.MarkerPosition position) {
 
 		Rectangle itemImageBounds = new Rectangle(0, 0, 0, 0);
 		if (itemImage != null) {
@@ -176,15 +171,13 @@ public class SubModuleTreeItemMarkerRenderer extends AbstractLnfRenderer {
 	}
 
 	/**
-	 * This class updates (redraws) the tree, so that the marker are also
-	 * updated (redrawn).
+	 * This class updates (redraws) the tree, so that the marker are also updated (redrawn).
 	 */
 	private class MarkerUpdater implements Runnable {
 
 		public void run() {
-			final Tree parent = item.getParent();
-			if (!parent.isDisposed()) {
-				parent.redraw();
+			if (!SwtUtilities.isDisposed(item)) {
+				item.getParent().redraw();
 			}
 		}
 	}

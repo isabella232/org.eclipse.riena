@@ -21,14 +21,12 @@ import org.eclipse.riena.core.marker.IMarker;
 public interface IBasicMarkableRidget extends IRidget, IMarkable, IClickableRidget {
 
 	/**
-	 * The name of the PropertyChangeEvent that will be fired if a marker was
-	 * added or removed ("marker").
+	 * The name of the PropertyChangeEvent that will be fired if a marker was added or removed ("marker").
 	 */
 	String PROPERTY_MARKER = "marker"; //$NON-NLS-1$
 
 	/**
-	 * The name of the PropertyChangeEvent that will be fired if a marker is
-	 * hidden or shown ("markerHiding").
+	 * The name of the PropertyChangeEvent that will be fired if a marker is hidden or shown ("markerHiding").
 	 * 
 	 * @since 3.0
 	 */
@@ -37,20 +35,17 @@ public interface IBasicMarkableRidget extends IRidget, IMarkable, IClickableRidg
 	/**
 	 * Returns all hidden marker types.
 	 * 
-	 * @return the set of currently hidden marker types; never null; may be
-	 *         empty
+	 * @return the set of currently hidden marker types; never null; may be empty
 	 * 
 	 * @since 3.0
 	 */
 	Set<Class<IMarker>> getHiddenMarkerTypes();
 
 	/**
-	 * Hide markers of the given type. Hidden markers of a matching type shall
-	 * be ignored in the UI (i.e. no feedback is shown by the ridget), but are
-	 * not removed from the ridget.
+	 * Hide markers of the given type. Hidden markers of a matching type shall be ignored in the UI (i.e. no feedback is shown by the ridget), but are not
+	 * removed from the ridget.
 	 * <p>
-	 * Initially the set of hidden markers is empty. When calling this method
-	 * the {@code type}-argument is added to the set.
+	 * Initially the set of hidden markers is empty. When calling this method the {@code type}-argument is added to the set.
 	 * 
 	 * @param types
 	 *            the type of markers to hide. The matching includes sublasses
@@ -61,20 +56,25 @@ public interface IBasicMarkableRidget extends IRidget, IMarkable, IClickableRidg
 	Set<Class<IMarker>> hideMarkersOfType(Class<? extends IMarker>... types);
 
 	/**
-	 * Show markers of the given type. Hidden markers of a matching type shall
-	 * be ignored in the UI (i.e. not feedback is shown by the ridget), but are
-	 * not removed from the ridget.
+	 * Show markers of the given type. Hidden markers of a matching type shall be ignored in the UI (i.e. not feedback is shown by the ridget), but are not
+	 * removed from the ridget.
 	 * <p>
-	 * Initially the set of hidden markers is empty. When calling this method
-	 * the {@code type}-argument is removed from the set.
+	 * Initially the set of hidden markers is empty. When calling this method the {@code type}-argument is removed from the set.
 	 * 
 	 * @param types
-	 *            the type of markers to show (unhide). The matching includes
-	 *            subclasses
+	 *            the type of markers to show (unhide). The matching includes subclasses
 	 * @return the set of currently hidden marker types (including type).
 	 * 
 	 * @since 3.0
 	 */
 	Set<Class<IMarker>> showMarkersOfType(Class<? extends IMarker>... types);
+
+	/**
+	 * Controls whether the border decoration will draw the border around the visible control area (does not work for all control types) or around the control
+	 * bounds. Set this flag if you are sure that the appropriate widget will be supported by the border decoration.
+	 * 
+	 * @since 5.0
+	 */
+	boolean decorateVisibleControlArea();
 
 }

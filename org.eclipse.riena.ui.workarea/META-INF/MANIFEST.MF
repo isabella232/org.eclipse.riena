@@ -2,13 +2,13 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Riena UI Workarea Plug-in
 Bundle-SymbolicName: org.eclipse.riena.ui.workarea;singleton:=true
-Bundle-Version: 4.0.0.qualifier
+Bundle-Version: 5.0.0.qualifier
 Bundle-Activator: org.eclipse.riena.internal.ui.workarea.Activator
 Require-Bundle: org.eclipse.riena.core,
  org.eclipse.riena.navigation,
  org.eclipse.riena.ui.core,
  org.eclipse.riena.ui.ridgets
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.riena.internal.ui.workarea;x-internal:=true,
  org.eclipse.riena.internal.ui.workarea.registry;x-internal:=true,

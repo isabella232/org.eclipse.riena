@@ -60,6 +60,7 @@ import org.eclipse.riena.navigation.ui.swt.presentation.stack.TitlelessStackPres
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.SubModuleUtils;
+import org.eclipse.riena.ui.ridgets.controller.IController;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.AbstractViewBindingDelegate;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtBindingDelegate;
 import org.eclipse.riena.ui.swt.EmbeddedTitleBar;
@@ -334,7 +335,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	}
 
 	/**
-	 * Important: This method is NOT API. It is used for the e4 migration only.
+	 * <<<<<<< HEAD Important: This method is NOT API. It is used for the e4 migration only.
 	 * 
 	 * @param node
 	 * @since 4.0
@@ -345,7 +346,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	}
 
 	/**
-	 * This implementation will automatically focus on the control that had previously the focus, or, the first focusable control.
+	 * ======= >>>>>>> origin/master This implementation will automatically focus on the control that had previously the focus, or, the first focusable control.
 	 * <p>
 	 * You may overwrite it, but it typically is not necessary to do so. If you still want to use the 'restore focus to last control' functionality, check
 	 * {@link #canRestoreFocus()} and the invoke this method.
@@ -877,7 +878,10 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	 * 
 	 * @since 4.0
 	 */
-	public void prepareNode(final ISubModuleNode node) {
-		binding.injectRidgets(createController(node));
+	public void prepareNode(final SubModuleNode node) {
+		final IController controller = createController(node);
+		if (controller != null) {
+			binding.injectRidgets(controller);
+		}
 	}
 }

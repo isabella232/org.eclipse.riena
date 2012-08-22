@@ -162,6 +162,7 @@ public class MenuCoolBarComposite extends Composite {
 		final ToolBarMenuListener listener = new ToolBarMenuListener();
 		menuToolBar.addMouseListener(listener);
 		SWTFacade.getDefault().addMouseTrackListener(menuToolBar, listener);
+		menuToolBar.addTraverseListener(listener);
 		fillMenuBar(listener);
 	}
 

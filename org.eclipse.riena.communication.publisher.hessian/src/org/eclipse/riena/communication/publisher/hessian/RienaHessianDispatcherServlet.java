@@ -184,7 +184,7 @@ public class RienaHessianDispatcherServlet extends GenericServlet {
 			while (t2.getCause() != null) {
 				t2 = t2.getCause();
 			}
-			LOGGER.log(LogService.LOG_ERROR, t.getMessage(), t2);
+			LOGGER.log(LogService.LOG_ERROR, t.getMessage() + " in service:" + rsd, t2);
 			Service.get(IExceptionHandlerManager.class).handleException(t2);
 			throw new ServletException(t);
 		} finally {

@@ -10,8 +10,6 @@ import org.eclipse.equinox.log.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.ControlListener;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
@@ -47,7 +45,6 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 public class BorderDrawer implements Listener {
 
 	public static final int DEFAULT_BORDER_WIDTH = 1;
-	private static final String GC_KEY = BorderDrawer.class.getName() + ".GC"; //$NON-NLS-1$
 	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), BorderDrawer.class);
 
 	private final IDecorationActivationStrategy activationStrategy;
@@ -83,6 +80,9 @@ public class BorderDrawer implements Listener {
 	};
 	private boolean isMasterDetails;
 	private Control controlToDecorate;
+	private boolean layouting;
+	private Rectangle boundsToDecorate;
+	private final boolean useVisibleControlArea;
 
 	/**
 	 * @param control
@@ -103,10 +103,29 @@ public class BorderDrawer implements Listener {
 	 *            the strategy that determines when the border should be drawn or <code>null</code> if the border should be always shown
 	 */
 	public BorderDrawer(final Control control, final int borderWidth, final Color borderColor, final IDecorationActivationStrategy activationStrategy) {
+		this(control, DEFAULT_BORDER_WIDTH, null, false, null);
+	}
+
+	/**
+	 * @param control
+	 *            the UI element for which the border will be drawn, not <code>null</code>
+	 * @param borderWidth
+	 *            the desired width of the border that will be drawn
+	 * @param borderColor
+	 *            the desired color of the border that will be drawn
+	 * @param useVisibleControlArea
+	 *            <code>true</code> if the border should be drawn according to the visible control area. This does not work for all control types.
+	 * @param activationStrategy
+	 *            the strategy that determines when the border should be drawn or <code>null</code> if the border should be always shown
+	 * @since 5.0
+	 */
+	public BorderDrawer(final Control control, final int borderWidth, final Color borderColor, final boolean useVisibleControlArea,
+			final IDecorationActivationStrategy activationStrategy) {
 		Assert.isNotNull(control);
 		this.control = control;
 		this.borderWidth = borderWidth;
 		this.borderColor = borderColor;
+		this.useVisibleControlArea = useVisibleControlArea;
 		this.activationStrategy = activationStrategy;
 	}
 
@@ -124,6 +143,8 @@ public class BorderDrawer implements Listener {
 			}
 		} else if (control instanceof CCombo) {
 			registerToControl(control.getParent(), SWTFacade.Paint);
+		} else if (!useVisibleControlArea) {
+			registerToControlAndChildren(control, SWTFacade.Paint);
 		} else {
 			registerToControl(control, SWTFacade.Paint);
 		}
@@ -147,6 +168,19 @@ public class BorderDrawer implements Listener {
 				dispose();
 			}
 		}, SWT.Dispose);
+	}
+
+	/**
+	 * @param children
+	 * @param paint
+	 */
+	private void registerToControlAndChildren(final Control control, final int... eventTypes) {
+		registerToControl(control, eventTypes);
+		if (control instanceof Composite) {
+			for (final Control child : ((Composite) control).getChildren()) {
+				registerToControlAndChildren(child, eventTypes);
+			}
+		}
 	}
 
 	/**
@@ -192,8 +226,14 @@ public class BorderDrawer implements Listener {
 	public void paintControl(final Event event) {
 		if (computeBorderArea) {
 			Rectangle visibleControlArea;
-			if (getControlToDecorate() instanceof CCombo || isMasterDetails) {
-				visibleControlArea = ((Composite) getControlToDecorate()).getClientArea();
+			if (!useVisibleControlArea || getControlToDecorate() instanceof CCombo || isMasterDetails) {
+				if (getControlToDecorate() instanceof Composite) {
+					visibleControlArea = ((Composite) getControlToDecorate()).getClientArea();
+				} else {
+					visibleControlArea = getControlToDecorate().getBounds();
+					visibleControlArea.x = 0;
+					visibleControlArea.y = 0;
+				}
 			} else {
 				visibleControlArea = getVisibleControlArea(event);
 			}
@@ -202,12 +242,27 @@ public class BorderDrawer implements Listener {
 		}
 		if (shouldShowDecoration()) {
 			Composite someParent = getControlToDecorate() instanceof Composite ? (Composite) getControlToDecorate() : getControlToDecorate().getParent();
+			Control someChild = getControlToDecorate();
 			boolean fullyPainted = false;
 			while (someParent != null && !fullyPainted) {
-				fullyPainted = includeAndDrawBorder(someParent);
+				fullyPainted = includeAndDrawBorder(someParent, someChild);
+				someChild = someParent;
 				someParent = someParent.getParent();
 			}
 		}
+	}
+
+	/**
+	 * request an update at the UI event queue end
+	 * 
+	 * @since 5.0
+	 */
+	public void scheduleUpdate(final boolean redraw) {
+		getControlToDecorate().getDisplay().asyncExec(new Runnable() {
+			public void run() {
+				update(redraw);
+			}
+		});
 	}
 
 	/**
@@ -310,34 +365,21 @@ public class BorderDrawer implements Listener {
 		if (activationStrategy != null && !activationStrategy.isActive()) {
 			return false;
 		}
-		return true;
+		return !layouting;
 	}
 
 	/**
+	 * @param someChild
 	 * @return true if the border could be completely painted on the available client area
 	 */
-	private boolean includeAndDrawBorder(final Composite someParent) {
+	private boolean includeAndDrawBorder(final Composite someParent, final Control someChild) {
 		final Rectangle areaOnControl = toAreaOnControl(visibleControlAreaOnDisplay, someParent);
 		final Rectangle clientArea = someParent.getClientArea();
-		drawBorder(areaOnControl, getGC(someParent));
-		return areaOnControl.x + areaOnControl.width < clientArea.width && areaOnControl.y + areaOnControl.width < clientArea.height;
-	}
-
-	/**
-	 * @param someParent
-	 * @return
-	 */
-	private GC getGC(final Composite someParent) {
-		if (someParent.getData(GC_KEY) == null) {
-			final GC gc = new GC(someParent);
-			someParent.setData(GC_KEY, gc);
-			someParent.addDisposeListener(new DisposeListener() {
-				public void widgetDisposed(final DisposeEvent e) {
-					gc.dispose();
-				}
-			});
-		}
-		return (GC) someParent.getData(GC_KEY);
+		final GC gc = new GC(someParent);
+		drawBorder(areaOnControl, gc);
+		gc.dispose();
+		return someChild.getBounds().x > getBorderWidth() && someChild.getBounds().y > getBorderWidth()
+				&& areaOnControl.x + areaOnControl.width < clientArea.width && areaOnControl.y + areaOnControl.width < clientArea.height;
 	}
 
 	/**
@@ -454,6 +496,7 @@ public class BorderDrawer implements Listener {
 		switch (event.type) {
 		case SWT.Move:
 			computeBorderArea = true;
+			boundsToDecorate = getControlToDecorate().getDisplay().map(getControlToDecorate(), null, getControlToDecorate().getBounds());
 			lastMoveEvent = event;
 			if (SwtUtilities.isDisposed(getControlToDecorate())) {
 				break;
@@ -471,11 +514,30 @@ public class BorderDrawer implements Listener {
 			break;
 		case SWT.Resize:
 			computeBorderArea = true;
+			boundsToDecorate = getControlToDecorate().getDisplay().map(getControlToDecorate(), null, getControlToDecorate().getBounds());
 			update(true);
 			break;
-
 		case SWTFacade.Paint:
-			paintControl(event);
+			final Rectangle onDisplay = getControlToDecorate().getDisplay().map(getControlToDecorate(), null, getControlToDecorate().getBounds());
+			if (boundsToDecorate == null) {
+				boundsToDecorate = onDisplay;
+			}
+			if (!onDisplay.equals(boundsToDecorate) && !computeBorderArea) {
+				boundsToDecorate = onDisplay;
+				layouting = true;
+				getControlToDecorate().getShell().redraw();
+				layouting = false;
+				computeBorderArea = true;
+				getControlToDecorate().getDisplay().asyncExec(new Runnable() {
+					public void run() {
+						if (!SwtUtilities.isDisposed(getControlToDecorate())) {
+							getControlToDecorate().redraw();
+						}
+					}
+				});
+			} else {
+				paintControl(event);
+			}
 			break;
 
 		default:

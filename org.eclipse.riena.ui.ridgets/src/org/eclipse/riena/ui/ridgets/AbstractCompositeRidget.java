@@ -18,10 +18,15 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.osgi.service.log.LogService;
+
 import org.eclipse.core.databinding.BindingException;
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.equinox.log.Logger;
 
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.RienaStatus;
+import org.eclipse.riena.internal.ui.ridgets.Activator;
 
 /**
  * Default implementation of the {@link IComplexRidget} interface.
@@ -29,6 +34,7 @@ import org.eclipse.riena.core.RienaStatus;
  * Implementors may extend this class instead from starting from scratch.
  */
 public abstract class AbstractCompositeRidget extends AbstractRidget implements IComplexRidget {
+	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), AbstractCompositeRidget.class);
 
 	private final PropertyChangeListener propertyChangeListener;
 	private final Map<String, IRidget> ridgets;
@@ -97,6 +103,10 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 		R ridget = getRidget(id);
 
 		if (ridget != null) {
+			if (!ridgetClazz.isInstance(ridget)) {
+				LOGGER.log(LogService.LOG_ERROR, "getRidget(Class, String): Actual ridget is not of desired type: ridget is " + ridget.getClass().getName() //$NON-NLS-1$
+						+ ", desired is " + ridgetClazz.getName()); //$NON-NLS-1$
+			}
 			return ridget;
 		}
 		if (allowRidgetCreation()) {
@@ -360,7 +370,6 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	 */
 	private class PropertyChangeHandler implements PropertyChangeListener {
 		public void propertyChange(final PropertyChangeEvent evt) {
-			//			System.out.println("AbstractCompositeRidget.PropertyChangeHandler.propertyChange()");
 			propertyChangeSupport.firePropertyChange(evt);
 		}
 	}

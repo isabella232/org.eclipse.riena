@@ -18,6 +18,7 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.riena.core.exception.MurphysLawFailure;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
+import org.eclipse.riena.ui.core.uiprocess.IUIProcessChangeListener;
 import org.eclipse.riena.ui.core.uiprocess.UIProcess;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
@@ -26,6 +27,7 @@ public class UIProcessDemoSubModuleController extends SubModuleController {
 
 	private boolean registered;
 	private UIProcess process;
+	private UIProcess processWithListener;
 
 	public UIProcessDemoSubModuleController() {
 		this(null);
@@ -43,6 +45,10 @@ public class UIProcessDemoSubModuleController extends SubModuleController {
 		return getRidget(IActionRidget.class, "actionRidgetJob"); //$NON-NLS-1$
 	}
 
+	public IActionRidget getActionRidgetListener() {
+		return getRidget(IActionRidget.class, "actionRidgetListener"); //$NON-NLS-1$
+	}
+
 	/**
 	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
 	 */
@@ -51,6 +57,7 @@ public class UIProcessDemoSubModuleController extends SubModuleController {
 		if (getActionRidget() != null && !registered) {
 			initUIProcessAction();
 			initJobAction();
+			initListenerAction();
 			registered = true;
 		}
 	}
@@ -66,6 +73,67 @@ public class UIProcessDemoSubModuleController extends SubModuleController {
 		getActionRidget().addListener(new UIProcessAction());
 	}
 
+	private void initListenerAction() {
+		getActionRidgetListener().setText("start with listener"); //$NON-NLS-1$
+		getActionRidgetListener().addListener(new ListenerAction());
+	}
+
+	void runWithListener() {
+		boolean addListenerAfterProcessStart = false;
+		if (processWithListener == null) {
+			addListenerAfterProcessStart = true;
+			processWithListener = new UIProcess("sample uiProcess with listener", true, getNavigationNode()) {
+				@Override
+				public boolean runJob(final IProgressMonitor monitor) {
+					return doSomeStuff(this, monitor);
+				}
+
+				@Override
+				protected int getTotalWork() {
+					return 10;
+				}
+
+				@Override
+				public void initialUpdateUI(final int totalWork) {
+					System.out.println("UIProcessDemoSubModuleController.runWithListener().new UIProcess() {...}.initialUpdateUI()");
+				}
+
+				@Override
+				public void finalUpdateUI() {
+					System.out.println("UIProcessDemoSubModuleController.runWithListener().new UIProcess() {...}.finalUpdateUI()");
+				}
+			};
+			processWithListener.addUIProcessChangedListener(new IUIProcessChangeListener() {
+				public void afterInitialUpdateUI(final int totalWork) {
+					System.out
+							.println("UIProcessDemoSubModuleController.runWithListener().new IUIProcessChangeListener() {...}.afterInitialUpdateUI()  - added before process start");
+				}
+
+				public void afterFinalUpdateUI() {
+					System.out
+							.println("UIProcessDemoSubModuleController.runWithListener().new IUIProcessChangeListener() {...}.afterFinalUpdateUI() - added before process start");
+				}
+			});
+			processWithListener.setNote("check sysout for listener events");
+		}
+
+		processWithListener.start();
+
+		if (addListenerAfterProcessStart) {
+			processWithListener.addUIProcessChangedListener(new IUIProcessChangeListener() {
+				public void afterInitialUpdateUI(final int totalWork) {
+					System.out
+							.println("UIProcessDemoSubModuleController.runWithListener().new IUIProcessChangeListener() {...}.afterInitialUpdateUI() - added after process start");
+				}
+
+				public void afterFinalUpdateUI() {
+					System.out
+							.println("UIProcessDemoSubModuleController.runWithListener().new IUIProcessChangeListener() {...}.afterFinalUpdateUI() - added after process start");
+				}
+			});
+		}
+	}
+
 	void runUIProcess() {
 		if (process == null) {
 			process = new UIProcess("sample uiProcess", true, getNavigationNode()) { //$NON-NLS-1$
@@ -78,25 +146,7 @@ public class UIProcessDemoSubModuleController extends SubModuleController {
 
 				@Override
 				public boolean runJob(final IProgressMonitor monitor) {
-					try {
-						Thread.sleep(500);
-					} catch (final InterruptedException e) {
-						throw new MurphysLawFailure("Sleeping failed", e); //$NON-NLS-1$
-					}
-					for (int i = 0; i < 10; i++) {
-						if (monitor.isCanceled()) {
-							monitor.done();
-							return false;
-						}
-						try {
-							Thread.sleep(500);
-						} catch (final InterruptedException e) {
-							throw new MurphysLawFailure("Sleeping failed", e); //$NON-NLS-1$
-						}
-						setTitle("sample uiProcess worked [" + i + "]"); //$NON-NLS-1$ //$NON-NLS-2$
-						monitor.worked(1);
-					}
-					return true;
+					return doSomeStuff(this, monitor);
 				}
 
 				@Override
@@ -147,6 +197,42 @@ public class UIProcessDemoSubModuleController extends SubModuleController {
 		job.setProperty(UIProcess.PROPERTY_CONTEXT, getNavigationNode());
 		job.setUser(true);// to be visualized the job has to be user
 		job.schedule();
+	}
+
+	/**
+	 * @param monitor
+	 * @return
+	 */
+	private boolean doSomeStuff(final UIProcess process, final IProgressMonitor monitor) {
+		try {
+			Thread.sleep(500);
+		} catch (final InterruptedException e) {
+			throw new MurphysLawFailure("Sleeping failed", e); //$NON-NLS-1$
+		}
+		for (int i = 0; i < 10; i++) {
+			if (monitor.isCanceled()) {
+				monitor.done();
+				return false;
+			}
+			try {
+				Thread.sleep(500);
+			} catch (final InterruptedException e) {
+				throw new MurphysLawFailure("Sleeping failed", e); //$NON-NLS-1$
+			}
+			if (process != null) {
+				process.setTitle("sample uiProcess worked [" + i + "]"); //$NON-NLS-1$ //$NON-NLS-2$
+			}
+			monitor.worked(1);
+		}
+		return true;
+	}
+
+	private class ListenerAction implements IActionListener {
+
+		public void callback() {
+			runWithListener();
+		}
+
 	}
 
 	private class UIProcessAction implements IActionListener {

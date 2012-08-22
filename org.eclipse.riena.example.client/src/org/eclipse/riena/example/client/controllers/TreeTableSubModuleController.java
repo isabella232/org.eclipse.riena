@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.controllers;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.List;
 
 import org.eclipse.core.databinding.DataBindingContext;
@@ -79,6 +81,8 @@ public class TreeTableSubModuleController extends SubModuleController {
 
 		tree = getRidget(IGroupedTreeTableRidget.class, "tree"); //$NON-NLS-1$
 		final IToggleButtonRidget buttonEnableGrouping = getRidget(IToggleButtonRidget.class, "buttonEnableGrouping"); //$NON-NLS-1$
+		final IToggleButtonRidget buttonShowRoots = getRidget(IToggleButtonRidget.class, "buttonShowRoots"); //$NON-NLS-1$
+		final IToggleButtonRidget buttonEmptyInput = getRidget(IToggleButtonRidget.class, "buttonEmptyInput"); //$NON-NLS-1$
 		final IActionRidget buttonAddSibling = getRidget(IActionRidget.class, "buttonAddSibling"); //$NON-NLS-1$
 		final IActionRidget buttonAddChild = getRidget(IActionRidget.class, "buttonAddChild"); //$NON-NLS-1$
 		buttonRename = getRidget(IActionRidget.class, "buttonRename"); //$NON-NLS-1$
@@ -98,6 +102,31 @@ public class TreeTableSubModuleController extends SubModuleController {
 
 		buttonEnableGrouping.setText("Grouping &Enabled"); //$NON-NLS-1$
 		buttonEnableGrouping.setSelected(true);
+
+		buttonShowRoots.setText("Show Roots"); //$NON-NLS-1$
+		buttonShowRoots.setSelected(true);
+		buttonShowRoots.addPropertyChangeListener(IToggleButtonRidget.PROPERTY_SELECTED, new PropertyChangeListener() {
+			public void propertyChange(final PropertyChangeEvent evt) {
+				tree.setRootsVisible((Boolean) evt.getNewValue());
+				tree.updateFromModel();
+			}
+		});
+
+		buttonEmptyInput.setText("Empty Input"); //$NON-NLS-1$
+		buttonEmptyInput.addPropertyChangeListener(IToggleButtonRidget.PROPERTY_SELECTED, new PropertyChangeListener() {
+			public void propertyChange(final PropertyChangeEvent evt) {
+				final Object[] roots;
+				if ((Boolean) evt.getNewValue()) {
+					roots = new Object[0];
+				} else {
+					roots = createTreeInput();
+				}
+				final String[] columnPropertyNames = { "word", "upperCase", "ACount" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				final String[] columnHeaders = { "Word", "Uppercase", "A Count" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				tree.bindToModel(roots, WordNode.class, "children", "parent", columnPropertyNames, columnHeaders); //$NON-NLS-1$ //$NON-NLS-2$
+				tree.expandAll();
+			}
+		});
 
 		buttonAddSibling.setText("Add &Sibling"); //$NON-NLS-1$
 		buttonAddSibling.addListener(new IActionListener() {

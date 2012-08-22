@@ -396,16 +396,13 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 
 	void updateWindowTitle() {
 		final IWindowRidget windowRidget = getWindowRidget();
-		if (getNavigationNode().isActivated()) {
-			if (windowRidget != null) {
-				windowRidget.setTitle(getFullTitle());
-			}
-		} else {
+		if (windowRidget != null) {
+			windowRidget.setTitle(getFullTitle());
+		}
+		if (!getNavigationNode().isActivated()) {
 			final ISubModuleNode subModule = ApplicationNodeManager.locateActiveSubModuleNode();
 			if ((subModule != null) && (subModule.getNavigationNodeController() instanceof SubModuleController)) {
 				((SubModuleController) subModule.getNavigationNodeController()).updateWindowTitle();
-			} else {
-				LOGGER.log(LogService.LOG_WARNING, "No active sub-module (with controller) found!"); //$NON-NLS-1$
 			}
 		}
 	}

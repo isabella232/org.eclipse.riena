@@ -79,9 +79,12 @@ public class TreeTableSubModuleView extends SubModuleView {
 		GridLayoutFactory.fillDefaults().numColumns(6).equalWidth(false).applyTo(buttonComposite);
 
 		final Button buttonEnableGrouping = UIControlsFactory.createButtonCheck(buttonComposite);
-		GridDataFactory.fillDefaults().span(6, 1).grab(true, false).align(SWT.END, SWT.BEGINNING)
-				.applyTo(buttonEnableGrouping);
-		addUIControl(buttonEnableGrouping, "buttonEnableGrouping"); //$NON-NLS-1$
+		GridDataFactory.fillDefaults().span(4, 1).grab(true, false).align(SWT.LEFT, SWT.BEGINNING).applyTo(buttonEnableGrouping);
+		addUIControl(buttonEnableGrouping, "buttonEmptyInput"); //$NON-NLS-1$
+
+		addUIControl(UIControlsFactory.createButtonCheck(buttonComposite), "buttonShowRoots"); //$NON-NLS-1$
+
+		addUIControl(UIControlsFactory.createButtonCheck(buttonComposite), "buttonEnableGrouping"); //$NON-NLS-1$
 
 		final Button buttonAddSibling = UIControlsFactory.createButton(buttonComposite);
 		GridDataFactory.fillDefaults().grab(true, false).align(SWT.END, SWT.BEGINNING).applyTo(buttonAddSibling);

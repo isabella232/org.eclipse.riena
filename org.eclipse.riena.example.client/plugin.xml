@@ -218,6 +218,11 @@
             name="org.eclipse.riena.example.client.views.CarCatalogSubModuleView">
       </view>
       <view allowMultiple="true"
+            class="org.eclipse.riena.example.client.views.CheckBoxTableSubModuleView"
+            id="org.eclipse.riena.example.client.views.CheckBoxTableSubModuleView"
+            name="org.eclipse.riena.example.client.views.CheckBoxTableSubModuleView">
+      </view>
+      <view allowMultiple="true"
             class="org.eclipse.riena.example.client.views.NavigationSubModuleView"
             id="org.eclipse.riena.example.client.views.NavigationSubModuleView"
             name="org.eclipse.riena.example.client.views.NavigationSubModuleView">

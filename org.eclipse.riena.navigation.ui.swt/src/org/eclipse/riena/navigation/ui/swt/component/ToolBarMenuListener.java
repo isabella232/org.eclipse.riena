@@ -16,18 +16,22 @@ import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.events.TraverseEvent;
+import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 
+import org.eclipse.riena.ui.swt.facades.SWTFacade;
+
 /**
  * This class helps to reproduce a menu behavior using a ToolBar. It is only intended for usage by the {@link MenuCoolBarComposite}.
  * <p>
  * public for testing
  */
-public class ToolBarMenuListener implements MouseListener, SelectionListener, MouseTrackListener {
+public class ToolBarMenuListener implements MouseListener, SelectionListener, MouseTrackListener, TraverseListener {
 	/**
 	 * The item, for which the menu is currently visible.
 	 */
@@ -46,6 +50,13 @@ public class ToolBarMenuListener implements MouseListener, SelectionListener, Mo
 	public void mouseDown(final MouseEvent e) {
 		// because of timing issues, mouseDown(...) is used to handle item selections
 		final ToolItem toolItem = getItem(e);
+		activateItem(toolItem);
+	}
+
+	/**
+	 * @param toolItem
+	 */
+	private void activateItem(final ToolItem toolItem) {
 		if (toolItem != null && toolItem != activeItem) {
 			showMenu(toolItem);
 		} else {
@@ -106,6 +117,38 @@ public class ToolBarMenuListener implements MouseListener, SelectionListener, Mo
 	/*
 	 * (non-Javadoc)
 	 * 
+	 * @see org.eclipse.swt.events.TraverseListener#keyTraversed(org.eclipse.swt.events.TraverseEvent)
+	 */
+	public void keyTraversed(final TraverseEvent evt) {
+		if (evt.detail == SWTFacade.TRAVERSE_MNEMONIC && evt.getSource() instanceof ToolBar) {
+			activateItem(null);
+			activateItem(getItem(evt.character, (ToolBar) evt.getSource()));
+		}
+	}
+
+	private ToolItem getItem(final char mnemonic, final ToolBar toolBar) {
+		String mnemonicStrg = "&" + mnemonic; //$NON-NLS-1$
+		mnemonicStrg = mnemonicStrg.toLowerCase();
+
+		for (final ToolItem item : toolBar.getItems()) {
+			String label = item.getText();
+			if (label != null) {
+				label = label.toLowerCase();
+				if (label.contains(mnemonicStrg)) {
+					if (label.indexOf('&') == label.indexOf(mnemonicStrg)) {
+						return item;
+					}
+				}
+			}
+		}
+
+		return null;
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.swt.events.MouseTrackListener#mouseEnter(org.eclipse.swt.events.MouseEvent)
 	 */
 	public void mouseEnter(final MouseEvent e) {
@@ -156,5 +199,4 @@ public class ToolBarMenuListener implements MouseListener, SelectionListener, Mo
 	public void mouseHover(final MouseEvent e) {
 		// unused
 	}
-
 }

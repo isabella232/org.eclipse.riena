@@ -21,6 +21,8 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.graphics.Resource;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.swt.widgets.Widget;
 
 import org.eclipse.riena.core.cache.LRUHashMap;
@@ -36,16 +38,14 @@ public final class SwtUtilities {
 	private static final Map<GCChar, Integer> CHAR_WIDTH_CACHE = LRUHashMap.createLRUHashMap(1024);
 
 	/**
-	 * This class contains only static methods. So it is not necessary to create
-	 * an instance.
+	 * This class contains only static methods. So it is not necessary to create an instance.
 	 */
 	private SwtUtilities() {
 		throw new Error("SwtUtilities is just a container for static methods"); //$NON-NLS-1$
 	}
 
 	/**
-	 * The text will be clipped, if the width of the given text is greater than
-	 * the maximum width.<br>
+	 * The text will be clipped, if the width of the given text is greater than the maximum width.<br>
 	 * The clipped text always ends with three dots ("...").
 	 * 
 	 * @param gc
@@ -72,8 +72,7 @@ public final class SwtUtilities {
 	}
 
 	/**
-	 * Calculates the width of the given text based on the current settings of
-	 * the given graphics context.
+	 * Calculates the width of the given text based on the current settings of the given graphics context.
 	 * 
 	 * @param gc
 	 *            graphics context
@@ -99,8 +98,7 @@ public final class SwtUtilities {
 	}
 
 	/**
-	 * Calculates the width of the given char based on the current settings of
-	 * the given graphics context.
+	 * Calculates the width of the given char based on the current settings of the given graphics context.
 	 * 
 	 * @param gc
 	 *            graphics context
@@ -119,8 +117,7 @@ public final class SwtUtilities {
 	}
 
 	/**
-	 * Disposes the given resource, if the resource is not null and isn't
-	 * already disposed.
+	 * Disposes the given resource, if the resource is not null and isn't already disposed.
 	 * 
 	 * @param resource
 	 *            resource to dispose
@@ -134,8 +131,7 @@ public final class SwtUtilities {
 	}
 
 	/**
-	 * Disposes the given widget, if the widget is not {@code null} and isn't
-	 * already disposed.
+	 * Disposes the given widget, if the widget is not {@code null} and isn't already disposed.
 	 * 
 	 * @param widget
 	 *            widget to dispose
@@ -149,12 +145,38 @@ public final class SwtUtilities {
 	}
 
 	/**
-	 * Returns the 0 based index of the column at {@code pt}. The code can
-	 * handle re-ordered columns. The index refers to the original ordering (as
-	 * used by SWT API).
+	 * Returns the 0 based index of the column at {@code pt}. The code can handle re-ordered columns. The index refers to the original ordering (as used by SWT
+	 * API).
 	 * <p>
-	 * Will return -1 if no column could be computed -- this is the case when
-	 * all columns are resized to have width 0.
+	 * Will return -1 if no column could be computed -- this is the case when all columns are resized to have width 0.
+	 * 
+	 * @since 5.0
+	 */
+	public static int findColumn(final Tree tree, final Point pt) {
+		int width = 0;
+		final int[] colOrder = tree.getColumnOrder();
+		// compute the current column ordering
+		final TreeColumn[] columns = new TreeColumn[colOrder.length];
+		for (int i = 0; i < colOrder.length; i++) {
+			final int idx = colOrder[i];
+			columns[i] = tree.getColumn(idx);
+		}
+		// find the column under Point pt
+		for (final TreeColumn col : columns) {
+			final int colWidth = col.getWidth();
+			if (width < pt.x && pt.x < width + colWidth) {
+				return tree.indexOf(col);
+			}
+			width += colWidth;
+		}
+		return -1;
+	}
+
+	/**
+	 * Returns the 0 based index of the column at {@code pt}. The code can handle re-ordered columns. The index refers to the original ordering (as used by SWT
+	 * API).
+	 * <p>
+	 * Will return -1 if no column could be computed -- this is the case when all columns are resized to have width 0.
 	 * 
 	 * @since 3.0
 	 */
@@ -179,8 +201,7 @@ public final class SwtUtilities {
 	}
 
 	/**
-	 * Returns true if the given {@code styleBit} is turned on, on the given
-	 * {@code widget} instance. Returns false otherwise.
+	 * Returns true if the given {@code styleBit} is turned on, on the given {@code widget} instance. Returns false otherwise.
 	 * <p>
 	 * Example:
 	 * 
@@ -203,8 +224,7 @@ public final class SwtUtilities {
 	 * 
 	 * @param widget
 	 *            widget to check
-	 * @return {@code true}, if the widget is disposed or {@code null};
-	 *         otherwise {@code false}.
+	 * @return {@code true}, if the widget is disposed or {@code null}; otherwise {@code false}.
 	 */
 	public static boolean isDisposed(final Widget widget) {
 		return widget == null || widget.isDisposed();
@@ -215,23 +235,20 @@ public final class SwtUtilities {
 	 * 
 	 * @param resource
 	 *            resource to check
-	 * @return {@code true}, if the resource is disposed or {@code null};
-	 *         otherwise {@code false}.
+	 * @return {@code true}, if the resource is disposed or {@code null}; otherwise {@code false}.
 	 */
 	public static boolean isDisposed(final Resource resource) {
 		return !((resource != null) && (!resource.isDisposed()));
 	}
 
 	/**
-	 * Creates a new instance of <code>Color</code> that is a brighter version
-	 * of the given color.
+	 * Creates a new instance of <code>Color</code> that is a brighter version of the given color.
 	 * 
 	 * @param color
 	 *            the color to make brighter; never null
 	 * @param f
 	 *            the factor.
-	 * @return a new <code>Color</code> object that is a brighter version of
-	 *         this given color.
+	 * @return a new <code>Color</code> object that is a brighter version of this given color.
 	 */
 	public static Color makeBrighter(final Color color, final float f) {
 

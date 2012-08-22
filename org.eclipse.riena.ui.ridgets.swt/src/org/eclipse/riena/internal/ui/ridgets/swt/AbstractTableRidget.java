@@ -279,7 +279,7 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 		viewerColumn.setEditingSupport(editingSupport);
 	}
 
-	private PropertyDescriptor getPropertyDescriptor(final String propertyName) {
+	protected PropertyDescriptor getPropertyDescriptor(final String propertyName) {
 
 		PropertyDescriptor[] descriptors;
 		try {
@@ -296,6 +296,11 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 
 		return null;
 
+	}
+
+	protected PropertyDescriptor getPropertyDescriptor(final int columnIndex) {
+		checkColumnRange(columnIndex);
+		return getPropertyDescriptor(renderingMethods[columnIndex]);
 	}
 
 	protected void checkColumnRange(final int columnIndex) {

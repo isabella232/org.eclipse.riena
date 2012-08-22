@@ -2,13 +2,13 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Riena Security Services Plug-in
 Bundle-SymbolicName: org.eclipse.riena.security.services;singleton:=true
-Bundle-Version: 4.0.0.qualifier
+Bundle-Version: 5.0.0.qualifier
 Bundle-Activator: org.eclipse.riena.internal.security.services.Activator
 Require-Bundle: org.eclipse.riena.core,
  org.eclipse.riena.security.common,
  org.eclipse.riena.security.server
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: org.eclipse.equinox.security.auth;version="1.0.0"
 Export-Package: org.eclipse.riena.internal.security.authenticationservice;x-internal:=true,
  org.eclipse.riena.internal.security.authorizationservice;x-friends:="org.eclipse.riena.tests",

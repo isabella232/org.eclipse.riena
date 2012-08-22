@@ -32,6 +32,18 @@ public class RemoteServiceFactoryTest extends RienaTestCase {
 
 	private final RemoteServiceRegistry remoteServiceRegistry = (RemoteServiceRegistry) Service.get(IRemoteServiceRegistry.class);
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.internal.core.test.RienaTestCase#setUp()
+	 */
+	@Override
+	protected void setUp() throws Exception {
+		// some tests are stopping this bundle to test the OSGi service unregistration
+		// we want to ensure that this bundle is active at the beginning of each test
+		startBundle("org.eclipse.riena.communication.console"); //$NON-NLS-1$
+	}
+
 	@Override
 	protected void tearDown() throws Exception {
 		super.tearDown();
@@ -58,7 +70,6 @@ public class RemoteServiceFactoryTest extends RienaTestCase {
 	}
 
 	public void testUnregisterForOtherBundle() throws Exception {
-		super.startBundle("org.eclipse.riena.communication.console"); //$NON-NLS-1$
 		final BundleContext context = org.eclipse.riena.internal.communication.console.Activator.getDefault().getContext();
 		final IRemoteServiceRegistration createAndRegisterProxy = Companion.per(RemoteServiceFactory.class).createAndRegisterProxy(IRSFTest.class,
 				"http://localhost", "hessian", context); //$NON-NLS-1$ //$NON-NLS-2$
@@ -72,7 +83,6 @@ public class RemoteServiceFactoryTest extends RienaTestCase {
 	}
 
 	public void testUnregisterForOtherBundleAndStopOtherBundle() throws Exception {
-		super.startBundle("org.eclipse.riena.communication.console"); //$NON-NLS-1$
 		final BundleContext context = org.eclipse.riena.internal.communication.console.Activator.getDefault().getContext();
 		Companion.per(RemoteServiceFactory.class).createAndRegisterProxy(IRSFTest.class, "http://localhost", "hessian", context); //$NON-NLS-1$ //$NON-NLS-2$
 		final Object service = context.getService(context.getServiceReference(IRSFTest.class.getName()));
@@ -85,7 +95,6 @@ public class RemoteServiceFactoryTest extends RienaTestCase {
 	}
 
 	public void testUnregisterForOtherBundleAndStopOtherBundleAndUnregister() throws Exception {
-		super.startBundle("org.eclipse.riena.communication.console"); //$NON-NLS-1$
 		final BundleContext context = org.eclipse.riena.internal.communication.console.Activator.getDefault().getContext();
 		final IRemoteServiceRegistration createAndRegisterProxy = Companion.per(RemoteServiceFactory.class).createAndRegisterProxy(IRSFTest.class,
 				"http://localhost", "hessian", context); //$NON-NLS-1$ //$NON-NLS-2$

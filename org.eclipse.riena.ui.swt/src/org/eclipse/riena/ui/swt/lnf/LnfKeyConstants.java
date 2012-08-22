@@ -21,8 +21,7 @@ import org.eclipse.riena.ui.swt.StatusMeter;
 /**
  * Keys of the look and feel of riena.
  * <p>
- * Some keys are in a special Wiki page of Eclipsepedia: <a
- * href="http://wiki.eclipse.org/Riena_Look_and_Feel">Riena Look and Feel</a>
+ * Some keys are in a special Wiki page of Eclipsepedia: <a href="http://wiki.eclipse.org/Riena_Look_and_Feel">Riena Look and Feel</a>
  * 
  * @since 2.0
  */
@@ -44,93 +43,80 @@ public final class LnfKeyConstants {
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena
-	 *      Wiki</a>
+	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena Wiki</a>
 	 */
 	public static final String DIALOG_FOREGROUND = "Dialog.foreground"; //$NON-NLS-1$
 	public static final String DIALOG_PASSIVE_FOREGROUND = "Dialog.passiveForeground"; //$NON-NLS-1$
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena
-	 *      Wiki</a>
+	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena Wiki</a>
 	 */
 	public static final String DIALOG_BORDER_BOTTOM_RIGHT_COLOR = "Dialog.bottomRightColor"; //$NON-NLS-1$
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena
-	 *      Wiki</a>
+	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena Wiki</a>
 	 */
 	public static final String DIALOG_BORDER_TOP_LEFT_COLOR = "Dialog.borderTopLeftColor"; //$NON-NLS-1$
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena
-	 *      Wiki</a>
+	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena Wiki</a>
 	 */
 	public static final String DIALOG_INNER_BORDER_BOTTOM_RIGHT_COLOR = "Dialog.innerBorderBottomRightColor"; //$NON-NLS-1$
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena
-	 *      Wiki</a>
+	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena Wiki</a>
 	 */
 	public static final String DIALOG_INNER_BORDER_TOP_LEFT_COLOR = "Dialog.innerBorderTopLeftColor"; //$NON-NLS-1$
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena
-	 *      Wiki</a>
+	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena Wiki</a>
 	 */
 	public static final String DIALOG_TITLEBAR_BACKGROUND_START_COLOR = "DialogTitleBar.backgroundStartColor"; //$NON-NLS-1$
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena
-	 *      Wiki</a>
+	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena Wiki</a>
 	 */
 	public static final String DIALOG_TITLEBAR_BACKGROUND_END_COLOR = "DialogTitleBar.backgroundEndColor"; //$NON-NLS-1$
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena
-	 *      Wiki</a>
+	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena Wiki</a>
 	 */
 	public static final String DIALOG_TITLEBAR_BACKGROUND_TOP_COLOR_1 = "DialogTitleBar.backgroundTopColor1"; //$NON-NLS-1$
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena
-	 *      Wiki</a>
+	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena Wiki</a>
 	 */
 	public static final String DIALOG_TITLEBAR_BACKGROUND_TOP_COLOR_2 = "DialogTitleBar.backgroundTopColor2"; //$NON-NLS-1$
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena
-	 *      Wiki</a>
+	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena Wiki</a>
 	 */
 	public static final String DIALOG_TITLEBAR_BACKGROUND_TOP_COLOR_3 = "DialogTitleBar.backgroundTopColor3"; //$NON-NLS-1$
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena
-	 *      Wiki</a>
+	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena Wiki</a>
 	 */
 	public static final String DIALOG_TITLEBAR_BACKGROUND_BOTTOM_COLOR_1 = "DialogTitleBar.backgroundBottomColor1"; //$NON-NLS-1$
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena
-	 *      Wiki</a>
+	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena Wiki</a>
 	 */
 	public static final String DIALOG_TITLEBAR_BACKGROUND_BOTTOM_COLOR_2 = "DialogTitleBar.backgroundBottomColor2"; //$NON-NLS-1$
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena
-	 *      Wiki</a>
+	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena Wiki</a>
 	 */
 	public static final String DIALOG_TITLEBAR_BACKGROUND_BOTTOM_COLOR_3 = "DialogTitleBar.backgroundBottomColor3"; //$NON-NLS-1$
 
@@ -146,17 +132,13 @@ public final class LnfKeyConstants {
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a href=
-	 *      "http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Application_Switcher"
-	 *      >Riena Wiki</a>
+	 * @see <a href= "http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Application_Switcher" >Riena Wiki</a>
 	 */
 	public static final String SUB_APPLICATION_SWITCHER_DISABLED_FOREGROUND = "SubApplicationSwitcher.disabledForeground"; //$NON-NLS-1$
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a href=
-	 *      "http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Application_Switcher"
-	 *      >Riena Wiki</a>
+	 * @see <a href= "http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Application_Switcher" >Riena Wiki</a>
 	 */
 	public static final String SUB_APPLICATION_SWITCHER_BORDER_BOTTOM_LEFT_COLOR = "SubApplicationSwitcher.borderBottomLeftColor"; //$NON-NLS-1$
 
@@ -168,9 +150,7 @@ public final class LnfKeyConstants {
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a href=
-	 *      "http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Application_Switcher"
-	 *      >Riena Wiki</a>
+	 * @see <a href= "http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Application_Switcher" >Riena Wiki</a>
 	 */
 	public static final String SUB_APPLICATION_SWITCHER_BORDER_TOP_RIGHT_COLOR = "SubApplicationSwitcher.borderTopRightColor"; //$NON-NLS-1$
 	/**
@@ -180,100 +160,76 @@ public final class LnfKeyConstants {
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a href=
-	 *      "http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Application_Switcher"
-	 *      >Riena Wiki</a>
+	 * @see <a href= "http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Application_Switcher" >Riena Wiki</a>
 	 */
 	public static final String SUB_APPLICATION_SWITCHER_INNER_BORDER_COLOR = "SubApplicationSwitcher.innerBorderColor"; //$NON-NLS-1$
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a href=
-	 *      "http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Application_Switcher"
-	 *      >Riena Wiki</a>
+	 * @see <a href= "http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Application_Switcher" >Riena Wiki</a>
 	 */
 	public static final String SUB_APPLICATION_SWITCHER_ACTIVE_BACKGROUND_END_COLOR = "SubApplicationSwitcher.activeBackgroundEndColor"; //$NON-NLS-1$
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a href=
-	 *      "http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Application_Switcher"
-	 *      >Riena Wiki</a>
+	 * @see <a href= "http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Application_Switcher" >Riena Wiki</a>
 	 */
 	public static final String SUB_APPLICATION_SWITCHER_ACTIVE_BACKGROUND_START_COLOR = "SubApplicationSwitcher.activeBackgroundStartColor"; //$NON-NLS-1$
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a href=
-	 *      "http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Application_Switcher"
-	 *      >Riena Wiki</a>
+	 * @see <a href= "http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Application_Switcher" >Riena Wiki</a>
 	 */
 	public static final String SUB_APPLICATION_SWITCHER_PASSIVE_BACKGROUND_END_COLOR = "SubApplicationSwitcher.passiveBackgroundEndColor"; //$NON-NLS-1$
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a href=
-	 *      "http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Application_Switcher"
-	 *      >Riena Wiki</a>
+	 * @see <a href= "http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Application_Switcher" >Riena Wiki</a>
 	 */
 	public static final String SUB_APPLICATION_SWITCHER_PASSIVE_BACKGROUND_START_COLOR = "SubApplicationSwitcher.passiveBackgroundStartColor"; //$NON-NLS-1$
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a href=
-	 *      "http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Application_Switcher"
-	 *      >Riena Wiki</a>
+	 * @see <a href= "http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Application_Switcher" >Riena Wiki</a>
 	 * @since 1.2
 	 */
 	public static final String SUB_APPLICATION_SWITCHER_PROCESS_FINISHED_BACKGROUND_END_COLOR = "SubApplicationSwitcher.processFinishedBackgroundEndColor"; //$NON-NLS-1$
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a href=
-	 *      "http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Application_Switcher"
-	 *      >Riena Wiki</a>
+	 * @see <a href= "http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Application_Switcher" >Riena Wiki</a>
 	 * @since 1.2
 	 */
 	public static final String SUB_APPLICATION_SWITCHER_PROCESS_FINISHED_BACKGROUND_START_COLOR = "SubApplicationSwitcher.processFinishedBackgroundStartColor"; //$NON-NLS-1$
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a href=
-	 *      "http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Application_Switcher"
-	 *      >Riena Wiki</a>
+	 * @see <a href= "http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Application_Switcher" >Riena Wiki</a>
 	 */
 	public static final String SUB_APPLICATION_SWITCHER_TOP_SELECTION_COLOR = "SubApplicationSwitcher.topSelectionColor"; //$NON-NLS-1$
 
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a href=
-	 *      "http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Application_Switcher"
-	 *      >Riena Wiki</a>
+	 * @see <a href= "http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Application_Switcher" >Riena Wiki</a>
 	 */
 	public static final String SUB_APPLICATION_SWITCHER_DISABLED_BORDER_BOTTOM_LEFT_COLOR = "SubApplicationSwitcher.borderBottomLeftColor"; //$NON-NLS-1$
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a href=
-	 *      "http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Application_Switcher"
-	 *      >Riena Wiki</a>
+	 * @see <a href= "http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Application_Switcher" >Riena Wiki</a>
 	 */
 	public static final String SUB_APPLICATION_SWITCHER_DISABLED_BORDER_TOP_RIGHT_COLOR = "SubApplicationSwitcher.borderTopRightColor"; //$NON-NLS-1$
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a href=
-	 *      "http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Application_Switcher"
-	 *      >Riena Wiki</a>
+	 * @see <a href= "http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Application_Switcher" >Riena Wiki</a>
 	 */
 	public static final String SUB_APPLICATION_SWITCHER_INNER_DISABLED_BORDER_COLOR = "SubApplicationSwitcher.innerDisabledBorderColor"; //$NON-NLS-1$
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a href=
-	 *      "http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Application_Switcher"
-	 *      >Riena Wiki</a>
+	 * @see <a href= "http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Application_Switcher" >Riena Wiki</a>
 	 * @since 1.2
 	 */
 	public static final String SUB_APPLICATION_SWITCHER_INNER_PROCESS_FINISHED_BORDER_COLOR = "SubApplicationSwitcher.innerProcessFinishedBorderColor"; //$NON-NLS-1$
@@ -281,115 +237,87 @@ public final class LnfKeyConstants {
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a
-	 *      href="http://wiki.eclipse.org/Riena_Look_and_Feel#Embedded_Title_Bar">
-	 *      Riena Wiki</a>
+	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Embedded_Title_Bar"> Riena Wiki</a>
 	 */
 	public static final String EMBEDDED_TITLEBAR_ACTIVE_FOREGROUND = "EmbeddedTitlebar.foreground"; //$NON-NLS-1$
 
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a
-	 *      href="http://wiki.eclipse.org/Riena_Look_and_Feel#Embedded_Title_Bar">
-	 *      Riena Wiki</a>
+	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Embedded_Title_Bar"> Riena Wiki</a>
 	 */
 	public static final String EMBEDDED_TITLEBAR_PASSIVE_FOREGROUND = "EmbeddedTitlebar.passiveForeground"; //$NON-NLS-1$
 
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a
-	 *      href="http://wiki.eclipse.org/Riena_Look_and_Feel#Embedded_Title_Bar">
-	 *      Riena Wiki</a>
+	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Embedded_Title_Bar"> Riena Wiki</a>
 	 */
 	public static final String EMBEDDED_TITLEBAR_DISABLED_FOREGROUND = "EmbeddedTitlebar.disabledForeground"; //$NON-NLS-1$
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a
-	 *      href="http://wiki.eclipse.org/Riena_Look_and_Feel#Embedded_Title_Bar">
-	 *      Riena Wiki</a>
+	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Embedded_Title_Bar"> Riena Wiki</a>
 	 */
 	public static final String EMBEDDED_TITLEBAR_DISABLED_BORDER_COLOR = "EmbeddedTitlebar.disabledBorderColor"; //$NON-NLS-1$
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a
-	 *      href="http://wiki.eclipse.org/Riena_Look_and_Feel#Embedded_Title_Bar">
-	 *      Riena Wiki</a>
+	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Embedded_Title_Bar"> Riena Wiki</a>
 	 */
 	public static final String EMBEDDED_TITLEBAR_ACTIVE_BORDER_COLOR = "EmbeddedTitlebar.activeBorderColor"; //$NON-NLS-1$
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a
-	 *      href="http://wiki.eclipse.org/Riena_Look_and_Feel#Embedded_Title_Bar">
-	 *      Riena Wiki</a>
+	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Embedded_Title_Bar"> Riena Wiki</a>
 	 */
 	public static final String EMBEDDED_TITLEBAR_ACTIVE_BACKGROUND_END_COLOR = "EmbeddedTitlebar.activeBackgroundEndColor"; //$NON-NLS-1$
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a
-	 *      href="http://wiki.eclipse.org/Riena_Look_and_Feel#Embedded_Title_Bar">
-	 *      Riena Wiki</a>
+	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Embedded_Title_Bar"> Riena Wiki</a>
 	 */
 	public static final String EMBEDDED_TITLEBAR_ACTIVE_BACKGROUND_START_COLOR = "EmbeddedTitlebar.activeBackgroundStartColor"; //$NON-NLS-1$
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a
-	 *      href="http://wiki.eclipse.org/Riena_Look_and_Feel#Embedded_Title_Bar">
-	 *      Riena Wiki</a>
+	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Embedded_Title_Bar"> Riena Wiki</a>
 	 */
 	public static final String EMBEDDED_TITLEBAR_PASSIVE_BORDER_COLOR = "EmbeddedTitlebar.passiveBorderColor"; //$NON-NLS-1$
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a
-	 *      href="http://wiki.eclipse.org/Riena_Look_and_Feel#Embedded_Title_Bar">
-	 *      Riena Wiki</a>
+	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Embedded_Title_Bar"> Riena Wiki</a>
 	 */
 	public static final String EMBEDDED_TITLEBAR_PASSIVE_BACKGROUND_END_COLOR = "EmbeddedTitlebar.passiveBackgroundEndColor"; //$NON-NLS-1$
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a
-	 *      href="http://wiki.eclipse.org/Riena_Look_and_Feel#Embedded_Title_Bar">
-	 *      Riena Wiki</a>
+	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Embedded_Title_Bar"> Riena Wiki</a>
 	 */
 	public static final String EMBEDDED_TITLEBAR_PASSIVE_BACKGROUND_START_COLOR = "EmbeddedTitlebar.passiveBackgroundStartColor"; //$NON-NLS-1$
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a
-	 *      href="http://wiki.eclipse.org/Riena_Look_and_Feel#Embedded_Title_Bar">
-	 *      Riena Wiki</a>
+	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Embedded_Title_Bar"> Riena Wiki</a>
 	 */
 	public static final String EMBEDDED_TITLEBAR_HOVER_BORDER_END_COLOR = "EmbeddedTitlebar.hoverBorderEndColor"; //$NON-NLS-1$
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a
-	 *      href="http://wiki.eclipse.org/Riena_Look_and_Feel#Embedded_Title_Bar">
-	 *      Riena Wiki</a>
+	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Embedded_Title_Bar"> Riena Wiki</a>
 	 */
 	public static final String EMBEDDED_TITLEBAR_HOVER_BORDER_START_COLOR = "EmbeddedTitlebar.hoverBorderStartColor"; //$NON-NLS-1$
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a
-	 *      href="http://wiki.eclipse.org/Riena_Look_and_Feel#Embedded_Title_Bar">
-	 *      Riena Wiki</a>
+	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Embedded_Title_Bar"> Riena Wiki</a>
 	 */
 	public static final String EMBEDDED_TITLEBAR_HOVER_BORDER_BOTTOM_COLOR = "EmbeddedTitlebar.hoverBorderBottomColor"; //$NON-NLS-1$
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a
-	 *      href="http://wiki.eclipse.org/Riena_Look_and_Feel#Embedded_Title_Bar">
-	 *      Riena Wiki</a>
+	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Embedded_Title_Bar"> Riena Wiki</a>
 	 */
 	public static final String EMBEDDED_TITLEBAR_HOVER_BORDER_TOP_COLOR = "EmbeddedTitlebar.hoverBorderTopColor"; //$NON-NLS-1$
 
@@ -527,113 +455,97 @@ public final class LnfKeyConstants {
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena
-	 *      Wiki</a>
+	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena Wiki</a>
 	 */
 	public static final String DIALOG_CLOSE_ICON = "Dialog.closeIcon"; //$NON-NLS-1$
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena
-	 *      Wiki</a>
+	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena Wiki</a>
 	 */
 	public static final String DIALOG_CLOSE_HOVER_ICON = "Dialog.closeHoverIcon"; //$NON-NLS-1$
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena
-	 *      Wiki</a>
+	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena Wiki</a>
 	 */
 	public static final String DIALOG_CLOSE_HOVER_SELECTED_ICON = "Dialog.closeHoverSelectedIcon"; //$NON-NLS-1$
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena
-	 *      Wiki</a>
+	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena Wiki</a>
 	 */
 	public static final String DIALOG_CLOSE_INACTIVE_ICON = "Dialog.closeInactiveIcon"; //$NON-NLS-1$
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena
-	 *      Wiki</a>
+	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena Wiki</a>
 	 */
 	public static final String DIALOG_MAX_ICON = "Dialog.maxIcon"; //$NON-NLS-1$
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena
-	 *      Wiki</a>
+	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena Wiki</a>
 	 */
 	public static final String DIALOG_MAX_HOVER_ICON = "Dialog.maxHoverIcon"; //$NON-NLS-1$
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena
-	 *      Wiki</a>
+	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena Wiki</a>
 	 */
 	public static final String DIALOG_MAX_HOVER_SELECTED_ICON = "Dialog.maxHoverSelectedIcon"; //$NON-NLS-1$
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena
-	 *      Wiki</a>
+	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena Wiki</a>
 	 */
 	public static final String DIALOG_MAX_INACTIVE_ICON = "Dialog.maxInactiveIcon"; //$NON-NLS-1$
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena
-	 *      Wiki</a>
+	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena Wiki</a>
 	 */
 	public static final String DIALOG_MIN_ICON = "Dialog.minIcon"; //$NON-NLS-1$
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena
-	 *      Wiki</a>
+	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena Wiki</a>
 	 */
 	public static final String DIALOG_MIN_HOVER_ICON = "Dialog.minHoverIcon"; //$NON-NLS-1$
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena
-	 *      Wiki</a>
+	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena Wiki</a>
 	 */
 	public static final String DIALOG_MIN_HOVER_SELECTED_ICON = "Dialog.minHoverSelectedIcon"; //$NON-NLS-1$
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena
-	 *      Wiki</a>
+	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena Wiki</a>
 	 */
 	public static final String DIALOG_MIN_INACTIVE_ICON = "Dialog.minInactiveIcon"; //$NON-NLS-1$
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena
-	 *      Wiki</a>
+	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena Wiki</a>
 	 */
 	public static final String DIALOG_RESTORE_ICON = "Dialog.restoreIcon"; //$NON-NLS-1$
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena
-	 *      Wiki</a>
+	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena Wiki</a>
 	 */
 	public static final String DIALOG_RESTORE_HOVER_ICON = "Dialog.restoreHoverIcon"; //$NON-NLS-1$
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena
-	 *      Wiki</a>
+	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena Wiki</a>
 	 */
 	public static final String DIALOG_RESTORE_HOVER_SELECTED_ICON = "Dialog.restoreHoverSelectedIcon"; //$NON-NLS-1$
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena
-	 *      Wiki</a>
+	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena Wiki</a>
 	 */
 	public static final String DIALOG_RESTORE_INACTIVE_ICON = "Dialog.restoreInactiveIcon"; //$NON-NLS-1$
 
@@ -647,17 +559,13 @@ public final class LnfKeyConstants {
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a
-	 *      href="http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Module_Tree">
-	 *      Riena Wiki</a>
+	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Module_Tree"> Riena Wiki</a>
 	 */
 	public static final String SUB_MODULE_TREE_FOLDER_OPEN_ICON = "subModuleTreeFolderOpen.icon"; //$NON-NLS-1$
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a
-	 *      href="http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Module_Tree">
-	 *      Riena Wiki</a>
+	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Module_Tree"> Riena Wiki</a>
 	 */
 	public static final String SUB_MODULE_TREE_FOLDER_CLOSED_ICON = "subModuleTreeFolderClosed.icon"; //$NON-NLS-1$
 
@@ -677,18 +585,14 @@ public final class LnfKeyConstants {
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a
-	 *      href="http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Module_Tree">
-	 *      Riena Wiki</a>
+	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Module_Tree"> Riena Wiki</a>
 	 */
 	public static final String SUB_MODULE_TREE_DOCUMENT_LEAF_ICON = "subModuleTreeDocumentLeaf.icon"; //$NON-NLS-1$
 
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a
-	 *      href="http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Module_Tree">
-	 *      Riena Wiki</a>
+	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Module_Tree"> Riena Wiki</a>
 	 * @since 3.0
 	 */
 	public static final String WORKAREA_TREE_DOCUMENT_LEAF_ICON = "workareaTreeDocumentLeaf.icon"; //$NON-NLS-1$
@@ -696,17 +600,14 @@ public final class LnfKeyConstants {
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Marker"> Riena
-	 *      Wiki</a>
+	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Marker"> Riena Wiki</a>
 	 * @since 1.2
 	 */
 	public static final String SUB_MODULE_TREE_MARKER_HIERARCHIC_ORDER_POSITION = "subModuleTreePaintMarkerInHierarchicOrder"; //$NON-NLS-1$
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a
-	 *      href="http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Module_Tree">
-	 *      Riena Wiki</a>
+	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Module_Tree"> Riena Wiki</a>
 	 * 
 	 * @since 1.2
 	 */
@@ -714,9 +615,7 @@ public final class LnfKeyConstants {
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a
-	 *      href="http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Module_Tree">
-	 *      Riena Wiki</a>
+	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Module_Tree"> Riena Wiki</a>
 	 * 
 	 * @since 1.2
 	 */
@@ -728,9 +627,7 @@ public final class LnfKeyConstants {
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a
-	 *      href="http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Module_Tree">
-	 *      Riena Wiki</a>
+	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Module_Tree"> Riena Wiki</a>
 	 * 
 	 * @since 1.2
 	 */
@@ -739,33 +636,25 @@ public final class LnfKeyConstants {
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a
-	 *      href="http://wiki.eclipse.org/Riena_Look_and_Feel#Embedded_Title_Bar">
-	 *      Riena Wiki</a>
+	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Embedded_Title_Bar"> Riena Wiki</a>
 	 */
 	public static final String EMBEDDED_TITLEBAR_CLOSE_ICON = "EmbeddedTitlebar.closeIcon"; //$NON-NLS-1$
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a
-	 *      href="http://wiki.eclipse.org/Riena_Look_and_Feel#Embedded_Title_Bar">
-	 *      Riena Wiki</a>
+	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Embedded_Title_Bar"> Riena Wiki</a>
 	 */
 	public static final String EMBEDDED_TITLEBAR_CLOSE_HOVER_ICON = "EmbeddedTitlebar.closeHoverIcon"; //$NON-NLS-1$
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a
-	 *      href="http://wiki.eclipse.org/Riena_Look_and_Feel#Embedded_Title_Bar">
-	 *      Riena Wiki</a>
+	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Embedded_Title_Bar"> Riena Wiki</a>
 	 */
 	public static final String EMBEDDED_TITLEBAR_CLOSE_HOVER_SELECTED_ICON = "EmbeddedTitlebar.closeHoverSelectedIcon"; //$NON-NLS-1$
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a
-	 *      href="http://wiki.eclipse.org/Riena_Look_and_Feel#Embedded_Title_Bar">
-	 *      Riena Wiki</a>
+	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Embedded_Title_Bar"> Riena Wiki</a>
 	 */
 	public static final String EMBEDDED_TITLEBAR_CLOSE_INACTIVE_ICON = "EmbeddedTitlebar.closeInactiveIcon"; //$NON-NLS-1$
 
@@ -784,8 +673,7 @@ public final class LnfKeyConstants {
 	public static final String NAVIGATION_SCROLL_DOWN_ICON = "navigation.scrollDown"; //$NON-NLS-1$
 
 	/**
-	 * Sets whether the nodes of the navigation tree are selectable through
-	 * typing characters on the keyboard.
+	 * Sets whether the nodes of the navigation tree are selectable through typing characters on the keyboard.
 	 * 
 	 * @since 3.0
 	 */
@@ -825,8 +713,7 @@ public final class LnfKeyConstants {
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Shell"> Riena
-	 *      Wiki</a>
+	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Shell"> Riena Wiki</a>
 	 */
 	public static final String SHELL_HIDE_OS_BORDER = "Shell.hideOsBorder"; //$NON-NLS-1$
 
@@ -855,19 +742,16 @@ public final class LnfKeyConstants {
 	public static final String DISABLED_MARKER_STANDARD_ALPHA = "DisabledMarker.standardAlpha"; //$NON-NLS-1$
 
 	/**
-	 * This constants turns the advanced disabled marker rendering on (
-	 * {@code true}) or off ({@code false}).<br>
-	 * Is advanced rendering turned off for disabled UI control only the method
-	 * setEnabled is called. Is advanced rendering turned off the widgets are
-	 * renderer in a spacial way (@see DisabledMarkerVisualizer).
+	 * This constants turns the advanced disabled marker rendering on ( {@code true}) or off ({@code false}).<br>
+	 * Is advanced rendering turned off for disabled UI control only the method setEnabled is called. Is advanced rendering turned off the widgets are renderer
+	 * in a spacial way (@see DisabledMarkerVisualizer).
 	 * 
 	 * @since 2.0
 	 */
 	public static final String DISABLED_MARKER_ADVANCED = "DisabledMarker.advanced"; //$NON-NLS-1$
 
 	/**
-	 * This constants returns whether the content of a disabled ridget should be
-	 * visible ({@code false}) or hidden {@code true}.
+	 * This constants returns whether the content of a disabled ridget should be visible ({@code false}) or hidden {@code true}.
 	 * 
 	 * @since 2.0
 	 */
@@ -876,8 +760,7 @@ public final class LnfKeyConstants {
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena
-	 *      Wiki</a>
+	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">Riena Wiki</a>
 	 */
 	public static final String DIALOG_HIDE_OS_BORDER = "Dialog.hideOsBorder"; //$NON-NLS-1$
 
@@ -886,17 +769,13 @@ public final class LnfKeyConstants {
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a href=
-	 *      "http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Application_Switcher"
-	 *      >Riena Wiki</a>
+	 * @see <a href= "http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Application_Switcher" >Riena Wiki</a>
 	 */
 	public static final String SUB_APPLICATION_SWITCHER_HORIZONTAL_TAB_POSITION = "SubApplicationSwitcher.horizontalTabPosition"; //$NON-NLS-1$
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a href=
-	 *      "http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Application_Switcher"
-	 *      >Riena Wiki</a>
+	 * @see <a href= "http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Application_Switcher" >Riena Wiki</a>
 	 */
 	public static final String SUB_APPLICATION_SWITCHER_TAB_SHOW_ICON = "SubApplicationSwitcher.tabShowIcon"; //$NON-NLS-1$
 	/**
@@ -905,16 +784,14 @@ public final class LnfKeyConstants {
 	public static final String SUB_APPLICATION_SWITCHER_TAB_MIN_WIDTH = "SubApplicationSwitcher.tabMinWidth"; //$NON-NLS-1$
 
 	/**
-	 * Only one ({@code true}) or more ({@code false}) than one sub-trees inside
-	 * a module can be expanded at the same time.
+	 * Only one ({@code true}) or more ({@code false}) than one sub-trees inside a module can be expanded at the same time.
 	 * 
 	 * @since 2.0
 	 */
 	public static final String SUB_MODULE_TREE_SHOW_ONE_SUB_TREE = "SubModuleTree.showOneSubTree"; //$NON-NLS-1$
 
 	/**
-	 * A switch to decide whether a SubModuleTree should have the standard SWT
-	 * disabled color or the same color as the enabled SubModuleTree.
+	 * A switch to decide whether a SubModuleTree should have the standard SWT disabled color or the same color as the enabled SubModuleTree.
 	 * 
 	 * @since 3.0
 	 */
@@ -930,9 +807,7 @@ public final class LnfKeyConstants {
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a href=
-	 *      "http://wiki.eclipse.org/Riena_Look_and_Feel#Navigation">Riena
-	 *      Wiki</a>
+	 * @see <a href= "http://wiki.eclipse.org/Riena_Look_and_Feel#Navigation">Riena Wiki</a>
 	 * 
 	 * @since 1.2
 	 */
@@ -953,9 +828,15 @@ public final class LnfKeyConstants {
 	public static final String NAVIGATION_SCROLL_BAR = "navigation.scroll.bar"; //$NON-NLS-1$
 
 	/**
-	 * Property to make the navigation area a fast view. The SubModule will then
-	 * take all the space in the SubApplication and the navigation will overlap
-	 * this area until set invisible again.
+	 * The amount of pixel the will be moved by when the up/down arrows of the scroll bar are pressed.
+	 * 
+	 * @since 5.0
+	 */
+	public static final String NAVIGATION_SCROLL_BAR_INCREMENT = "navigation.scroll.bar.increment"; //$NON-NLS-1$
+
+	/**
+	 * Property to make the navigation area a fast view. The SubModule will then take all the space in the SubApplication and the navigation will overlap this
+	 * area until set invisible again.
 	 * 
 	 * @since 4.0
 	 */
@@ -964,24 +845,21 @@ public final class LnfKeyConstants {
 	/**
 	 * Defines if the user can change the size of the navigation.
 	 * <p>
-	 * <i>A combination of fast view (see NAVIGATION_FAST_VIEW) and resizeable
-	 * navigation is not supported.</i>
+	 * <i>A combination of fast view (see NAVIGATION_FAST_VIEW) and resizeable navigation is not supported.</i>
 	 * 
 	 * @since 4.0
 	 */
 	public static final String NAVIGATION_RESIZEABLE = "navigation.resizeable"; //$NON-NLS-1$
 
 	/**
-	 * Defines the minimum width of the navigation, if the navigatin is
-	 * resizable.
+	 * Defines the minimum width of the navigation, if the navigatin is resizable.
 	 * 
 	 * @since 4.0
 	 */
 	public static final String NAVIGATION_MIN_WIDTH = "navigation.minWidth"; //$NON-NLS-1$
 
 	/**
-	 * Defines the maximium width of the navigation, if the navigatin is
-	 * resizable.
+	 * Defines the maximium width of the navigation, if the navigatin is resizable.
 	 * 
 	 * @since 4.0
 	 */
@@ -990,9 +868,7 @@ public final class LnfKeyConstants {
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a href=
-	 *      "http://wiki.eclipse.org/Riena_Look_and_Feel#Menu_Bar_.2F_Tool_Bar">Riena
-	 *      Wiki</a>
+	 * @see <a href= "http://wiki.eclipse.org/Riena_Look_and_Feel#Menu_Bar_.2F_Tool_Bar">Riena Wiki</a>
 	 * 
 	 * @since 1.2
 	 */
@@ -1008,9 +884,7 @@ public final class LnfKeyConstants {
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a
-	 *      href="http://wiki.eclipse.org/Riena_Look_and_Feel#Embedded_Title_Bar">
-	 *      Riena Wiki</a>
+	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Embedded_Title_Bar"> Riena Wiki</a>
 	 * @since 2.0
 	 */
 	public static final String EMBEDDED_TITLEBAR_HOVER_BORDER_MARGIN = "EmbeddedTitlebar.hoverBorderMargin"; //$NON-NLS-1$
@@ -1023,9 +897,7 @@ public final class LnfKeyConstants {
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a href=
-	 *      "http://wiki.eclipse.org/Riena_Look_and_Feel#Menu_Bar_.2F_Tool_Bar">Riena
-	 *      Wiki</a>
+	 * @see <a href= "http://wiki.eclipse.org/Riena_Look_and_Feel#Menu_Bar_.2F_Tool_Bar">Riena Wiki</a>
 	 * 
 	 * @since 1.2
 	 */
@@ -1034,9 +906,7 @@ public final class LnfKeyConstants {
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
-	 * @see <a href=
-	 *      "http://wiki.eclipse.org/Riena_Look_and_Feel#Menu_Bar_.2F_Tool_Bar">Riena
-	 *      Wiki</a>
+	 * @see <a href= "http://wiki.eclipse.org/Riena_Look_and_Feel#Menu_Bar_.2F_Tool_Bar">Riena Wiki</a>
 	 * 
 	 * @since 1.2
 	 */
@@ -1066,8 +936,7 @@ public final class LnfKeyConstants {
 	public static final String FONTDESCRIPTOR_DEFAULT_HEIGHT = "FontDescriptor.defaultHeight"; //$NON-NLS-1$
 
 	/**
-	 * ID of the marker support that will be used to display the markers in the
-	 * UI.
+	 * ID of the marker support that will be used to display the markers in the UI.
 	 * 
 	 * @since 2.0
 	 */
@@ -1115,8 +984,7 @@ public final class LnfKeyConstants {
 	public static final String MASTER_DETAILS_WIDGET_SEPARATOR_FOREGROUND = "MDW.separatorForeground"; //$NON-NLS-1$
 
 	/**
-	 * The time it takes for the {@link InfoFlyout} to be fully grown resp.
-	 * shrunk.
+	 * The time it takes for the {@link InfoFlyout} to be fully grown resp. shrunk.
 	 * 
 	 * @since 2.0
 	 */
@@ -1186,8 +1054,7 @@ public final class LnfKeyConstants {
 	public static final String INFO_FLYOUT_RIGHT_MARGIN = "InfoFlyout.rightmargin"; //$NON-NLS-1$
 
 	/**
-	 * The gap between the right border of the {@link InfoFlyout} and top level
-	 * shell.
+	 * The gap between the right border of the {@link InfoFlyout} and top level shell.
 	 * 
 	 * @since 2.0
 	 */
@@ -1250,8 +1117,7 @@ public final class LnfKeyConstants {
 	public static final String STATUS_METER_GRADIENT_END_COLOR = "StatusMeter.gradientEndColor"; //$NON-NLS-1$
 
 	/**
-	 * The color used to create a transparent background around the bar of
-	 * {@link StatusMeter}.
+	 * The color used to create a transparent background around the bar of {@link StatusMeter}.
 	 * 
 	 * @since 3.0
 	 */

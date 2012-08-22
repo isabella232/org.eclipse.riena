@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Riena Example Client
 Bundle-SymbolicName: org.eclipse.riena.example.client;singleton:=true
-Bundle-Version: 4.0.0.qualifier
+Bundle-Version: 5.0.0.qualifier
 Bundle-Activator: org.eclipse.riena.internal.example.client.Activator
 Require-Bundle: org.eclipse.riena.client,
  org.eclipse.riena.monitor.common,
@@ -12,7 +12,7 @@ Require-Bundle: org.eclipse.riena.client,
  org.eclipse.core.expressions,
  org.eclipse.riena.security.ui
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: org.osgi.service.log;version="1.3.0"
 Export-Package: org.eclipse.riena.example.client.application,
  org.eclipse.riena.example.client.communication,
