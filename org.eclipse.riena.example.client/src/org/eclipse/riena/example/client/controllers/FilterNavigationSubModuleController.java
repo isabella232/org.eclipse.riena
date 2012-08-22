@@ -23,6 +23,8 @@ import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.riena.internal.navigation.ui.filter.UIFilterRuleNavigationDisabledMarker;
 import org.eclipse.riena.internal.navigation.ui.filter.UIFilterRuleNavigationHiddenMarker;
 import org.eclipse.riena.navigation.IApplicationNode;
+import org.eclipse.riena.navigation.INavigationNode;
+import org.eclipse.riena.navigation.model.SimpleNavigationNodeAdapter;
 import org.eclipse.riena.navigation.model.SubApplicationNode;
 import org.eclipse.riena.navigation.ui.controllers.SubApplicationController;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
@@ -38,8 +40,7 @@ import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 
 /**
- * Controller of the sub module that demonstrates UI filters for navigation
- * nodes.
+ * Controller of the sub module that demonstrates UI filters for navigation nodes.
  */
 public class FilterNavigationSubModuleController extends SubModuleController {
 
@@ -82,10 +83,22 @@ public class FilterNavigationSubModuleController extends SubModuleController {
 
 		rebindFilterTypeValues(filterModel, filterTypeValues, addFilter);
 
-		final SubApplicationNode subAppNode = getNavigationNode().getParentOfType(SubApplicationNode.class);
-		final SubApplicationController subApp = (SubApplicationController) subAppNode.getNavigationNodeController();
-		final IActionRidget ridget = subApp.getMenuActionRidget("org.eclipse.riena.example.client.histBackMenuItem"); //$NON-NLS-1$
-		ridget.setEnabled(false);
+	}
+
+	@Override
+	public void configureRidgets() {
+		super.configureRidgets();
+
+		getNavigationNode().addSimpleListener(new SimpleNavigationNodeAdapter() {
+			@Override
+			public void afterActivated(final INavigationNode<?> source) {
+				super.afterActivated(source);
+				final SubApplicationNode subAppNode = getNavigationNode().getParentOfType(SubApplicationNode.class);
+				final SubApplicationController subApp = (SubApplicationController) subAppNode.getNavigationNodeController();
+				final IActionRidget ridget = subApp.getMenuActionRidget("org.eclipse.riena.example.client.histBackMenuItem"); //$NON-NLS-1$
+				ridget.setEnabled(false);
+			}
+		});
 
 	}
 
@@ -130,8 +143,7 @@ public class FilterNavigationSubModuleController extends SubModuleController {
 	}
 
 	/**
-	 * The combo box for filter values is update with the given model. Also the
-	 * add button is enabled or disabled.
+	 * The combo box for filter values is update with the given model. Also the add button is enabled or disabled.
 	 * 
 	 * @param model
 	 * @param typeValues
@@ -146,8 +158,8 @@ public class FilterNavigationSubModuleController extends SubModuleController {
 		}
 		model.setSelectedFilterTypeValue(null);
 		if (typeValues != null) {
-			typeValues.bindToModel(new WritableList(Arrays.asList(model.getSelectedType().getArgs()), Object.class),
-					FilterModel.class, null, PojoObservables.observeValue(model, "selectedFilterTypeValue")); //$NON-NLS-1$
+			typeValues.bindToModel(new WritableList(Arrays.asList(model.getSelectedType().getArgs()), Object.class), FilterModel.class, null,
+					PojoObservables.observeValue(model, "selectedFilterTypeValue")); //$NON-NLS-1$
 			typeValues.updateFromModel();
 		}
 		if (add != null) {
@@ -180,8 +192,7 @@ public class FilterNavigationSubModuleController extends SubModuleController {
 	}
 
 	/**
-	 * Creates a filter rule for a ridget, dependent on the selected type of
-	 * filter.
+	 * Creates a filter rule for a ridget, dependent on the selected type of filter.
 	 * 
 	 * @param model
 	 *            model with selections.
