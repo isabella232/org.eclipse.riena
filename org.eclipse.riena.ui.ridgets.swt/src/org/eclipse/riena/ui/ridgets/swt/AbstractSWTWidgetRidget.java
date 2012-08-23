@@ -351,6 +351,18 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 		return markerSupport.showMarkersOfType(types);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.ui.ridgets.IBasicMarkableRidget#decorateVisibleControlArea()
+	 */
+	/**
+	 * @since 5.0
+	 */
+	public boolean decorateVisibleControlArea() {
+		return true;
+	}
+
 	// abstract methods - subclasses must implement
 	/////////////////////////////////////////////////////////
 
@@ -690,5 +702,4 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 		}
 
 	}
-
 }

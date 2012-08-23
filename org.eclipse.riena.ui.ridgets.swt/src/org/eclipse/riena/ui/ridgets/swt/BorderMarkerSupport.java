@@ -64,7 +64,8 @@ public class BorderMarkerSupport extends MarkerSupport {
 		final RienaDefaultLnf lnf = LnfManager.getLnf();
 		final int width = lnf.getIntegerSetting(LnfKeyConstants.ERROR_MARKER_BORDER_WIDTH, 1);
 		final Color borderColor = lnf.getColor(LnfKeyConstants.ERROR_MARKER_BORDER_COLOR);
-		return new BorderControlDecoration(control, width, borderColor, new IDecorationActivationStrategy() {
+		final boolean useVisibleControlArea = getRidget() != null ? getRidget().decorateVisibleControlArea() : false;
+		return new BorderControlDecoration(control, width, borderColor, useVisibleControlArea, new IDecorationActivationStrategy() {
 			public boolean isActive() {
 				final Object data = control.getData(IRidget.class.getName());
 				return data instanceof IRidget && ((IRidget) data).getUIControl() != null;

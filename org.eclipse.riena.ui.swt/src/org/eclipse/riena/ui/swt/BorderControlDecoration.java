@@ -78,11 +78,32 @@ public class BorderControlDecoration implements IControlDecoration {
 	 * @since 3.0
 	 */
 	public BorderControlDecoration(final Control control, final int borderWidth, final Color borderColor, final IDecorationActivationStrategy activationStrategy) {
-		borderDrawer = new BorderDrawer(getBorderControl(control), checkBorderWidth(borderWidth), borderColor, new IDecorationActivationStrategy() {
-			public boolean isActive() {
-				return visible && (activationStrategy == null || activationStrategy.isActive());
-			}
-		});
+		this(control, borderWidth, borderColor, false, activationStrategy);
+	}
+
+	/**
+	 * Creates a new instance of {@code ControlDecoration} for decorating the specified control.
+	 * 
+	 * @param control
+	 *            the control to be decorated
+	 * @param borderWidth
+	 *            the width of the border
+	 * @param borderColor
+	 *            the color of the border
+	 * @param useVisibleControlArea
+	 *            <code>true</code> if the border should be drawn according to the visible control area. This does not work for all control types.
+	 * @param activationStrategy
+	 *            the activationStrategy of the decoration
+	 * @since 5.0
+	 */
+	public BorderControlDecoration(final Control control, final int borderWidth, final Color borderColor, final boolean useVisibleControlArea,
+			final IDecorationActivationStrategy activationStrategy) {
+		borderDrawer = new BorderDrawer(getBorderControl(control), checkBorderWidth(borderWidth), borderColor, useVisibleControlArea,
+				new IDecorationActivationStrategy() {
+					public boolean isActive() {
+						return visible && (activationStrategy == null || activationStrategy.isActive());
+					}
+				});
 		borderDrawer.register();
 	}
 
