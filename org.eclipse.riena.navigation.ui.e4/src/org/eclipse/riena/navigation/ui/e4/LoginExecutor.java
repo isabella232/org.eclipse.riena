@@ -25,12 +25,12 @@ import org.eclipse.riena.navigation.ui.swt.application.LoginNonActivityTimer.ILo
 /**
  *
  */
-abstract class LoginExecutor implements ILoginExecutor<Integer> {
+public abstract class LoginExecutor implements ILoginExecutor<Integer> {
 	private final List<MWindow> showAfterLogin = new ArrayList<MWindow>();
 	private final IEclipseContext eclipseContext;
 	private final int nonActivityDuration;
 
-	LoginExecutor(final IEclipseContext eclipseContext, final int nonActivityDuration) {
+	public LoginExecutor(final IEclipseContext eclipseContext, final int nonActivityDuration) {
 		this.nonActivityDuration = nonActivityDuration;
 		Assert.isNotNull(eclipseContext);
 		this.eclipseContext = eclipseContext;

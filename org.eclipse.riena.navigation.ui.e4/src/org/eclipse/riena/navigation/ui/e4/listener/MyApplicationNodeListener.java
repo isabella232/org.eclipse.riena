@@ -2,8 +2,6 @@ package org.eclipse.riena.navigation.ui.e4.listener;
 
 import javax.inject.Inject;
 
-import org.eclipse.e4.core.contexts.IEclipseContext;
-import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.riena.navigation.IApplicationNode;
@@ -18,12 +16,6 @@ public class MyApplicationNodeListener extends ApplicationNodeListener {
 
 	@Inject
 	private ILoginExecutor<Integer> loginExecutor;
-
-	@Inject
-	private EModelService modelService;
-
-	@Inject
-	private IEclipseContext applicationContext;
 
 	@Override
 	public void filterAdded(final IApplicationNode source, final IUIFilter filter) {
@@ -50,7 +42,6 @@ public class MyApplicationNodeListener extends ApplicationNodeListener {
 		if (navigationNode == null || navigationNode.isDisposed()) {
 			return;
 		}
-
 		throw new UnsupportedOperationException("TODO: show view");
 
 	}
