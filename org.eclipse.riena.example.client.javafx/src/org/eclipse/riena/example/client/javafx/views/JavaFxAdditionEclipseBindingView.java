@@ -22,14 +22,13 @@ import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.beans.PojoObservables;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.riena.navigation.ui.javafx.views.AbstractJavaFxSubModuleView;
+import org.eclipse.riena.navigation.ui.javafx.views.JavaFxSubModuleView;
 
 /**
  * @author tsc
  * 
  */
-public class JavaFxAdditionEclipseBindingView extends
-		AbstractJavaFxSubModuleView {
+public class JavaFxAdditionEclipseBindingView extends JavaFxSubModuleView {
 
 	@Override
 	protected Scene createScene() {
@@ -52,7 +51,7 @@ public class JavaFxAdditionEclipseBindingView extends
 
 		final TextField value1TextField = new TextField();
 		pane.add(value1TextField, 1, 0);
-		Wrapper<String> value1Wrapper = new Wrapper<String>(
+		JavaFxPropertyWrapper<String> value1Wrapper = new JavaFxPropertyWrapper<String>(
 				value1TextField.textProperty());
 		IObservableValue value1TextObserveValue = BeansObservables
 				.observeValue(value1Wrapper, "value");
@@ -62,7 +61,7 @@ public class JavaFxAdditionEclipseBindingView extends
 
 		final TextField value2TextField = new TextField();
 		pane.add(value2TextField, 1, 1);
-		Wrapper<String> value2Wrapper = new Wrapper<String>(
+		JavaFxPropertyWrapper<String> value2Wrapper = new JavaFxPropertyWrapper<String>(
 				value2TextField.textProperty());
 		IObservableValue value2TextObserveValue = BeansObservables
 				.observeValue(value2Wrapper, "value");
@@ -78,7 +77,7 @@ public class JavaFxAdditionEclipseBindingView extends
 		final TextField resultTextField = new TextField();
 		resultTextField.setEditable(false);
 		pane.add(resultTextField, 1, 3);
-		Wrapper<String> resultWrapper = new Wrapper<String>(
+		JavaFxPropertyWrapper<String> resultWrapper = new JavaFxPropertyWrapper<String>(
 				resultTextField.textProperty());
 		IObservableValue resultTextObserveValue = BeansObservables
 				.observeValue(resultWrapper, "value");
@@ -180,16 +179,16 @@ public class JavaFxAdditionEclipseBindingView extends
 
 	}
 
-	public class Wrapper<T> implements ChangeListener<T> {
+	public class JavaFxPropertyWrapper<T> implements ChangeListener<T> {
 
 		private final PropertyChangeSupport propertyChangeSupport;
 		private final Property<T> value;
 
-		public Wrapper(Property<T> value) {
+		public JavaFxPropertyWrapper(Property<T> value) {
 			super();
+			propertyChangeSupport = new PropertyChangeSupport(this);
 			this.value = value;
 			this.value.addListener(this);
-			propertyChangeSupport = new PropertyChangeSupport(this);
 		}
 
 		public void addPropertyChangeListener(final PropertyChangeListener l) {

@@ -136,7 +136,7 @@ public class AbstractControlRidgetMapper implements IControlRidgetMapper<Object>
 			this(controlClazz, ridgetClazz, null);
 		}
 
-		private Mapping(final Class<? extends Object> controlClazz, final Class<? extends IRidget> ridgetClazz, final IMappingCondition condition) {
+		public Mapping(final Class<? extends Object> controlClazz, final Class<? extends IRidget> ridgetClazz, final IMappingCondition condition) {
 			this.controlClazz = controlClazz;
 			this.ridgetClazz = ridgetClazz;
 			this.condition = condition;

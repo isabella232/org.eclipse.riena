@@ -16,7 +16,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-public abstract class AbstractJavaFxSubModuleView extends SubModuleView {
+public abstract class JavaFxSubModuleView extends SubModuleView {
 
 	@Override
 	protected void basicCreatePartControl(Composite parent) {

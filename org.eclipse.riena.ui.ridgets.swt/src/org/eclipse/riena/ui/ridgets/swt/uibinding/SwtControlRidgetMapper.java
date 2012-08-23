@@ -30,7 +30,6 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.swt.widgets.Tree;
-import org.eclipse.swt.widgets.Widget;
 
 import org.eclipse.riena.core.singleton.SingletonProvider;
 import org.eclipse.riena.internal.ui.ridgets.swt.ActionRidget;
@@ -73,7 +72,6 @@ import org.eclipse.riena.ui.ridgets.ClassRidgetMapper;
 import org.eclipse.riena.ui.ridgets.swt.ImageButtonRidget;
 import org.eclipse.riena.ui.ridgets.uibinding.AbstractControlRidgetMapper;
 import org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper;
-import org.eclipse.riena.ui.ridgets.uibinding.IMappingCondition;
 import org.eclipse.riena.ui.swt.ChoiceComposite;
 import org.eclipse.riena.ui.swt.CompletionCombo;
 import org.eclipse.riena.ui.swt.DatePickerComposite;
@@ -155,29 +153,6 @@ public final class SwtControlRidgetMapper extends AbstractControlRidgetMapper {
 		addMapping(InfoFlyout.class, InfoFlyoutRidget.class);
 		addMapping(StatusMeterWidget.class, StatusMeterRidget.class);
 		addMapping(Shell.class, ShellRidget.class);
-	}
-
-	private final class StyleCondition implements IMappingCondition {
-
-		private final int controlStyle;
-
-		public StyleCondition(final int style) {
-			controlStyle = style;
-		}
-
-		public boolean isMatch(final Object control) {
-			if (control instanceof Widget) {
-				if ((((Widget) control).getStyle() & getControlStyle()) == getControlStyle()) {
-					return true;
-				}
-			}
-			return false;
-		}
-
-		public int getControlStyle() {
-			return controlStyle;
-		}
-
 	}
 
 }

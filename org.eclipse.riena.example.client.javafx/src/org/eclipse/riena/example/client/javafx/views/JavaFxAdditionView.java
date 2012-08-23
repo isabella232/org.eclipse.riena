@@ -19,13 +19,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.util.converter.NumberStringConverter;
 
-import org.eclipse.riena.navigation.ui.javafx.views.AbstractJavaFxSubModuleView;
+import org.eclipse.riena.navigation.ui.javafx.views.JavaFxSubModuleView;
 
 /**
  * @author tsc
  * 
  */
-public class JavaFxAdditionView extends AbstractJavaFxSubModuleView {
+public class JavaFxAdditionView extends JavaFxSubModuleView {
 
 	@Override
 	protected Scene createScene() {
@@ -39,8 +39,6 @@ public class JavaFxAdditionView extends AbstractJavaFxSubModuleView {
 
 		try {
 			final CalcModel model = new CalcModel();
-			final JavaBeanStringProperty value1Prop = JavaBeanStringPropertyBuilder
-					.create().bean(model).name("value1").build();
 			final JavaBeanStringProperty value2Prop = JavaBeanStringPropertyBuilder
 					.create().bean(model).name("value2").build();
 			final ReadOnlyJavaBeanStringProperty resultProp = ReadOnlyJavaBeanStringPropertyBuilder
@@ -82,8 +80,6 @@ public class JavaFxAdditionView extends AbstractJavaFxSubModuleView {
 
 				@Override
 				public void handle(ActionEvent event) {
-					System.out.println("value1Prop: " + value1Prop);
-					System.out.println("value2Prop: " + value2Prop);
 					model.calc();
 					resultTextField.textProperty().unbind();
 					resultTextField.textProperty().setValue(model.getResult());
@@ -119,19 +115,8 @@ public class JavaFxAdditionView extends AbstractJavaFxSubModuleView {
 	public class CalcModel {
 
 		private int intValue1 = 11;
-		private String value1 = "1";
 		private String value2 = "2";
 		private String result = "3";
-
-		public String getValue1() {
-			return value1;
-		}
-
-		public void setValue1(String value1) {
-			this.value1 = value1;
-			System.out.println("JavaFxAdditionView.CalcModel.setValue1(): "
-					+ this.value1);
-		}
 
 		public String getValue2() {
 			return value2;
@@ -153,19 +138,13 @@ public class JavaFxAdditionView extends AbstractJavaFxSubModuleView {
 
 		public void calc() {
 
-			double val1 = 0.0;
-			try {
-				val1 = Double.parseDouble(getValue1());
-			} catch (NumberFormatException e) {
-				e.printStackTrace();
-			}
+			double val1 = val1 = getIntValue1();
 			double val2 = 0.0;
 			try {
 				val2 = Double.parseDouble(getValue2());
 			} catch (NumberFormatException e) {
 				e.printStackTrace();
 			}
-			val1 = getIntValue1();
 			double res = val1 + val2;
 			setResult(Double.toString(res));
 
@@ -182,7 +161,6 @@ public class JavaFxAdditionView extends AbstractJavaFxSubModuleView {
 		}
 
 		public void clear() {
-			setValue1("");
 			setValue2("");
 			setIntValue1(0);
 			setResult("");

@@ -30,8 +30,9 @@ import org.eclipse.riena.ui.ridgets.ClassRidgetMapper;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.listener.IFocusListener;
+import org.eclipse.riena.ui.ridgets.swt.uibinding.StyleCondition;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
-import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper.Mapping;
+import org.eclipse.riena.ui.ridgets.uibinding.AbstractControlRidgetMapper.Mapping;
 import org.eclipse.riena.ui.ridgets.uibinding.IMappingCondition;
 
 /**
@@ -55,8 +56,8 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 	protected void tearDown() throws Exception {
 
 		// Create new instance of SwtControlRidgetMapper to start with initial mappings only (not additional mappings added in previous test cases)
-		final Object scrm = ReflectionUtils.getHidden(SwtControlRidgetMapper.class, "SCRM");
-		ReflectionUtils.setHidden(scrm, "singleton", null);
+		final Object scrm = ReflectionUtils.getHidden(SwtControlRidgetMapper.class, "SCRM"); //$NON-NLS-1$
+		ReflectionUtils.setHidden(scrm, "singleton", null); //$NON-NLS-1$
 		mapper = null;
 		shell.dispose();
 		shell = null;
@@ -65,9 +66,7 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 	}
 
 	/**
-	 * Tests the method
-	 * <code>addMapping(Class<? extends Widget> , Class<? extends IRidget> )</code>
-	 * .
+	 * Tests the method <code>addMapping(Class<? extends Widget> , Class<? extends IRidget> )</code> .
 	 * 
 	 * @throws Exception
 	 *             handled by JUnit
@@ -83,34 +82,7 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 	}
 
 	/**
-	 * Tests the method
-	 * <code>addMapping(Class<? extends Widget> , Class<? extends IRidget> , int )</code>
-	 * .
-	 * 
-	 * @throws Exception
-	 *             handled by JUnit
-	 */
-	public void testAddMappingSwtStyle() throws Exception {
-
-		mapper.addMapping(MockComposite.class, MockRidget.class);
-		mapper.addMapping(MockComposite.class, MockRidget2.class, SWT.BORDER);
-
-		Class<? extends IRidget> ridget = mapper.getRidgetClass(MockComposite.class);
-		assertNotNull(ridget);
-		assertEquals(MockRidget.class.getName(), ridget.getName());
-
-		final MockComposite widget = new MockComposite(shell, SWT.BORDER);
-		ridget = mapper.getRidgetClass(widget);
-		assertNotNull(ridget);
-		assertEquals(MockRidget2.class.getName(), ridget.getName());
-		widget.dispose();
-
-	}
-
-	/**
-	 * Tests the method
-	 * {@link SwtControlRidgetMapper#addMapping(Class, Class, IMappingCondition)}
-	 * .
+	 * Tests the method {@link SwtControlRidgetMapper#addMapping(Class, Class, IMappingCondition)} .
 	 */
 	public void testAddMappingWithCondition() {
 
@@ -162,9 +134,9 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 
 		try {
 			mapper.getRidgetClass(MockComposite.class);
-			fail("BindingException expected");
+			fail("BindingException expected"); //$NON-NLS-1$
 		} catch (final BindingException e) {
-			ok("BindingException expected");
+			ok("BindingException expected"); //$NON-NLS-1$
 		}
 
 	}
@@ -206,7 +178,7 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 		assertTrue(mapping.isMatching(MockComposite.class));
 		assertFalse(mapping.isMatching(MockComposite2.class));
 
-		mapping = new Mapping(MockComposite.class, MockRidget.class, SWT.CHECK);
+		mapping = new Mapping(MockComposite.class, MockRidget.class, new StyleCondition(SWT.CHECK));
 		assertFalse(mapping.isMatching(MockComposite.class));
 		assertFalse(mapping.isMatching(MockComposite2.class));
 
@@ -231,7 +203,7 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 		assertFalse(mapping.isMatching(comp2));
 		comp2.dispose();
 
-		mapping = new Mapping(MockComposite.class, MockRidget.class, SWT.ABORT);
+		mapping = new Mapping(MockComposite.class, MockRidget.class, new StyleCondition(SWT.ABORT));
 		comp = new MockComposite(shell, SWT.ALPHA);
 		assertFalse(mapping.isMatching(comp));
 		comp.dispose();
@@ -272,9 +244,9 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 
 		try {
 			classRidgetMapper.getRidgetClass(IMockRidget.class);
-			fail("BindingException expected");
+			fail("BindingException expected"); //$NON-NLS-1$
 		} catch (final BindingException e) {
-			ok("BindingException expected");
+			ok("BindingException expected"); //$NON-NLS-1$
 		}
 	}
 
@@ -282,8 +254,7 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 	// ////////////////
 
 	/**
-	 * Simple implementation of an IMappingCondition used for testing purposes.
-	 * USe the {@link #setMatch(boolean)} to change the behavior of a condition.
+	 * Simple implementation of an IMappingCondition used for testing purposes. USe the {@link #setMatch(boolean)} to change the behavior of a condition.
 	 */
 	private static final class FTMappingCondition implements IMappingCondition {
 
@@ -340,15 +311,13 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 		public void addPropertyChangeListener(final PropertyChangeListener propertyChangeListener) {
 		}
 
-		public void addPropertyChangeListener(final String propertyName,
-				final PropertyChangeListener propertyChangeListener) {
+		public void addPropertyChangeListener(final String propertyName, final PropertyChangeListener propertyChangeListener) {
 		}
 
 		public void removePropertyChangeListener(final PropertyChangeListener propertyChangeListener) {
 		}
 
-		public void removePropertyChangeListener(final String propertyName,
-				final PropertyChangeListener propertyChangeListener) {
+		public void removePropertyChangeListener(final String propertyName, final PropertyChangeListener propertyChangeListener) {
 		}
 
 		public boolean isVisible() {
@@ -436,15 +405,13 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 		public void addPropertyChangeListener(final PropertyChangeListener propertyChangeListener) {
 		}
 
-		public void addPropertyChangeListener(final String propertyName,
-				final PropertyChangeListener propertyChangeListener) {
+		public void addPropertyChangeListener(final String propertyName, final PropertyChangeListener propertyChangeListener) {
 		}
 
 		public void removePropertyChangeListener(final PropertyChangeListener propertyChangeListener) {
 		}
 
-		public void removePropertyChangeListener(final String propertyName,
-				final PropertyChangeListener propertyChangeListener) {
+		public void removePropertyChangeListener(final String propertyName, final PropertyChangeListener propertyChangeListener) {
 		}
 
 		public boolean isVisible() {
@@ -545,15 +512,13 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 		public void addPropertyChangeListener(final PropertyChangeListener propertyChangeListener) {
 		}
 
-		public void addPropertyChangeListener(final String propertyName,
-				final PropertyChangeListener propertyChangeListener) {
+		public void addPropertyChangeListener(final String propertyName, final PropertyChangeListener propertyChangeListener) {
 		}
 
 		public void removePropertyChangeListener(final PropertyChangeListener propertyChangeListener) {
 		}
 
-		public void removePropertyChangeListener(final String propertyName,
-				final PropertyChangeListener propertyChangeListener) {
+		public void removePropertyChangeListener(final String propertyName, final PropertyChangeListener propertyChangeListener) {
 		}
 
 		public boolean isVisible() {
@@ -641,8 +606,7 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 
 	}
 
-	private static class MockRidgetImplementigSeveralInterfaces extends MockNonRidgetSuperClass implements
-			IMockRidget2, IAction {
+	private static class MockRidgetImplementigSeveralInterfaces extends MockNonRidgetSuperClass implements IMockRidget2, IAction {
 
 		public Object getUIControl() {
 			return null;
@@ -654,15 +618,13 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 		public void addPropertyChangeListener(final PropertyChangeListener propertyChangeListener) {
 		}
 
-		public void addPropertyChangeListener(final String propertyName,
-				final PropertyChangeListener propertyChangeListener) {
+		public void addPropertyChangeListener(final String propertyName, final PropertyChangeListener propertyChangeListener) {
 		}
 
 		public void removePropertyChangeListener(final PropertyChangeListener propertyChangeListener) {
 		}
 
-		public void removePropertyChangeListener(final String propertyName,
-				final PropertyChangeListener propertyChangeListener) {
+		public void removePropertyChangeListener(final String propertyName, final PropertyChangeListener propertyChangeListener) {
 		}
 
 		public boolean isVisible() {
