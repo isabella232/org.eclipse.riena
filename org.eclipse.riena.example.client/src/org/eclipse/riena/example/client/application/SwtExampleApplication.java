@@ -58,10 +58,11 @@ public class SwtExampleApplication extends SwtApplication {
 	@Override
 	protected void initializeUI() {
 		super.initializeUI();
-		setDummyPermissions();
+		configure();
 	}
 
-	private void setDummyPermissions() {
+	@Override
+	public void configure() {
 		final ISubjectHolder subjectHolder = Service.get(ISubjectHolder.class);
 		final IPermissionCache pmCache = Service.get(IPermissionCache.class);
 		final Subject subject = new Subject();

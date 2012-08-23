@@ -51,8 +51,9 @@ public class ApplicationLifeCycle {
 
 		/** AbstractApplication */
 		final SwtApplication legacyHelper = new SwtApplication();
-		final IApplicationModelCreator c = getModelCreatorFromExtension();
-		final IApplicationNode applicationNode = c != null ? c.createModel() : legacyHelper.createModel();
+		final IApplicationModelCreator applicationModelCreator = getModelCreatorFromExtension();
+		final IApplicationNode applicationNode = applicationModelCreator != null ? createModel(applicationModelCreator) : createModel(legacyHelper);
+
 		eclipseContext.set(IApplicationNode.class, applicationNode);
 		legacyHelper.initApplicationNode(applicationNode);
 
@@ -68,6 +69,15 @@ public class ApplicationLifeCycle {
 		/** ApplicationViewAdvisor */
 		new InjectSwtViewBindingDelegate().bind(controller);
 		initializeListener(controller);
+	}
+
+	/**
+	 * Creates the riena application model represented by an instance of {@link IApplicationNode}
+	 */
+	private IApplicationNode createModel(final IApplicationModelCreator creator) {
+		// call configuration hook
+		creator.configure();
+		return creator.createModel();
 	}
 
 	private IApplicationModelCreator getModelCreatorFromExtension() {

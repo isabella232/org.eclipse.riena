@@ -28,4 +28,9 @@ public interface IApplicationModelCreator {
 	 * @return the application model root
 	 */
 	IApplicationNode createModel();
+
+	/**
+	 * Hook for configuration code
+	 */
+	void configure();
 }

@@ -265,4 +265,7 @@ public abstract class AbstractApplication implements IApplication, IApplicationM
 	protected void initializeLoginViewDefinition() {
 		Wire.instance(this).andStart(Activator.getDefault().getContext());
 	}
+
+	public void configure() {
+	}
 }
