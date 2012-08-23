@@ -22,6 +22,7 @@ import org.eclipse.riena.internal.navigation.ui.swt.handlers.NavigationSourcePro
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
+import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.e4.Activator;
 import org.eclipse.riena.navigation.ui.e4.E4XMIConstants;
 import org.eclipse.riena.navigation.ui.e4.part.MainMenuPart;
@@ -104,7 +105,7 @@ public class MySubModuleNodeListener extends SubModuleNodeListener {
 			final Object viewInstance = partToActivate.getTransientData().get(PartWrapper.VIEW_KEY);
 			if (viewInstance instanceof SubModuleView) {
 				((SubModuleView) viewInstance).setNavigationNode(source);
-				((SubModuleView) viewInstance).prepareNode(source);
+				((SubModuleView) viewInstance).prepareNode((SubModuleNode) source);
 			}
 		}
 		if (partToActivate == null) {

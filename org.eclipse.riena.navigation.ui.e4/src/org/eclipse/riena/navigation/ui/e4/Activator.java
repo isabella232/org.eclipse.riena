@@ -13,6 +13,9 @@ package org.eclipse.riena.navigation.ui.e4;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
+import org.eclipse.riena.core.wire.Wire;
+import org.eclipse.riena.navigation.ui.e4.exception.E4UncaughtExceptionHandler;
+
 public class Activator implements BundleActivator {
 	private BundleContext bundleContext;
 	private static Activator singleton;
@@ -36,6 +39,7 @@ public class Activator implements BundleActivator {
 	public void start(final BundleContext context) throws Exception {
 		bundleContext = context;
 		singleton = this;
+		Wire.instance(new E4UncaughtExceptionHandler().install()).andStart(getBundleContext());
 	}
 
 	/*
