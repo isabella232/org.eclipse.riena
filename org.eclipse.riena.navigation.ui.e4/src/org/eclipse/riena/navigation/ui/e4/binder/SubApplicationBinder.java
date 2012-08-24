@@ -53,6 +53,8 @@ public class SubApplicationBinder {
 	private final ISubApplicationNode subApplicationNode;
 	private SubApplicationListener subApplicationListener;
 
+	private SubApplicationController subApplicationController;
+
 	public SubApplicationBinder(final ISubApplicationNode subApplicationNode) {
 		this.subApplicationNode = subApplicationNode;
 		binding = createBinding();
@@ -78,6 +80,8 @@ public class SubApplicationBinder {
 	 * @see org.eclipse.riena.navigation.ui.swt.views.INavigationNodeView#bind(org.eclipse.riena.navigation.INavigationNode)
 	 */
 	public void bind() {
+		subApplicationController = new SubApplicationController(subApplicationNode);
+		subApplicationController.installNavigationListeners();
 		final Object shell = context.get(IServiceConstants.ACTIVE_SHELL);
 		if (null == shell) {
 			eventBroker.subscribe(RienaWBWRenderer.SHELL_CREATED, new LazyBinder());
@@ -102,7 +106,6 @@ public class SubApplicationBinder {
 
 	private void bindController() {
 		if (null == getNavigationNode().getNavigationNodeController()) {
-			final SubApplicationController subApplicationController = new SubApplicationController(subApplicationNode);
 			binding.injectRidgets(subApplicationController);
 			binding.bind(subApplicationController);
 

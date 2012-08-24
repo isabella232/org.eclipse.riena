@@ -2,6 +2,7 @@ package org.eclipse.riena.navigation.ui.e4;
 
 import javax.inject.Inject;
 
+import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
@@ -10,6 +11,8 @@ import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.services.log.Logger;
 import org.eclipse.e4.ui.workbench.lifecycle.PostContextCreate;
 import org.eclipse.e4.ui.workbench.lifecycle.ProcessAdditions;
+import org.eclipse.jface.databinding.swt.SWTObservables;
+import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.riena.navigation.ApplicationNodeManager;
 import org.eclipse.riena.navigation.IApplicationNode;
@@ -83,7 +86,13 @@ public class ApplicationLifeCycle {
 	 */
 	@ProcessAdditions
 	public void activateRienaApplicationNode() {
-		ApplicationNodeManager.getApplicationNode().activate();
+		final Realm realm = SWTObservables.getRealm(Display.getCurrent());
+		Realm.runWithDefault(realm, new Runnable() {
+
+			public void run() {
+				ApplicationNodeManager.getApplicationNode().activate();
+			}
+		});
 	}
 
 	private void observeRienaNavigation(final IApplicationNode applicationNode) {

@@ -40,6 +40,8 @@ public class SubApplicationController extends NavigationNodeController<ISubAppli
 	private IUIProcessRidget uiProcessRidget;
 	private final NodeEventDelegation contextUpdater = new NodeEventDelegation();
 
+	private NavigationTreeObserver navigationTreeObserver;
+
 	/**
 	 * Create a new Controller, find the corresponding subApplication for the passed ID
 	 */
@@ -51,7 +53,14 @@ public class SubApplicationController extends NavigationNodeController<ISubAppli
 	 * @see org.eclipse.riena.ui.internal.ridgets.IRidgetContainer#configureRidgets()
 	 */
 	public void configureRidgets() {
-		final NavigationTreeObserver navigationTreeObserver = new NavigationTreeObserver();
+		installNavigationListeners();
+	}
+
+	public void installNavigationListeners() {
+		if (null != navigationTreeObserver) {
+			return;
+		}
+		navigationTreeObserver = new NavigationTreeObserver();
 		navigationTreeObserver.addListener(new MySubModuleNodeListener());
 		navigationTreeObserver.addListenerTo(getNavigationNode());
 	}
