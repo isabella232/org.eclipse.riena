@@ -38,6 +38,8 @@ import org.eclipse.riena.navigation.ui.swt.splashHandlers.AbstractLoginSplashHan
  */
 public class LoginHelper {
 
+	private static final String ATTRIBUTE_NON_ACTIVITY_DURATION = "nonActivityDuration"; //$NON-NLS-1$
+
 	@Inject
 	private IExtensionRegistry extensionRegistry;
 
@@ -86,7 +88,7 @@ public class LoginHelper {
 	 * Creates a new instance of {@link ILoginExecutor} for default login view without splash
 	 */
 	private ILoginExecutor<Integer> loginExecutorForDialog(final IConfigurationElement iConfigurationElement) throws CoreException {
-		final String attribute = iConfigurationElement.getAttribute("nonActivityDuration"); //$NON-NLS-1$
+		final String attribute = iConfigurationElement.getAttribute(ATTRIBUTE_NON_ACTIVITY_DURATION);
 		final ILoginDialogView loginDialogView = (ILoginDialogView) iConfigurationElement.createExecutableExtension("viewClass"); //$NON-NLS-1$
 
 		return new LoginExecutor(eclipseContext, Integer.parseInt(attribute)) {
@@ -108,7 +110,7 @@ public class LoginHelper {
 	 * Creates a new instance of {@link ILoginExecutor} for splash views
 	 */
 	private ILoginExecutor<Integer> loginExecutorForSplash(final IConfigurationElement iConfigurationElement) throws CoreException {
-		final String attribute = iConfigurationElement.getAttribute("nonActivityDuration"); //$NON-NLS-1$
+		final String attribute = iConfigurationElement.getAttribute(ATTRIBUTE_NON_ACTIVITY_DURATION);
 
 		return new LoginExecutor(eclipseContext, Integer.parseInt(attribute)) {
 			public Integer performLogin() {

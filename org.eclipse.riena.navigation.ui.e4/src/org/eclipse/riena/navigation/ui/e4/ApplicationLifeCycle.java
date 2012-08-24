@@ -13,19 +13,16 @@ import org.eclipse.e4.ui.workbench.lifecycle.ProcessAdditions;
 
 import org.eclipse.riena.navigation.ApplicationNodeManager;
 import org.eclipse.riena.navigation.IApplicationNode;
-import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
 import org.eclipse.riena.navigation.ui.application.IApplicationModelCreator;
 import org.eclipse.riena.navigation.ui.controllers.ApplicationController;
-import org.eclipse.riena.navigation.ui.e4.listener.MyApplicationNodeListener;
-import org.eclipse.riena.navigation.ui.e4.listener.MyModuleGroupNodeListener;
-import org.eclipse.riena.navigation.ui.e4.listener.MyModuleNodeListener;
-import org.eclipse.riena.navigation.ui.e4.listener.MySubApplicationNodeListener;
-import org.eclipse.riena.navigation.ui.e4.listener.MySubModuleNodeListener;
 import org.eclipse.riena.navigation.ui.e4.security.LoginHelper;
 import org.eclipse.riena.navigation.ui.swt.application.LoginNonActivityTimer.ILoginExecutor;
 import org.eclipse.riena.navigation.ui.swt.application.SwtApplication;
 import org.eclipse.riena.navigation.ui.swt.binding.InjectSwtViewBindingDelegate;
 
+/**
+ * ApplicationLifeCycle building the bridge between Eclipse 4 and Riena.
+ */
 @SuppressWarnings("restriction")
 public class ApplicationLifeCycle {
 	private static final String MODEL_CREATORS_EXT_POINT_SUFFIX = ".applicationModelCreators"; //$NON-NLS-1$
@@ -39,40 +36,29 @@ public class ApplicationLifeCycle {
 	@Inject
 	private IEclipseContext eclipseContext;
 
-	/**
-	 * called very early (application model is not created)
-	 */
 	@PostContextCreate
-	public void initApplicationNode() {
+	public void initRienaApplicationNode() {
 
 		// if there is some login configured, ask for login and remember the extension in the app context
 		// later we will need this extension for the (in)activity login timer
 		eclipseContext.set(ILoginExecutor.class, ContextInjectionFactory.make(LoginHelper.class, eclipseContext).checkLogin());
 
-		/** AbstractApplication */
 		final SwtApplication legacyHelper = new SwtApplication();
-		final IApplicationModelCreator applicationModelCreator = getModelCreatorFromExtension();
+		final IApplicationModelCreator applicationModelCreator = getApplicationModelCreatorFromExtension();
 		final IApplicationNode applicationNode = applicationModelCreator != null ? createModel(applicationModelCreator) : createModel(legacyHelper);
 
 		eclipseContext.set(IApplicationNode.class, applicationNode);
 		legacyHelper.initApplicationNode(applicationNode);
 
-		/** SwtApplication */
-		final ApplicationController controller = new ApplicationController(applicationNode);
-		// initializeLoginNonActivityTimer()
-
-		/** ApplicationAdvisor */
-		// error handling getWorkbenchErrorHandler()
 		// installDefaultBinding()
 		// preShutdown()
 
-		/** ApplicationViewAdvisor */
-		new InjectSwtViewBindingDelegate().bind(controller);
-		initializeListener(controller);
+		observeRienaNavigation(applicationNode);
+		new InjectSwtViewBindingDelegate().bind(new ApplicationController(applicationNode));
 	}
 
 	/**
-	 * Creates the riena application model represented by an instance of {@link IApplicationNode}
+	 * Creates the Riena application model represented by an instance of {@link IApplicationNode}
 	 */
 	private IApplicationNode createModel(final IApplicationModelCreator creator) {
 		// call configuration hook
@@ -80,13 +66,13 @@ public class ApplicationLifeCycle {
 		return creator.createModel();
 	}
 
-	private IApplicationModelCreator getModelCreatorFromExtension() {
+	private IApplicationModelCreator getApplicationModelCreatorFromExtension() {
 		final String pluginId = Activator.getDefault().getBundleContext().getBundle().getSymbolicName();
 		for (final IConfigurationElement e : extensionRegistry.getConfigurationElementsFor(pluginId + MODEL_CREATORS_EXT_POINT_SUFFIX)) {
 			try {
 				return (IApplicationModelCreator) e.createExecutableExtension("class"); //$NON-NLS-1$
-			} catch (final CoreException e1) {
-				logger.error(e1);
+			} catch (final CoreException coreException) {
+				logger.error(coreException);
 			}
 		}
 		return null;
@@ -96,23 +82,12 @@ public class ApplicationLifeCycle {
 	 * called after the application model has been fully created
 	 */
 	@ProcessAdditions
-	public void initRienaNavigation() {
+	public void activateRienaApplicationNode() {
 		ApplicationNodeManager.getApplicationNode().activate();
 	}
 
-	private void initializeListener(final ApplicationController controller) {
-		final NavigationTreeObserver navigationTreeObserver = new NavigationTreeObserver();
-		navigationTreeObserver.addListener(createInstance(MyApplicationNodeListener.class, eclipseContext));
-		navigationTreeObserver.addListener(createInstance(MySubApplicationNodeListener.class, eclipseContext));
-		navigationTreeObserver.addListener(createInstance(MyModuleGroupNodeListener.class, eclipseContext));
-		navigationTreeObserver.addListener(createInstance(MyModuleNodeListener.class, eclipseContext));
-		navigationTreeObserver.addListener(createInstance(MySubModuleNodeListener.class, eclipseContext));
-
-		navigationTreeObserver.addListenerTo(controller.getNavigationNode());
-	}
-
-	private <T> T createInstance(final Class<T> clazz, final IEclipseContext context) {
-		return ContextInjectionFactory.make(clazz, context);
+	private void observeRienaNavigation(final IApplicationNode applicationNode) {
+		ContextInjectionFactory.make(RienaNavigationObserver.class, eclipseContext).install(applicationNode);
 	}
 
 }
