@@ -38,7 +38,9 @@ import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 import org.eclipse.riena.ui.swt.uiprocess.UIProcessControl;
 
 /**
- * replacement for {@link SubApplicationView}
+ * Creates and binds an instance of {@link SubApplicationController}. This is a replacement for riena {@link SubApplicationView}. Moreover {@link #bind()}
+ * honors the possibility of a non existing {@link Shell}. For that case the {@link IEventBroker} is used. As soon as the {@link Shell} is created by the
+ * {@link RienaWBWRenderer} the listener gets notified.
  */
 @SuppressWarnings("restriction")
 public class SubApplicationBinder {
@@ -108,12 +110,14 @@ public class SubApplicationBinder {
 		if (null == getNavigationNode().getNavigationNodeController()) {
 			binding.injectRidgets(subApplicationController);
 			binding.bind(subApplicationController);
-
-			subApplicationListener = new SubApplicationListener();
-			getNavigationNode().addListener(subApplicationListener);
+			observeSubApplicationNode();
 			subApplicationController.afterBind();
-
 		}
+	}
+
+	private void observeSubApplicationNode() {
+		subApplicationListener = new SubApplicationListener();
+		getNavigationNode().addListener(subApplicationListener);
 	}
 
 	private class SubApplicationListener extends SubApplicationNodeListener {
@@ -140,15 +144,10 @@ public class SubApplicationBinder {
 
 	public void unbind() {
 		if (getNavigationNode() != null) {
-
 			getNavigationNode().removeListener(subApplicationListener);
-
 			if (getNavigationNode().getNavigationNodeController() instanceof IController) {
 				final IController controller = (IController) getNavigationNode().getNavigationNodeController();
 				binding.unbind(controller);
-				//				if (menuItemBindingManager != null) {
-				//					menuItemBindingManager.unbind(controller, getUIControls());
-				//				}
 			}
 		}
 	}

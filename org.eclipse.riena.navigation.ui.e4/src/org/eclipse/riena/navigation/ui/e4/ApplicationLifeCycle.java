@@ -71,9 +71,9 @@ public class ApplicationLifeCycle {
 
 	private IApplicationModelCreator getApplicationModelCreatorFromExtension() {
 		final String pluginId = Activator.getDefault().getBundleContext().getBundle().getSymbolicName();
-		for (final IConfigurationElement e : extensionRegistry.getConfigurationElementsFor(pluginId + MODEL_CREATORS_EXT_POINT_SUFFIX)) {
+		for (final IConfigurationElement configElement : extensionRegistry.getConfigurationElementsFor(pluginId + MODEL_CREATORS_EXT_POINT_SUFFIX)) {
 			try {
-				return (IApplicationModelCreator) e.createExecutableExtension("class"); //$NON-NLS-1$
+				return (IApplicationModelCreator) configElement.createExecutableExtension("class"); //$NON-NLS-1$
 			} catch (final CoreException coreException) {
 				logger.error(coreException);
 			}

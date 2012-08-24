@@ -22,6 +22,9 @@ public class E4UncaughtExceptionHandler implements UncaughtExceptionHandler {
 
 	private IExceptionHandlerManager exceptionHanderManager;
 
+	/**
+	 * Installs this instance as global {@link UncaughtExceptionHandler}. Note: This {@link UncaughtExceptionHandler} will be used by all Threads.
+	 */
 	public E4UncaughtExceptionHandler install() {
 		Thread.setDefaultUncaughtExceptionHandler(this);
 		return this;
