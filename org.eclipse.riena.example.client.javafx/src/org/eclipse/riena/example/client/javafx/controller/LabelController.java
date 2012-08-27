@@ -77,6 +77,25 @@ public class LabelController extends SubModuleController {
 				"hideLabel");
 		hideLabel.addDoubleClickListener(doubleHideListener);
 
+		final ILabelRidget imageLabel = getRidget(ILabelRidget.class,
+				"imageLabel");
+		imageLabel.setIcon("eclipse.gif");
+		IClickListener imageListener = new IClickListener() {
+
+			@Override
+			public void callback(ClickEvent event) {
+				if (event.getButton() == 1) {
+					imageLabel.setIcon("cool.gif");
+				} else if (event.getButton() == 2) {
+					imageLabel.setIcon("eclipse.gif");
+				}
+			}
+		};
+		imageLabel.addClickListener(imageListener);
+		final ILabelRidget changeImageLabel = getRidget(ILabelRidget.class,
+				"changeImageLabel");
+		changeImageLabel.addClickListener(imageListener);
+
 		updateAllRidgetsFromModel();
 
 	}

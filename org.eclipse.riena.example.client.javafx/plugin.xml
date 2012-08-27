@@ -30,4 +30,10 @@
             <subModule controller="org.eclipse.riena.example.client.javafx.controller.JavaFxAdditionController" expanded="false" name="Addition" nodeId="org.eclipse.riena.example.client.javafx.AdditionEclipseBinding.submodule" requiresPreparation="false" selectable="true" sharedView="false" viewId="org.eclipse.riena.example.client.javafx.views.JavaFxAdditionEclipseBindingView" visible="true"/>
         </assembly2>
     </extension>
+<extension
+      point="org.eclipse.riena.ui.swt.imagePaths">
+   <path
+         path="icons">
+   </path>
+</extension>
 </plugin>

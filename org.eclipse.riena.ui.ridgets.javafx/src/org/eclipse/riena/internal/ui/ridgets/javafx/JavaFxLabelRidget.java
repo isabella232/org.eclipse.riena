@@ -1,5 +1,6 @@
 package org.eclipse.riena.internal.ui.ridgets.javafx;
 
+import java.io.IOException;
 import java.net.URL;
 
 import javafx.scene.control.Control;
@@ -9,6 +10,8 @@ import javafx.scene.image.ImageView;
 
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.equinox.log.Logger;
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.ui.core.resource.IIconManager;
 import org.eclipse.riena.ui.core.resource.IconManagerProvider;
 import org.eclipse.riena.ui.core.resource.IconSize;
@@ -16,9 +19,15 @@ import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
 import org.eclipse.riena.ui.ridgets.ILabelRidget;
 import org.eclipse.riena.ui.ridgets.javafx.AbstractJavaFxValueRidget;
 import org.eclipse.riena.ui.ridgets.javafx.JavaFxBasicMarkerSupport;
+import org.eclipse.riena.ui.swt.utils.ImageStore;
+import org.osgi.service.log.LogService;
 
 public class JavaFxLabelRidget extends AbstractJavaFxValueRidget implements
 		ILabelRidget {
+
+	private final static Logger LOGGER = Log4r
+			.getLogger(JavaFxLabelRidget.class);
+
 	/**
 	 * This property is used by the databinding to sync ridget and model. It is
 	 * always fired before its sibling {@link ILabelRidget#PROPERTY_TEXT} to
@@ -31,6 +40,7 @@ public class JavaFxLabelRidget extends AbstractJavaFxValueRidget implements
 	private static final String EMPTY_STRING = ""; //$NON-NLS-1$
 	private String text;
 	private String iconID;
+	private URL iconLocation;
 	private boolean textAlreadyInitialized;
 	private boolean useRidgetIcon;
 
@@ -103,8 +113,12 @@ public class JavaFxLabelRidget extends AbstractJavaFxValueRidget implements
 
 	@Override
 	public void setIconLocation(URL location) {
-		// TODO Auto-generated method stub
-
+		useRidgetIcon = true;
+		final URL oldUrl = this.iconLocation;
+		this.iconLocation = location;
+		if (hasChanged(oldUrl, location)) {
+			updateUIIcon();
+		}
 	}
 
 	@Override
@@ -139,7 +153,7 @@ public class JavaFxLabelRidget extends AbstractJavaFxValueRidget implements
 	protected void bindUIControl() {
 		initText();
 		updateUIText();
-		// updateUIIcon();
+		updateUIIcon();
 	}
 
 	@Override
@@ -186,7 +200,24 @@ public class JavaFxLabelRidget extends AbstractJavaFxValueRidget implements
 		if (getUIControl() != null) {
 			Image image = null;
 			if (getIcon() != null) {
-				image = new Image(getClass().getResourceAsStream(getIcon()));
+				URL url = ImageStore.getInstance().getImageUrl(getIcon());
+				if (url != null) {
+					try {
+						image = new Image(url.openStream());
+					} catch (IOException ex) {
+						final String message = String.format(
+								"Image resource '%s' not found", getIcon());
+						LOGGER.log(LogService.LOG_DEBUG, message, ex);
+					}
+				}
+			} else if (iconLocation != null) {
+				try {
+					image = new Image(iconLocation.openStream());
+				} catch (IOException ex) {
+					final String message = String.format(
+							"Image resource '%s' not found", iconLocation);
+					LOGGER.log(LogService.LOG_DEBUG, message, ex);
+				}
 			}
 			if ((image != null) || useRidgetIcon) {
 				setUIControlImage(image);

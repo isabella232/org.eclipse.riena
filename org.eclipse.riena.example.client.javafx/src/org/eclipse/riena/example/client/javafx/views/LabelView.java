@@ -91,6 +91,24 @@ public class LabelView extends JavaFxSubModuleView {
 		GridPane.setConstraints(label, x, y, 1, 1);
 		addUIControl(label, "hideLabel");
 
+		x = 0;
+		y++;
+		label = new Label("Label with image:");
+		grid.getChildren().add(label);
+		GridPane.setConstraints(label, x, y, 1, 1);
+
+		x++;
+		Label imageLabel = new Label("Image");
+		GridPane.setConstraints(imageLabel, x, y, 1, 1);
+		grid.getChildren().add(imageLabel);
+		addUIControl(imageLabel, "imageLabel");
+
+		x++;
+		label = new Label("(cool image left click / eclipse image right click)");
+		grid.getChildren().add(label);
+		GridPane.setConstraints(label, x, y, 1, 1);
+		addUIControl(label, "changeImageLabel");
+
 		return new Scene(grid);
 
 	}

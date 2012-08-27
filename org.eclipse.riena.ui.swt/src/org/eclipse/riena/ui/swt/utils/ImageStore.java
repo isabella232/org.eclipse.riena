@@ -30,10 +30,8 @@ import org.eclipse.riena.ui.core.resource.IconSize;
 import org.eclipse.riena.ui.core.resource.IconState;
 
 /**
- * The ImageStore returns the images for given names. The images are loaded form
- * and cached. The ImageStore extends the images name, if a state (@see
- * {@link ImageState}) like pressed of hover is given. If the image name has no
- * file extension, the extension ".png" will be added.
+ * The ImageStore returns the images for given names. The images are loaded form and cached. The ImageStore extends the images name, if a state (@see
+ * {@link ImageState}) like pressed of hover is given. If the image name has no file extension, the extension ".png" will be added.
  */
 public final class ImageStore {
 
@@ -58,8 +56,7 @@ public final class ImageStore {
 	}
 
 	/**
-	 * Returns the image for the given image name and with the given file
-	 * extension.
+	 * Returns the image for the given image name and with the given file extension.
 	 * 
 	 * @param imageName
 	 *            name (ID) of the image
@@ -149,9 +146,8 @@ public final class ImageStore {
 	}
 
 	/**
-	 * Returns the image for the given name. If the image isn't cached, the
-	 * image is loaded form the resources and stores in the cache of the
-	 * {@code ImageStore}.
+	 * Returns the image for the given name. If the image isn't cached, the image is loaded form the resources and stores in the cache of the {@code ImageStore}
+	 * .
 	 * 
 	 * @param fullName
 	 *            full name of the image (file name)
@@ -181,9 +177,8 @@ public final class ImageStore {
 	}
 
 	/**
-	 * Returns a descriptor of the image for the given name. The file of the
-	 * image is searched in every given bundle + icon path. The icon paths are
-	 * define via extension points.
+	 * Returns a descriptor of the image for the given name. The file of the image is searched in every given bundle + icon path. The icon paths are define via
+	 * extension points.
 	 * 
 	 * @param fullName
 	 *            full name of the image (file name)
@@ -191,12 +186,9 @@ public final class ImageStore {
 	 */
 	private ImageDescriptor getImageDescriptor(final String fullName) {
 
-		for (final IImagePathExtension iconPath : iconPaths) {
-			final String fullPath = iconPath.getPath() + '/' + fullName;
-			final URL url = iconPath.getContributingBundle().getEntry(fullPath);
-			if (url != null) {
-				return ImageDescriptor.createFromURL(url);
-			}
+		final URL url = getImageUrl(fullName);
+		if (url != null) {
+			return ImageDescriptor.createFromURL(url);
 		}
 
 		final StringBuilder sb = new StringBuilder();
@@ -213,6 +205,17 @@ public final class ImageStore {
 		LOGGER.log(LogService.LOG_DEBUG, sb.toString());
 		return null;
 
+	}
+
+	public URL getImageUrl(final String fullName) {
+		for (final IImagePathExtension iconPath : iconPaths) {
+			final String fullPath = iconPath.getPath() + '/' + fullName;
+			final URL url = iconPath.getContributingBundle().getEntry(fullPath);
+			if (url != null) {
+				return url;
+			}
+		}
+		return null;
 	}
 
 	/**
