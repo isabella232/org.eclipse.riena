@@ -7,12 +7,8 @@ import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 
 /**
  * @author tsc
- *
+ * 
  */
 public class JavaFxAdditionController extends SubModuleController {
 
-	@Override
-	public void configureRidgets() {
-		super.configureRidgets();
-	}
 }

@@ -32,8 +32,7 @@ public final class ClickEvent {
 	 * @param source
 	 *            the source ridget
 	 * @param button
-	 *            the mouse button used; 1 for the first button, 2 for the 2nd,
-	 *            3 for the 3rd, etc.
+	 *            the mouse button used; 1 for the first button, 2 for the 2nd, 3 for the 3rd, etc. or -1 for unknown button
 	 * @since 4.0
 	 */
 	public ClickEvent(final IRidget source, final int button) {
@@ -46,8 +45,7 @@ public final class ClickEvent {
 	 * @param source
 	 *            the source ridget
 	 * @param button
-	 *            the mouse button used; 1 for the first button, 2 for the 2nd,
-	 *            3 for the 3rd, etc.
+	 *            the mouse button used; 1 for the first button, 2 for the 2nd, 3 for the 3rd, etc. or -1 for unknown button
 	 * @param columnIndex
 	 *            the 0-based index of a column, or -1
 	 * @param rowData
@@ -62,8 +60,7 @@ public final class ClickEvent {
 	}
 
 	/**
-	 * The button that was pressed or released; 1 for the first button, 2 for
-	 * the second button, and 3 for the third button, etc.
+	 * The button that was pressed or released; 1 for the first button, 2 for the second button, and 3 for the third button, etc. or -1 for unknown button
 	 */
 	public int getButton() {
 		return button;
@@ -72,16 +69,14 @@ public final class ClickEvent {
 	/**
 	 * Returns the zero-based index of the column which was clicked.
 	 * <p>
-	 * May be -1 if no column could be determined. This is the case when the
-	 * user manually resizes all columns to have 0 width (!).
+	 * May be -1 if no column could be determined. This is the case when the user manually resizes all columns to have 0 width (!).
 	 */
 	public int getColumnIndex() {
 		return columnIndex;
 	}
 
 	/**
-	 * The row element. May be null, if no column could be determined (see
-	 * {@link #getColumnIndex()).
+	 * The row element. May be null, if no column could be determined (see {@link #getColumnIndex()).
 	 */
 	public Object getRow() {
 		return rowData;

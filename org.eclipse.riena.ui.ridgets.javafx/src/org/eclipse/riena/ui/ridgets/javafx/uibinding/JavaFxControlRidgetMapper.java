@@ -1,6 +1,9 @@
 package org.eclipse.riena.ui.ridgets.javafx.uibinding;
 
+import javafx.scene.control.Label;
+
 import org.eclipse.riena.core.singleton.SingletonProvider;
+import org.eclipse.riena.internal.ui.ridgets.javafx.JavaFxLabelRidget;
 import org.eclipse.riena.ui.ridgets.uibinding.AbstractControlRidgetMapper;
 
 public class JavaFxControlRidgetMapper extends AbstractControlRidgetMapper {
@@ -25,7 +28,7 @@ public class JavaFxControlRidgetMapper extends AbstractControlRidgetMapper {
 	 * Sets the default mapping of UI control-classes to a ridget-classes
 	 */
 	private void initDefaultMappings() {
-		// TODO
+		addMapping(Label.class, JavaFxLabelRidget.class);
 	}
 
 }

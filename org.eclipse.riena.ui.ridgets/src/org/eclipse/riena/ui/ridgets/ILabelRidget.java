@@ -17,11 +17,10 @@ import org.eclipse.riena.ui.core.resource.IconSize;
 /**
  * Ridget for a label.
  * <p>
- * Because a label is read-only, this ridget will not modify the bound model
- * value (ref. {@link #bindToModel(Object, String)}) when the ridget value is
+ * Because a label is read-only, this ridget will not modify the bound model value (ref. {@link #bindToModel(Object, String)}) when the ridget value is
  * modified.
  */
-public interface ILabelRidget extends IValueRidget {
+public interface ILabelRidget extends IValueRidget, IClickableRidget {
 
 	/**
 	 * Property name of the text property.
@@ -74,8 +73,7 @@ public interface ILabelRidget extends IValueRidget {
 
 	/**
 	 * Sets the name of the icon. <br>
-	 * Beware of the method setIconLocation(URL). The latest set icon is
-	 * displayed. <br>
+	 * Beware of the method setIconLocation(URL). The latest set icon is displayed. <br>
 	 * 
 	 * @see #setIconLocation(URL)
 	 * 
