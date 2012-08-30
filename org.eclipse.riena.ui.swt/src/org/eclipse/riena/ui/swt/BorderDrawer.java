@@ -43,7 +43,7 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
  * @since 4.0
  */
 public class BorderDrawer implements Listener {
-
+	private static final String NEED_SHELL_REDRAW = "needShellRedraw"; //$NON-NLS-1$
 	public static final int DEFAULT_BORDER_WIDTH = 1;
 	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), BorderDrawer.class);
 
@@ -522,16 +522,23 @@ public class BorderDrawer implements Listener {
 			if (boundsToDecorate == null) {
 				boundsToDecorate = onDisplay;
 			}
+			// this hacky workaround is needed for the case when a layout()
+			// caused the control to decorate to be moved or resized
+			// in this case, we don't get a resize or move event
 			if (!onDisplay.equals(boundsToDecorate) && !computeBorderArea) {
 				boundsToDecorate = onDisplay;
 				layouting = true;
-				getControlToDecorate().getShell().redraw();
+				final Shell shell = getControlToDecorate().getShell();
+				shell.redraw();
 				layouting = false;
 				computeBorderArea = true;
+				shell.setData(NEED_SHELL_REDRAW, true);
 				getControlToDecorate().getDisplay().asyncExec(new Runnable() {
 					public void run() {
-						if (!SwtUtilities.isDisposed(getControlToDecorate())) {
-							getControlToDecorate().redraw();
+						if (!SwtUtilities.isDisposed(getControlToDecorate()) && (Boolean) shell.getData(NEED_SHELL_REDRAW)) {
+							final Rectangle b = shell.getBounds();
+							shell.redraw(0, 0, b.width, b.height, true);
+							shell.setData(NEED_SHELL_REDRAW, false);
 						}
 					}
 				});
