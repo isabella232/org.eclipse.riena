@@ -1620,7 +1620,7 @@
       </navigator>
    </extension>
    <extension
-         point="org.eclipse.riena.navigation.ui.e4.applicationModelCreators">
+         point="org.eclipse.riena.e4.launcher.applicationModelCreators">
       <modelCreator
             class="org.eclipse.riena.example.client.application.SwtExampleApplication">
       </modelCreator>
