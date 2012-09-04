@@ -878,7 +878,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	 * 
 	 * @since 4.0
 	 */
-	public void prepareNode(final SubModuleNode node) {
+	public void prepareNode(final ISubModuleNode node) {
 		final IController controller = createController(node);
 		if (controller != null) {
 			binding.injectRidgets(controller);
