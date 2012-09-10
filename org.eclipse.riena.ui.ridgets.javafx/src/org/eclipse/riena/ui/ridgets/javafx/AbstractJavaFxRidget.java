@@ -17,6 +17,7 @@ import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.core.util.ListenerList;
+import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.ErrorMessageMarker;
@@ -30,9 +31,9 @@ import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;
 import org.eclipse.riena.ui.ridgets.listener.ClickEvent;
 import org.eclipse.riena.ui.ridgets.listener.IClickListener;
+import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTWidgetRidget;
 import org.eclipse.riena.ui.ridgets.uibinding.IBindingPropertyLocator;
-import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.widgets.Widget;
 import org.osgi.service.log.LogService;
 
@@ -53,6 +54,13 @@ public abstract class AbstractJavaFxRidget extends AbstractRidget implements
 	private HiddenMarker hiddenMarker;
 	private AbstractMarkerSupport markerSupport;
 	private ClickForwarder mouseListener;
+	private boolean focusable;
+	private final JavaFxFocusManager focusManager;
+
+	public AbstractJavaFxRidget() {
+		focusable = true;
+		focusManager = new JavaFxFocusManager(this);
+	}
 
 	@Override
 	public void setUIControl(Object uiControl) {
@@ -65,6 +73,7 @@ public abstract class AbstractJavaFxRidget extends AbstractRidget implements
 		updateEnabled();
 		updateMarkers();
 		updateToolTip();
+		updateFocusable();
 		bindUIControl();
 		installListeners();
 	}
@@ -93,6 +102,10 @@ public abstract class AbstractJavaFxRidget extends AbstractRidget implements
 	 */
 	@Override
 	public boolean hasFocus() {
+		final Control control = getUIControl();
+		if (control != null) {
+			return control.isFocused();
+		}
 		return false;
 	}
 
@@ -151,12 +164,11 @@ public abstract class AbstractJavaFxRidget extends AbstractRidget implements
 	 * ridget.
 	 */
 	protected void installListeners() {
-		if (getUIControl() != null) {
+		final Control control = getUIControl();
+		if (control != null) {
 			mouseListener = new ClickForwarder();
-			if (getUIControl() instanceof Control) {
-				final Control control = getUIControl();
-				control.setOnMouseClicked(mouseListener);
-			}
+			control.setOnMouseClicked(mouseListener);
+			control.focusedProperty().addListener(focusManager);
 		}
 	}
 
@@ -165,8 +177,10 @@ public abstract class AbstractJavaFxRidget extends AbstractRidget implements
 	 * unbound from the ridget.
 	 */
 	protected void uninstallListeners() {
-		if (getUIControl() != null) {
+		final Control control = getUIControl();
+		if (control != null) {
 			// remove mouseListener ?
+			control.focusedProperty().removeListener(focusManager);
 		}
 	}
 
@@ -186,6 +200,38 @@ public abstract class AbstractJavaFxRidget extends AbstractRidget implements
 				disabledMarker = new DisabledMarker();
 			}
 			addMarker(disabledMarker);
+		}
+	}
+
+	/**
+	 * Copy of {@link AbstractSWTWidgetRidget#setMandatory()}
+	 */
+	public final void setMandatory(final boolean mandatory) {
+		if (!mandatory) {
+			if (mandatoryMarker != null) {
+				removeMarker(mandatoryMarker);
+			}
+		} else {
+			if (mandatoryMarker == null) {
+				mandatoryMarker = new MandatoryMarker();
+			}
+			addMarker(mandatoryMarker);
+		}
+	}
+
+	/**
+	 * Copy of {@link AbstractSWTWidgetRidget#setOutputOnly()}
+	 */
+	public final void setOutputOnly(final boolean outputOnly) {
+		if (!outputOnly) {
+			if (outputMarker != null) {
+				removeMarker(outputMarker);
+			}
+		} else {
+			if (outputMarker == null) {
+				outputMarker = new OutputMarker();
+			}
+			addMarker(outputMarker);
 		}
 	}
 
@@ -219,24 +265,38 @@ public abstract class AbstractJavaFxRidget extends AbstractRidget implements
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 * <p>
-	 * Copy of {@link AbstractSWTWidgetRidget#setFocusable()}
-	 */
-	@Override
-	public void setFocusable(final boolean focusable) {
-		// not supported
+	public JavaFxFocusManager getFocusManager() {
+		return focusManager;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * Copy of {@link AbstractSWTWidgetRidget#isFocusable()}
+	 * Copy of {@link AbstractSWTRidget#setFocusable()}
 	 */
 	@Override
-	public boolean isFocusable() {
-		return false;
+	public final boolean isFocusable() {
+		return focusable;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * Copy of {@link AbstractSWTRidget#setFocusable()}
+	 */
+	@Override
+	public final void setFocusable(final boolean focusable) {
+		if (this.focusable != focusable) {
+			this.focusable = focusable;
+			updateFocusable();
+		}
+	}
+
+	private void updateFocusable() {
+		if (getUIControl() != null) {
+			boolean focusable = isFocusable() && !isOutputOnly();
+			getUIControl().setFocusTraversable(focusable);
+		}
 	}
 
 	/**
@@ -272,8 +332,13 @@ public abstract class AbstractJavaFxRidget extends AbstractRidget implements
 
 	protected final void updateToolTip() {
 		if (getUIControl() != null) {
-			Tooltip tooltip = new Tooltip(getToolTipText());
-			getUIControl().setTooltip(tooltip);
+			String toolTipText = getToolTipText();
+			if (StringUtils.isEmpty(toolTipText)) {
+				getUIControl().setTooltip(null);
+			} else {
+				Tooltip tooltip = new Tooltip(toolTipText);
+				getUIControl().setTooltip(tooltip);
+			}
 		}
 	}
 
@@ -406,19 +471,20 @@ public abstract class AbstractJavaFxRidget extends AbstractRidget implements
 	 * Copy of {@link AbstractSWTWidgetRidget#createMarkerSupport()}
 	 */
 	protected AbstractMarkerSupport createMarkerSupport() {
-		AbstractMarkerSupport lnfMarkerSupport = null;
-		if (LnfManager.getLnf() != null) {
-			// TODO ?
-			lnfMarkerSupport = LnfManager.getLnf().getMarkerSupport(
-					this.getClass());
-		}
-		if (lnfMarkerSupport == null) {
-			// No MarkerSupport exits. Default MarkerSupport is used.
-			lnfMarkerSupport = new JavaFxBasicMarkerSupport();
-		}
-		lnfMarkerSupport.init(this, propertyChangeSupport);
-		Assert.isNotNull(lnfMarkerSupport, "Marker support is null!"); //$NON-NLS-1$
-		return lnfMarkerSupport;
+		// AbstractMarkerSupport lnfMarkerSupport = null;
+		// // if (LnfManager.getLnf() != null) {
+		// // // TODO ?
+		// // lnfMarkerSupport = LnfManager.getLnf().getMarkerSupport(
+		// // this.getClass());
+		// // }
+		// if (lnfMarkerSupport == null) {
+		// // No MarkerSupport exits. Default MarkerSupport is used.
+		// lnfMarkerSupport = new JavaFxBasicMarkerSupport();
+		// }
+		// lnfMarkerSupport.init(this, propertyChangeSupport);
+		//		Assert.isNotNull(lnfMarkerSupport, "Marker support is null!"); //$NON-NLS-1$
+		// return lnfMarkerSupport;
+		return new JavaFxMarkerSupport(this, propertyChangeSupport);
 	}
 
 	/**
@@ -563,6 +629,43 @@ public abstract class AbstractJavaFxRidget extends AbstractRidget implements
 					button);
 			LOGGER.log(LogService.LOG_WARNING, message);
 			return -1;
+		}
+	}
+
+	/**
+	 * Copy of {@link AbstractSWTWidgetRidget#isMandatory}
+	 */
+	@Deprecated
+	public final boolean isMandatory() {
+		return !getMarkersOfType(MandatoryMarker.class).isEmpty();
+	}
+
+	/**
+	 * Copy of {@link AbstractSWTWidgetRidget#isOutputOnly}
+	 */
+	public final boolean isOutputOnly() {
+		return !getMarkersOfType(OutputMarker.class).isEmpty();
+	}
+
+	/**
+	 * Copy of {@link AbstractSWTWidgetRidget#flash}
+	 */
+	protected synchronized final void flash() {
+		if (getUIControl() != null) {
+			if (markerSupport == null) {
+				markerSupport = createMarkerSupport();
+				markerSupport.setRidget(this);
+			}
+			markerSupport.flash();
+		}
+	}
+
+	/**
+	 * Copy of {@link AbstractSWTWidgetRidget#disableMandatoryMarkers}
+	 */
+	protected final void disableMandatoryMarkers(final boolean disable) {
+		for (final MandatoryMarker marker : getMarkersOfType(MandatoryMarker.class)) {
+			marker.setDisabled(disable);
 		}
 	}
 

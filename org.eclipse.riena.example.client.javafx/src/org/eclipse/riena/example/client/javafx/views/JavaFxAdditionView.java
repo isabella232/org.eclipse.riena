@@ -138,7 +138,7 @@ public class JavaFxAdditionView extends JavaFxSubModuleView {
 
 		public void calc() {
 
-			double val1 = val1 = getIntValue1();
+			double val1 = getIntValue1();
 			double val2 = 0.0;
 			try {
 				val2 = Double.parseDouble(getValue2());

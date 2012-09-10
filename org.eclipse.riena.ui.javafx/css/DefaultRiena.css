@@ -1,0 +1,19 @@
+*.output-only {
+	-fx-control-inner-background: rgb(231, 233, 245);
+}
+*.mandatory {
+	-fx-control-inner-background: rgb(255, 255, 175);
+}
+*.mandatory-output-only {
+	-fx-control-inner-background: rgb(255, 249, 216);
+}
+*.error {
+	-fx-background-color: red, white;
+    -fx-background-insets: 0, 1;
+    -fx-hover-stroke: black;
+    /*
+    -fx-border-style: line-cap round;
+    -fx-border-radius: 10;
+    -fx-border-color: red;
+     */   
+}

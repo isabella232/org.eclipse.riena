@@ -446,9 +446,8 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	 *            the new disabled state
 	 */
 	protected final void disableMandatoryMarkers(final boolean disable) {
-		for (final IMarker marker : getMarkersOfType(MandatoryMarker.class)) {
-			final MandatoryMarker mMarker = (MandatoryMarker) marker;
-			mMarker.setDisabled(disable);
+		for (final MandatoryMarker marker : getMarkersOfType(MandatoryMarker.class)) {
+			marker.setDisabled(disable);
 		}
 	}
 

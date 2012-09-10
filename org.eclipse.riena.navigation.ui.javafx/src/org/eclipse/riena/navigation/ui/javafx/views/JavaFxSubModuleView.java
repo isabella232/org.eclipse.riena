@@ -10,6 +10,7 @@ import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.javafx.utils.JavaFxControlFinder;
+import org.eclipse.riena.ui.javafx.utils.RienaCssLoader;
 import org.eclipse.riena.ui.ridgets.javafx.swtjavafx.uibinding.SwtJavaFxViewBindingDelegate;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.AbstractViewBindingDelegate;
 import org.eclipse.swt.SWT;
@@ -25,7 +26,9 @@ public abstract class JavaFxSubModuleView extends SubModuleView {
 				.applyTo(parent);
 
 		final FXCanvas canvas = new FXCanvas(parent, SWT.BORDER);
-		canvas.setScene(createScene());
+		Scene scene = createScene();
+		RienaCssLoader.getInstance().addStylesheets(scene);
+		canvas.setScene(scene);
 		GridDataFactory.fillDefaults().grab(true, true)
 				.align(SWT.FILL, SWT.FILL).applyTo(canvas);
 

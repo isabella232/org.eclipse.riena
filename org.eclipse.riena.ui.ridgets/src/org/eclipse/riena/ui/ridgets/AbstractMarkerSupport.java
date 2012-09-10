@@ -36,7 +36,7 @@ public abstract class AbstractMarkerSupport {
 	private Set<Class<? extends IMarker>> hiddenMarkerTypes;
 	private IBasicMarkableRidget ridget;
 	private PropertyChangeSupport propertyChangeSupport;
-	private IMarkerAttributeChangeListener markerAttributeChangeListener;
+	private final IMarkerAttributeChangeListener markerAttributeChangeListener;
 
 	/**
 	 * @since 2.0
@@ -46,7 +46,7 @@ public abstract class AbstractMarkerSupport {
 	}
 
 	public AbstractMarkerSupport(final IBasicMarkableRidget ridget, final PropertyChangeSupport propertyChangeSupport) {
-		super();
+		this();
 		init(ridget, propertyChangeSupport);
 	}
 
@@ -85,8 +85,7 @@ public abstract class AbstractMarkerSupport {
 	}
 
 	/**
-	 * Initializes this marker support with the Ridget and the property change
-	 * support.
+	 * Initializes this marker support with the Ridget and the property change support.
 	 * 
 	 * @param ridget
 	 *            the Ridget that needs the marker support.
@@ -104,13 +103,11 @@ public abstract class AbstractMarkerSupport {
 	}
 
 	/**
-	 * "Flashes" some kind of notification <b>asynchronously</b>. The notion and
-	 * duration of "flashing" is implementation specific - it could flash a
-	 * special color, an error decoration, etc.
+	 * "Flashes" some kind of notification <b>asynchronously</b>. The notion and duration of "flashing" is implementation specific - it could flash a special
+	 * color, an error decoration, etc.
 	 * <p>
-	 * The default implementation does nothing. Subclasses should override.
-	 * Implementors shall check that the ui control is not null and that the
-	 * flash is not already in progress.
+	 * The default implementation does nothing. Subclasses should override. Implementors shall check that the ui control is not null and that the flash is not
+	 * already in progress.
 	 * <p>
 	 * <b>Flashing must not alter the marker state of the ridget!</b>
 	 * 
@@ -123,8 +120,7 @@ public abstract class AbstractMarkerSupport {
 	/**
 	 * Returns all hidden marker types.
 	 * 
-	 * @return the set of currently hidden marker types; never null; may be
-	 *         empty
+	 * @return the set of currently hidden marker types; never null; may be empty
 	 * 
 	 * @since 3.0
 	 */
@@ -160,15 +156,12 @@ public abstract class AbstractMarkerSupport {
 	}
 
 	/**
-	 * Hide markers of the given type. Hidden markers of a matching type shall
-	 * be ignored in the UI (i.e. no feedback is shown by the ridget), but are
-	 * not removed from the ridget.
+	 * Hide markers of the given type. Hidden markers of a matching type shall be ignored in the UI (i.e. no feedback is shown by the ridget), but are not
+	 * removed from the ridget.
 	 * <p>
-	 * Initially the set of hidden markers is empty. When calling this method
-	 * the {@code type}-argument is added to the set.
+	 * Initially the set of hidden markers is empty. When calling this method the {@code type}-argument is added to the set.
 	 * <p>
-	 * <b>Note:</b> the set of marker types that can be successfully ignored is
-	 * implementation detail of concrete implementations of this class.
+	 * <b>Note:</b> the set of marker types that can be successfully ignored is implementation detail of concrete implementations of this class.
 	 * 
 	 * @param types
 	 *            the type of markers to hide. The matching includes sublasses
@@ -241,19 +234,15 @@ public abstract class AbstractMarkerSupport {
 	}
 
 	/**
-	 * Show markers of the given type. Hidden markers of a matching type shall
-	 * be ignored in the UI (i.e. not feedback is shown by the ridget), but are
-	 * not removed from the ridget.
+	 * Show markers of the given type. Hidden markers of a matching type shall be ignored in the UI (i.e. not feedback is shown by the ridget), but are not
+	 * removed from the ridget.
 	 * <p>
-	 * Initially the set of hidden markers is empty. When calling this method
-	 * the {@code type}-argument is removed from the set.
+	 * Initially the set of hidden markers is empty. When calling this method the {@code type}-argument is removed from the set.
 	 * <p>
-	 * <b>Note:</b> the set of marker types that can be successfully ignored is
-	 * implementation detail of concrete implementations of this class.
+	 * <b>Note:</b> the set of marker types that can be successfully ignored is implementation detail of concrete implementations of this class.
 	 * 
 	 * @param types
-	 *            the type of markers to show (unhide). The matching includes
-	 *            subclasses
+	 *            the type of markers to show (unhide). The matching includes subclasses
 	 * @return the set of currently hidden marker types (including type).
 	 * 
 	 * @since 3.0
@@ -274,8 +263,7 @@ public abstract class AbstractMarkerSupport {
 	}
 
 	/**
-	 * Callback method triggered when a control is unbound from the
-	 * {@link IRidget}.
+	 * Callback method triggered when a control is unbound from the {@link IRidget}.
 	 * <p>
 	 * The default implementation is empty. Subclasses may override.
 	 * 
@@ -355,34 +343,28 @@ public abstract class AbstractMarkerSupport {
 		return Boolean.valueOf(result);
 	}
 
-	private void fireEnabledPropertyChangeEvent(final Collection<IMarker> oldMarkers,
-			final Collection<IMarker> newMarkers) {
+	private void fireEnabledPropertyChangeEvent(final Collection<IMarker> oldMarkers, final Collection<IMarker> newMarkers) {
 		final Boolean oldValue = isEnabled(oldMarkers);
 		final Boolean newValue = isEnabled(newMarkers);
 		if (!oldValue.equals(newValue)) {
-			final PropertyChangeEvent evt = new PropertyChangeEvent(getRidget(), IRidget.PROPERTY_ENABLED, oldValue,
-					newValue);
+			final PropertyChangeEvent evt = new PropertyChangeEvent(getRidget(), IRidget.PROPERTY_ENABLED, oldValue, newValue);
 			propertyChangeSupport.firePropertyChange(evt);
 		}
 	}
 
-	private void fireMarkerPropertyChangeEvent(final Collection<IMarker> oldMarkers,
-			final Collection<IMarker> newMarkers) {
+	private void fireMarkerPropertyChangeEvent(final Collection<IMarker> oldMarkers, final Collection<IMarker> newMarkers) {
 		propertyChangeSupport.firePropertyChange(new MarkerPropertyChangeEvent(oldMarkers, getRidget(), newMarkers));
 	}
 
-	private void fireMarkerHidingPropertyChangeEvent(final Collection<IMarker> oldMarkers,
-			final Collection<IMarker> newMarkers) {
+	private void fireMarkerHidingPropertyChangeEvent(final Collection<IMarker> oldMarkers, final Collection<IMarker> newMarkers) {
 		propertyChangeSupport.firePropertyChange(IBasicMarkableRidget.PROPERTY_MARKER_HIDING, null, null);
 	}
 
-	private void fireOutputPropertyChangeEvent(final Collection<IMarker> oldMarkers,
-			final Collection<IMarker> newMarkers) {
+	private void fireOutputPropertyChangeEvent(final Collection<IMarker> oldMarkers, final Collection<IMarker> newMarkers) {
 		final Boolean oldValue = isOutput(oldMarkers);
 		final Boolean newValue = isOutput(newMarkers);
 		if (!oldValue.equals(newValue)) {
-			final PropertyChangeEvent evt = new PropertyChangeEvent(getRidget(), IMarkableRidget.PROPERTY_OUTPUT_ONLY,
-					oldValue, newValue);
+			final PropertyChangeEvent evt = new PropertyChangeEvent(getRidget(), IMarkableRidget.PROPERTY_OUTPUT_ONLY, oldValue, newValue);
 			propertyChangeSupport.firePropertyChange(evt);
 		}
 	}
@@ -390,20 +372,17 @@ public abstract class AbstractMarkerSupport {
 	// helping classes
 	//////////////////
 
-	private static final class MarkerPropertyChangeEvent extends PropertyChangeEvent implements
-			IMarkerPropertyChangeEvent {
+	private static final class MarkerPropertyChangeEvent extends PropertyChangeEvent implements IMarkerPropertyChangeEvent {
 
 		private static final long serialVersionUID = 1L;
 
 		private boolean attributeRelated = false;
 
-		private MarkerPropertyChangeEvent(final Object oldValue, final IBasicMarkableRidget source,
-				final Object newValue) {
+		private MarkerPropertyChangeEvent(final Object oldValue, final IBasicMarkableRidget source, final Object newValue) {
 			super(source, IBasicMarkableRidget.PROPERTY_MARKER, oldValue, newValue);
 		}
 
-		private MarkerPropertyChangeEvent(final boolean attributeRelated, final IBasicMarkableRidget source,
-				final Object newValue) {
+		private MarkerPropertyChangeEvent(final boolean attributeRelated, final IBasicMarkableRidget source, final Object newValue) {
 			this(null, source, newValue);
 			this.attributeRelated = attributeRelated;
 		}
