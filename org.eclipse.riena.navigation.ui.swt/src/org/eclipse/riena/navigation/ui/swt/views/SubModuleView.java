@@ -137,6 +137,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	 * used for the e4 migration
 	 */
 	private IShellProvider shellProvider;
+	private boolean e4Runtime = false;
 
 	/**
 	 * Creates a new instance of {@code SubModuleView}.
@@ -150,6 +151,10 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 				return getSite().getShell();
 			}
 		});
+	}
+
+	public void setE4Runtime(final boolean e4Runtime) {
+		this.e4Runtime = e4Runtime;
 	}
 
 	public void addUpdateListener(final IComponentUpdateListener listener) {
@@ -171,7 +176,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 			//"old" node bound?
 			if (currentController != null) {
 				// old node disposed?
-				if (currentController.getNavigationNode().isDisposed()) {
+				if (currentController.getNavigationNode().isDisposed() && !e4Runtime) {
 					return;
 				}
 				// unbind "old" node
