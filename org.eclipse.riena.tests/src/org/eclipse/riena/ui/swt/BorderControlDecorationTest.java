@@ -82,7 +82,7 @@ public class BorderControlDecorationTest extends TestCase {
 
 	public void testDecorationRectangle() {
 		final int borderWidth = 3;
-		final BorderControlDecoration deco = new BorderControlDecoration(text, borderWidth);
+		final BorderControlDecoration deco = new BorderControlDecoration(text, borderWidth, null, true, null);
 		deco.show();
 		shell.setVisible(true);
 		final BorderDrawer borderDrawer = ReflectionUtils.getHidden(deco, "borderDrawer");
