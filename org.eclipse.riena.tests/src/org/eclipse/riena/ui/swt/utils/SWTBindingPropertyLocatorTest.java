@@ -20,6 +20,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
+import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.collect.UITestCase;
 import org.eclipse.riena.ui.common.IComplexComponent;
 
@@ -52,10 +53,10 @@ public class SWTBindingPropertyLocatorTest extends TestCase {
 		assertEquals(null, prop);
 
 		final Label label = new Label(shell, SWT.NONE);
-		locator.setBindingProperty(label, "label1");
+		locator.setBindingProperty(label, "label1"); //$NON-NLS-1$
 		prop = locator.locateBindingProperty(label);
 
-		assertEquals("label1", prop);
+		assertEquals("label1", prop); //$NON-NLS-1$
 
 		label.dispose();
 		prop = locator.locateBindingProperty(label);
@@ -76,22 +77,22 @@ public class SWTBindingPropertyLocatorTest extends TestCase {
 		final TestComplexComponent complexComponent = new TestComplexComponent(shell, SWT.NONE);
 		final Text text = new Text(complexComponent, SWT.NONE);
 
-		locator.setBindingProperty(complexComponent, "complex1");
+		locator.setBindingProperty(complexComponent, "complex1"); //$NON-NLS-1$
 
 		assertEquals(null, locator.locateBindingProperty(text));
 
-		locator.setBindingProperty(text, "text1");
+		locator.setBindingProperty(text, "text1"); //$NON-NLS-1$
 
-		assertEquals("text1", locator.locateBindingProperty(text));
+		assertEquals("text1", locator.locateBindingProperty(text)); //$NON-NLS-1$
 
 		try {
-			locator.setBindingProperty(complexComponent, "");
+			locator.setBindingProperty(complexComponent, ""); //$NON-NLS-1$
 
 		} catch (final IllegalArgumentException ex) {
 
 		}
 
-		assertEquals("text1", locator.locateBindingProperty(text));
+		assertEquals("text1", locator.locateBindingProperty(text)); //$NON-NLS-1$
 	}
 
 	public void testLocateBindingPropertyInComplexComponentWithNesting() {
@@ -100,10 +101,10 @@ public class SWTBindingPropertyLocatorTest extends TestCase {
 		final Composite composite = new Composite(complexComponent, SWT.NONE);
 		final Text text = new Text(composite, SWT.NONE);
 
-		locator.setBindingProperty(complexComponent, "complex1");
-		locator.setBindingProperty(text, "text");
+		locator.setBindingProperty(complexComponent, "complex1"); //$NON-NLS-1$
+		locator.setBindingProperty(text, "text"); //$NON-NLS-1$
 
-		assertEquals("text", locator.locateBindingProperty(text));
+		assertEquals("text", locator.locateBindingProperty(text)); //$NON-NLS-1$
 	}
 
 	public void testGetControlsWithBindingProperty() {
@@ -112,8 +113,8 @@ public class SWTBindingPropertyLocatorTest extends TestCase {
 		final Label label1 = new Label(composite1, SWT.NONE);
 		final Label label2 = new Label(composite1, SWT.NONE);
 
-		locator.setBindingProperty(label1, "label1");
-		locator.setBindingProperty(label2, "label2");
+		locator.setBindingProperty(label1, "label1"); //$NON-NLS-1$
+		locator.setBindingProperty(label2, "label2"); //$NON-NLS-1$
 
 		final List<Object> result1 = SWTBindingPropertyLocator.getControlsWithBindingProperty(composite1);
 
@@ -127,8 +128,8 @@ public class SWTBindingPropertyLocatorTest extends TestCase {
 		final Composite composite1 = new Composite(shell, SWT.NONE);
 		final Label label1 = new Label(composite1, SWT.NONE);
 
-		locator.setBindingProperty(composite1, "complex1");
-		locator.setBindingProperty(label1, "label1");
+		locator.setBindingProperty(composite1, "complex1"); //$NON-NLS-1$
+		locator.setBindingProperty(label1, "label1"); //$NON-NLS-1$
 
 		final List<Object> result1 = SWTBindingPropertyLocator.getControlsWithBindingProperty(composite1);
 
@@ -140,13 +141,13 @@ public class SWTBindingPropertyLocatorTest extends TestCase {
 		final SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
 
 		final Composite composite1 = new Composite(shell, SWT.NONE);
-		locator.setBindingProperty(composite1, "composite1");
+		locator.setBindingProperty(composite1, "composite1"); //$NON-NLS-1$
 		final Composite composite2 = new Composite(composite1, SWT.NONE);
-		locator.setBindingProperty(composite2, "composite2");
+		locator.setBindingProperty(composite2, "composite2"); //$NON-NLS-1$
 		final Label c2Label1 = new Label(composite2, SWT.NONE);
-		locator.setBindingProperty(c2Label1, "label1");
+		locator.setBindingProperty(c2Label1, "label1"); //$NON-NLS-1$
 		final Label c2Label2 = new Label(composite2, SWT.NONE);
-		locator.setBindingProperty(c2Label2, "label2");
+		locator.setBindingProperty(c2Label2, "label2"); //$NON-NLS-1$
 
 		final List<Object> result = SWTBindingPropertyLocator.getControlsWithBindingProperty(composite1);
 
@@ -162,9 +163,9 @@ public class SWTBindingPropertyLocatorTest extends TestCase {
 		final Label label1 = new Label(composite1, SWT.NONE);
 		final Label label2 = new Label(composite1, SWT.NONE);
 
-		locator.setBindingProperty(composite1, "composite1");
-		locator.setBindingProperty(label1, "label");
-		locator.setBindingProperty(label2, "label");
+		locator.setBindingProperty(composite1, "composite1"); //$NON-NLS-1$
+		locator.setBindingProperty(label1, "label"); //$NON-NLS-1$
+		locator.setBindingProperty(label2, "label"); //$NON-NLS-1$
 
 		try {
 			SWTBindingPropertyLocator.getControlsWithBindingProperty(composite1);
@@ -181,9 +182,9 @@ public class SWTBindingPropertyLocatorTest extends TestCase {
 		final Composite composite2 = new Composite(composite1, SWT.NONE);
 		final Label label2 = new Label(composite2, SWT.NONE);
 
-		locator.setBindingProperty(composite1, "composite1");
-		locator.setBindingProperty(label1, "label");
-		locator.setBindingProperty(label2, "label");
+		locator.setBindingProperty(composite1, "composite1"); //$NON-NLS-1$
+		locator.setBindingProperty(label1, "label"); //$NON-NLS-1$
+		locator.setBindingProperty(label2, "label"); //$NON-NLS-1$
 
 		try {
 			SWTBindingPropertyLocator.getControlsWithBindingProperty(composite1);
@@ -200,10 +201,10 @@ public class SWTBindingPropertyLocatorTest extends TestCase {
 		final Label c1Label1 = new Label(composite1, SWT.NONE);
 		final Label c2Label1 = new Label(composite2, SWT.NONE);
 
-		locator.setBindingProperty(composite1, "composite1");
-		locator.setBindingProperty(composite2, "composite2");
-		locator.setBindingProperty(c1Label1, "label");
-		locator.setBindingProperty(c2Label1, "label");
+		locator.setBindingProperty(composite1, "composite1"); //$NON-NLS-1$
+		locator.setBindingProperty(composite2, "composite2"); //$NON-NLS-1$
+		locator.setBindingProperty(c1Label1, "label"); //$NON-NLS-1$
+		locator.setBindingProperty(c2Label1, "label"); //$NON-NLS-1$
 
 		try {
 			SWTBindingPropertyLocator.getControlsWithBindingProperty(shell);
@@ -211,6 +212,59 @@ public class SWTBindingPropertyLocatorTest extends TestCase {
 		} catch (final RuntimeException rex) {
 			// ok
 		}
+	}
+
+	/**
+	 * Tests the <i>private/i> method {@code getComplexParent(Control)}.
+	 * 
+	 * @throws Exception
+	 *             handled by JUnit
+	 */
+	public void testGetComplexParent() throws Exception {
+
+		final SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
+
+		final Composite composite1 = new Composite(shell, SWT.NONE);
+		IComplexComponent parent = ReflectionUtils.invokeHidden(locator, "getComplexParent", composite1); //$NON-NLS-1$
+		assertNull(parent);
+
+		final Label c1Label1 = new Label(composite1, SWT.NONE);
+		parent = ReflectionUtils.invokeHidden(locator, "getComplexParent", c1Label1); //$NON-NLS-1$
+		assertNull(parent);
+
+		final TestComplexComponent complexComponent = new TestComplexComponent(shell, SWT.NONE);
+		parent = ReflectionUtils.invokeHidden(locator, "getComplexParent", complexComponent); //$NON-NLS-1$
+		assertNull(parent);
+
+		final Label c2Label1 = new Label(complexComponent, SWT.NONE);
+		parent = ReflectionUtils.invokeHidden(locator, "getComplexParent", c2Label1); //$NON-NLS-1$
+		assertSame(complexComponent, parent);
+
+	}
+
+	public void testGetComplexBindingId() throws Exception {
+
+		final SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
+
+		String id = locator.getComplexBindingId(null);
+		assertNull(id);
+
+		final Composite composite1 = new Composite(shell, SWT.NONE);
+		final Label c1Label1 = new Label(composite1, SWT.NONE);
+		locator.setBindingProperty(composite1, "composite1"); //$NON-NLS-1$
+		locator.setBindingProperty(c1Label1, "label"); //$NON-NLS-1$
+
+		id = locator.getComplexBindingId(c1Label1);
+		assertEquals("label", id); //$NON-NLS-1$
+
+		final TestComplexComponent complexComponent = new TestComplexComponent(shell, SWT.NONE);
+		final Label c2Label1 = new Label(complexComponent, SWT.NONE);
+		locator.setBindingProperty(complexComponent, "complexComponent"); //$NON-NLS-1$
+		locator.setBindingProperty(c2Label1, "label"); //$NON-NLS-1$
+
+		id = locator.getComplexBindingId(c2Label1);
+		assertEquals("complexComponent.label", id); //$NON-NLS-1$
+
 	}
 
 	// helping classes

@@ -79,22 +79,17 @@ public abstract class AbstractWindowController implements IController, IContext 
 	}
 
 	/**
-	 * Make {@code action} the default action while the focus is within
-	 * {@code focusRidget} including it's children.
+	 * Make {@code action} the default action while the focus is within {@code focusRidget} including it's children.
 	 * <p>
-	 * If a default action is available and enabled, it will be invoked whenever
-	 * the user presses ENTER within the window.
+	 * If a default action is available and enabled, it will be invoked whenever the user presses ENTER within the window.
 	 * <p>
-	 * Note: the algorithm stops at the first match. It will check the most
-	 * specific (innermost) ridget first and check the most general (outermost)
-	 * ridget last.
+	 * Note: the algorithm stops at the first match. It will check the most specific (innermost) ridget first and check the most general (outermost) ridget
+	 * last.
 	 * 
 	 * @param focusRidget
-	 *            the ridget that needs to have the focus to activate this rule.
-	 *            Never null.
+	 *            the ridget that needs to have the focus to activate this rule. Never null.
 	 * @param action
-	 *            this ridget will become the default action, while focusRidget
-	 *            has the focus. Never null.
+	 *            this ridget will become the default action, while focusRidget has the focus. Never null.
 	 * 
 	 * @since 2.0
 	 */
@@ -104,6 +99,10 @@ public abstract class AbstractWindowController implements IController, IContext 
 
 	public void addRidget(final String id, final IRidget ridget) {
 		ridgets.put(id, ridget);
+	}
+
+	public boolean removeRidget(final String id) {
+		return ridgets.remove(id) != null;
 	}
 
 	public void afterBind() {
@@ -165,13 +164,11 @@ public abstract class AbstractWindowController implements IController, IContext 
 		if (RienaStatus.isTest()) {
 			try {
 				if (ridgetClazz.isInterface() || Modifier.isAbstract(ridgetClazz.getModifiers())) {
-					final Class<R> mappedRidgetClazz = (Class<R>) ClassRidgetMapper.getInstance().getRidgetClass(
-							ridgetClazz);
+					final Class<R> mappedRidgetClazz = (Class<R>) ClassRidgetMapper.getInstance().getRidgetClass(ridgetClazz);
 					if (mappedRidgetClazz != null) {
 						ridget = mappedRidgetClazz.newInstance();
 					}
-					Assert.isNotNull(
-							ridget,
+					Assert.isNotNull(ridget,
 							"Could not find a corresponding implementation for " + ridgetClazz.getName() + " in " + ClassRidgetMapper.class.getName()); //$NON-NLS-1$ //$NON-NLS-2$
 				} else {
 					ridget = ridgetClazz.newInstance();
@@ -197,15 +194,12 @@ public abstract class AbstractWindowController implements IController, IContext 
 	 */
 	public IWindowRidget getWindowRidget() {
 		if (RienaStatus.isTest() && windowRidget == null) {
-			final Class<IWindowRidget> mappedRidgetClazz = (Class<IWindowRidget>) ClassRidgetMapper.getInstance()
-					.getRidgetClass(IShellRidget.class);
+			final Class<IWindowRidget> mappedRidgetClazz = (Class<IWindowRidget>) ClassRidgetMapper.getInstance().getRidgetClass(IShellRidget.class);
 			try {
 				if (mappedRidgetClazz != null) {
 					windowRidget = mappedRidgetClazz.newInstance();
 				}
-				Assert.isNotNull(
-						windowRidget,
-						"Could not find a corresponding implementation for IWindowRidget in " + ClassRidgetMapper.class.getName()); //$NON-NLS-1$ 
+				Assert.isNotNull(windowRidget, "Could not find a corresponding implementation for IWindowRidget in " + ClassRidgetMapper.class.getName()); //$NON-NLS-1$ 
 			} catch (final InstantiationException e) {
 				throw new RuntimeException(e);
 			} catch (final IllegalAccessException e) {
@@ -219,8 +213,7 @@ public abstract class AbstractWindowController implements IController, IContext 
 	/**
 	 * Returns the return code for this window.
 	 * <p>
-	 * These codes are window specific, but two return codes are already
-	 * defined: {@link #OK} and {@link #CANCEL}.
+	 * These codes are window specific, but two return codes are already defined: {@link #OK} and {@link #CANCEL}.
 	 * 
 	 * @since 1.2
 	 */
@@ -247,8 +240,7 @@ public abstract class AbstractWindowController implements IController, IContext 
 	/**
 	 * Set the return code for this window.
 	 * <p>
-	 * These codes are window specific, but two return codes are already
-	 * defined: {@link #OK} and {@link #CANCEL}.
+	 * These codes are window specific, but two return codes are already defined: {@link #OK} and {@link #CANCEL}.
 	 * 
 	 * @since 1.2
 	 */
@@ -270,9 +262,7 @@ public abstract class AbstractWindowController implements IController, IContext 
 	 * Closes the dialog and sets given return code.
 	 * 
 	 * @param returnCode
-	 *            the return code to set. These codes are window specific, but
-	 *            two return codes are already defined: {@link #OK} and
-	 *            {@link #CANCEL}.
+	 *            the return code to set. These codes are window specific, but two return codes are already defined: {@link #OK} and {@link #CANCEL}.
 	 * @since 3.0
 	 */
 	public void close(final int returnCode) {

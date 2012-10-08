@@ -37,8 +37,7 @@ public final class SWTBindingPropertyLocator implements IBindingPropertyLocator 
 	/**
 	 * Key to retrieve a control's binding property.
 	 * <p>
-	 * That value (String) will also be assigned to the Ridget that is paired to
-	 * the control.
+	 * That value (String) will also be assigned to the Ridget that is paired to the control.
 	 */
 	public final static String BINDING_PROPERTY = "binding_property"; //$NON-NLS-1$
 
@@ -65,9 +64,8 @@ public final class SWTBindingPropertyLocator implements IBindingPropertyLocator 
 	 * 
 	 * @param composite
 	 *            a Composite instance; never null
-	 * @return a List of bounds Controls (exluding composite); never null; may
-	 *         be empty. Will not continue into {@link IComplexComponent}s - as
-	 *         they are repsonsible for they own children.
+	 * @return a List of bounds Controls (exluding composite); never null; may be empty. Will not continue into {@link IComplexComponent}s - as they are
+	 *         repsonsible for they own children.
 	 * @since 1.2
 	 */
 	public static List<Object> getControlsWithBindingProperty(final Composite composite) {
@@ -88,8 +86,7 @@ public final class SWTBindingPropertyLocator implements IBindingPropertyLocator 
 	}
 
 	/**
-	 * Returns true if the given UI control has a binding property, false
-	 * otherwise.
+	 * Returns true if the given UI control has a binding property, false otherwise.
 	 * 
 	 * @param uiControl
 	 *            UI control; may be null
@@ -119,9 +116,7 @@ public final class SWTBindingPropertyLocator implements IBindingPropertyLocator 
 	 * @param uiControl
 	 *            an instanceof {@link Widget} or {@link IPropertyNameProvider}
 	 * @param id
-	 *            the binding property; never null; must not be empty.The given
-	 *            value will also be assigned to the Ridget that is paired to
-	 *            the control.
+	 *            the binding property; never null; must not be empty.The given value will also be assigned to the Ridget that is paired to the control.
 	 */
 	public void setBindingProperty(final Object uiControl, final String id) {
 		Assert.isNotNull(id, "The binding property must not be null"); //$NON-NLS-1$
@@ -140,6 +135,47 @@ public final class SWTBindingPropertyLocator implements IBindingPropertyLocator 
 			final String msg = String.format("Failed to set binding property '%s' for %s", id, className); //$NON-NLS-1$
 			log.log(LogService.LOG_WARNING, msg);
 		}
+	}
+
+	public String getComplexBindingId(final Object uiControl) {
+
+		if (uiControl instanceof Control) {
+			final Control swtControl = (Control) uiControl;
+			if (!swtControl.isDisposed()) {
+				final IComplexComponent parent = getComplexParent(swtControl);
+				if (parent != null) {
+					final String parentId = locateBindingProperty(parent);
+					if (parentId != null) {
+						String id = locateBindingProperty(uiControl);
+						id = parentId + "." + id; //$NON-NLS-1$
+						return id;
+					}
+				}
+			}
+		}
+
+		return locateBindingProperty(uiControl);
+
+	}
+
+	/**
+	 * Returns the complex component that is a parent of the given control.
+	 * 
+	 * @param control
+	 *            child control
+	 * @return complex parent or {@code null} if the control has no complex parent
+	 */
+	private IComplexComponent getComplexParent(final Control control) {
+
+		final Composite parent = control.getParent();
+		if (parent == null) {
+			return null;
+		}
+		if (parent instanceof IComplexComponent) {
+			return (IComplexComponent) parent;
+		}
+		return getComplexParent(parent);
+
 	}
 
 }
