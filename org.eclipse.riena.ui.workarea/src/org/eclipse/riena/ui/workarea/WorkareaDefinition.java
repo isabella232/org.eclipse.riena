@@ -15,8 +15,7 @@ import org.eclipse.riena.ui.ridgets.controller.IController;
 import org.eclipse.riena.ui.ridgets.controller.IControllerFactory;
 
 /**
- * A WorkareaDefinition consists of viewId and a {@link IController}. Also other
- * information for creating a view or a controller of a navigation node are
+ * A WorkareaDefinition consists of viewId and a {@link IController}. Also other information for creating a view or a controller of a navigation node are
  * stored.
  */
 public class WorkareaDefinition implements IWorkareaDefinition {
@@ -26,33 +25,31 @@ public class WorkareaDefinition implements IWorkareaDefinition {
 	private final Object viewId;
 	private boolean viewShared;
 	private boolean requiredPreparation;
+	private boolean prepareView;
 
 	/**
-	 * Creates a new instance of {@code WorkareaDefinition} with only a view ID
-	 * and the information whether the view is shared.
+	 * Creates a new instance of {@code WorkareaDefinition} with only a view ID and the information whether the view is shared.
 	 * 
 	 * @param viewId
-	 *            ID of the view (see <code>org.eclipse.ui.views</code>
-	 *            extension point)
+	 *            ID of the view (see <code>org.eclipse.ui.views</code> extension point)
 	 */
 	public WorkareaDefinition(final Object viewId) {
 		this((Class<? extends IController>) null, viewId);
 	}
 
 	/**
-	 * Creates a new instance of {@code WorkareaDefinition} with controller
-	 * class, view ID and the information whether the view is shared.
+	 * Creates a new instance of {@code WorkareaDefinition} with controller class, view ID and the information whether the view is shared.
 	 * 
 	 * @param controllerClass
 	 *            the controller class to be used with the view
 	 * @param viewId
-	 *            ID of the view (see <code>org.eclipse.ui.views</code>
-	 *            extension point)
+	 *            ID of the view (see <code>org.eclipse.ui.views</code> extension point)
 	 */
 	public WorkareaDefinition(final Class<? extends IController> controllerClass, final Object viewId) {
 		this.controllerClass = controllerClass;
 		this.controllerFactory = null;
 		this.viewId = viewId;
+		this.prepareView = true;
 	}
 
 	/**
@@ -71,8 +68,7 @@ public class WorkareaDefinition implements IWorkareaDefinition {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @return the created controller or {@code null} if no controller class
-	 *         exists
+	 * @return the created controller or {@code null} if no controller class exists
 	 */
 	public IController createController() throws IllegalAccessException, InstantiationException {
 
@@ -114,6 +110,14 @@ public class WorkareaDefinition implements IWorkareaDefinition {
 	 */
 	public void setRequiredPreparation(final boolean required) {
 		this.requiredPreparation = required;
+	}
+
+	public void setPrepareView(final boolean prepare) {
+		prepareView = prepare;
+	}
+
+	public boolean isPrepareView() {
+		return prepareView;
 	}
 
 }
