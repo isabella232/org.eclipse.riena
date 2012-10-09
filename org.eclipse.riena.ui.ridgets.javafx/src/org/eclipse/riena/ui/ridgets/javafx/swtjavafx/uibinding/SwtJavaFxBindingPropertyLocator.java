@@ -61,4 +61,10 @@ public class SwtJavaFxBindingPropertyLocator implements IBindingPropertyLocator 
 		return !StringUtils.isDeepEmpty(prop);
 	}
 
+	@Override
+	public String getComplexBindingId(Object uiControl) {
+		// TODO (?)
+		return locateBindingProperty(uiControl);
+	}
+
 }

@@ -86,4 +86,11 @@ public class JavaFxBindingPropertyLocator implements IBindingPropertyLocator {
 			log.log(LogService.LOG_WARNING, msg);
 		}
 	}
+
+	@Override
+	public String getComplexBindingId(Object uiControl) {
+		// TODO (?)
+		return locateBindingProperty(uiControl);
+	}
+
 }

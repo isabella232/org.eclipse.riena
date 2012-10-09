@@ -41,8 +41,7 @@ public final class SwtRidgetFactory {
 		new DefaultRealm(display);
 	}
 
-	private static final IBindingManager DUMMY_BINDING_MAN = new DefaultBindingManager(
-			new DummyBindingPropertyLocator(), SwtControlRidgetMapper.getInstance());
+	private static final IBindingManager DUMMY_BINDING_MAN = new DefaultBindingManager(new DummyBindingPropertyLocator(), SwtControlRidgetMapper.getInstance());
 
 	private static final DummyContainer CONTAINER = new DummyContainer();
 
@@ -71,13 +70,16 @@ public final class SwtRidgetFactory {
 		private static final SWTBindingPropertyLocator DELEGATE = SWTBindingPropertyLocator.getInstance();
 
 		/*
-		 * Find the binding property in the uiControl. If none is available
-		 * return 'dummy', since in that case we use the DummyContainer which
-		 * does not need an id (see DummyContainer#getRidget(...)).
+		 * Find the binding property in the uiControl. If none is available return 'dummy', since in that case we use the DummyContainer which does not need an
+		 * id (see DummyContainer#getRidget(...)).
 		 */
 		public String locateBindingProperty(final Object uiControl) {
 			final String bindingProp = DELEGATE.locateBindingProperty(uiControl);
 			return bindingProp != null ? bindingProp : "dummy"; //$NON-NLS-1$
+		}
+
+		public String getComplexBindingId(final Object uiControl) {
+			return null;
 		}
 	}
 
@@ -91,6 +93,10 @@ public final class SwtRidgetFactory {
 				ridgets.put(id, ridget);
 			}
 			this.ridget = ridget;
+		}
+
+		public boolean removeRidget(final String id) {
+			return false;
 		}
 
 		public void configureRidgets() {

@@ -28,6 +28,7 @@ import org.eclipse.swt.widgets.Tree;
 
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.internal.ui.swt.Activator;
+import org.eclipse.riena.ui.swt.CompletionCombo.DropDownListener;
 import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
@@ -141,6 +142,10 @@ public class BorderDrawer implements Listener {
 					registerToControl(child, SWTFacade.Paint);
 				}
 			}
+
+			if (control instanceof CompletionCombo) {
+				addDropDownListener((CompletionCombo) control);
+			}
 		} else if (control instanceof CCombo) {
 			registerToControl(control.getParent(), SWTFacade.Paint);
 		} else if (!useVisibleControlArea) {
@@ -168,6 +173,24 @@ public class BorderDrawer implements Listener {
 				dispose();
 			}
 		}, SWT.Dispose);
+	}
+
+	/**
+	 * @param cc
+	 */
+	private void addDropDownListener(final CompletionCombo cc) {
+		final DropDownListener listener = new DropDownListener() {
+			public void hidden() {
+				computeBorderArea = true;
+				update(true);
+			}
+		};
+		cc.addDropDownListener(listener);
+		toUnregister.add(new Runnable() {
+			public void run() {
+				cc.removeDropDownListener(listener);
+			}
+		});
 	}
 
 	/**
@@ -450,7 +473,7 @@ public class BorderDrawer implements Listener {
 				// we also have a label
 				visibleControlArea.x -= 16;
 				visibleControlArea.width += 16;
-			} else if (visibleControlArea.width + specialWidgetWidthAdjustment + 2 * getControlToDecorate().getBorderWidth() + 1 == getControlToDecorate()
+			} else if (visibleControlArea.width + specialWidgetWidthAdjustment + 2 * getControlToDecorate().getBorderWidth() + 1 >= getControlToDecorate()
 					.getBounds().width) {
 				visibleControlArea.width += specialWidgetWidthAdjustment + 1;
 			}

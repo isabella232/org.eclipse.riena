@@ -25,6 +25,7 @@ public class WorkareaDefinition implements IWorkareaDefinition {
 	private final Object viewId;
 	private boolean viewShared;
 	private boolean requiredPreparation;
+	private boolean prepareView;
 
 	/**
 	 * Creates a new instance of {@code WorkareaDefinition} with only a view ID and the information whether the view is shared.
@@ -48,6 +49,7 @@ public class WorkareaDefinition implements IWorkareaDefinition {
 		this.controllerClass = controllerClass;
 		this.controllerFactory = null;
 		this.viewId = viewId;
+		this.prepareView = true;
 	}
 
 	/**
@@ -109,6 +111,14 @@ public class WorkareaDefinition implements IWorkareaDefinition {
 	 */
 	public void setRequiredPreparation(final boolean required) {
 		this.requiredPreparation = required;
+	}
+
+	public void setPrepareView(final boolean prepare) {
+		prepareView = prepare;
+	}
+
+	public boolean isPrepareView() {
+		return prepareView;
 	}
 
 }

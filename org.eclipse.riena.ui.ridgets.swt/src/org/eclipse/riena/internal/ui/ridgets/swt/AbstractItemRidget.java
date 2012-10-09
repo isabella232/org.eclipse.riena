@@ -71,6 +71,11 @@ public abstract class AbstractItemRidget extends AbstractSWTWidgetRidget impleme
 	}
 
 	@Override
+	public final void setUIControl(final Object uiControl) {
+		super.setUIControl(uiControl);
+	}
+
+	@Override
 	public final String getID() {
 		String idString = super.getID();
 		if (StringUtils.isEmpty(idString)) {
@@ -80,8 +85,7 @@ public abstract class AbstractItemRidget extends AbstractSWTWidgetRidget impleme
 	}
 
 	/**
-	 * If the text of the ridget has no value, initialize it with the text of
-	 * the UI control.
+	 * If the text of the ridget has no value, initialize it with the text of the UI control.
 	 */
 	private void initText() {
 		if ((text == null) && (!textAlreadyInitialized)) {
@@ -114,8 +118,7 @@ public abstract class AbstractItemRidget extends AbstractSWTWidgetRidget impleme
 	}
 
 	/**
-	 * Always returns true because mandatory markers do not make sense for this
-	 * ridget.
+	 * Always returns true because mandatory markers do not make sense for this ridget.
 	 */
 	@Override
 	public boolean isDisableMandatoryMarker() {
@@ -155,8 +158,7 @@ public abstract class AbstractItemRidget extends AbstractSWTWidgetRidget impleme
 	/**
 	 * Returns form the data of the item the {@link CommandContributionItem}.
 	 * 
-	 * @return the {@code CommandContributionItem} or <{@code null} if the item
-	 *         has no {@code CommandContributionItem}.
+	 * @return the {@code CommandContributionItem} or <{@code null} if the item has no {@code CommandContributionItem}.
 	 */
 	protected CommandContributionItem getContributionItem() {
 
@@ -213,8 +215,7 @@ public abstract class AbstractItemRidget extends AbstractSWTWidgetRidget impleme
 	/**
 	 * Updates (sets) the icon of the item.
 	 * 
-	 * @return {@code true} if image of control was set; otherwise {@code false}
-	 *         .
+	 * @return {@code true} if image of control was set; otherwise {@code false} .
 	 */
 	protected boolean updateUIIcon() {
 		final Item control = getUIControl();

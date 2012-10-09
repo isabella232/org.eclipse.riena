@@ -83,23 +83,19 @@ public class CorrespondingLabelManagerTest extends TestCase {
 
 		lblFirstName = (ILabelRidget) SwtRidgetFactory.createRidget(UIControlsFactory.createLabel(shell, "FirstName", //$NON-NLS-1$
 				SWT.None, FIRSTNAME_LABEL_ID));
-		txtFirstName = (ITextRidget) SwtRidgetFactory.createRidget(UIControlsFactory.createText(shell, SWT.NONE,
-				FIRSTNAME_TEXT_ID));
+		txtFirstName = (ITextRidget) SwtRidgetFactory.createRidget(UIControlsFactory.createText(shell, SWT.NONE, FIRSTNAME_TEXT_ID));
 
 		lblLastName = (ILabelRidget) SwtRidgetFactory.createRidget(UIControlsFactory.createLabel(shell, "LastName", //$NON-NLS-1$
 				SWT.None, LASTNAME_LABEL_ID));
-		txtLastName = (ITextRidget) SwtRidgetFactory.createRidget(UIControlsFactory.createText(shell, SWT.NONE,
-				LASTNAME_TEXT_ID));
+		txtLastName = (ITextRidget) SwtRidgetFactory.createRidget(UIControlsFactory.createText(shell, SWT.NONE, LASTNAME_TEXT_ID));
 
 		lblLastName = (ILabelRidget) SwtRidgetFactory.createRidget(UIControlsFactory.createLabel(shell, "LastName", //$NON-NLS-1$
 				SWT.None, LASTNAME_LABEL_ID));
-		txtLastName = (ITextRidget) SwtRidgetFactory.createRidget(UIControlsFactory.createText(shell, SWT.NONE,
-				LASTNAME_TEXT_ID));
+		txtLastName = (ITextRidget) SwtRidgetFactory.createRidget(UIControlsFactory.createText(shell, SWT.NONE, LASTNAME_TEXT_ID));
 
 		lblAge = (ILabelRidget) SwtRidgetFactory.createRidget(UIControlsFactory.createLabel(shell, "Age", SWT.None, //$NON-NLS-1$
 				AGE_LABEL_ID));
-		txtAge = (ITextRidget) SwtRidgetFactory
-				.createRidget(UIControlsFactory.createText(shell, SWT.NONE, AGE_TEXT_ID));
+		txtAge = (ITextRidget) SwtRidgetFactory.createRidget(UIControlsFactory.createText(shell, SWT.NONE, AGE_TEXT_ID));
 
 		ridgetContainer.addRidget(FIRSTNAME_LABEL_ID, lblFirstName);
 		ridgetContainer.addRidget(FIRSTNAME_TEXT_ID, txtFirstName);
@@ -219,7 +215,10 @@ public class CorrespondingLabelManagerTest extends TestCase {
 
 		public void addRidget(final String id, final IRidget ridget) {
 			ridgets.put(id, ridget);
+		}
 
+		public boolean removeRidget(final String id) {
+			return ridgets.remove(id) != null;
 		}
 
 		public <R extends IRidget> R getRidget(final String id) {

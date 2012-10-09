@@ -114,6 +114,10 @@ public class InjectBindingManagerTest extends TestCase {
 			final Control control = (Control) uiControl;
 			return (String) control.getData(BINDING_PROPERTY);
 		}
+
+		public String getComplexBindingId(final Object uiControl) {
+			return null;
+		}
 	}
 
 	/**
@@ -125,8 +129,7 @@ public class InjectBindingManagerTest extends TestCase {
 			// not supported in this test
 		}
 
-		public void addMapping(final Class<? extends Object> controlClazz, final Class<? extends IRidget> ridgetClazz,
-				final IMappingCondition condition) {
+		public void addMapping(final Class<? extends Object> controlClazz, final Class<? extends IRidget> ridgetClazz, final IMappingCondition condition) {
 			// not supported in this test
 		}
 
@@ -152,7 +155,10 @@ public class InjectBindingManagerTest extends TestCase {
 
 		public void addRidget(final String id, final IRidget ridget) {
 			ridgets.put(id, ridget);
+		}
 
+		public boolean removeRidget(final String id) {
+			return ridgets.remove(id) != null;
 		}
 
 		@SuppressWarnings("unchecked")

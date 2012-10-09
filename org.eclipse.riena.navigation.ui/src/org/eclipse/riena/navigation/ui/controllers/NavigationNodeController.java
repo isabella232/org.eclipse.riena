@@ -24,6 +24,7 @@ import org.eclipse.core.runtime.Assert;
 
 import org.eclipse.riena.core.RienaStatus;
 import org.eclipse.riena.core.marker.IMarker;
+import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.navigation.INavigationContext;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationNodeController;
@@ -187,6 +188,10 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 		ridgets.put(id, ridget);
 	}
 
+	public boolean removeRidget(final String id) {
+		return ridgets.remove(id) != null;
+	}
+
 	/**
 	 * {@inheritDoc}
 	 * <p>
@@ -203,11 +208,10 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	public <R extends IRidget> R getRidget(final String id) {
 		IRidget result = ridgets.get(id);
 		if (result == null && id.indexOf('.') != -1) {
-			final String parentId = id.substring(0, id.lastIndexOf('.'));
-			final String childId = id.substring(id.lastIndexOf('.') + 1);
-			final IRidget parent = ridgets.get(parentId);
-			if (parent instanceof IRidgetContainer) {
-				result = ((IRidgetContainer) parent).getRidget(childId);
+			final String childId = getChildId(id);
+			final IRidgetContainer parent = getContainer(childId);
+			if (parent != null) {
+				result = parent.getRidget(childId);
 			}
 		}
 		return (R) result;
@@ -217,11 +221,12 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	 * @since 2.0
 	 */
 	public <R extends IRidget> R getRidget(final Class<R> ridgetClazz, final String id) {
-		R ridget = getRidget(id);
 
+		R ridget = getRidget(id);
 		if (ridget != null) {
 			return ridget;
 		}
+
 		if (!SubModuleUtils.isPrepareView() || RienaStatus.isTest()) {
 			try {
 				if (ridgetClazz.isInterface() || Modifier.isAbstract(ridgetClazz.getModifiers())) {
@@ -240,10 +245,48 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 				throw new RuntimeException(e);
 			}
 
-			addRidget(id, ridget);
+			final String childId = getChildId(id);
+			if (childId.equals(id)) {
+				addRidget(id, ridget);
+			} else {
+				final IRidgetContainer container = getContainer(id);
+				if (container != null) {
+					container.addRidget(childId, ridget);
+				} else {
+					// TODO
+					addRidget(id, ridget);
+				}
+			}
 		}
 
 		return ridget;
+	}
+
+	private String getChildId(final String id) {
+		if (StringUtils.isEmpty(id)) {
+			return id;
+		}
+		if (id.indexOf('.') != -1) {
+			return id.substring(id.lastIndexOf('.') + 1);
+		}
+		return id;
+	}
+
+	private IRidgetContainer getContainer(final String id) {
+
+		if (StringUtils.isEmpty(id)) {
+			return null;
+		}
+		if (id.indexOf('.') != -1) {
+			final String parentId = id.substring(0, id.lastIndexOf('.'));
+			final IRidget parent = ridgets.get(parentId);
+			if (parent instanceof IRidgetContainer) {
+				return ((IRidgetContainer) parent);
+			}
+		}
+
+		return null;
+
 	}
 
 	public Collection<? extends IRidget> getRidgets() {

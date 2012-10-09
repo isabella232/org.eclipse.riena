@@ -1033,6 +1033,10 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 			throw new UnsupportedOperationException("not supported"); //$NON-NLS-1$
 		}
 
+		public boolean removeRidget(final String id) {
+			throw new UnsupportedOperationException("not supported"); //$NON-NLS-1$
+		}
+
 		public void configureRidgets() {
 			throw new UnsupportedOperationException("not supported"); //$NON-NLS-1$
 		}
