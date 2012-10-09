@@ -18,38 +18,31 @@ import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.riena.ui.ridgets.listener.IFocusListener;
 
 /**
- * A UI-toolkit independent Ridget (Riena widget) wrapping and extending an
- * UI-control / widget. Offers an API to modify a UI-control that is not
- * specific for the UI-toolkit to which the UI-control belongs (e.g. SWT or
- * Swing).
+ * A UI-toolkit independent Ridget (Riena widget) wrapping and extending an UI-control / widget. Offers an API to modify a UI-control that is not specific for
+ * the UI-toolkit to which the UI-control belongs (e.g. SWT or Swing).
  */
 public interface IRidget {
 
 	/**
-	 * The name of the PropertyChangeEvent that will be fired when the ridget's
-	 * tooltip is changed ({@value} ).
+	 * The name of the PropertyChangeEvent that will be fired when the ridget's tooltip is changed ({@value} ).
 	 */
 	String PROPERTY_TOOLTIP = "tooltip"; //$NON-NLS-1$
 
 	/**
-	 * The name of the PropertyChangeEvent that will be fired when the
-	 * enablement state of this ridget is changed ("enabled").
+	 * The name of the PropertyChangeEvent that will be fired when the enablement state of this ridget is changed ("enabled").
 	 */
 	String PROPERTY_ENABLED = "enabled"; //$NON-NLS-1$
 
 	/**
-	 * The name of the PropertyChangeEvent that is fired when the actual
-	 * visibility of the Ridget changes while the Ridget is bound to a widget -
-	 * either the visibility of the Ridget itself or the visibility of a parent
-	 * of the associated widget.
+	 * The name of the PropertyChangeEvent that is fired when the actual visibility of the Ridget changes while the Ridget is bound to a widget - either the
+	 * visibility of the Ridget itself or the visibility of a parent of the associated widget.
 	 * 
 	 * @see IRidget#isVisible()
 	 */
 	String PROPERTY_SHOWING = "showing"; //$NON-NLS-1$
 
 	/**
-	 * Adds a {@link IFocusListener} for receiving focus events from this
-	 * ridget.
+	 * Adds a {@link IFocusListener} for receiving focus events from this ridget.
 	 * <p>
 	 * Adding the same listener several times has to effect.
 	 * 
@@ -61,9 +54,8 @@ public interface IRidget {
 	void addFocusListener(IFocusListener listener);
 
 	/**
-	 * Adds a PropertyChangeListener for all properties of the Ridget. Through
-	 * PropertyChangeEvents the Ridget allows listening for property changes of
-	 * the UI-control in a UI-toolkit independent way.
+	 * Adds a PropertyChangeListener for all properties of the Ridget. Through PropertyChangeEvents the Ridget allows listening for property changes of the
+	 * UI-control in a UI-toolkit independent way.
 	 * <p>
 	 * Adding the same listener several times has no effect.
 	 * 
@@ -75,16 +67,13 @@ public interface IRidget {
 	void addPropertyChangeListener(PropertyChangeListener propertyChangeListener);
 
 	/**
-	 * Adds a PropertyChangeListener for a specific property of the Ridget.
-	 * Through PropertyChangeEvents the Ridget allows listening for property
-	 * changes of specific properties of the UI-control in a UI-toolkit
-	 * independent way, e.g. the property "text" of a text field.
+	 * Adds a PropertyChangeListener for a specific property of the Ridget. Through PropertyChangeEvents the Ridget allows listening for property changes of
+	 * specific properties of the UI-control in a UI-toolkit independent way, e.g. the property "text" of a text field.
 	 * <p>
 	 * Adding the same listener several times has no effect.
 	 * 
 	 * @param propertyName
-	 *            The name of the property to listen on (may be null to listen
-	 *            to all properties)
+	 *            The name of the property to listen on (may be null to listen to all properties)
 	 * @param propertyChangeListener
 	 *            The PropertyChangeListener to be added (non null)
 	 * @throws RuntimeException
@@ -115,8 +104,7 @@ public interface IRidget {
 	String getToolTipText();
 
 	/**
-	 * Getter to access the UI-toolkit specific UI-control. Allows modifications
-	 * of the UI-control that are not supported by the Ridgets API.
+	 * Getter to access the UI-toolkit specific UI-control. Allows modifications of the UI-control that are not supported by the Ridgets API.
 	 * 
 	 * @return The bound UI-control or null, if no control is bound.
 	 */
@@ -125,8 +113,7 @@ public interface IRidget {
 	/**
 	 * Returns if this ridget is the focus owner.
 	 * 
-	 * @return <code>true</code> if this ridget is the focus owner;
-	 *         <code>false</code> otherwise
+	 * @return <code>true</code> if this ridget is the focus owner; <code>false</code> otherwise
 	 */
 	boolean hasFocus();
 
@@ -152,8 +139,7 @@ public interface IRidget {
 	boolean isVisible();
 
 	/**
-	 * Removes the specified focus listener so that it no longer receives focus
-	 * events from this ridget.
+	 * Removes the specified focus listener so that it no longer receives focus events from this ridget.
 	 * 
 	 * @param listener
 	 *            the focus listener to be removed
@@ -176,8 +162,7 @@ public interface IRidget {
 	 * Removes a PropertyChangeListener for a specific property of the Ridget.
 	 * 
 	 * @param propertyName
-	 *            The name of the property to listen on (may be null to remove
-	 *            the listener from all properties)
+	 *            The name of the property to listen on (may be null to remove the listener from all properties)
 	 * @param propertyChangeListener
 	 *            The PropertyChangeListener to be removed (non null)
 	 * @throws RuntimeException
@@ -187,8 +172,7 @@ public interface IRidget {
 
 	/**
 	 * Requests that this ridget get the input focus.<br>
-	 * Precondition is, that the ridget, which should receive the focus is
-	 * visible.
+	 * Precondition is, that the ridget, which should receive the focus is visible.
 	 */
 	void requestFocus();
 
@@ -221,8 +205,7 @@ public interface IRidget {
 	 * Sets the text that is shown in the tool tip of this Ridget.
 	 * 
 	 * @param toolTipText
-	 *            The text of tool tip to set. May be {@code null} to turn off
-	 *            the tool tip.
+	 *            The text of tool tip to set. May be {@code null} to turn off the tool tip.
 	 */
 	void setToolTipText(String toolTipText);
 
@@ -230,8 +213,7 @@ public interface IRidget {
 	 * Setter to be internally used by the view to bind and unbind the Ridgets.
 	 * 
 	 * @param uiControl
-	 *            The wrapped UI-control to which the Ridget is bound or null to
-	 *            unbind the Ridget.
+	 *            The wrapped UI-control to which the Ridget is bound or null to unbind the Ridget.
 	 */
 	void setUIControl(Object uiControl);
 
@@ -244,8 +226,7 @@ public interface IRidget {
 	void setVisible(boolean visible);
 
 	/**
-	 * For value based ridgets triggers an update from the model value to the
-	 * Ridget value when a default binding is used.
+	 * For value based ridgets triggers an update from the model value to the Ridget value when a default binding is used.
 	 * 
 	 * <p>
 	 * For an example binding IValueRidget see:
@@ -266,29 +247,79 @@ public interface IRidget {
 	void updateFromModel();
 
 	/**
-	 * Sets whether the method {@code updateAllRidgetsFromModel()} of the class
-	 * {@code SubModuleController} should ignore binding errors. If the method
-	 * should ignore the binding errors, the binding exceptions will be caught
-	 * in the method {@code updateAllRidgetsFromModel()} and logged.
+	 * Sets whether the method {@code updateAllRidgetsFromModel()} of the class {@code SubModuleController} should ignore binding errors. If the method should
+	 * ignore the binding errors, the binding exceptions will be caught in the method {@code updateAllRidgetsFromModel()} and logged.
 	 * 
-	 * @param {@code true} if the binding error should be ignored; {@code false}
-	 *        if the binding errors should be forwarded.
+	 * @param {@code true} if the binding error should be ignored; {@code false} if the binding errors should be forwarded.
 	 * 
 	 * @since 4.0
 	 */
 	void setIgnoreBindingError(boolean ignore);
 
 	/**
-	 * Returns whether the method {@code updateAllRidgetsFromModel()} of the
-	 * class {@code SubModuleController} should ignore binding errors. If the
-	 * method should ignore the binding errors, the binding exceptions will be
-	 * caught in the method {@code updateAllRidgetsFromModel()} and logged.
+	 * Returns whether the method {@code updateAllRidgetsFromModel()} of the class {@code SubModuleController} should ignore binding errors. If the method
+	 * should ignore the binding errors, the binding exceptions will be caught in the method {@code updateAllRidgetsFromModel()} and logged.
 	 * 
-	 * @return {@code true} if the binding error should be ignored;
-	 *         {@code false} if the binding errors should be forwarded.
+	 * @return {@code true} if the binding error should be ignored; {@code false} if the binding errors should be forwarded.
 	 * 
 	 * @since 4.0
 	 */
 	boolean isIgnoreBindingError();
 
+	/**
+	 * Adds a menu item to the ridget.
+	 * 
+	 * @param menuItemText
+	 *            The text of the menu item to be added.
+	 * @return the menu item rigdet.
+	 * 
+	 */
+	IMenuItemRidget addMenuItem(String menuItemText);
+
+	/**
+	 * Adds a menu item to the ridget.
+	 * 
+	 * @param menuItemText
+	 *            The text of the menu item to be added.
+	 * @param iconName
+	 *            The name of the icon for the menu item to be added.
+	 * @return the menu item rigdet.
+	 * 
+	 */
+	IMenuItemRidget addMenuItem(String menuItemText, String iconName);
+
+	/**
+	 * Removes a specific menu item from the contextmenu of the ridget.
+	 * 
+	 * @param menuItemText
+	 *            The text of the menu item to be removed.
+	 */
+	void removeMenuItem(String menuItemText);
+
+	/**
+	 * Removes a specific menu item from the contextmenu of the ridget.
+	 * 
+	 * @param menuItemRidget
+	 *            The menu item to be removed.
+	 */
+	void removeMenuItem(IMenuItemRidget menuItemRidget);
+
+	/**
+	 * Returns a menu item was added before.
+	 * 
+	 * @return Menu item of the index.
+	 */
+	IMenuItemRidget getMenuItem(int index);
+
+	/**
+	 * Returns count of menu items.
+	 * 
+	 * @return Count of the menu items.
+	 */
+	int getMenuItemCount();
+
+	/**
+	 * Updates the context menu of the ridget.
+	 */
+	void updateContextMenu();
 }

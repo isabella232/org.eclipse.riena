@@ -10,11 +10,18 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.swt;
 
+import java.util.List;
+
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 
+import org.eclipse.riena.internal.ui.ridgets.swt.ContextMenuDelegate;
 import org.eclipse.riena.ui.core.marker.HiddenMarker;
+import org.eclipse.riena.ui.ridgets.IMenuItemRidget;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
+import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
  * Ridget for an SWT control.
@@ -22,12 +29,12 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget {
 
 	/**
-	 * The key of the SWT data property that identifies the (top) composite of a
-	 * sub-module view.
+	 * The key of the SWT data property that identifies the (top) composite of a sub-module view.
 	 */
 	private static final String IS_SUB_MODULE_VIEW_COMPOSITE = "isSubModuleViewComposite"; //$NON-NLS-1$
 	private final FocusManager focusManager;
 	private boolean focusable;
+	private final ContextMenuDelegate contextMenuDelegate;
 
 	/**
 	 * @since 3.0
@@ -39,6 +46,7 @@ public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget {
 	public AbstractSWTRidget() {
 		focusManager = new FocusManager(this);
 		focusable = true;
+		contextMenuDelegate = new ContextMenuDelegate();
 	}
 
 	@Override
@@ -98,13 +106,11 @@ public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget {
 	}
 
 	/**
-	 * Returns whether the given control is the (top) composite of a sub-module
-	 * view.
+	 * Returns whether the given control is the (top) composite of a sub-module view.
 	 * 
 	 * @param uiControl
 	 *            UI control
-	 * @return {@code true} if control is composite of a sub-module; otherwise
-	 *         {@code false}
+	 * @return {@code true} if control is composite of a sub-module; otherwise {@code false}
 	 */
 	private boolean isSubModuleViewComposite(final Control uiControl) {
 
@@ -122,13 +128,11 @@ public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget {
 	}
 
 	/**
-	 * Returns whether the given control is a child of the (top) composite of a
-	 * sub-module view.
+	 * Returns whether the given control is a child of the (top) composite of a sub-module view.
 	 * 
 	 * @param uiControl
 	 *            UI control
-	 * @return {@code true} if control is child of a sub-module; otherwise
-	 *         {@code false}
+	 * @return {@code true} if control is child of a sub-module; otherwise {@code false}
 	 */
 	private boolean isChildOfSubModuleView(final Control uiControl) {
 
@@ -150,9 +154,8 @@ public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget {
 	/**
 	 * Returns whether the given control is visible or invisible.
 	 * <p>
-	 * Similar to the SWT method isVisible of the class {@link Control} this
-	 * method also checks if the parent composite are also visible. But this
-	 * checks end at the top composite of a sub-module view.
+	 * Similar to the SWT method isVisible of the class {@link Control} this method also checks if the parent composite are also visible. But this checks end at
+	 * the top composite of a sub-module view.
 	 * 
 	 * @param uiControl
 	 *            UI control
@@ -185,8 +188,7 @@ public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget {
 	// ////////////////
 
 	/**
-	 * Adds listeners to the <tt>uiControl</tt> after it was bound to the
-	 * ridget.
+	 * Adds listeners to the <tt>uiControl</tt> after it was bound to the ridget.
 	 */
 	@Override
 	protected final void installListeners() {
@@ -198,8 +200,7 @@ public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget {
 	}
 
 	/**
-	 * Removes listeners from the <tt>uiControl</tt> when it is about to be
-	 * unbound from the ridget.
+	 * Removes listeners from the <tt>uiControl</tt> when it is about to be unbound from the ridget.
 	 */
 	@Override
 	protected final void uninstallListeners() {
@@ -222,6 +223,62 @@ public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget {
 		if (getUIControl() != null) {
 			getUIControl().setToolTipText(getToolTipText());
 		}
+	}
+
+	@Override
+	public final void setUIControl(final Object uiControl) {
+		super.setUIControl(uiControl);
+		if (uiControl != null) {
+			updateContextMenu();
+		}
+	}
+
+	@Override
+	public void updateContextMenu() {
+		final List<IMenuItemRidget> menuItems = contextMenuDelegate.getMenuItems();
+		if (menuItems != null && !menuItems.isEmpty()) {
+			Menu menu = getUIControl().getMenu();
+			if (menu != null) {
+				getUIControl().setMenu(null);
+				menu.dispose();
+			}
+			menu = UIControlsFactory.createMenu(getUIControl());
+			getUIControl().setMenu(menu);
+			for (final IMenuItemRidget item : menuItems) {
+				final MenuItem uiItem = UIControlsFactory.createMenuItem(menu, item.getText(), item.getText());
+				item.setUIControl(uiItem);
+			}
+		}
+	}
+
+	@Override
+	public IMenuItemRidget addMenuItem(final String itemText) {
+		return contextMenuDelegate.addMenuItem(itemText);
+	}
+
+	@Override
+	public IMenuItemRidget addMenuItem(final String itemText, final String iconName) {
+		return contextMenuDelegate.addMenuItem(itemText, iconName);
+	}
+
+	@Override
+	public void removeMenuItem(final String menuItemText) {
+		contextMenuDelegate.removeMenuItem(menuItemText);
+	}
+
+	@Override
+	public void removeMenuItem(final IMenuItemRidget menuItemRidget) {
+		contextMenuDelegate.removeMenuItem(menuItemRidget);
+	}
+
+	@Override
+	public IMenuItemRidget getMenuItem(final int index) {
+		return contextMenuDelegate.getMenuItem(index);
+	}
+
+	@Override
+	public int getMenuItemCount() {
+		return contextMenuDelegate.getMenuItemCount();
 	}
 
 }

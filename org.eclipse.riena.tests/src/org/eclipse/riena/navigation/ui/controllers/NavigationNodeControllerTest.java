@@ -44,6 +44,7 @@ import org.eclipse.riena.ui.core.marker.OutputMarker;
 import org.eclipse.riena.ui.ridgets.AbstractCompositeRidget;
 import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;
 import org.eclipse.riena.ui.ridgets.ICompositeRidget;
+import org.eclipse.riena.ui.ridgets.IMenuItemRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
@@ -455,6 +456,31 @@ public class NavigationNodeControllerTest extends RienaTestCase {
 
 		public boolean isIgnoreBindingError() {
 			return false;
+		}
+
+		public IMenuItemRidget addMenuItem(final String menuItemText) {
+			return null;
+		}
+
+		public IMenuItemRidget addMenuItem(final String menuItemText, final String iconName) {
+			return null;
+		}
+
+		public void removeMenuItem(final String menuItemText) {
+		}
+
+		public void removeMenuItem(final IMenuItemRidget menuItemRidget) {
+		}
+
+		public IMenuItemRidget getMenuItem(final int index) {
+			return null;
+		}
+
+		public int getMenuItemCount() {
+			return 0;
+		}
+
+		public void updateContextMenu() {
 		}
 
 	}

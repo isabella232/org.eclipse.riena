@@ -305,7 +305,7 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	 * Do not override. Template Method Pattern: Subclasses may implement {@code unbindUIControl()} and {@code bindUIControl}, if they need to manipulate the
 	 * control when it is bound/unbound, for example to add/remove listeners.
 	 */
-	public final void setUIControl(final Object uiControl) {
+	public void setUIControl(final Object uiControl) {
 		checkUIControl(uiControl);
 		uninstallListeners();
 		unbindUIControl();
