@@ -20,7 +20,7 @@ import org.eclipse.riena.ui.ridgets.IRidget;
  * This class notifies a collection of action {@link IActionListener}s when a
  * widget is selected.
  */
-public class ActionObserver extends AbstractObserver<IActionListener> {
+public class ActionObserver extends AbstractSelectionObserver<IActionListener> {
 
 	public ActionObserver(final IRidget source) {
 		super(source);

@@ -187,7 +187,7 @@ public class LinkRidget extends AbstractValueRidget implements ILinkRidget {
 	 * Forwards selection events from the Link widget to a collection of
 	 * ISelectionListeners.
 	 */
-	private static final class LinkSelectionObserver extends AbstractObserver<ISelectionListener> {
+	private static final class LinkSelectionObserver extends AbstractSelectionObserver<ISelectionListener> {
 		public LinkSelectionObserver(final IRidget source) {
 			super(source);
 		}

@@ -10,6 +10,7 @@
         <view allowMultiple="true" class="org.eclipse.riena.example.client.javafx.views.LabelView" id="org.eclipse.riena.example.client.javafx.views.LabelView" name="org.eclipse.riena.example.client.javafx.views.LabelView"/>
         <view allowMultiple="true" class="org.eclipse.riena.example.client.javafx.views.TextFieldView" id="org.eclipse.riena.example.client.javafx.views.TextFieldView" name="org.eclipse.riena.example.client.javafx.views.TextFieldView"/>
         <view allowMultiple="true" class="org.eclipse.riena.example.client.javafx.views.MarkerView" id="org.eclipse.riena.example.client.javafx.views.MarkerView" name="org.eclipse.riena.example.client.javafx.views.MarkerView"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.javafx.views.ButtonView" id="org.eclipse.riena.example.client.javafx.views.ButtonView" name="org.eclipse.riena.example.client.javafx.views.ButtonView"/>
     </extension>
     <extension point="org.eclipse.ui.perspectives">
         <perspective class="org.eclipse.riena.navigation.ui.swt.views.SubApplicationView" id="org.eclipse.riena.example.client.javafx.JavaFX.perspective" name="org.eclipse.riena.example.client.javafx.JavaFX.perspective"/>
@@ -22,10 +23,11 @@
             <subApplication name="JavaFX" nodeId="org.eclipse.riena.example.client.javafx.JavaFX.subapp" perspectiveId="org.eclipse.riena.example.client.javafx.JavaFX.perspective">
                 <moduleGroup name="Playground" nodeId="org.eclipse.riena.example.client.javafx.Playground.modulegroup">
                     <module closable="true" name="Playground" nodeId="org.eclipse.riena.example.client.javafx.Playground.module">
-                        <subModule controller="org.eclipse.riena.example.client.javafx.controller.GotoJavaFxController" expanded="false" name="GotoJavaFx" nodeId="org.eclipse.riena.example.client.javafx.GotoJavaFx.submodule" requiresPreparation="false" selectable="true" sharedView="false" viewId="org.eclipse.riena.example.client.javafx.views.GotoJavaFxView" visible="true"/>
                         <subModule controller="org.eclipse.riena.example.client.javafx.controller.LabelController" expanded="false" name="Label" nodeId="org.eclipse.riena.example.client.javafx.Label.submodule" requiresPreparation="false" selectable="true" sharedView="false" viewId="org.eclipse.riena.example.client.javafx.views.LabelView" visible="true"/>
                         <subModule controller="org.eclipse.riena.example.client.javafx.controller.TextFieldController" expanded="false" name="TextField" nodeId="org.eclipse.riena.example.client.javafx.TextField.submodule" requiresPreparation="false" selectable="true" sharedView="false" viewId="org.eclipse.riena.example.client.javafx.views.TextFieldView" visible="true"/>
+                        <subModule controller="org.eclipse.riena.example.client.javafx.controller.ButtonController" expanded="false" name="Button" nodeId="org.eclipse.riena.example.client.javafx.Button.submodule" requiresPreparation="false" selectable="true" sharedView="false" viewId="org.eclipse.riena.example.client.javafx.views.ButtonView" visible="true"/>
                         <subModule controller="org.eclipse.riena.example.client.javafx.controller.MarkerController" expanded="false" name="Marker" nodeId="org.eclipse.riena.example.client.javafx.Marker.submodule" requiresPreparation="false" selectable="true" sharedView="false" viewId="org.eclipse.riena.example.client.javafx.views.MarkerView" visible="true"/>
+                        <subModule controller="org.eclipse.riena.example.client.javafx.controller.GotoJavaFxController" expanded="false" name="GotoJavaFx" nodeId="org.eclipse.riena.example.client.javafx.GotoJavaFx.submodule" requiresPreparation="false" selectable="true" sharedView="false" viewId="org.eclipse.riena.example.client.javafx.views.GotoJavaFxView" visible="true"/>
                     </module>
                 </moduleGroup>
             </subApplication>

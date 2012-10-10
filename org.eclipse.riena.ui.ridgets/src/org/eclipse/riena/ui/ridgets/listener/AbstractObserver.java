@@ -8,20 +8,17 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.internal.ui.ridgets.swt;
+package org.eclipse.riena.ui.ridgets.listener;
 
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 
 import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.ui.ridgets.IRidget;
 
 /**
- * This class notifies a collection of listeners of the type T when a widget is
- * selected.
+ * This class notifies a collection of listeners of the type T when something happens.
  */
-abstract class AbstractObserver<T> extends SelectionAdapter {
+public abstract class AbstractObserver<T> {
 
 	private final IRidget source;
 
@@ -38,14 +35,8 @@ abstract class AbstractObserver<T> extends SelectionAdapter {
 		this.source = source;
 	}
 
-	@Override
-	public final void widgetSelected(final SelectionEvent evt) {
-		fireAction(evt);
-	}
-
 	/**
-	 * Adds a listener to the collection of listeners which are notified. Adding
-	 * the same listener twice has no effect.
+	 * Adds a listener to the collection of listeners which are notified. Adding the same listener twice has no effect.
 	 * 
 	 * @param listener
 	 *            a listener instance of type T (non-null)
@@ -76,22 +67,11 @@ abstract class AbstractObserver<T> extends SelectionAdapter {
 	////////////////////
 
 	/**
-	 * Creates an instance of ListenerList&lt;T&gt;. This will be invoked when
-	 * the first listener is added.
+	 * Creates an instance of ListenerList&lt;T&gt;. This will be invoked when the first listener is added.
 	 * 
 	 * @return a ListenerList; never null
 	 */
 	protected abstract ListenerList<T> createList();
-
-	/**
-	 * This method forwards the given SelectionEvent to the collection of
-	 * listeners.
-	 * <p>
-	 * Must be implemented by subclasses. Subclasses are free to create an
-	 * entirely new event and forward that instead of the original one, if
-	 * necessary.
-	 */
-	protected abstract void fireAction(SelectionEvent evt);
 
 	/**
 	 * Get the ridget where the selection occurred.
@@ -105,10 +85,10 @@ abstract class AbstractObserver<T> extends SelectionAdapter {
 	/**
 	 * Get the collection of listeners.
 	 * 
-	 * @return A ListenerList or <b>null</b>, if no listeners have been added.
-	 *         May be empty.
+	 * @return A ListenerList or <b>null</b>, if no listeners have been added. May be empty.
 	 */
 	protected final ListenerList<T> getListeners() {
 		return listeners;
 	}
+
 }

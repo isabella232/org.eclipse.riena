@@ -107,8 +107,7 @@ public class JavaFxLabelRidget extends AbstractJavaFxValueRidget implements
 
 	@Override
 	public URL getIconLocation() {
-		// TODO Auto-generated method stub
-		return null;
+		return iconLocation;
 	}
 
 	@Override
