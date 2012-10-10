@@ -14,11 +14,13 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.ui.ridgets.IMenuItemRidget;
 
 /**
  *
  */
+@NonUITestCase
 public class ContextMenuDelegateTest extends TestCase {
 
 	private ContextMenuDelegate contextMenuDelegate;
