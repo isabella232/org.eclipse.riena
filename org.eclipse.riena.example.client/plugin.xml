@@ -1,561 +1,126 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?eclipse version="3.2"?>
-<plugin>   
-   <extension
-         id="exampleapp"
-         name="org.eclipse.riena.example.client.application"
-         point="org.eclipse.core.runtime.applications">
-      <application>
-         <run
-               class="org.eclipse.riena.example.client.application.SwtExampleApplication">
-         </run>
-      </application>
-   </extension>
-   <extension
-         id="example_product"
-         point="org.eclipse.core.runtime.products">
-      <product
-            application="org.eclipse.riena.example.client.exampleapp"
-            name="%product.name">
-         <property
-               name="appName"
-               value="%product.name">
-         </property>
-      </product>
-   </extension>
-   <extension
-         point="org.eclipse.ui.perspectives">
-      <perspective
-            class="org.eclipse.riena.navigation.ui.swt.views.SubApplicationView"
-            id="subapplication.1"
-            name="subapplication.1">
-      </perspective>
-      <perspective
-            class="org.eclipse.riena.navigation.ui.swt.views.SubApplicationView"
-            id="subapplication.2"
-            name="subapplication.2">
-      </perspective>
-      <perspective
-            class="org.eclipse.riena.navigation.ui.swt.views.SubApplicationView"
-            id="subapplication.3"
-            name="subapplication.3">
-      </perspective>
-   </extension>
-   <extension point="org.eclipse.ui.views">
-   	  <view allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.DemoTargetSubModuleView"
-            id="org.eclipse.riena.example.client.views.DemoTargetSubModuleView"
-            name="org.eclipse.riena.example.client.views.DemoTargetSubModuleView">
-      </view>
-      <view allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.CustomerDetailSubModuleView"
-            id="org.eclipse.riena.example.client.views.CustomerDetailSubModuleView"
-            name="org.eclipse.riena.example.client.views.CustomerDetailSubModuleView">
-      </view>
-      <view allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.SharedViewDemoSubModuleView"
-            id="org.eclipse.riena.example.client.views.SharedViewDemoSubModuleView"
-            name="org.eclipse.riena.example.client.views.SharedViewDemoSubModuleView">
-      </view>
-      <view allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.SharedViewDemoSubModuleView"
-            id="org.eclipse.riena.example.client.views.SharedViewDemoSubModuleViewNotShared"
-            name="org.eclipse.riena.example.client.views.SharedViewDemoSubModuleViewNotShared">
-      </view>
-      <view allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.RidgetsSubModuleView"
-            id="org.eclipse.riena.example.client.views.RidgetsSubModuleView"
-            name="org.eclipse.riena.example.client.views.RidgetsSubModuleView">
-      </view>
-      <view allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.UIProcessDemoSubModuleView"
-            id="org.eclipse.riena.example.client.views.UIProcessDemoSubModuleView"
-            name="org.eclipse.riena.example.client.views.UIProcessDemoSubModuleView">
-      </view>
-      <view allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.ChoiceSubModuleView"
-            id="org.eclipse.riena.example.client.views.ChoiceSubModuleView"
-            name="org.eclipse.riena.example.client.views.ChoiceSubModuleView">
-      </view>
-      <view allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.ComboSubModuleView"
-            id="org.eclipse.riena.example.client.views.ComboSubModuleView"
-            name="org.eclipse.riena.example.client.views.ComboSubModuleView">
-      </view>
-      <view allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.CompletionComboSubModuleView"
-            id="org.eclipse.riena.example.client.views.CompletionComboSubModuleView"
-            name="org.eclipse.riena.example.client.views.CompletionComboSubModuleView">
-      </view>
-      <view allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.DateTimeSubModuleView"
-            id="org.eclipse.riena.example.client.views.DateTimeSubModuleView"
-            name="org.eclipse.riena.example.client.views.DateTimeSubModuleView">
-      </view>
-      <view allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.DefaultButtonSubModuleView"
-            id="org.eclipse.riena.example.client.views.DefaultButtonSubModuleView"
-            name="org.eclipse.riena.example.client.views.DefaultButtonSubModuleView">
-      </view>
-      <view allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.InfoFlyoutSubModuleView"
-            id="org.eclipse.riena.example.client.views.InfoFlyoutSubModuleView"
-            name="org.eclipse.riena.example.client.views.InfoFlyoutSubModuleView">
-      </view>
-      <view allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.LayoutSubModuleView"
-            id="org.eclipse.riena.example.client.views.LayoutSubModuleView"
-            name="org.eclipse.riena.example.client.views.LayoutSubModuleView">
-      </view>
-      <view allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.LinkSubModuleView"
-            id="org.eclipse.riena.example.client.views.LinkSubModuleView"
-            name="org.eclipse.riena.example.client.views.LinkSubModuleView">
-      </view>
-      <view allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.ListSubModuleView"
-            id="org.eclipse.riena.example.client.views.ListSubModuleView"
-            name="org.eclipse.riena.example.client.views.ListSubModuleView">
-      </view>
-      <view allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.ListUsingTableSubModuleView"
-            id="org.eclipse.riena.example.client.views.ListUsingTableSubModuleView"
-            name="org.eclipse.riena.example.client.views.ListUsingTableSubModuleView">
-      </view>
-      <view allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.TextSubModuleView"
-            id="org.eclipse.riena.example.client.views.TextSubModuleView"
-            name="org.eclipse.riena.example.client.views.TextSubModuleView">
-      </view>
-      <view allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.TextNumericSubModuleView"
-            id="org.eclipse.riena.example.client.views.TextNumericSubModuleView"
-            name="org.eclipse.riena.example.client.views.TextNumericSubModuleView">
-      </view>
-      <view allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.TextDateSubModuleView"
-            id="org.eclipse.riena.example.client.views.TextDateSubModuleView"
-            name="org.eclipse.riena.example.client.views.TextDateSubModuleView">
-      </view>
-      <view allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.MarkerSubModuleView"
-            id="org.eclipse.riena.example.client.views.MarkerSubModuleView"
-            name="org.eclipse.riena.example.client.views.MarkerSubModuleView">
-      </view>
-      <view allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.MarkerHidingSubModuleView"
-            id="org.eclipse.riena.example.client.views.MarkerHidingSubModuleView"
-            name="org.eclipse.riena.example.client.views.MarkerHidingSubModuleView">
-      </view>
-      <view allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.CustomMarkerSubModuleView"
-            id="org.eclipse.riena.example.client.views.CustomMarkerSubModuleView"
-            name="org.eclipse.riena.example.client.views.CustomMarkerSubModuleView">
-      </view>
-      <view allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.MasterDetailsSubModuleView"
-            id="org.eclipse.riena.example.client.views.MasterDetailsSubModuleView"
-            name="org.eclipse.riena.example.client.views.MasterDetailsSubModuleView">
-      </view>
-      <view allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.MasterDetailsSubModuleView2"
-            id="org.eclipse.riena.example.client.views.MasterDetailsSubModuleView2"
-            name="org.eclipse.riena.example.client.views.MasterDetailsSubModuleView2">
-      </view>
-      <view allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.MasterDetailsSubModuleView3"
-            id="org.eclipse.riena.example.client.views.MasterDetailsSubModuleView3"
-            name="org.eclipse.riena.example.client.views.MasterDetailsSubModuleView3">
-      </view>
-      <view allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.MasterDetailsSubModuleView4"
-            id="org.eclipse.riena.example.client.views.MasterDetailsSubModuleView4"
-            name="org.eclipse.riena.example.client.views.MasterDetailsSubModuleView4">
-      </view>
-      <view allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.MasterDetailsSubModuleView5"
-            id="org.eclipse.riena.example.client.views.MasterDetailsSubModuleView5"
-            name="org.eclipse.riena.example.client.views.MasterDetailsSubModuleView5">
-      </view>
-      <view allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.MessageMarkerSubModuleView"
-            id="org.eclipse.riena.example.client.views.MessageMarkerSubModuleView"
-            name="org.eclipse.riena.example.client.views.MessageMarkerSubModuleView">
-      </view>
-      <view allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.FocusableSubModuleView"
-            id="org.eclipse.riena.example.client.views.FocusableSubModuleView"
-            name="org.eclipse.riena.example.client.views.FocusableSubModuleView">
-      </view>
-      <view allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.ValidationSubModuleView"
-            id="org.eclipse.riena.example.client.views.ValidationSubModuleView"
-            name="org.eclipse.riena.example.client.views.ValidationSubModuleView">
-      </view>
-      <view allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.SystemPropertiesSubModuleView"
-            id="org.eclipse.riena.example.client.views.SystemPropertiesSubModuleView"
-            name="org.eclipse.riena.example.client.views.SystemPropertiesSubModuleView">
-      </view>
-      <view allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.TreeSubModuleView"
-            id="org.eclipse.riena.example.client.views.TreeSubModuleView"
-            name="org.eclipse.riena.example.client.views.TreeSubModuleView">
-      </view>
-      <view allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.TreeTableSubModuleView"
-            id="org.eclipse.riena.example.client.views.TreeTableSubModuleView"
-            name="org.eclipse.riena.example.client.views.TreeTableSubModuleView">
-      </view>
-      <view allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.TableSubModuleView"
-            id="org.eclipse.riena.example.client.views.TableSubModuleView"
-            name="org.eclipse.riena.example.client.views.TableSubModuleView">
-      </view>
-      <view allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.CarCatalogSubModuleView"
-            id="org.eclipse.riena.example.client.views.CarCatalogSubModuleView"
-            name="org.eclipse.riena.example.client.views.CarCatalogSubModuleView">
-      </view>
-      <view allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.CheckBoxTableSubModuleView"
-            id="org.eclipse.riena.example.client.views.CheckBoxTableSubModuleView"
-            name="org.eclipse.riena.example.client.views.CheckBoxTableSubModuleView">
-      </view>
-      <view allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.NavigationSubModuleView"
-            id="org.eclipse.riena.example.client.views.NavigationSubModuleView"
-            name="org.eclipse.riena.example.client.views.NavigationSubModuleView">
-      </view>
-      <view allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.StatuslineSubModuleView"
-            id="org.eclipse.riena.example.client.views.StatuslineSubModuleView"
-            name="org.eclipse.riena.example.client.views.StatuslineSubModuleView">
-      </view>
-      <view allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.NavigateSubModuleView"
-            id="org.eclipse.riena.example.client.views.NavigateSubModuleView"
-            name="org.eclipse.riena.example.client.views.NavigateSubModuleView">
-      </view>
-      <view
-            allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.BlockingSubModuleView"
-            id="org.eclipse.riena.example.client.views.BlockingSubModuleView"
-            name="org.eclipse.riena.example.client.views.BlockingSubModuleView"
-            restorable="true">
-      </view>
-      <view
-            allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.NoControllerSubModuleView"
-            id="org.eclipse.riena.example.client.views.NoControllerSubModuleView"
-            name="org.eclipse.riena.example.client.views.NoControllerSubModuleView"
-            restorable="true">
-      </view>
-      <view
-            allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.LogCollectorSubModuleView"
-            id="org.eclipse.riena.example.client.views.LogCollectorSubModuleView"
-            name="org.eclipse.riena.example.client.views.LogCollectorSubModuleView"
-            restorable="true"/>
-      <view
-            allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.FilterSubModuleView"
-            id="org.eclipse.riena.example.client.views.FilterSubModuleView"
-            name="org.eclipse.riena.example.client.views.FilterSubModuleView"
-            restorable="true">
-      </view>
-      <view
-            allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.FilterNavigationSubModuleView"
-            id="org.eclipse.riena.example.client.views.FilterNavigationSubModuleView"
-            name="org.eclipse.riena.example.client.views.FilterNavigationSubModuleView"
-            restorable="true">
-      </view>
-      <view
-            allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.FilterExternalDefinitionSubModuleView"
-            id="org.eclipse.riena.example.client.views.FilterExternalDefinitionSubModuleView"
-            name="org.eclipse.riena.example.client.views.FilterExternalDefinitionSubModuleView"
-            restorable="true">
-      </view>
-      <view
-            allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.FilterActionSubModuleView"
-            id="org.eclipse.riena.example.client.views.FilterActionSubModuleView"
-            name="org.eclipse.riena.example.client.views.FilterActionSubModuleView"
-            restorable="true">
-      </view>
-      <view
-            allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.DialogSubModuleView"
-            id="org.eclipse.riena.example.client.views.DialogSubModuleView"
-            name="org.eclipse.riena.example.client.views.DialogSubModuleView"
-            restorable="true">
-      </view>
-      <view
-            allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.DetachedSubModuleView"
-            id="org.eclipse.riena.example.client.views.DetachedSubModuleView"
-            name="org.eclipse.riena.example.client.views.DetachedSubModuleView"
-            restorable="true">
-      </view>
-      <view
-            allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.MessageBoxSubModuleView"
-            id="org.eclipse.riena.example.client.views.MessageBoxSubModuleView"
-            name="org.eclipse.riena.example.client.views.MessageBoxSubModuleView"
-            restorable="true">
-      </view>
-      <view
-            allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.RemoteServiceProgressSubModuleView"
-            id="org.eclipse.riena.example.client.views.RemoteServiceProgressSubModuleView"
-            name="org.eclipse.riena.example.client.views.RemoteServiceProgressSubModuleView"
-            restorable="true">
-      </view>
-      <view
-            allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.FilterExampleSubModuleView"
-            id="org.eclipse.riena.example.client.views.FilterExampleSubModuleView"
-            name="org.eclipse.riena.example.client.views.FilterExampleSubModuleView"
-            restorable="true">
-      </view>
-      <view
-            allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.ExceptionTestView"
-            id="org.eclipse.riena.example.client.exceptiontest.view"
-            name="org.eclipse.riena.example.client.views.ExceptionTestView"
-            restorable="true">
-      </view>
-      <view
-            allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.OnePersonSubModuleView"
-            id="org.eclipse.riena.example.client.views.OnePersonSubModuleView"
-            name="org.eclipse.riena.example.client.views.OnePersonSubModuleView"
-            restorable="true">
-      </view>
-      <view
-            allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.ComboAndChoiceSubModuleView"
-            id="org.eclipse.riena.example.client.views.ComboAndChoiceSubModuleView"
-            name="org.eclipse.riena.example.client.views.ComboAndChoiceSubModuleView"
-            restorable="true">
-      </view>
-      <view
-            allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.SalaryView"
-            id="org.eclipse.riena.example.client.views.SalaryView"
-            name="org.eclipse.riena.example.client.views.SalaryView"
-            restorable="true">
-      </view>
-      <view
-            allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.SalaryIgnoreView"
-            id="org.eclipse.riena.example.client.views.SalaryIgnoreView"
-            name="org.eclipse.riena.example.client.views.SalaryIgnoreView"
-            restorable="true">
-      </view>
-      <view
-            allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.OutlineContractsView"
-            id="org.eclipse.riena.example.client.views.OutlineContractsView"
-            name="org.eclipse.riena.example.client.views.OutlineContractsView"
-            restorable="true">
-      </view>
-      <view
-            allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.ServiceContractsView"
-            id="org.eclipse.riena.example.client.views.ServiceContractsView"
-            name="org.eclipse.riena.example.client.views.ServiceContractsView"
-            restorable="true">
-      </view>
-      <view
-            allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.CComboSubModuleView"
-            id="org.eclipse.riena.example.client.views.CComboSubModuleView"
-            name="org.eclipse.riena.example.client.views.CComboSubModuleView"
-            restorable="true">
-      </view>
-      <view
-            allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.ContextMenuSubModuleView"
-            id="org.eclipse.riena.example.client.views.ContextMenuSubModuleView"
-            name="org.eclipse.riena.example.client.views.ContextMenuSubModuleView"
-            restorable="true">
-      </view>
-      <view
-            allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.TraverseSubModuleView"
-            id="org.eclipse.riena.example.client.views.TraverseSubModuleView"
-            name="org.eclipse.riena.example.client.views.TraverseSubModuleView"
-            restorable="true">
-      </view>
-      <view
-            allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.ControllerTestsPlaygroundSubModuleView"
-            id="org.eclipse.riena.example.client.views.ControllerTestsPlaygroundSubModuleView"
-            name="org.eclipse.riena.example.client.views.ControllerTestsPlaygroundSubModuleView"
-            restorable="true">
-      </view>
-      <view
-            allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.BeforeActivateSubModuleView"
-            id="org.eclipse.riena.example.client.views.BeforeActivateSubModuleView"
-            name="org.eclipse.riena.example.client.views.BeforeActivateSubModuleView"
-            restorable="true">
-      </view>
-      <view
-            allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.AllowActivateSubModuleView"
-            id="org.eclipse.riena.example.client.views.AllowActivateSubModuleView"
-            name="org.eclipse.riena.example.client.views.AllowActivateSubModuleView"
-            restorable="true">
-      </view>
-      <view
-            allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.AllowsDisposeSubModuleView"
-            id="org.eclipse.riena.example.client.allowsDisposeSubModuleView"
-            name="allowsDispose"
-            restorable="true">
-      </view>
-      <view
-            allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.PartnerSubModuleView"
-            id="org.eclipse.riena.example.client.views.PartnerSubModuleView"
-            name="Partner"
-            restorable="true">
-      </view>
-      <view
-            allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.PoliceSubModuleView"
-            id="org.eclipse.riena.example.client.views.PoliceSubModuleView"
-            name="Police"
-            restorable="true">
-      </view>
-      <view
-            allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.MarkerSubModuleWithAlternativeBackgroundView"
-            id="org.eclipse.riena.example.client.views.MarkerSubModuleWithAlternativeBackgroundView"
-            name="org.eclipse.riena.example.client.views.MarkerSubModuleWithAlternativeBackgroundView"
-            restorable="true">
-      </view>
-      <view
-            allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.ContentFilterSubModuleView"
-            id="org.eclipse.riena.example.client.view.contentFilter"
-            name="org.eclipse.riena.example.client.view.contentFilter"
-            restorable="true">
-      </view>
-      <view
-            allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.ChangeLogoSubModuleView"
-            id="org.eclipse.riena.example.client.view.changeLogo"
-            name="org.eclipse.riena.example.client.view.changeLogo"
-            restorable="true">
-      </view>
-   </extension>
-   <extension
-         point="org.eclipse.ui.commands">
-         
-      <command
-         defaultHandler="org.eclipse.riena.example.client.handler.FocusFinderHandler"
-         id="de.compeople.scp.example.client.findfocus.command"
-         name="FindFocus">
-   	  </command>
-         
-      <command
-            id="org.eclipse.riena.example.client.exitCommand"
-            name="Exit">
-      </command>
-      <command
-            id="org.eclipse.riena.example.client.toggleNavigationVisibility"
-            name="Navigation">
-      </command>
-      <command
-            id="org.eclipse.riena.example.client.closeModuleCommand"
-            name="Close Module">
-      </command>
-      <command
-            id="org.eclipse.riena.example.client.zoomInCommand"
-            name="In">
-      </command>
-      <command
-            id="org.eclipse.riena.example.client.activeSubModuleCommand"
-            name="Active Sub-Module (Combo)">
-      </command>
-      <command
-            id="org.eclipse.riena.example.client.zoomOutCommand"
-            name="Out">
-      </command>
-      <command
-            id="org.eclipse.riena.example.client.activeSubApplicationCommand"
-            name="Active Sub-Application (Playground)">
-      </command>
-            <command
-            id="org.eclipse.riena.example.client.histBackCommand"
-            name="History Backward">
-      </command>
-      <command
-            id="org.eclipse.riena.example.client.histForCommand"
-            name="History Forward">
-      </command>
-      <command
-            id="org.eclipse.riena.example.client.openPlayground"
-            name="Open Playground">
-      </command>
-      <command
-            id="org.eclipse.riena.example.client.navigateToMarkers"
-            name="Navigate To Markers">
-      </command>
+
+<plugin>
+    <extension id="exampleapp" name="org.eclipse.riena.example.client.application" point="org.eclipse.core.runtime.applications">
+        <application>
+            <run class="org.eclipse.riena.example.client.application.SwtExampleApplication"/>
+        </application>
     </extension>
-   <extension
-         point="org.eclipse.ui.menus">
-      <menuContribution
-            locationURI="menu:org.eclipse.ui.main.menu">
-         <menu
-               id="fileMenu"
-               label="File"
-               mnemonic="F">
-            <menu
-                  id="org.eclipse.riena.example.client.zoomMenu"
-                  label="Zoom"
-                  mnemonic="Z">
-               <command
-                     commandId="org.eclipse.riena.example.client.zoomInCommand"
-                     id="org.eclipse.riena.example.client.zoomInMenuItem"
-                     mnemonic="I"
-                     style="push">
-               </command>
-               <command
-                     commandId="org.eclipse.riena.example.client.zoomOutCommand"
-                     id="org.eclipse.riena.example.client.zoomOutMenuItem"
-                     mnemonic="O"
-                     style="push">
-               </command>
-               <visibleWhen
-                     checkEnabled="false">
-                  <not>
-                     <reference
-                           definitionId="org.eclipse.riena.example.client.navigationSubAppVisible">
-                     </reference>
-                  </not>
-               </visibleWhen>
+    <extension id="example_product" point="org.eclipse.core.runtime.products">
+        <product application="org.eclipse.riena.example.client.exampleapp" name="%product.name">
+            <property name="appName" value="%product.name"/>
+        </product>
+    </extension>
+    <extension point="org.eclipse.ui.perspectives">
+        <perspective class="org.eclipse.riena.navigation.ui.swt.views.SubApplicationView" id="subapplication.1" name="subapplication.1"/>
+        <perspective class="org.eclipse.riena.navigation.ui.swt.views.SubApplicationView" id="subapplication.2" name="subapplication.2"/>
+        <perspective class="org.eclipse.riena.navigation.ui.swt.views.SubApplicationView" id="subapplication.3" name="subapplication.3"/>
+    </extension>
+    <extension point="org.eclipse.ui.views">
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.DemoTargetSubModuleView" id="org.eclipse.riena.example.client.views.DemoTargetSubModuleView" name="org.eclipse.riena.example.client.views.DemoTargetSubModuleView"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.CustomerDetailSubModuleView" id="org.eclipse.riena.example.client.views.CustomerDetailSubModuleView" name="org.eclipse.riena.example.client.views.CustomerDetailSubModuleView"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.SharedViewDemoSubModuleView" id="org.eclipse.riena.example.client.views.SharedViewDemoSubModuleView" name="org.eclipse.riena.example.client.views.SharedViewDemoSubModuleView"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.SharedViewDemoSubModuleView" id="org.eclipse.riena.example.client.views.SharedViewDemoSubModuleViewNotShared" name="org.eclipse.riena.example.client.views.SharedViewDemoSubModuleViewNotShared"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.RidgetsSubModuleView" id="org.eclipse.riena.example.client.views.RidgetsSubModuleView" name="org.eclipse.riena.example.client.views.RidgetsSubModuleView"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.UIProcessDemoSubModuleView" id="org.eclipse.riena.example.client.views.UIProcessDemoSubModuleView" name="org.eclipse.riena.example.client.views.UIProcessDemoSubModuleView"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.ChoiceSubModuleView" id="org.eclipse.riena.example.client.views.ChoiceSubModuleView" name="org.eclipse.riena.example.client.views.ChoiceSubModuleView"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.ComboSubModuleView" id="org.eclipse.riena.example.client.views.ComboSubModuleView" name="org.eclipse.riena.example.client.views.ComboSubModuleView"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.CompletionComboSubModuleView" id="org.eclipse.riena.example.client.views.CompletionComboSubModuleView" name="org.eclipse.riena.example.client.views.CompletionComboSubModuleView"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.DateTimeSubModuleView" id="org.eclipse.riena.example.client.views.DateTimeSubModuleView" name="org.eclipse.riena.example.client.views.DateTimeSubModuleView"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.DefaultButtonSubModuleView" id="org.eclipse.riena.example.client.views.DefaultButtonSubModuleView" name="org.eclipse.riena.example.client.views.DefaultButtonSubModuleView"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.InfoFlyoutSubModuleView" id="org.eclipse.riena.example.client.views.InfoFlyoutSubModuleView" name="org.eclipse.riena.example.client.views.InfoFlyoutSubModuleView"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.LayoutSubModuleView" id="org.eclipse.riena.example.client.views.LayoutSubModuleView" name="org.eclipse.riena.example.client.views.LayoutSubModuleView"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.LinkSubModuleView" id="org.eclipse.riena.example.client.views.LinkSubModuleView" name="org.eclipse.riena.example.client.views.LinkSubModuleView"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.ListSubModuleView" id="org.eclipse.riena.example.client.views.ListSubModuleView" name="org.eclipse.riena.example.client.views.ListSubModuleView"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.ListUsingTableSubModuleView" id="org.eclipse.riena.example.client.views.ListUsingTableSubModuleView" name="org.eclipse.riena.example.client.views.ListUsingTableSubModuleView"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.TextSubModuleView" id="org.eclipse.riena.example.client.views.TextSubModuleView" name="org.eclipse.riena.example.client.views.TextSubModuleView"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.TextNumericSubModuleView" id="org.eclipse.riena.example.client.views.TextNumericSubModuleView" name="org.eclipse.riena.example.client.views.TextNumericSubModuleView"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.TextDateSubModuleView" id="org.eclipse.riena.example.client.views.TextDateSubModuleView" name="org.eclipse.riena.example.client.views.TextDateSubModuleView"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.MarkerSubModuleView" id="org.eclipse.riena.example.client.views.MarkerSubModuleView" name="org.eclipse.riena.example.client.views.MarkerSubModuleView"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.MarkerHidingSubModuleView" id="org.eclipse.riena.example.client.views.MarkerHidingSubModuleView" name="org.eclipse.riena.example.client.views.MarkerHidingSubModuleView"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.CustomMarkerSubModuleView" id="org.eclipse.riena.example.client.views.CustomMarkerSubModuleView" name="org.eclipse.riena.example.client.views.CustomMarkerSubModuleView"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.MasterDetailsSubModuleView" id="org.eclipse.riena.example.client.views.MasterDetailsSubModuleView" name="org.eclipse.riena.example.client.views.MasterDetailsSubModuleView"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.MasterDetailsSubModuleView2" id="org.eclipse.riena.example.client.views.MasterDetailsSubModuleView2" name="org.eclipse.riena.example.client.views.MasterDetailsSubModuleView2"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.MasterDetailsSubModuleView3" id="org.eclipse.riena.example.client.views.MasterDetailsSubModuleView3" name="org.eclipse.riena.example.client.views.MasterDetailsSubModuleView3"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.MasterDetailsSubModuleView4" id="org.eclipse.riena.example.client.views.MasterDetailsSubModuleView4" name="org.eclipse.riena.example.client.views.MasterDetailsSubModuleView4"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.MasterDetailsSubModuleView5" id="org.eclipse.riena.example.client.views.MasterDetailsSubModuleView5" name="org.eclipse.riena.example.client.views.MasterDetailsSubModuleView5"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.MessageMarkerSubModuleView" id="org.eclipse.riena.example.client.views.MessageMarkerSubModuleView" name="org.eclipse.riena.example.client.views.MessageMarkerSubModuleView"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.FocusableSubModuleView" id="org.eclipse.riena.example.client.views.FocusableSubModuleView" name="org.eclipse.riena.example.client.views.FocusableSubModuleView"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.ValidationSubModuleView" id="org.eclipse.riena.example.client.views.ValidationSubModuleView" name="org.eclipse.riena.example.client.views.ValidationSubModuleView"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.SystemPropertiesSubModuleView" id="org.eclipse.riena.example.client.views.SystemPropertiesSubModuleView" name="org.eclipse.riena.example.client.views.SystemPropertiesSubModuleView"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.TreeSubModuleView" id="org.eclipse.riena.example.client.views.TreeSubModuleView" name="org.eclipse.riena.example.client.views.TreeSubModuleView"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.TreeTableSubModuleView" id="org.eclipse.riena.example.client.views.TreeTableSubModuleView" name="org.eclipse.riena.example.client.views.TreeTableSubModuleView"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.TableSubModuleView" id="org.eclipse.riena.example.client.views.TableSubModuleView" name="org.eclipse.riena.example.client.views.TableSubModuleView"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.CarCatalogSubModuleView" id="org.eclipse.riena.example.client.views.CarCatalogSubModuleView" name="org.eclipse.riena.example.client.views.CarCatalogSubModuleView"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.CheckBoxTableSubModuleView" id="org.eclipse.riena.example.client.views.CheckBoxTableSubModuleView" name="org.eclipse.riena.example.client.views.CheckBoxTableSubModuleView"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.NavigationSubModuleView" id="org.eclipse.riena.example.client.views.NavigationSubModuleView" name="org.eclipse.riena.example.client.views.NavigationSubModuleView"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.StatuslineSubModuleView" id="org.eclipse.riena.example.client.views.StatuslineSubModuleView" name="org.eclipse.riena.example.client.views.StatuslineSubModuleView"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.NavigateSubModuleView" id="org.eclipse.riena.example.client.views.NavigateSubModuleView" name="org.eclipse.riena.example.client.views.NavigateSubModuleView"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.BlockingSubModuleView" id="org.eclipse.riena.example.client.views.BlockingSubModuleView" name="org.eclipse.riena.example.client.views.BlockingSubModuleView" restorable="true"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.NoControllerSubModuleView" id="org.eclipse.riena.example.client.views.NoControllerSubModuleView" name="org.eclipse.riena.example.client.views.NoControllerSubModuleView" restorable="true"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.LogCollectorSubModuleView" id="org.eclipse.riena.example.client.views.LogCollectorSubModuleView" name="org.eclipse.riena.example.client.views.LogCollectorSubModuleView" restorable="true"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.FilterSubModuleView" id="org.eclipse.riena.example.client.views.FilterSubModuleView" name="org.eclipse.riena.example.client.views.FilterSubModuleView" restorable="true"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.FilterNavigationSubModuleView" id="org.eclipse.riena.example.client.views.FilterNavigationSubModuleView" name="org.eclipse.riena.example.client.views.FilterNavigationSubModuleView" restorable="true"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.FilterExternalDefinitionSubModuleView" id="org.eclipse.riena.example.client.views.FilterExternalDefinitionSubModuleView" name="org.eclipse.riena.example.client.views.FilterExternalDefinitionSubModuleView" restorable="true"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.FilterActionSubModuleView" id="org.eclipse.riena.example.client.views.FilterActionSubModuleView" name="org.eclipse.riena.example.client.views.FilterActionSubModuleView" restorable="true"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.DialogSubModuleView" id="org.eclipse.riena.example.client.views.DialogSubModuleView" name="org.eclipse.riena.example.client.views.DialogSubModuleView" restorable="true"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.DetachedSubModuleView" id="org.eclipse.riena.example.client.views.DetachedSubModuleView" name="org.eclipse.riena.example.client.views.DetachedSubModuleView" restorable="true"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.MessageBoxSubModuleView" id="org.eclipse.riena.example.client.views.MessageBoxSubModuleView" name="org.eclipse.riena.example.client.views.MessageBoxSubModuleView" restorable="true"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.RemoteServiceProgressSubModuleView" id="org.eclipse.riena.example.client.views.RemoteServiceProgressSubModuleView" name="org.eclipse.riena.example.client.views.RemoteServiceProgressSubModuleView" restorable="true"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.FilterExampleSubModuleView" id="org.eclipse.riena.example.client.views.FilterExampleSubModuleView" name="org.eclipse.riena.example.client.views.FilterExampleSubModuleView" restorable="true"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.ExceptionTestView" id="org.eclipse.riena.example.client.exceptiontest.view" name="org.eclipse.riena.example.client.views.ExceptionTestView" restorable="true"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.OnePersonSubModuleView" id="org.eclipse.riena.example.client.views.OnePersonSubModuleView" name="org.eclipse.riena.example.client.views.OnePersonSubModuleView" restorable="true"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.ComboAndChoiceSubModuleView" id="org.eclipse.riena.example.client.views.ComboAndChoiceSubModuleView" name="org.eclipse.riena.example.client.views.ComboAndChoiceSubModuleView" restorable="true"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.SalaryView" id="org.eclipse.riena.example.client.views.SalaryView" name="org.eclipse.riena.example.client.views.SalaryView" restorable="true"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.SalaryIgnoreView" id="org.eclipse.riena.example.client.views.SalaryIgnoreView" name="org.eclipse.riena.example.client.views.SalaryIgnoreView" restorable="true"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.OutlineContractsView" id="org.eclipse.riena.example.client.views.OutlineContractsView" name="org.eclipse.riena.example.client.views.OutlineContractsView" restorable="true"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.ServiceContractsView" id="org.eclipse.riena.example.client.views.ServiceContractsView" name="org.eclipse.riena.example.client.views.ServiceContractsView" restorable="true"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.CComboSubModuleView" id="org.eclipse.riena.example.client.views.CComboSubModuleView" name="org.eclipse.riena.example.client.views.CComboSubModuleView" restorable="true"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.ContextMenuSubModuleView" id="org.eclipse.riena.example.client.views.ContextMenuSubModuleView" name="org.eclipse.riena.example.client.views.ContextMenuSubModuleView" restorable="true"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.TraverseSubModuleView" id="org.eclipse.riena.example.client.views.TraverseSubModuleView" name="org.eclipse.riena.example.client.views.TraverseSubModuleView" restorable="true"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.ControllerTestsPlaygroundSubModuleView" id="org.eclipse.riena.example.client.views.ControllerTestsPlaygroundSubModuleView" name="org.eclipse.riena.example.client.views.ControllerTestsPlaygroundSubModuleView" restorable="true"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.BeforeActivateSubModuleView" id="org.eclipse.riena.example.client.views.BeforeActivateSubModuleView" name="org.eclipse.riena.example.client.views.BeforeActivateSubModuleView" restorable="true"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.AllowActivateSubModuleView" id="org.eclipse.riena.example.client.views.AllowActivateSubModuleView" name="org.eclipse.riena.example.client.views.AllowActivateSubModuleView" restorable="true"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.AllowsDisposeSubModuleView" id="org.eclipse.riena.example.client.allowsDisposeSubModuleView" name="allowsDispose" restorable="true"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.PartnerSubModuleView" id="org.eclipse.riena.example.client.views.PartnerSubModuleView" name="Partner" restorable="true"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.PoliceSubModuleView" id="org.eclipse.riena.example.client.views.PoliceSubModuleView" name="Police" restorable="true"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.MarkerSubModuleWithAlternativeBackgroundView" id="org.eclipse.riena.example.client.views.MarkerSubModuleWithAlternativeBackgroundView" name="org.eclipse.riena.example.client.views.MarkerSubModuleWithAlternativeBackgroundView" restorable="true"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.ContentFilterSubModuleView" id="org.eclipse.riena.example.client.view.contentFilter" name="org.eclipse.riena.example.client.view.contentFilter" restorable="true"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.ChangeLogoSubModuleView" id="org.eclipse.riena.example.client.view.changeLogo" name="org.eclipse.riena.example.client.view.changeLogo" restorable="true"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.UsersView" id="org.eclipse.riena.example.client.views.UsersView" name="org.eclipse.riena.example.client.views.UsersView"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.views.UserView" id="org.eclipse.riena.example.client.views.UserView" name="org.eclipse.riena.example.client.views.UserView"/>
+    </extension>
+    <extension point="org.eclipse.ui.commands">
+        <command defaultHandler="org.eclipse.riena.example.client.handler.FocusFinderHandler" id="de.compeople.scp.example.client.findfocus.command" name="FindFocus"/>
+        <command id="org.eclipse.riena.example.client.exitCommand" name="Exit"/>
+        <command id="org.eclipse.riena.example.client.toggleNavigationVisibility" name="Navigation"/>
+        <command id="org.eclipse.riena.example.client.closeModuleCommand" name="Close Module"/>
+        <command id="org.eclipse.riena.example.client.zoomInCommand" name="In"/>
+        <command id="org.eclipse.riena.example.client.activeSubModuleCommand" name="Active Sub-Module (Combo)"/>
+        <command id="org.eclipse.riena.example.client.zoomOutCommand" name="Out"/>
+        <command id="org.eclipse.riena.example.client.activeSubApplicationCommand" name="Active Sub-Application (Playground)"/>
+        <command id="org.eclipse.riena.example.client.histBackCommand" name="History Backward"/>
+        <command id="org.eclipse.riena.example.client.histForCommand" name="History Forward"/>
+        <command id="org.eclipse.riena.example.client.openPlayground" name="Open Playground"/>
+        <command id="org.eclipse.riena.example.client.navigateToMarkers" name="Navigate To Markers"/>
+    </extension>
+    <extension point="org.eclipse.ui.menus">
+        <menuContribution locationURI="menu:org.eclipse.ui.main.menu">
+            <menu id="fileMenu" label="File" mnemonic="F">
+                <menu id="org.eclipse.riena.example.client.zoomMenu" label="Zoom" mnemonic="Z">
+                    <command commandId="org.eclipse.riena.example.client.zoomInCommand" id="org.eclipse.riena.example.client.zoomInMenuItem" mnemonic="I" style="push"/>
+                    <command commandId="org.eclipse.riena.example.client.zoomOutCommand" id="org.eclipse.riena.example.client.zoomOutMenuItem" mnemonic="O" style="push"/>
+                    <visibleWhen checkEnabled="false">
+                        <not>
+                            <reference definitionId="org.eclipse.riena.example.client.navigationSubAppVisible"/>
+                        </not>
+                    </visibleWhen>
+                </menu>
+                <command commandId="org.eclipse.riena.example.client.closeModuleCommand" label="Close module" mnemonic="M" style="push" tooltip="Closes active module"/>
+                <command commandId="org.eclipse.riena.example.client.exitCommand" id="org.eclipse.riena.example.client.exitMenuItem" label="Exit" mnemonic="x"/>
             </menu>
-            <command 
-            	commandId="org.eclipse.riena.example.client.closeModuleCommand"
-            	style="push"
-                label="Close module"
-                mnemonic="M"
-                tooltip="Closes active module">
-            </command>
-            <command
-                  commandId="org.eclipse.riena.example.client.exitCommand"
-                  id="org.eclipse.riena.example.client.exitMenuItem"
-                  label="Exit"
-                  mnemonic="x">
-            </command>
-         </menu>
-         <!--
+            <!--
          <menu
                label="Preferences"
                mnemonic="P">
@@ -575,932 +140,171 @@
             </menu>
          </menu>
          -->
-         <menu
-               id="contextMenu"
-               label="Context menu"
-               mnemonic="x">
-            <command
-                  commandId="org.eclipse.riena.example.client.activeSubModuleCommand"
-                  icon="icons/ledred.png"
-                  id="org.eclipse.riena.example.client.activeSubModuleMenuItem"
-                  mnemonic="M"
-                  style="push">
-            </command>
-            <command
-                  commandId="org.eclipse.riena.example.client.activeSubApplicationCommand"
-                  icon="icons/ledlightgreen.png"
-                  id="org.eclipse.riena.example.client.activeSubApplicationMenuItem"
-                  mnemonic="A"
-                  style="push">
-            </command>
-         </menu>
-         <menu
-               id="navigationMenu"
-               label="Navigation menu"
-               mnemonic="N">
-            <command
-                  commandId="org.eclipse.riena.example.client.histBackCommand"
-                  icon="icons/backward.gif"
-                  id="org.eclipse.riena.example.client.histBackMenuItem"
-                  mnemonic="B"
-                  style="push">
-            </command>
-            <command
-                  commandId="org.eclipse.riena.example.client.histForCommand"
-                  icon="icons/forward.gif"
-                  id="org.eclipse.riena.example.client.histForMenuItem"
-                  mnemonic="F"
-                  style="push">
-            </command>
-         </menu>
-         <menu
-               id="playgroundMenu"
-               label="Playground Menu"
-               mnemonic="P">
-            <command
-                  commandId="org.eclipse.riena.example.client.openPlayground"
-                  id="org.eclipse.riena.example.client.openPlayground"
-                  label="Open Playground"
-                  style="push">
-            </command>
-            <visibleWhen
-                  checkEnabled="false">
-               <reference
-                     definitionId="org.eclipse.riena.example.client.playgroundSubAppVisible">
-               </reference>
-            </visibleWhen>
-         </menu>
-         <menu
-               id="playgroundNavigation"
-               label="Playground Navigation">
-            <command
-                  commandId="org.eclipse.riena.example.client.navigateToMarkers"
-                  style="push">
-            </command>
-            <visibleWhen
-                  checkEnabled="false">
-               <reference
-                     definitionId="org.eclipse.riena.example.client.playgroundModuleVisible">
-               </reference>
-            </visibleWhen>
-         </menu>
-      </menuContribution>
-      <menuContribution
-            locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
-         <toolbar
-               id="org.eclipse.riena.example.client.toolbar">
-            <command
-                  commandId="org.eclipse.riena.example.client.exitCommand"
-                  id="org.eclipse.riena.example.client.exitToolBarItem"
-                  label="Exit"
-                  mnemonic="x"
-                  style="push">
-            </command>
-            <command
-                  commandId="org.eclipse.riena.example.client.activeSubModuleCommand"
-                  icon="icons/ledred.png"
-                  id="org.eclipse.riena.example.client.activeSubModuleToolBarItem"
-                  label="Sub-Module"
-                  mnemonic="M"
-                  style="push">
-               <visibleWhen
-                     checkEnabled="false">
-                  <not>
-                     <reference
-                           definitionId="org.eclipse.riena.example.client.navigationSubAppVisible">
-                     </reference>
-                  </not>
-               </visibleWhen>
-            </command>
-            <command
-                  commandId="org.eclipse.riena.example.client.activeSubApplicationCommand"
-                  icon="icons/ledlightgreen.png"
-                  label="Sub-Application"
-                  mnemonic="A"
-                  style="push">
-            </command>
-            <command
-                  commandId="org.eclipse.riena.example.client.histBackCommand"
-                  icon="icons/backward.gif"
-                  id="backToolItem"
-                  label="History Back"
-                  mnemonic="B"
-                  style="push">
-            </command>
-            <command
-                  commandId="org.eclipse.riena.example.client.histForCommand"
-                  icon="icons/forward.gif"
-                  id="forwardToolItem"
-                  label="History Forward"
-                  mnemonic="F"
-                  style="push">
-            </command>
-            <command
-                  commandId="org.eclipse.riena.example.client.toggleNavigationVisibility"
-                  id="toggleNavigationVisibility"
-                  label="Toggle Navigation"
-                  style="push">
-               <visibleWhen
-                     checkEnabled="false">
-		            <with
-		                  variable="activeModuleNode">
-		               <test
-		                     property="org.eclipse.riena.navigation.model.isFastView">
-		               </test>
-		            </with>
-               </visibleWhen>
-            </command>
-         </toolbar>
-      </menuContribution>
-   </extension>
-   <extension
-         point="org.eclipse.ui.handlers">
-      <handler
-            class="org.eclipse.riena.example.client.handler.ExitHandler"
-            commandId="org.eclipse.riena.example.client.exitCommand">
-      </handler>
-      <handler
-            class="org.eclipse.riena.navigation.ui.swt.handlers.ShowHideNavigationHandler"
-            commandId="org.eclipse.riena.example.client.toggleNavigationVisibility">
-      </handler>
-      <handler
-            class="org.eclipse.riena.example.client.handler.CloseModuleHandler"
-            commandId="org.eclipse.riena.example.client.closeModuleCommand">
-         <enabledWhen>
-            <with
-                  variable="activeModuleNode">
-               <test
-                     property="org.eclipse.riena.navigation.model.isClosable">
-               </test>
-            </with>
-         </enabledWhen>
-      </handler>
-      <handler
-            class="org.eclipse.riena.example.client.handler.ActionSubmoduleHandler"
-            commandId="org.eclipse.riena.example.client.activeSubModuleCommand">
-         <enabledWhen>
-            <with
-                  variable="activeSubModuleNodeId">
-               <equals
-                     value="org.eclipse.riena.example.choice">
-               </equals>
-            </with>
-         </enabledWhen>
-      </handler>
-      <handler
-            class="org.eclipse.riena.example.client.handler.ActiveSubApplicationHandler"
-            commandId="org.eclipse.riena.example.client.activeSubApplicationCommand">
-         <enabledWhen>
-            <with
-                  variable="activeSubApplicationNodeId">
-               <equals
-                     value="playground">
-               </equals>
-            </with>
-         </enabledWhen>
-      </handler>
-      <handler
-            class="org.eclipse.riena.example.client.handler.ZoomInHandler"
-            commandId="org.eclipse.riena.example.client.zoomInCommand">
-      </handler>
-      <handler
-            class="org.eclipse.riena.example.client.handler.ZoomOutHandler"
-            commandId="org.eclipse.riena.example.client.zoomOutCommand">
-      </handler>
-      <handler
-            class="org.eclipse.riena.example.client.handler.HistoryBackwardHandler"
-            commandId="org.eclipse.riena.example.client.histBackCommand">
-      </handler>
-      <handler
-            class="org.eclipse.riena.example.client.handler.HistoryForwardHandler"
-            commandId="org.eclipse.riena.example.client.histForCommand">
-      </handler>
-      <handler
-            class="org.eclipse.riena.example.client.handler.OpenPlaygroundHandler"
-            commandId="org.eclipse.riena.example.client.openPlayground">
-         <enabledWhen>
-            <not>
-               <reference
-                     definitionId="org.eclipse.riena.example.client.playgroundModuleVisible">
-               </reference>
-            </not>
-         </enabledWhen>
-      </handler>
-      <handler
-            class="org.eclipse.riena.example.client.handler.NavigateToMarkersHandler"
-            commandId="org.eclipse.riena.example.client.navigateToMarkers">
-      </handler>
-   </extension>
-   <extension
-         point="org.eclipse.riena.ui.swt.lnfRenderers">
-      <renderer
-            class="org.eclipse.riena.example.client.application.ExampleModuleGroupRenderer"
-            lnfid="ExampleLnf"
-            lnfkey="ModuleGroup.renderer">
-      </renderer>
-   </extension>
-   
-   
-   
-   
-   <extension
-         point="org.eclipse.ui.bindings">
-      <!-- example showing how to define own key bindings. See also: SwtExampleApplication#getKeyScheme() -->
-      <scheme
-            id="org.eclipse.riena.example.client.scheme"
-            name="Riena Client Key Bindings"
-            parentId="org.eclipse.riena.ui.defaultBindings">
-      </scheme>
-      
-      
-      <key
-            commandId="de.compeople.scp.example.client.findfocus.command"
-            contextId="org.eclipse.ui.contexts.window"
-            schemeId="org.eclipse.riena.example.client.scheme"
-            sequence="F10">
-      </key>
-      
-      <key
-            commandId="org.eclipse.riena.example.client.exitCommand"
-            contextId="org.eclipse.ui.contexts.window"
-            schemeId="org.eclipse.riena.example.client.scheme"
-            sequence="F11">
-      </key>
-      <key
-            commandId="org.eclipse.riena.example.client.zoomInCommand"
-            contextId="org.eclipse.ui.contexts.window"
-            schemeId="org.eclipse.riena.example.client.scheme"
-            sequence="CTRL+I">
-      </key>
-      <key
-            commandId="org.eclipse.riena.example.client.zoomOutCommand"
-            contextId="org.eclipse.ui.contexts.window"
-            schemeId="org.eclipse.riena.example.client.scheme"
-            sequence="CTRL+O">
-      </key>
-   </extension>
-   <extension
-         point="org.eclipse.riena.navigation.assemblies2">
-      <assembly2
-            id="org.eclipse.riena.example.navigation.assembly"
-            assembler="org.eclipse.riena.example.client.navigation.model.NavigationSubApplicationNodeAssembler"
-            parentNodeId="application">
-      </assembly2>
-      <assembly2
-            id="org.eclipse.riena.example.uiProcesses.assembly"
-            assembler="org.eclipse.riena.example.client.navigation.model.UIProcessNodeAssembler"
-            parentNodeId="playground">
-      </assembly2>
-      <assembly2
-            id="org.eclipse.riena.example.navigate.assembly"
-            assembler="org.eclipse.riena.example.client.navigation.model.NavigateNodeAssembler"
-            parentNodeId="org.eclipse.riena.example.navigation.subapplication">
-      </assembly2>
-      <assembly2
-            id="org.eclipse.riena.example.sharedViews"
-            assembler="org.eclipse.riena.example.client.navigation.model.SharedViewsNodeAssembler"
-            parentNodeId="playground">
-      </assembly2>
-      <assembly2
-            startOrder="100"
-            id="org.eclipse.riena.example.deselectablenodes.assembly"
-            name="Selectable Submodule Assembly"
-            parentNodeId="playground">
-         <moduleGroup
-               name="Selectable Submodule"
-               nodeId="org.eclipse.riena.example.selectablesubmodule.modulegroup">
-            <module
-                  nodeId="org.eclipse.riena.example.selectablesubmodule.module"
-                  name="Selectable Submodule"
-                  closable="true">
-               <subModule
-                     closable="true"
-                     controller="org.eclipse.riena.example.client.controllers.SalaryController"
-                     expanded="false"
-                     name="Salary"
-                     nodeId="org.eclipse.riena.example.selectablesubmodule.salary"
-                     selectable="true"
-                     sharedView="false"
-                     viewId="org.eclipse.riena.example.client.views.SalaryView"
-                     visible="true">
-               </subModule>
-               <subModule
-                     closable="true"
-                     controller="org.eclipse.riena.example.client.controllers.SalaryIgnoreController"
-                     expanded="false"
-                     name="Salary"
-                     nodeId="org.eclipse.riena.example.selectablesubmodule.salaryignore"
-                     selectable="true"
-                     sharedView="false"
-                     viewId="org.eclipse.riena.example.client.views.SalaryIgnoreView"
-                     visible="true">
-               </subModule>
-               <subModule
-                     closable="true"
-                     expanded="true"
-                     name="Contracts (not selectable)"
-                     nodeId="org.eclipse.riena.example.selectablesubmodule.contracts"
-                     selectable="false"
-                     sharedView="false"
-                     visible="true">
-                  <subModule
-                        closable="true"
-                        controller="org.eclipse.riena.example.client.controllers.ServiceContractsController"
-                        expanded="false"
-                        name="ServiceContracts"
-                        nodeId="org.eclipse.riena.example.selectablesubmodule.servicecontracts"
-                        selectable="true"
-                        sharedView="false"
-                        viewId="org.eclipse.riena.example.client.views.ServiceContractsView"
-                        visible="true">
-                  </subModule>
-                  <subModule
-                        closable="true"
-                        controller="org.eclipse.riena.example.client.controllers.OutlineContractsController"
-                        expanded="false"
-                        name="OutlineContracts"
-                        nodeId="org.eclipse.riena.example.selectablesubmodule.outlinecontracts"
-                        selectable="true"
-                        sharedView="false"
-                        viewId="org.eclipse.riena.example.client.views.OutlineContractsView"
-                        visible="true">
-                  </subModule>
-               </subModule>
-            </module>
-         </moduleGroup>
-      </assembly2>
-      <assembly2
-            id="org.eclipse.riena.example.playground"
-            assembler="org.eclipse.riena.example.client.navigation.model.PlaygroundNodeAssembler"
-            parentNodeId="playground">
-      </assembly2>
-      <assembly2
-            id="org.eclipse.riena.example.filters.assembly"
-            name="filters_definition"
-            parentNodeId="playground">
-         <moduleGroup
-               nodeId="org.eclipse.riena.example.filters"
-               name="uiFilters_group">
-            <module
-                  nodeId="org.eclipse.riena.example.module.filters"
-                  name="UI-Filters">
-               <subModule
-                     controller="org.eclipse.riena.example.client.controllers.FilterExampleSubModuleController"
-                     name="%submodule.label.6"
-                     sharedView="false"
-                     nodeId="org.eclipse.riena.example.filterexample"
-                     viewId="org.eclipse.riena.example.client.views.FilterExampleSubModuleView">
-               </subModule>
-               <subModule
-                     nodeId="org.eclipse.riena.example.filterridget"
-                     name="Ridget"
-                     viewId="org.eclipse.riena.example.client.views.FilterSubModuleView"
-                     controller="org.eclipse.riena.example.client.controllers.FilterSubModuleController"/>
-               <subModule
-                     nodeId="org.eclipse.riena.example.filternavigation"
-                     name="Navigation"
-                     viewId="org.eclipse.riena.example.client.views.FilterNavigationSubModuleView"
-                     controller="org.eclipse.riena.example.client.controllers.FilterNavigationSubModuleController"/>
-               <subModule
-                     controller="org.eclipse.riena.example.client.controllers.FilterActionSubModuleController"
-                     name="Menu Item"
-                     nodeId="org.eclipse.riena.example.filteraction"
-                     viewId="org.eclipse.riena.example.client.views.FilterActionSubModuleView">
-               </subModule>
-               <subModule
-                     nodeId="org.eclipse.riena.example.filterdefinition"
-                     name="External Definition"
-                     viewId="org.eclipse.riena.example.client.views.FilterExternalDefinitionSubModuleView"
-                     controller="org.eclipse.riena.example.client.controllers.FilterExternalDefinitionSubModuleController"/>
-            </module>
-         </moduleGroup>
-      </assembly2>
-      <assembly2
-            id="org.eclipse.riena.example.logcollector.assembly"
-            name="logcollector"
-            parentNodeId="playground">
-         <moduleGroup
-               nodeId="org.eclipse.riena.example.logcollector"
-               name="logcollector_group">
-            <module
-                  name="LogCollector"
-                  nodeId="logcollectorModule">
-               <subModule
-                     controller="org.eclipse.riena.example.client.controllers.LogCollectorSubModuleController"
-                     expanded="false"
-                     name="Log Collector"
-                     nodeId="org.eclipse.riena.example.logcollectorlog"
-                     requiresPreparation="true"
-                     viewId="org.eclipse.riena.example.client.views.LogCollectorSubModuleView"
-                     visible="true"/>
-            </module>
-         </moduleGroup>
-      </assembly2>
-      <assembly2
-            id="org.eclipse.riena.example.navigate.comboAndList"
-            assembler="org.eclipse.riena.example.client.navigation.model.ComboAndListNodeAssembler"
-            parentNodeId="org.eclipse.riena.example.navigation.subapplication">
-      </assembly2>
-      
-      <assembly2
-            id="org.eclipse.riena.example.navigate.firstSubModule"
-            assembler="org.eclipse.riena.example.client.navigation.model.ComboAssembler"
-            parentNodeId="org.eclipse.riena.example.listdemo">
-      </assembly2>
-      
-      <assembly2
-            id="org.eclipse.riena.example.navigate.thirdSubModule"
-            assembler="org.eclipse.riena.example.client.navigation.model.ComboAssemblerAsThirdSubModule"
-            parentNodeId="org.eclipse.riena.example.listdemo">
-      </assembly2>
-      
-      <assembly2
-            id="org.eclipse.riena.example.navigate.firstmodule"
-            assembler="org.eclipse.riena.example.client.navigation.model.FirstModuleAssembler"
-            parentNodeId="org.eclipse.riena.example.navigate.comboAndListGroup">
-      </assembly2>
-      
-      <assembly2
-            id="org.eclipse.riena.example.navigate.submoduleToModuleAtIndex2"
-            assembler="org.eclipse.riena.example.client.navigation.model.AddSubmoduleToModuleAtIndexAssembler"
-            parentNodeId="org.eclipse.riena.example.navigate.module">
-      </assembly2>
-      
-      <assembly2
-            id="org.eclipse.riena.example.navigate.demotarget"
-            assembler="org.eclipse.riena.example.client.navigation.model.DemoTargetNodeAssembler"
-            parentNodeId="org.eclipse.riena.example.navigation.subapplication">
-      </assembly2>
-      
-      <assembly2
-            id="org.eclipse.riena.example.navigate.ordinal5SubModule"
-            assembler="org.eclipse.riena.example.client.navigation.model.OrdinalIndex5NodeAssembler"
-            parentNodeId="org.eclipse.riena.example.ordinalparent">
-      </assembly2>
-      
-      <assembly2
-            id="org.eclipse.riena.example.navigate.ordinal10SubModule"
-            assembler="org.eclipse.riena.example.client.navigation.model.OrdinalIndex10NodeAssembler"
-            parentNodeId="org.eclipse.riena.example.ordinalparent">
-      </assembly2>
-      
-      <assembly2
-            id="org.eclipse.riena.example.navigate.tableTextAndTree.assembly"
-            assembler="org.eclipse.riena.example.client.navigation.model.TableTextAndTreeNodeAssembler"
-            parentNodeId="playground">
-      </assembly2>
-      <assembly2
-            id="org.eclipse.riena.example.client.textAssembly"
-            parentNodeId="org.eclipse.riena.example.navigation.subapplication">
-         <moduleGroup
-               name="textExamplesGroup"
-               nodeId="org.eclipse.riena.example.client.textExamplesGroup">
-            <module
-                  name="Text Examples"
-                  nodeId="org.eclipse.riena.example.client.textExamples"
-                  closable="true">
-               <subModule
-                     controller="org.eclipse.riena.example.client.controllers.TextSubModuleController"
-                     expanded="false"
-                     name="Text"
-                     nodeId="textSubModuleView"
-                     requiresPreparation="true"
-                     selectable="true"
-                     sharedView="false"
-                     viewId="org.eclipse.riena.example.client.views.TextSubModuleView"
-                     visible="true">
-               </subModule>
-               <subModule
-                     controller="org.eclipse.riena.example.client.controllers.TextNumericSubModuleController"
-                     expanded="false"
-                     name="Numeric Text"
-                     nodeId="textNumericSubModuleView"
-                     requiresPreparation="true"
-                     selectable="true"
-                     sharedView="false"
-                     viewId="org.eclipse.riena.example.client.views.TextNumericSubModuleView"
-                     visible="true">
-               </subModule>
-               <subModule
-                     controller="org.eclipse.riena.example.client.controllers.TextDateSubModuleController"
-                     expanded="false"
-                     name="Date Text"
-                     nodeId=".textDateSubModuleView"
-                     requiresPreparation="true"
-                     selectable="true"
-                     sharedView="false"
-                     viewId="org.eclipse.riena.example.client.views.TextDateSubModuleView"
-                     visible="true">
-               </subModule>
-            </module>
-         </moduleGroup>
-      </assembly2>
-      <assembly2
-            id="org.eclipse.riena.example.beforeactivate.assembly"
-            parentNodeId="org.eclipse.riena.example.navigation.subapplication"
-            startOrder="2">
-         <moduleGroup
-               name="Activate/Deactivate"
-               nodeId="org.eclipse.riena.example.activatedeactivate.mg">
-            <module
-                  closable="true"
-                  name="Before Activate"
-                  nodeId="org.eclipse.riena.example.beforeactivate.module">
-               <subModule
-                     controller="org.eclipse.riena.example.client.controllers.BeforeActivateSubModuleController"
-                     name="Before Activate"
-                     nodeId="org.eclipse.riena.example.client.subModule.beforeActivate"
-                     requiresPreparation="true"
-                     selectable="true"
-                     sharedView="false"
-                     viewId="org.eclipse.riena.example.client.views.BeforeActivateSubModuleView">
-               </subModule>
-               <subModule
-                     controller="org.eclipse.riena.example.client.controllers.AllowActivateSubModuleController"
-                     name="Allow Activate"
-                     nodeId="org.eclipse.riena.example.client.subModule.allowActivate"
-                     requiresPreparation="true"
-                     selectable="true"
-                     sharedView="false"
-                     viewId="org.eclipse.riena.example.client.views.AllowActivateSubModuleView">
-               </subModule>
-            </module>
-            <module
-                  closable="true"
-                  name="Allows Dispose"
-                  nodeId="org.eclipse.riena.example.allowsdispose.module">
-               <subModule
-                     closable="true"
-                     controller="org.eclipse.riena.example.client.controllers.AllowsDisposeSubModuleController"
-                     expanded="false"
-                     name="Allows Dispose"
-                     nodeId="org.eclipse.riena.example.client.subModule.allowsDispose"
-                     selectable="true"
-                     sharedView="false"
-                     viewId="org.eclipse.riena.example.client.allowsDisposeSubModuleView"
-                     visible="true">
-               </subModule>
-            </module>
-         </moduleGroup>
-      </assembly2>
-      <assembly2
-            id="org.eclipse.riena.example.client.assembly2.contentFilter"
-            parentNodeId="playgroundModule"
-            startOrder="1">
-         <subModule
-               closable="false"
-               controller="org.eclipse.riena.example.client.controllers.ContentFilterSubModuleController"
-               expanded="false"
-               name="Content Filter"
-               nodeId="org.eclipse.riena.example.client.subModule.contentFilter"
-               selectable="true"
-               sharedView="false"
-               viewId="org.eclipse.riena.example.client.view.contentFilter"
-               visible="true">
-         </subModule>
-         <subModule
-               closable="false"
-               controller="org.eclipse.riena.example.client.controllers.ChangeLogoSubModuleController"
-               expanded="false"
-               name="Change Logo"
-               nodeId="org.eclipse.riena.example.client.subModule.changeLogo"
-               selectable="true"
-               sharedView="false"
-               viewId="org.eclipse.riena.example.client.view.changeLogo"
-               visible="true">
-         </subModule>
-      </assembly2>
-   </extension>
-   <extension
-         point="org.eclipse.riena.ui.filter.uiFilters">
-           <filter
-            filterId="rienaExample.newx">
-         <nodeId
-               id="*/org.eclipse.riena.example.buttons">
-         </nodeId>
-         <ruleMarkerRidget
-               marker="disabled"
-               ridgetId="*button*">
-         </ruleMarkerRidget>
-      </filter>
-      <filter
-            filterId="rienaExample.offline">
-         <nodeId
-               id="application">
-         </nodeId>
-         <ruleMarkerNavigation
-               marker="hidden"
-               nodeId="*/org.eclipse.riena.example.uiProcesses">
-         </ruleMarkerNavigation>
-         <ruleMarkerNavigation
-               marker="hidden"
-               nodeId="*/org.eclipse.riena.example.navigation*">
-         </ruleMarkerNavigation>
-         <ruleMarkerRidget
-               marker="hidden"
-               ridgetId="*/textPassword">
-         </ruleMarkerRidget>
-         <ruleMarkerRidget
-               marker="hidden"
-               ridgetId="*/ui_label2">
-         </ruleMarkerRidget>
-         <ruleMarkerRidget
-               marker="output"
-               ridgetId="*/textField">
-         </ruleMarkerRidget>
-         <ruleValidatorRidget
-               ridgetId="*/ui_text1"
-               validationTime="onUIControlEdit"
-               validator="org.eclipse.riena.ui.ridgets.validation.MaxLength:12">
-         </ruleValidatorRidget>
-         <ruleMarkerMenuItem
-               itemId="org.eclipse.riena.example.client.exitToolBarItem"
-               marker="disabled">
-         </ruleMarkerMenuItem>
-      </filter>
-      <filter
-            filterId="rienaExample.menuToolBar">
-         <nodeId
-               id="/application">
-         </nodeId>
-         <ruleMarkerMenuItem
-               itemId="org.eclipse.riena.example.client.zoom*MenuItem"
-               marker="disabled">
-         </ruleMarkerMenuItem>
-         <ruleMarkerMenuItem
-               itemId="org.eclipse.riena.example.client.exitMenuItem"
-               marker="disabled">
-         </ruleMarkerMenuItem>
-         <ruleMarkerMenuItem
-               itemId="org.eclipse.riena.example.client.closeModuleCommand"
-               marker="disabled">
-         </ruleMarkerMenuItem>
-         <ruleMarkerMenuItem
-               itemId="org.eclipse.riena.example.client.exitToolBarItem"
-               marker="disabled">
-         </ruleMarkerMenuItem>
-         <ruleMarkerMenuItem
-               itemId="navigationMenu"
-               marker="hidden">
-         </ruleMarkerMenuItem>
-      </filter>
-      <filter
-            filterId="rienaExample.ridget">
-         <nodeId
-               id="/application">
-         </nodeId>
-         <ruleMarkerRidget
-               marker="hidden"
-               ridgetId="/application/*/org.eclipse.riena.example.text/textModel?">
-         </ruleMarkerRidget>
-         <ruleValidatorRidget
-               ridgetId="/application/*/org.eclipse.riena.example.text/*"
-               validationTime="onUIControlEdit"
-               validator="org.eclipse.riena.ui.ridgets.validation.MaxLengthNonBlocking:12">
-         </ruleValidatorRidget>
-      </filter>
-      <filter
-            filterId="rienaExample.navigation">
-         <nodeId
-               id="/application">
-         </nodeId>
-         <ruleMarkerNavigation
-               marker="hidden"
-               nodeId="/application/*/org.eclipse.riena.example.sharedViews">
-         </ruleMarkerNavigation>
-         <ruleMarkerNavigation
-               marker="hidden"
-               nodeId="/application/*/org.eclipse.riena.example.uiProcesses">
-         </ruleMarkerNavigation>
-         <ruleMarkerNavigation
-               marker="disabled"
-               nodeId="/application/*/logcollectorModule">
-         </ruleMarkerNavigation>
-         <ruleMarkerNavigation
-               marker="disabled"
-               nodeId="/application/*/org.eclipse.riena.example.tree">
-         </ruleMarkerNavigation>
-         <ruleMarkerNavigation
-               marker="disabled"
-               nodeId="/application/*/org.eclipse.riena.example.treeTable">
-         </ruleMarkerNavigation>
-         <ruleMarkerNavigation
-               marker="hidden"
-               nodeId="/application/*/org.eclipse.riena.example.table">
-         </ruleMarkerNavigation>
-         <ruleMarkerNavigation
-               marker="disabled"
-               nodeId="/application/*/org.eclipse.riena.example.filters/*/org.eclipse.riena.example.filterridget">
-         </ruleMarkerNavigation>
-         <ruleMarkerNavigation
-               marker="disabled"
-               nodeId="/application/*/org.eclipse.riena.example.filters/*/org.eclipse.riena.example.filternavigation">
-         </ruleMarkerNavigation>
-         <ruleMarkerNavigation
-               marker="hidden"
-               nodeId="/application/*/org.eclipse.riena.example.filters/*/org.eclipse.riena.example.filteraction">
-         </ruleMarkerNavigation>
-         <ruleMarkerNavigation
-               marker="hidden"
-               nodeId="/application/*/org.eclipse.riena.example.filters/*/org.eclipse.riena.example.filterdefinition">
-         </ruleMarkerNavigation>
-      </filter>
-      <filter
-            filterId="rienaExample.ridget01">
-         <nodeId
-               id="/application">
-         </nodeId>
-         <ruleValidatorRidget
-               ridgetId="/application/*/org.eclipse.riena.example.filters/*/org.eclipse.riena.example.filterexample/sampleText"
-               validationTime="onUpdateToModel"
-               validator="org.eclipse.riena.ui.ridgets.validation.ValidCharacters:01">
-         </ruleValidatorRidget>
-      </filter>
-      <filter
-            filterId="rienaExample.ridgetDisable">
-         <nodeId
-               id="/application">
-         </nodeId>
-         <ruleMarkerRidget
-               marker="disabled"
-               ridgetId="/application/*/org.eclipse.riena.example.filters/*/org.eclipse.riena.example.filterexample/sample*">
-         </ruleMarkerRidget>
-      </filter>
-      <filter
-            filterId="rienaExample.ridgetHide">
-         <nodeId
-               id="/application">
-         </nodeId>
-         <ruleMarkerRidget
-               marker="hidden"
-               ridgetId="/application/*/org.eclipse.riena.example.filters/*/org.eclipse.riena.example.filterexample/sample*">
-         </ruleMarkerRidget>
-      </filter>
-   </extension>
-   
-   <!-- To activate client monitoring for the example client simply uncomment this. -->
-   <extension point="org.eclipse.riena.monitor.client.collectors">
-      <collector
-            category="LogCollector"
-            class="org.eclipse.riena.monitor.client.LogServiceCollector: collectRange=1,2; triggerRange=1,2; async=true"
-            maxItems="50">
-      </collector>
-      <collector
-            category="CustomCollector"
-            class="org.eclipse.riena.monitor.client.LogServiceCollector: collectRange=-2..0; triggerRange=-2"
-            maxItems="250">
-      </collector>
-   </extension>
-   
-   <extension point="org.eclipse.riena.monitor.client.store">
-      <store
-            name="SimpleStore"
-            class="org.eclipse.riena.monitor.client.SimpleStore:cleanupDelay=1 h">
-      </store>
-	</extension>
-	
-   <extension point="org.eclipse.riena.monitor.client.sender">
-      <sender
-            name="SimpleSender"
-            class="org.eclipse.riena.monitor.client.SimpleSender:retryTime=20 m">
-      </sender>
-	</extension>
-
-	<extension point="org.eclipse.riena.monitor.client.clientInfoProvider">
-       <clientInfoProvider
-            name="SimpleClientInfoProvider"
-            class="org.eclipse.riena.monitor.client.SimpleClientInfoProvider:user.name,x-host.name">
-       </clientInfoProvider>
- 	</extension>
- 
-	
+            <menu id="contextMenu" label="Context menu" mnemonic="x">
+                <command commandId="org.eclipse.riena.example.client.activeSubModuleCommand" icon="icons/ledred.png" id="org.eclipse.riena.example.client.activeSubModuleMenuItem" mnemonic="M" style="push"/>
+                <command commandId="org.eclipse.riena.example.client.activeSubApplicationCommand" icon="icons/ledlightgreen.png" id="org.eclipse.riena.example.client.activeSubApplicationMenuItem" mnemonic="A" style="push"/>
+            </menu>
+            <menu id="navigationMenu" label="Navigation menu" mnemonic="N">
+                <command commandId="org.eclipse.riena.example.client.histBackCommand" icon="icons/backward.gif" id="org.eclipse.riena.example.client.histBackMenuItem" mnemonic="B" style="push"/>
+                <command commandId="org.eclipse.riena.example.client.histForCommand" icon="icons/forward.gif" id="org.eclipse.riena.example.client.histForMenuItem" mnemonic="F" style="push"/>
+            </menu>
+            <menu id="playgroundMenu" label="Playground Menu" mnemonic="P">
+                <command commandId="org.eclipse.riena.example.client.openPlayground" id="org.eclipse.riena.example.client.openPlayground" label="Open Playground" style="push"/>
+                <visibleWhen checkEnabled="false">
+                    <reference definitionId="org.eclipse.riena.example.client.playgroundSubAppVisible"/>
+                </visibleWhen>
+            </menu>
+            <menu id="playgroundNavigation" label="Playground Navigation">
+                <command commandId="org.eclipse.riena.example.client.navigateToMarkers" style="push"/>
+                <visibleWhen checkEnabled="false">
+                    <reference definitionId="org.eclipse.riena.example.client.playgroundModuleVisible"/>
+                </visibleWhen>
+            </menu>
+        </menuContribution>
+        <menuContribution locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
+            <toolbar id="org.eclipse.riena.example.client.toolbar">
+                <command commandId="org.eclipse.riena.example.client.exitCommand" id="org.eclipse.riena.example.client.exitToolBarItem" label="Exit" mnemonic="x" style="push"/>
+                <command commandId="org.eclipse.riena.example.client.activeSubModuleCommand" icon="icons/ledred.png" id="org.eclipse.riena.example.client.activeSubModuleToolBarItem" label="Sub-Module" mnemonic="M" style="push">
+                    <visibleWhen checkEnabled="false">
+                        <not>
+                            <reference definitionId="org.eclipse.riena.example.client.navigationSubAppVisible"/>
+                        </not>
+                    </visibleWhen>
+                </command>
+                <command commandId="org.eclipse.riena.example.client.activeSubApplicationCommand" icon="icons/ledlightgreen.png" label="Sub-Application" mnemonic="A" style="push"/>
+                <command commandId="org.eclipse.riena.example.client.histBackCommand" icon="icons/backward.gif" id="backToolItem" label="History Back" mnemonic="B" style="push"/>
+                <command commandId="org.eclipse.riena.example.client.histForCommand" icon="icons/forward.gif" id="forwardToolItem" label="History Forward" mnemonic="F" style="push"/>
+                <command commandId="org.eclipse.riena.example.client.toggleNavigationVisibility" id="toggleNavigationVisibility" label="Toggle Navigation" style="push">
+                    <visibleWhen checkEnabled="false">
+                        <with variable="activeModuleNode">
+                            <test property="org.eclipse.riena.navigation.model.isFastView"/>
+                        </with>
+                    </visibleWhen>
+                </command>
+            </toolbar>
+        </menuContribution>
+    </extension>
+    <extension point="org.eclipse.ui.handlers">
+        <handler class="org.eclipse.riena.example.client.handler.ExitHandler" commandId="org.eclipse.riena.example.client.exitCommand"/>
+        <handler class="org.eclipse.riena.navigation.ui.swt.handlers.ShowHideNavigationHandler" commandId="org.eclipse.riena.example.client.toggleNavigationVisibility"/>
+        <handler class="org.eclipse.riena.example.client.handler.CloseModuleHandler" commandId="org.eclipse.riena.example.client.closeModuleCommand">
+            <enabledWhen>
+                <with variable="activeModuleNode">
+                    <test property="org.eclipse.riena.navigation.model.isClosable"/>
+                </with>
+            </enabledWhen>
+        </handler>
+        <handler class="org.eclipse.riena.example.client.handler.ActionSubmoduleHandler" commandId="org.eclipse.riena.example.client.activeSubModuleCommand">
+            <enabledWhen>
+                <with variable="activeSubModuleNodeId">
+                    <equals value="org.eclipse.riena.example.choice"/>
+                </with>
+            </enabledWhen>
+        </handler>
+        <handler class="org.eclipse.riena.example.client.handler.ActiveSubApplicationHandler" commandId="org.eclipse.riena.example.client.activeSubApplicationCommand">
+            <enabledWhen>
+                <with variable="activeSubApplicationNodeId">
+                    <equals value="playground"/>
+                </with>
+            </enabledWhen>
+        </handler>
+        <handler class="org.eclipse.riena.example.client.handler.ZoomInHandler" commandId="org.eclipse.riena.example.client.zoomInCommand"/>
+        <handler class="org.eclipse.riena.example.client.handler.ZoomOutHandler" commandId="org.eclipse.riena.example.client.zoomOutCommand"/>
+        <handler class="org.eclipse.riena.example.client.handler.HistoryBackwardHandler" commandId="org.eclipse.riena.example.client.histBackCommand"/>
+        <handler class="org.eclipse.riena.example.client.handler.HistoryForwardHandler" commandId="org.eclipse.riena.example.client.histForCommand"/>
+        <handler class="org.eclipse.riena.example.client.handler.OpenPlaygroundHandler" commandId="org.eclipse.riena.example.client.openPlayground">
+            <enabledWhen>
+                <not>
+                    <reference definitionId="org.eclipse.riena.example.client.playgroundModuleVisible"/>
+                </not>
+            </enabledWhen>
+        </handler>
+        <handler class="org.eclipse.riena.example.client.handler.NavigateToMarkersHandler" commandId="org.eclipse.riena.example.client.navigateToMarkers"/>
+    </extension>
+    <extension point="org.eclipse.riena.ui.swt.lnfRenderers">
+        <renderer class="org.eclipse.riena.example.client.application.ExampleModuleGroupRenderer" lnfid="ExampleLnf" lnfkey="ModuleGroup.renderer"/>
+    </extension>
+    <extension point="org.eclipse.ui.bindings">
+        <!-- example showing how to define own key bindings. See also: SwtExampleApplication#getKeyScheme() -->
+        <scheme id="org.eclipse.riena.example.client.scheme" name="Riena Client Key Bindings" parentId="org.eclipse.riena.ui.defaultBindings"/>
+        <key commandId="de.compeople.scp.example.client.findfocus.command" contextId="org.eclipse.ui.contexts.window" schemeId="org.eclipse.riena.example.client.scheme" sequence="F10"/>
+        <key commandId="org.eclipse.riena.example.client.exitCommand" contextId="org.eclipse.ui.contexts.window" schemeId="org.eclipse.riena.example.client.scheme" sequence="F11"/>
+        <key commandId="org.eclipse.riena.example.client.zoomInCommand" contextId="org.eclipse.ui.contexts.window" schemeId="org.eclipse.riena.example.client.scheme" sequence="CTRL+I"/>
+        <key commandId="org.eclipse.riena.example.client.zoomOutCommand" contextId="org.eclipse.ui.contexts.window" schemeId="org.eclipse.riena.example.client.scheme" sequence="CTRL+O"/>
+    </extension>
+    <extension point="org.eclipse.riena.ui.filter.uiFilters">
+        <filter filterId="rienaExample.newx">
+            <nodeId id="*/org.eclipse.riena.example.buttons"/>
+            <ruleMarkerRidget marker="disabled" ridgetId="*button*"/>
+        </filter>
+        <filter filterId="rienaExample.offline">
+            <nodeId id="application"/>
+            <ruleMarkerNavigation marker="hidden" nodeId="*/org.eclipse.riena.example.uiProcesses"/>
+            <ruleMarkerNavigation marker="hidden" nodeId="*/org.eclipse.riena.example.navigation*"/>
+            <ruleMarkerRidget marker="hidden" ridgetId="*/textPassword"/>
+            <ruleMarkerRidget marker="hidden" ridgetId="*/ui_label2"/>
+            <ruleMarkerRidget marker="output" ridgetId="*/textField"/>
+            <ruleValidatorRidget ridgetId="*/ui_text1" validationTime="onUIControlEdit" validator="org.eclipse.riena.ui.ridgets.validation.MaxLength:12"/>
+            <ruleMarkerMenuItem itemId="org.eclipse.riena.example.client.exitToolBarItem" marker="disabled"/>
+        </filter>
+        <filter filterId="rienaExample.menuToolBar">
+            <nodeId id="/application"/>
+            <ruleMarkerMenuItem itemId="org.eclipse.riena.example.client.zoom*MenuItem" marker="disabled"/>
+            <ruleMarkerMenuItem itemId="org.eclipse.riena.example.client.exitMenuItem" marker="disabled"/>
+            <ruleMarkerMenuItem itemId="org.eclipse.riena.example.client.closeModuleCommand" marker="disabled"/>
+            <ruleMarkerMenuItem itemId="org.eclipse.riena.example.client.exitToolBarItem" marker="disabled"/>
+            <ruleMarkerMenuItem itemId="navigationMenu" marker="hidden"/>
+        </filter>
+        <filter filterId="rienaExample.ridget">
+            <nodeId id="/application"/>
+            <ruleMarkerRidget marker="hidden" ridgetId="/application/*/org.eclipse.riena.example.text/textModel?"/>
+            <ruleValidatorRidget ridgetId="/application/*/org.eclipse.riena.example.text/*" validationTime="onUIControlEdit" validator="org.eclipse.riena.ui.ridgets.validation.MaxLengthNonBlocking:12"/>
+        </filter>
+        <filter filterId="rienaExample.navigation">
+            <nodeId id="/application"/>
+            <ruleMarkerNavigation marker="hidden" nodeId="/application/*/org.eclipse.riena.example.sharedViews"/>
+            <ruleMarkerNavigation marker="hidden" nodeId="/application/*/org.eclipse.riena.example.uiProcesses"/>
+            <ruleMarkerNavigation marker="disabled" nodeId="/application/*/logcollectorModule"/>
+            <ruleMarkerNavigation marker="disabled" nodeId="/application/*/org.eclipse.riena.example.tree"/>
+            <ruleMarkerNavigation marker="disabled" nodeId="/application/*/org.eclipse.riena.example.treeTable"/>
+            <ruleMarkerNavigation marker="hidden" nodeId="/application/*/org.eclipse.riena.example.table"/>
+            <ruleMarkerNavigation marker="disabled" nodeId="/application/*/org.eclipse.riena.example.filters/*/org.eclipse.riena.example.filterridget"/>
+            <ruleMarkerNavigation marker="disabled" nodeId="/application/*/org.eclipse.riena.example.filters/*/org.eclipse.riena.example.filternavigation"/>
+            <ruleMarkerNavigation marker="hidden" nodeId="/application/*/org.eclipse.riena.example.filters/*/org.eclipse.riena.example.filteraction"/>
+            <ruleMarkerNavigation marker="hidden" nodeId="/application/*/org.eclipse.riena.example.filters/*/org.eclipse.riena.example.filterdefinition"/>
+        </filter>
+        <filter filterId="rienaExample.ridget01">
+            <nodeId id="/application"/>
+            <ruleValidatorRidget ridgetId="/application/*/org.eclipse.riena.example.filters/*/org.eclipse.riena.example.filterexample/sampleText" validationTime="onUpdateToModel" validator="org.eclipse.riena.ui.ridgets.validation.ValidCharacters:01"/>
+        </filter>
+        <filter filterId="rienaExample.ridgetDisable">
+            <nodeId id="/application"/>
+            <ruleMarkerRidget marker="disabled" ridgetId="/application/*/org.eclipse.riena.example.filters/*/org.eclipse.riena.example.filterexample/sample*"/>
+        </filter>
+        <filter filterId="rienaExample.ridgetHide">
+            <nodeId id="/application"/>
+            <ruleMarkerRidget marker="hidden" ridgetId="/application/*/org.eclipse.riena.example.filters/*/org.eclipse.riena.example.filterexample/sample*"/>
+        </filter>
+    </extension>
+    <!-- To activate client monitoring for the example client simply uncomment this. -->
+    <extension point="org.eclipse.riena.monitor.client.collectors">
+        <collector category="LogCollector" class="org.eclipse.riena.monitor.client.LogServiceCollector: collectRange=1,2; triggerRange=1,2; async=true" maxItems="50"/>
+        <collector category="CustomCollector" class="org.eclipse.riena.monitor.client.LogServiceCollector: collectRange=-2..0; triggerRange=-2" maxItems="250"/>
+    </extension>
+    <extension point="org.eclipse.riena.monitor.client.store">
+        <store class="org.eclipse.riena.monitor.client.SimpleStore:cleanupDelay=1 h" name="SimpleStore"/>
+    </extension>
+    <extension point="org.eclipse.riena.monitor.client.sender">
+        <sender class="org.eclipse.riena.monitor.client.SimpleSender:retryTime=20 m" name="SimpleSender"/>
+    </extension>
+    <extension point="org.eclipse.riena.monitor.client.clientInfoProvider">
+        <clientInfoProvider class="org.eclipse.riena.monitor.client.SimpleClientInfoProvider:user.name,x-host.name" name="SimpleClientInfoProvider"/>
+    </extension>
     <!-- -->
-    <extension
-           point="org.eclipse.riena.core.exceptionHandlers">
-        <exceptionHandler
-              class="org.eclipse.riena.example.client.exceptionhandler.ExceptionMessageBox"
-              name="riena example exception message box">
-        </exceptionHandler>
-     </extension>
-    <extension
-          point="org.eclipse.riena.navigation.assemblies2">
-       <assembly2
-             startOrder="1"
-             id="org.eclipse.riena.example.exceptiontest"
-             parentNodeId="playground">
-          <moduleGroup
-                name="ExceptionTest"
-                nodeId="org.eclipse.riena.example.exceptiontest.mg">
-             <module
-                   name="Exception Test"
-                   nodeId="org.eclipse.riena.example.exceptiontest.module"
-                   closable="true">
-                <subModule
-                      closable="true"
-                      controller="org.eclipse.riena.example.client.controllers.ExceptionTestController"
-                      nodeId="org.eclipse.riena.example.exceptiontest.submodule"
-                      sharedView="false"
-                      viewId="org.eclipse.riena.example.client.exceptiontest.view">
-                </subModule>
-             </module>
-          </moduleGroup>
-<!--          
-         <moduleGroup
-               name="uiProcesses_group"
-               nodeId="org.eclipse.riena.example.uiProcesses">
-            <module
-                  icon="ledred.png"
-                  name="UIProcess"
-                  nodeId="uiProcesses">
-               <subModule
-                     controller="org.eclipse.riena.example.client.controllers.UIProcessDemoSubModuleController"
-                     icon="ledlightgreen.png"
-                     name="Demo1"
-                     nodeId="org.eclipse.riena.example.uiProcess_1"
-                     viewId="org.eclipse.riena.example.client.views.UIProcessDemoSubModuleView">
-               </subModule>
-               <subModule
-                     nodeId="org.eclipse.riena.example.uiProcess_2"
-                     name="uiProcess_2"
-                     viewId="org.eclipse.riena.example.client.views.UIProcessDemoSubModuleView"
-                     controller="org.eclipse.riena.example.client.controllers.UIProcessDemoSubModuleController"/>
-            </module>
-            <module
-                  icon="ledred.png"
-                  name="service call progress"
-                  nodeId="remoteProgress">
-               <subModule
-                     nodeId="org.eclipse.riena.example.remoteProgress"
-                     name="service call progress"
-                     icon="ledlightgreen.png"
-                     viewId="org.eclipse.riena.example.client.views.RemoteServiceProgressSubModuleView"
-                     controller="org.eclipse.riena.example.client.controllers.RemoteServiceProgressSubModuleController"/>
-            </module>
-         </moduleGroup>
--->         
-       </assembly2>
-       <assembly2
-             id="org.eclipse.riena.example.client.setnodeidsample"
-             parentNodeId="playground"
-             startOrder="1">
-          <moduleGroup
-                nodeId="org.eclipse.riena.example.client.mgkundennummer">
-             <module
-                   closable="true"
-                   name="Customer nr."
-                   nodeId="org.eclipse.riena.example.client.mkundennummer">
-                <subModule
-                      controller="org.eclipse.riena.example.client.controllers.PartnerSubModuleController"
-                      expanded="false"
-                      name="Customer number"
-                      nodeId="org.eclipse.riena.example.client.smkundennummer"
-                      selectable="true"
-                      sharedView="false"
-                      viewId="org.eclipse.riena.example.client.views.PartnerSubModuleView"
-                      visible="true">
-                </subModule>
-             </module>
-          </moduleGroup>
-          <moduleGroup
-                nodeId="org.eclipse.riena.example.client.mgpolice">
-             <module
-                   closable="true"
-                   name="Police"
-                   nodeId="org.eclipse.riena.example.client.mpolice">
-                <subModule
-                      closable="false"
-                      controller="org.eclipse.riena.example.client.controllers.PoliceSubModuleController"
-                      expanded="false"
-                      name="Police"
-                      nodeId="org.eclipse.riena.example.client.smpolice"
-                      selectable="true"
-                      sharedView="false"
-                      viewId="org.eclipse.riena.example.client.views.PoliceSubModuleView"
-                      visible="true">
-                </subModule>
-             </module>
-          </moduleGroup>
-       </assembly2>
+    <extension point="org.eclipse.riena.core.exceptionHandlers">
+        <exceptionHandler class="org.eclipse.riena.example.client.exceptionhandler.ExceptionMessageBox" name="riena example exception message box"/>
     </extension>
-    
-    <extension
-          point="org.eclipse.riena.navigation.assemblies2">
-      <assembly2
-            startOrder="2"
-            id="org.eclipse.riena.example.onecustomer"
-            parentNodeId="module121">
-         <subModule
-               controller="org.eclipse.riena.example.client.controllers.OnePersonSubModuleController"
-               icon="person.gif"
-               name="One Person"
-               requiresPreparation="true"
-               sharedView="false"
-               nodeId="onePersonSubModule"
-               viewId="org.eclipse.riena.example.client.views.OnePersonSubModuleView">
-         </subModule>
-      </assembly2>
-    </extension>
-<!--
+    <!--
     <extension
           point="org.eclipse.riena.navigation.ui.loginDialogViewDefinition">
        <loginDialogViewDefinition
@@ -1509,116 +313,155 @@
        </loginDialogViewDefinition>
     </extension>
 -->
-     <extension
-          point="org.eclipse.riena.navigation.ui.swt.loginSplashViewDefinition">
-       <loginSplashViewDefinition
-             nonActivityDuration="0"
-             viewClass="org.eclipse.riena.example.client.views.LoginSplashView">
-       </loginSplashViewDefinition>
+    <extension point="org.eclipse.riena.navigation.ui.swt.loginSplashViewDefinition">
+        <loginSplashViewDefinition nonActivityDuration="0" viewClass="org.eclipse.riena.example.client.views.LoginSplashView"/>
     </extension>
-    <extension
-          id="LocalCallback"
-          point="org.eclipse.equinox.security.callbackHandler">
-       <callbackHandler
-             class="org.eclipse.riena.internal.example.client.security.authentication.LocalLoginCallbackHandler">
-       </callbackHandler>
+    <extension id="LocalCallback" point="org.eclipse.equinox.security.callbackHandler">
+        <callbackHandler class="org.eclipse.riena.internal.example.client.security.authentication.LocalLoginCallbackHandler"/>
     </extension>
-    <extension
-          id="remoteSecurity"
-          point="org.eclipse.equinox.security.loginModule">
-       <loginModule
-             class="org.eclipse.riena.internal.example.client.security.authentication.RemoteLoginModule">
-       </loginModule>
+    <extension id="remoteSecurity" point="org.eclipse.equinox.security.loginModule">
+        <loginModule class="org.eclipse.riena.internal.example.client.security.authentication.RemoteLoginModule"/>
     </extension>
-    <extension
-          id="Remote"
-          point="org.eclipse.equinox.security.callbackHandlerMapping">
-       <callbackHandlerMapping
-             callbackHandlerId="org.eclipse.riena.example.client.LocalCallback"
-             configName="Remote">
-       </callbackHandlerMapping>
+    <extension id="Remote" point="org.eclipse.equinox.security.callbackHandlerMapping">
+        <callbackHandlerMapping callbackHandlerId="org.eclipse.riena.example.client.LocalCallback" configName="Remote"/>
     </extension>
-    <extension
-          point="org.eclipse.ui.splashHandlers">
-       <splashHandler
-             class="org.eclipse.riena.example.client.splashHandlers.LoginSplashHandler"
-             id="org.eclipse.riena.example.client.splashHandlers.interactive">
-       </splashHandler>
-       <splashHandlerProductBinding
-             productId="org.eclipse.riena.example.client.example_product"
-             splashId="org.eclipse.riena.example.client.splashHandlers.interactive">
-       </splashHandlerProductBinding>
+    <extension point="org.eclipse.ui.splashHandlers">
+        <splashHandler class="org.eclipse.riena.example.client.splashHandlers.LoginSplashHandler" id="org.eclipse.riena.example.client.splashHandlers.interactive"/>
+        <splashHandlerProductBinding productId="org.eclipse.riena.example.client.example_product" splashId="org.eclipse.riena.example.client.splashHandlers.interactive"/>
     </extension>
-    <extension
-          point="org.eclipse.riena.ui.swt.imagePaths">
-       <path
-             path="icons">
-       </path>
+    <extension point="org.eclipse.riena.ui.swt.imagePaths">
+        <path path="icons"/>
     </extension>
-    <extension
-          point="org.eclipse.riena.navigation.ui.swt.statusLine">
-       <contentFactory
-             factory="org.eclipse.riena.example.client.statusline.ExampleStatuslineContentFactory">
-       </contentFactory>
+    <extension point="org.eclipse.riena.navigation.ui.swt.statusLine">
+        <contentFactory factory="org.eclipse.riena.example.client.statusline.ExampleStatuslineContentFactory"/>
     </extension>
-   <extension point="org.eclipse.core.expressions.definitions">
-    	<definition id="org.eclipse.riena.example.client.playgroundModuleVisible">
-        <with
-              variable="activeModuleNodeId">
-           <equals
-                 value="playgroundModule">
-           </equals>
-        </with>
-    	</definition>
-     <definition
-           id="org.eclipse.riena.example.client.playgroundSubAppVisible">
-        <with
-              variable="activeSubApplicationNodeId">
-           <equals
-                 value="playground">
-           </equals>
-        </with>
-     </definition>
-     <definition
-           id="org.eclipse.riena.example.client.navigationSubAppVisible">
-        <with
-              variable="activeSubApplicationNodeId">
-           <equals
-                 value="org.eclipse.riena.example.navigation.subapplication">
-           </equals>
-        </with>
-     </definition>
-	</extension>
-   <extension
-         point="org.eclipse.core.expressions.propertyTesters">
-      <propertyTester
-            class="org.eclipse.riena.example.client.ClosablePropertyTester"
-            id="org.eclipse.riena.example.client.closablePropertyTester"
-            namespace="org.eclipse.riena.navigation.model"
-            properties="isClosable"
-            type="org.eclipse.riena.navigation.INavigationNode">
-      </propertyTester>
-      <propertyTester
-            class="org.eclipse.riena.example.client.FastViewPropertyTester"
-            id="org.eclipse.riena.example.client.fastViewPropertyTester"
-            namespace="org.eclipse.riena.navigation.model"
-            properties="isFastView"
-            type="org.eclipse.riena.navigation.INavigationNode">
-      </propertyTester>
-   </extension>
-   <extension
-         point="org.eclipse.riena.security.ui.permissionFilterMapping">
-      <mapping
-            filterID="rienaExample.newx"
-            permissionAction="newx"
-            permissionClass="java.lang.RuntimePermission"
-            permissionName="navi">
-      </mapping>
-   </extension>
-   <extension
-         point="org.eclipse.riena.navigation.ui.swt.windowNavigator">
-      <navigator
-            navigatorClass="org.eclipse.riena.example.client.views.ExampleWindowNavigator">
-      </navigator>
-   </extension>
+    <extension point="org.eclipse.core.expressions.definitions">
+        <definition id="org.eclipse.riena.example.client.playgroundModuleVisible">
+            <with variable="activeModuleNodeId">
+                <equals value="playgroundModule"/>
+            </with>
+        </definition>
+        <definition id="org.eclipse.riena.example.client.playgroundSubAppVisible">
+            <with variable="activeSubApplicationNodeId">
+                <equals value="playground"/>
+            </with>
+        </definition>
+        <definition id="org.eclipse.riena.example.client.navigationSubAppVisible">
+            <with variable="activeSubApplicationNodeId">
+                <equals value="org.eclipse.riena.example.navigation.subapplication"/>
+            </with>
+        </definition>
+    </extension>
+    <extension point="org.eclipse.core.expressions.propertyTesters">
+        <propertyTester class="org.eclipse.riena.example.client.ClosablePropertyTester" id="org.eclipse.riena.example.client.closablePropertyTester" namespace="org.eclipse.riena.navigation.model" properties="isClosable" type="org.eclipse.riena.navigation.INavigationNode"/>
+        <propertyTester class="org.eclipse.riena.example.client.FastViewPropertyTester" id="org.eclipse.riena.example.client.fastViewPropertyTester" namespace="org.eclipse.riena.navigation.model" properties="isFastView" type="org.eclipse.riena.navigation.INavigationNode"/>
+    </extension>
+    <extension point="org.eclipse.riena.security.ui.permissionFilterMapping">
+        <mapping filterID="rienaExample.newx" permissionAction="newx" permissionClass="java.lang.RuntimePermission" permissionName="navi"/>
+    </extension>
+    <extension point="org.eclipse.riena.navigation.ui.swt.windowNavigator">
+        <navigator navigatorClass="org.eclipse.riena.example.client.views.ExampleWindowNavigator"/>
+    </extension>
+<extension point="org.eclipse.riena.navigation.assemblies2">
+        <assembly2 assembler="org.eclipse.riena.example.client.navigation.model.NavigationSubApplicationNodeAssembler" id="org.eclipse.riena.example.navigation.assembly" parentNodeId="application"/>
+        <assembly2 assembler="org.eclipse.riena.example.client.navigation.model.UIProcessNodeAssembler" id="org.eclipse.riena.example.uiProcesses.assembly" parentNodeId="playground"/>
+        <assembly2 assembler="org.eclipse.riena.example.client.navigation.model.NavigateNodeAssembler" id="org.eclipse.riena.example.navigate.assembly" parentNodeId="org.eclipse.riena.example.navigation.subapplication"/>
+        <assembly2 assembler="org.eclipse.riena.example.client.navigation.model.SharedViewsNodeAssembler" id="org.eclipse.riena.example.sharedViews" parentNodeId="playground"/>
+        <assembly2 id="org.eclipse.riena.example.deselectablenodes.assembly" name="Selectable Submodule Assembly" parentNodeId="playground" startOrder="100">
+            <moduleGroup name="Selectable Submodule" nodeId="org.eclipse.riena.example.selectablesubmodule.modulegroup">
+                <module closable="true" name="Selectable Submodule" nodeId="org.eclipse.riena.example.selectablesubmodule.module">
+                    <subModule controller="org.eclipse.riena.example.client.controllers.SalaryController" expanded="false" name="Salary" nodeId="org.eclipse.riena.example.selectablesubmodule.salary" requiresPreparation="false" selectable="true" sharedView="false" viewId="org.eclipse.riena.example.client.views.SalaryView" visible="true"/>
+                    <subModule controller="org.eclipse.riena.example.client.controllers.SalaryIgnoreController" expanded="false" name="Salary" nodeId="org.eclipse.riena.example.selectablesubmodule.salaryignore" requiresPreparation="false" selectable="true" sharedView="false" viewId="org.eclipse.riena.example.client.views.SalaryIgnoreView" visible="true"/>
+                    <subModule expanded="true" name="Contracts (not selectable)" nodeId="org.eclipse.riena.example.selectablesubmodule.contracts" requiresPreparation="false" selectable="false" sharedView="false" visible="true">
+                        <subModule controller="org.eclipse.riena.example.client.controllers.ServiceContractsController" expanded="false" name="ServiceContracts" nodeId="org.eclipse.riena.example.selectablesubmodule.servicecontracts" requiresPreparation="false" selectable="true" sharedView="false" viewId="org.eclipse.riena.example.client.views.ServiceContractsView" visible="true"/>
+                        <subModule controller="org.eclipse.riena.example.client.controllers.OutlineContractsController" expanded="false" name="OutlineContracts" nodeId="org.eclipse.riena.example.selectablesubmodule.outlinecontracts" requiresPreparation="false" selectable="true" sharedView="false" viewId="org.eclipse.riena.example.client.views.OutlineContractsView" visible="true"/>
+                    </subModule>
+                </module>
+            </moduleGroup>
+        </assembly2>
+        <assembly2 assembler="org.eclipse.riena.example.client.navigation.model.PlaygroundNodeAssembler" id="org.eclipse.riena.example.playground" parentNodeId="playground"/>
+        <assembly2 id="org.eclipse.riena.example.filters.assembly" name="filters_definition" parentNodeId="playground">
+            <moduleGroup name="uiFilters_group" nodeId="org.eclipse.riena.example.filters">
+                <module closable="true" name="UI-Filters" nodeId="org.eclipse.riena.example.module.filters">
+                    <subModule controller="org.eclipse.riena.example.client.controllers.FilterExampleSubModuleController" expanded="false" name="%submodule.label.6" nodeId="org.eclipse.riena.example.filterexample" requiresPreparation="false" selectable="true" sharedView="false" viewId="org.eclipse.riena.example.client.views.FilterExampleSubModuleView" visible="true"/>
+                    <subModule controller="org.eclipse.riena.example.client.controllers.FilterSubModuleController" expanded="false" name="Ridget" nodeId="org.eclipse.riena.example.filterridget" requiresPreparation="false" selectable="true" sharedView="false" viewId="org.eclipse.riena.example.client.views.FilterSubModuleView" visible="true"/>
+                    <subModule controller="org.eclipse.riena.example.client.controllers.FilterNavigationSubModuleController" expanded="false" name="Navigation" nodeId="org.eclipse.riena.example.filternavigation" requiresPreparation="false" selectable="true" sharedView="false" viewId="org.eclipse.riena.example.client.views.FilterNavigationSubModuleView" visible="true"/>
+                    <subModule controller="org.eclipse.riena.example.client.controllers.FilterActionSubModuleController" expanded="false" name="Menu Item" nodeId="org.eclipse.riena.example.filteraction" requiresPreparation="false" selectable="true" sharedView="false" viewId="org.eclipse.riena.example.client.views.FilterActionSubModuleView" visible="true"/>
+                    <subModule controller="org.eclipse.riena.example.client.controllers.FilterExternalDefinitionSubModuleController" expanded="false" name="External Definition" nodeId="org.eclipse.riena.example.filterdefinition" requiresPreparation="false" selectable="true" sharedView="false" viewId="org.eclipse.riena.example.client.views.FilterExternalDefinitionSubModuleView" visible="true"/>
+                </module>
+            </moduleGroup>
+        </assembly2>
+        <assembly2 id="org.eclipse.riena.example.logcollector.assembly" name="logcollector" parentNodeId="playground">
+            <moduleGroup name="logcollector_group" nodeId="org.eclipse.riena.example.logcollector">
+                <module closable="true" name="LogCollector" nodeId="logcollectorModule">
+                    <subModule controller="org.eclipse.riena.example.client.controllers.LogCollectorSubModuleController" expanded="false" name="Log Collector" nodeId="org.eclipse.riena.example.logcollectorlog" requiresPreparation="true" selectable="true" sharedView="false" viewId="org.eclipse.riena.example.client.views.LogCollectorSubModuleView" visible="true"/>
+                </module>
+            </moduleGroup>
+        </assembly2>
+        <assembly2 assembler="org.eclipse.riena.example.client.navigation.model.ComboAndListNodeAssembler" id="org.eclipse.riena.example.navigate.comboAndList" parentNodeId="org.eclipse.riena.example.navigation.subapplication"/>
+        <assembly2 assembler="org.eclipse.riena.example.client.navigation.model.ComboAssembler" id="org.eclipse.riena.example.navigate.firstSubModule" parentNodeId="org.eclipse.riena.example.listdemo"/>
+        <assembly2 assembler="org.eclipse.riena.example.client.navigation.model.ComboAssemblerAsThirdSubModule" id="org.eclipse.riena.example.navigate.thirdSubModule" parentNodeId="org.eclipse.riena.example.listdemo"/>
+        <assembly2 assembler="org.eclipse.riena.example.client.navigation.model.FirstModuleAssembler" id="org.eclipse.riena.example.navigate.firstmodule" parentNodeId="org.eclipse.riena.example.navigate.comboAndListGroup"/>
+        <assembly2 assembler="org.eclipse.riena.example.client.navigation.model.AddSubmoduleToModuleAtIndexAssembler" id="org.eclipse.riena.example.navigate.submoduleToModuleAtIndex2" parentNodeId="org.eclipse.riena.example.navigate.module"/>
+        <assembly2 assembler="org.eclipse.riena.example.client.navigation.model.DemoTargetNodeAssembler" id="org.eclipse.riena.example.navigate.demotarget" parentNodeId="org.eclipse.riena.example.navigation.subapplication"/>
+        <assembly2 assembler="org.eclipse.riena.example.client.navigation.model.OrdinalIndex5NodeAssembler" id="org.eclipse.riena.example.navigate.ordinal5SubModule" parentNodeId="org.eclipse.riena.example.ordinalparent"/>
+        <assembly2 assembler="org.eclipse.riena.example.client.navigation.model.OrdinalIndex10NodeAssembler" id="org.eclipse.riena.example.navigate.ordinal10SubModule" parentNodeId="org.eclipse.riena.example.ordinalparent"/>
+        <assembly2 assembler="org.eclipse.riena.example.client.navigation.model.TableTextAndTreeNodeAssembler" id="org.eclipse.riena.example.navigate.tableTextAndTree.assembly" parentNodeId="playground"/>
+        <assembly2 id="org.eclipse.riena.example.client.textAssembly" parentNodeId="org.eclipse.riena.example.navigation.subapplication">
+            <moduleGroup name="textExamplesGroup" nodeId="org.eclipse.riena.example.client.textExamplesGroup">
+                <module closable="true" name="Text Examples" nodeId="org.eclipse.riena.example.client.textExamples">
+                    <subModule controller="org.eclipse.riena.example.client.controllers.TextSubModuleController" expanded="false" name="Text" nodeId="textSubModuleView" requiresPreparation="true" selectable="true" sharedView="false" viewId="org.eclipse.riena.example.client.views.TextSubModuleView" visible="true"/>
+                    <subModule controller="org.eclipse.riena.example.client.controllers.TextNumericSubModuleController" expanded="false" name="Numeric Text" nodeId="textNumericSubModuleView" requiresPreparation="true" selectable="true" sharedView="false" viewId="org.eclipse.riena.example.client.views.TextNumericSubModuleView" visible="true"/>
+                    <subModule controller="org.eclipse.riena.example.client.controllers.TextDateSubModuleController" expanded="false" name="Date Text" nodeId=".textDateSubModuleView" requiresPreparation="true" selectable="true" sharedView="false" viewId="org.eclipse.riena.example.client.views.TextDateSubModuleView" visible="true"/>
+                </module>
+            </moduleGroup>
+        </assembly2>
+        <assembly2 id="org.eclipse.riena.example.beforeactivate.assembly" parentNodeId="org.eclipse.riena.example.navigation.subapplication" startOrder="2">
+            <moduleGroup name="Activate/Deactivate" nodeId="org.eclipse.riena.example.activatedeactivate.mg">
+                <module closable="true" name="Before Activate" nodeId="org.eclipse.riena.example.beforeactivate.module">
+                    <subModule controller="org.eclipse.riena.example.client.controllers.BeforeActivateSubModuleController" expanded="false" name="Before Activate" nodeId="org.eclipse.riena.example.client.subModule.beforeActivate" requiresPreparation="true" selectable="true" sharedView="false" viewId="org.eclipse.riena.example.client.views.BeforeActivateSubModuleView" visible="true"/>
+                    <subModule controller="org.eclipse.riena.example.client.controllers.AllowActivateSubModuleController" expanded="false" name="Allow Activate" nodeId="org.eclipse.riena.example.client.subModule.allowActivate" requiresPreparation="true" selectable="true" sharedView="false" viewId="org.eclipse.riena.example.client.views.AllowActivateSubModuleView" visible="true"/>
+                </module>
+                <module closable="true" name="Allows Dispose" nodeId="org.eclipse.riena.example.allowsdispose.module">
+                    <subModule controller="org.eclipse.riena.example.client.controllers.AllowsDisposeSubModuleController" expanded="false" name="Allows Dispose" nodeId="org.eclipse.riena.example.client.subModule.allowsDispose" requiresPreparation="false" selectable="true" sharedView="false" viewId="org.eclipse.riena.example.client.allowsDisposeSubModuleView" visible="true"/>
+                </module>
+            </moduleGroup>
+        </assembly2>
+        <assembly2 id="org.eclipse.riena.example.client.assembly2.contentFilter" parentNodeId="playgroundModule" startOrder="1">
+            <subModule controller="org.eclipse.riena.example.client.controllers.ContentFilterSubModuleController" expanded="false" name="Content Filter" nodeId="org.eclipse.riena.example.client.subModule.contentFilter" requiresPreparation="false" selectable="true" sharedView="false" viewId="org.eclipse.riena.example.client.view.contentFilter" visible="true"/>
+            <subModule controller="org.eclipse.riena.example.client.controllers.ChangeLogoSubModuleController" expanded="false" name="Change Logo" nodeId="org.eclipse.riena.example.client.subModule.changeLogo" requiresPreparation="false" selectable="true" sharedView="false" viewId="org.eclipse.riena.example.client.view.changeLogo" visible="true"/>
+        </assembly2>
+        <assembly2 id="org.eclipse.riena.example.exceptiontest" parentNodeId="playground" startOrder="1">
+            <moduleGroup name="ExceptionTest" nodeId="org.eclipse.riena.example.exceptiontest.mg">
+                <module closable="true" name="Exception Test" nodeId="org.eclipse.riena.example.exceptiontest.module">
+                    <subModule controller="org.eclipse.riena.example.client.controllers.ExceptionTestController" expanded="false" nodeId="org.eclipse.riena.example.exceptiontest.submodule" requiresPreparation="false" selectable="true" sharedView="false" viewId="org.eclipse.riena.example.client.exceptiontest.view" visible="true"/>
+                </module>
+            </moduleGroup>
+        </assembly2>
+        <assembly2 id="org.eclipse.riena.example.client.setnodeidsample" parentNodeId="playground" startOrder="1">
+            <moduleGroup nodeId="org.eclipse.riena.example.client.mgkundennummer">
+                <module closable="true" name="Customer nr." nodeId="org.eclipse.riena.example.client.mkundennummer">
+                    <subModule controller="org.eclipse.riena.example.client.controllers.PartnerSubModuleController" expanded="false" name="Customer number" nodeId="org.eclipse.riena.example.client.smkundennummer" requiresPreparation="false" selectable="true" sharedView="false" viewId="org.eclipse.riena.example.client.views.PartnerSubModuleView" visible="true"/>
+                </module>
+            </moduleGroup>
+            <moduleGroup nodeId="org.eclipse.riena.example.client.mgpolice">
+                <module closable="true" name="Police" nodeId="org.eclipse.riena.example.client.mpolice">
+                    <subModule controller="org.eclipse.riena.example.client.controllers.PoliceSubModuleController" expanded="false" name="Police" nodeId="org.eclipse.riena.example.client.smpolice" requiresPreparation="false" selectable="true" sharedView="false" viewId="org.eclipse.riena.example.client.views.PoliceSubModuleView" visible="true"/>
+                </module>
+            </moduleGroup>
+        </assembly2>
+        <assembly2 id="org.eclipse.riena.example.onecustomer" parentNodeId="module121" startOrder="2">
+            <subModule controller="org.eclipse.riena.example.client.controllers.OnePersonSubModuleController" expanded="false" icon="person.gif" name="One Person" nodeId="onePersonSubModule" requiresPreparation="true" selectable="true" sharedView="false" viewId="org.eclipse.riena.example.client.views.OnePersonSubModuleView" visible="true"/>
+        </assembly2>
+        <assembly2 id="org.eclipse.riena.example.client.Users.assembly" name="Users" parentNodeId="playground" startOrder="3">
+            <moduleGroup name="Users" nodeId="org.eclipse.riena.example.client.Users.modulegroup">
+                <module closable="false" icon="person.gif" name="Users" nodeId="org.eclipse.riena.example.client.Users.module">
+                    <subModule controller="org.eclipse.riena.example.client.controller.UsersController" expanded="false" name="Users" nodeId="org.eclipse.riena.example.client.Users.submodule" requiresPreparation="false" selectable="true" sharedView="false" viewId="org.eclipse.riena.example.client.views.UsersView" visible="true"/>
+                </module>
+            </moduleGroup>
+        </assembly2>
+        <assembly2 id="org.eclipse.riena.example.client.User.assembly" name="User" parentNodeId="org.eclipse.riena.example.client.Users.module">
+            <subModule controller="org.eclipse.riena.example.client.controller.UserController" expanded="false" name="User" nodeId="org.eclipse.riena.example.client.User.submodule" requiresPreparation="false" selectable="true" sharedView="false" viewId="org.eclipse.riena.example.client.views.UserView" visible="true"/>
+        </assembly2>
+    </extension>
 </plugin>

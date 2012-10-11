@@ -133,8 +133,11 @@ public class DefaultBindingManager implements IBindingManager {
 		if (ridgetContainer instanceof IComplexRidget) {
 			final IComplexRidget complexRidget = (IComplexRidget) ridgetContainer;
 			final IRidgetContainer parent = complexRidget.getController();
+			if (parent == null) {
+				return null;
+			}
 			IRidget ridget = parent.getRidget(id);
-			if ((ridget == null) && (parent != null)) {
+			if (ridget == null) {
 				ridget = getPreparedRidget(parent, id);
 			}
 			if (ridget != null) {
