@@ -41,9 +41,7 @@ public class ContextMenuDelegateTest extends TestCase {
 		final String menuItemWithIconText = "MenuItemWithIcon"; //$NON-NLS-1$
 		final String iconName = "leftArrow"; //$NON-NLS-1$
 
-		assertEquals(0, contextMenuDelegate.getMenuItemCount());
-
-		contextMenuDelegate.addMenuItem(menuItemWithoutIconText);
+		contextMenuDelegate.addMenuItem(menuItemWithoutIconText, null);
 		assertEquals(1, contextMenuDelegate.getMenuItemCount());
 
 		contextMenuDelegate.addMenuItem(menuItemWithIconText, iconName);
@@ -55,7 +53,7 @@ public class ContextMenuDelegateTest extends TestCase {
 		final String menuItemWithIconText = "MenuItemWithIcon"; //$NON-NLS-1$
 		final String iconName = "leftArrow"; //$NON-NLS-1$
 
-		final IMenuItemRidget menuItemWithoutIcon = contextMenuDelegate.addMenuItem(menuItemWithoutIconText);
+		final IMenuItemRidget menuItemWithoutIcon = contextMenuDelegate.addMenuItem(menuItemWithoutIconText, null);
 		assertEquals(menuItemWithoutIcon, contextMenuDelegate.getMenuItem(0));
 
 		final IMenuItemRidget menuItemWithIcon = contextMenuDelegate.addMenuItem(menuItemWithIconText, iconName);
@@ -67,7 +65,7 @@ public class ContextMenuDelegateTest extends TestCase {
 		final String menuItemWithIconText = "MenuItemWithIcon"; //$NON-NLS-1$
 		final String iconName = "leftArrow"; //$NON-NLS-1$
 
-		final IMenuItemRidget menuItemWithoutIcon = contextMenuDelegate.addMenuItem(menuItemWithoutIconText);
+		final IMenuItemRidget menuItemWithoutIcon = contextMenuDelegate.addMenuItem(menuItemWithoutIconText, null);
 		assertEquals(menuItemWithoutIcon, contextMenuDelegate.getMenuItem(0));
 
 		final IMenuItemRidget menuItemWithIcon = contextMenuDelegate.addMenuItem(menuItemWithIconText, iconName);
@@ -76,17 +74,10 @@ public class ContextMenuDelegateTest extends TestCase {
 		final List<IMenuItemRidget> items = contextMenuDelegate.getMenuItems();
 		assertEquals(items.size(), 2);
 		for (int i = 0; i < items.size(); i++) {
-			final IMenuItemRidget item = items.get(i);
-			switch (i) {
-			case 0:
-				assertEquals(item, menuItemWithoutIcon);
-				break;
-			case 1:
-				assertEquals(item, menuItemWithIcon);
-				break;
-			default:
-				fail("unexpected item count"); //$NON-NLS-1$
-				break;
+			if (i == 0) {
+				items.get(i).equals(menuItemWithoutIcon);
+			} else if (i == 1) {
+				items.get(i).equals(menuItemWithIcon);
 			}
 		}
 	}
@@ -96,7 +87,7 @@ public class ContextMenuDelegateTest extends TestCase {
 		final String menuItemWithIconText = "MenuItemWithIcon"; //$NON-NLS-1$
 		final String iconName = "leftArrow"; //$NON-NLS-1$
 
-		final IMenuItemRidget menuItemWithoutIcon = contextMenuDelegate.addMenuItem(menuItemWithoutIconText);
+		final IMenuItemRidget menuItemWithoutIcon = contextMenuDelegate.addMenuItem(menuItemWithoutIconText, null);
 		assertEquals(1, contextMenuDelegate.getMenuItemCount());
 		assertEquals(menuItemWithoutIcon, contextMenuDelegate.getMenuItem(0));
 
@@ -111,7 +102,7 @@ public class ContextMenuDelegateTest extends TestCase {
 		final String menuItemWithIconText = "MenuItemWithIcon"; //$NON-NLS-1$
 		final String iconName = "leftArrow"; //$NON-NLS-1$
 
-		final IMenuItemRidget menuItemWithoutIcon = contextMenuDelegate.addMenuItem(menuItemWithoutIconText);
+		final IMenuItemRidget menuItemWithoutIcon = contextMenuDelegate.addMenuItem(menuItemWithoutIconText, null);
 		IMenuItemRidget menuItemWithIcon = contextMenuDelegate.addMenuItem(menuItemWithIconText, iconName);
 
 		assertEquals(2, contextMenuDelegate.getMenuItemCount());

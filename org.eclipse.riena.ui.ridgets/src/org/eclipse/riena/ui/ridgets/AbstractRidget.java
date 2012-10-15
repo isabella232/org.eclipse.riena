@@ -301,8 +301,4 @@ public abstract class AbstractRidget implements IRidget {
 	public int getMenuItemCount() {
 		throw new UnsupportedOperationException("Context menu is unsupported for " + this.toString()); //$NON-NLS-1$
 	}
-
-	public void updateContextMenu() {
-		throw new UnsupportedOperationException("Context menu is unsupported for " + this.toString()); //$NON-NLS-1$
-	}
 }

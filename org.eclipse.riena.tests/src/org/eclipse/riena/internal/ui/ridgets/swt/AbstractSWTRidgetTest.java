@@ -21,6 +21,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Widget;
 
 import org.eclipse.riena.core.marker.IMarker;
+import org.eclipse.riena.core.util.Nop;
 import org.eclipse.riena.internal.ui.swt.test.UITestHelper;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
@@ -376,6 +377,8 @@ public abstract class AbstractSWTRidgetTest extends AbstractRidgetTestCase {
 		final String menuItemWithIconText = "MenuItemWithIcon"; //$NON-NLS-1$
 		final String iconName = "leftArrow"; //$NON-NLS-1$
 
+		assertEquals(0, ridget.getMenuItemCount());
+
 		ridget.addMenuItem(menuItemWithoutIconText);
 		assertEquals(1, ridget.getMenuItemCount());
 
@@ -396,20 +399,48 @@ public abstract class AbstractSWTRidgetTest extends AbstractRidgetTestCase {
 		assertEquals(menuItemWithIcon, ridget.getMenuItem(1));
 	}
 
+	public void testGetMenuItemEmptyContextMenu() {
+		try {
+			final IRidget ridget = getRidget();
+			final String menuItemWithoutIconText = "MenuItemWithoutIcon"; //$NON-NLS-1$
+			final String menuItemWithIconText = "MenuItemWithIcon"; //$NON-NLS-1$
+			final String iconName = "leftArrow"; //$NON-NLS-1$
+
+			ridget.addMenuItem(menuItemWithoutIconText);
+			ridget.addMenuItem(menuItemWithIconText, iconName);
+			ridget.getMenuItem(2);
+			fail("IllegalArgumentException expected"); //$NON-NLS-1$
+		} catch (final IllegalArgumentException expected) {
+			Nop.reason("IllegalArgumentException expected"); //$NON-NLS-1$
+		}
+	}
+
+	public void testGetMenuItemNotExistingItem() {
+		final IRidget ridget = getRidget();
+		try {
+			ridget.getMenuItem(0);
+			fail("IllegalStateException expected"); //$NON-NLS-1$
+		} catch (final IllegalStateException expected) {
+			Nop.reason("IllegalStateException expected"); //$NON-NLS-1$
+		}
+	}
+
 	public void testAddMenuItem() {
 		final IRidget ridget = getRidget();
 		final String menuItemWithoutIconText = "MenuItemWithoutIcon"; //$NON-NLS-1$
 		final String menuItemWithIconText = "MenuItemWithIcon"; //$NON-NLS-1$
 		final String iconName = "leftArrow"; //$NON-NLS-1$
+		final Control control = (Control) getWidget();
 
 		final IMenuItemRidget menuItemWithoutIcon = ridget.addMenuItem(menuItemWithoutIconText);
 		assertEquals(1, ridget.getMenuItemCount());
 		assertEquals(menuItemWithoutIcon, ridget.getMenuItem(0));
+		assertEquals(1, control.getMenu().getItemCount());
 
 		final IMenuItemRidget menuItemWithIcon = ridget.addMenuItem(menuItemWithIconText, iconName);
 		assertEquals(2, ridget.getMenuItemCount());
 		assertEquals(menuItemWithIcon, ridget.getMenuItem(1));
-
+		assertEquals(2, control.getMenu().getItemCount());
 	}
 
 	public void testRemoveMenuItem() {
@@ -417,21 +448,27 @@ public abstract class AbstractSWTRidgetTest extends AbstractRidgetTestCase {
 		final String menuItemWithoutIconText = "MenuItemWithoutIcon"; //$NON-NLS-1$
 		final String menuItemWithIconText = "MenuItemWithIcon"; //$NON-NLS-1$
 		final String iconName = "leftArrow"; //$NON-NLS-1$
+		final Control control = (Control) getWidget();
 
 		final IMenuItemRidget menuItemWithoutIcon = ridget.addMenuItem(menuItemWithoutIconText);
 		IMenuItemRidget menuItemWithIcon = ridget.addMenuItem(menuItemWithIconText, iconName);
 
 		assertEquals(2, ridget.getMenuItemCount());
+		assertEquals(2, control.getMenu().getItemCount());
 		ridget.removeMenuItem(menuItemWithIconText);
 		assertEquals(1, ridget.getMenuItemCount());
+		assertEquals(1, control.getMenu().getItemCount());
 
 		menuItemWithIcon = ridget.addMenuItem(menuItemWithIconText, iconName);
 		assertEquals(2, ridget.getMenuItemCount());
+		assertEquals(2, control.getMenu().getItemCount());
 
 		ridget.removeMenuItem(menuItemWithoutIcon);
 		assertEquals(1, ridget.getMenuItemCount());
+		assertEquals(1, control.getMenu().getItemCount());
 		ridget.removeMenuItem(menuItemWithIcon);
 		assertEquals(0, ridget.getMenuItemCount());
+		assertEquals(0, control.getMenu().getItemCount());
 	}
 
 }

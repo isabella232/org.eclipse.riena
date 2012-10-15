@@ -37,18 +37,6 @@ public class ContextMenuDelegate {
 	 * 
 	 * @param menuItemText
 	 *            The text of the menu item to be added.
-	 * @return the menu item rigdet.
-	 * 
-	 */
-	public IMenuItemRidget addMenuItem(final String menuText) {
-		return addMenuItem(menuText, null);
-	}
-
-	/**
-	 * Adds a menu item to the ridget.
-	 * 
-	 * @param menuItemText
-	 *            The text of the menu item to be added.
 	 * @param iconName
 	 *            The name of the icon for the menu item to be added.
 	 * @return the menu item rigdet.
@@ -129,6 +117,12 @@ public class ContextMenuDelegate {
 	 * @return Menu item of the index.
 	 */
 	public IMenuItemRidget getMenuItem(final int index) {
+		if (menuItems == null || menuItems.isEmpty()) {
+			throw new IllegalStateException("No menu items in context menu."); //$NON-NLS-1$
+		}
+		if (index >= menuItems.size() || index < 0) {
+			throw new IllegalArgumentException("No menu item at index " + index + " found"); //$NON-NLS-1$//$NON-NLS-2$
+		}
 		return menuItems.get(index);
 	}
 
