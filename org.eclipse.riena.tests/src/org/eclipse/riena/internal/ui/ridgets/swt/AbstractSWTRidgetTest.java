@@ -401,17 +401,10 @@ public abstract class AbstractSWTRidgetTest extends AbstractRidgetTestCase {
 
 	public void testGetMenuItemEmptyContextMenu() {
 		try {
-			final IRidget ridget = getRidget();
-			final String menuItemWithoutIconText = "MenuItemWithoutIcon"; //$NON-NLS-1$
-			final String menuItemWithIconText = "MenuItemWithIcon"; //$NON-NLS-1$
-			final String iconName = "leftArrow"; //$NON-NLS-1$
-
-			ridget.addMenuItem(menuItemWithoutIconText);
-			ridget.addMenuItem(menuItemWithIconText, iconName);
-			ridget.getMenuItem(2);
-			fail("IllegalArgumentException expected"); //$NON-NLS-1$
-		} catch (final IllegalArgumentException expected) {
-			Nop.reason("IllegalArgumentException expected"); //$NON-NLS-1$
+			getRidget().addMenuItem("text");
+			fail("UnsupportedOperationException expected"); //$NON-NLS-1$
+		} catch (final UnsupportedOperationException expected) {
+			Nop.reason("UnsupportedOperationException expected"); //$NON-NLS-1$
 		}
 	}
 
@@ -419,9 +412,9 @@ public abstract class AbstractSWTRidgetTest extends AbstractRidgetTestCase {
 		final IRidget ridget = getRidget();
 		try {
 			ridget.getMenuItem(0);
-			fail("IllegalStateException expected"); //$NON-NLS-1$
-		} catch (final IllegalStateException expected) {
-			Nop.reason("IllegalStateException expected"); //$NON-NLS-1$
+			fail("UnsupportedOperationException expected"); //$NON-NLS-1$
+		} catch (final UnsupportedOperationException expected) {
+			Nop.reason("UnsupportedOperationException expected"); //$NON-NLS-1$
 		}
 	}
 
