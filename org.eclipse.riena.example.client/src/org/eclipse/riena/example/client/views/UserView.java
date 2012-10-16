@@ -29,6 +29,7 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 public class UserView extends SubModuleView {
 
 	private static final int TEXT_FIELD_WIDTH = 200;
+	private static final int LIGHTS_WIDTH = 25;
 	private static final int BUTTON_WIDTH = 75;
 
 	@Override
@@ -73,7 +74,7 @@ public class UserView extends SubModuleView {
 		GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.FILL).hint(TEXT_FIELD_WIDTH, SWT.DEFAULT).applyTo(txtPassword);
 
 		final Label lblLights = UIControlsFactory.createLabel(top, "", "lblLights"); //$NON-NLS-1$ //$NON-NLS-2$
-		GridDataFactory.fillDefaults().applyTo(lblLights);
+		GridDataFactory.fillDefaults().hint(LIGHTS_WIDTH, SWT.DEFAULT).applyTo(lblLights);
 
 		UIControlsFactory.createLabel(top, "Comfirm:"); //$NON-NLS-1$
 		final Text txtConfirm = UIControlsFactory.createText(top, SWT.SINGLE | SWT.PASSWORD, "txtConfirm"); //$NON-NLS-1$
