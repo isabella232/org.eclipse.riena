@@ -251,15 +251,15 @@ public class UserController extends SubModuleController {
 		String tooltip = "The quality of your password is "; //$NON-NLS-1$
 		switch (quality) {
 		case LOW:
-			icon = "lights_red"; //$NON-NLS-1$
+			icon = "lights_red.png"; //$NON-NLS-1$
 			tooltip += "low"; //$NON-NLS-1$
 			break;
 		case MEDIUM:
-			icon = "lights_yellow"; //$NON-NLS-1$
+			icon = "lights_yellow.png"; //$NON-NLS-1$
 			tooltip += "medium"; //$NON-NLS-1$
 			break;
 		case HIGH:
-			icon = "lights_green"; //$NON-NLS-1$
+			icon = "lights_green.png"; //$NON-NLS-1$
 			tooltip += "high"; //$NON-NLS-1$
 			break;
 		default:

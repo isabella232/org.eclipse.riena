@@ -111,7 +111,7 @@ public class UserView extends JavaFxSubModuleView {
 		GridPane.setConstraints(txtPassword, x, y);
 		addUIControl(txtPassword, "txtPassword");
 		x++;
-		Label lblLights = new Label("a");
+		Label lblLights = new Label();
 		lblLights.setPrefWidth(LIGHTS_WIDTH);
 		top.getChildren().add(lblLights);
 		GridPane.setConstraints(lblLights, x, y);
