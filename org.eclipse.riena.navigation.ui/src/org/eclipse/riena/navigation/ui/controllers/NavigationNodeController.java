@@ -208,9 +208,9 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	public <R extends IRidget> R getRidget(final String id) {
 		IRidget result = ridgets.get(id);
 		if (result == null && id.indexOf('.') != -1) {
-			final String childId = getChildId(id);
-			final IRidgetContainer parent = getContainer(childId);
+			final IRidgetContainer parent = getContainer(id);
 			if (parent != null) {
+				final String childId = getChildId(id);
 				result = parent.getRidget(childId);
 			}
 		}
