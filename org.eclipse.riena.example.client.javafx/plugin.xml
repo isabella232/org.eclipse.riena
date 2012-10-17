@@ -11,6 +11,8 @@
         <view allowMultiple="true" class="org.eclipse.riena.example.client.javafx.views.TextFieldView" id="org.eclipse.riena.example.client.javafx.views.TextFieldView" name="org.eclipse.riena.example.client.javafx.views.TextFieldView"/>
         <view allowMultiple="true" class="org.eclipse.riena.example.client.javafx.views.MarkerView" id="org.eclipse.riena.example.client.javafx.views.MarkerView" name="org.eclipse.riena.example.client.javafx.views.MarkerView"/>
         <view allowMultiple="true" class="org.eclipse.riena.example.client.javafx.views.ButtonView" id="org.eclipse.riena.example.client.javafx.views.ButtonView" name="org.eclipse.riena.example.client.javafx.views.ButtonView"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.javafx.views.UsersView" id="org.eclipse.riena.example.client.javafx.views.UsersView" name="org.eclipse.riena.example.client.javafx.views.UsersView"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.javafx.views.UserView" id="org.eclipse.riena.example.client.javafx.views.UserView" name="org.eclipse.riena.example.client.javafx.views.UserView"/>
     </extension>
     <extension point="org.eclipse.ui.perspectives">
         <perspective class="org.eclipse.riena.navigation.ui.swt.views.SubApplicationView" id="org.eclipse.riena.example.client.javafx.JavaFX.perspective" name="org.eclipse.riena.example.client.javafx.JavaFX.perspective"/>
@@ -37,6 +39,16 @@
         </assembly2>
         <assembly2 id="org.eclipse.riena.example.client.javafx.AdditionEclipseBinding" name="JavaFX Examples" parentNodeId="org.eclipse.riena.example.client.javafx.Playground.module">
             <subModule controller="org.eclipse.riena.example.client.javafx.controller.JavaFxAdditionController" expanded="false" name="Addition" nodeId="org.eclipse.riena.example.client.javafx.AdditionEclipseBinding.submodule" requiresPreparation="false" selectable="true" sharedView="false" viewId="org.eclipse.riena.example.client.javafx.views.JavaFxAdditionEclipseBindingView" visible="true"/>
+        </assembly2>
+        <assembly2 id="org.eclipse.riena.example.client.javafx.Users.assembly" name="Users" parentNodeId="org.eclipse.riena.example.client.javafx.JavaFX.subapp" startOrder="3">
+            <moduleGroup name="Users" nodeId="org.eclipse.riena.example.client.javafx.Users.modulegroup">
+                <module closable="false" icon="person.gif" name="Users" nodeId="org.eclipse.riena.example.client.javafx.Users.module">
+                    <subModule controller="org.eclipse.riena.example.client.javafx.controller.UsersController" expanded="false" name="Users" nodeId="org.eclipse.riena.example.client.javafx.Users.submodule" requiresPreparation="false" selectable="true" sharedView="false" viewId="org.eclipse.riena.example.client.javafx.views.UsersView" visible="true"/>
+                </module>
+            </moduleGroup>
+        </assembly2>
+        <assembly2 id="org.eclipse.riena.example.client.javafx.User.assembly" name="User" parentNodeId="org.eclipse.riena.example.client.javafx.Users.module">
+            <subModule controller="org.eclipse.riena.example.client.controllers.UserController" expanded="false" name="User" nodeId="org.eclipse.riena.example.client.javafx.User.submodule" requiresPreparation="false" selectable="true" sharedView="false" viewId="org.eclipse.riena.example.client.javafx.views.UserView" visible="true"/>
         </assembly2>
     </extension>
 </plugin>

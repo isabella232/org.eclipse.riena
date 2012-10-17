@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.example.client.controller;
+package org.eclipse.riena.example.client.javafx.controller;
 
 import java.util.UUID;
 
@@ -27,13 +27,16 @@ public class UsersController extends SubModuleController {
 
 		super.configureRidgets();
 
-		final IActionRidget createAction = getRidget(IActionRidget.class, "btnCreate"); //$NON-NLS-1$
+		final IActionRidget createAction = getRidget(IActionRidget.class,
+				"btnCreate"); //$NON-NLS-1$
 		createAction.addListener(new IActionListener() {
 
+			@Override
 			public void callback() {
-				final String typeId = "org.eclipse.riena.example.client.User.submodule"; //$NON-NLS-1$
+				final String typeId = "org.eclipse.riena.example.client.javafx.User.submodule"; //$NON-NLS-1$
 				final String instanceId = UUID.randomUUID().toString();
-				getNavigationNode().navigate(new NavigationNodeId(typeId, instanceId));
+				getNavigationNode().navigate(
+						new NavigationNodeId(typeId, instanceId));
 			}
 		});
 

@@ -132,15 +132,16 @@ public class JavaFxMarkerSupport extends JavaFxBasicMarkerSupport {
 	}
 
 	protected void addCssClass(final Control control, String cssClass) {
+		control.getStyleClass().remove(cssClass);
 		control.getStyleClass().add(cssClass);
 	}
 
 	protected void addMandatory(final Control control) {
-		control.getStyleClass().add(CSS_MANADORY);
+		addCssClass(control, CSS_MANADORY);
 	}
 
 	protected void addError(final Control control) {
-		control.getStyleClass().add(CSS_ERROR);
+		addCssClass(control, CSS_ERROR);
 	}
 
 	protected void clearError(final Control control) {

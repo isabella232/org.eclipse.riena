@@ -456,12 +456,12 @@
         <assembly2 id="org.eclipse.riena.example.client.Users.assembly" name="Users" parentNodeId="playground" startOrder="3">
             <moduleGroup name="Users" nodeId="org.eclipse.riena.example.client.Users.modulegroup">
                 <module closable="false" icon="person.gif" name="Users" nodeId="org.eclipse.riena.example.client.Users.module">
-                    <subModule controller="org.eclipse.riena.example.client.controller.UsersController" expanded="false" name="Users" nodeId="org.eclipse.riena.example.client.Users.submodule" requiresPreparation="false" selectable="true" sharedView="false" viewId="org.eclipse.riena.example.client.views.UsersView" visible="true"/>
+                    <subModule controller="org.eclipse.riena.example.client.controllers.UsersController" expanded="false" name="Users" nodeId="org.eclipse.riena.example.client.Users.submodule" requiresPreparation="false" selectable="true" sharedView="false" viewId="org.eclipse.riena.example.client.views.UsersView" visible="true"/>
                 </module>
             </moduleGroup>
         </assembly2>
         <assembly2 id="org.eclipse.riena.example.client.User.assembly" name="User" parentNodeId="org.eclipse.riena.example.client.Users.module">
-            <subModule controller="org.eclipse.riena.example.client.controller.UserController" expanded="false" name="User" nodeId="org.eclipse.riena.example.client.User.submodule" requiresPreparation="false" selectable="true" sharedView="false" viewId="org.eclipse.riena.example.client.views.UserView" visible="true"/>
+            <subModule controller="org.eclipse.riena.example.client.controllers.UserController" expanded="false" name="User" nodeId="org.eclipse.riena.example.client.User.submodule" requiresPreparation="false" selectable="true" sharedView="false" viewId="org.eclipse.riena.example.client.views.UserView" visible="true"/>
         </assembly2>
     </extension>
 </plugin>
