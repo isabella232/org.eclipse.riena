@@ -209,7 +209,7 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 		IRidget result = ridgets.get(id);
 		if (result == null && id.indexOf('.') != -1) {
 			final String childId = getChildId(id);
-			final IRidgetContainer parent = getContainer(childId);
+			final IRidgetContainer parent = getContainer(id);
 			if (parent != null) {
 				result = parent.getRidget(childId);
 			}
