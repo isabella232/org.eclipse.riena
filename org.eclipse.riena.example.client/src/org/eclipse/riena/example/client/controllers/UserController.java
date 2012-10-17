@@ -33,6 +33,8 @@ import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IMessageBoxRidget;
 import org.eclipse.riena.ui.ridgets.IStatuslineRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
+import org.eclipse.riena.ui.ridgets.listener.FocusEvent;
+import org.eclipse.riena.ui.ridgets.listener.IFocusListener;
 import org.eclipse.riena.ui.ridgets.marker.StatuslineMessageMarkerViewer;
 import org.eclipse.riena.ui.ridgets.validation.ValidationFailure;
 import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
@@ -101,6 +103,15 @@ public class UserController extends SubModuleController {
 		final StringBean comfirmModel = new StringBean();
 		txtConfirm.bindToModel(comfirmModel, StringBean.PROP_VALUE);
 		inputRidgets.add(txtConfirm);
+		txtPassword.addFocusListener(new IFocusListener() {
+
+			public void focusLost(final FocusEvent event) {
+				txtConfirm.revalidate();
+			}
+
+			public void focusGained(final FocusEvent event) {
+			}
+		});
 
 		final IStatuslineRidget statuslineRidget = getApplicationController().getStatusline();
 		final StatuslineMessageMarkerViewer statuslineMessageMarkerViewer = new StatuslineMessageMarkerViewer(statuslineRidget);
