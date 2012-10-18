@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component id="org.eclipse.riena.ui.ridgets" version="2">
+<resource path="src/org/eclipse/riena/ui/ridgets/AbstractMarkerSupport.java" type="org.eclipse.riena.ui.ridgets.AbstractMarkerSupport">
+<filter id="338792546">
+<message_arguments>
+<message_argument value="org.eclipse.riena.ui.ridgets.AbstractMarkerSupport"/>
+<message_argument value="removeMarker(IMarker)"/>
+</message_arguments>
+</filter>
+</resource>
+<resource path="src/org/eclipse/riena/ui/ridgets/IMasterDetailsRidget.java" type="org.eclipse.riena.ui.ridgets.IMasterDetailsRidget">
+<filter id="403804204">
+<message_arguments>
+<message_argument value="org.eclipse.riena.ui.ridgets.IMasterDetailsRidget"/>
+<message_argument value="canSuggest()"/>
+</message_arguments>
+</filter>
+</resource>
+</component>
