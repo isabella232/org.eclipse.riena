@@ -555,16 +555,16 @@ public class BorderDrawer implements Listener {
 				shell.redraw();
 				layouting = false;
 				computeBorderArea = true;
-				shell.setData(NEED_SHELL_REDRAW, true);
-				getControlToDecorate().getDisplay().asyncExec(new Runnable() {
-					public void run() {
-						if (!SwtUtilities.isDisposed(getControlToDecorate()) && (Boolean) shell.getData(NEED_SHELL_REDRAW)) {
-							final Rectangle b = shell.getBounds();
-							shell.redraw(0, 0, b.width, b.height, true);
-							shell.setData(NEED_SHELL_REDRAW, false);
-						}
-					}
-				});
+				//				shell.setData(NEED_SHELL_REDRAW, true);
+				//				getControlToDecorate().getDisplay().asyncExec(new Runnable() {
+				//					public void run() {
+				//						if (!SwtUtilities.isDisposed(getControlToDecorate()) && (Boolean) shell.getData(NEED_SHELL_REDRAW)) {
+				final Rectangle b = shell.getBounds();
+				shell.redraw(0, 0, b.width, b.height, true);
+				//				shell.setData(NEED_SHELL_REDRAW, false);
+				//						}
+				//					}
+				//				});
 			} else {
 				paintControl(event);
 			}
