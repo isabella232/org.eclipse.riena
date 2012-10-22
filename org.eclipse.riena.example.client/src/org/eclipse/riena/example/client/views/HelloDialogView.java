@@ -38,7 +38,7 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 public class HelloDialogView extends AbstractDialogViewWithButtonBar {
 
 	public HelloDialogView() {
-		super(null);
+		super(null, true);
 	}
 
 	@Override
@@ -61,8 +61,7 @@ public class HelloDialogView extends AbstractDialogViewWithButtonBar {
 		final Group group = UIControlsFactory.createGroup(parent, "James' Car Configurator:"); //$NON-NLS-1$
 		GridLayoutFactory.fillDefaults().margins(20, 20).numColumns(2).spacing(20, 20).applyTo(group);
 
-		final GridDataFactory choiceLayoutFactory = GridDataFactory.fillDefaults().align(SWT.FILL, SWT.BEGINNING)
-				.grab(true, false);
+		final GridDataFactory choiceLayoutFactory = GridDataFactory.fillDefaults().align(SWT.FILL, SWT.BEGINNING).grab(true, false);
 
 		// next row
 
