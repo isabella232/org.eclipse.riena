@@ -12,17 +12,14 @@ package org.eclipse.riena.core.exception;
 
 import org.eclipse.equinox.log.Logger;
 
-import org.eclipse.riena.core.exception.IExceptionHandler.Action;
-
 /**
  * The ExceptionHandlerManager handles exception.
  */
-public interface IExceptionHandlerManager {
+public interface IExceptionHandlerManager extends IExceptionHandler {
 
 	/**
-	 * Check if the exception passed can be handled and return an {@link Action}
-	 * how might to process. This method should be used anywhere where an
-	 * exceptions is catched directly.
+	 * Check if the exception passed can be handled and return an {@link Action} how might to process. This method should be used anywhere where an exceptions
+	 * is catched directly.
 	 * 
 	 * @pre t != null
 	 * @post result != null
@@ -34,9 +31,8 @@ public interface IExceptionHandlerManager {
 	Action handleException(Throwable t);
 
 	/**
-	 * Check if the exception passed can be handled and return an {@link Action}
-	 * how might to process. This method should be used anywhere where an
-	 * exceptions is catched directly.
+	 * Check if the exception passed can be handled and return an {@link Action} how might to process. This method should be used anywhere where an exceptions
+	 * is catched directly.
 	 * 
 	 * @pre t != null
 	 * @post result != null
@@ -50,9 +46,8 @@ public interface IExceptionHandlerManager {
 	Action handleException(Throwable t, Logger logger);
 
 	/**
-	 * Check if the exception passed can be handled and return an {@link Action}
-	 * how might to process. This method should be used anywhere where an
-	 * exceptions is catched directly.
+	 * Check if the exception passed can be handled and return an {@link Action} how might to process. This method should be used anywhere where an exceptions
+	 * is catched directly.
 	 * 
 	 * @pre t != null
 	 * @post result != null
@@ -66,9 +61,8 @@ public interface IExceptionHandlerManager {
 	Action handleException(Throwable t, String msg);
 
 	/**
-	 * Check if the exception passed can be handled and return an {@link Action}
-	 * how might to process. This method should be used anywhere where an
-	 * exceptions is catched directly.
+	 * Check if the exception passed can be handled and return an {@link Action} how might to process. This method should be used anywhere where an exceptions
+	 * is catched directly.
 	 * 
 	 * @pre t != null
 	 * @post result != null
@@ -80,7 +74,10 @@ public interface IExceptionHandlerManager {
 	 * @param logger
 	 *            to be used for logging
 	 * @return the Action how to process
+	 * 
+	 *         This method is now derived from IExceptionHandler. The advantage is that the IExceptionHandlerManager can be supplied everywhere where an
+	 *         IException can be used and simply distributes the exceptions to the registered IExceptionHandlers that it knows
 	 */
-	Action handleException(Throwable t, String msg, Logger logger);
+	// Action handleException(Throwable t, String msg, Logger logger);
 
 }
