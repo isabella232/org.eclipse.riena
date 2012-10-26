@@ -509,10 +509,14 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		for (final ErrorMarker m : errorMarkers) {
 			table.removeMarker(m);
 		}
+		// trying to fix an ugly border decoration bug
+		((Control) table.getUIControl()).getDisplay().update();
 
 		ignoreChanges = true;
 		try {
 			delegate.prepareItemSelected(newSelection);
+			// trying to fix an ugly border decoration bug
+			((Control) table.getUIControl()).getDisplay().update();
 			delegate.updateMasterDetailsActionRidgets(actionRidgetFacade, newSelection);
 			if (newSelection != null) { // selection changed
 				if (editable == null) {
@@ -536,6 +540,8 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 			for (final ErrorMarker m : errorMarkers) {
 				table.addMarker(m);
 			}
+			// trying to fix an ugly border decoration bug
+			((Control) table.getUIControl()).getDisplay().update();
 		}
 	}
 
