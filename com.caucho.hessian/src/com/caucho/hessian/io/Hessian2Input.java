@@ -51,6 +51,7 @@ package com.caucho.hessian.io;
 import java.io.*;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.logging.*;
@@ -2044,8 +2045,11 @@ public class Hessian2Input
     if (cl != null) {
       Deserializer reader;
       reader = findSerializerFactory().getObjectDeserializer(type, cl);
-
+      try {
       return reader.readObject(this, fieldNames);
+      } catch(UnsupportedOperationException e) {
+    	  throw new UnsupportedOperationException("Reader: "+ reader.getClass()+ ", type: "+type+" Cl: "+cl+" fieldNames: "+ Arrays.asList(fieldNames), e);
+      }
     }
     else {
       return findSerializerFactory().readObject(this, type, fieldNames);
