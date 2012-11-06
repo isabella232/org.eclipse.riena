@@ -59,7 +59,7 @@ public abstract class AbstractRidget implements IRidget {
 	 *             if the uiControl is not of the given type
 	 * @since 4.0
 	 */
-	final protected void checkType(final Object uiControl, final Class<?> type) {
+	protected void checkType(final Object uiControl, final Class<?> type) {
 		if ((uiControl != null) && !(type.isAssignableFrom(uiControl.getClass()))) {
 			final String expectedClassName = type.getSimpleName();
 			final String controlClassName = uiControl.getClass().getSimpleName();
