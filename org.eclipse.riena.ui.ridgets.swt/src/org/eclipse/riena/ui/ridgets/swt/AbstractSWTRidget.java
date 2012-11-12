@@ -194,7 +194,7 @@ public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget {
 	protected final void installListeners() {
 		super.installListeners();
 		final Control control = getUIControl();
-		if (control != null) {
+		if (!SwtUtilities.isDisposed(control)) {
 			focusManager.addListeners(control);
 		}
 	}
@@ -205,7 +205,7 @@ public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget {
 	@Override
 	protected final void uninstallListeners() {
 		final Control control = getUIControl();
-		if (control != null) {
+		if (!SwtUtilities.isDisposed(control)) {
 			focusManager.removeListeners(control);
 		}
 		super.uninstallListeners();
@@ -213,14 +213,14 @@ public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget {
 
 	@Override
 	protected final void updateEnabled() {
-		if (getUIControl() != null) {
+		if (!SwtUtilities.isDisposed(getUIControl())) {
 			getUIControl().setEnabled(isEnabled());
 		}
 	}
 
 	@Override
 	protected final void updateToolTip() {
-		if (getUIControl() != null) {
+		if (!SwtUtilities.isDisposed(getUIControl())) {
 			getUIControl().setToolTipText(getToolTipText());
 		}
 	}
@@ -228,13 +228,13 @@ public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget {
 	@Override
 	public final void setUIControl(final Object uiControl) {
 		super.setUIControl(uiControl);
-		if (uiControl != null) {
-			updateContextMenu();
-		}
+		updateContextMenu();
 	}
 
-	@Override
-	public void updateContextMenu() {
+	private void updateContextMenu() {
+		if (SwtUtilities.isDisposed(getUIControl())) {
+			return;
+		}
 		final List<IMenuItemRidget> menuItems = contextMenuDelegate.getMenuItems();
 		if (menuItems != null && !menuItems.isEmpty()) {
 			Menu menu = getUIControl().getMenu();
@@ -253,22 +253,26 @@ public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget {
 
 	@Override
 	public IMenuItemRidget addMenuItem(final String itemText) {
-		return contextMenuDelegate.addMenuItem(itemText);
+		return addMenuItem(itemText, null);
 	}
 
 	@Override
 	public IMenuItemRidget addMenuItem(final String itemText, final String iconName) {
-		return contextMenuDelegate.addMenuItem(itemText, iconName);
+		final IMenuItemRidget item = contextMenuDelegate.addMenuItem(itemText, iconName);
+		updateContextMenu();
+		return item;
 	}
 
 	@Override
 	public void removeMenuItem(final String menuItemText) {
 		contextMenuDelegate.removeMenuItem(menuItemText);
+		updateContextMenu();
 	}
 
 	@Override
 	public void removeMenuItem(final IMenuItemRidget menuItemRidget) {
 		contextMenuDelegate.removeMenuItem(menuItemRidget);
+		updateContextMenu();
 	}
 
 	@Override

@@ -145,8 +145,19 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	}
 
 	public String getID() {
+		return getID(getUIControl());
+	}
+
+	/**
+	 * Returns the (binding) ID of the given UI control.
+	 * 
+	 * @param uiControl
+	 *            UI control
+	 * @return ID of the given UI control; maybe {@code null}, if the control has no binding ID, is disposed or is not a {@link Widget}.
+	 */
+	public String getID(final Object uiControl) {
 		final IBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
-		return locator.locateBindingProperty(getUIControl());
+		return locator.locateBindingProperty(uiControl);
 	}
 
 	/**
@@ -361,6 +372,26 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	 */
 	public boolean decorateVisibleControlArea() {
 		return true;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * The {@code BindingException} will be caught and re-thrown with infos about the binding ID.
+	 */
+	@Override
+	final protected void checkType(final Object uiControl, final Class<?> type) {
+		try {
+			super.checkType(uiControl, type);
+		} catch (final BindingException e) {
+			final String bindingId = getID(uiControl);
+			if (bindingId != null) {
+				final String message = "Unexpected uicontrol has the binding ID " + bindingId; //$NON-NLS-1$
+				throw new BindingException(message, e);
+			} else {
+				throw e;
+			}
+		}
 	}
 
 	// abstract methods - subclasses must implement

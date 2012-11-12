@@ -17,6 +17,9 @@ import org.eclipse.swt.widgets.MenuItem;
 
 import org.eclipse.riena.ui.ridgets.IMenuItemRidget;
 
+/**
+ * Every ridget has its own delegate. A SWT ridget object delegates all of its instance methods for modifying its context menu to its delegate.
+ */
 public class ContextMenuDelegate {
 
 	private final List<IMenuItemRidget> menuItems;
@@ -29,10 +32,16 @@ public class ContextMenuDelegate {
 		return menuItems;
 	}
 
-	public IMenuItemRidget addMenuItem(final String menuText) {
-		return addMenuItem(menuText, null);
-	}
-
+	/**
+	 * Adds a menu item to the ridget.
+	 * 
+	 * @param menuItemText
+	 *            The text of the menu item to be added.
+	 * @param iconName
+	 *            The name of the icon for the menu item to be added.
+	 * @return the menu item rigdet.
+	 * 
+	 */
 	public IMenuItemRidget addMenuItem(final String menuText, final String iconName) {
 		final IMenuItemRidget mi = getMenuRidget(menuText);
 		return addMenuItem(mi, menuText, iconName);
@@ -49,10 +58,22 @@ public class ContextMenuDelegate {
 		return menuItemRidget;
 	}
 
+	/**
+	 * Removes a specific menu item from the contextmenu of the ridget.
+	 * 
+	 * @param menuItemText
+	 *            The text of the menu item to be removed.
+	 */
 	public void removeMenuItem(final String menuItemText) {
 		removeMenuItem(getMenuRidget(menuItemText));
 	}
 
+	/**
+	 * Removes a specific menu item from the contextmenu of the ridget.
+	 * 
+	 * @param menuItemRidget
+	 *            The menu item to be removed.
+	 */
 	public void removeMenuItem(final IMenuItemRidget menuItemRidget) {
 		if (!menuItems.isEmpty() && menuItemRidget != null) {
 			if (menuItemRidget.getUIControl() != null) {
@@ -90,10 +111,26 @@ public class ContextMenuDelegate {
 		return ridget;
 	}
 
+	/**
+	 * Returns a menu item was added before.
+	 * 
+	 * @return Menu item of the index.
+	 */
 	public IMenuItemRidget getMenuItem(final int index) {
+		if (menuItems == null || menuItems.isEmpty()) {
+			throw new IllegalStateException("No menu items in context menu."); //$NON-NLS-1$
+		}
+		if (index >= menuItems.size() || index < 0) {
+			throw new IllegalArgumentException("No menu item at index " + index + " found"); //$NON-NLS-1$//$NON-NLS-2$
+		}
 		return menuItems.get(index);
 	}
 
+	/**
+	 * Returns count of menu items.
+	 * 
+	 * @return Count of the menu items.
+	 */
 	public int getMenuItemCount() {
 		return menuItems.size();
 	}

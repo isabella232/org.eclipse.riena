@@ -36,6 +36,7 @@ import org.eclipse.swt.widgets.Widget;
 import org.eclipse.riena.beans.common.AbstractBean;
 import org.eclipse.riena.core.RienaStatus;
 import org.eclipse.riena.core.marker.IMarkable;
+import org.eclipse.riena.core.util.Nop;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.ui.swt.test.UITestHelper;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
@@ -45,7 +46,6 @@ import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.ICompositeRidget;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsActionRidgetFacade;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
-import org.eclipse.riena.ui.ridgets.IMenuItemRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
@@ -2276,88 +2276,72 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 	@Override
 	public void testGetMenuItemCount() {
 		final IRidget ridget = getRidget();
-		final String menuItemWithoutIconText = "MenuItemWithoutIcon"; //$NON-NLS-1$
-		final String menuItemWithIconText = "MenuItemWithIcon"; //$NON-NLS-1$
-		final String iconName = "leftArrow"; //$NON-NLS-1$
 
 		try {
-			ridget.addMenuItem(menuItemWithoutIconText);
-			assertEquals(1, ridget.getMenuItemCount());
-
-			ridget.addMenuItem(menuItemWithIconText, iconName);
-			assertEquals(2, ridget.getMenuItemCount());
+			ridget.getMenuItemCount();
 			fail("UnsupportedOperationException expected"); //$NON-NLS-1$
 		} catch (final UnsupportedOperationException expected) {
-
+			Nop.reason("UnsupportedOperationException expected"); //$NON-NLS-1$
 		}
-
 	}
 
 	@Override
 	public void testGetMenuItem() {
 		final IRidget ridget = getRidget();
-		final String menuItemWithoutIconText = "MenuItemWithoutIcon"; //$NON-NLS-1$
-		final String menuItemWithIconText = "MenuItemWithIcon"; //$NON-NLS-1$
-		final String iconName = "leftArrow"; //$NON-NLS-1$
 
 		try {
-			final IMenuItemRidget menuItemWithoutIcon = ridget.addMenuItem(menuItemWithoutIconText);
-			assertEquals(menuItemWithoutIcon, ridget.getMenuItem(0));
-
-			final IMenuItemRidget menuItemWithIcon = ridget.addMenuItem(menuItemWithIconText, iconName);
-			assertEquals(menuItemWithIcon, ridget.getMenuItem(1));
+			ridget.getMenuItem(0);
 			fail("UnsupportedOperationException expected"); //$NON-NLS-1$
 		} catch (final UnsupportedOperationException expected) {
-
+			Nop.reason("UnsupportedOperationException expected"); //$NON-NLS-1$
 		}
-
 	}
 
 	@Override
 	public void testAddMenuItem() {
 		final IRidget ridget = getRidget();
 		final String menuItemWithoutIconText = "MenuItemWithoutIcon"; //$NON-NLS-1$
-		final String menuItemWithIconText = "MenuItemWithIcon"; //$NON-NLS-1$
-		final String iconName = "leftArrow"; //$NON-NLS-1$
-		try {
-			final IMenuItemRidget menuItemWithoutIcon = ridget.addMenuItem(menuItemWithoutIconText);
-			assertEquals(1, ridget.getMenuItemCount());
-			assertEquals(menuItemWithoutIcon, ridget.getMenuItem(0));
 
-			final IMenuItemRidget menuItemWithIcon = ridget.addMenuItem(menuItemWithIconText, iconName);
-			assertEquals(2, ridget.getMenuItemCount());
-			assertEquals(menuItemWithIcon, ridget.getMenuItem(1));
+		try {
+			ridget.addMenuItem(menuItemWithoutIconText);
 			fail("UnsupportedOperationException expected"); //$NON-NLS-1$
 		} catch (final UnsupportedOperationException expected) {
-
+			Nop.reason("UnsupportedOperationException expected"); //$NON-NLS-1$
 		}
-
 	}
 
 	@Override
 	public void testRemoveMenuItem() {
 		final IRidget ridget = getRidget();
-		final String menuItemWithoutIconText = "MenuItemWithoutIcon"; //$NON-NLS-1$
 		final String menuItemWithIconText = "MenuItemWithIcon"; //$NON-NLS-1$
-		final String iconName = "leftArrow"; //$NON-NLS-1$
+
 		try {
-			final IMenuItemRidget menuItemWithoutIcon = ridget.addMenuItem(menuItemWithoutIconText);
-			IMenuItemRidget menuItemWithIcon = ridget.addMenuItem(menuItemWithIconText, iconName);
-
-			assertEquals(2, ridget.getMenuItemCount());
 			ridget.removeMenuItem(menuItemWithIconText);
-			assertEquals(1, ridget.getMenuItemCount());
-
-			menuItemWithIcon = ridget.addMenuItem(menuItemWithIconText, iconName);
-			assertEquals(2, ridget.getMenuItemCount());
-
-			ridget.removeMenuItem(menuItemWithoutIcon);
-			assertEquals(1, ridget.getMenuItemCount());
-			ridget.removeMenuItem(menuItemWithIcon);
-			assertEquals(0, ridget.getMenuItemCount());
 			fail("UnsupportedOperationException expected"); //$NON-NLS-1$
 		} catch (final UnsupportedOperationException expected) {
+			Nop.reason("UnsupportedOperationException expected"); //$NON-NLS-1$
+		}
+	}
 
+	@Override
+	public void testGetMenuItemEmptyContextMenu() {
+		try {
+			final IRidget ridget = getRidget();
+			ridget.getMenuItem(0);
+			fail("UnsupportedOperationException expected"); //$NON-NLS-1$
+		} catch (final UnsupportedOperationException expected) {
+			Nop.reason("UnsupportedOperationException expected"); //$NON-NLS-1$
+		}
+	}
+
+	@Override
+	public void testGetMenuItemNotExistingItem() {
+		final IRidget ridget = getRidget();
+		try {
+			ridget.getMenuItem(0);
+			fail("UnsupportedOperationException expected"); //$NON-NLS-1$
+		} catch (final UnsupportedOperationException expected) {
+			Nop.reason("UnsupportedOperationException expected"); //$NON-NLS-1$
 		}
 	}
 

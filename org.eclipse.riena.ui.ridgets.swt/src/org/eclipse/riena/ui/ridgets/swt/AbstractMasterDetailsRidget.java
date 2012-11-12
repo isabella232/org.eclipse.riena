@@ -1,12 +1,7 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 compeople AG and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *    compeople AG - initial API and implementation
+ * Copyright (c) 2007, 2012 compeople AG and others. All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is
+ * available at http://www.eclipse.org/legal/epl-v10.html Contributors: compeople AG - initial API and implementation
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.swt;
 
@@ -45,7 +40,6 @@ import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.annotation.processor.RidgetContainerAnnotationProcessor;
 import org.eclipse.riena.ui.swt.AbstractMasterDetailsComposite;
-import org.eclipse.riena.ui.swt.MasterDetailsComposite;
 
 /**
  * Common functionality that is shared between implementations of the {@link IMasterDetailsRidget}.
@@ -504,15 +498,16 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	}
 
 	protected void handleSelectionChange(final Object newSelection) {
-		final IMarkableRidget table = getRidget(IMarkableRidget.class, MasterDetailsComposite.BIND_ID_TABLE);
+		final IMarkableRidget table = getRidget(IMarkableRidget.class, AbstractMasterDetailsComposite.BIND_ID_TABLE);
 		final Collection<ErrorMarker> errorMarkers = table.getMarkersOfType(ErrorMarker.class);
 		for (final ErrorMarker m : errorMarkers) {
 			table.removeMarker(m);
 		}
-
+		updateBorder(table);
 		ignoreChanges = true;
 		try {
 			delegate.prepareItemSelected(newSelection);
+			updateBorder(table);
 			delegate.updateMasterDetailsActionRidgets(actionRidgetFacade, newSelection);
 			if (newSelection != null) { // selection changed
 				if (editable == null) {
@@ -536,7 +531,21 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 			for (final ErrorMarker m : errorMarkers) {
 				table.addMarker(m);
 			}
+			updateBorder(table);
 		}
+	}
+
+	/**
+	 * Trying to fix an ugly border decoration bug
+	 * 
+	 * @param ridget
+	 *            Ridget whose UI control should be updated
+	 */
+	private void updateBorder(final IRidget ridget) {
+		if (ridget == null || !(ridget.getUIControl() instanceof Control)) {
+			return;
+		}
+		((Control) ridget.getUIControl()).getDisplay().update();
 	}
 
 	@Override

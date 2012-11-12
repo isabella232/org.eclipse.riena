@@ -317,9 +317,4 @@ public interface IRidget {
 	 * @return Count of the menu items.
 	 */
 	int getMenuItemCount();
-
-	/**
-	 * Updates the context menu of the ridget.
-	 */
-	void updateContextMenu();
 }

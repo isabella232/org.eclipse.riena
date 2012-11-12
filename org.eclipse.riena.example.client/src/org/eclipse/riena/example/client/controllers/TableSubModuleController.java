@@ -140,8 +140,7 @@ public class TableSubModuleController extends SubModuleController {
 			@Override
 			public ImageData getImage(final Object element) {
 				if (((WordNode) element).isUpperCase()) {
-					return StatusMeter.imageFinished().width(16).gradientStartColor(green).gradientEndColor(darkGreen)
-							.getImageData();
+					return StatusMeter.imageFinished().width(16).gradientStartColor(green).gradientEndColor(darkGreen).getImageData();
 				} else {
 					final int value = (int) ((WordNode) element).getAQuota();
 					return StatusMeter.imageDefault().width(16).value(value).getImageData();
@@ -151,11 +150,9 @@ public class TableSubModuleController extends SubModuleController {
 
 		// Show error messages in the status line
 		final IApplicationNode application = getNavigationNode().getParentOfType(IApplicationNode.class);
-		final ApplicationController applicationController = (ApplicationController) application
-				.getNavigationNodeController();
+		final ApplicationController applicationController = (ApplicationController) application.getNavigationNodeController();
 		final IStatuslineRidget statuslineRidget = applicationController.getStatusline();
-		final StatuslineMessageMarkerViewer statuslineMessageMarkerViewer = new StatuslineMessageMarkerViewer(
-				statuslineRidget);
+		final StatuslineMessageMarkerViewer statuslineMessageMarkerViewer = new StatuslineMessageMarkerViewer(statuslineRidget);
 		statuslineMessageMarkerViewer.addMarkerType(RowErrorMessageMarker.class);
 		statuslineMessageMarkerViewer.addRidget(table);
 	}
@@ -185,8 +182,7 @@ public class TableSubModuleController extends SubModuleController {
 						return;
 					}
 				}
-				final RowErrorMessageMarker remm = new RowErrorMessageMarker(node.getWord()
-						+ " hat " + node.getACount() //$NON-NLS-1$
+				final RowErrorMessageMarker remm = new RowErrorMessageMarker(node.getWord() + " has " + node.getACount() //$NON-NLS-1$
 						+ " \"a\"", node); //$NON-NLS-1$
 				table.addMarker(remm);
 			}
