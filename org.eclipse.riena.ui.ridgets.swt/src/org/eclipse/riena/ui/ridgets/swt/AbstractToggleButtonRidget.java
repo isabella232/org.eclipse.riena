@@ -173,8 +173,8 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 
 	@Override
 	protected void bindUIControl() {
-		final DataBindingContext context = getValueBindingSupport().getContext();
 		if (getUIControl() != null) {
+			final DataBindingContext context = getValueBindingSupport().getContext();
 			controlBinding = context.bindValue(getUIControlSelectionObservable(), getRidgetObservable(), new UpdateValueStrategy(
 					UpdateValueStrategy.POLICY_UPDATE), new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE)
 					.setBeforeSetValidator(new CancelControlUpdateWhenDisabled()));

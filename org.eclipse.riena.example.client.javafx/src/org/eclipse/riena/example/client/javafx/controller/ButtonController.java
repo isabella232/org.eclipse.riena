@@ -3,6 +3,8 @@
  */
 package org.eclipse.riena.example.client.javafx.controller;
 
+import javafx.scene.control.Button;
+
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
@@ -28,6 +30,7 @@ public class ButtonController extends SubModuleController {
 				"simpleLbl");
 		final IActionRidget simpleButton = getRidget(IActionRidget.class,
 				"simpleBtn");
+		
 		simpleButton.addListener(new IActionListener() {
 			@Override
 			public void callback() {
@@ -40,6 +43,8 @@ public class ButtonController extends SubModuleController {
 
 		final IActionRidget imageButton = getRidget(IActionRidget.class,
 				"imageBtn");
+		
+		
 		updateIcon(imageButton);
 		imageButton.addListener(new IActionListener() {
 			@Override

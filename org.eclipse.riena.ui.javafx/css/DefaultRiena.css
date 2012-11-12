@@ -1,10 +1,32 @@
-*.output-only {
+.output-only {
 	-fx-control-inner-background: rgb(231, 233, 245);
 }
-*.mandatory {
-	-fx-control-inner-background: rgb(255, 255, 175);
+.mandatory {
+	-fx-control-inner-background: rgb(255, 255, 175); 
+	/* -fx-background-color: rgb(255, 255, 175);  */
+	/* -fx-border-color: rgb(255, 255, 175);	*/ 
+	/* -fx-foreground-color: rgb(255, 255, 175);*/ 
+
+} 
+/*#toggle-button-mandatory {
+	-fx-body-color: linear-gradient(
+        to bottom,
+        derive(rgb(255, 255, 175),34%) 0%,
+        derive(rgb(255, 255, 175),-18%) 100%
+    );
+	
+}*/
+
+.mandatory-toggle-button {
+	-fx-body-color: linear-gradient(
+        to bottom,
+        derive(rgb(255, 255, 175),34%) 0%,
+        derive(rgb(255, 255, 175),-18%) 100%
+    );
+	
 }
-*.mandatory-output-only {
+
+.mandatory-output-only {
 	-fx-control-inner-background: rgb(255, 249, 216);
 }
 *.error {

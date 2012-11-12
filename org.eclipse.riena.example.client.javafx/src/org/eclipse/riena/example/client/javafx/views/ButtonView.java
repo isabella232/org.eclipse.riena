@@ -35,7 +35,7 @@ public class ButtonView extends JavaFxSubModuleView {
 		grid.getChildren().add(simpleButton);
 		GridPane.setConstraints(simpleButton, x, y, 1, 1);
 		propertyLocator.setBindingProperty(simpleButton, "simpleBtn");
-
+		
 		x++;
 		Label simpleLabel = new Label("Simple Button never clicked!");
 		GridPane.setConstraints(simpleLabel, x, y, 1, 1);

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?eclipse version="3.4"?>
-
 <plugin>
     <extension point="org.eclipse.ui.views">
         <view allowMultiple="true" class="org.eclipse.riena.example.client.javafx.views.JavaFxAdditionView" id="org.eclipse.riena.example.client.javafx.views.JavaFxAdditionView" name="org.eclipse.riena.example.client.javafx.views.JavaFxAdditionView"/>
@@ -11,6 +10,7 @@
         <view allowMultiple="true" class="org.eclipse.riena.example.client.javafx.views.TextFieldView" id="org.eclipse.riena.example.client.javafx.views.TextFieldView" name="org.eclipse.riena.example.client.javafx.views.TextFieldView"/>
         <view allowMultiple="true" class="org.eclipse.riena.example.client.javafx.views.MarkerView" id="org.eclipse.riena.example.client.javafx.views.MarkerView" name="org.eclipse.riena.example.client.javafx.views.MarkerView"/>
         <view allowMultiple="true" class="org.eclipse.riena.example.client.javafx.views.ButtonView" id="org.eclipse.riena.example.client.javafx.views.ButtonView" name="org.eclipse.riena.example.client.javafx.views.ButtonView"/>
+        <view allowMultiple="true" class="org.eclipse.riena.example.client.javafx.views.ToggleButtonView" id="org.eclipse.riena.example.client.javafx.views.ToggleButtonView" name="org.eclipse.riena.example.client.javafx.views.ToggleButtonView"/>
         <view allowMultiple="true" class="org.eclipse.riena.example.client.javafx.views.UsersView" id="org.eclipse.riena.example.client.javafx.views.UsersView" name="org.eclipse.riena.example.client.javafx.views.UsersView"/>
         <view allowMultiple="true" class="org.eclipse.riena.example.client.javafx.views.UserView" id="org.eclipse.riena.example.client.javafx.views.UserView" name="org.eclipse.riena.example.client.javafx.views.UserView"/>
     </extension>
@@ -30,6 +30,7 @@
                         <subModule controller="org.eclipse.riena.example.client.javafx.controller.ButtonController" expanded="false" name="Button" nodeId="org.eclipse.riena.example.client.javafx.Button.submodule" requiresPreparation="false" selectable="true" sharedView="false" viewId="org.eclipse.riena.example.client.javafx.views.ButtonView" visible="true"/>
                         <subModule controller="org.eclipse.riena.example.client.javafx.controller.MarkerController" expanded="false" name="Marker" nodeId="org.eclipse.riena.example.client.javafx.Marker.submodule" requiresPreparation="false" selectable="true" sharedView="false" viewId="org.eclipse.riena.example.client.javafx.views.MarkerView" visible="true"/>
                         <subModule controller="org.eclipse.riena.example.client.javafx.controller.GotoJavaFxController" expanded="false" name="GotoJavaFx" nodeId="org.eclipse.riena.example.client.javafx.GotoJavaFx.submodule" requiresPreparation="false" selectable="true" sharedView="false" viewId="org.eclipse.riena.example.client.javafx.views.GotoJavaFxView" visible="true"/>
+                        <subModule controller="org.eclipse.riena.example.client.javafx.controller.ToggleButtonController" expanded="false" name="ToggleButton" nodeId="org.eclipse.riena.example.client.javafx.ToggleButton.submodule" requiresPreparation="false" selectable="true" sharedView="false" viewId="org.eclipse.riena.example.client.javafx.views.ToggleButtonView" visible="true"/>
                     </module>
                 </moduleGroup>
             </subApplication>

@@ -1,5 +1,6 @@
 package org.eclipse.riena.ui.ridgets.javafx;
 
+import java.beans.PropertyChangeListener;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -720,6 +721,21 @@ public abstract class AbstractJavaFxRidget extends AbstractRidget implements
 			}
 		}
 
+	}
+	
+	public static boolean isBean(final Class<?> clazz) {
+		try {
+			// next line throws NoSuchMethodException, if no matching method found
+			clazz.getMethod("addPropertyChangeListener", PropertyChangeListener.class); //$NON-NLS-1$
+			return true; // have bean
+		} catch (final NoSuchMethodException e) {
+			return false; // have pojo
+		}
+	}
+
+	protected ClickEvent createClickEvent(org.eclipse.swt.events.MouseEvent e) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -5,6 +5,8 @@ import java.util.Iterator;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
 
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
@@ -13,13 +15,22 @@ import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractActionRidget;
 import org.eclipse.riena.ui.ridgets.swt.MarkerSupport;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
 
 public class JavaFxMarkerSupport extends JavaFxBasicMarkerSupport {
 
-	private final static String CSS_MANADORY = "mandatory";
+	private static Boolean hideDisabledRidgetContent;
+
+	private final static String CSS_MANDATORY = "mandatory";
 	private final static String CSS_OUTPUT_ONLY = "output-only";
-	private final static String CSS_MANADORY_OUTPUT_ONLY = "mandatory-output-only";
+	private final static String CSS_MANDATORY_OUTPUT_ONLY = "mandatory-output-only";
 	private final static String CSS_ERROR = "error";
+	private final static String CSS_MANDATORY_TOGGLE_BUTTON = "mandatory-toggle-button";
+
+	private static final boolean HIDE_DISABLED_RIDGET_CONTENT = Boolean
+			.parseBoolean(System.getProperty(
+					"HIDE_DISABLED_RIDGET_CONTENT", Boolean.FALSE.toString())); //$NON-NLS-1$ 
 
 	public JavaFxMarkerSupport() {
 		super();
@@ -28,6 +39,22 @@ public class JavaFxMarkerSupport extends JavaFxBasicMarkerSupport {
 	public JavaFxMarkerSupport(final IBasicMarkableRidget ridget,
 			final PropertyChangeSupport propertyChangeSupport) {
 		super(ridget, propertyChangeSupport);
+	}
+
+	/**
+	 * Returns whether the content of a disabled ridget should be visible (
+	 * {@code false}) or hidden {@code true}.
+	 * 
+	 * @return ({@code false}): visible; {@code true}: hidden
+	 * @since 2.0
+	 */
+	public static boolean isHideDisabledRidgetContent() {
+		if (hideDisabledRidgetContent == null) {
+			hideDisabledRidgetContent = LnfManager.getLnf().getBooleanSetting(
+					LnfKeyConstants.DISABLED_MARKER_HIDE_CONTENT,
+					HIDE_DISABLED_RIDGET_CONTENT);
+		}
+		return hideDisabledRidgetContent;
 	}
 
 	private void updateOutput(final Control control) {
@@ -42,7 +69,7 @@ public class JavaFxMarkerSupport extends JavaFxBasicMarkerSupport {
 
 	private void addOutput(final Control control) {
 		if (isMandatory(getRidget()) && !isHidden(MandatoryMarker.class)) {
-			addCssClass(control, CSS_MANADORY_OUTPUT_ONLY);
+			addCssClass(control, CSS_MANDATORY_OUTPUT_ONLY);
 		} else {
 			addCssClass(control, CSS_OUTPUT_ONLY);
 		}
@@ -121,13 +148,14 @@ public class JavaFxMarkerSupport extends JavaFxBasicMarkerSupport {
 	}
 
 	protected void clearMandatory(final Control control) {
-		control.getStyleClass().remove(CSS_MANADORY);
-		control.getStyleClass().remove(CSS_MANADORY_OUTPUT_ONLY);
+		control.getStyleClass().remove(CSS_MANDATORY);
+		control.getStyleClass().remove(CSS_MANDATORY_OUTPUT_ONLY);
+		control.getStyleClass().remove(CSS_MANDATORY_TOGGLE_BUTTON);
 	}
 
 	protected void clearOutput(final Control control) {
 		control.getStyleClass().remove(CSS_OUTPUT_ONLY);
-		control.getStyleClass().remove(CSS_MANADORY_OUTPUT_ONLY);
+		control.getStyleClass().remove(CSS_MANDATORY_OUTPUT_ONLY);
 		control.setFocusTraversable(getRidget().isFocusable());
 	}
 
@@ -137,7 +165,12 @@ public class JavaFxMarkerSupport extends JavaFxBasicMarkerSupport {
 	}
 
 	protected void addMandatory(final Control control) {
-		addCssClass(control, CSS_MANADORY);
+		if (control.getClass().isInstance(new TextField())) {
+			addCssClass(control, CSS_MANDATORY);
+		} else if (control.getClass().isInstance(new ToggleButton())) {
+			addCssClass(control, CSS_MANDATORY_TOGGLE_BUTTON);
+		}
+
 	}
 
 	protected void addError(final Control control) {

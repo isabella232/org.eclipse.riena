@@ -31,15 +31,13 @@ import org.eclipse.riena.ui.ridgets.swt.AbstractToggleButtonRidget;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 
 /**
- * Adapter of the SWT Widget <code>Button</code> with the style SWT.CHECK,
- * SWT.RADIO or SWT.TOGGLE.
+ * Adapter of the SWT Widget <code>Button</code> with the style SWT.CHECK, SWT.RADIO or SWT.TOGGLE.
  */
 // Note: TBR and ATBR could be merged - TBR is the only subclass
 public class ToggleButtonRidget extends AbstractToggleButtonRidget {
 
 	/**
-	 * ToggleButtonRidgets use this property to store a reference to themselves
-	 * in their assigned control.
+	 * ToggleButtonRidgets use this property to store a reference to themselves in their assigned control.
 	 */
 	private static final String TOGGLE_BUTTON_RIDGET = "tbr"; //$NON-NLS-1$
 
@@ -51,6 +49,7 @@ public class ToggleButtonRidget extends AbstractToggleButtonRidget {
 		final Button control = getUIControl();
 		if (control != null) {
 			control.setData(TOGGLE_BUTTON_RIDGET, this);
+
 			updateMandatoryMarkers();
 		}
 	}
@@ -82,19 +81,16 @@ public class ToggleButtonRidget extends AbstractToggleButtonRidget {
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * The disabled state for mandatory markers on this ridget is computed as
-	 * follows:
+	 * The disabled state for mandatory markers on this ridget is computed as follows:
 	 * <ul>
 	 * <li>if this ridget is selected, return true</li>
-	 * <li>if an enabled sibling control (i.e. a Button of the same type &ndash;
-	 * where type is check, radio or toggle &ndash; located in the same parent
+	 * <li>if an enabled sibling control (i.e. a Button of the same type &ndash; where type is check, radio or toggle &ndash; located in the same parent
 	 * Composite) is checked, return true</li>
 	 * <li>otherwise, return false</li>
 	 * </ul>
 	 * <p>
-	 * Correspondingly, this method only returns a fully accurate result when
-	 * this ridget has a bound UI-control. Without a UI-control is it not
-	 * possible to look at the siblings when computing the result.
+	 * Correspondingly, this method only returns a fully accurate result when this ridget has a bound UI-control. Without a UI-control is it not possible to
+	 * look at the siblings when computing the result.
 	 * 
 	 * @return true if mandatory markers should be disabled, false otherwise
 	 */
@@ -142,8 +138,7 @@ public class ToggleButtonRidget extends AbstractToggleButtonRidget {
 		if (!isSelected() && selected && isRadioSingleSelection(selectedUIControl)) {
 			for (final Button sibling : getSiblings(selectedUIControl)) {
 				final String bindingId = SWTBindingPropertyLocator.getInstance().locateBindingProperty(sibling);
-				final IToggleButtonRidget siblingRidget = getController().getRidget(IToggleButtonRidget.class,
-						bindingId);
+				final IToggleButtonRidget siblingRidget = getController().getRidget(IToggleButtonRidget.class, bindingId);
 				siblingRidget.setSelected(false);
 			}
 		}
@@ -177,8 +172,7 @@ public class ToggleButtonRidget extends AbstractToggleButtonRidget {
 		final Control[] siblings = control.getParent().getChildren();
 		for (final Control candidate : siblings) {
 			if (candidate != control && candidate instanceof Button) {
-				if ((isCheck && isCheck(candidate)) || (isRadio && isRadio(candidate))
-						|| (isPush && isToggle(candidate))) {
+				if ((isCheck && isCheck(candidate)) || (isRadio && isRadio(candidate)) || (isPush && isToggle(candidate))) {
 					result.add((Button) candidate);
 				}
 			}
@@ -219,14 +213,12 @@ public class ToggleButtonRidget extends AbstractToggleButtonRidget {
 	//////////////////
 
 	/**
-	 * Custom IObservableValue that will revert selection changes when the
-	 * ridget is output-only.
+	 * Custom IObservableValue that will revert selection changes when the ridget is output-only.
 	 * 
 	 * @see http://bugs.eclipse.org/271762
 	 * @see http://bugs.eclipse.org/321935
 	 */
-	private final class SelectionObservableWithOutputOnly extends SimplePropertyObservableValue implements
-			SelectionListener {
+	private final class SelectionObservableWithOutputOnly extends SimplePropertyObservableValue implements SelectionListener {
 
 		private final Button button;
 

@@ -32,7 +32,6 @@ public class JavaFxActionRidget extends AbstractJavaFxRidget implements
 	private static final String EMPTY_STRING = ""; //$NON-NLS-1$
 
 	private final JavaFxActionObserver actionObserver;
-	private Button button;
 	private String text;
 	private String iconID;
 	private boolean textAlreadyInitialized;
@@ -92,7 +91,8 @@ public class JavaFxActionRidget extends AbstractJavaFxRidget implements
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * Copy of {@link AbstractActionRidget#setText(String)}
+	 * Copy of {@link 
+#setText(String)}
 	 */
 	@Override
 	public void setIcon(final String icon) {
@@ -146,19 +146,11 @@ public class JavaFxActionRidget extends AbstractJavaFxRidget implements
 	protected void bindUIControl() {
 		final Button control = getUIControl();
 		if (control != null) {
-			button = control;
 			initText();
-			button.setOnAction(actionObserver);
+			getUIControl().setOnAction(actionObserver);
 			updateUIText();
 			updateUIIcon();
-		}
-	}
-
-	@Override
-	protected void unbindUIControl() {
-		super.unbindUIControl();
-		if (button != null) {
-			button = null;
+			
 		}
 	}
 
