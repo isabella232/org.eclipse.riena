@@ -68,6 +68,9 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 public abstract class AbstractDialogView extends Dialog {
 
 	private static final LnFUpdater LNF_UPDATER = LnFUpdater.getInstance();
+	/**
+	 * @since 5.0
+	 */
 	public static final String STATUSLINE_BINDING_ID = "dlg_statusline"; //$NON-NLS-1$
 
 	private final RienaWindowRenderer dlgRenderer;
@@ -103,6 +106,7 @@ public abstract class AbstractDialogView extends Dialog {
 	 * @throws RuntimeException
 	 *             if no shell instance could be obtained - this can only happen when parentShell the value {@code null} and the class failed to obtain an
 	 *             appropriate shell.
+	 * @since 5.0
 	 */
 	protected AbstractDialogView(final Shell parentShell, final boolean statusLine) {
 		super(parentShell != null ? parentShell : getShellByGuessing());
@@ -309,6 +313,7 @@ public abstract class AbstractDialogView extends Dialog {
 	 * Returns the factory that creates the content of the status line.
 	 * 
 	 * @return factory to create the content of the status line
+	 * @since 5.0
 	 */
 	protected IStatusLineContentFactory getStatusLineContentFacroty() {
 		return new DialogStatuslineContentFactory();

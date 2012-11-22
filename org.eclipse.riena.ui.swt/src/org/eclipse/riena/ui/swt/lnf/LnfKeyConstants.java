@@ -878,6 +878,9 @@ public final class LnfKeyConstants {
 	 * @since 1.2
 	 */
 	public static final String STATUSLINE_HEIGHT = "statusline.height"; //$NON-NLS-1$
+	/**
+	 * @since 5.0
+	 */
 	public static final String DIALOG_STATUSLINE_HEIGHT = "dialog.statusline.height"; //$NON-NLS-1$
 
 	public static final String MODULE_ITEM_TOOLTIP_POPUP_DELAY = "ModuleItemToolTip.popupDelay"; //$NON-NLS-1$

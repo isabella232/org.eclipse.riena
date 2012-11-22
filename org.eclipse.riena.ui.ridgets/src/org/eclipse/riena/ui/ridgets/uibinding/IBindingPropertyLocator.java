@@ -33,6 +33,7 @@ public interface IBindingPropertyLocator {
 	 * @param uiControl
 	 *            UI control; may be null
 	 * @return complex or simple ID, the empty string if no ID is available, null if uiControl is null or disposed
+	 * @since 5.0
 	 */
 	String getComplexBindingId(Object uiControl);
 

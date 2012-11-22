@@ -272,6 +272,7 @@ public interface IRidget {
 	 * @param menuItemText
 	 *            The text of the menu item to be added.
 	 * @return the menu item rigdet.
+	 * @since 5.0
 	 * 
 	 */
 	IMenuItemRidget addMenuItem(String menuItemText);
@@ -284,6 +285,7 @@ public interface IRidget {
 	 * @param iconName
 	 *            The name of the icon for the menu item to be added.
 	 * @return the menu item rigdet.
+	 * @since 5.0
 	 * 
 	 */
 	IMenuItemRidget addMenuItem(String menuItemText, String iconName);
@@ -293,6 +295,7 @@ public interface IRidget {
 	 * 
 	 * @param menuItemText
 	 *            The text of the menu item to be removed.
+	 * @since 5.0
 	 */
 	void removeMenuItem(String menuItemText);
 
@@ -301,6 +304,7 @@ public interface IRidget {
 	 * 
 	 * @param menuItemRidget
 	 *            The menu item to be removed.
+	 * @since 5.0
 	 */
 	void removeMenuItem(IMenuItemRidget menuItemRidget);
 
@@ -308,6 +312,7 @@ public interface IRidget {
 	 * Returns a menu item was added before.
 	 * 
 	 * @return Menu item of the index.
+	 * @since 5.0
 	 */
 	IMenuItemRidget getMenuItem(int index);
 
@@ -315,6 +320,7 @@ public interface IRidget {
 	 * Returns count of menu items.
 	 * 
 	 * @return Count of the menu items.
+	 * @since 5.0
 	 */
 	int getMenuItemCount();
 }

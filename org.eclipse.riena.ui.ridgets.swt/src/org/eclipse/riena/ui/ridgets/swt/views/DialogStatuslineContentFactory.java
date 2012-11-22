@@ -22,6 +22,8 @@ import org.eclipse.riena.ui.swt.StatuslineMessage;
  * Create a simple status line for dialog.
  * <p>
  * This status line only displays a message.
+ * 
+ * @since 5.0
  */
 public class DialogStatuslineContentFactory implements IStatusLineContentFactory {
 

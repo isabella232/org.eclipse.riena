@@ -84,6 +84,7 @@ public interface IWorkareaDefinition {
 	 * 
 	 * @param prepare
 	 *            {@code true} also prepare view; {@code false} create view while node is activated
+	 * @since 5.0
 	 */
 	void setPrepareView(boolean prepare);
 
@@ -93,6 +94,7 @@ public interface IWorkareaDefinition {
 	 * @see #isRequiredPreparation
 	 * 
 	 * @return {@code true} also prepare view; {@code false} create view while node is activated
+	 * @since 5.0
 	 */
 	boolean isPrepareView();
 
