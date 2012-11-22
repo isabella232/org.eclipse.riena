@@ -34,6 +34,9 @@ public abstract class AbstractDialogViewWithButtonBar extends AbstractDialogView
 		this(parentShell, false);
 	}
 
+	/**
+	 * @since 5.0
+	 */
 	protected AbstractDialogViewWithButtonBar(final Shell parentShell, final boolean statusline) {
 		super(parentShell, statusline);
 	}

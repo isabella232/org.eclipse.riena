@@ -28,6 +28,9 @@ public interface IRidgetContainer {
 	 */
 	void addRidget(String id, IRidget ridget);
 
+	/**
+	 * @since 5.0
+	 */
 	boolean removeRidget(String id);
 
 	/**

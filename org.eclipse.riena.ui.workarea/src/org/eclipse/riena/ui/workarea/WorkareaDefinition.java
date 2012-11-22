@@ -112,10 +112,16 @@ public class WorkareaDefinition implements IWorkareaDefinition {
 		this.requiredPreparation = required;
 	}
 
+	/**
+	 * @since 5.0
+	 */
 	public void setPrepareView(final boolean prepare) {
 		prepareView = prepare;
 	}
 
+	/**
+	 * @since 5.0
+	 */
 	public boolean isPrepareView() {
 		return prepareView;
 	}

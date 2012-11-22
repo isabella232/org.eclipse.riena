@@ -154,6 +154,7 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	 * @param uiControl
 	 *            UI control
 	 * @return ID of the given UI control; maybe {@code null}, if the control has no binding ID, is disposed or is not a {@link Widget}.
+	 * @since 5.0
 	 */
 	public String getID(final Object uiControl) {
 		final IBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();

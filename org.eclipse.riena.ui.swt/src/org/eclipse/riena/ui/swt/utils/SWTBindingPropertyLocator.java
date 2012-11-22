@@ -137,6 +137,9 @@ public final class SWTBindingPropertyLocator implements IBindingPropertyLocator 
 		}
 	}
 
+	/**
+	 * @since 5.0
+	 */
 	public String getComplexBindingId(final Object uiControl) {
 
 		if (uiControl instanceof Control) {
