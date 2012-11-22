@@ -26,7 +26,7 @@ public class AllManualTests extends TestCase {
 
 	@SuppressWarnings("unchecked")
 	public static Test suite() {
-		return TestCollector.createTestSuiteWith(Activator.getDefault().getBundle(), null, ManualTestCase.class);
+		return TestCollector.createTestSuiteWithJUnit3And4(Activator.getDefault().getBundle(), null, ManualTestCase.class);
 	}
 
 }
