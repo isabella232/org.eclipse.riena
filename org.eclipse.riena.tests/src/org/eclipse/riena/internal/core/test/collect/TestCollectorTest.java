@@ -36,7 +36,7 @@ public class TestCollectorTest {
 	private Package withinPackage;
 
 	@Before
-	protected void setUp() throws Exception {
+	public void setUp() throws Exception {
 		bundle = Activator.getDefault().getBundle();
 		withinPackage = JUnit3DummyTest.class.getPackage();
 	}
