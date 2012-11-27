@@ -114,6 +114,7 @@ public class ShellRenderer extends AbstractTitleBarRenderer {
 	 * The default implementation returns the text of the SWT shell.
 	 * 
 	 * @return text of title bar
+	 * @since 5.0
 	 */
 	protected String getTitleText() {
 		final String title = getShell().getText();
