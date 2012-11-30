@@ -71,6 +71,45 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 	// test methods
 	///////////////
 
+	public void testInputNegativeNumber() throws Exception {
+		final DoubleBean bean = new DoubleBean();
+		getRidget().setDirectWriting(true);
+		getRidget().bindToModel(bean, DoubleBean.PROP_VALUE);
+		assertNull(bean.getValue());
+
+		UITestHelper.sendString(getWidget().getDisplay(), minus);
+		assertEquals(minus + decimalSeparator + "00", getWidget().getText());
+		assertNull(bean.getValue());
+
+		UITestHelper.sendString(getWidget().getDisplay(), "5");
+		assertEquals(minus + "5" + decimalSeparator + "00", getWidget().getText());
+		assertEquals(Double.valueOf(-5), bean.getValue());
+	}
+
+	public void testInputNegativeNumberInEmptyTextField() throws Exception {
+		final DoubleBean bean = new DoubleBean();
+		getRidget().setDirectWriting(true);
+		getRidget().bindToModel(bean, DoubleBean.PROP_VALUE);
+		assertNull(bean.getValue());
+		UITestHelper.sendKeyAction(getWidget().getDisplay(), UITestHelper.KC_DEL);
+
+		UITestHelper.sendString(getWidget().getDisplay(), minus);
+		assertEquals(minus + decimalSeparator, getWidget().getText());
+		assertNull(bean.getValue());
+
+		UITestHelper.sendString(getWidget().getDisplay(), "5");
+		assertEquals(minus + "5" + decimalSeparator, getWidget().getText());
+		assertEquals(Double.valueOf(-5), bean.getValue());
+
+		UITestHelper.sendString(getWidget().getDisplay(), decimalSeparator);
+		assertEquals(minus + "5" + decimalSeparator, getWidget().getText());
+		assertEquals(Double.valueOf(-5), bean.getValue());
+
+		UITestHelper.sendString(getWidget().getDisplay(), "2");
+		assertEquals(minus + "5" + decimalSeparator + "2", getWidget().getText());
+		assertEquals(Double.valueOf(-5.2), bean.getValue());
+	}
+
 	public void testRidgetMapping() {
 		final SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
 		assertSame(DecimalTextRidget.class, mapper.getRidgetClass(getWidget()));
@@ -831,7 +870,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(localize("0,"), NumericTextRidget.removeLeadingCruft(localize("0,")));
 		assertEquals(localize("0,"), NumericTextRidget.removeLeadingCruft(localize("00,")));
 		assertEquals(localize("1,"), NumericTextRidget.removeLeadingCruft(localize("001,")));
-		assertEquals(localize(","), NumericTextRidget.removeLeadingCruft(localize("-,")));
+		assertEquals(localize("-,"), NumericTextRidget.removeLeadingCruft(localize("-,")));
 		assertEquals(localize("0,"), NumericTextRidget.removeLeadingCruft(localize("-0,")));
 		assertEquals(localize("0,"), NumericTextRidget.removeLeadingCruft(localize("-00,")));
 		assertEquals(localize("-10,"), NumericTextRidget.removeLeadingCruft(localize("-0010,")));

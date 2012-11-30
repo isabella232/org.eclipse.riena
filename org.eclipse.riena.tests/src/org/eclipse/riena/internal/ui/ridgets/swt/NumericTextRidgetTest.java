@@ -501,6 +501,40 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		assertEquals(Integer.valueOf(471), bean.getValue());
 	}
 
+	public void testInputNegativeNumber() throws Exception {
+		final IntegerBean bean = new IntegerBean();
+		getRidget().setDirectWriting(true);
+		getRidget().bindToModel(bean, IntegerBean.PROP_VALUE);
+		assertEquals(Integer.valueOf(0), bean.getValue());
+
+		UITestHelper.sendString(getWidget().getDisplay(), minus);
+		assertEquals(minus, getWidget().getText());
+		assertEquals(Integer.valueOf(0), bean.getValue());
+
+		UITestHelper.sendString(getWidget().getDisplay(), "5");
+		assertEquals(minus + "5", getWidget().getText());
+		assertEquals(Integer.valueOf(-5), bean.getValue());
+	}
+
+	public void testInputNegativeNumberInEmptyTextField() throws Exception {
+		final IntegerBean bean = new IntegerBean();
+
+		getRidget().setDirectWriting(true);
+		getRidget().bindToModel(bean, IntegerBean.PROP_VALUE);
+		assertEquals(Integer.valueOf(0), bean.getValue());
+
+		UITestHelper.sendKeyAction(getWidget().getDisplay(), UITestHelper.KC_DEL);
+		final Integer expectedAfterMinus = bean.getValue();
+
+		UITestHelper.sendString(getWidget().getDisplay(), minus);
+		assertEquals(minus, getWidget().getText());
+		assertEquals(expectedAfterMinus, bean.getValue());
+
+		UITestHelper.sendString(getWidget().getDisplay(), "5");
+		assertEquals(minus + "5", getWidget().getText());
+		assertEquals(Integer.valueOf(-5), bean.getValue());
+	}
+
 	public void testUpdateFromControlUserInputDirectWriting() {
 		final Text control = getWidget();
 		final INumericTextRidget ridget = getRidget();
@@ -1162,8 +1196,8 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 	}
 
 	public void testRemoveLeadingCruft() {
-		assertEquals("0", NumericTextRidget.removeLeadingCruft("-"));
-		assertEquals("0", NumericTextRidget.removeLeadingCruft("-0"));
+		assertEquals("-", NumericTextRidget.removeLeadingCruft("-"));
+		assertEquals("-", NumericTextRidget.removeLeadingCruft("-0"));
 		assertEquals("0", NumericTextRidget.removeLeadingCruft("0"));
 		assertEquals("-1", NumericTextRidget.removeLeadingCruft("-01"));
 		assertEquals("-10", NumericTextRidget.removeLeadingCruft("-010"));

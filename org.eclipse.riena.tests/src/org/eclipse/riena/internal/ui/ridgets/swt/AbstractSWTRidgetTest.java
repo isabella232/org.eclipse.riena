@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -37,6 +38,22 @@ import org.eclipse.riena.ui.ridgets.listener.IFocusListener;
  * Superclass to test a Ridget which is bound to an SWT-Widget.
  */
 public abstract class AbstractSWTRidgetTest extends AbstractRidgetTestCase {
+
+	protected String minus;
+	protected String decimalSeparator;
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.internal.ui.ridgets.swt.AbstractRidgetTestCase#setUp()
+	 */
+	@Override
+	protected void setUp() throws Exception {
+		super.setUp();
+		final DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+		minus = new String(new char[] { symbols.getMinusSign() });
+		decimalSeparator = new String(new char[] { symbols.getDecimalSeparator() });
+	}
 
 	// protected methods
 	// //////////////////
