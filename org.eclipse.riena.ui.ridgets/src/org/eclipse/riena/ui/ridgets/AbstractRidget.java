@@ -278,26 +278,44 @@ public abstract class AbstractRidget implements IRidget {
 		this.retryRequestFocus = retryRequestFocus;
 	}
 
+	/**
+	 * @since 5.0
+	 */
 	public IMenuItemRidget addMenuItem(final String itemText) {
 		throw new UnsupportedOperationException("Context menu is unsupported for " + this.toString()); //$NON-NLS-1$
 	}
 
+	/**
+	 * @since 5.0
+	 */
 	public IMenuItemRidget addMenuItem(final String itemText, final String iconName) {
 		throw new UnsupportedOperationException("Context menu is unsupported for " + this.toString()); //$NON-NLS-1$
 	}
 
+	/**
+	 * @since 5.0
+	 */
 	public void removeMenuItem(final String menuItemText) {
 		throw new UnsupportedOperationException("Context menu is unsupported for " + this.toString()); //$NON-NLS-1$
 	}
 
+	/**
+	 * @since 5.0
+	 */
 	public void removeMenuItem(final IMenuItemRidget menuItemRidget) {
 		throw new UnsupportedOperationException("Context menu is unsupported for " + this.toString()); //$NON-NLS-1$
 	}
 
+	/**
+	 * @since 5.0
+	 */
 	public IMenuItemRidget getMenuItem(final int index) {
 		throw new UnsupportedOperationException("Context menu is unsupported for " + this.toString()); //$NON-NLS-1$
 	}
 
+	/**
+	 * @since 5.0
+	 */
 	public int getMenuItemCount() {
 		throw new UnsupportedOperationException("Context menu is unsupported for " + this.toString()); //$NON-NLS-1$
 	}

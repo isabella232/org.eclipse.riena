@@ -101,6 +101,9 @@ public abstract class AbstractWindowController implements IController, IContext 
 		ridgets.put(id, ridget);
 	}
 
+	/**
+	 * @since 5.0
+	 */
 	public boolean removeRidget(final String id) {
 		return ridgets.remove(id) != null;
 	}

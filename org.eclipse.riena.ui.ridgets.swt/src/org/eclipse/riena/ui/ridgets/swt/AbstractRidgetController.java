@@ -68,6 +68,9 @@ public abstract class AbstractRidgetController implements IController {
 		map.put(id, ridget);
 	}
 
+	/**
+	 * @since 5.0
+	 */
 	public boolean removeRidget(final String id) {
 		return map.remove(id) != null;
 	}
