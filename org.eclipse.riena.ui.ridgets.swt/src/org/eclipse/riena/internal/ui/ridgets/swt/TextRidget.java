@@ -45,9 +45,8 @@ import org.eclipse.riena.ui.swt.facades.SWTFacade;
 public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 
 	/**
-	 * This property is used by the databinding to sync ridget and model. It is
-	 * always fired before its sibling {@link ITextRidget#PROPERTY_TEXT} to
-	 * ensure that the model is updated before any listeners try accessing it.
+	 * This property is used by the databinding to sync ridget and model. It is always fired before its sibling {@link ITextRidget#PROPERTY_TEXT} to ensure that
+	 * the model is updated before any listeners try accessing it.
 	 * <p>
 	 * This property is not API. Do not use in client code.
 	 */
@@ -66,24 +65,20 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	private final static boolean DEFAULT_DIRECTWRITING = getDefaultTextRidgetDirectWritingEnabled();
 
 	/**
-	 * This system property controls
-	 * {@code RienaStatus.getDefaultTextRidgetDirectWritingEnabled}
+	 * This system property controls {@code RienaStatus.getDefaultTextRidgetDirectWritingEnabled}
 	 */
 	private static final String RIENA_TEXT_RIDGET_DIRECTWRITING_PROPERTY = "riena.textridget.directwriting"; //$NON-NLS-1$
 
 	private static final String DIRECTWRITING_DEFAULT = "false"; //$NON-NLS-1$
 
 	/**
-	 * Checks if the systemproperty <code>riena.textridget.directwriting</code>
-	 * was given, that indicates that every TextRidget has per default
-	 * directwriting enabled.
+	 * Checks if the systemproperty <code>riena.textridget.directwriting</code> was given, that indicates that every TextRidget has per default directwriting
+	 * enabled.
 	 * 
-	 * @return <code>true</code> if per default directwriting is enabled in
-	 *         TextRidgets, otherwise <code>false</code>
+	 * @return <code>true</code> if per default directwriting is enabled in TextRidgets, otherwise <code>false</code>
 	 */
 	private static boolean getDefaultTextRidgetDirectWritingEnabled() {
-		return Boolean
-				.parseBoolean(System.getProperty(RIENA_TEXT_RIDGET_DIRECTWRITING_PROPERTY, DIRECTWRITING_DEFAULT));
+		return Boolean.parseBoolean(System.getProperty(RIENA_TEXT_RIDGET_DIRECTWRITING_PROPERTY, DIRECTWRITING_DEFAULT));
 	}
 
 	public TextRidget() {
@@ -123,11 +118,9 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	}
 
 	/**
-	 * Returns true, if the input to this method is considered 'non empty',
-	 * false otherwise.
+	 * Returns true, if the input to this method is considered 'non empty', false otherwise.
 	 * <p>
-	 * Subclasses may override, to provide their own notion what is considered
-	 * to be an 'non empty' String value.
+	 * Subclasses may override, to provide their own notion what is considered to be an 'non empty' String value.
 	 * 
 	 * @param input
 	 *            a String; never null
@@ -157,8 +150,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	}
 
 	/**
-	 * Template method for adding listeners to the control. Will be called
-	 * automatically. Children can override but must call super.
+	 * Template method for adding listeners to the control. Will be called automatically. Children can override but must call super.
 	 * 
 	 * @param control
 	 *            a Text instance (never null)
@@ -171,8 +163,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	}
 
 	/**
-	 * Template method for removing listeners from the control. Will be called
-	 * automatically. Children can override but must call super.
+	 * Template method for removing listeners from the control. Will be called automatically. Children can override but must call super.
 	 * 
 	 * @param control
 	 *            a Text instance (never null)
@@ -188,9 +179,8 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	// ////////////////
 
 	/**
-	 * Given an input {@value} , compute an output value for the UI control,
-	 * based on the current marker state. The method is called when any of the
-	 * following markers changes state: output, read-only.
+	 * Given an input {@value} , compute an output value for the UI control, based on the current marker state. The method is called when any of the following
+	 * markers changes state: output, read-only.
 	 * <p>
 	 * Subclasses may override, but should call super.
 	 * 
@@ -204,8 +194,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	/**
 	 * Returns the underlying Text control.
 	 * <p>
-	 * Ridgets that wrap a Text widget into other UI elements, may override this
-	 * method to provide access to the text widget.
+	 * Ridgets that wrap a Text widget into other UI elements, may override this method to provide access to the text widget.
 	 * 
 	 * @return the Text control to be used by this ridget; may be null
 	 * @since 2.0
@@ -264,8 +253,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 
 	public void setInputToUIControlConverter(final IConverter converter) {
 		if (converter != null) {
-			Assert.isLegal(converter.getFromType() == String.class,
-					"Invalid from-type. Need a String-to-String converter"); //$NON-NLS-1$
+			Assert.isLegal(converter.getFromType() == String.class, "Invalid from-type. Need a String-to-String converter"); //$NON-NLS-1$
 			Assert.isLegal(converter.getToType() == String.class, "Invalid to-type. Need a String-to-String converter"); //$NON-NLS-1$
 		}
 		this.inputConverter = converter;
@@ -274,11 +262,8 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * Invoking this method will copy the given text into the ridget and the
-	 * widget regardless of the validation outcome. If the text does not pass
-	 * validation the error marker will be set and the text will <b>not</b> be
-	 * copied into the model. If validation passes the text will be copied into
-	 * the model as well.
+	 * Invoking this method will copy the given text into the ridget and the widget regardless of the validation outcome. If the text does not pass validation
+	 * the error marker will be set and the text will <b>not</b> be copied into the model. If validation passes the text will be copied into the model as well.
 	 * <p>
 	 * Passing a null value is equivalent to {@code setText("")}.
 	 */
@@ -319,9 +304,8 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * Invoking this method will copy the model value into the ridget and the
-	 * widget regardless of the validation outcome. If the model value does not
-	 * pass validation, the error marker will be set.
+	 * Invoking this method will copy the model value into the ridget and the widget regardless of the validation outcome. If the model value does not pass
+	 * validation, the error marker will be set.
 	 */
 	@Override
 	public synchronized void updateFromModel() {
@@ -382,13 +366,15 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	}
 
 	/**
-	 * Answers true if the the {@link TextRidget} should fire a
-	 * {@link PropertyChangeEvent} for property
-	 * {@link ITextRidget#PROPERTY_TEXT} given the transition from oldValue to
-	 * newValue.
+	 * Answers true if the the {@link TextRidget} should fire a {@link PropertyChangeEvent} for property {@link ITextRidget#PROPERTY_TEXT} given the transition
+	 * from oldValue to newValue.
 	 */
 	protected boolean isExternalValueChange(final String oldValue, final String newValue) {
 		return true;
+	}
+
+	protected void enterKeyReleased() {
+		updateTextValue();
 	}
 
 	// helping classes
@@ -401,7 +387,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 		@Override
 		public void keyReleased(final KeyEvent e) {
 			if (e.character == '\r') {
-				updateTextValue();
+				enterKeyReleased();
 			}
 		}
 	}
@@ -439,14 +425,10 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	}
 
 	/**
-	 * Validation listener that checks 'on edit' validation rules when the text
-	 * widget's contents are modified by the user. If the new text value does
-	 * not pass the test and outcome is ERROR_BLOCK_WITH_FLASH, the change will
-	 * be rejected. If the new text passed the test, or fails the test without
-	 * blocking, the value is copied into the ridget. This will fire a proprty
-	 * change event (see {@link TextRidget#setText(String)}) causing the 'on
-	 * update' validation rules to be checked and will copy the value into the
-	 * model if it passes those checks.
+	 * Validation listener that checks 'on edit' validation rules when the text widget's contents are modified by the user. If the new text value does not pass
+	 * the test and outcome is ERROR_BLOCK_WITH_FLASH, the change will be rejected. If the new text passed the test, or fails the test without blocking, the
+	 * value is copied into the ridget. This will fire a proprty change event (see {@link TextRidget#setText(String)}) causing the 'on update' validation rules
+	 * to be checked and will copy the value into the model if it passes those checks.
 	 */
 	private final class ValidationListener implements VerifyListener {
 
