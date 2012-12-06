@@ -18,6 +18,7 @@ import java.util.Collection;
 import org.eclipse.core.databinding.BindingException;
 import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.jface.databinding.swt.SWTObservables;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
@@ -86,6 +87,34 @@ public class NavigationNodeControllerTest extends RienaTestCase {
 		controller = null;
 		node = null;
 		SwtUtilities.dispose(shell);
+	}
+
+	public void testUpdateNavigationMarkersUniqueAndDisabled() throws Exception {
+		assertTrue(node.getMarkers().isEmpty());
+
+		final TextRidget r1 = new TextRidget();
+		r1.setUIControl(new Text(shell, SWT.NONE));
+		final MandatoryMarker m1 = new MandatoryMarker(true);
+		r1.addMarker(m1);
+		controller.addRidget("id1", r1); //$NON-NLS-1$
+		controller.updateNavigationNodeMarkers();
+		assertEquals(1, node.getMarkers().size());
+		assertSame(m1, node.getMarkersOfType(MandatoryMarker.class).iterator().next());
+
+		final TextRidget r2 = new TextRidget();
+		r2.setUIControl(new Text(shell, SWT.NONE));
+		final MandatoryMarker m2 = new MandatoryMarker(true);
+		r2.addMarker(m2);
+		controller.addRidget("id2", r2); //$NON-NLS-1$
+		controller.updateNavigationNodeMarkers();
+		// m2 was not added to the node since m1 is there
+		assertEquals(1, node.getMarkers().size());
+		assertSame(m1, node.getMarkersOfType(MandatoryMarker.class).iterator().next());
+
+		m1.setDisabled(true); // triggers also controller.updateNavigationNodeMarkers();
+		// m1 was removed since it is disabled, m2 was added to the node instead
+		assertEquals(1, node.getMarkers().size());
+		assertSame(m2, node.getMarkersOfType(MandatoryMarker.class).iterator().next());
 	}
 
 	/**

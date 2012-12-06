@@ -188,6 +188,9 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 		ridgets.put(id, ridget);
 	}
 
+	/**
+	 * @since 5.0
+	 */
 	public boolean removeRidget(final String id) {
 		return ridgets.remove(id) != null;
 	}
@@ -325,6 +328,10 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 		}
 	}
 
+	/**
+	 * The idea in this method is to have at most one marker of each type (to avoid firing too many events when redundantly adding/removing markers of the same
+	 * type)
+	 */
 	protected void updateNavigationNodeMarkers() {
 		final Collection<ErrorMarker> errorInRidgets = new ArrayList<ErrorMarker>();
 		final Collection<MandatoryMarker> mandatoryInRidgets = new ArrayList<MandatoryMarker>();
@@ -341,33 +348,58 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 			}
 		}
 
+		// handle error markers
 		final Collection<ErrorMarker> errorInNode = getNavigationNode().getMarkersOfType(ErrorMarker.class);
-		final Collection<MandatoryMarker> mandatoryInNode = getNavigationNode().getMarkersOfType(MandatoryMarker.class);
-
-		// error in node    - no
-		// error in ridgets - yes
-		// => we have to add an error marker to the node
+		// case 1:
+		// marker in node    - no
+		// marker in ridgets - yes
+		// => we have to add a marker to the node
 		if (errorInNode.isEmpty() && !errorInRidgets.isEmpty()) {
 			// error markers are unique, so just add the first one
 			getNavigationNode().addMarker(errorInRidgets.iterator().next());
 		}
-
-		// error in node    - yes
-		// error in ridgets - no
-		// => we have to remove the error marker from the node
+		// case 2:
+		// marker in node    - yes
+		// marker in ridgets - no
+		// => we have to remove the marker from the node
 		if (!errorInNode.isEmpty() && errorInRidgets.isEmpty()) {
 			getNavigationNode().removeMarker(errorInNode.iterator().next());
 		}
 
 		// now we repeat the same for the mandatory markers
+		final Collection<MandatoryMarker> mandatoryInNode = getNavigationNode().getMarkersOfType(MandatoryMarker.class);
+		// case 1:
+		// marker in node    - no
+		// marker in ridgets - yes
+		// => we have to add a marker to the node
 		if (mandatoryInNode.isEmpty() && !mandatoryInRidgets.isEmpty()) {
 			getNavigationNode().addMarker(mandatoryInRidgets.iterator().next());
 		}
-
+		// case 2:
+		// marker in node    - yes
+		// marker in ridgets - no
+		// => we have to remove the marker from the node
 		if (!mandatoryInNode.isEmpty() && mandatoryInRidgets.isEmpty()) {
 			getNavigationNode().removeMarker(mandatoryInNode.iterator().next());
 		}
-
+		// case 3:
+		// enabled marker in node      - no
+		// disabled marker in node     - yes
+		// (enabled) marker in ridgets - yes
+		// => we have to remove the disabled marker from the node and add the enabled marker from the ridgets
+		final List<MandatoryMarker> enabledMandatoryInNode = new ArrayList<MandatoryMarker>();
+		final List<MandatoryMarker> disabledMandatoryInNode = new ArrayList<MandatoryMarker>();
+		for (final MandatoryMarker m : new ArrayList<MandatoryMarker>(mandatoryInNode)) {
+			if (m.isDisabled()) {
+				disabledMandatoryInNode.add(m);
+			} else {
+				enabledMandatoryInNode.add(m);
+			}
+		}
+		if (enabledMandatoryInNode.isEmpty() && !disabledMandatoryInNode.isEmpty() && !mandatoryInRidgets.isEmpty()) {
+			getNavigationNode().removeMarker(disabledMandatoryInNode.iterator().next());
+			getNavigationNode().addMarker(mandatoryInRidgets.iterator().next());
+		}
 	}
 
 	private List<IMarker> getRidgetMarkers() {
