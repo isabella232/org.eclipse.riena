@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.internal.ui.swt.utils;
+package org.eclipse.riena.ui.swt.utils;
 
 import org.osgi.service.log.LogService;
 
@@ -23,6 +23,7 @@ import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.riena.core.Log4r;
+import org.eclipse.riena.internal.ui.swt.utils.RcpUtilities;
 
 /**
  * This class helps to maximize or restore a shell.
@@ -70,8 +71,7 @@ public class ShellHelper {
 	/**
 	 * Calculates the maximal bounds for the given shell.
 	 * <p>
-	 * If the task bar of the operation system (Windwos) is hidden, the maximal
-	 * bounds for the shell are reduced by one pixel a every side.
+	 * If the task bar of the operation system (Windwos) is hidden, the maximal bounds for the shell are reduced by one pixel at every side.
 	 * 
 	 * @param shell
 	 *            the shell which maximal bounds should be returned
@@ -79,8 +79,7 @@ public class ShellHelper {
 	 */
 	public static Rectangle calcMaxBounds(final Shell shell) {
 		final Rectangle clientBounds = shell.getMonitor().getClientArea();
-		final Rectangle newBounds = new Rectangle(clientBounds.x, clientBounds.y, clientBounds.width,
-				clientBounds.height);
+		final Rectangle newBounds = new Rectangle(clientBounds.x, clientBounds.y, clientBounds.width, clientBounds.height);
 		if (isTaskbarHidden()) {
 			newBounds.x += 1;
 			newBounds.y += 1;
@@ -91,12 +90,10 @@ public class ShellHelper {
 	}
 
 	/**
-	 * Returns whether the task bar of the operation system (Windows) is hidden
-	 * or not.
+	 * Returns whether the task bar of the operation system (Windows) is hidden or not.
 	 * <p>
-	 * Because there is no API to check these, the bounds of the client area and
-	 * the monitor will be compared. If they are identical, it will be expected
-	 * that the task bar is hidden.
+	 * Because there is no API to check these, the bounds of the client area and the monitor will be compared. If they are identical, it will be expected that
+	 * the task bar is hidden.
 	 * 
 	 * @return {@code true} if task bar is hidden; otherwise {@code false}
 	 */
@@ -117,8 +114,7 @@ public class ShellHelper {
 	/**
 	 * Returns whether the shell is currently maximized or not.
 	 * 
-	 * @return {@code true} if the shell is maximized; {@code false} if the
-	 *         shell isn't maximized.
+	 * @return {@code true} if the shell is maximized; {@code false} if the shell isn't maximized.
 	 */
 	public static boolean isShellMaximzed() {
 		final Shell shell = RcpUtilities.getWorkbenchShell();
@@ -134,8 +130,7 @@ public class ShellHelper {
 	 * 
 	 * @param shell
 	 *            shell to check
-	 * @return {@code true} if the shell is maximized; {@code false} if the
-	 *         shell isn't maximized.
+	 * @return {@code true} if the shell is maximized; {@code false} if the shell isn't maximized.
 	 */
 	private static boolean isMaximzed(final Shell shell) {
 		if ((shell == null) || shell.isDisposed()) {
@@ -156,13 +151,11 @@ public class ShellHelper {
 	}
 
 	/**
-	 * Returns whether the given shell has the default shell style with (title
-	 * bar, border, system menu etc.) or not.
+	 * Returns whether the given shell has the default shell style with (title bar, border, system menu etc.) or not.
 	 * 
 	 * @param shell
 	 *            shell to check
-	 * @return {@code true} not default shell style (no title bar etc.);
-	 *         {@code false] default shell style
+	 * @return {@code true} not default shell style (no title bar etc.); {@code false] default shell style
 	 */
 	private static boolean isTitleless(final Shell shell) {
 		if ((shell == null) || shell.isDisposed()) {
@@ -174,11 +167,9 @@ public class ShellHelper {
 	}
 
 	/**
-	 * Returns whether the shell has the default shell style with (title bar,
-	 * border, system menu etc.) or not.
+	 * Returns whether the shell has the default shell style with (title bar, border, system menu etc.) or not.
 	 * 
-	 * @return {@code true} not default shell style (no title bar etc.);
-	 *         {@code false] default shell style
+	 * @return {@code true} not default shell style (no title bar etc.); {@code false] default shell style
 	 */
 	private static boolean isShellTitleless() {
 		final Shell shell = RcpUtilities.getWorkbenchShell();
@@ -205,8 +196,7 @@ public class ShellHelper {
 	}
 
 	private static Rectangle getSurroundingBounds(final Shell shell) {
-		return shell.getParent() != null ? shell.getParent().getBounds() : getClosestMonitor(shell.getDisplay(),
-				shell.getLocation()).getBounds();
+		return shell.getParent() != null ? shell.getParent().getBounds() : getClosestMonitor(shell.getDisplay(), shell.getLocation()).getBounds();
 	}
 
 	public static Monitor getClosestMonitor(final Shell shell) {

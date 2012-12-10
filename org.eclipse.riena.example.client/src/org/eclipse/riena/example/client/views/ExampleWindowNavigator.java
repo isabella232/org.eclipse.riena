@@ -14,8 +14,8 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 
-import org.eclipse.riena.internal.ui.swt.utils.ShellHelper;
 import org.eclipse.riena.navigation.ui.swt.views.IWindowNavigator;
+import org.eclipse.riena.ui.swt.utils.ShellHelper;
 
 public class ExampleWindowNavigator implements IWindowNavigator {
 

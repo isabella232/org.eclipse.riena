@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.internal.ui.swt.utils;
+package org.eclipse.riena.ui.swt.utils;
 
 import junit.framework.TestCase;
 
@@ -17,6 +17,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
+import org.eclipse.riena.ui.swt.utils.ShellHelper;
 
 /**
  * Tests of the class {@link ShellHelper}.
