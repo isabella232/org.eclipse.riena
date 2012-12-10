@@ -12,7 +12,7 @@ package org.eclipse.riena.navigation.ui.swt.views;
 
 import org.eclipse.swt.widgets.Shell;
 
-import org.eclipse.riena.internal.ui.swt.utils.ShellHelper;
+import org.eclipse.riena.ui.swt.utils.ShellHelper;
 
 /**
  * This will center the shell on the current screen.
