@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.riena.build.feature.sdk"
       label="Riena Target Components"
-      version="4.0.0.qualifier"
+      version="5.0.0.qualifier"
       provider-name="Eclipse.org - Riena">
 
    <description url="http://www.eclipse.org/riena">
