@@ -8,10 +8,10 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.riena.ui.swt,
  org.eclipse.riena.navigation.ui.swt,
  org.pushingpixels.trident,
- org.eclipse.riena.core;bundle-version="4.0.0",
- org.eclipse.riena.ui.core;bundle-version="4.0.0",
- org.eclipse.riena.ui.ridgets;bundle-version="4.0.0",
- org.eclipse.riena.ui.ridgets.swt;bundle-version="4.0.0"
+ org.eclipse.riena.core;bundle-version="5.0.0",
+ org.eclipse.riena.ui.core;bundle-version="5.0.0",
+ org.eclipse.riena.ui.ridgets;bundle-version="5.0.0",
+ org.eclipse.riena.ui.ridgets.swt;bundle-version="5.0.0"
 Eclipse-RegisterBuddy: org.eclipse.riena.ui.swt
 Export-Package: org.eclipse.riena.ui.swt.facades.internal;x-friends:="org.eclipse.riena.tests"
 Bundle-Vendor: Eclipse.org - Riena
