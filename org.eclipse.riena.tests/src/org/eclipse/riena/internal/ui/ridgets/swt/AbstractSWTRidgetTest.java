@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -21,11 +22,13 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Widget;
 
 import org.eclipse.riena.core.marker.IMarker;
+import org.eclipse.riena.core.util.Nop;
 import org.eclipse.riena.internal.ui.swt.test.UITestHelper;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IClickableRidget;
+import org.eclipse.riena.ui.ridgets.IMenuItemRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.listener.ClickEvent;
 import org.eclipse.riena.ui.ridgets.listener.FocusEvent;
@@ -35,6 +38,22 @@ import org.eclipse.riena.ui.ridgets.listener.IFocusListener;
  * Superclass to test a Ridget which is bound to an SWT-Widget.
  */
 public abstract class AbstractSWTRidgetTest extends AbstractRidgetTestCase {
+
+	protected String minus;
+	protected String decimalSeparator;
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.internal.ui.ridgets.swt.AbstractRidgetTestCase#setUp()
+	 */
+	@Override
+	protected void setUp() throws Exception {
+		super.setUp();
+		final DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+		minus = new String(new char[] { symbols.getMinusSign() });
+		decimalSeparator = new String(new char[] { symbols.getDecimalSeparator() });
+	}
 
 	// protected methods
 	// //////////////////
@@ -367,7 +386,106 @@ public abstract class AbstractSWTRidgetTest extends AbstractRidgetTestCase {
 		control.notifyListeners(SWT.MouseUp, mdEvent);
 
 		assertEquals(3, listener2.getCount());
+	}
 
+	public void testGetMenuItemCount() {
+		final IRidget ridget = getRidget();
+		final String menuItemWithoutIconText = "MenuItemWithoutIcon"; //$NON-NLS-1$
+		final String menuItemWithIconText = "MenuItemWithIcon"; //$NON-NLS-1$
+		final String iconName = "leftArrow"; //$NON-NLS-1$
+
+		assertEquals(0, ridget.getMenuItemCount());
+
+		ridget.addMenuItem(menuItemWithoutIconText);
+		assertEquals(1, ridget.getMenuItemCount());
+
+		ridget.addMenuItem(menuItemWithIconText, iconName);
+		assertEquals(2, ridget.getMenuItemCount());
+	}
+
+	public void testGetMenuItem() {
+		final IRidget ridget = getRidget();
+		final String menuItemWithoutIconText = "MenuItemWithoutIcon"; //$NON-NLS-1$
+		final String menuItemWithIconText = "MenuItemWithIcon"; //$NON-NLS-1$
+		final String iconName = "leftArrow"; //$NON-NLS-1$
+
+		final IMenuItemRidget menuItemWithoutIcon = ridget.addMenuItem(menuItemWithoutIconText);
+		assertEquals(menuItemWithoutIcon, ridget.getMenuItem(0));
+
+		final IMenuItemRidget menuItemWithIcon = ridget.addMenuItem(menuItemWithIconText, iconName);
+		assertEquals(menuItemWithIcon, ridget.getMenuItem(1));
+	}
+
+	public void testGetMenuItemEmptyContextMenu() {
+		try {
+			final IRidget ridget = getRidget();
+			final String menuItemWithoutIconText = "MenuItemWithoutIcon"; //$NON-NLS-1$
+			final String menuItemWithIconText = "MenuItemWithIcon"; //$NON-NLS-1$
+			final String iconName = "leftArrow"; //$NON-NLS-1$
+
+			ridget.addMenuItem(menuItemWithoutIconText);
+			ridget.addMenuItem(menuItemWithIconText, iconName);
+			ridget.getMenuItem(2);
+			fail("IllegalArgumentException expected"); //$NON-NLS-1$
+		} catch (final IllegalArgumentException expected) {
+			Nop.reason("IllegalArgumentException expected"); //$NON-NLS-1$
+		}
+	}
+
+	public void testGetMenuItemNotExistingItem() {
+		final IRidget ridget = getRidget();
+		try {
+			ridget.getMenuItem(0);
+			fail("IllegalStateException expected"); //$NON-NLS-1$
+		} catch (final IllegalStateException expected) {
+			Nop.reason("IllegalStateException expected"); //$NON-NLS-1$
+		}
+	}
+
+	public void testAddMenuItem() {
+		final IRidget ridget = getRidget();
+		final String menuItemWithoutIconText = "MenuItemWithoutIcon"; //$NON-NLS-1$
+		final String menuItemWithIconText = "MenuItemWithIcon"; //$NON-NLS-1$
+		final String iconName = "leftArrow"; //$NON-NLS-1$
+		final Control control = (Control) getWidget();
+
+		final IMenuItemRidget menuItemWithoutIcon = ridget.addMenuItem(menuItemWithoutIconText);
+		assertEquals(1, ridget.getMenuItemCount());
+		assertEquals(menuItemWithoutIcon, ridget.getMenuItem(0));
+		assertEquals(1, control.getMenu().getItemCount());
+
+		final IMenuItemRidget menuItemWithIcon = ridget.addMenuItem(menuItemWithIconText, iconName);
+		assertEquals(2, ridget.getMenuItemCount());
+		assertEquals(menuItemWithIcon, ridget.getMenuItem(1));
+		assertEquals(2, control.getMenu().getItemCount());
+	}
+
+	public void testRemoveMenuItem() {
+		final IRidget ridget = getRidget();
+		final String menuItemWithoutIconText = "MenuItemWithoutIcon"; //$NON-NLS-1$
+		final String menuItemWithIconText = "MenuItemWithIcon"; //$NON-NLS-1$
+		final String iconName = "leftArrow"; //$NON-NLS-1$
+		final Control control = (Control) getWidget();
+
+		final IMenuItemRidget menuItemWithoutIcon = ridget.addMenuItem(menuItemWithoutIconText);
+		IMenuItemRidget menuItemWithIcon = ridget.addMenuItem(menuItemWithIconText, iconName);
+
+		assertEquals(2, ridget.getMenuItemCount());
+		assertEquals(2, control.getMenu().getItemCount());
+		ridget.removeMenuItem(menuItemWithIconText);
+		assertEquals(1, ridget.getMenuItemCount());
+		assertEquals(1, control.getMenu().getItemCount());
+
+		menuItemWithIcon = ridget.addMenuItem(menuItemWithIconText, iconName);
+		assertEquals(2, ridget.getMenuItemCount());
+		assertEquals(2, control.getMenu().getItemCount());
+
+		ridget.removeMenuItem(menuItemWithoutIcon);
+		assertEquals(1, ridget.getMenuItemCount());
+		assertEquals(1, control.getMenu().getItemCount());
+		ridget.removeMenuItem(menuItemWithIcon);
+		assertEquals(0, ridget.getMenuItemCount());
+		assertEquals(0, control.getMenu().getItemCount());
 	}
 
 }

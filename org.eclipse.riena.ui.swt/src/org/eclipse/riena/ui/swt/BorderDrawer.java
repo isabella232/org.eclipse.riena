@@ -28,6 +28,7 @@ import org.eclipse.swt.widgets.Tree;
 
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.internal.ui.swt.Activator;
+import org.eclipse.riena.ui.swt.CompletionCombo.DropDownListener;
 import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
@@ -43,7 +44,6 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
  * @since 4.0
  */
 public class BorderDrawer implements Listener {
-
 	public static final int DEFAULT_BORDER_WIDTH = 1;
 	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), BorderDrawer.class);
 
@@ -141,6 +141,10 @@ public class BorderDrawer implements Listener {
 					registerToControl(child, SWTFacade.Paint);
 				}
 			}
+
+			if (control instanceof CompletionCombo) {
+				addDropDownListener((CompletionCombo) control);
+			}
 		} else if (control instanceof CCombo) {
 			registerToControl(control.getParent(), SWTFacade.Paint);
 		} else if (!useVisibleControlArea) {
@@ -168,6 +172,24 @@ public class BorderDrawer implements Listener {
 				dispose();
 			}
 		}, SWT.Dispose);
+	}
+
+	/**
+	 * @param cc
+	 */
+	private void addDropDownListener(final CompletionCombo cc) {
+		final DropDownListener listener = new DropDownListener() {
+			public void hidden() {
+				computeBorderArea = true;
+				update(true);
+			}
+		};
+		cc.addDropDownListener(listener);
+		toUnregister.add(new Runnable() {
+			public void run() {
+				cc.removeDropDownListener(listener);
+			}
+		});
 	}
 
 	/**
@@ -270,7 +292,7 @@ public class BorderDrawer implements Listener {
 	 */
 	public void update(final boolean redraw) {
 		if (SwtUtilities.isDisposed(getControlToDecorate())) {
-			LOGGER.log(LogService.LOG_ERROR, "Control with border is disposed", new Exception()); //$NON-NLS-1$
+			LOGGER.log(LogService.LOG_WARNING, "Control with border is disposed"); //$NON-NLS-1$
 			return;
 		}
 		final Shell shell = getControlToDecorate().getShell();
@@ -450,7 +472,7 @@ public class BorderDrawer implements Listener {
 				// we also have a label
 				visibleControlArea.x -= 16;
 				visibleControlArea.width += 16;
-			} else if (visibleControlArea.width + specialWidgetWidthAdjustment + 2 * getControlToDecorate().getBorderWidth() + 1 == getControlToDecorate()
+			} else if (visibleControlArea.width + specialWidgetWidthAdjustment + 2 * getControlToDecorate().getBorderWidth() + 1 >= getControlToDecorate()
 					.getBounds().width) {
 				visibleControlArea.width += specialWidgetWidthAdjustment + 1;
 			}
@@ -522,19 +544,18 @@ public class BorderDrawer implements Listener {
 			if (boundsToDecorate == null) {
 				boundsToDecorate = onDisplay;
 			}
+			// this hacky workaround is needed for the case when a layout()
+			// caused the control to decorate to be moved or resized
+			// in this case, we don't get a resize or move event
 			if (!onDisplay.equals(boundsToDecorate) && !computeBorderArea) {
 				boundsToDecorate = onDisplay;
 				layouting = true;
-				getControlToDecorate().getShell().redraw();
+				final Shell shell = getControlToDecorate().getShell();
+				shell.redraw();
 				layouting = false;
 				computeBorderArea = true;
-				getControlToDecorate().getDisplay().asyncExec(new Runnable() {
-					public void run() {
-						if (!SwtUtilities.isDisposed(getControlToDecorate())) {
-							getControlToDecorate().redraw();
-						}
-					}
-				});
+				final Rectangle b = shell.getBounds();
+				shell.redraw(0, 0, b.width, b.height, true);
 			} else {
 				paintControl(event);
 			}

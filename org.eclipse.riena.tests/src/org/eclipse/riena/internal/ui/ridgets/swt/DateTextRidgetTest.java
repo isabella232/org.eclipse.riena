@@ -14,6 +14,8 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 
+import com.ibm.icu.util.GregorianCalendar;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.RowData;
@@ -68,6 +70,25 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 
 	// test methods
 	///////////////
+
+	/**
+	 * ensure that pressing ENTER triggers an autofill
+	 */
+	public void testAutofillOnEnter() throws Exception {
+		final IDateTextRidget ridget = getRidget();
+		ridget.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
+		ridget.setDirectWriting(false);
+		final DateBean bean = new DateBean(new Date());
+		ridget.bindToModel(bean, DateBean.DATE_PROPERTY);
+
+		UITestHelper.sendKeyAction(getWidget().getDisplay(), UITestHelper.KC_DEL);
+		UITestHelper.sendString(getWidget().getDisplay(), "010298"); //$NON-NLS-1$
+		// not press ENTER
+		UITestHelper.sendString(getWidget().getDisplay(), "\r"); //$NON-NLS-1$
+
+		assertEquals(new GregorianCalendar(1998, 1, 1).getTime(), bean.getValue());
+		assertEquals("01.02.1998", getWidget().getText()); //$NON-NLS-1$
+	}
 
 	public void testEmptyText() {
 		final IDateTextRidget ridget = getRidget();
@@ -213,8 +234,7 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	/**
-	 * Tests that setText(null) clears the ridget (i.e. results in an empty
-	 * pattern with just the separators)
+	 * Tests that setText(null) clears the ridget (i.e. results in an empty pattern with just the separators)
 	 */
 	public void testSetTextNull() {
 		final IDateTextRidget ridget = getRidget();
@@ -297,9 +317,8 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 	/**
 	 * As per Bug 289535
 	 * <p>
-	 * When the ridget / control value on setFormat(...) it will be overwritten
-	 * with the freshly formatted data from the model. If there is no model it
-	 * will be cleared.
+	 * When the ridget / control value on setFormat(...) it will be overwritten with the freshly formatted data from the model. If there is no model it will be
+	 * cleared.
 	 */
 	public void testSetFormatWithDateBean() {
 		final IDateTextRidget ridget = getRidget();
@@ -324,13 +343,10 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 	/**
 	 * As per Bug 289535
 	 * <p>
-	 * When the format is incompatible with the model (this can never happen
-	 * when the model is backed by a Date. It can only happen when the model is
-	 * backed by a String), the format will be changed and the value of the
-	 * model will be applied as is to the ridget / widget. If the value is
-	 * longer than the format pattern, it will be truncated. In any case the
-	 * resulting value will most likely be incorrect (since it is based on the
-	 * old format) and may cause an error marker to appear.
+	 * When the format is incompatible with the model (this can never happen when the model is backed by a Date. It can only happen when the model is backed by
+	 * a String), the format will be changed and the value of the model will be applied as is to the ridget / widget. If the value is longer than the format
+	 * pattern, it will be truncated. In any case the resulting value will most likely be incorrect (since it is based on the old format) and may cause an error
+	 * marker to appear.
 	 */
 	public void testSetFormatWithStringBean() {
 		final IDateTextRidget ridget = getRidget();
@@ -365,9 +381,8 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 	/**
 	 * As per Bug 289535
 	 * <p>
-	 * When the ridget / control value on setFormat(...) it will be overwritten
-	 * with the freshly formatted data from the model. If there is no model it
-	 * will be cleared.
+	 * When the ridget / control value on setFormat(...) it will be overwritten with the freshly formatted data from the model. If there is no model it will be
+	 * cleared.
 	 */
 	public void testSetFormatWithNoBean() {
 		final IDateTextRidget ridget = getRidget();

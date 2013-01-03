@@ -27,6 +27,7 @@ import org.eclipse.riena.internal.ui.ridgets.swt.CompositeRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.LabelRidget;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.common.IComplexComponent;
+import org.eclipse.riena.ui.ridgets.IComplexRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.swt.DefaultRealm;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
@@ -88,11 +89,11 @@ public class DefaultBindingManagerTest extends TestCase {
 		manager.injectRidgets(ridgetContainer, uiControls);
 
 		// injected, but not binded
-		assertNotNull(ridgetContainer.getRidget("label1"));
-		assertNull(ridgetContainer.getRidget("label1").getUIControl());
+		assertNotNull(ridgetContainer.getRidget("label1")); //$NON-NLS-1$
+		assertNull(ridgetContainer.getRidget("label1").getUIControl()); //$NON-NLS-1$
 		// injected, but not binded
-		assertNotNull(ridgetContainer.getRidget("label2"));
-		assertNull(ridgetContainer.getRidget("label2").getUIControl());
+		assertNotNull(ridgetContainer.getRidget("label2")); //$NON-NLS-1$
+		assertNull(ridgetContainer.getRidget("label2").getUIControl()); //$NON-NLS-1$
 
 		label1.dispose();
 		label2.dispose();
@@ -116,8 +117,8 @@ public class DefaultBindingManagerTest extends TestCase {
 		manager.bind(ridgetContainer, uiControls);
 
 		// injected and binded
-		assertNotNull(ridgetContainer.getRidget("label1"));
-		assertSame(label1, ridgetContainer.getRidget("label1").getUIControl());
+		assertNotNull(ridgetContainer.getRidget("label1")); //$NON-NLS-1$
+		assertSame(label1, ridgetContainer.getRidget("label1").getUIControl()); //$NON-NLS-1$
 
 		final ComplexComposite complex = new ComplexComposite(shell, SWT.NONE);
 		complex.setData(BINDING_PROPERTY, "complex1"); //$NON-NLS-1$
@@ -130,8 +131,9 @@ public class DefaultBindingManagerTest extends TestCase {
 		manager.bind(ridgetContainer, uiControls);
 
 		// injected and binded
-		assertNotNull(ridgetContainer.getRidget("complex1.label2"));
-		assertSame(label2, ridgetContainer.getRidget("complex1.label2").getUIControl());
+		final IComplexRidget complexRidget = ridgetContainer.getRidget("complex1"); //$NON-NLS-1$
+		assertNotNull(complexRidget.getRidget("label2")); //$NON-NLS-1$
+		assertSame(label2, complexRidget.getRidget("label2").getUIControl()); //$NON-NLS-1$
 
 		label2.dispose();
 		complex.dispose();
@@ -156,12 +158,12 @@ public class DefaultBindingManagerTest extends TestCase {
 		manager.bind(ridgetContainer, uiControls);
 
 		// binded
-		assertSame(label1, ridgetContainer.getRidget("label1").getUIControl());
+		assertSame(label1, ridgetContainer.getRidget("label1").getUIControl()); //$NON-NLS-1$
 
 		manager.unbind(ridgetContainer, uiControls);
 
 		// unbinded
-		assertNull(ridgetContainer.getRidget("label1").getUIControl());
+		assertNull(ridgetContainer.getRidget("label1").getUIControl()); //$NON-NLS-1$
 
 		label1.dispose();
 
@@ -174,7 +176,7 @@ public class DefaultBindingManagerTest extends TestCase {
 
 		final Label label1 = new Label(shell, SWT.NONE);
 
-		final IRidget ridget = ReflectionUtils.invokeHidden(manager, "createRidget", label1);
+		final IRidget ridget = ReflectionUtils.invokeHidden(manager, "createRidget", label1); //$NON-NLS-1$
 		assertNotNull(ridget);
 		assertTrue(ridget instanceof LabelRidget);
 
@@ -188,11 +190,14 @@ public class DefaultBindingManagerTest extends TestCase {
 			final Control control = (Control) uiControl;
 			return (String) control.getData(BINDING_PROPERTY);
 		}
+
+		public String getComplexBindingId(final Object uiControl) {
+			return null;
+		}
 	}
 
 	/**
-	 * This Mapper returns always the class <code>LabelRidget</code> or
-	 * {@code CompositeRidget}.
+	 * This Mapper returns always the class <code>LabelRidget</code> or {@code CompositeRidget}.
 	 */
 	private static class ControlRidgetMapper implements IControlRidgetMapper<Object> {
 
@@ -200,8 +205,7 @@ public class DefaultBindingManagerTest extends TestCase {
 			// not supported in this test
 		}
 
-		public void addMapping(final Class<? extends Object> controlClazz, final Class<? extends IRidget> ridgetClazz,
-				final IMappingCondition condition) {
+		public void addMapping(final Class<? extends Object> controlClazz, final Class<? extends IRidget> ridgetClazz, final IMappingCondition condition) {
 			// not supported in this test
 		}
 

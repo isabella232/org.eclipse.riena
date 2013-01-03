@@ -145,8 +145,20 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	}
 
 	public String getID() {
+		return getID(getUIControl());
+	}
+
+	/**
+	 * Returns the (binding) ID of the given UI control.
+	 * 
+	 * @param uiControl
+	 *            UI control
+	 * @return ID of the given UI control; maybe {@code null}, if the control has no binding ID, is disposed or is not a {@link Widget}.
+	 * @since 5.0
+	 */
+	public String getID(final Object uiControl) {
 		final IBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
-		return locator.locateBindingProperty(getUIControl());
+		return locator.locateBindingProperty(uiControl);
 	}
 
 	/**
@@ -305,7 +317,7 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	 * Do not override. Template Method Pattern: Subclasses may implement {@code unbindUIControl()} and {@code bindUIControl}, if they need to manipulate the
 	 * control when it is bound/unbound, for example to add/remove listeners.
 	 */
-	public final void setUIControl(final Object uiControl) {
+	public void setUIControl(final Object uiControl) {
 		checkUIControl(uiControl);
 		uninstallListeners();
 		unbindUIControl();
@@ -361,6 +373,26 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	 */
 	public boolean decorateVisibleControlArea() {
 		return true;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * The {@code BindingException} will be caught and re-thrown with infos about the binding ID.
+	 */
+	@Override
+	final protected void checkType(final Object uiControl, final Class<?> type) {
+		try {
+			super.checkType(uiControl, type);
+		} catch (final BindingException e) {
+			final String bindingId = getID(uiControl);
+			if (bindingId != null) {
+				final String message = "Unexpected uicontrol has the binding ID " + bindingId; //$NON-NLS-1$
+				throw new BindingException(message, e);
+			} else {
+				throw e;
+			}
+		}
 	}
 
 	// abstract methods - subclasses must implement

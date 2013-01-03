@@ -21,8 +21,7 @@ import org.eclipse.riena.ui.ridgets.controller.AbstractWindowController;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
- * A specialized version of AbstractDialogView, e.g. adding default OK and
- * CANCEL buttons.
+ * A specialized version of AbstractDialogView, e.g. adding default OK and CANCEL buttons.
  * 
  * @since 3.0
  */
@@ -32,7 +31,14 @@ public abstract class AbstractDialogViewWithButtonBar extends AbstractDialogView
 	private Button cancelButton;
 
 	protected AbstractDialogViewWithButtonBar(final Shell parentShell) {
-		super(parentShell);
+		this(parentShell, false);
+	}
+
+	/**
+	 * @since 5.0
+	 */
+	protected AbstractDialogViewWithButtonBar(final Shell parentShell, final boolean statusline) {
+		super(parentShell, statusline);
 	}
 
 	@Override

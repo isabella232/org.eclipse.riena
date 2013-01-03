@@ -27,15 +27,10 @@ import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.SubModuleUtils;
 
 /**
- * This class manages the binding between UI-control and ridget. In contrast to
- * the {@link InjectBindingManager} which calls a setter method for each ridget
- * immediately after ridget creation and addition to the
- * {@link IRidgetContainer} managed ridget collection this
- * {@link IBindingManager} implementation only calls the method
- * {@link IInjectAllRidgets#configureRidgets()} once. Therefore the
- * {@link IRidgetContainer} is required to interface {@link IInjectAllRidgets}
- * if using this binding policy. The binding policy is configured in the view to
- * be bound.
+ * This class manages the binding between UI-control and ridget. In contrast to the {@link InjectBindingManager} which calls a setter method for each ridget
+ * immediately after ridget creation and addition to the {@link IRidgetContainer} managed ridget collection this {@link IBindingManager} implementation only
+ * calls the method {@link IInjectAllRidgets#configureRidgets()} once. Therefore the {@link IRidgetContainer} is required to interface {@link IInjectAllRidgets}
+ * if using this binding policy. The binding policy is configured in the view to be bound.
  */
 public class DefaultBindingManager implements IBindingManager {
 
@@ -46,13 +41,11 @@ public class DefaultBindingManager implements IBindingManager {
 	 * Creates the managers of all bindings of a view.
 	 * 
 	 * @param propertyStrategy
-	 *            strategy to get the property for the binding from the
-	 *            UI-control.
+	 *            strategy to get the property for the binding from the UI-control.
 	 * @param mapper
 	 *            mapping for UI control-classes to ridget-classes
 	 */
-	public DefaultBindingManager(final IBindingPropertyLocator propertyStrategy,
-			final IControlRidgetMapper<Object> mapper) {
+	public DefaultBindingManager(final IBindingPropertyLocator propertyStrategy, final IControlRidgetMapper<Object> mapper) {
 		this.propertyStrategy = propertyStrategy;
 		this.mapper = mapper;
 	}
@@ -68,9 +61,20 @@ public class DefaultBindingManager implements IBindingManager {
 		for (final Object control : uiControls) {
 			final String bindingProperty = propertyStrategy.locateBindingProperty(control);
 			if (bindingProperty != null) {
+
 				IRidget ridget = null;
+
 				if (!SubModuleUtils.isPrepareView()) {
-					ridget = ridgetContainer.getRidget(bindingProperty);
+					final String id = propertyStrategy.getComplexBindingId(control);
+					if (id != null) {
+						ridget = getPreparedRidget(ridgetContainer, id);
+					}
+				}
+
+				if (ridget == null) {
+					if (!SubModuleUtils.isPrepareView()) {
+						ridget = ridgetContainer.getRidget(bindingProperty);
+					}
 				}
 				if (ridget == null) {
 					ridget = createRidget(control);
@@ -111,6 +115,42 @@ public class DefaultBindingManager implements IBindingManager {
 	}
 
 	/**
+	 * Returns an already created Ridget that is a child of a complex Ridget.
+	 * <p>
+	 * The Ridget will be removed from the former parent container.
+	 * 
+	 * @param ridgetContainer
+	 * @param id
+	 *            complex ID of the UI control
+	 * @return already created Ridget
+	 */
+	private IRidget getPreparedRidget(final IRidgetContainer ridgetContainer, final String id) {
+
+		if (id.indexOf('.') == -1) {
+			return null;
+		}
+
+		if (ridgetContainer instanceof IComplexRidget) {
+			final IComplexRidget complexRidget = (IComplexRidget) ridgetContainer;
+			final IRidgetContainer parent = complexRidget.getController();
+			if (parent == null) {
+				return null;
+			}
+			IRidget ridget = parent.getRidget(id);
+			if (ridget == null) {
+				ridget = getPreparedRidget(parent, id);
+			}
+			if (ridget != null) {
+				parent.removeRidget(id);
+				return ridget;
+			}
+		}
+
+		return null;
+
+	}
+
+	/**
 	 * Injects the given ridget into the given container.<br>
 	 * Adds the ridget to the container.
 	 * 
@@ -119,8 +159,7 @@ public class DefaultBindingManager implements IBindingManager {
 	 * @param ridget
 	 *            ridget to inject
 	 */
-	protected void injectRidget(final IRidgetContainer ridgetContainer, final String bindingProperty,
-			final IRidget ridget) {
+	protected void injectRidget(final IRidgetContainer ridgetContainer, final String bindingProperty, final IRidget ridget) {
 		ridgetContainer.addRidget(bindingProperty, ridget);
 		ridget.setController(ridgetContainer);
 	}
@@ -144,8 +183,7 @@ public class DefaultBindingManager implements IBindingManager {
 	}
 
 	/**
-	 * Returns form the given ridget container the ridget with the given
-	 * property value.
+	 * Returns form the given ridget container the ridget with the given property value.
 	 * 
 	 * @param bindingProperty
 	 *            value of the binding property
@@ -158,16 +196,14 @@ public class DefaultBindingManager implements IBindingManager {
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.internal.ridgets.uibinding.IBindingManager#bind(IRidgetContainer,
-	 *      java.util.List)
+	 * @see org.eclipse.riena.ui.internal.ridgets.uibinding.IBindingManager#bind(IRidgetContainer, java.util.List)
 	 */
 	public void bind(final IRidgetContainer controller, final List<Object> uiControls) {
 		updateBindings(controller, uiControls, false);
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.internal.ridgets.uibinding.IBindingManager#unbind(IRidgetContainer,
-	 *      java.util.List)
+	 * @see org.eclipse.riena.ui.internal.ridgets.uibinding.IBindingManager#unbind(IRidgetContainer, java.util.List)
 	 */
 	public void unbind(final IRidgetContainer controller, final List<Object> uiControls) {
 		updateBindings(controller, uiControls, true);

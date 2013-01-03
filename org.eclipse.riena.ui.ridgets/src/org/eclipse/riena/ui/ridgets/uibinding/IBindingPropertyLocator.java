@@ -11,8 +11,7 @@
 package org.eclipse.riena.ui.ridgets.uibinding;
 
 /**
- * Helper class to get the ID (binding property) of a UI control used for
- * binding.
+ * Helper class to get the ID (binding property) of a UI control used for binding.
  */
 public interface IBindingPropertyLocator {
 
@@ -21,9 +20,21 @@ public interface IBindingPropertyLocator {
 	 * 
 	 * @param uiControl
 	 *            UI control; may be null
-	 * @return the ID String if one is available, the empty string if no ID is
-	 *         available, null if uiControl is null or disposed
+	 * @return the ID String if one is available, the empty string if no ID is available, null if uiControl is null or disposed
 	 */
 	String locateBindingProperty(Object uiControl);
+
+	/**
+	 * Returns the complex ID of the given UI control.
+	 * <p>
+	 * The complex ID is a concatenation of the ID of the UI control and the ID of a parent composite. If the given UI control has no complex parent (
+	 * {@code IComplexComponent}) the <i>simple</i> binding ID of the control will be returned.
+	 * 
+	 * @param uiControl
+	 *            UI control; may be null
+	 * @return complex or simple ID, the empty string if no ID is available, null if uiControl is null or disposed
+	 * @since 5.0
+	 */
+	String getComplexBindingId(Object uiControl);
 
 }

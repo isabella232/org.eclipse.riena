@@ -19,8 +19,7 @@ public interface IRidgetContainer {
 	/**
 	 * Adds the ridget with id to the ridgets of this ridget container.
 	 * <p>
-	 * If the given (id, ridget) pair is already in the container, the previous
-	 * value will be replaced.
+	 * If the given (id, ridget) pair is already in the container, the previous value will be replaced.
 	 * 
 	 * @param id
 	 *            the ridget id.
@@ -28,6 +27,11 @@ public interface IRidgetContainer {
 	 *            the ridget.
 	 */
 	void addRidget(String id, IRidget ridget);
+
+	/**
+	 * @since 5.0
+	 */
+	boolean removeRidget(String id);
 
 	/**
 	 * Returns the ridget with the given id from this ridget container.
@@ -42,9 +46,8 @@ public interface IRidgetContainer {
 
 	/**
 	 * Returns the ridget with the given id from this container. <br>
-	 * If no ridget with that id can be found (e.g. when running controller
-	 * tests), this method creates and returns a ridget of the given ridgetClazz
-	 * and adds it to the container.
+	 * If no ridget with that id can be found (e.g. when running controller tests), this method creates and returns a ridget of the given ridgetClazz and adds
+	 * it to the container.
 	 * 
 	 * @param <R>
 	 *            the type of class
@@ -82,8 +85,7 @@ public interface IRidgetContainer {
 	 * Sets whether the Rdigets of this container are configured or not.
 	 * 
 	 * @param configured
-	 *            {@code true} all Ridgets are configured; otherwise
-	 *            {@code false}
+	 *            {@code true} all Ridgets are configured; otherwise {@code false}
 	 * @since 4.0
 	 */
 	void setConfigured(boolean configured);

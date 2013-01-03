@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.internal.ui.swt.utils;
+package org.eclipse.riena.ui.swt.utils;
 
 import org.osgi.service.log.LogService;
 
@@ -23,6 +23,7 @@ import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.riena.core.Log4r;
+import org.eclipse.riena.internal.ui.swt.utils.RcpUtilities;
 
 /**
  * This class helps to maximize or restore a shell.

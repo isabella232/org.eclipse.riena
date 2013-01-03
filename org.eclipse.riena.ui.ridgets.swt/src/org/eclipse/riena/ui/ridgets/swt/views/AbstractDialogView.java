@@ -30,54 +30,55 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 
-import org.eclipse.riena.internal.ui.swt.utils.ShellHelper;
 import org.eclipse.riena.ui.ridgets.controller.AbstractWindowController;
 import org.eclipse.riena.ui.swt.GrabCorner;
+import org.eclipse.riena.ui.swt.IStatusLineContentFactory;
 import org.eclipse.riena.ui.swt.RienaWindowRenderer;
+import org.eclipse.riena.ui.swt.Statusline;
+import org.eclipse.riena.ui.swt.StatuslineSpacer;
 import org.eclipse.riena.ui.swt.lnf.LnFUpdater;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.SWTControlFinder;
+import org.eclipse.riena.ui.swt.utils.ShellHelper;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
- * Base class for Riena Dialogs. This class enhances JFace dialogs by adding:
- * (a) theming capabilities based on the current Look-and-Feel, (b) providing
- * View / Controller separation, (c) binding the View's widgets to the
- * Controller's ridgets.
+ * Base class for Riena Dialogs. This class enhances JFace dialogs by adding: (a) theming capabilities based on the current Look-and-Feel, (b) providing View /
+ * Controller separation, (c) binding the View's widgets to the Controller's ridgets.
  * <p>
  * Implementors have to subclass this class and provide these methods:
  * <ol>
  * <li>createController() - returns the Controller for this dialog</li>
- * <li>buildView() - creates the UI for this dialog. This includes creating the
- * appropriate buttons, such as Ok and Cancel.</li>
+ * <li>buildView() - creates the UI for this dialog. This includes creating the appropriate buttons, such as Ok and Cancel.</li>
  * </ol>
- * This subclass can then be used as any other JFace dialog: create a new
- * instance and invoke dialog.open() to show the dialog. Open() blocks as long
- * as the dialog is open. It returns an integer code. By default this is
- * {@link Window#OK} ({@value Window#OK}). You can change the return code via
+ * This subclass can then be used as any other JFace dialog: create a new instance and invoke dialog.open() to show the dialog. Open() blocks as long as the
+ * dialog is open. It returns an integer code. By default this is {@link Window#OK} ({@value Window#OK}). You can change the return code via
  * {@link AbstractWindowController}{@link #setReturnCode(int)}.
  * <p>
  * <b>How to migrate from DialogView</b>
  * <p>
- * If you have been using DialogView and want to use this class instead you
- * should:
+ * If you have been using DialogView and want to use this class instead you should:
  * <ol>
  * <li>createContentView() does not need to call super anymore</li>
- * <li>onClose() becomes close() - remember to invoke super.close() when
- * overriding</li>
+ * <li>onClose() becomes close() - remember to invoke super.close() when overriding</li>
  * <li>build() is deprecated - invoke open() in client code instead</li>
  * </ol>
  */
 public abstract class AbstractDialogView extends Dialog {
 
 	private static final LnFUpdater LNF_UPDATER = LnFUpdater.getInstance();
+	/**
+	 * @since 5.0
+	 */
+	public static final String STATUSLINE_BINDING_ID = "dlg_statusline"; //$NON-NLS-1$
 
 	private final RienaWindowRenderer dlgRenderer;
 	private final ControlledView controlledView;
 
 	private String title;
 	private boolean isClosing;
+	private final boolean statusLine;
 
 	private static Shell getShellByGuessing() {
 		if (PlatformUI.isWorkbenchRunning()) {
@@ -99,20 +100,25 @@ public abstract class AbstractDialogView extends Dialog {
 	 * Create a new instance of this class.
 	 * 
 	 * @param parentShell
-	 *            the parent Shell. It is recommended to supply one. If you use
-	 *            {@code null}, this class will try to guess the most
-	 *            appropriate parent shell.
+	 *            the parent Shell. It is recommended to supply one. If you use {@code null}, this class will try to guess the most appropriate parent shell.
+	 * @param statusLine
+	 *            {@code true} to display a status line at the bottom of this dialog; otherwise {@code false}
 	 * @throws RuntimeException
-	 *             if no shell instance could be obtained - this can only happen
-	 *             when parentShell the value {@code null} and the class failed
-	 *             to obtain an appropriate shell.
+	 *             if no shell instance could be obtained - this can only happen when parentShell the value {@code null} and the class failed to obtain an
+	 *             appropriate shell.
+	 * @since 5.0
 	 */
-	protected AbstractDialogView(final Shell parentShell) {
+	protected AbstractDialogView(final Shell parentShell, final boolean statusLine) {
 		super(parentShell != null ? parentShell : getShellByGuessing());
+		this.statusLine = statusLine;
 		title = ""; //$NON-NLS-1$
 		dlgRenderer = new RienaWindowRenderer(this, isPaintTitlebar());
 		controlledView = new ControlledView();
 		controlledView.setController(createController());
+	}
+
+	protected AbstractDialogView(final Shell parentShell) {
+		this(parentShell, false);
 	}
 
 	/**
@@ -186,9 +192,8 @@ public abstract class AbstractDialogView extends Dialog {
 	/**
 	 * Sets the title of this dialog (convenience method).
 	 * <p>
-	 * Implementation note: if you set the title both from the view (here) and
-	 * the controller (via windowRidget.setTitle(...)), the value used in the
-	 * controller will prevail.
+	 * Implementation note: if you set the title both from the view (here) and the controller (via windowRidget.setTitle(...)), the value used in the controller
+	 * will prevail.
 	 * 
 	 * @param title
 	 *            the title; never null.
@@ -210,14 +215,12 @@ public abstract class AbstractDialogView extends Dialog {
 	////////////////////
 
 	/**
-	 * Add a control to the list of 'bound' controls. These controls will be
-	 * bound to ridgets by the framework.
+	 * Add a control to the list of 'bound' controls. These controls will be bound to ridgets by the framework.
 	 * 
 	 * @param uiControl
 	 *            the UI control to bind; never null
 	 * @param bindingId
-	 *            a non-empty non-null binding id for the control. Must be
-	 *            unique within this composite
+	 *            a non-empty non-null binding id for the control. Must be unique within this composite
 	 */
 	protected final void addUIControl(final Object uiControl, final String bindingId) {
 		controlledView.addUIControl(uiControl, bindingId);
@@ -238,11 +241,31 @@ public abstract class AbstractDialogView extends Dialog {
 	@Override
 	protected final Control createDialogArea(final Composite parent) {
 		final Composite mainComposite = createMainComposite(parent);
+		int lineRightOffset = 0;
 		if (isResizable() && isHideOsBorder() && isPaintTitlebar()) {
-			new GrabCorner(mainComposite, mainComposite.getStyle());
+			final GrabCorner grabCorner = new GrabCorner(mainComposite, mainComposite.getStyle());
+			lineRightOffset = grabCorner.getGrabCornerSize().x;
+		}
+		if (statusLine) {
+			final Statusline line = new Statusline(mainComposite, SWT.None, StatuslineSpacer.class, getStatusLineContentFacroty());
+			final FormData lineFormData = new FormData();
+			lineFormData.height = getStatuslineHeight();
+			lineFormData.bottom = new FormAttachment(100, 0);
+			lineFormData.right = new FormAttachment(100, -lineRightOffset);
+			lineFormData.left = new FormAttachment(0, 0);
+			line.setLayoutData(lineFormData);
+			addUIControl(line, STATUSLINE_BINDING_ID);
 		}
 		createContentComposite(mainComposite);
 		return mainComposite;
+	}
+
+	private Integer getStatuslineHeight() {
+		if (statusLine) {
+			return LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.DIALOG_STATUSLINE_HEIGHT);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -272,7 +295,7 @@ public abstract class AbstractDialogView extends Dialog {
 		resultFormData.top = new FormAttachment(0, 0);
 		resultFormData.left = new FormAttachment(0, 0);
 		resultFormData.right = new FormAttachment(100, 0);
-		resultFormData.bottom = new FormAttachment(100, 0);
+		resultFormData.bottom = new FormAttachment(100, -getStatuslineHeight());
 		mainContentComposite.setLayoutData(resultFormData);
 		createOkCancelButtons(mainContentComposite);
 	}
@@ -287,8 +310,17 @@ public abstract class AbstractDialogView extends Dialog {
 	}
 
 	/**
-	 * Creates the UI for this dialog. This includes creating the appropriate
-	 * buttons, such as Ok and Cancel.
+	 * Returns the factory that creates the content of the status line.
+	 * 
+	 * @return factory to create the content of the status line
+	 * @since 5.0
+	 */
+	protected IStatusLineContentFactory getStatusLineContentFacroty() {
+		return new DialogStatuslineContentFactory();
+	}
+
+	/**
+	 * Creates the UI for this dialog. This includes creating the appropriate buttons, such as Ok and Cancel.
 	 * 
 	 * @wbp.parser.entryPoint
 	 */

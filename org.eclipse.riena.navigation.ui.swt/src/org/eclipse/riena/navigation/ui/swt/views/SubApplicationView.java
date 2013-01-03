@@ -548,7 +548,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 
 		@Override
 		public void prepared(final ISubModuleNode source) {
-			if (SubModuleUtils.isPrepareView() && source.isSelectable()) {
+			if (SubModuleUtils.isPrepareView() /* && source.isSelectable() */) {
 				checkBaseStructure();
 
 				final SwtViewId id = getViewId(source);

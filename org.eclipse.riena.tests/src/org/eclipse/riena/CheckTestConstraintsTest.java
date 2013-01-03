@@ -14,8 +14,12 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.osgi.framework.Bundle;
+
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.internal.core.test.collect.TestCollector;
+import org.eclipse.riena.internal.core.test.collect.TestCollectorTest;
+import org.eclipse.riena.internal.core.test.collect.testpackage.JUnit3DummyBadlyNamed;
 import org.eclipse.riena.internal.tests.Activator;
 
 /**
@@ -25,8 +29,8 @@ import org.eclipse.riena.internal.tests.Activator;
 public class CheckTestConstraintsTest extends TestCase {
 
 	public void testUnmarkedTests() {
-		final List<Class<? extends TestCase>> unmarked = TestCollector.collectUnmarked(Activator.getDefault()
-				.getBundle(), null);
+		final List<Class<?>> unmarked = TestCollector.collectUnmarkedJUnit3And4(getBundle(), null);
+		removeTestCollectorTests(unmarked);
 		if (unmarked.size() > 0) {
 			System.err.println(">> Found unmarked tests:");
 			for (final Class<?> testCase : unmarked) {
@@ -36,9 +40,16 @@ public class CheckTestConstraintsTest extends TestCase {
 		assertEquals(unmarked.size() + " unmarked test(s) found: " + unmarked, 0, unmarked.size());
 	}
 
+	/**
+	 * @return
+	 */
+	private Bundle getBundle() {
+		return Activator.getDefault().getBundle();
+	}
+
 	public void testBadlyNamedTests() {
-		final List<Class<? extends TestCase>> badlyNamed = TestCollector.collectBadlyNamed(Activator.getDefault()
-				.getBundle(), null);
+		final List<Class<?>> badlyNamed = TestCollector.collectBadlyNamedJUnit3And4(getBundle(), null);
+		removeTestCollectorTests(badlyNamed);
 		if (badlyNamed.size() > 0) {
 			System.err.println(">> Found badly named tests:");
 			for (final Class<?> testCase : badlyNamed) {
@@ -48,4 +59,12 @@ public class CheckTestConstraintsTest extends TestCase {
 		assertEquals(badlyNamed.size() + " badly named test(s) found: " + badlyNamed, 0, badlyNamed.size());
 	}
 
+	/**
+	 * Remove all dummy test classes used for the {@link TestCollectorTest}
+	 * 
+	 */
+	private void removeTestCollectorTests(final List<Class<?>> tests) {
+		final List<Class<?>> dummyTests = TestCollector.collectJUnit3And4(getBundle(), JUnit3DummyBadlyNamed.class.getPackage(), true);
+		tests.removeAll(dummyTests);
+	}
 }

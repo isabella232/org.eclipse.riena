@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -47,33 +48,24 @@ import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
- * The CompletionCombo class represents a selectable user interface object that
- * combines a text field and a list and issues notification when an item is
- * selected from the list. The list will automatically pop-up when the text
- * control is focused and the user is typing.
+ * The CompletionCombo class represents a selectable user interface object that combines a text field and a list and issues notification when an item is
+ * selected from the list. The list will automatically pop-up when the text control is focused and the user is typing.
  * <p>
- * This class is abstract. There are several implementations along these axes:
- * RCP-specific or RAP-specific, and with images for each item (using a Table)
- * or without images for each item (using a List). This yields the following
- * combinations:
+ * This class is abstract. There are several implementations along these axes: RCP-specific or RAP-specific, and with images for each item (using a Table) or
+ * without images for each item (using a List). This yields the following combinations:
  * <ul>
- * <li>ComplectionComboRCP / CompletionComboRAP &ndash; a CompletionCombo with a
- * text field and a list control</li>
- * <li>ComplectionComboWithImageRCP / CompletionComboWithImageRAP &ndash; a
- * CompletionCombo with a text field, with an optional image on the left, and a
- * table control (which can show an image next to each item)</li>
+ * <li>ComplectionComboRCP / CompletionComboRAP &ndash; a CompletionCombo with a text field and a list control</li>
+ * <li>ComplectionComboWithImageRCP / CompletionComboWithImageRAP &ndash; a CompletionCombo with a text field, with an optional image on the left, and a table
+ * control (which can show an image next to each item)</li>
  * </ul>
  * <p>
- * <b>Important:</b> use {@code UIControlsFactory.createCompletionCombo(...)}
- * and {@code UIControlsFactory.createCompletionComboWithImage(...)} to
- * automatically get the correct RCP- or RAP-specific instance.
+ * <b>Important:</b> use {@code UIControlsFactory.createCompletionCombo(...)} and {@code UIControlsFactory.createCompletionComboWithImage(...)} to automatically
+ * get the correct RCP- or RAP-specific instance.
  * <p>
- * CompletionCombo was written to work around certain limitations in the native
- * combo box. There is no is no strict requirement that CompletionCombo look or
+ * CompletionCombo was written to work around certain limitations in the native combo box. There is no is no strict requirement that CompletionCombo look or
  * behave the same as the native combo box.
  * <p>
- * Note that although this class is a subclass of <code>Composite</code>, it
- * does not make sense to add children to it, or set a layout on it.
+ * Note that although this class is a subclass of <code>Composite</code>, it does not make sense to add children to it, or set a layout on it.
  * <dl>
  * <dt><b>Styles:</b>
  * <dd>BORDER, READ_ONLY, FLAT</dd>
@@ -85,17 +77,26 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
  */
 public abstract class CompletionCombo extends Composite {
 
+	/**
+	 * Implementations of this interface can be added to the {@link CompletionCombo} to get notified when the combo popup is hidden.
+	 * <p>
+	 * IMPORTANT: This interface is not API
+	 * 
+	 * @since 5.0
+	 */
+	public interface DropDownListener {
+		void hidden();
+	}
+
 	private static final SWTFacade SWT_FACADE = SWTFacade.getDefault();
 	/**
-	 * Stores all allowed input characters that are not letters or digits. This
-	 * data is computed as items are added to the CompletionCombo and used in
+	 * Stores all allowed input characters that are not letters or digits. This data is computed as items are added to the CompletionCombo and used in
 	 * {@link #isInputChar(char)}.
 	 */
 	private final Set<Character> inputChars = new HashSet<Character>();
 
 	/**
-	 * Label for showing an image next to the combo's text control. This control
-	 * is optional and may be null.
+	 * Label for showing an image next to the combo's text control. This control is optional and may be null.
 	 */
 	private Label label;
 	/**
@@ -123,52 +124,44 @@ public abstract class CompletionCombo extends Composite {
 	private int visibleItemCount = 5;
 	private boolean hasFocus;
 	/**
-	 * Stores the enablement setting for this widget, independelty if of parent
-	 * enablement (v.s. isEnabled() which depends on parent enablement)
+	 * Stores the enablement setting for this widget, independelty if of parent enablement (v.s. isEnabled() which depends on parent enablement)
 	 */
 	private boolean isEnabled = true;
 	/**
-	 * Fix for 335129: ignore FocusOut event when we move the focus from the
-	 * Text widget to the list popup.
+	 * Fix for 335129: ignore FocusOut event when we move the focus from the Text widget to the list popup.
 	 */
 	private boolean ignoreFocusOut;
 	private AutoCompletionMode autoCompletionMode;
 	/**
-	 * Algorithm for flashing the combo's background when non-matching input is
-	 * rejected.
+	 * Algorithm for flashing the combo's background when non-matching input is rejected.
 	 */
 	private IFlashDelegate flashDelegate;
 	private Menu systemContextMenu;
 	private Menu emptyContextMenu;
+	private final ArrayList<DropDownListener> dropDownListeners = new ArrayList<CompletionCombo.DropDownListener>();
 
 	/**
-	 * This enumeration is used to configure the the way the autocompletion
-	 * works.
+	 * This enumeration is used to configure the the way the autocompletion works.
 	 */
 	public enum AutoCompletionMode {
 		/**
-		 * The Combo accepts all typed words and and just stops tracking the
-		 * list items if no match is found.
+		 * The Combo accepts all typed words and and just stops tracking the list items if no match is found.
 		 */
 		ALLOW_MISSMATCH,
 		/**
-		 * The Combo rejects typed characters that would make the String in the
-		 * textfield not match any of the items in the list.
+		 * The Combo rejects typed characters that would make the String in the textfield not match any of the items in the list.
 		 */
 		NO_MISSMATCH,
 		/**
-		 * The Combo selects the items beginning with the character that was
-		 * just typed (ignoring case). If no match is found the input is
-		 * ignored. When reaching the end of the list of matches, the selection
-		 * wraps around and continues from the beginning.
+		 * The Combo selects the items beginning with the character that was just typed (ignoring case). If no match is found the input is ignored. When
+		 * reaching the end of the list of matches, the selection wraps around and continues from the beginning.
 		 * <p>
 		 * Examples:
 		 * <ul>
 		 * <li>'a' selects the 1st item beginning with 'a',</li>
 		 * <li>'aa' selects the 2nd item beginning with 'a',</li>
 		 * <li>'aaa' the 3rd item,</li>
-		 * <li>assumming there are only two items beginning with 'a', then 'aaa'
-		 * would wrap and select the 1st item,</li>
+		 * <li>assumming there are only two items beginning with 'a', then 'aaa' would wrap and select the 1st item,</li>
 		 * <li>'ad' selects the 1st item beginning with 'd'</li>
 		 * </ul>
 		 * 
@@ -183,19 +176,14 @@ public abstract class CompletionCombo extends Composite {
 	}
 
 	/**
-	 * Constructs a new instance of this class given its parent and a style
-	 * value describing its behavior and appearance.
+	 * Constructs a new instance of this class given its parent and a style value describing its behavior and appearance.
 	 * <p>
-	 * The style value is either one of the style constants defined in class
-	 * <code>SWT</code> which is applicable to instances of this class, or must
-	 * be built by <em>bitwise OR</em>'ing together (that is, using the
-	 * <code>int</code> "|" operator) two or more of those <code>SWT</code>
-	 * style constants. The class description lists the style constants that are
-	 * applicable to the class. Style bits are also inherited from superclasses.
+	 * The style value is either one of the style constants defined in class <code>SWT</code> which is applicable to instances of this class, or must be built
+	 * by <em>bitwise OR</em>'ing together (that is, using the <code>int</code> "|" operator) two or more of those <code>SWT</code> style constants. The class
+	 * description lists the style constants that are applicable to the class. Style bits are also inherited from superclasses.
 	 * 
 	 * @param parent
-	 *            a control which will be the parent of the new instance (cannot
-	 *            be null)
+	 *            a control which will be the parent of the new instance (cannot be null)
 	 * @param style
 	 *            the style of control to construct
 	 * 
@@ -205,8 +193,7 @@ public abstract class CompletionCombo extends Composite {
 	 *                </ul>
 	 * @exception SWTException
 	 *                <ul>
-	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
-	 *                thread that created the parent</li>
+	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the parent</li>
 	 *                </ul>
 	 * 
 	 * @see SWT#BORDER
@@ -309,17 +296,15 @@ public abstract class CompletionCombo extends Composite {
 			this.addListener(comboEvent, listener);
 		}
 
-		final int[] textEvents = { SWT.DefaultSelection, SWT.DragDetect, SWT.KeyDown, SWT.KeyUp, SWT.MenuDetect,
-				SWT.Modify, SWT.MouseDown, SWT.MouseUp, SWT.MouseDoubleClick, SWTFacade.MouseEnter,
-				SWTFacade.MouseExit, SWTFacade.MouseHover, SWTFacade.MouseMove, SWTFacade.MouseWheel, SWT.Traverse,
+		final int[] textEvents = { SWT.DefaultSelection, SWT.DragDetect, SWT.KeyDown, SWT.KeyUp, SWT.MenuDetect, SWT.Modify, SWT.MouseDown, SWT.MouseUp,
+				SWT.MouseDoubleClick, SWTFacade.MouseEnter, SWTFacade.MouseExit, SWTFacade.MouseHover, SWTFacade.MouseMove, SWTFacade.MouseWheel, SWT.Traverse,
 				SWT.FocusIn, SWT.Verify };
 		for (final int textEvent : textEvents) {
 			text.addListener(textEvent, listener);
 		}
 
-		final int[] arrowEvents = { SWT.DragDetect, SWT.MouseDown, SWTFacade.MouseEnter, SWTFacade.MouseExit,
-				SWTFacade.MouseHover, SWTFacade.MouseMove, SWT.MouseUp, SWTFacade.MouseWheel, SWT.Selection,
-				SWT.FocusIn };
+		final int[] arrowEvents = { SWT.DragDetect, SWT.MouseDown, SWTFacade.MouseEnter, SWTFacade.MouseExit, SWTFacade.MouseHover, SWTFacade.MouseMove,
+				SWT.MouseUp, SWTFacade.MouseWheel, SWT.Selection, SWT.FocusIn };
 		for (final int arrowEvent : arrowEvents) {
 			arrow.addListener(arrowEvent, listener);
 		}
@@ -329,9 +314,8 @@ public abstract class CompletionCombo extends Composite {
 	}
 
 	/**
-	 * Create an optional label for showing the image associated with contents
-	 * of the combo's text control. The label will be placed to the right of the
-	 * combo's text control.
+	 * Create an optional label for showing the image associated with contents of the combo's text control. The label will be placed to the right of the combo's
+	 * text control.
 	 * 
 	 * @return a Label or null to not show any images.
 	 * @since 3.0
@@ -341,8 +325,7 @@ public abstract class CompletionCombo extends Composite {
 	/**
 	 * Create a {@link Control} for selecting entries in this combo.
 	 * 
-	 * @return a control instance; never null. Typically this is a {@link List}
-	 *         or {@link Table} control.
+	 * @return a control instance; never null. Typically this is a {@link List} or {@link Table} control.
 	 * @since 3.0
 	 */
 	protected abstract Control createList(final Composite parent);
@@ -357,16 +340,14 @@ public abstract class CompletionCombo extends Composite {
 	protected abstract void deselectAll(Control list);
 
 	/**
-	 * Returns the image associated with the requested item in the selection
-	 * control.
+	 * Returns the image associated with the requested item in the selection control.
 	 * 
 	 * @param list
 	 *            the list control; never null
 	 * @param index
 	 *            the zero-relative index of the item
-	 * @return an Image or null. The later case will occur when the selection
-	 *         control does not associate images with it's items (example List)
-	 *         or the individual item has no image (example Table).
+	 * @return an Image or null. The later case will occur when the selection control does not associate images with it's items (example List) or the individual
+	 *         item has no image (example Table).
 	 * @throws IllegalArgumentException
 	 *             if index is out of range
 	 * @since 3.0
@@ -374,8 +355,7 @@ public abstract class CompletionCombo extends Composite {
 	protected abstract Image getImage(Control list, int index);
 
 	/**
-	 * Return the String associated with the requested item in the selection
-	 * control.
+	 * Return the String associated with the requested item in the selection control.
 	 * 
 	 * @param list
 	 *            the list control; never null
@@ -391,8 +371,7 @@ public abstract class CompletionCombo extends Composite {
 	/**
 	 * Returns the height of each item in the list control.
 	 * <p>
-	 * Implementation notes: this assumes that all items have the same height.
-	 * The item height is used to calculate the size of the selection pop-up.
+	 * Implementation notes: this assumes that all items have the same height. The item height is used to calculate the size of the selection pop-up.
 	 * 
 	 * @param list
 	 *            the list control; never null
@@ -403,28 +382,22 @@ public abstract class CompletionCombo extends Composite {
 	protected abstract int getItemHeight(Control list);
 
 	/**
-	 * Returns the Images for the items in the list control. The order of the
-	 * Images in the array must correspond to the order of the items in the
-	 * control.
+	 * Returns the Images for the items in the list control. The order of the Images in the array must correspond to the order of the items in the control.
 	 * 
 	 * @param list
 	 *            the list control; never null
-	 * @return an array of Images; may be empty. May be null if the list control
-	 *         does not support images. Individual entries may be null if the
-	 *         corresponding item does not have an image.
+	 * @return an array of Images; may be empty. May be null if the list control does not support images. Individual entries may be null if the corresponding
+	 *         item does not have an image.
 	 * @since 3.0
 	 */
 	protected abstract Image[] getImages(Control list);
 
 	/**
-	 * Returns the Strings for the items in the list control. The order of the
-	 * Strings in the array must correspond to the order of items in the
-	 * control.
+	 * Returns the Strings for the items in the list control. The order of the Strings in the array must correspond to the order of items in the control.
 	 * 
 	 * @param list
 	 *            the list control; never null
-	 * @return an array of Strings; may be empty; never null. Individual entries
-	 *         may be empty but never null.
+	 * @return an array of Strings; may be empty; never null. Individual entries may be empty but never null.
 	 * @since 3.0
 	 */
 	protected abstract String[] getItems(Control list);
@@ -440,39 +413,33 @@ public abstract class CompletionCombo extends Composite {
 	protected abstract int getItemCount(Control list);
 
 	/**
-	 * Returns the zero-relative index of the item which is currently selected
-	 * in the list control. Returns -1 if no item is selected.
+	 * Returns the zero-relative index of the item which is currently selected in the list control. Returns -1 if no item is selected.
 	 * 
 	 * @param list
 	 *            the list control; never null
-	 * @return the zero-relative index of the currently selected item; -1 if no
-	 *         item is selected
+	 * @return the zero-relative index of the currently selected item; -1 if no item is selected
 	 * @since 3.0
 	 */
 	protected abstract int getSelectionIndex(Control list);
 
 	/**
-	 * Returns the zero-relative index of the item currently shown in the top
-	 * row of the list control. The index changes as the control is scrolled or
-	 * items are added / removed.
+	 * Returns the zero-relative index of the item currently shown in the top row of the list control. The index changes as the control is scrolled or items are
+	 * added / removed.
 	 * 
 	 * @param list
 	 *            the list control; never null
-	 * @return the zero-relative index of the item currently shown in the top
-	 *         row of the control
+	 * @return the zero-relative index of the item currently shown in the top row of the control
 	 * @since 3.0
 	 */
 	protected abstract int getTopIndex(Control list);
 
 	/**
-	 * Searches from the given {@code start} position and an item matching the
-	 * given {@code string} is found and returns the zero-relative index of the
-	 * match. Returns -1 if no matching item is found.
+	 * Searches from the given {@code start} position and an item matching the given {@code string} is found and returns the zero-relative index of the match.
+	 * Returns -1 if no matching item is found.
 	 * 
 	 * @param list
 	 *            the list control; never null
-	 * @return the zero-relative index of the matched item; -1 if no match was
-	 *         found
+	 * @return the zero-relative index of the matched item; -1 if no match was found
 	 * @since 3.0
 	 */
 	protected abstract int indexOf(Control list, String string, int start);
@@ -487,18 +454,15 @@ public abstract class CompletionCombo extends Composite {
 	protected abstract void removeAll(final Control list);
 
 	/**
-	 * Creates the given items in the list control. The list control is cleared
-	 * at the beginning of this operation
+	 * Creates the given items in the list control. The list control is cleared at the beginning of this operation
 	 * 
 	 * @param list
 	 *            the list control; never null
 	 * @param items
-	 *            an array of Strings for the items in the control; never null.
-	 *            Individual entries cannot be null.
+	 *            an array of Strings for the items in the control; never null. Individual entries cannot be null.
 	 * @param images
-	 *            an array of Images for the items in the control. May be null
-	 *            if no images should be used. Individual entries may be null,
-	 *            if no image should be used for that item.
+	 *            an array of Images for the items in the control. May be null if no images should be used. Individual entries may be null, if no image should
+	 *            be used for that item.
 	 * @throws RuntimeException
 	 *             if the images and items arrays have different lengths
 	 * @since 3.0
@@ -506,34 +470,29 @@ public abstract class CompletionCombo extends Composite {
 	protected abstract void setItems(Control list, String[] items, Image[] images);
 
 	/**
-	 * Selects the item at the given zero-relative {@code index} in the list
-	 * control.
+	 * Selects the item at the given zero-relative {@code index} in the list control.
 	 * 
 	 * @param list
 	 *            the list control; never null
 	 * @param index
-	 *            the zero-relative index of the item to select. Values that are
-	 *            out of range are ignored.
+	 *            the zero-relative index of the item to select. Values that are out of range are ignored.
 	 * @since 3.0
 	 */
 	protected abstract void setSelection(Control list, int index);
 
 	/**
-	 * Scrolls the contents of the list control, so that the item at the given
-	 * zero-relative {@code index} is at the top of the control.
+	 * Scrolls the contents of the list control, so that the item at the given zero-relative {@code index} is at the top of the control.
 	 * 
 	 * @param list
 	 *            the list control; never null
 	 * @param index
-	 *            the zero-relative index of the item to show at the top of the
-	 *            control
+	 *            the zero-relative index of the item to show at the top of the control
 	 * @since 3.0
 	 */
 	protected abstract void setTopIndex(Control list, int index);
 
 	/**
-	 * Returns the arrow-button control for this combo. This is the arrow-down
-	 * button at the right side of the combo.
+	 * Returns the arrow-button control for this combo. This is the arrow-down button at the right side of the combo.
 	 * 
 	 * @return a Button control; never null
 	 * @since 3.0
@@ -543,8 +502,7 @@ public abstract class CompletionCombo extends Composite {
 	}
 
 	/**
-	 * Returns the list control for this combo. Can be a {@link List} or
-	 * {@link Table} widget.
+	 * Returns the list control for this combo. Can be a {@link List} or {@link Table} widget.
 	 * 
 	 * @return the list control; never null
 	 * @since 3.0
@@ -564,9 +522,8 @@ public abstract class CompletionCombo extends Composite {
 	}
 
 	/**
-	 * Adds the listener to the collection of listeners who will be notified
-	 * when the receiver's text is modified, by sending it one of the messages
-	 * defined in the <code>ModifyListener</code> interface.
+	 * Adds the listener to the collection of listeners who will be notified when the receiver's text is modified, by sending it one of the messages defined in
+	 * the <code>ModifyListener</code> interface.
 	 * 
 	 * @param listener
 	 *            the listener which should be notified
@@ -577,10 +534,8 @@ public abstract class CompletionCombo extends Composite {
 	 *                </ul>
 	 * @exception SWTException
 	 *                <ul>
-	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been
-	 *                disposed</li>
-	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
-	 *                thread that created the receiver</li>
+	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
+	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
 	 *                </ul>
 	 * 
 	 * @see ModifyListener
@@ -589,18 +544,15 @@ public abstract class CompletionCombo extends Composite {
 	public abstract void addModifyListener(final ModifyListener listener);
 
 	/**
-	 * Adds the listener to the collection of listeners who will be notified
-	 * when the user changes the receiver's selection, by sending it one of the
-	 * messages defined in the <code>SelectionListener</code> interface.
+	 * Adds the listener to the collection of listeners who will be notified when the user changes the receiver's selection, by sending it one of the messages
+	 * defined in the <code>SelectionListener</code> interface.
 	 * <p>
-	 * <code>widgetSelected</code> is called when the combo's list selection
-	 * changes. <code>widgetDefaultSelected</code> is typically called when
-	 * ENTER is pressed the combo's text area.
+	 * <code>widgetSelected</code> is called when the combo's list selection changes. <code>widgetDefaultSelected</code> is typically called when ENTER is
+	 * pressed the combo's text area.
 	 * </p>
 	 * 
 	 * @param listener
-	 *            the listener which should be notified when the user changes
-	 *            the receiver's selection
+	 *            the listener which should be notified when the user changes the receiver's selection
 	 * 
 	 * @exception IllegalArgumentException
 	 *                <ul>
@@ -608,10 +560,8 @@ public abstract class CompletionCombo extends Composite {
 	 *                </ul>
 	 * @exception SWTException
 	 *                <ul>
-	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been
-	 *                disposed</li>
-	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
-	 *                thread that created the receiver</li>
+	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
+	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
 	 *                </ul>
 	 * 
 	 * @see SelectionListener
@@ -621,9 +571,8 @@ public abstract class CompletionCombo extends Composite {
 	public abstract void addSelectionListener(final SelectionListener listener);
 
 	/**
-	 * Adds the listener to the collection of listeners who will be notified
-	 * when the receiver's text is verified, by sending it one of the messages
-	 * defined in the <code>VerifyListener</code> interface.
+	 * Adds the listener to the collection of listeners who will be notified when the receiver's text is verified, by sending it one of the messages defined in
+	 * the <code>VerifyListener</code> interface.
 	 * 
 	 * @param listener
 	 *            the listener which should be notified
@@ -634,16 +583,27 @@ public abstract class CompletionCombo extends Composite {
 	 *                </ul>
 	 * @exception SWTException
 	 *                <ul>
-	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been
-	 *                disposed</li>
-	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
-	 *                thread that created the receiver</li>
+	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
+	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
 	 *                </ul>
 	 * 
 	 * @see VerifyListener
 	 * @see #removeVerifyListener
 	 */
 	public abstract void addVerifyListener(final VerifyListener listener);
+
+	/**
+	 * Adds the given {@link DropDownListener} to the listeners list.
+	 * <p>
+	 * IMPORTANT: This method is not API
+	 * 
+	 * @since 5.0
+	 */
+	public void addDropDownListener(final DropDownListener listener) {
+		if (!dropDownListeners.contains(dropDownListeners)) {
+			dropDownListeners.add(listener);
+		}
+	}
 
 	void arrowEvent(final Event event) {
 		switch (event.type) {
@@ -704,18 +664,15 @@ public abstract class CompletionCombo extends Composite {
 	}
 
 	/**
-	 * Sets the selection in the receiver's text field to an empty selection
-	 * starting just before the first character. If the text field is editable,
-	 * this has the effect of placing the i-beam at the start of the text.
+	 * Sets the selection in the receiver's text field to an empty selection starting just before the first character. If the text field is editable, this has
+	 * the effect of placing the i-beam at the start of the text.
 	 * <p>
-	 * Note: To clear the selected items in the receiver's list, use
-	 * <code>deselectAll()</code>.
+	 * Note: To clear the selected items in the receiver's list, use <code>deselectAll()</code>.
 	 * 
 	 * @exception SWTException
 	 *                <ul>
-	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been
-	 *                disposed</li> <li>ERROR_THREAD_INVALID_ACCESS - if not
-	 *                called from the thread that created the receiver</li>
+	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li> <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that
+	 *                created the receiver</li>
 	 *                </ul>
 	 * 
 	 * @see #deselectAll
@@ -823,8 +780,7 @@ public abstract class CompletionCombo extends Composite {
 		for (final int popupEvent : popupEvents) {
 			popup.addListener(popupEvent, listener);
 		}
-		final int[] listEvents = { SWT.MouseUp, SWT.Selection, SWT.Traverse, SWT.KeyDown, SWT.KeyUp, SWT.FocusIn,
-				SWTFacade.MouseWheel, SWT.Dispose };
+		final int[] listEvents = { SWT.MouseUp, SWT.Selection, SWT.Traverse, SWT.KeyDown, SWT.KeyUp, SWT.FocusIn, SWTFacade.MouseWheel, SWT.Dispose };
 		for (final int listEvent : listEvents) {
 			list.addListener(listEvent, listener);
 		}
@@ -838,25 +794,21 @@ public abstract class CompletionCombo extends Composite {
 	}
 
 	/**
-	 * Deselects the item at the given zero-relative index in the receiver's
-	 * list. If the item at the index was already deselected, it remains
-	 * deselected. Indices that are out of range are ignored.
+	 * Deselects the item at the given zero-relative index in the receiver's list. If the item at the index was already deselected, it remains deselected.
+	 * Indices that are out of range are ignored.
 	 * 
 	 * @param index
 	 *            the index of the item to deselect
 	 * 
 	 * @exception SWTException
 	 *                <ul>
-	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been
-	 *                disposed</li>
-	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
-	 *                thread that created the receiver</li>
+	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
+	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
 	 *                </ul>
 	 */
 	public void deselect(final int index) {
 		checkWidget();
-		if (0 <= index && index < getItemCount(list) && index == getSelectionIndex(list)
-				&& text.getText().equals(getItem(list, index))) {
+		if (0 <= index && index < getItemCount(list) && index == getSelectionIndex(list) && text.getText().equals(getItem(list, index))) {
 			clearImage();
 			text.setText(""); //$NON-NLS-1$
 			deselectAll(list);
@@ -866,16 +818,13 @@ public abstract class CompletionCombo extends Composite {
 	/**
 	 * Deselects all selected items in the receiver's list.
 	 * <p>
-	 * Note: To clear the selection in the receiver's text field, use
-	 * <code>clearSelection()</code>.
+	 * Note: To clear the selection in the receiver's text field, use <code>clearSelection()</code>.
 	 * </p>
 	 * 
 	 * @exception SWTException
 	 *                <ul>
-	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been
-	 *                disposed</li>
-	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
-	 *                thread that created the receiver</li>
+	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
+	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
 	 *                </ul>
 	 * 
 	 * @see #clearSelection
@@ -896,6 +845,7 @@ public abstract class CompletionCombo extends Composite {
 			if (!isDisposed() && isFocusControl()) {
 				setFocus();
 			}
+			notifyDropDownListeners();
 			return;
 		}
 		if (!isVisible()) {
@@ -952,6 +902,12 @@ public abstract class CompletionCombo extends Composite {
 		}
 	}
 
+	private void notifyDropDownListeners() {
+		for (final DropDownListener l : new ArrayList<DropDownListener>(dropDownListeners)) {
+			l.hidden();
+		}
+	}
+
 	/**
 	 * Returns the background color of the combo's List control.
 	 * 
@@ -979,10 +935,8 @@ public abstract class CompletionCombo extends Composite {
 	 * 
 	 * @exception SWTException
 	 *                <ul>
-	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been
-	 *                disposed</li>
-	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
-	 *                thread that created the receiver</li>
+	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
+	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
 	 *                </ul>
 	 */
 	public boolean getEditable() {
@@ -991,8 +945,7 @@ public abstract class CompletionCombo extends Composite {
 	}
 
 	/**
-	 * Returns the item at the given, zero-relative index in the receiver's
-	 * list. Throws an exception if the index is out of range.
+	 * Returns the item at the given, zero-relative index in the receiver's list. Throws an exception if the index is out of range.
 	 * 
 	 * @param index
 	 *            the index of the item to return
@@ -1000,16 +953,12 @@ public abstract class CompletionCombo extends Composite {
 	 * 
 	 * @exception IllegalArgumentException
 	 *                <ul>
-	 *                <li>ERROR_INVALID_RANGE - if the index is not between 0
-	 *                and the number of elements in the list minus 1 (inclusive)
-	 *                </li>
+	 *                <li>ERROR_INVALID_RANGE - if the index is not between 0 and the number of elements in the list minus 1 (inclusive)</li>
 	 *                </ul>
 	 * @exception SWTException
 	 *                <ul>
-	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been
-	 *                disposed</li>
-	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
-	 *                thread that created the receiver</li>
+	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
+	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
 	 *                </ul>
 	 */
 	public String getItem(final int index) {
@@ -1024,10 +973,8 @@ public abstract class CompletionCombo extends Composite {
 	 * 
 	 * @exception SWTException
 	 *                <ul>
-	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been
-	 *                disposed</li>
-	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
-	 *                thread that created the receiver</li>
+	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
+	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
 	 *                </ul>
 	 */
 	public int getItemCount() {
@@ -1036,17 +983,14 @@ public abstract class CompletionCombo extends Composite {
 	}
 
 	/**
-	 * Returns the height of the area which would be used to display
-	 * <em>one</em> of the items in the receiver's list.
+	 * Returns the height of the area which would be used to display <em>one</em> of the items in the receiver's list.
 	 * 
 	 * @return the height of one item
 	 * 
 	 * @exception SWTException
 	 *                <ul>
-	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been
-	 *                disposed</li>
-	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
-	 *                thread that created the receiver</li>
+	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
+	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
 	 *                </ul>
 	 */
 	public int getItemHeight() {
@@ -1055,21 +999,17 @@ public abstract class CompletionCombo extends Composite {
 	}
 
 	/**
-	 * Returns an array of <code>String</code>s which are the items in the
-	 * receiver's list.
+	 * Returns an array of <code>String</code>s which are the items in the receiver's list.
 	 * <p>
-	 * Note: This is not the actual structure used by the receiver to maintain
-	 * its list of items, so modifying the array will not affect the receiver.
+	 * Note: This is not the actual structure used by the receiver to maintain its list of items, so modifying the array will not affect the receiver.
 	 * </p>
 	 * 
 	 * @return the items in the receiver's list
 	 * 
 	 * @exception SWTException
 	 *                <ul>
-	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been
-	 *                disposed</li>
-	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
-	 *                thread that created the receiver</li>
+	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
+	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
 	 *                </ul>
 	 */
 	public String[] getItems() {
@@ -1078,11 +1018,9 @@ public abstract class CompletionCombo extends Composite {
 	}
 
 	/**
-	 * Returns <code>true</code> if the receiver's list is visible, and
-	 * <code>false</code> otherwise.
+	 * Returns <code>true</code> if the receiver's list is visible, and <code>false</code> otherwise.
 	 * <p>
-	 * If one of the receiver's ancestors is not visible or some other condition
-	 * makes the receiver not visible, this method may still indicate that it is
+	 * If one of the receiver's ancestors is not visible or some other condition makes the receiver not visible, this method may still indicate that it is
 	 * considered visible even though it may not actually be showing.
 	 * </p>
 	 * 
@@ -1090,10 +1028,8 @@ public abstract class CompletionCombo extends Composite {
 	 * 
 	 * @exception SWTException
 	 *                <ul>
-	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been
-	 *                disposed</li>
-	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
-	 *                thread that created the receiver</li>
+	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
+	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
 	 *                </ul>
 	 */
 	public boolean getListVisible() {
@@ -1107,20 +1043,15 @@ public abstract class CompletionCombo extends Composite {
 	}
 
 	/**
-	 * Returns a <code>Point</code> whose x coordinate is the start of the
-	 * selection in the receiver's text field, and whose y coordinate is the end
-	 * of the selection. The returned values are zero-relative. An "empty"
-	 * selection as indicated by the the x and y coordinates having the same
-	 * value.
+	 * Returns a <code>Point</code> whose x coordinate is the start of the selection in the receiver's text field, and whose y coordinate is the end of the
+	 * selection. The returned values are zero-relative. An "empty" selection as indicated by the the x and y coordinates having the same value.
 	 * 
 	 * @return a point representing the selection start and end
 	 * 
 	 * @exception SWTException
 	 *                <ul>
-	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been
-	 *                disposed</li>
-	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
-	 *                thread that created the receiver</li>
+	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
+	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
 	 *                </ul>
 	 */
 	public Point getSelection() {
@@ -1129,17 +1060,14 @@ public abstract class CompletionCombo extends Composite {
 	}
 
 	/**
-	 * Returns the zero-relative index of the item which is currently selected
-	 * in the receiver's list, or -1 if no item is selected.
+	 * Returns the zero-relative index of the item which is currently selected in the receiver's list, or -1 if no item is selected.
 	 * 
 	 * @return the index of the selected item
 	 * 
 	 * @exception SWTException
 	 *                <ul>
-	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been
-	 *                disposed</li>
-	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
-	 *                thread that created the receiver</li>
+	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
+	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
 	 *                </ul>
 	 */
 	public int getSelectionIndex() {
@@ -1171,17 +1099,14 @@ public abstract class CompletionCombo extends Composite {
 	}
 
 	/**
-	 * Returns a string containing a copy of the contents of the receiver's text
-	 * field.
+	 * Returns a string containing a copy of the contents of the receiver's text field.
 	 * 
 	 * @return the receiver's text
 	 * 
 	 * @exception SWTException
 	 *                <ul>
-	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been
-	 *                disposed</li>
-	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
-	 *                thread that created the receiver</li>
+	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
+	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
 	 *                </ul>
 	 */
 	public String getText() {
@@ -1196,10 +1121,8 @@ public abstract class CompletionCombo extends Composite {
 	 * 
 	 * @exception SWTException
 	 *                <ul>
-	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been
-	 *                disposed</li>
-	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
-	 *                thread that created the receiver</li>
+	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
+	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
 	 *                </ul>
 	 */
 	public int getTextHeight() {
@@ -1208,19 +1131,15 @@ public abstract class CompletionCombo extends Composite {
 	}
 
 	/**
-	 * Returns the maximum number of characters that the receiver's text field
-	 * is capable of holding. If this has not been changed by
-	 * <code>setTextLimit()</code>, it will be the constant
-	 * <code>Combo.LIMIT</code>.
+	 * Returns the maximum number of characters that the receiver's text field is capable of holding. If this has not been changed by
+	 * <code>setTextLimit()</code>, it will be the constant <code>Combo.LIMIT</code>.
 	 * 
 	 * @return the text limit
 	 * 
 	 * @exception SWTException
 	 *                <ul>
-	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been
-	 *                disposed</li>
-	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
-	 *                thread that created the receiver</li>
+	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
+	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
 	 *                </ul>
 	 */
 	public int getTextLimit() {
@@ -1229,17 +1148,14 @@ public abstract class CompletionCombo extends Composite {
 	}
 
 	/**
-	 * Gets the number of items that are visible in the drop down portion of the
-	 * receiver's list.
+	 * Gets the number of items that are visible in the drop down portion of the receiver's list.
 	 * 
 	 * @return the number of items that are visible
 	 * 
 	 * @exception SWTException
 	 *                <ul>
-	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been
-	 *                disposed</li>
-	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
-	 *                thread that created the receiver</li>
+	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
+	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
 	 *                </ul>
 	 */
 	public int getVisibleItemCount() {
@@ -1289,9 +1205,8 @@ public abstract class CompletionCombo extends Composite {
 	}
 
 	/**
-	 * Searches the receiver's list starting at the first item (index 0) until
-	 * an item is found that is equal to the argument, and returns the index of
-	 * that item. If no item is found, returns -1.
+	 * Searches the receiver's list starting at the first item (index 0) until an item is found that is equal to the argument, and returns the index of that
+	 * item. If no item is found, returns -1.
 	 * 
 	 * @param string
 	 *            the search item
@@ -1303,10 +1218,8 @@ public abstract class CompletionCombo extends Composite {
 	 *                </ul>
 	 * @exception SWTException
 	 *                <ul>
-	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been
-	 *                disposed</li>
-	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
-	 *                thread that created the receiver</li>
+	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
+	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
 	 *                </ul>
 	 */
 	public int indexOf(final String string) {
@@ -1318,10 +1231,8 @@ public abstract class CompletionCombo extends Composite {
 	}
 
 	/**
-	 * Searches the receiver's list starting at the given, zero-relative index
-	 * until an item is found that is equal to the argument, and returns the
-	 * index of that item. If no item is found or the starting index is out of
-	 * range, returns -1.
+	 * Searches the receiver's list starting at the given, zero-relative index until an item is found that is equal to the argument, and returns the index of
+	 * that item. If no item is found or the starting index is out of range, returns -1.
 	 * 
 	 * @param string
 	 *            the search item
@@ -1335,10 +1246,8 @@ public abstract class CompletionCombo extends Composite {
 	 *                </ul>
 	 * @exception SWTException
 	 *                <ul>
-	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been
-	 *                disposed</li>
-	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
-	 *                thread that created the receiver</li>
+	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
+	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
 	 *                </ul>
 	 */
 	public int indexOf(final String string, final int start) {
@@ -1350,8 +1259,7 @@ public abstract class CompletionCombo extends Composite {
 	}
 
 	/**
-	 * Returns true if the item selection pop-up is dropped (=open), false
-	 * otherwise
+	 * Returns true if the item selection pop-up is dropped (=open), false otherwise
 	 * 
 	 * @return true if the selection pop-up is dropped, false otherwise
 	 * @since 3.0
@@ -1474,8 +1382,7 @@ public abstract class CompletionCombo extends Composite {
 			if ((event.stateMask & SWT.ALT) != 0 && (event.keyCode == SWT.ARROW_UP || event.keyCode == SWT.ARROW_DOWN)) {
 				dropDown(false);
 			}
-			if ((event.character == SWT.DEL || event.character == SWT.BS)
-					&& autoCompletionMode == AutoCompletionMode.FIRST_LETTER_MATCH) {
+			if ((event.character == SWT.DEL || event.character == SWT.BS) && autoCompletionMode == AutoCompletionMode.FIRST_LETTER_MATCH) {
 				clearImage();
 				text.setText(""); //$NON-NLS-1$
 				deselectAll(list);
@@ -1565,15 +1472,13 @@ public abstract class CompletionCombo extends Composite {
 	}
 
 	/**
-	 * Removes all of the items from the receiver's list control and clear the
-	 * contents of receiver's text field.
+	 * Removes all of the items from the receiver's list control and clear the contents of receiver's text field.
 	 * <p>
 	 * 
 	 * @exception SWTException
 	 *                <ul>
-	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been
-	 *                disposed</li> <li>ERROR_THREAD_INVALID_ACCESS - if not
-	 *                called from the thread that created the receiver</li>
+	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li> <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that
+	 *                created the receiver</li>
 	 *                </ul>
 	 */
 	public void removeAll() {
@@ -1584,8 +1489,7 @@ public abstract class CompletionCombo extends Composite {
 	}
 
 	/**
-	 * Removes the listener from the collection of listeners who will be
-	 * notified when the receiver's text is modified.
+	 * Removes the listener from the collection of listeners who will be notified when the receiver's text is modified.
 	 * 
 	 * @param listener
 	 *            the listener which should no longer be notified
@@ -1596,10 +1500,8 @@ public abstract class CompletionCombo extends Composite {
 	 *                </ul>
 	 * @exception SWTException
 	 *                <ul>
-	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been
-	 *                disposed</li>
-	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
-	 *                thread that created the receiver</li>
+	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
+	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
 	 *                </ul>
 	 * 
 	 * @see ModifyListener
@@ -1608,8 +1510,7 @@ public abstract class CompletionCombo extends Composite {
 	public abstract void removeModifyListener(final ModifyListener listener);
 
 	/**
-	 * Removes the listener from the collection of listeners who will be
-	 * notified when the user changes the receiver's selection.
+	 * Removes the listener from the collection of listeners who will be notified when the user changes the receiver's selection.
 	 * 
 	 * @param listener
 	 *            the listener which should no longer be notified
@@ -1620,10 +1521,8 @@ public abstract class CompletionCombo extends Composite {
 	 *                </ul>
 	 * @exception SWTException
 	 *                <ul>
-	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been
-	 *                disposed</li>
-	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
-	 *                thread that created the receiver</li>
+	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
+	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
 	 *                </ul>
 	 * 
 	 * @see SelectionListener
@@ -1632,8 +1531,7 @@ public abstract class CompletionCombo extends Composite {
 	public abstract void removeSelectionListener(final SelectionListener listener);
 
 	/**
-	 * Removes the listener from the collection of listeners who will be
-	 * notified when the control is verified.
+	 * Removes the listener from the collection of listeners who will be notified when the control is verified.
 	 * 
 	 * @param listener
 	 *            the listener which should no longer be notified
@@ -1644,10 +1542,8 @@ public abstract class CompletionCombo extends Composite {
 	 *                </ul>
 	 * @exception SWTException
 	 *                <ul>
-	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been
-	 *                disposed</li>
-	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
-	 *                thread that created the receiver</li>
+	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
+	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
 	 *                </ul>
 	 * 
 	 * @see VerifyListener
@@ -1656,19 +1552,27 @@ public abstract class CompletionCombo extends Composite {
 	public abstract void removeVerifyListener(final VerifyListener listener);
 
 	/**
-	 * Selects the item at the given zero-relative index in the receiver's list.
-	 * If the item at the index was already selected, it remains selected.
-	 * Indices that are out of range are ignored.
+	 * Adds the given {@link DropDownListener} to the listeners list.
+	 * <p>
+	 * IMPORTANT: This method is not API
+	 * 
+	 * @since 5.0
+	 */
+	public void removeDropDownListener(final DropDownListener listener) {
+		dropDownListeners.remove(listener);
+	}
+
+	/**
+	 * Selects the item at the given zero-relative index in the receiver's list. If the item at the index was already selected, it remains selected. Indices
+	 * that are out of range are ignored.
 	 * 
 	 * @param index
 	 *            the index of the item to select
 	 * 
 	 * @exception SWTException
 	 *                <ul>
-	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been
-	 *                disposed</li>
-	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
-	 *                thread that created the receiver</li>
+	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
+	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
 	 *                </ul>
 	 */
 	public void select(final int index) {
@@ -1690,8 +1594,7 @@ public abstract class CompletionCombo extends Composite {
 	}
 
 	/**
-	 * Set's the strategy for autocompletion. See {@link AutoCompletionMode} for
-	 * details.
+	 * Set's the strategy for autocompletion. See {@link AutoCompletionMode} for details.
 	 * <p>
 	 * The default value is {@link AutoCompletionMode#NO_MISSMATCH}.
 	 * 
@@ -1714,8 +1617,7 @@ public abstract class CompletionCombo extends Composite {
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * Note: this will change the background of both the Text and List controls
-	 * maintained by this control.
+	 * Note: this will change the background of both the Text and List controls maintained by this control.
 	 */
 	@Override
 	public void setBackground(final Color color) {
@@ -1765,10 +1667,8 @@ public abstract class CompletionCombo extends Composite {
 	 * 
 	 * @exception SWTException
 	 *                <ul>
-	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been
-	 *                disposed</li>
-	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
-	 *                thread that created the receiver</li>
+	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
+	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
 	 *                </ul>
 	 */
 	public void setEditable(final boolean editable) {
@@ -1780,16 +1680,12 @@ public abstract class CompletionCombo extends Composite {
 	/**
 	 * Sets the {@link IFlashDelegate} for this widget.
 	 * <p>
-	 * The IFlashDelegate is responsible for providing visual feedback on the
-	 * control, when a user's keyboard entry is rejected. This happens when the
-	 * combo is configured to reject mismatching entries
-	 * (AutoCompletionMode.NO_MISMATCH). When a rejection occurs the combo will
-	 * notify the {@link IFlashDelegate}.
+	 * The IFlashDelegate is responsible for providing visual feedback on the control, when a user's keyboard entry is rejected. This happens when the combo is
+	 * configured to reject mismatching entries (AutoCompletionMode.NO_MISMATCH). When a rejection occurs the combo will notify the {@link IFlashDelegate}.
 	 * <p>
 	 * The default value is null.
 	 * 
-	 * @see IFlashDelegate the {@link IFlashDelegate} to use with this combo. A
-	 *      null value indicates that no visual feedback is necessary.
+	 * @see IFlashDelegate the {@link IFlashDelegate} to use with this combo. A null value indicates that no visual feedback is necessary.
 	 * @since 3.0
 	 */
 	public void setFlashDelegate(final IFlashDelegate delegate) {
@@ -1843,25 +1739,20 @@ public abstract class CompletionCombo extends Composite {
 	}
 
 	/**
-	 * Fills the combo's list control with the given array of items (with no
-	 * images).
+	 * Fills the combo's list control with the given array of items (with no images).
 	 * 
 	 * @param items
-	 *            an array of Strings for the items in the control; never null.
-	 *            Individual entries cannot be null.
+	 *            an array of Strings for the items in the control; never null. Individual entries cannot be null.
 	 * 
 	 * @exception IllegalArgumentException
 	 *                <ul>
 	 *                <li>ERROR_NULL_ARGUMENT - if the items array is null</li>
-	 *                <li>ERROR_INVALID_ARGUMENT - if an item in the items array
-	 *                is null</li>
+	 *                <li>ERROR_INVALID_ARGUMENT - if an item in the items array is null</li>
 	 *                </ul>
 	 * @exception SWTException
 	 *                <ul>
-	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been
-	 *                disposed</li>
-	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
-	 *                thread that created the receiver</li>
+	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
+	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
 	 *                </ul>
 	 * @see #setItems(String[], Image[])
 	 */
@@ -1873,12 +1764,10 @@ public abstract class CompletionCombo extends Composite {
 	 * Fills the combo's list control with the given array of items and images.
 	 * 
 	 * @param items
-	 *            an array of Strings for the items in the control; never null.
-	 *            Individual entries cannot be null.
+	 *            an array of Strings for the items in the control; never null. Individual entries cannot be null.
 	 * @param images
-	 *            an array of Images for the items in the control. May be null
-	 *            if no images should be used. Individual entries may be null,
-	 *            if no image should be used for that item.
+	 *            an array of Images for the items in the control. May be null if no images should be used. Individual entries may be null, if no image should
+	 *            be used for that item.
 	 * @throws RuntimeException
 	 *             if the images and items arrays have different lengths
 	 * @since 3.0
@@ -1899,11 +1788,9 @@ public abstract class CompletionCombo extends Composite {
 	}
 
 	/**
-	 * Sets the layout which is associated with the receiver to be the argument
-	 * which may be null.
+	 * Sets the layout which is associated with the receiver to be the argument which may be null.
 	 * <p>
-	 * Note: No Layout can be set on this Control because it already manages the
-	 * size and position of its children.
+	 * Note: No Layout can be set on this Control because it already manages the size and position of its children.
 	 * </p>
 	 * 
 	 * @param layout
@@ -1911,10 +1798,8 @@ public abstract class CompletionCombo extends Composite {
 	 * 
 	 * @exception SWTException
 	 *                <ul>
-	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been
-	 *                disposed</li>
-	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
-	 *                thread that created the receiver</li>
+	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
+	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
 	 *                </ul>
 	 */
 	@Override
@@ -1924,12 +1809,10 @@ public abstract class CompletionCombo extends Composite {
 	}
 
 	/**
-	 * Marks the receiver's list as visible if the argument is <code>true</code>
-	 * , and marks it invisible otherwise.
+	 * Marks the receiver's list as visible if the argument is <code>true</code> , and marks it invisible otherwise.
 	 * <p>
-	 * If one of the receiver's ancestors is not visible or some other condition
-	 * makes the receiver not visible, marking it visible may not actually cause
-	 * it to be displayed.
+	 * If one of the receiver's ancestors is not visible or some other condition makes the receiver not visible, marking it visible may not actually cause it to
+	 * be displayed.
 	 * </p>
 	 * 
 	 * @param visible
@@ -1937,10 +1820,8 @@ public abstract class CompletionCombo extends Composite {
 	 * 
 	 * @exception SWTException
 	 *                <ul>
-	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been
-	 *                disposed</li>
-	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
-	 *                thread that created the receiver</li>
+	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
+	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
 	 *                </ul>
 	 */
 	public void setListVisible(final boolean visible) {
@@ -1954,8 +1835,7 @@ public abstract class CompletionCombo extends Composite {
 	}
 
 	/**
-	 * Sets the selection in the receiver's text field to the range specified by
-	 * the argument whose x coordinate is the start of the selection and whose y
+	 * Sets the selection in the receiver's text field to the range specified by the argument whose x coordinate is the start of the selection and whose y
 	 * coordinate is the end of the selection.
 	 * 
 	 * @param selection
@@ -1967,10 +1847,8 @@ public abstract class CompletionCombo extends Composite {
 	 *                </ul>
 	 * @exception SWTException
 	 *                <ul>
-	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been
-	 *                disposed</li>
-	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
-	 *                thread that created the receiver</li>
+	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
+	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
 	 *                </ul>
 	 */
 	public void setSelection(final Point selection) {
@@ -1984,10 +1862,8 @@ public abstract class CompletionCombo extends Composite {
 	/**
 	 * Sets the contents of the receiver's text field to the given string.
 	 * <p>
-	 * Note: The text field in a <code>Combo</code> is typically only capable of
-	 * displaying a single line of text. Thus, setting the text to a string
-	 * containing line breaks or other special characters will probably cause it
-	 * to display incorrectly.
+	 * Note: The text field in a <code>Combo</code> is typically only capable of displaying a single line of text. Thus, setting the text to a string containing
+	 * line breaks or other special characters will probably cause it to display incorrectly.
 	 * </p>
 	 * 
 	 * @param string
@@ -1999,10 +1875,8 @@ public abstract class CompletionCombo extends Composite {
 	 *                </ul>
 	 * @exception SWTException
 	 *                <ul>
-	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been
-	 *                disposed</li>
-	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
-	 *                thread that created the receiver</li>
+	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
+	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
 	 *                </ul>
 	 */
 	public void setText(final String string) {
@@ -2024,8 +1898,7 @@ public abstract class CompletionCombo extends Composite {
 	}
 
 	/**
-	 * Sets the maximum number of characters that the receiver's text field is
-	 * capable of holding to be the argument.
+	 * Sets the maximum number of characters that the receiver's text field is capable of holding to be the argument.
 	 * 
 	 * @param limit
 	 *            new text limit
@@ -2036,10 +1909,8 @@ public abstract class CompletionCombo extends Composite {
 	 *                </ul>
 	 * @exception SWTException
 	 *                <ul>
-	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been
-	 *                disposed</li>
-	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
-	 *                thread that created the receiver</li>
+	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
+	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
 	 *                </ul>
 	 */
 	public void setTextLimit(final int limit) {
@@ -2059,8 +1930,7 @@ public abstract class CompletionCombo extends Composite {
 	public void setVisible(final boolean visible) {
 		super.setVisible(visible);
 		/*
-		 * At this point the control may have been disposed in a FocusOut event.
-		 * If so then do not continue.
+		 * At this point the control may have been disposed in a FocusOut event. If so then do not continue.
 		 */
 		if (isDisposed()) {
 			return;
@@ -2075,18 +1945,15 @@ public abstract class CompletionCombo extends Composite {
 	}
 
 	/**
-	 * Sets the number of items that are visible in the drop down portion of the
-	 * receiver's list.
+	 * Sets the number of items that are visible in the drop down portion of the receiver's list.
 	 * 
 	 * @param count
 	 *            the new number of items to be visible
 	 * 
 	 * @exception SWTException
 	 *                <ul>
-	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been
-	 *                disposed</li>
-	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
-	 *                thread that created the receiver</li>
+	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
+	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
 	 *                </ul>
 	 */
 	public void setVisibleItemCount(final int count) {
@@ -2486,8 +2353,7 @@ public abstract class CompletionCombo extends Composite {
 	}
 
 	/**
-	 * Handles a key press when the AutoCompletionMode.FIRST_LETTER_MATCH is
-	 * set.
+	 * Handles a key press when the AutoCompletionMode.FIRST_LETTER_MATCH is set.
 	 * 
 	 * @param event
 	 *            the key event that triggered the method
@@ -2547,8 +2413,7 @@ public abstract class CompletionCombo extends Composite {
 		if (data != null) {
 			final Point selection = text.getSelection();
 			final String oldText = text.getText();
-			final String newText = oldText.substring(0, selection.x) + data
-					+ oldText.substring(selection.y, oldText.length());
+			final String newText = oldText.substring(0, selection.x) + data + oldText.substring(selection.y, oldText.length());
 			final int index = indexOf(newText);
 			if (index != -1) {
 				setImage(index);

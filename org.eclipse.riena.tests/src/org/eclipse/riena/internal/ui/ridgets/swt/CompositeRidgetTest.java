@@ -17,6 +17,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Widget;
 
+import org.eclipse.riena.core.util.Nop;
 import org.eclipse.riena.ui.ridgets.ICompositeRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
@@ -35,7 +36,7 @@ public class CompositeRidgetTest extends AbstractSWTRidgetTest {
 	@Override
 	protected Widget createWidget(final Composite parent) {
 		final Widget result = new Composite(parent, SWT.NONE);
-		result.setData(SWTBindingPropertyLocator.BINDING_PROPERTY, "pbId");
+		result.setData(SWTBindingPropertyLocator.BINDING_PROPERTY, "pbId"); //$NON-NLS-1$
 		return result;
 	}
 
@@ -56,7 +57,7 @@ public class CompositeRidgetTest extends AbstractSWTRidgetTest {
 		final SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
 
 		final Composite composite = new Composite(getShell(), SWT.NONE);
-		composite.setData(SWTBindingPropertyLocator.BINDING_PROPERTY, "id1");
+		composite.setData(SWTBindingPropertyLocator.BINDING_PROPERTY, "id1"); //$NON-NLS-1$
 
 		assertNotNull(composite.getData(SWTBindingPropertyLocator.BINDING_PROPERTY));
 		assertSame(CompositeRidget.class, mapper.getRidgetClass(composite));
@@ -66,7 +67,7 @@ public class CompositeRidgetTest extends AbstractSWTRidgetTest {
 		final SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
 
 		final Group group = new Group(getShell(), SWT.NONE);
-		group.setData(SWTBindingPropertyLocator.BINDING_PROPERTY, "id2");
+		group.setData(SWTBindingPropertyLocator.BINDING_PROPERTY, "id2"); //$NON-NLS-1$
 
 		assertNotNull(group.getData(SWTBindingPropertyLocator.BINDING_PROPERTY));
 		assertSame(CompositeRidget.class, mapper.getRidgetClass(group));
@@ -79,7 +80,7 @@ public class CompositeRidgetTest extends AbstractSWTRidgetTest {
 
 		assertNullId(mapper, composite);
 
-		composite.setData(SWTBindingPropertyLocator.BINDING_PROPERTY, "");
+		composite.setData(SWTBindingPropertyLocator.BINDING_PROPERTY, ""); //$NON-NLS-1$
 
 		assertEmptyId(mapper, composite);
 	}
@@ -91,7 +92,7 @@ public class CompositeRidgetTest extends AbstractSWTRidgetTest {
 
 		assertNullId(mapper, composite);
 
-		composite.setData(SWTBindingPropertyLocator.BINDING_PROPERTY, "");
+		composite.setData(SWTBindingPropertyLocator.BINDING_PROPERTY, ""); //$NON-NLS-1$
 
 		assertEmptyId(mapper, composite);
 	}
@@ -118,12 +119,12 @@ public class CompositeRidgetTest extends AbstractSWTRidgetTest {
 	//////////////////
 
 	private void assertEmptyId(final SwtControlRidgetMapper mapper, final Composite control) {
-		assertEquals("", control.getData(SWTBindingPropertyLocator.BINDING_PROPERTY));
+		assertEquals("", control.getData(SWTBindingPropertyLocator.BINDING_PROPERTY)); //$NON-NLS-1$
 		try {
 			mapper.getRidgetClass(control);
 			fail();
 		} catch (final BindingException bex) {
-			ok("expected");
+			ok("expected"); //$NON-NLS-1$
 		}
 	}
 
@@ -133,22 +134,94 @@ public class CompositeRidgetTest extends AbstractSWTRidgetTest {
 			mapper.getRidgetClass(control);
 			fail();
 		} catch (final BindingException bex) {
-			ok("expected");
+			ok("expected"); //$NON-NLS-1$
 		}
 	}
 
 	/*
-	 * Giving focus assumes there is something in the composite than can receive
-	 * it. This method will create a Text widget / ridget to set that up.
+	 * Giving focus assumes there is something in the composite than can receive it. This method will create a Text widget / ridget to set that up.
 	 */
 	private void createTextWidget() {
 		final Composite control = getWidget();
 		final Text txt = new Text(control, SWT.BORDER);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(txt, "txt");
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(txt, "txt"); //$NON-NLS-1$
 		final TextRidget txtRidget = new TextRidget();
 		txtRidget.setUIControl(txt);
 
 		final ICompositeRidget ridget = getRidget();
-		ridget.addRidget("txt", txtRidget);
+		ridget.addRidget("txt", txtRidget); //$NON-NLS-1$
 	}
+
+	@Override
+	public void testGetMenuItemCount() {
+		final IRidget ridget = getRidget();
+
+		try {
+			ridget.getMenuItemCount();
+			fail("UnsupportedOperationException expected"); //$NON-NLS-1$
+		} catch (final UnsupportedOperationException expected) {
+			Nop.reason("UnsupportedOperationException expected"); //$NON-NLS-1$
+		}
+	}
+
+	@Override
+	public void testGetMenuItem() {
+		final IRidget ridget = getRidget();
+
+		try {
+			ridget.getMenuItem(0);
+			fail("UnsupportedOperationException expected"); //$NON-NLS-1$
+		} catch (final UnsupportedOperationException expected) {
+			Nop.reason("UnsupportedOperationException expected"); //$NON-NLS-1$
+		}
+	}
+
+	@Override
+	public void testAddMenuItem() {
+		final IRidget ridget = getRidget();
+		final String menuItemWithoutIconText = "MenuItemWithoutIcon"; //$NON-NLS-1$
+
+		try {
+			ridget.addMenuItem(menuItemWithoutIconText);
+			fail("UnsupportedOperationException expected"); //$NON-NLS-1$
+		} catch (final UnsupportedOperationException expected) {
+			Nop.reason("UnsupportedOperationException expected"); //$NON-NLS-1$
+		}
+	}
+
+	@Override
+	public void testRemoveMenuItem() {
+		final IRidget ridget = getRidget();
+		final String menuItemWithIconText = "MenuItemWithIcon"; //$NON-NLS-1$
+
+		try {
+			ridget.removeMenuItem(menuItemWithIconText);
+			fail("UnsupportedOperationException expected"); //$NON-NLS-1$
+		} catch (final UnsupportedOperationException expected) {
+			Nop.reason("UnsupportedOperationException expected"); //$NON-NLS-1$
+		}
+	}
+
+	@Override
+	public void testGetMenuItemEmptyContextMenu() {
+		try {
+			final IRidget ridget = getRidget();
+			ridget.getMenuItem(0);
+			fail("UnsupportedOperationException expected"); //$NON-NLS-1$
+		} catch (final UnsupportedOperationException expected) {
+			Nop.reason("UnsupportedOperationException expected"); //$NON-NLS-1$
+		}
+	}
+
+	@Override
+	public void testGetMenuItemNotExistingItem() {
+		final IRidget ridget = getRidget();
+		try {
+			ridget.getMenuItem(0);
+			fail("UnsupportedOperationException expected"); //$NON-NLS-1$
+		} catch (final UnsupportedOperationException expected) {
+			Nop.reason("UnsupportedOperationException expected"); //$NON-NLS-1$
+		}
+	}
+
 }

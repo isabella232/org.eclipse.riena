@@ -194,6 +194,11 @@ public class ShellRidget extends AbstractSWTWidgetRidget implements IShellRidget
 	}
 
 	@Override
+	public final void setUIControl(final Object uiControl) {
+		super.setUIControl(uiControl);
+	}
+
+	@Override
 	protected void checkUIControl(final Object uiControl) {
 		if (uiControl != null && !(uiControl instanceof Shell)) {
 			throw new UIBindingFailure("uiControl of a ShellRidget must be a Shell but was a " //$NON-NLS-1$

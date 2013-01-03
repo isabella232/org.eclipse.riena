@@ -18,24 +18,32 @@ import java.util.List;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.beans.PojoObservables;
+import org.eclipse.core.databinding.observable.ChangeEvent;
+import org.eclipse.core.databinding.observable.IChangeListener;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.runtime.Assert;
 
 import org.eclipse.riena.beans.common.AbstractBean;
 import org.eclipse.riena.example.client.application.ExampleIcons;
+import org.eclipse.riena.ui.core.marker.ErrorMessageMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IMultipleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
+import org.eclipse.riena.ui.ridgets.IStatuslineRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.annotation.OnActionCallback;
 import org.eclipse.riena.ui.ridgets.annotation.OnActionCallbacks;
 import org.eclipse.riena.ui.ridgets.controller.AbstractWindowController;
+import org.eclipse.riena.ui.ridgets.marker.StatuslineMessageMarkerViewer;
+import org.eclipse.riena.ui.ridgets.swt.views.AbstractDialogView;
 
 /**
  * The controller for the hello dialog of the dialog example.
  */
 public class HelloDialogController extends AbstractWindowController {
+
+	private static final ErrorMessageMarker TOO_EXPENSIVE_MARKER = new ErrorMessageMarker("The car is too expensive!"); //$NON-NLS-1$
 
 	private final String[] carPlates = { "JM5B0ND", "1 SPY", "MNY PNY", "BN D07", "Q RULE2", "MI64EVR" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
 	private ISingleChoiceRidget compositeCarModel;
@@ -55,41 +63,52 @@ public class HelloDialogController extends AbstractWindowController {
 		carConfig = new CarConfig();
 
 		compositeCarModel = getRidget(ISingleChoiceRidget.class, "compositeCarModel"); //$NON-NLS-1$
-		compositeCarModel.bindToModel(toList(CarModels.values()),
-				BeansObservables.observeValue(carConfig, CarConfig.PROP_MODEL));
+		compositeCarModel.bindToModel(toList(CarModels.values()), BeansObservables.observeValue(carConfig, CarConfig.PROP_MODEL));
 		compositeCarModel.addMarker(new MandatoryMarker());
 		compositeCarModel.updateFromModel();
 
 		compositeCarExtras = getRidget(IMultipleChoiceRidget.class, "compositeCarExtras"); //$NON-NLS-1$
 		final String[] labels = { "Front Machine Guns", "Self Destruct Button", "Underwater Package", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				"Park Distance Control System", }; //$NON-NLS-1$
-		compositeCarExtras.bindToModel(toList(CarOptions.values()), Arrays.asList(labels), carConfig,
-				CarConfig.PROP_OPTIONS);
+		compositeCarExtras.bindToModel(toList(CarOptions.values()), Arrays.asList(labels), carConfig, CarConfig.PROP_OPTIONS);
 		compositeCarExtras.updateFromModel();
 
 		compositeCarWarranty = getRidget(ISingleChoiceRidget.class, "compositeCarWarranty"); //$NON-NLS-1$
-		compositeCarWarranty.bindToModel(toList(CarWarranties.values()),
-				BeansObservables.observeValue(carConfig, CarConfig.PROP_WARRANTY));
+		compositeCarWarranty.bindToModel(toList(CarWarranties.values()), BeansObservables.observeValue(carConfig, CarConfig.PROP_WARRANTY));
 		compositeCarWarranty.addMarker(new MandatoryMarker());
 		compositeCarWarranty.updateFromModel();
 
 		compositeCarPlates = getRidget(IMultipleChoiceRidget.class, "compositeCarPlates"); //$NON-NLS-1$
-		compositeCarPlates
-				.bindToModel(toList(carPlates), PojoObservables.observeList(carConfig, CarConfig.PROP_PLATES));
+		compositeCarPlates.bindToModel(toList(carPlates), PojoObservables.observeList(carConfig, CarConfig.PROP_PLATES));
 		compositeCarPlates.addMarker(new MandatoryMarker());
 		compositeCarPlates.updateFromModel();
 
 		final ITextRidget txtPrice = getRidget(ITextRidget.class, "txtPrice"); //$NON-NLS-1$
 		txtPrice.setOutputOnly(true);
+		txtPrice.addMarker(TOO_EXPENSIVE_MARKER);
 		final DataBindingContext dbc = new DataBindingContext();
-		dbc.bindValue(BeansObservables.observeValue(txtPrice, ITextRidget.PROPERTY_TEXT),
-				BeansObservables.observeValue(carConfig, CarConfig.PROP_PRICE), null, null);
+		dbc.bindValue(BeansObservables.observeValue(txtPrice, ITextRidget.PROPERTY_TEXT), BeansObservables.observeValue(carConfig, CarConfig.PROP_PRICE), null,
+				null);
+		BeansObservables.observeValue(carConfig, CarConfig.PROP_PRICE).addChangeListener(new IChangeListener() {
+			public void handleChange(final ChangeEvent event) {
+				if (carConfig.getPrice() > 200000) {
+					txtPrice.addMarker(TOO_EXPENSIVE_MARKER);
+				} else {
+					txtPrice.removeMarker(TOO_EXPENSIVE_MARKER);
+				}
+			}
+		});
 
 		final IActionRidget buttonPreset = getRidget(IActionRidget.class, "buttonPreset"); //$NON-NLS-1$
 		buttonPreset.setText("&Quick Config"); //$NON-NLS-1$
 
 		final IActionRidget buttonReset = getRidget(IActionRidget.class, "buttonReset"); //$NON-NLS-1$
 		buttonReset.setText("&Reset"); //$NON-NLS-1$
+
+		final IStatuslineRidget statuslineRidget = getRidget(IStatuslineRidget.class, AbstractDialogView.STATUSLINE_BINDING_ID);
+		final StatuslineMessageMarkerViewer statuslineMessageMarkerViewer = new StatuslineMessageMarkerViewer(statuslineRidget);
+		statuslineMessageMarkerViewer.addRidget(txtPrice);
+
 	}
 
 	public CarConfig getCarConfig() {
@@ -130,8 +149,7 @@ public class HelloDialogController extends AbstractWindowController {
 	// ////////////////
 
 	/**
-	 * Bean that holds a single car configuration composed of: model, option(s),
-	 * warranty, plate(s).
+	 * Bean that holds a single car configuration composed of: model, option(s), warranty, plate(s).
 	 */
 	public static final class CarConfig extends AbstractBean {
 		public static final String PROP_MODEL = "model"; //$NON-NLS-1$

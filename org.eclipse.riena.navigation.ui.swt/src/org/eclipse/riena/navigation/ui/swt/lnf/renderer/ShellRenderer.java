@@ -33,17 +33,13 @@ public class ShellRenderer extends AbstractTitleBarRenderer {
 	 */
 	private final static int TITLE_MARGIN = 5;
 
-	private final String[] btnImageKeys = new String[] { LnfKeyConstants.TITLELESS_SHELL_CLOSE_ICON,
-			LnfKeyConstants.TITLELESS_SHELL_MAX_ICON, LnfKeyConstants.TITLELESS_SHELL_MIN_ICON,
-			LnfKeyConstants.TITLELESS_SHELL_RESTORE_ICON };
-	private final String[] btnHoverSelectedImageKeys = new String[] {
-			LnfKeyConstants.TITLELESS_SHELL_CLOSE_HOVER_SELECTED_ICON,
-			LnfKeyConstants.TITLELESS_SHELL_MAX_HOVER_SELECTED_ICON,
-			LnfKeyConstants.TITLELESS_SHELL_MIN_HOVER_SELECTED_ICON,
+	private final String[] btnImageKeys = new String[] { LnfKeyConstants.TITLELESS_SHELL_CLOSE_ICON, LnfKeyConstants.TITLELESS_SHELL_MAX_ICON,
+			LnfKeyConstants.TITLELESS_SHELL_MIN_ICON, LnfKeyConstants.TITLELESS_SHELL_RESTORE_ICON };
+	private final String[] btnHoverSelectedImageKeys = new String[] { LnfKeyConstants.TITLELESS_SHELL_CLOSE_HOVER_SELECTED_ICON,
+			LnfKeyConstants.TITLELESS_SHELL_MAX_HOVER_SELECTED_ICON, LnfKeyConstants.TITLELESS_SHELL_MIN_HOVER_SELECTED_ICON,
 			LnfKeyConstants.TITLELESS_SHELL_RESTORE_HOVER_SELECTED_ICON };
-	private final String[] btnHoverImageKeys = new String[] { LnfKeyConstants.TITLELESS_SHELL_CLOSE_HOVER_ICON,
-			LnfKeyConstants.TITLELESS_SHELL_MAX_HOVER_ICON, LnfKeyConstants.TITLELESS_SHELL_MIN_HOVER_ICON,
-			LnfKeyConstants.TITLELESS_SHELL_RESTORE_HOVER_ICON };
+	private final String[] btnHoverImageKeys = new String[] { LnfKeyConstants.TITLELESS_SHELL_CLOSE_HOVER_ICON, LnfKeyConstants.TITLELESS_SHELL_MAX_HOVER_ICON,
+			LnfKeyConstants.TITLELESS_SHELL_MIN_HOVER_ICON, LnfKeyConstants.TITLELESS_SHELL_RESTORE_HOVER_ICON };
 	private final String[] btnInactiveImageKeys = new String[] { LnfKeyConstants.TITLELESS_SHELL_CLOSE_INACTIVE_ICON,
 			LnfKeyConstants.TITLELESS_SHELL_MAX_INACTIVE_ICON, LnfKeyConstants.TITLELESS_SHELL_MIN_INACTIVE_ICON,
 			LnfKeyConstants.TITLELESS_SHELL_RESTORE_INACTIVE_ICON };
@@ -66,7 +62,7 @@ public class ShellRenderer extends AbstractTitleBarRenderer {
 			return new Rectangle(0, 0, 0, 0);
 		}
 
-		final String title = getShell().getText();
+		final String title = getTitleText();
 		if (StringUtils.isEmpty(title)) {
 			return new Rectangle(0, 0, 0, 0);
 		}
@@ -110,6 +106,19 @@ public class ShellRenderer extends AbstractTitleBarRenderer {
 		gc.drawText(title, x, y, true);
 		return new Rectangle(x, y, textWidth, textHeight);
 
+	}
+
+	/**
+	 * Returns the text, that will be displayed in the title bar of the shell.
+	 * <p>
+	 * The default implementation returns the text of the SWT shell.
+	 * 
+	 * @return text of title bar
+	 * @since 5.0
+	 */
+	protected String getTitleText() {
+		final String title = getShell().getText();
+		return title;
 	}
 
 	@Override

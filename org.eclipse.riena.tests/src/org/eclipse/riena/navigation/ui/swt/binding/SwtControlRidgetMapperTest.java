@@ -27,6 +27,7 @@ import org.eclipse.riena.internal.ui.ridgets.swt.LabelRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.ToggleButtonRidget;
 import org.eclipse.riena.navigation.IAction;
 import org.eclipse.riena.ui.ridgets.ClassRidgetMapper;
+import org.eclipse.riena.ui.ridgets.IMenuItemRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.listener.IFocusListener;
@@ -65,9 +66,7 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 	}
 
 	/**
-	 * Tests the method
-	 * <code>addMapping(Class<? extends Widget> , Class<? extends IRidget> )</code>
-	 * .
+	 * Tests the method <code>addMapping(Class<? extends Widget> , Class<? extends IRidget> )</code> .
 	 * 
 	 * @throws Exception
 	 *             handled by JUnit
@@ -83,9 +82,7 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 	}
 
 	/**
-	 * Tests the method
-	 * <code>addMapping(Class<? extends Widget> , Class<? extends IRidget> , int )</code>
-	 * .
+	 * Tests the method <code>addMapping(Class<? extends Widget> , Class<? extends IRidget> , int )</code> .
 	 * 
 	 * @throws Exception
 	 *             handled by JUnit
@@ -108,9 +105,7 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 	}
 
 	/**
-	 * Tests the method
-	 * {@link SwtControlRidgetMapper#addMapping(Class, Class, IMappingCondition)}
-	 * .
+	 * Tests the method {@link SwtControlRidgetMapper#addMapping(Class, Class, IMappingCondition)} .
 	 */
 	public void testAddMappingWithCondition() {
 
@@ -282,8 +277,7 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 	// ////////////////
 
 	/**
-	 * Simple implementation of an IMappingCondition used for testing purposes.
-	 * USe the {@link #setMatch(boolean)} to change the behavior of a condition.
+	 * Simple implementation of an IMappingCondition used for testing purposes. USe the {@link #setMatch(boolean)} to change the behavior of a condition.
 	 */
 	private static final class FTMappingCondition implements IMappingCondition {
 
@@ -328,193 +322,243 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 	/**
 	 * Mock implementation of ridget.
 	 */
-	private static final class MockRidget implements IRidget {
+	private static final class MockRidget extends AbstractMockRidget implements IRidget {
 
+		@Override
 		public Object getUIControl() {
 			return null;
 		}
 
+		@Override
 		public void setUIControl(final Object uiControl) {
 		}
 
+		@Override
 		public void addPropertyChangeListener(final PropertyChangeListener propertyChangeListener) {
 		}
 
-		public void addPropertyChangeListener(final String propertyName,
-				final PropertyChangeListener propertyChangeListener) {
+		@Override
+		public void addPropertyChangeListener(final String propertyName, final PropertyChangeListener propertyChangeListener) {
 		}
 
+		@Override
 		public void removePropertyChangeListener(final PropertyChangeListener propertyChangeListener) {
 		}
 
-		public void removePropertyChangeListener(final String propertyName,
-				final PropertyChangeListener propertyChangeListener) {
+		@Override
+		public void removePropertyChangeListener(final String propertyName, final PropertyChangeListener propertyChangeListener) {
 		}
 
+		@Override
 		public boolean isVisible() {
 			return false;
 		}
 
+		@Override
 		public void setVisible(final boolean visible) {
 		}
 
+		@Override
 		public boolean isEnabled() {
 			return false;
 		}
 
+		@Override
 		public void setEnabled(final boolean enabled) {
 		}
 
+		@Override
 		public void addFocusListener(final IFocusListener listener) {
 		}
 
+		@Override
 		public void removeFocusListener(final IFocusListener listener) {
 		}
 
+		@Override
 		public void updateFromModel() {
 		}
 
+		@Override
 		public void requestFocus() {
 		}
 
+		@Override
 		public boolean hasFocus() {
 			return false;
 		}
 
+		@Override
 		public boolean isFocusable() {
 			return false;
 		}
 
+		@Override
 		public void setFocusable(final boolean focusable) {
 		}
 
+		@Override
 		public String getToolTipText() {
 			return null;
 		}
 
+		@Override
 		public void setToolTipText(final String toolTipText) {
 		}
 
+		@Override
 		public boolean isBlocked() {
 			return false;
 		}
 
+		@Override
 		public void setBlocked(final boolean blocked) {
 		}
 
+		@Override
 		public String getID() {
 			return null;
 		}
 
+		@Override
 		public IRidgetContainer getController() {
 			return null;
 		}
 
+		@Override
 		public void setController(final IRidgetContainer controller) {
 		}
 
+		@Override
 		public void setIgnoreBindingError(final boolean ignore) {
 		}
 
+		@Override
 		public boolean isIgnoreBindingError() {
 			return false;
 		}
+
 	}
 
 	/**
 	 * Another mock implementation of ridget.
 	 */
-	private static final class MockRidget2 implements IRidget {
+	private static final class MockRidget2 extends AbstractMockRidget implements IRidget {
 
+		@Override
 		public Object getUIControl() {
 			return null;
 		}
 
+		@Override
 		public void setUIControl(final Object uiControl) {
 		}
 
+		@Override
 		public void addPropertyChangeListener(final PropertyChangeListener propertyChangeListener) {
 		}
 
-		public void addPropertyChangeListener(final String propertyName,
-				final PropertyChangeListener propertyChangeListener) {
+		@Override
+		public void addPropertyChangeListener(final String propertyName, final PropertyChangeListener propertyChangeListener) {
 		}
 
+		@Override
 		public void removePropertyChangeListener(final PropertyChangeListener propertyChangeListener) {
 		}
 
-		public void removePropertyChangeListener(final String propertyName,
-				final PropertyChangeListener propertyChangeListener) {
+		@Override
+		public void removePropertyChangeListener(final String propertyName, final PropertyChangeListener propertyChangeListener) {
 		}
 
+		@Override
 		public boolean isVisible() {
 			return false;
 		}
 
+		@Override
 		public void setVisible(final boolean visible) {
 		}
 
+		@Override
 		public boolean isEnabled() {
 			return false;
 		}
 
+		@Override
 		public void setEnabled(final boolean enabled) {
 		}
 
+		@Override
 		public void addFocusListener(final IFocusListener listener) {
 		}
 
+		@Override
 		public void removeFocusListener(final IFocusListener listener) {
 		}
 
+		@Override
 		public void updateFromModel() {
 		}
 
+		@Override
 		public void requestFocus() {
 		}
 
+		@Override
 		public boolean hasFocus() {
 			return false;
 		}
 
+		@Override
 		public boolean isFocusable() {
 			return false;
 		}
 
+		@Override
 		public void setFocusable(final boolean focusable) {
 		}
 
+		@Override
 		public String getToolTipText() {
 			return null;
 		}
 
+		@Override
 		public void setToolTipText(final String toolTipText) {
 		}
 
+		@Override
 		public boolean isBlocked() {
 			return false;
 		}
 
+		@Override
 		public void setBlocked(final boolean blocked) {
 		}
 
+		@Override
 		public String getID() {
 			return null;
 		}
 
+		@Override
 		public IRidgetContainer getController() {
 			return null;
 		}
 
+		@Override
 		public void setController(final IRidgetContainer controller) {
 		}
 
+		@Override
 		public void setIgnoreBindingError(final boolean ignore) {
 		}
 
+		@Override
 		public boolean isIgnoreBindingError() {
 			return false;
 		}
+
 	}
 
 	/**
@@ -545,15 +589,13 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 		public void addPropertyChangeListener(final PropertyChangeListener propertyChangeListener) {
 		}
 
-		public void addPropertyChangeListener(final String propertyName,
-				final PropertyChangeListener propertyChangeListener) {
+		public void addPropertyChangeListener(final String propertyName, final PropertyChangeListener propertyChangeListener) {
 		}
 
 		public void removePropertyChangeListener(final PropertyChangeListener propertyChangeListener) {
 		}
 
-		public void removePropertyChangeListener(final String propertyName,
-				final PropertyChangeListener propertyChangeListener) {
+		public void removePropertyChangeListener(final String propertyName, final PropertyChangeListener propertyChangeListener) {
 		}
 
 		public boolean isVisible() {
@@ -624,6 +666,31 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 		public boolean isIgnoreBindingError() {
 			return false;
 		}
+
+		public IMenuItemRidget addMenuItem(final String menuItemText) {
+			return null;
+		}
+
+		public IMenuItemRidget addMenuItem(final String menuItemText, final String iconName) {
+			return null;
+		}
+
+		public void removeMenuItem(final String menuItemText) {
+		}
+
+		public void removeMenuItem(final IMenuItemRidget menuItemRidget) {
+		}
+
+		public IMenuItemRidget getMenuItem(final int index) {
+			return null;
+		}
+
+		public int getMenuItemCount() {
+			return 0;
+		}
+
+		public void updateContextMenu() {
+		}
 	}
 
 	/**
@@ -641,8 +708,7 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 
 	}
 
-	private static class MockRidgetImplementigSeveralInterfaces extends MockNonRidgetSuperClass implements
-			IMockRidget2, IAction {
+	private static class MockRidgetImplementigSeveralInterfaces extends MockNonRidgetSuperClass implements IMockRidget2, IAction {
 
 		public Object getUIControl() {
 			return null;
@@ -654,15 +720,13 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 		public void addPropertyChangeListener(final PropertyChangeListener propertyChangeListener) {
 		}
 
-		public void addPropertyChangeListener(final String propertyName,
-				final PropertyChangeListener propertyChangeListener) {
+		public void addPropertyChangeListener(final String propertyName, final PropertyChangeListener propertyChangeListener) {
 		}
 
 		public void removePropertyChangeListener(final PropertyChangeListener propertyChangeListener) {
 		}
 
-		public void removePropertyChangeListener(final String propertyName,
-				final PropertyChangeListener propertyChangeListener) {
+		public void removePropertyChangeListener(final String propertyName, final PropertyChangeListener propertyChangeListener) {
 		}
 
 		public boolean isVisible() {
@@ -739,6 +803,33 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 			// TODO Auto-generated method stub
 			return false;
 		}
+
+		public IMenuItemRidget addMenuItem(final String menuItemText) {
+			return null;
+		}
+
+		public IMenuItemRidget addMenuItem(final String menuItemText, final String iconName) {
+			return null;
+		}
+
+		public void removeMenuItem(final String menuItemText) {
+		}
+
+		public void removeMenuItem(final IMenuItemRidget menuItemRidget) {
+		}
+
+		public IMenuItemRidget getMenuItem(final int index) {
+			return null;
+		}
+
+		public int getMenuItemCount() {
+			return 0;
+		}
+
+		public void updateContextMenu() {
+
+		}
+
 	}
 
 }

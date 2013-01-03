@@ -93,12 +93,15 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 			return ZERO_DEC;
 		}
 		if (MINUS_DEC.matches(input)) {
-			return String.valueOf(DECIMAL_SEPARATOR);
+			return MINUS_DEC;
 		}
 		if (Pattern.matches(MINUS_SIGN + "0+.", input) && input.endsWith(String.valueOf(DECIMAL_SEPARATOR))) { //$NON-NLS-1$
 			return ZERO_DEC;
 		}
-		if (String.valueOf(MINUS_SIGN).equals(input) || MINUS_ZERO.equals(input) || String.valueOf(ZERO).equals(input)) {
+		if (String.valueOf(MINUS_SIGN).equals(input) || MINUS_ZERO.equals(input)) {
+			return String.valueOf(MINUS_SIGN);
+		}
+		if (String.valueOf(ZERO).equals(input)) {
 			return String.valueOf(ZERO);
 		}
 		final StringBuilder result = new StringBuilder(input.length());
@@ -445,6 +448,9 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 	private String beautifyText(final String text) {
 		if (text.length() == 0 || String.valueOf(DECIMAL_SEPARATOR).equals(text)) {
 			return isConvertEmptyToZero() ? createZero() : text;
+		}
+		if (MINUS_DEC.equals(text)) {
+			return isConvertEmptyToZero() ? createZero() : String.valueOf(DECIMAL_SEPARATOR);
 		}
 		String newText = formatFraction(text);
 		if (newText.length() > 1 && newText.charAt(0) == DECIMAL_SEPARATOR) {

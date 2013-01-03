@@ -22,12 +22,10 @@ import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtBindingDelegate;
 /**
  * Controller for using ridgets in a regular SWT view.
  * <p>
- * Your controller will receive its ridgets from a binding delegate. Your
- * subclass must implement the {@link #configureRidgets()} method. References to
- * your ridgets can obtained using {@link #getRidget(String)}.
+ * Your controller will receive its ridgets from a binding delegate. Your subclass must implement the {@link #configureRidgets()} method. References to your
+ * ridgets can obtained using {@link #getRidget(String)}.
  * </p>
- * Here's an example showing how this class is used in a <b>regular</b>
- * ViewPart:
+ * Here's an example showing how this class is used in a <b>regular</b> ViewPart:
  * 
  * <pre>
  * tree = new Tree(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
@@ -52,8 +50,7 @@ import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtBindingDelegate;
  * }
  * </pre>
  * 
- * If you use the Riena UI / Navigation you should look at the classes
- * SubModuleController and SubModuleView (and their subclasses) instead.
+ * If you use the Riena UI / Navigation you should look at the classes SubModuleController and SubModuleView (and their subclasses) instead.
  * 
  * @see DefaultSwtBindingDelegate
  */
@@ -69,6 +66,13 @@ public abstract class AbstractRidgetController implements IController {
 
 	public final void addRidget(final String id, final IRidget ridget) {
 		map.put(id, ridget);
+	}
+
+	/**
+	 * @since 5.0
+	 */
+	public boolean removeRidget(final String id) {
+		return map.remove(id) != null;
 	}
 
 	public final void afterBind() {

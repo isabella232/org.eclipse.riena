@@ -59,7 +59,7 @@ public abstract class AbstractRidget implements IRidget {
 	 *             if the uiControl is not of the given type
 	 * @since 4.0
 	 */
-	final protected void checkType(final Object uiControl, final Class<?> type) {
+	protected void checkType(final Object uiControl, final Class<?> type) {
 		if ((uiControl != null) && !(type.isAssignableFrom(uiControl.getClass()))) {
 			final String expectedClassName = type.getSimpleName();
 			final String controlClassName = uiControl.getClass().getSimpleName();
@@ -126,8 +126,7 @@ public abstract class AbstractRidget implements IRidget {
 		removePropertyChangeListener(null, propertyChangeListener);
 	}
 
-	public void removePropertyChangeListener(final String propertyName,
-			final PropertyChangeListener propertyChangeListener) {
+	public void removePropertyChangeListener(final String propertyName, final PropertyChangeListener propertyChangeListener) {
 		Assert.isNotNull(propertyChangeListener);
 		if (propertyName == null) {
 			propertyChangeSupport.removePropertyChangeListener(propertyChangeListener);
@@ -207,8 +206,7 @@ public abstract class AbstractRidget implements IRidget {
 	}
 
 	/**
-	 * Notifies all listeners about a changed property. No event is fired if old
-	 * and new are equal and non-null.
+	 * Notifies all listeners about a changed property. No event is fired if old and new are equal and non-null.
 	 * 
 	 * @param propertyName
 	 *            The name of the property that was changed.
@@ -222,8 +220,7 @@ public abstract class AbstractRidget implements IRidget {
 	}
 
 	/**
-	 * Notifies all listeners about a changed property. No event is fired if old
-	 * and new are equal and non-null.
+	 * Notifies all listeners about a changed property. No event is fired if old and new are equal and non-null.
 	 * 
 	 * @param propertyName
 	 *            The name of the property that was changed.
@@ -237,8 +234,7 @@ public abstract class AbstractRidget implements IRidget {
 	}
 
 	/**
-	 * Notifies all listeners about a changed property. No event is fired if old
-	 * and new are equal and non-null.
+	 * Notifies all listeners about a changed property. No event is fired if old and new are equal and non-null.
 	 * 
 	 * @param propertyName
 	 *            The name of the property that was changed.
@@ -264,8 +260,7 @@ public abstract class AbstractRidget implements IRidget {
 	}
 
 	/**
-	 * Returns <code>true</code> if retryFocusRequest has been set otherwise
-	 * <code>false</code>
+	 * Returns <code>true</code> if retryFocusRequest has been set otherwise <code>false</code>
 	 * 
 	 * @return the retryRequestFocus flag
 	 * @since 4.0
@@ -275,9 +270,7 @@ public abstract class AbstractRidget implements IRidget {
 	}
 
 	/**
-	 * Marks this ridget, that a call to requestFocus() failed, because e.g. the
-	 * parent is disabled. Afterwards this flag can be checked to restore the
-	 * focus.
+	 * Marks this ridget, that a call to requestFocus() failed, because e.g. the parent is disabled. Afterwards this flag can be checked to restore the focus.
 	 * 
 	 * @since 4.0
 	 */
@@ -285,4 +278,45 @@ public abstract class AbstractRidget implements IRidget {
 		this.retryRequestFocus = retryRequestFocus;
 	}
 
+	/**
+	 * @since 5.0
+	 */
+	public IMenuItemRidget addMenuItem(final String itemText) {
+		throw new UnsupportedOperationException("Context menu is unsupported for " + this.toString()); //$NON-NLS-1$
+	}
+
+	/**
+	 * @since 5.0
+	 */
+	public IMenuItemRidget addMenuItem(final String itemText, final String iconName) {
+		throw new UnsupportedOperationException("Context menu is unsupported for " + this.toString()); //$NON-NLS-1$
+	}
+
+	/**
+	 * @since 5.0
+	 */
+	public void removeMenuItem(final String menuItemText) {
+		throw new UnsupportedOperationException("Context menu is unsupported for " + this.toString()); //$NON-NLS-1$
+	}
+
+	/**
+	 * @since 5.0
+	 */
+	public void removeMenuItem(final IMenuItemRidget menuItemRidget) {
+		throw new UnsupportedOperationException("Context menu is unsupported for " + this.toString()); //$NON-NLS-1$
+	}
+
+	/**
+	 * @since 5.0
+	 */
+	public IMenuItemRidget getMenuItem(final int index) {
+		throw new UnsupportedOperationException("Context menu is unsupported for " + this.toString()); //$NON-NLS-1$
+	}
+
+	/**
+	 * @since 5.0
+	 */
+	public int getMenuItemCount() {
+		throw new UnsupportedOperationException("Context menu is unsupported for " + this.toString()); //$NON-NLS-1$
+	}
 }

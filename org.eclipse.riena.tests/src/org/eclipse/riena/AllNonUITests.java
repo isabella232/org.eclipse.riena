@@ -26,7 +26,7 @@ public class AllNonUITests extends TestCase {
 
 	@SuppressWarnings("unchecked")
 	public static Test suite() {
-		return TestCollector.createTestSuiteWith(Activator.getDefault().getBundle(), null, NonUITestCase.class);
+		return TestCollector.createTestSuiteWithJUnit3And4(Activator.getDefault().getBundle(), null, NonUITestCase.class);
 	}
 
 }

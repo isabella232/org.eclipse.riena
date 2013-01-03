@@ -41,8 +41,7 @@ import org.eclipse.riena.ui.swt.DatePickerComposite.IDateConverterStrategy;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
- * Ridget for a 'date/time/date time' SWT <code>Text</code> widget. The desired
- * date/time/dat time pattern can be set via {@link #setFormat(String)}. See
+ * Ridget for a 'date/time/date time' SWT <code>Text</code> widget. The desired date/time/dat time pattern can be set via {@link #setFormat(String)}. See
  * {@link IDecimalTextRidget} for supported patterns.
  * 
  * @see UIControlsFactory#createTextDate(org.eclipse.swt.widgets.Composite)
@@ -50,10 +49,8 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 public class DateTextRidget extends TextRidget implements IDateTextRidget {
 
 	/**
-	 * Controls the expansion that happens when a two-digit year is entered
-	 * where a four-digit year is expected. If the entered value is below * * *
-	 * * {@value} , it will be prefixed with '20'. Otherwise it will be prefixed
-	 * with '19'.
+	 * Controls the expansion that happens when a two-digit year is entered where a four-digit year is expected. If the entered value is below * * * * {@value}
+	 * , it will be prefixed with '20'. Otherwise it will be prefixed with '19'.
 	 */
 	private static final int Y2K_CUTOFF = 30;
 
@@ -91,8 +88,7 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 
 		if ((!isValidType(uiControl, Text.class) && !isValidDatePicker)) {
 			throw new BindingException(String.format("uiControl must be a '%s' or a '%s' but was a %s ", //$NON-NLS-1$
-					Text.class.getSimpleName(), DatePickerComposite.class.getSimpleName(), uiControl.getClass()
-							.getSimpleName()));
+					Text.class.getSimpleName(), DatePickerComposite.class.getSimpleName(), uiControl.getClass().getSimpleName()));
 		}
 	}
 
@@ -108,8 +104,7 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * The 'empty' value will be replaced with the empty string, if the ridget
-	 * is in output only mode. Otherwise same behavior as super.
+	 * The 'empty' value will be replaced with the empty string, if the ridget is in output only mode. Otherwise same behavior as super.
 	 */
 	@Override
 	protected final String getTextBasedOnMarkerState(final String value) {
@@ -120,9 +115,7 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 	}
 
 	/**
-	 * This ridget is bound to Text or DatePickerComposite controls. In the
-	 * second case this method will return the Text component of the
-	 * DatePickerComposite.
+	 * This ridget is bound to Text or DatePickerComposite controls. In the second case this method will return the Text component of the DatePickerComposite.
 	 * 
 	 * @return a Text widget or null
 	 */
@@ -195,15 +188,10 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 	 * <p>
 	 * 
 	 * @throws RuntimeException
-	 *             if {code text} does not (partially) match the specified
-	 *             format pattern. A partial match is any string that has digits
-	 *             and separators in the expected places - as defined by the
-	 *             format pattern - regardless of limits for a certain group
-	 *             (i.e. month <= 12 etc.). For example, assuming the format
-	 *             pattern is 'dd.MM.yyyy', all of the following values are
-	 *             valid: "", "12", "12.10", "47.11", "12.10.20", "12.10.2008",
-	 *             "  .  .    ", "  .10". Invalid values would be: null, "abc",
-	 *             "12.ab", "12122008", "12/12/2008"
+	 *             if {code text} does not (partially) match the specified format pattern. A partial match is any string that has digits and separators in the
+	 *             expected places - as defined by the format pattern - regardless of limits for a certain group (i.e. month <= 12 etc.). For example, assuming
+	 *             the format pattern is 'dd.MM.yyyy', all of the following values are valid: "", "12", "12.10", "47.11", "12.10.20", "12.10.2008",
+	 *             "  .  .    ", "  .10". Invalid values would be: null, "abc", "12.ab", "12122008", "12/12/2008"
 	 */
 	@Override
 	public synchronized void setText(final String text) {
@@ -258,17 +246,24 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 	//////////////////
 
 	/**
-	 * A {@link IDateConverterStrategy} that uses the current
-	 * modelToUIControlConverter and uiControlToModelconverter for conversion
-	 * between {@link String} and {@link Date}
+	 * @param control
+	 */
+	private void transferTextToBean(final Text control) {
+		final String autoFill = computeAutoFill(control.getText());
+		if (autoFill != null) {
+			forceTextToControl(control, autoFill);
+		}
+	}
+
+	/**
+	 * A {@link IDateConverterStrategy} that uses the current modelToUIControlConverter and uiControlToModelconverter for conversion between {@link String} and
+	 * {@link Date}
 	 * 
 	 * @noinstantiate This class is not intended to be instantiated by clients.
 	 */
 	public final class RidgetAwareDateConverterStrategy implements IDateConverterStrategy {
 		/*
-		 * The dates given are in the local timezone, so that why we use the
-		 * SimpleDateFormat instead of the DateToStringConverter /
-		 * StringToDateConverter
+		 * The dates given are in the local timezone, so that why we use the SimpleDateFormat instead of the DateToStringConverter / StringToDateConverter
 		 */
 		public void setDateToTextField(final Date date) {
 			final SimpleDateFormat format = new SimpleDateFormat(pattern);
@@ -289,9 +284,8 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 	}
 
 	/**
-	 * This listener handles addition, deletion and replacement of text in the
-	 * Text control. When the text in the control is modified, it will compute
-	 * the new value. Unsupported modifications will be cancelled.
+	 * This listener handles addition, deletion and replacement of text in the Text control. When the text in the control is modified, it will compute the new
+	 * value. Unsupported modifications will be cancelled.
 	 */
 	private final class DateVerifyListener implements VerifyListener {
 
@@ -378,15 +372,13 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 	}
 
 	/**
-	 * This listener controls which key strokes are allowed by the text control.
-	 * Additionally some keystrokes replaced with special behavior. Currently
-	 * those key strokes are:
+	 * This listener controls which key strokes are allowed by the text control. Additionally some keystrokes replaced with special behavior. Currently those
+	 * key strokes are:
 	 * <ol>
 	 * <ol>
 	 * <li>Left & Right arrow - will jump over separators and spaces</li>
 	 * <li>
-	 * Delete / Backspace at a single separator - will jump to the next valid
-	 * location in the same direction</li>
+	 * Delete / Backspace at a single separator - will jump to the next valid location in the same direction</li>
 	 * <li>Shift - disables jumping over grouping separators when pressed down</li>
 	 * </ol>
 	 */
@@ -447,23 +439,20 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 						}
 						control.setSelection(index);
 					}
+				} else if ('\r' == e.character) {
+					transferTextToBean((Text) e.widget);
 				}
 			}
 		}
 	}
 
 	/**
-	 * For date ridgets with a four-digit-year segment, this focus listener will
-	 * try to expand two-digit-years into four-digit years.
+	 * For date ridgets with a four-digit-year segment, this focus listener will try to expand two-digit-years into four-digit years.
 	 */
 	private final class DateFocusListener extends FocusAdapter {
 		@Override
 		public void focusLost(final FocusEvent e) {
-			final Text control = (Text) e.widget;
-			final String autoFill = computeAutoFill(control.getText());
-			if (autoFill != null) {
-				forceTextToControl(control, autoFill);
-			}
+			transferTextToBean((Text) e.widget);
 		}
 	}
 

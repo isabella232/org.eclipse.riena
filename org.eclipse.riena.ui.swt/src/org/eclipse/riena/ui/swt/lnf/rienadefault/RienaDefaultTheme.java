@@ -414,6 +414,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 		lnf.putLnfSetting(LnfKeyConstants.NAVIGATION_RESIZEABLE, false);
 
 		lnf.putLnfSetting(LnfKeyConstants.STATUSLINE_HEIGHT, 20);
+		lnf.putLnfSetting(LnfKeyConstants.DIALOG_STATUSLINE_HEIGHT, 20);
 
 		lnf.putLnfSetting(LnfKeyConstants.DIALOG_HIDE_OS_BORDER, hideOsBorder());
 

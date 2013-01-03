@@ -131,8 +131,7 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 		ridget.bindToModel(modelOV);
 
 		assertNotNull(BeansObservables.observeValue(ridget, IToggleButtonRidget.PROPERTY_SELECTED));
-		assertEquals(boolean.class, BeansObservables.observeValue(ridget, IToggleButtonRidget.PROPERTY_SELECTED)
-				.getValueType());
+		assertEquals(boolean.class, BeansObservables.observeValue(ridget, IToggleButtonRidget.PROPERTY_SELECTED).getValueType());
 		assertFalse(ridget.isSelected());
 
 		ridget.updateFromModel();
@@ -148,8 +147,7 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 		ridget.bindToModel(model, "selected"); //$NON-NLS-1$
 
 		assertNotNull(BeansObservables.observeValue(ridget, IToggleButtonRidget.PROPERTY_SELECTED));
-		assertEquals(boolean.class, BeansObservables.observeValue(ridget, IToggleButtonRidget.PROPERTY_SELECTED)
-				.getValueType());
+		assertEquals(boolean.class, BeansObservables.observeValue(ridget, IToggleButtonRidget.PROPERTY_SELECTED).getValueType());
 		assertFalse(ridget.isSelected());
 
 		ridget.updateFromModel();
@@ -313,8 +311,7 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	/**
-	 * Tests that control is hidden when the ToggleButtonRidget is
-	 * "output only".
+	 * Tests that control is hidden when the ToggleButtonRidget is "output only".
 	 */
 	public void testOutputRidgetNotVisible() {
 		final IToggleButtonRidget ridget = getRidget();
@@ -371,9 +368,7 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	/**
-	 * Tests that changing the selected state via
-	 * {@link IToggleButtonRidget#setSelected(boolean) does not select the
-	 * control, when the ridget is disabled.
+	 * Tests that changing the selected state via {@link IToggleButtonRidget#setSelected(boolean) does not select the control, when the ridget is disabled.
 	 */
 	public void testDisabledRidgetDoesNotCheckControlOnRidgetSelection() {
 		final IToggleButtonRidget ridget = getRidget();
@@ -406,8 +401,7 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	/**
-	 * Tests that changing the selected state via a bound model, does not select
-	 * the control, when the ridget is disabled.
+	 * Tests that changing the selected state via a bound model, does not select the control, when the ridget is disabled.
 	 */
 	public void testDisabledRidgetDoesNotCheckControlOnModelSelection() {
 		final IToggleButtonRidget ridget = getRidget();
@@ -442,8 +436,7 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	/**
-	 * Tests that disabling the ridget unselects the checkbox button, even when
-	 * no model is bound to the ridget.
+	 * Tests that disabling the ridget unselects the checkbox button, even when no model is bound to the ridget.
 	 */
 	public void testDisableRidgetRemovesSelection() {
 		final IToggleButtonRidget ridget = getRidget();
@@ -477,8 +470,7 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	/**
-	 * Tests that disabling the ridget does not fire 'selected' events, even
-	 * though the control is modified.
+	 * Tests that disabling the ridget does not fire 'selected' events, even though the control is modified.
 	 */
 	public void testDisabledDoesNotFireSelected() {
 		final IToggleButtonRidget ridget = getRidget();
@@ -497,8 +489,7 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	/**
-	 * Tests that the disabled state is applied to a new control when set into
-	 * the ridget.
+	 * Tests that the disabled state is applied to a new control when set into the ridget.
 	 */
 	public void testDisableAndClearOnBind() {
 		final IToggleButtonRidget ridget = getRidget();
@@ -884,8 +875,7 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 		control.notifyListeners(SWT.Selection, event); // fire a selection on the control
 	}
 
-	private void setEnabledOutputSelected(final IToggleButtonRidget ridget, final boolean enabled,
-			final boolean output, final boolean selected) {
+	private void setEnabledOutputSelected(final IToggleButtonRidget ridget, final boolean enabled, final boolean output, final boolean selected) {
 		ridget.setEnabled(enabled);
 		ridget.setOutputOnly(output);
 		ridget.setSelected(selected);
@@ -915,6 +905,10 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 
 		public void addRidget(final String id, final IRidget ridget) {
 			ridgets.put(id, ridget);
+		}
+
+		public boolean removeRidget(final String id) {
+			return false;
 		}
 
 		public void configureRidgets() {
