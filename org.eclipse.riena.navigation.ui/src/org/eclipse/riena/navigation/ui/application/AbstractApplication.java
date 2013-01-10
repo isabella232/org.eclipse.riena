@@ -235,18 +235,15 @@ public abstract class AbstractApplication implements IApplication, IApplicationM
 		return false;
 	}
 
-	protected Object doPerformLogin(final IApplicationContext context) {
-
+	protected Integer doPerformLogin(final IApplicationContext context) {
 		return EXIT_OK;
 	}
 
-	protected Object doPerformSplashLogin(final IApplicationContext context) {
-
+	protected Integer doPerformSplashLogin(final IApplicationContext context) {
 		return EXIT_OK;
 	}
 
-	protected Object performLogin(final IApplicationContext context) throws Exception {
-
+	protected Integer performLogin(final IApplicationContext context) throws Exception {
 		if (isSplashLogin(context)) {
 			return doPerformSplashLogin(context);
 		} else {
@@ -256,7 +253,6 @@ public abstract class AbstractApplication implements IApplication, IApplicationM
 
 	@InjectExtension
 	public void update(final ILoginDialogViewExtension[] data) {
-
 		if (data.length > 0) {
 			loginDialogViewExtension = data[0];
 		}
