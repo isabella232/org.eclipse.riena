@@ -18,8 +18,6 @@ import org.osgi.service.log.LogService;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
@@ -84,7 +82,6 @@ import org.eclipse.riena.ui.swt.InfoFlyout;
 import org.eclipse.riena.ui.swt.Statusline;
 import org.eclipse.riena.ui.swt.StatuslineSpacer;
 import org.eclipse.riena.ui.swt.facades.SWTFacade;
-import org.eclipse.riena.ui.swt.lnf.ILnfRenderer;
 import org.eclipse.riena.ui.swt.lnf.LnFUpdater;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -866,39 +863,6 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		final List<INavigationNode<?>> children = new ArrayList<INavigationNode<?>>(node.getChildren());
 		for (final INavigationNode<?> child : children) {
 			prepare(child);
-		}
-	}
-
-	/**
-	 * This listener paints the shell (the border of the shell).
-	 */
-	private static class ShellPaintListener implements PaintListener {
-
-		public void paintControl(final PaintEvent e) {
-			onPaint(e);
-		}
-
-		/**
-		 * Paints the border of the (titleless) shell.
-		 * 
-		 * @param e
-		 *            event
-		 */
-		private void onPaint(final PaintEvent e) {
-			if (e.getSource() instanceof Control) {
-				final Control shell = (Control) e.getSource();
-
-				final Rectangle shellBounds = shell.getBounds();
-				final Rectangle bounds = new Rectangle(0, 0, shellBounds.width, shellBounds.height);
-
-				final ILnfRenderer borderRenderer = LnfManager.getLnf().getRenderer(
-						LnfKeyConstants.TITLELESS_SHELL_BORDER_RENDERER);
-				borderRenderer.setBounds(bounds);
-				// TODO [ev] gc is sometimes disposed -- looks like a RAP bug, adding a workaround, need to file bug
-				if (!e.gc.isDisposed()) {
-					borderRenderer.paint(e.gc, null);
-				}
-			}
 		}
 	}
 
