@@ -19,8 +19,6 @@ import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
@@ -54,7 +52,8 @@ import org.eclipse.riena.ui.swt.utils.ImageStore;
 public class SwtApplication extends AbstractApplication {
 
 	protected ILoginSplashViewExtension loginSplashViewExtension;
-	private LoginNonActivityTimer loginNonActivityTimer;
+
+	// private LoginNonActivityTimer loginNonActivityTimer;
 
 	@Override
 	protected void initializeUI() {
@@ -171,9 +170,9 @@ public class SwtApplication extends AbstractApplication {
 	}
 
 	@Override
-	protected Object doPerformLogin(final IApplicationContext context) {
+	protected Integer doPerformLogin(final IApplicationContext context) {
 		final Realm realm = SWTObservables.getRealm(getDisplay());
-		// TODO Is really necessary that the loginDialogViewExtension is used here. Shouldn�t it be done it the super class??
+		// TODO Is really necessary that the loginDialogViewExtension is used here. Should not it be done it the super class??
 		final ILoginDialogView loginDialogView = loginDialogViewExtension.createViewClass();
 		do {
 			Realm.runWithDefault(realm, new Runnable() {
@@ -187,7 +186,7 @@ public class SwtApplication extends AbstractApplication {
 	}
 
 	@Override
-	protected Object doPerformSplashLogin(final IApplicationContext context) {
+	protected Integer doPerformSplashLogin(final IApplicationContext context) {
 
 		final Shell shell = new Shell(getDisplay(), SWT.NO_TRIM | SWT.APPLICATION_MODAL);
 		initilizeShellBackgroundImage(shell, getBackgroundImagePath(context));
@@ -259,17 +258,17 @@ public class SwtApplication extends AbstractApplication {
 
 			@Override
 			public void afterActivated(final IApplicationNode source) {
-				final ILoginExecutor loginExecutor = new ILoginExecutor() {
+				final ILoginExecutor<Integer> loginExecutor = new ILoginExecutor<Integer>() {
 
 					public void prePerformLogin() throws Exception {
 						SwtApplication.this.prePerformLogin(context);
 					}
 
-					public void postPerformLogin(final Object result) throws Exception {
+					public void postPerformLogin(final Integer result) throws Exception {
 						SwtApplication.this.postPerformLogin(context, result);
 					}
 
-					public Object performLogin() {
+					public Integer performLogin() {
 						try {
 							return SwtApplication.this.performLogin(context);
 						} catch (final Exception e) {
@@ -287,16 +286,23 @@ public class SwtApplication extends AbstractApplication {
 						return 0;
 					}
 				};
-				if (isSplashLogin(context) && loginSplashViewExtension.getNonActivityDuration() > 0) {
-					loginNonActivityTimer = new LoginNonActivityTimer(display, loginExecutor, loginSplashViewExtension.getNonActivityDuration());
-					loginNonActivityTimer.schedule();
-				} else if (isDialogLogin(context) && loginDialogViewExtension.getNonActivityDuration() > 0) {
+				if (isSplashLogin(context)) {
+					startNonActivityTimer(display, loginExecutor);
+				} else if (isDialogLogin(context)) {
 					// TODO See todo in method doPerformLogin(IApplicationContext context)
-					loginNonActivityTimer = new LoginNonActivityTimer(display, loginExecutor, loginDialogViewExtension.getNonActivityDuration());
-					loginNonActivityTimer.schedule();
+					startNonActivityTimer(display, loginExecutor);
 				}
 			}
 		});
+	}
+
+	private boolean startNonActivityTimer(final Display display, final ILoginExecutor<Integer> loginExecutor) {
+		if (loginDialogViewExtension.getNonActivityDuration() > 0) {
+			new LoginNonActivityTimer(display, loginExecutor, loginSplashViewExtension.getNonActivityDuration()).schedule();
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	private void initializeLoginSplashViewDefinition() {
@@ -322,20 +328,20 @@ public class SwtApplication extends AbstractApplication {
 		}
 	}
 
-	private static final class EventListener implements Listener {
-		private boolean activity;
-		private long activityTime;
-
-		private EventListener() {
-			activity = false;
-			activityTime = -1;
-		}
-
-		public void handleEvent(final Event event) {
-			activity = true;
-			activityTime = System.currentTimeMillis();
-		}
-	}
+	//	private static final class EventListener implements Listener {
+	//		private boolean activity;
+	//		private long activityTime;
+	//
+	//		private EventListener() {
+	//			activity = false;
+	//			activityTime = -1;
+	//		}
+	//
+	//		public void handleEvent(final Event event) {
+	//			activity = true;
+	//			activityTime = System.currentTimeMillis();
+	//		}
+	//	}
 
 	//	private final class LoginNonActivityTimer implements Runnable {
 	//		private final Display display;

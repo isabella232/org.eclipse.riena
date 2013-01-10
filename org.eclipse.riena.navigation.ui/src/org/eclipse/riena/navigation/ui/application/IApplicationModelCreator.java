@@ -33,4 +33,7 @@ public interface IApplicationModelCreator {
 	 * Hook for configuration code
 	 */
 	void configure();
+
+	void initApplicationNode(IApplicationNode applicationNode);
+
 }
