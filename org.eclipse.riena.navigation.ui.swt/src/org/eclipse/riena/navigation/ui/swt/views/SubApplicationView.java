@@ -45,6 +45,7 @@ import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.internal.navigation.ui.swt.Activator;
 import org.eclipse.riena.internal.ui.ridgets.swt.AbstractItemRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.uiprocess.UIProcessRidget;
+import org.eclipse.riena.internal.ui.swt.facades.RcpFacade;
 import org.eclipse.riena.navigation.ApplicationModelFailure;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
@@ -55,7 +56,6 @@ import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
 import org.eclipse.riena.navigation.listener.SubApplicationNodeListener;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.model.SubApplicationNode;
-import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubApplicationController;
 import org.eclipse.riena.navigation.ui.swt.binding.DelegatingRidgetMapper;
 import org.eclipse.riena.navigation.ui.swt.binding.InjectSwtViewBindingDelegate;
@@ -706,7 +706,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 		final IWorkbenchPage page = getActivePage();
 		final IViewReference viewRef = page.findViewReference(id, secondary);
 		if (viewRef != null) {
-			//			((WorkbenchPage) page).getActivePerspective().bringToTop(viewRef);
+			RcpFacade.getInstance().showView(page, viewRef);
 		}
 	}
 
@@ -776,7 +776,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 			 */
 			if (currentPrepared != null && currentPrepared.getNavigationNodeController() == null) {
 				if (viewPart instanceof SubModuleView) {
-					((SubModuleView) viewPart).prepareNode((SubModuleNode) currentPrepared);
+					((SubModuleView) viewPart).prepareNode(currentPrepared);
 				}
 			}
 			return page.findViewReference(id, secondary);
