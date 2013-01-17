@@ -44,6 +44,7 @@ public class SwtExampleApplication extends SwtApplication {
 	protected ApplicationController createApplicationController(final IApplicationNode node) {
 		final ApplicationController controller = super.createApplicationController(node);
 		controller.setMenubarVisible(true);
+		controller.setShowRidgetMessagesInStatusline(true);
 		return controller;
 	}
 
