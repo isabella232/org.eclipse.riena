@@ -23,6 +23,7 @@ import org.eclipse.riena.internal.core.test.collect.UITestCase;
 import org.eclipse.riena.ui.ridgets.ILabelRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
+import org.eclipse.riena.ui.ridgets.IStatuslineRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.SubModuleUtils;
 import org.eclipse.riena.ui.ridgets.swt.SwtRidgetFactory;
@@ -241,6 +242,16 @@ public class CorrespondingLabelManagerTest extends TestCase {
 		}
 
 		public void setConfigured(final boolean configured) {
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#setStatuslineToShowMarkerMessages(org.eclipse.riena.ui.ridgets.IStatuslineRidget)
+		 */
+		public void setStatuslineToShowMarkerMessages(final IStatuslineRidget statuslineToShowMarkerMessages) {
+			// TODO Auto-generated method stub
+
 		}
 	}
 }

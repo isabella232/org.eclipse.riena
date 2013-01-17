@@ -46,6 +46,8 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 
 	private String toolTip = null;
 
+	private final RidgetToStatuslineSubscriber ridgetToStatuslineSubscriber = new RidgetToStatuslineSubscriber();
+
 	/**
 	 * Constructor
 	 */
@@ -57,16 +59,28 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	}
 
 	public void addRidget(final String id, final IRidget ridget) {
-		if (null == ridgets.put(id, ridget)) {
+		final IRidget oldRidget = ridgets.put(id, ridget);
+		if (null == oldRidget) {
 			ridget.addPropertyChangeListener(propertyChangeListener);
+		} else {
+			ridgetToStatuslineSubscriber.removeRidget(oldRidget);
 		}
+		ridgetToStatuslineSubscriber.addRidget(ridget);
 	}
 
 	/**
 	 * @since 5.0
 	 */
 	public boolean removeRidget(final String id) {
+		ridgetToStatuslineSubscriber.removeRidget(getRidget(id));
 		return ridgets.remove(id) != null;
+	}
+
+	/**
+	 * @since 5.0
+	 */
+	public void setStatuslineToShowMarkerMessages(final IStatuslineRidget statuslineToShowMarkerMessages) {
+		ridgetToStatuslineSubscriber.setStatuslineToShowMarkerMessages(statuslineToShowMarkerMessages, getRidgets());
 	}
 
 	/**
@@ -330,6 +344,9 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	 * @since 1.2
 	 */
 	protected final void removeRidgets() {
+		for (final IRidget r : getRidgets()) {
+			ridgetToStatuslineSubscriber.removeRidget(r);
+		}
 		ridgets.clear();
 	}
 

@@ -25,7 +25,9 @@ import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IDefaultActionManager;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IShellRidget;
+import org.eclipse.riena.ui.ridgets.IStatuslineRidget;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
+import org.eclipse.riena.ui.ridgets.RidgetToStatuslineSubscriber;
 
 /**
  * Controller for a view that is or has a window.
@@ -46,6 +48,14 @@ public abstract class AbstractWindowController implements IController, IContext 
 	 * The ridget id to use for the window ridget.
 	 */
 	public static final String RIDGET_ID_WINDOW = "windowRidget"; //$NON-NLS-1$
+
+	/**
+	 * The ridget id to use for the statusline.
+	 * 
+	 * @since 5.0
+	 */
+	// if changing this constant, also adjust AbstractDialogView.RIDGET_ID_STATUSLINE
+	public static final String RIDGET_ID_STATUSLINE = "dlg_statusline"; //$NON-NLS-1$
 
 	/**
 	 * Return code to indicate that the window was a OK-ed (value: {@value} ).
@@ -71,6 +81,7 @@ public abstract class AbstractWindowController implements IController, IContext 
 	private boolean configured = false;
 
 	private IDefaultActionManager actionManager;
+	private final RidgetToStatuslineSubscriber ridgetToStatusLineSubscriber = new RidgetToStatuslineSubscriber();
 
 	public AbstractWindowController() {
 		super();
@@ -99,13 +110,26 @@ public abstract class AbstractWindowController implements IController, IContext 
 
 	public void addRidget(final String id, final IRidget ridget) {
 		ridgets.put(id, ridget);
+		ridgetToStatusLineSubscriber.addRidget(ridget);
 	}
 
 	/**
+	 * {@inheritDoc}
+	 * 
 	 * @since 5.0
 	 */
 	public boolean removeRidget(final String id) {
+		ridgetToStatusLineSubscriber.removeRidget(getRidget(id));
 		return ridgets.remove(id) != null;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @since 5.0
+	 */
+	public void setStatuslineToShowMarkerMessages(final IStatuslineRidget statuslineToShowMarkerMessages) {
+		ridgetToStatusLineSubscriber.setStatuslineToShowMarkerMessages(statuslineToShowMarkerMessages, getRidgets());
 	}
 
 	public void afterBind() {
@@ -114,6 +138,8 @@ public abstract class AbstractWindowController implements IController, IContext 
 		if (actionManager != null) {
 			actionManager.activate();
 		}
+
+		setStatuslineToShowMarkerMessages(getRidget(IStatuslineRidget.class, RIDGET_ID_STATUSLINE));
 	}
 
 	public void configureRidgets() {

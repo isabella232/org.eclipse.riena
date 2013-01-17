@@ -31,6 +31,7 @@ import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
+import org.eclipse.riena.ui.ridgets.IStatuslineRidget;
 import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
 import org.eclipse.riena.ui.ridgets.swt.MarkerSupport;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
@@ -932,6 +933,16 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 		}
 
 		public void setConfigured(final boolean configured) {
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#setStatuslineToShowMarkerMessages(org.eclipse.riena.ui.ridgets.IStatuslineRidget)
+		 */
+		public void setStatuslineToShowMarkerMessages(final IStatuslineRidget statuslineToShowMarkerMessages) {
+			// TODO Auto-generated method stub
+
 		}
 	}
 

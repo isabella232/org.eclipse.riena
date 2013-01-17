@@ -187,7 +187,10 @@ public class StatuslineMessageMarkerViewer extends AbstractMessageMarkerViewer {
 
 	}
 
-	IStatuslineRidget getStatusLine() {
+	/**
+	 * @since 5.0
+	 */
+	public IStatuslineRidget getStatusLine() {
 		// if ( statusline == null ) {
 		// IModuleApplicationController moduleApplicationController =
 		// subModuleController.getModuleApplicationController();

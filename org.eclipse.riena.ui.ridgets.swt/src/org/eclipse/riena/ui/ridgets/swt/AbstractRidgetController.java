@@ -16,6 +16,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.riena.ui.ridgets.IRidget;
+import org.eclipse.riena.ui.ridgets.IStatuslineRidget;
+import org.eclipse.riena.ui.ridgets.RidgetToStatuslineSubscriber;
 import org.eclipse.riena.ui.ridgets.controller.IController;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtBindingDelegate;
 
@@ -59,6 +61,7 @@ public abstract class AbstractRidgetController implements IController {
 	private final Map<String, IRidget> map;
 	private boolean isBlocked;
 	private boolean configured = false;
+	private final RidgetToStatuslineSubscriber ridgetToStatuslineSubscriber = new RidgetToStatuslineSubscriber();
 
 	public AbstractRidgetController() {
 		map = new HashMap<String, IRidget>();
@@ -66,13 +69,22 @@ public abstract class AbstractRidgetController implements IController {
 
 	public final void addRidget(final String id, final IRidget ridget) {
 		map.put(id, ridget);
+		ridgetToStatuslineSubscriber.addRidget(ridget);
 	}
 
 	/**
 	 * @since 5.0
 	 */
 	public boolean removeRidget(final String id) {
+		ridgetToStatuslineSubscriber.removeRidget(getRidget(id));
 		return map.remove(id) != null;
+	}
+
+	/**
+	 * @since 5.0
+	 */
+	public void setStatuslineToShowMarkerMessages(final IStatuslineRidget statuslineToShowMarkerMessages) {
+		ridgetToStatuslineSubscriber.setStatuslineToShowMarkerMessages(statuslineToShowMarkerMessages, getRidgets());
 	}
 
 	public final void afterBind() {

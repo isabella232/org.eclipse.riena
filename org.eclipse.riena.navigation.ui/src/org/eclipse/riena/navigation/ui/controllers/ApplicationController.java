@@ -46,6 +46,7 @@ public class ApplicationController extends NavigationNodeController<IApplication
 
 	private boolean done = false;
 	private final NodeEventDelegation contextUpdater = new NodeEventDelegation();
+	private boolean showRidgetMessagesInStatusline;
 
 	public IStatuslineRidget getStatusline() {
 		if (!done) {
@@ -142,6 +143,23 @@ public class ApplicationController extends NavigationNodeController<IApplication
 	 */
 	public IInfoFlyoutRidget getInfoFlyout() {
 		return infoFlyout;
+	}
+
+	/**
+	 * @return
+	 * @since 5.0
+	 */
+	public boolean isShowRidgetMessagesInStatusline() {
+		return showRidgetMessagesInStatusline;
+	}
+
+	/**
+	 * @param showRidgetMessagesInStatusline
+	 *            the showRidgetMessagesInStatusline to set
+	 * @since 5.0
+	 */
+	public void setShowRidgetMessagesInStatusline(final boolean showRidgetMessagesInStatusline) {
+		this.showRidgetMessagesInStatusline = showRidgetMessagesInStatusline;
 	}
 
 }

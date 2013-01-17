@@ -248,6 +248,9 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 				if (actionManager != null) {
 					actionManager.activate();
 				}
+				if (getApplicationController().isShowRidgetMessagesInStatusline()) {
+					setStatuslineToShowMarkerMessages(getStatusline());
+				}
 			}
 
 			@Override

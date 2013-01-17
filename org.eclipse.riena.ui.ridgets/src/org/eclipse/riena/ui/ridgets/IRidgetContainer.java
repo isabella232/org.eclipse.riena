@@ -12,6 +12,8 @@ package org.eclipse.riena.ui.ridgets;
 
 import java.util.Collection;
 
+import org.eclipse.riena.ui.core.marker.IMessageMarker;
+
 /**
  * A container for ridgets.
  */
@@ -89,5 +91,15 @@ public interface IRidgetContainer {
 	 * @since 4.0
 	 */
 	void setConfigured(boolean configured);
+
+	/**
+	 * If a non-<code>null</code> {@link IStatuslineRidget} is set, than all ridgets with {@link IMessageMarker} within this container will automatically
+	 * display their messages in the given status line. Setting <code>null</code> will disable this functionality.
+	 * 
+	 * @param statuslineToShowMarkerMessages
+	 *            a {@link IStatuslineRidget} to bind the ridgets to or <code>null</code> to unbind and disable automatic status line binding
+	 * @since 5.0
+	 */
+	void setStatuslineToShowMarkerMessages(IStatuslineRidget statuslineToShowMarkerMessages);
 
 }

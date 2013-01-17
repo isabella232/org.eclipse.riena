@@ -70,7 +70,9 @@ public abstract class AbstractDialogView extends Dialog {
 	private static final LnFUpdater LNF_UPDATER = LnFUpdater.getInstance();
 	/**
 	 * @since 5.0
+	 * @deprecated use {@link AbstractWindowController#RIDGET_ID_STATUSLINE}
 	 */
+	@Deprecated
 	public static final String STATUSLINE_BINDING_ID = "dlg_statusline"; //$NON-NLS-1$
 
 	private final RienaWindowRenderer dlgRenderer;
@@ -254,7 +256,7 @@ public abstract class AbstractDialogView extends Dialog {
 			lineFormData.right = new FormAttachment(100, -lineRightOffset);
 			lineFormData.left = new FormAttachment(0, 0);
 			line.setLayoutData(lineFormData);
-			addUIControl(line, STATUSLINE_BINDING_ID);
+			addUIControl(line, AbstractWindowController.RIDGET_ID_STATUSLINE);
 		}
 		createContentComposite(mainComposite);
 		return mainComposite;
