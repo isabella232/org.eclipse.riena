@@ -59,6 +59,8 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Item;
+import org.eclipse.swt.widgets.ScrollBar;
+import org.eclipse.swt.widgets.Scrollable;
 import org.eclipse.swt.widgets.Widget;
 
 import org.eclipse.riena.core.Log4r;
@@ -491,6 +493,7 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 
 	private void refreshViewer(final AbstractTableViewer viewer) {
 		viewer.getControl().setRedraw(false); // prevent flicker during update
+		final boolean scrollBarVisibleBeforeRefresh = isVerticalScrollBarVisible(viewer.getControl());
 		final StructuredSelection currentSelection = new StructuredSelection(getSelection());
 		try {
 			TableRidgetLabelProvider tableLabelProvider = null;
@@ -503,7 +506,33 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 		} finally {
 			viewer.setSelection(currentSelection);
 			viewer.getControl().setRedraw(true);
+			layoutIfScrollBarVisibilityChanged(viewer.getControl(), scrollBarVisibleBeforeRefresh);
 		}
+	}
+
+	/**
+	 * Checks if the table scroll bar visibility changed and triggers a layout() if needed.
+	 * <p>
+	 * When using TableLayout, tables do not consider the presence of a vertical scroll bar and the space it needs in case that the table needs a vertical
+	 * scroll bar, also a horizontal bar will appear (swt/jface problem). This method works around that.
+	 */
+	protected void layoutIfScrollBarVisibilityChanged(final Control control, final boolean barVisibilityBefore) {
+		if (barVisibilityBefore != isVerticalScrollBarVisible(control)) {
+			if (control.getParent().getChildren().length == 1) {
+				control.getParent().layout(true, true);
+			}
+		}
+	}
+
+	/**
+	 * @return <code>true</code> if the given control is {@link Scrollable} and the vertical scroll bar is visible
+	 */
+	protected boolean isVerticalScrollBarVisible(final Control control) {
+		if (control instanceof Scrollable) {
+			final ScrollBar sb = ((Scrollable) control).getVerticalBar();
+			return sb != null && sb.isVisible();
+		}
+		return false;
 	}
 
 	public void bindToModel(final IObservableList rowObservables, final Class<? extends Object> aRowClass, final String[] columnPropertyNames,
