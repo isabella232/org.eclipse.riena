@@ -27,6 +27,8 @@ import org.eclipse.riena.internal.ui.swt.utils.RcpUtilities;
 
 /**
  * This class helps to maximize or restore a shell.
+ * 
+ * @since 5.0
  */
 public class ShellHelper {
 

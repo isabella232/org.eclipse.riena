@@ -118,6 +118,21 @@ public class TableRidget extends AbstractTableRidget {
 			control.addSelectionListener(selectionTypeEnforcer);
 			final SWTFacade facade = SWTFacade.getDefault();
 			facade.addEraseItemListener(control, itemEraser);
+
+			// when using TableLayout, tables do not consider the presence of a vertical scroll bar and the space it needs
+			// in case that the table is created with a vertical scroll bar, also a horizontal bar will appear (swt/jface problem)
+			// this listener is a workaround for this behavior to trigger a layout ONCE and disables itself
+			control.addListener(SWTFacade.Paint, new Listener() {
+				private boolean disable;
+
+				public void handleEvent(final Event event) {
+					if (disable) {
+						return;
+					}
+					disable = true;
+					control.getParent().layout(true, true);
+				}
+			});
 		}
 	}
 

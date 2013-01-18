@@ -62,6 +62,9 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 		}
 	}
 
+	/**
+	 * @since 5.0
+	 */
 	public boolean removeRidget(final String id) {
 		return ridgets.remove(id) != null;
 	}
