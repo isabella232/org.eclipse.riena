@@ -25,6 +25,7 @@ import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IDefaultActionManager;
 import org.eclipse.riena.ui.ridgets.IRidget;
+import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.IShellRidget;
 import org.eclipse.riena.ui.ridgets.IStatuslineRidget;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
@@ -140,12 +141,33 @@ public abstract class AbstractWindowController implements IController, IContext 
 			actionManager.activate();
 		}
 
-		final String value = RienaConfiguration.getInstance().getProperty(RidgetToStatuslineSubscriber.SHOW_RIDGET_MESSAGES_IN_STATUSLINE_KEY);
-		if (Boolean.parseBoolean(value)) {
+		if (shouldEnableStatuslineMessageViewer()) {
 			setStatuslineToShowMarkerMessages((IStatuslineRidget) getRidget(RIDGET_ID_STATUSLINE));
 		} else {
 			setStatuslineToShowMarkerMessages(null);
 		}
+	}
+
+	/**
+	 * Controls if the ridget messages from this dialog are displayed in the status line (if any).
+	 * <p>
+	 * This behavior is:
+	 * <ul>
+	 * <li>disabled by default,
+	 * <li>can be defined globally by setting '<code>riena.showRidgetMessagesInStatusline=true</code>' using extension point
+	 * <tt>org.eclipse.riena.core.configuration</tt>,
+	 * <li>can be defined individually (overriding the global setting) for this dialog using this method.
+	 * </ul>
+	 * <p>
+	 * This method will be called by {@link #afterBind()} <strong>after</strong> {@link #configureRidgets()} was executed.
+	 * 
+	 * @return <code>true</code> if the ridget messages should be displayed in the status line
+	 * @since 5.0
+	 * @see IRidgetContainer#setStatuslineToShowMarkerMessages(IStatuslineRidget)
+	 */
+	protected boolean shouldEnableStatuslineMessageViewer() {
+		final String value = RienaConfiguration.getInstance().getProperty(RidgetToStatuslineSubscriber.SHOW_RIDGET_MESSAGES_IN_STATUSLINE_KEY);
+		return Boolean.parseBoolean(value);
 	}
 
 	public void configureRidgets() {

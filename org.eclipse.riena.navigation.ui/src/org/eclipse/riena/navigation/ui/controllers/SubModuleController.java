@@ -35,9 +35,11 @@ import org.eclipse.riena.ui.ridgets.IEmbeddedTitleBarRidget;
 import org.eclipse.riena.ui.ridgets.IInfoFlyoutRidget;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
+import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.IStatuslineRidget;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
 import org.eclipse.riena.ui.ridgets.RidgetToStatuslineSubscriber;
+import org.eclipse.riena.ui.ridgets.controller.AbstractWindowController;
 import org.eclipse.riena.ui.ridgets.listener.IWindowRidgetListener;
 
 /**
@@ -110,16 +112,35 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 		initializeStatuslineMessageViewer();
 	}
 
-	/**
-	 * Check the configuration and if needed, use the application window status line to display ridget marker messages.
-	 */
 	private void initializeStatuslineMessageViewer() {
-		final String value = RienaConfiguration.getInstance().getProperty(RidgetToStatuslineSubscriber.SHOW_RIDGET_MESSAGES_IN_STATUSLINE_KEY);
-		if (Boolean.parseBoolean(value)) {
+		if (shouldEnableStatuslineMessageViewer()) {
 			setStatuslineToShowMarkerMessages(getStatusline());
 		} else {
 			setStatuslineToShowMarkerMessages(null);
 		}
+	}
+
+	/**
+	 * Controls if the ridget messages from this controller are displayed in the status line.
+	 * <p>
+	 * This behavior is:
+	 * <ul>
+	 * <li>disabled by default,
+	 * <li>can be defined globally by setting '<code>riena.showRidgetMessagesInStatusline=true</code>' using extension point
+	 * <tt>org.eclipse.riena.core.configuration</tt>,
+	 * <li>can be defined individually (overriding the global setting) for this controller using this method.
+	 * </ul>
+	 * <p>
+	 * This method will be called by {@link #afterBind()} <strong>after</strong> {@link #configureRidgets()} was executed.
+	 * 
+	 * @return <code>true</code> if the ridget messages should be displayed in the status line
+	 * @since 5.0
+	 * @see IRidgetContainer#setStatuslineToShowMarkerMessages(IStatuslineRidget)
+	 * @see AbstractWindowController#shouldEnableStatuslineMessageViewer()
+	 */
+	protected boolean shouldEnableStatuslineMessageViewer() {
+		final String value = RienaConfiguration.getInstance().getProperty(RidgetToStatuslineSubscriber.SHOW_RIDGET_MESSAGES_IN_STATUSLINE_KEY);
+		return Boolean.parseBoolean(value);
 	}
 
 	/**
