@@ -18,6 +18,15 @@ import org.eclipse.riena.ui.ridgets.marker.StatuslineMessageMarkerViewer;
  * @since 5.0
  */
 public class RidgetToStatuslineSubscriber {
+	/**
+	 * Key for the property which controls if ridget marker messages automatically are displayed in the status line.
+	 * <p>
+	 * The configuration for this property must be set to the extension point <tt>org.eclipse.riena.core.configuration</tt>
+	 * <p>
+	 * The default for this property (if not set) is <code>false</code>.
+	 */
+	public static final String SHOW_RIDGET_MESSAGES_IN_STATUSLINE_KEY = "riena.showRidgetMessagesInStatusline"; //$NON-NLS-1$
+
 	private StatuslineMessageMarkerViewer messageViewer;
 
 	/**
@@ -39,26 +48,26 @@ public class RidgetToStatuslineSubscriber {
 	 * "unsubscribed" from the marker messages. Only one status line ridget can be set up to display these messages. If <code>null</code> is passed, the marker
 	 * messages will not be displayed on any status line (that may be set before).
 	 */
-	public void setStatuslineToShowMarkerMessages(final IStatuslineRidget statuslineToShowMarkerMessages, final Collection<? extends IRidget> ridgets) {
-		if (!isDifferentStatusline(statuslineToShowMarkerMessages)) {
+	public void setStatuslineToShowMarkerMessages(final IStatuslineRidget statusline, final Collection<? extends IRidget> ridgets) {
+		if (!isDifferentStatusline(statusline)) {
 			return;
 		}
 
-		final StatuslineMessageMarkerViewer mv = createMessageViewer(statuslineToShowMarkerMessages);
+		final StatuslineMessageMarkerViewer newMessageViewer = createMessageViewer(statusline);
 		for (final IRidget r : ridgets) {
-			removeStatuslineViewerForRidget(r, this.messageViewer);
-			if (mv != null) {
-				setStatuslineViewerForRidget(r, mv);
+			removeStatuslineViewerForRidget(r, messageViewer);
+			if (newMessageViewer != null) {
+				setStatuslineViewerForRidget(r, newMessageViewer);
 			}
 		}
-		this.messageViewer = mv;
+		messageViewer = newMessageViewer;
 	}
 
 	/**
 	 * visible for testing
 	 */
-	protected StatuslineMessageMarkerViewer createMessageViewer(final IStatuslineRidget statuslineToShowMarkerMessages) {
-		return statuslineToShowMarkerMessages != null ? new StatuslineMessageMarkerViewer(statuslineToShowMarkerMessages) : null;
+	protected StatuslineMessageMarkerViewer createMessageViewer(final IStatuslineRidget statusline) {
+		return statusline != null ? new StatuslineMessageMarkerViewer(statusline) : null;
 	}
 
 	/**
@@ -77,8 +86,7 @@ public class RidgetToStatuslineSubscriber {
 		}
 		if (ridget instanceof IRidgetContainer) {
 			((IRidgetContainer) ridget).setStatuslineToShowMarkerMessages(null);
-		}
-		if (ridget instanceof IBasicMarkableRidget) {
+		} else if (ridget instanceof IBasicMarkableRidget) {
 			messageViewer.removeRidget((IBasicMarkableRidget) ridget);
 		}
 	}
@@ -89,8 +97,7 @@ public class RidgetToStatuslineSubscriber {
 		}
 		if (ridget instanceof IRidgetContainer) {
 			((IRidgetContainer) ridget).setStatuslineToShowMarkerMessages(messageViewer.getStatusLine());
-		}
-		if (ridget instanceof IBasicMarkableRidget) {
+		} else if (ridget instanceof IBasicMarkableRidget) {
 			messageViewer.addRidget((IBasicMarkableRidget) ridget);
 		}
 	}

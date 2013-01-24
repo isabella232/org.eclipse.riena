@@ -19,6 +19,7 @@ import org.eclipse.core.databinding.BindingException;
 import org.eclipse.equinox.log.Logger;
 
 import org.eclipse.riena.core.Log4r;
+import org.eclipse.riena.core.util.RienaConfiguration;
 import org.eclipse.riena.internal.ui.ridgets.Activator;
 import org.eclipse.riena.navigation.ApplicationNodeManager;
 import org.eclipse.riena.navigation.IApplicationNode;
@@ -36,6 +37,7 @@ import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IStatuslineRidget;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
+import org.eclipse.riena.ui.ridgets.RidgetToStatuslineSubscriber;
 import org.eclipse.riena.ui.ridgets.listener.IWindowRidgetListener;
 
 /**
@@ -104,6 +106,19 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 		updateActive();
 		if (getWindowRidget() != null) {
 			getWindowRidget().addWindowRidgetListener(windowListener);
+		}
+		initializeStatuslineMessageViewer();
+	}
+
+	/**
+	 * Check the configuration and if needed, use the application window status line to display ridget marker messages.
+	 */
+	private void initializeStatuslineMessageViewer() {
+		final String value = RienaConfiguration.getInstance().getProperty(RidgetToStatuslineSubscriber.SHOW_RIDGET_MESSAGES_IN_STATUSLINE_KEY);
+		if (Boolean.parseBoolean(value)) {
+			setStatuslineToShowMarkerMessages(getStatusline());
+		} else {
+			setStatuslineToShowMarkerMessages(null);
 		}
 	}
 
@@ -247,9 +262,6 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 			public void afterActivated(final ISubModuleNode source) {
 				if (actionManager != null) {
 					actionManager.activate();
-				}
-				if (getApplicationController().isShowRidgetMessagesInStatusline()) {
-					setStatuslineToShowMarkerMessages(getStatusline());
 				}
 			}
 

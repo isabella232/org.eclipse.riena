@@ -18,6 +18,7 @@ import java.util.Map;
 import org.eclipse.core.runtime.Assert;
 
 import org.eclipse.riena.core.RienaStatus;
+import org.eclipse.riena.core.util.RienaConfiguration;
 import org.eclipse.riena.ui.core.context.IContext;
 import org.eclipse.riena.ui.ridgets.ClassRidgetMapper;
 import org.eclipse.riena.ui.ridgets.IActionListener;
@@ -139,7 +140,12 @@ public abstract class AbstractWindowController implements IController, IContext 
 			actionManager.activate();
 		}
 
-		setStatuslineToShowMarkerMessages(getRidget(IStatuslineRidget.class, RIDGET_ID_STATUSLINE));
+		final String value = RienaConfiguration.getInstance().getProperty(RidgetToStatuslineSubscriber.SHOW_RIDGET_MESSAGES_IN_STATUSLINE_KEY);
+		if (Boolean.parseBoolean(value)) {
+			setStatuslineToShowMarkerMessages((IStatuslineRidget) getRidget(RIDGET_ID_STATUSLINE));
+		} else {
+			setStatuslineToShowMarkerMessages(null);
+		}
 	}
 
 	public void configureRidgets() {
