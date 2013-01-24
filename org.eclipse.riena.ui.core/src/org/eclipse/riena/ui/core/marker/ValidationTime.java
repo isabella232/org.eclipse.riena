@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 compeople AG and others.
+ * Copyright (c) 2007, 2013 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,7 @@ package org.eclipse.riena.ui.core.marker;
 /**
  * This enum is used when adding a {link IValidator} to a ridget, to specify when the validator will be evaluated.
  * 
- * @see {@link IEditableRidget#addValidationRule(IValidator, ValidationTime)
+ * @see {@link IEditableRidget#addValidationRule(IValidator, ValidationTime)
  */
 public enum ValidationTime {
 
