@@ -75,7 +75,7 @@ public class RidgetToStatuslineSubscriber {
 	 * 
 	 * @return checks if the given status line is different than the one we are holding
 	 */
-	boolean isDifferentStatusline(final IStatuslineRidget statuslineToShowMarkerMessages) {
+	public boolean isDifferentStatusline(final IStatuslineRidget statuslineToShowMarkerMessages) {
 		return messageViewer == null && statuslineToShowMarkerMessages != null || messageViewer != null
 				&& messageViewer.getStatusLine() != statuslineToShowMarkerMessages;
 	}
