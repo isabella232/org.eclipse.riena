@@ -22,6 +22,7 @@ import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
@@ -42,6 +43,7 @@ import org.eclipse.riena.ui.swt.facades.internal.DisabledPainter;
 import org.eclipse.riena.ui.swt.facades.internal.EmbeddedTitleBarToolTip;
 import org.eclipse.riena.ui.swt.facades.internal.GrabCornerListenerWithTracker;
 import org.eclipse.riena.ui.swt.facades.internal.InfoFlyoutRCP;
+import org.eclipse.riena.ui.swt.facades.internal.MultilineButton;
 import org.eclipse.riena.ui.swt.facades.internal.SubApplicationToolTip;
 import org.eclipse.riena.ui.swt.facades.internal.SubModuleToolTip;
 import org.eclipse.riena.ui.swt.facades.internal.TreeItemEraserAndPainter;
@@ -225,6 +227,11 @@ public final class SWTFacadeRCP extends SWTFacade {
 		scrollBar.setIncrement(value);
 	}
 
+	@Override
+	public Button createMultilineButton(final Composite parent, final int style) {
+		return new MultilineButton(parent, style | SWT.WRAP);
+	}
+
 	// protected methods
 	////////////////////
 
@@ -259,5 +266,4 @@ public final class SWTFacadeRCP extends SWTFacade {
 		}
 		return result;
 	}
-
 }

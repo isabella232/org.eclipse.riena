@@ -56,6 +56,53 @@ public class ChoiceCompositeTest extends RienaTestCase {
 	// testing methods
 	// ////////////////
 
+	public void testCreateChildWithTextWrapMulti() {
+		final ChoiceComposite cc = new ChoiceComposite(shell, SWT.NONE, true);
+		cc.setWrapOptionsText(true);
+
+		// this must be a check box
+		assertFalse((cc.createChild("label").getStyle() & SWT.CHECK) == 0);
+		assertTrue((cc.createChild("label").getStyle() & SWT.RADIO) == 0);
+	}
+
+	public void testCreateChildWithTextWrapSingle() {
+		final ChoiceComposite cc = new ChoiceComposite(shell, SWT.NONE, false);
+		cc.setWrapOptionsText(true);
+
+		// this must be a radio button
+		assertTrue((cc.createChild("label").getStyle() & SWT.CHECK) == 0);
+		assertFalse((cc.createChild("label").getStyle() & SWT.RADIO) == 0);
+	}
+
+	public void testCenterButtonsInHorizontalLayout() throws Exception {
+		final ChoiceComposite cc = new ChoiceComposite(shell, SWT.NONE, false);
+		cc.setOrientation(SWT.HORIZONTAL);
+		cc.setWrapOptionsText(true);
+		final Button b1 = cc.createChild("multi\nline");
+		final Button b2 = cc.createChild("single-line");
+
+		cc.layout(true, true);
+
+		// the multi line button should be positioned at the top,
+		// while the single line button will be centered (begins not at the top)
+		assertTrue(b1.getBounds().y < b2.getBounds().y);
+	}
+
+	/**
+	 * Tests the workaround for Bug 400248
+	 */
+	public void testMultiLineRadioButtons() {
+		final ChoiceComposite cc = new ChoiceComposite(shell, SWT.NONE, false);
+		cc.setOrientation(SWT.HORIZONTAL);
+		cc.setWrapOptionsText(true);
+		final Button b1 = cc.createChild("multi\nline");
+		final Button b2 = cc.createChild("single-line");
+
+		cc.layout(true, true);
+
+		assertTrue(b1.getBounds().height > b2.getBounds().height);
+	}
+
 	public void testConstructor() {
 		try {
 			new ChoiceComposite(null, SWT.NONE, false);
@@ -402,8 +449,7 @@ public class ChoiceCompositeTest extends RienaTestCase {
 	/**
 	 * As per Bug ruv301
 	 * 
-	 * control should have the same background color as its parent, if it is
-	 * disabled.
+	 * control should have the same background color as its parent, if it is disabled.
 	 */
 	public void testSetBackgroundColorWhileDisabledRespectingParentsBackground() {
 		final ChoiceComposite control = new ChoiceComposite(shell, SWT.NONE, false);
