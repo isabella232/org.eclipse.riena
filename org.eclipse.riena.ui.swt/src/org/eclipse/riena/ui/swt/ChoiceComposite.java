@@ -23,7 +23,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import org.eclipse.riena.ui.swt.facades.SWTFacade;
+import org.eclipse.riena.internal.ui.swt.MultilineButton;
 
 /**
  * This composite presents a list of single or multiple choices. It is mapped to a {@link org.eclipse.riena.ui.ridgets.ISingleChoiceRidget} or
@@ -87,10 +87,11 @@ public class ChoiceComposite extends Composite implements SelectionListener {
 	 * @since 3.0
 	 */
 	public Button createChild(final String caption) {
-		final int style = isMulti ? SWT.CHECK : SWT.RADIO;
+		int style = isMulti ? SWT.CHECK : SWT.RADIO;
 		Button result;
 		if (wrapOptionsText) {
-			result = SWTFacade.getDefault().createMultilineButton(this, style);
+			style |= SWT.WRAP;
+			result = new MultilineButton(this, style);
 		} else {
 			result = new Button(this, style);
 		}

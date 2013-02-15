@@ -19,7 +19,6 @@ import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
@@ -450,18 +449,6 @@ public abstract class SWTFacade {
 	 * @return a Listener or null (in RAP)
 	 */
 	public abstract Listener createTreeItemEraserAndPainter();
-
-	/**
-	 * Returns a multiline radio button. This method is needed until SWT Bug 400248 is fixed.
-	 * 
-	 * @param parent
-	 *            the parent composite
-	 * @param style
-	 *            the requested button style which will be bitwise OR-ed with SWT.WRAP
-	 * @return the radio {@link Button}
-	 * @since 5.0
-	 */
-	public abstract Button createMultilineButton(Composite parent, int style);
 
 	/**
 	 * Posts the given event on the display.
