@@ -15,3 +15,4 @@ Require-Bundle: org.eclipse.core.runtime,
 Eclipse-RegisterBuddy: org.eclipse.riena.ui.swt
 Export-Package: org.eclipse.riena.ui.swt.facades.internal;x-friends:="org.eclipse.riena.tests"
 Bundle-Vendor: Eclipse.org - Riena
+Import-Package: org.eclipse.swt.internal.win32
