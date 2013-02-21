@@ -33,7 +33,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 
@@ -47,7 +46,6 @@ import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.ui.ridgets.swt.MarkerSupport;
 import org.eclipse.riena.ui.swt.ChoiceComposite;
 import org.eclipse.riena.ui.swt.lnf.LnFUpdater;
-import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
  * Ridget for a {@link ChoiceComposite} widget with single selection.
@@ -127,8 +125,7 @@ public class SingleChoiceRidget extends AbstractChoiceRidget implements ISingleC
 		bindToModel(optionValues, null, selectionValue);
 	}
 
-	public void bindToModel(final Object listHolder, final String listPropertyName, final Object selectionHolder,
-			final String selectionPropertyName) {
+	public void bindToModel(final Object listHolder, final String listPropertyName, final Object selectionHolder, final String selectionPropertyName) {
 		Assert.isNotNull(listHolder, "listHolder"); //$NON-NLS-1$
 		Assert.isNotNull(listPropertyName, "listPropertyName"); //$NON-NLS-1$
 		Assert.isNotNull(selectionHolder, "selectionHolder"); //$NON-NLS-1$
@@ -148,8 +145,8 @@ public class SingleChoiceRidget extends AbstractChoiceRidget implements ISingleC
 		bindToModel(optionValues, null, selectionValue);
 	}
 
-	public void bindToModel(final List<? extends Object> optionValues, final List<String> optionLabels,
-			final Object selectionHolder, final String selectionPropertyName) {
+	public void bindToModel(final List<? extends Object> optionValues, final List<String> optionLabels, final Object selectionHolder,
+			final String selectionPropertyName) {
 		Assert.isNotNull(optionValues, "optionValues"); //$NON-NLS-1$
 		Assert.isNotNull(selectionHolder, "selectionHolder"); //$NON-NLS-1$
 		Assert.isNotNull(selectionPropertyName, "selectionPropertyName"); //$NON-NLS-1$
@@ -187,21 +184,6 @@ public class SingleChoiceRidget extends AbstractChoiceRidget implements ISingleC
 			newSelection = null;
 		}
 		firePropertyChange(PROPERTY_SELECTION, oldSelection, newSelection);
-	}
-
-	/**
-	 * Returns the number of the children of the given UI control.
-	 * 
-	 * @param control
-	 *            UI control
-	 * 
-	 * @return number of children
-	 */
-	private int getChildrenCount(final Composite control) {
-		if (SwtUtilities.isDisposed(control)) {
-			return 0;
-		}
-		return control.getChildren().length;
 	}
 
 	public Object getSelection() {
@@ -274,8 +256,7 @@ public class SingleChoiceRidget extends AbstractChoiceRidget implements ISingleC
 		}
 	}
 
-	private void bindToModel(final IObservableList optionValues, final List<String> optionLabels,
-			final IObservableValue selectionValue) {
+	private void bindToModel(final IObservableList optionValues, final List<String> optionLabels, final IObservableValue selectionValue) {
 		if (optionLabels != null) {
 			final String msg = "Mismatch between number of optionValues and optionLabels"; //$NON-NLS-1$
 			Assert.isLegal(optionValues.size() == optionLabels.size(), msg);
@@ -298,10 +279,10 @@ public class SingleChoiceRidget extends AbstractChoiceRidget implements ISingleC
 
 		// set up new binding
 		final DataBindingContext dbc = new DataBindingContext();
-		optionsBinding = dbc.bindList(optionsObservable, optionValues, new UpdateListStrategy(
-				UpdateListStrategy.POLICY_UPDATE), new UpdateListStrategy(UpdateListStrategy.POLICY_ON_REQUEST));
-		selectionBinding = dbc.bindValue(selectionObservable, selectionValue, new UpdateValueStrategy(
-				UpdateValueStrategy.POLICY_UPDATE), new UpdateValueStrategy(UpdateValueStrategy.POLICY_ON_REQUEST));
+		optionsBinding = dbc.bindList(optionsObservable, optionValues, new UpdateListStrategy(UpdateListStrategy.POLICY_UPDATE), new UpdateListStrategy(
+				UpdateListStrategy.POLICY_ON_REQUEST));
+		selectionBinding = dbc.bindValue(selectionObservable, selectionValue, new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE),
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_ON_REQUEST));
 		if (optionLabels != null) {
 			this.optionLabels = optionLabels.toArray(new String[optionLabels.size()]);
 		} else {
@@ -340,14 +321,6 @@ public class SingleChoiceRidget extends AbstractChoiceRidget implements ISingleC
 		}
 	}
 
-	private void disposeChildren(final Composite control) {
-		if (control != null && !control.isDisposed()) {
-			for (final Control child : control.getChildren()) {
-				child.dispose();
-			}
-		}
-	}
-
 	private void fireFocusIn(final Control control) {
 		final Event event = new Event();
 		event.type = SWT.FocusIn;
@@ -370,19 +343,16 @@ public class SingleChoiceRidget extends AbstractChoiceRidget implements ISingleC
 	}
 
 	/**
-	 * Iterates over the composite's children, disabling all buttons, except the
-	 * one that has value as it's data element. If the ridget is not enabled, it
-	 * may deselect all buttons, as mandated by
-	 * {@link MarkerSupport#isHideDisabledRidgetContent()}.
+	 * Iterates over the composite's children, disabling all buttons, except the one that has value as it's data element. If the ridget is not enabled, it may
+	 * deselect all buttons, as mandated by {@link MarkerSupport#isHideDisabledRidgetContent()}.
 	 */
 	private void updateSelection(final ChoiceComposite control) {
 		final boolean canSelect = isEnabled() || !MarkerSupport.isHideDisabledRidgetContent();
 		if (control != null && !control.isDisposed()) {
 			final Object value = selectionObservable.getValue();
-			for (final Control child : control.getChildren()) {
+			for (final Control child : control.getChildrenButtons()) {
 				final Button button = (Button) child;
-				final boolean isSelected = canSelect
-						&& ((value != null && value.equals(child.getData())) || (value == null && child.getData() == null));
+				final boolean isSelected = canSelect && ((value != null && value.equals(child.getData())) || (value == null && child.getData() == null));
 				button.setSelection(isSelected);
 			}
 		}
@@ -391,8 +361,8 @@ public class SingleChoiceRidget extends AbstractChoiceRidget implements ISingleC
 
 	private void notifySelectionListeners(final List<?> oldSelectionList, final List<?> newSelectionList) {
 		if (selectionListeners != null) {
-			final org.eclipse.riena.ui.ridgets.listener.SelectionEvent event = new org.eclipse.riena.ui.ridgets.listener.SelectionEvent(
-					this, oldSelectionList, newSelectionList);
+			final org.eclipse.riena.ui.ridgets.listener.SelectionEvent event = new org.eclipse.riena.ui.ridgets.listener.SelectionEvent(this, oldSelectionList,
+					newSelectionList);
 			for (final ISelectionListener listener : selectionListeners.getListeners()) {
 				listener.ridgetSelected(event);
 			}

@@ -18,10 +18,13 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Text;
 
 import org.eclipse.riena.internal.ui.swt.MultilineButton;
 
@@ -43,6 +46,8 @@ public class ChoiceComposite extends Composite implements SelectionListener {
 	private Color bgColor;
 
 	private boolean wrapOptionsText;
+
+	private final Composite content;
 
 	/**
 	 * Create a new ChoiceComposite instance given its parent and style value. The default orientation is <tt>SWT.VERTICAL</tt> (see also
@@ -67,12 +72,29 @@ public class ChoiceComposite extends Composite implements SelectionListener {
 	 *            the SWT style of the Composite
 	 * @param multipleSelection
 	 *            true to allow multiple selection (=check boxes), false for single selection (=radio buttons)
+	 * @see #createChild(String)
+	 * @see #setOrientation(int)
 	 */
 	public ChoiceComposite(final Composite parent, final int style, final boolean multipleSelection) {
 		super(parent, style);
 		this.isMulti = multipleSelection;
 		this.orientation = SWT.VERTICAL;
 		isEditable = true;
+
+		final GridLayout layout = new GridLayout(1, false);
+		layout.marginWidth = 0;
+		layout.marginHeight = 0;
+		layout.verticalSpacing = 0;
+		setLayout(layout);
+
+		// an invisible text field to prevent unwanted radio button selection
+		// while org.eclipse.riena.ui.ridgets.swt.FocusManager handles focus events
+		// on neighbor widgets with readOnly=true
+		new Text(this, SWT.NONE).setLayoutData(new GridData(1, 0));
+
+		content = new Composite(this, SWT.NONE);
+		content.setLayoutData(new GridData(GridData.FILL_BOTH));
+
 		applyLayout();
 	}
 
@@ -91,9 +113,9 @@ public class ChoiceComposite extends Composite implements SelectionListener {
 		Button result;
 		if (wrapOptionsText) {
 			style |= SWT.WRAP;
-			result = new MultilineButton(this, style);
+			result = new MultilineButton(content, style);
 		} else {
-			result = new Button(this, style);
+			result = new Button(content, style);
 		}
 		result.setText(caption);
 		result.setForeground(getForeground());
@@ -314,8 +336,53 @@ public class ChoiceComposite extends Composite implements SelectionListener {
 		// unused
 	}
 
+	/**
+	 * Set this flag to enable multi line presentation of the options text. When wrapOptionsText is <code>true</code> the character '\n' will be interpreted as
+	 * a line break. Default is <code>false</code>.
+	 * 
+	 * @param wrapOptionsText
+	 *            <code>true</code> to enable word wrap for the options text
+	 * @since 5.0
+	 */
+	public void setWrapOptionsText(final boolean wrapOptionsText) {
+		this.wrapOptionsText = wrapOptionsText;
+	}
+
+	/**
+	 * Returns the "children" buttons in this choice composite (one button for each choice option). Due to {@link ChoiceComposite} internals, these children
+	 * must not be the same as the controls returned by {@link #getChildren()}. All elements of the returned array will be of type {@link Button}.
+	 * 
+	 * @return a {@link Button}s array
+	 * @since 5.0
+	 */
+	public Control[] getChildrenButtons() {
+		return content.getChildren();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.swt.widgets.Composite#setFocus()
+	 */
+	@Override
+	public boolean setFocus() {
+		return isMulti ? content.setFocus() : super.setFocus();
+	}
+
 	// helping methods
 	// ////////////////
+
+	/**
+	 * This method is not API.
+	 * <p>
+	 * visible for testing
+	 * 
+	 * @return the content composite holding the buttons
+	 * @since 5.0
+	 */
+	public Composite getContentComposite() {
+		return content;
+	}
 
 	private void applyLayout() {
 		if (orientation == SWT.VERTICAL) {
@@ -323,7 +390,7 @@ public class ChoiceComposite extends Composite implements SelectionListener {
 			layout.marginHeight = marginHeight;
 			layout.marginWidth = marginWidth;
 			layout.spacing = vSpacing;
-			setLayout(layout);
+			content.setLayout(layout);
 		} else {
 			final RowLayout layout = new RowLayout(SWT.HORIZONTAL);
 			layout.center = true;
@@ -335,7 +402,7 @@ public class ChoiceComposite extends Composite implements SelectionListener {
 			layout.marginBottom = 0;
 			layout.spacing = hSpacing;
 			layout.wrap = false;
-			setLayout(layout);
+			content.setLayout(layout);
 		}
 	}
 
@@ -345,13 +412,17 @@ public class ChoiceComposite extends Composite implements SelectionListener {
 
 	private void updateBgColor(final Color color) {
 		super.setBackground(color);
+		content.setBackground(color);
 		for (final Control child : getChildren()) {
+			child.setBackground(color);
+		}
+		for (final Control child : getChildrenButtons()) {
 			child.setBackground(color);
 		}
 	}
 
 	private void updateEnabled(final boolean isEnabled) {
-		for (final Control child : getChildren()) {
+		for (final Control child : getChildrenButtons()) {
 			updateEnabled(child, isEnabled);
 		}
 	}
@@ -363,17 +434,5 @@ public class ChoiceComposite extends Composite implements SelectionListener {
 		} else { // isEditable && (isEnabled == true || isEnabled == false)
 			child.setEnabled(isEnabled);
 		}
-	}
-
-	/**
-	 * Set this flag to enable multi line presentation of the options text. When wrapOptionsText is <code>true</code> the character '\n' will be interpreted as
-	 * a line break. Default is <code>false</code>.
-	 * 
-	 * @param wrapOptionsText
-	 *            <code>true</code> to enable word wrap for the options text
-	 * @since 5.0
-	 */
-	public void setWrapOptionsText(final boolean wrapOptionsText) {
-		this.wrapOptionsText = wrapOptionsText;
 	}
 }

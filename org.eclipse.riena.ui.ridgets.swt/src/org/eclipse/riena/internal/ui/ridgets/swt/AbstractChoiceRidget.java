@@ -14,12 +14,37 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
+import org.eclipse.riena.ui.swt.ChoiceComposite;
 import org.eclipse.riena.ui.swt.utils.SWTControlFinder;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
  * Baseclass for all ChoiceRidgets.
  */
 public abstract class AbstractChoiceRidget extends AbstractSWTRidget {
+
+	protected void disposeChildren(final ChoiceComposite control) {
+		if (control != null && !control.isDisposed()) {
+			for (final Control child : control.getChildrenButtons()) {
+				child.dispose();
+			}
+		}
+	}
+
+	/**
+	 * Returns the number of the children of the given UI control.
+	 * 
+	 * @param control
+	 *            UI control
+	 * 
+	 * @return number of children
+	 */
+	protected int getChildrenCount(final ChoiceComposite control) {
+		if (SwtUtilities.isDisposed(control)) {
+			return 0;
+		}
+		return control.getChildren().length;
+	}
 
 	@Override
 	public boolean hasFocus() {
@@ -43,8 +68,7 @@ public abstract class AbstractChoiceRidget extends AbstractSWTRidget {
 	}
 
 	/**
-	 * Iterates over the child controls of a given composite and checks if one
-	 * them has the focus.
+	 * Iterates over the child controls of a given composite and checks if one them has the focus.
 	 */
 	private static class ChildFocusChecker extends SWTControlFinder {
 

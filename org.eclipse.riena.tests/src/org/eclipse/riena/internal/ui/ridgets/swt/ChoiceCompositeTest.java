@@ -126,14 +126,14 @@ public class ChoiceCompositeTest extends RienaTestCase {
 		control.setOrientation(SWT.HORIZONTAL);
 
 		assertEquals(SWT.HORIZONTAL, control.getOrientation());
-		assertTrue(control.getLayout() instanceof RowLayout);
-		assertEquals(SWT.HORIZONTAL, ((RowLayout) control.getLayout()).type);
+		assertTrue(control.getContentComposite().getLayout() instanceof RowLayout);
+		assertEquals(SWT.HORIZONTAL, ((RowLayout) control.getContentComposite().getLayout()).type);
 
 		control.setOrientation(SWT.VERTICAL);
 
 		assertEquals(SWT.VERTICAL, control.getOrientation());
-		assertTrue(control.getLayout() instanceof FillLayout);
-		assertEquals(SWT.VERTICAL, ((FillLayout) control.getLayout()).type);
+		assertTrue(control.getContentComposite().getLayout() instanceof FillLayout);
+		assertEquals(SWT.VERTICAL, ((FillLayout) control.getContentComposite().getLayout()).type);
 
 		try {
 			control.setOrientation(SWT.NONE);
@@ -174,7 +174,8 @@ public class ChoiceCompositeTest extends RienaTestCase {
 
 	public void testSetEnabled() {
 		final ChoiceComposite control = new ChoiceComposite(shell, SWT.NONE, false);
-		final Button child1 = new Button(control, SWT.RADIO);
+		//		final Button child1 = new Button(control, SWT.RADIO);
+		final Button child1 = control.createChild("one");
 
 		assertTrue(control.getEnabled());
 		assertTrue(child1.getEnabled());
@@ -195,11 +196,11 @@ public class ChoiceCompositeTest extends RienaTestCase {
 	 */
 	public void testSetEditable() {
 		final ChoiceComposite control = new ChoiceComposite(shell, SWT.NONE, true);
-		final Button child1 = new Button(control, SWT.CHECK);
+		final Button child1 = control.createChild("one");
 		child1.setSelection(true);
-		final Button child2 = new Button(control, SWT.CHECK);
+		final Button child2 = control.createChild("two");
 		child2.setSelection(true);
-		final Button child3 = new Button(control, SWT.CHECK);
+		final Button child3 = control.createChild("three");
 		child3.setSelection(false);
 
 		assertTrue(control.isEnabled());
@@ -253,11 +254,11 @@ public class ChoiceCompositeTest extends RienaTestCase {
 	 */
 	public void testToggleEditableWhenDisabled() {
 		final ChoiceComposite control = new ChoiceComposite(shell, SWT.NONE, true);
-		final Button child1 = new Button(control, SWT.CHECK);
+		final Button child1 = control.createChild("one");
 		child1.setSelection(true);
-		final Button child2 = new Button(control, SWT.CHECK);
+		final Button child2 = control.createChild("two");
 		child2.setSelection(true);
-		final Button child3 = new Button(control, SWT.CHECK);
+		final Button child3 = control.createChild("three");
 		child3.setSelection(false);
 
 		control.setEditable(false);
@@ -289,15 +290,15 @@ public class ChoiceCompositeTest extends RienaTestCase {
 
 		assertEquals(0, control.getMargins().x);
 		assertEquals(0, control.getMargins().y);
-		assertEquals(0, ((FillLayout) control.getLayout()).marginHeight);
-		assertEquals(0, ((FillLayout) control.getLayout()).marginWidth);
+		assertEquals(0, ((FillLayout) control.getContentComposite().getLayout()).marginHeight);
+		assertEquals(0, ((FillLayout) control.getContentComposite().getLayout()).marginWidth);
 
 		control.setMargins(10, 20);
 
 		assertEquals(10, control.getMargins().x);
 		assertEquals(20, control.getMargins().y);
-		assertEquals(10, ((FillLayout) control.getLayout()).marginHeight);
-		assertEquals(20, ((FillLayout) control.getLayout()).marginWidth);
+		assertEquals(10, ((FillLayout) control.getContentComposite().getLayout()).marginHeight);
+		assertEquals(20, ((FillLayout) control.getContentComposite().getLayout()).marginWidth);
 	}
 
 	/**
@@ -310,15 +311,15 @@ public class ChoiceCompositeTest extends RienaTestCase {
 
 		assertEquals(0, control.getMargins().x);
 		assertEquals(0, control.getMargins().y);
-		assertEquals(0, ((RowLayout) control.getLayout()).marginHeight);
-		assertEquals(0, ((RowLayout) control.getLayout()).marginWidth);
+		assertEquals(0, ((RowLayout) control.getContentComposite().getLayout()).marginHeight);
+		assertEquals(0, ((RowLayout) control.getContentComposite().getLayout()).marginWidth);
 
 		control.setMargins(10, 20);
 
 		assertEquals(10, control.getMargins().x);
 		assertEquals(20, control.getMargins().y);
-		assertEquals(10, ((RowLayout) control.getLayout()).marginHeight);
-		assertEquals(20, ((RowLayout) control.getLayout()).marginWidth);
+		assertEquals(10, ((RowLayout) control.getContentComposite().getLayout()).marginHeight);
+		assertEquals(20, ((RowLayout) control.getContentComposite().getLayout()).marginWidth);
 	}
 
 	/**
@@ -351,13 +352,13 @@ public class ChoiceCompositeTest extends RienaTestCase {
 
 		assertEquals(3, control.getSpacing().x);
 		assertEquals(0, control.getSpacing().y);
-		assertEquals(0, ((FillLayout) control.getLayout()).spacing);
+		assertEquals(0, ((FillLayout) control.getContentComposite().getLayout()).spacing);
 
 		control.setSpacing(0, 10);
 
 		assertEquals(0, control.getSpacing().x);
 		assertEquals(10, control.getSpacing().y);
-		assertEquals(10, ((FillLayout) control.getLayout()).spacing);
+		assertEquals(10, ((FillLayout) control.getContentComposite().getLayout()).spacing);
 	}
 
 	/**
@@ -370,13 +371,13 @@ public class ChoiceCompositeTest extends RienaTestCase {
 
 		assertEquals(3, control.getSpacing().x);
 		assertEquals(0, control.getSpacing().y);
-		assertEquals(3, ((RowLayout) control.getLayout()).spacing);
+		assertEquals(3, ((RowLayout) control.getContentComposite().getLayout()).spacing);
 
 		control.setSpacing(10, 0);
 
 		assertEquals(10, control.getSpacing().x);
 		assertEquals(0, control.getSpacing().y);
-		assertEquals(10, ((RowLayout) control.getLayout()).spacing);
+		assertEquals(10, ((RowLayout) control.getContentComposite().getLayout()).spacing);
 	}
 
 	/**
