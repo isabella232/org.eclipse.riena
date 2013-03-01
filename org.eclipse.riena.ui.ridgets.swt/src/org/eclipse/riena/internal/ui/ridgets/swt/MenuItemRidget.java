@@ -12,6 +12,9 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import org.eclipse.core.databinding.BindingException;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MenuAdapter;
+import org.eclipse.swt.events.MenuEvent;
+import org.eclipse.swt.events.MenuListener;
 import org.eclipse.swt.widgets.MenuItem;
 
 import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
@@ -22,6 +25,18 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
  * Ridget of a menu item.
  */
 public class MenuItemRidget extends AbstractItemRidget implements IMenuItemRidget {
+
+	/**
+	 * Workaround for bug #397884
+	 */
+	private final MenuListener enablementWatcher = new MenuAdapter() {
+		@Override
+		public void menuShown(final MenuEvent e) {
+			if (!SwtUtilities.isDisposed(getUIControl()) && isEnabled() != getUIControl().getEnabled()) {
+				getUIControl().setEnabled(isEnabled());
+			}
+		}
+	};
 
 	/**
 	 * Returns whether the given menu item is a cascade menu.
@@ -43,6 +58,7 @@ public class MenuItemRidget extends AbstractItemRidget implements IMenuItemRidge
 		final MenuItem menuItem = getUIControl();
 		if (!SwtUtilities.isDisposed(menuItem)) {
 			menuItem.addSelectionListener(getActionObserver());
+			menuItem.getParent().addMenuListener(enablementWatcher);
 		}
 	}
 
@@ -52,6 +68,7 @@ public class MenuItemRidget extends AbstractItemRidget implements IMenuItemRidge
 		final MenuItem menuItem = getUIControl();
 
 		if (!SwtUtilities.isDisposed(menuItem) && !isMenu(menuItem)) {
+			menuItem.getParent().removeMenuListener(enablementWatcher);
 			menuItem.removeSelectionListener(getActionObserver());
 		}
 		super.unbindUIControl();
