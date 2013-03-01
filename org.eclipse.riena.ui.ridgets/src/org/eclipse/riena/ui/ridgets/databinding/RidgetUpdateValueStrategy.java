@@ -112,7 +112,12 @@ public class RidgetUpdateValueStrategy extends UpdateValueStrategy {
 		return status.isOK() ? validateAfterSet() : status;
 	}
 
-	private IStatus validateAfterSet() {
+	/**
+	 * Visible for testing
+	 * 
+	 * @since 5.0
+	 */
+	protected IStatus validateAfterSet() {
 		final Object value = valueBindingSupport.getTargetOV().getValue();
 		return performValidation(value, afterSetValidator);
 	}

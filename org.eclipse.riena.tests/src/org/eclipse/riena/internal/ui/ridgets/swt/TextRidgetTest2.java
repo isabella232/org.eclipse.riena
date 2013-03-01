@@ -21,6 +21,7 @@ import java.util.Iterator;
 import org.eclipse.core.databinding.conversion.Converter;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Composite;
@@ -102,6 +103,46 @@ public final class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		return (Text) super.getWidget();
 	}
 
+	/**
+	 * This test verifies that validate() is not being called too often since this may have negative effect on the performance.
+	 */
+	public void testDontValidateMoreThanOnceAfterUpdateToModel() throws Exception {
+		final int timesValidated = createRidgetAndEnterChar(ValidationTime.AFTER_UPDATE_TO_MODEL);
+		assertEquals(1, timesValidated);
+	}
+
+	/**
+	 * This test verifies that validate() is not being called too often since this may have negative effect on the performance.
+	 */
+	public void testDontValidateMoreThanOnceOnUpdateToModel() throws Exception {
+		final int timesValidated = createRidgetAndEnterChar(ValidationTime.ON_UPDATE_TO_MODEL);
+		assertEquals(1, timesValidated);
+	}
+
+	/**
+	 * creates a {@link TextRidget} with a validator and enters the char '1'
+	 * 
+	 * @return the times validate() was called
+	 */
+	protected int createRidgetAndEnterChar(final ValidationTime validationTime) {
+		final Text control = getWidget();
+		final ITextRidget ridget = getRidget();
+		ridget.bindToModel(bean, TestBean.PROPERTY);
+
+		final int[] timesValidated = new int[1];
+		final IValidator validator = new IValidator() {
+			public IStatus validate(final Object value) {
+				timesValidated[0]++;
+				return Status.OK_STATUS;
+			}
+		};
+		ridget.addValidationRule(validator, validationTime);
+
+		control.setFocus();
+		UITestHelper.sendString(control.getDisplay(), "1\t");
+		return timesValidated[0];
+	}
+
 	public void testRidgetMapping() {
 		final SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
 		assertSame(TextRidget.class, mapper.getRidgetClass(getWidget()));
@@ -119,8 +160,8 @@ public final class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		assertEquals("", ridget.getText());
 		assertEquals(TEXT_TWO, bean.getProperty());
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "", TEXT_TWO),
-				new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT, "", TEXT_TWO));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "", TEXT_TWO), new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT,
+				"", TEXT_TWO));
 
 		ridget.updateFromModel();
 
@@ -156,8 +197,8 @@ public final class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		assertEquals(TEXT_ONE, ridget.getText());
 		assertEquals(TEXT_TWO, bean.getProperty());
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", TEXT_ONE, TEXT_TWO),
-				new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT, TEXT_ONE, TEXT_TWO));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", TEXT_ONE, TEXT_TWO), new PropertyChangeEvent(ridget,
+				ITextRidget.PROPERTY_TEXT, TEXT_ONE, TEXT_TWO));
 
 		ridget.updateFromModel();
 
@@ -203,8 +244,8 @@ public final class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		assertEquals("", ridget.getText());
 		assertEquals(null, bean.getProperty());
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "", "test"),
-				new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT, "", "test"));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "", "test"), new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT, "",
+				"test"));
 
 		UITestHelper.sendString(display, "\r");
 		UITestHelper.readAndDispatch(control);
@@ -223,8 +264,8 @@ public final class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		assertEquals("test", ridget.getText());
 		assertEquals("test", bean.getProperty());
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "test", "test2"),
-				new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT, "test", "test2"));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "test", "test2"), new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT,
+				"test", "test2"));
 
 		UITestHelper.sendString(display, "\t");
 
@@ -248,8 +289,8 @@ public final class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		assertEquals("t", ridget.getText());
 		assertEquals("t", bean.getProperty());
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "t", "te"), new PropertyChangeEvent(
-				ridget, ITextRidget.PROPERTY_TEXT, "t", "te"));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "t", "te"), new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT, "t",
+				"te"));
 
 		UITestHelper.sendString(display, "e");
 
@@ -258,8 +299,8 @@ public final class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		assertEquals("te", ridget.getText());
 		assertEquals("te", bean.getProperty());
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "te", "tes"),
-				new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT, "te", "tes"));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "te", "tes"), new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT,
+				"te", "tes"));
 
 		UITestHelper.sendString(display, "s");
 
@@ -268,8 +309,8 @@ public final class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		assertEquals("tes", ridget.getText());
 		assertEquals("tes", bean.getProperty());
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "tes", "test"),
-				new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT, "tes", "test"));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "tes", "test"), new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT,
+				"tes", "test"));
 
 		UITestHelper.sendString(display, "t");
 
@@ -278,8 +319,8 @@ public final class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		assertEquals("test", ridget.getText());
 		assertEquals("test", bean.getProperty());
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "test", "tet"),
-				new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT, "test", "tet"));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "test", "tet"), new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT,
+				"test", "tet"));
 
 		UITestHelper.sendKeyAction(display, SWT.ARROW_LEFT);
 		UITestHelper.sendString(display, "\b");
@@ -289,8 +330,8 @@ public final class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		assertEquals("tet", ridget.getText());
 		assertEquals("tet", bean.getProperty());
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "tet", "te"),
-				new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT, "tet", "te"));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "tet", "te"), new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT,
+				"tet", "te"));
 
 		UITestHelper.sendString(display, String.valueOf(SWT.DEL));
 
@@ -308,8 +349,8 @@ public final class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		assertEquals("te", ridget.getText());
 		assertEquals("Test", bean.getProperty());
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "te", "t"), new PropertyChangeEvent(
-				ridget, ITextRidget.PROPERTY_TEXT, "te", "t"));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "te", "t"), new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT, "te",
+				"t"));
 
 		UITestHelper.sendString(display, "\b");
 
@@ -331,8 +372,8 @@ public final class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		assertEquals("", ridget.getText());
 		assertEquals(null, bean.getProperty());
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "", "test"),
-				new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT, "", "test"));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "", "test"), new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT, "",
+				"test"));
 
 		UITestHelper.sendString(control.getDisplay(), "\r");
 
@@ -350,8 +391,8 @@ public final class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		assertEquals("test", ridget.getText());
 		assertEquals("test", bean.getProperty());
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "test", "TEST2"),
-				new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT, "test", "TEST2"));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "test", "TEST2"), new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT,
+				"test", "TEST2"));
 
 		UITestHelper.sendString(control.getDisplay(), "\t");
 
@@ -375,8 +416,8 @@ public final class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		assertEquals("t", ridget.getText());
 		assertEquals("t", bean.getProperty());
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "t", "Test"),
-				new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT, "t", "Test"));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "t", "Test"), new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT,
+				"t", "Test"));
 
 		((Text) ridget.getUIControl()).setText("Test");
 
@@ -394,8 +435,8 @@ public final class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		assertEquals("Test", ridget.getText());
 		assertEquals("Toast", bean.getProperty());
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "Test", "Test2"),
-				new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT, "Test", "Test2"));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "Test", "Test2"), new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT,
+				"Test", "Test2"));
 
 		UITestHelper.sendKeyAction(control.getDisplay(), SWT.END);
 		UITestHelper.sendString(control.getDisplay(), "2");
@@ -429,8 +470,8 @@ public final class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		assertEquals(TEXT_TWO, ridget.getText());
 		assertEquals("Bean34", bean.getProperty());
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", TEXT_TWO, TEXT_ONE),
-				new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT, TEXT_TWO, TEXT_ONE));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", TEXT_TWO, TEXT_ONE), new PropertyChangeEvent(ridget,
+				ITextRidget.PROPERTY_TEXT, TEXT_TWO, TEXT_ONE));
 
 		ridget.setText(TEXT_ONE);
 
@@ -894,8 +935,7 @@ public final class TextRidgetTest2 extends AbstractSWTRidgetTest {
 			final IMarker next = iterator.next();
 			assertTrue(next instanceof IMessageMarker);
 			final IMessageMarker marker = (IMessageMarker) next;
-			assertTrue(marker.getMessage().equals("TestTextTooShortMessage")
-					|| marker.getMessage().equals("Odd number of characters."));
+			assertTrue(marker.getMessage().equals("TestTextTooShortMessage") || marker.getMessage().equals("Odd number of characters."));
 		}
 
 		UITestHelper.sendString(control.getDisplay(), "b");
@@ -1149,8 +1189,7 @@ public final class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	}
 
 	/**
-	 * Tests that the mandatory marker is enabled/disabled when calling
-	 * {@code setText(string)}.
+	 * Tests that the mandatory marker is enabled/disabled when calling {@code setText(string)}.
 	 */
 	public void testDisableMandatoryMarkersSetText() {
 		final ITextRidget ridget = getRidget();
@@ -1171,8 +1210,7 @@ public final class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	}
 
 	/**
-	 * Tests that the manddatory marker is enabled/disabled when updated from
-	 * the model.
+	 * Tests that the manddatory marker is enabled/disabled when updated from the model.
 	 */
 	public void testDisableMandatoryMarkersUpdateFromModel() {
 		final ITextRidget ridget = getRidget();
@@ -1235,8 +1273,7 @@ public final class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	}
 
 	/**
-	 * Tests that the mandatory marker is enabled/disabled when typing in
-	 * "direct writing" mode.
+	 * Tests that the mandatory marker is enabled/disabled when typing in "direct writing" mode.
 	 */
 	public void testDisableMandatoryMarkersDirectWriting() {
 		final ITextRidget ridget = getRidget();
@@ -1586,8 +1623,7 @@ public final class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	}
 
 	/**
-	 * Tests the <i>private</i> method {@code isSubModuleViewComposite(Control)}
-	 * .
+	 * Tests the <i>private</i> method {@code isSubModuleViewComposite(Control)} .
 	 */
 	public void testIsSubModuleViewComposite() {
 		final Text text = new Text(getShell(), SWT.BORDER);
@@ -1784,11 +1820,9 @@ public final class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	}
 
 	/**
-	 * Tests if all nested properties of a <b>pojo</b> will be observed by the
-	 * JFace data binding.
+	 * Tests if all nested properties of a <b>pojo</b> will be observed by the JFace data binding.
 	 * <p>
-	 * Note: All involved value holder must be beans. With pojos a rebind to the
-	 * model will be necessary.
+	 * Note: All involved value holder must be beans. With pojos a rebind to the model will be necessary.
 	 * 
 	 * @throws Exception
 	 *             handled by JUnit
@@ -1819,11 +1853,9 @@ public final class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	}
 
 	/**
-	 * Tests if all nested properties of a <b>bean</b> will be observed by the
-	 * JFace data binding.
+	 * Tests if all nested properties of a <b>bean</b> will be observed by the JFace data binding.
 	 * <p>
-	 * Note: All involved value holder must be beans. With pojos a rebind to the
-	 * model will be necessary.
+	 * Note: All involved value holder must be beans. With pojos a rebind to the model will be necessary.
 	 * 
 	 * @throws Exception
 	 *             handled by JUnit
@@ -1852,7 +1884,7 @@ public final class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		assertEquals(modelHolder.getBean().getText2(), ridget.getText());
 
 	}
-	
+
 	public void testVetoValidationWithOnEditRule() {
 		final Text control = getWidget();
 		final ITextRidget ridget = getRidget();
@@ -1869,7 +1901,6 @@ public final class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		assertEquals(1, ridget.getMarkers().size());
 		assertEquals("'1' is less than 2 characters long.", ((IMessageMarker) ridget.getMarkers().iterator().next()).getMessage());
 	}
-
 
 	// helping methods
 	//////////////////
@@ -1899,8 +1930,7 @@ public final class TextRidgetTest2 extends AbstractSWTRidgetTest {
 				}
 				return ValidationRuleStatus.error(false, "Odd number of characters.");
 			}
-			throw new ValidationFailure(getClass().getName() + " can only validate objects of type "
-					+ String.class.getName());
+			throw new ValidationFailure(getClass().getName() + " can only validate objects of type " + String.class.getName());
 		}
 	}
 
@@ -1935,8 +1965,7 @@ public final class TextRidgetTest2 extends AbstractSWTRidgetTest {
 				assertEquals(1, count);
 				assertEquals(value, evt.getNewValue());
 				/*
-				 * tests that the model is already updated with the new value,
-				 * when this listener is notified
+				 * tests that the model is already updated with the new value, when this listener is notified
 				 */
 				assertEquals(value, bean.getProperty());
 			}

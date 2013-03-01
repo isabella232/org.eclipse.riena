@@ -821,7 +821,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		ridget.addValidationRule(new EndsWithFive(), ValidationTime.ON_UPDATE_TO_MODEL);
 		ridget.bindToModel(bean, IntegerBean.PROP_VALUE);
 
-		assertFalse(ridget.isErrorMarked());
+		assertTrue(ridget.isErrorMarked());
 		assertFalse(ridget.isDirectWriting());
 
 		UITestHelper.sendString(control.getDisplay(), "98765\t");
