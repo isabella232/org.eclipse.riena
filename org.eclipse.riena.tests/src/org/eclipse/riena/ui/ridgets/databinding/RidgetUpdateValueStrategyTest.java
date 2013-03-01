@@ -101,7 +101,7 @@ public class RidgetUpdateValueStrategyTest extends TestCase {
 			}
 		};
 
-		strategy.doSet(mock, "one two");
+		ReflectionUtils.invokeHidden(strategy, "doSet", mock, "one two");
 	}
 
 	public void testValidateAfterSetWithSetOk() throws Exception {
@@ -119,7 +119,7 @@ public class RidgetUpdateValueStrategyTest extends TestCase {
 			}
 		};
 
-		strategy.doSet(EasyMock.createNiceMock(IObservableValue.class), "one two");
+		ReflectionUtils.invokeHidden(strategy, "doSet", EasyMock.createNiceMock(IObservableValue.class), "one two");
 		assertTrue("validateAfterSet() must be called if doSet() returned an OK status.", validateAfterSetCalled[0]);
 	}
 }
