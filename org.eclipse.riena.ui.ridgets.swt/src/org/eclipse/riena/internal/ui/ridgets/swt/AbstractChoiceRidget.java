@@ -33,17 +33,19 @@ public abstract class AbstractChoiceRidget extends AbstractSWTRidget {
 
 	/**
 	 * Returns the number of the children of the given UI control.
+	 * <p>
+	 * this method is not API, visibility for testing
 	 * 
 	 * @param control
 	 *            UI control
 	 * 
 	 * @return number of children
 	 */
-	protected int getChildrenCount(final ChoiceComposite control) {
+	public int getChildrenCount(final ChoiceComposite control) {
 		if (SwtUtilities.isDisposed(control)) {
 			return 0;
 		}
-		return control.getChildren().length;
+		return control.getChildrenButtons().length;
 	}
 
 	@Override

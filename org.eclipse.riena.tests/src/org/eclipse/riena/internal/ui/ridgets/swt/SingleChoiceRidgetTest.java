@@ -18,6 +18,8 @@ import java.util.List;
 
 import org.eclipse.core.databinding.beans.PojoObservables;
 import org.eclipse.core.databinding.observable.Realm;
+import org.eclipse.core.databinding.observable.list.WritableList;
+import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Button;
@@ -75,6 +77,18 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 
 	// testing methods
 	// ////////////////
+
+	public void testChildrenCount() {
+		final AbstractChoiceRidget r = (AbstractChoiceRidget) getRidget();
+
+		getRidget().bindToModel(new WritableList(), new WritableValue());
+		getRidget().updateFromModel();
+		assertEquals(0, r.getChildrenCount(getWidget()));
+
+		getRidget().bindToModel(new WritableList(Arrays.asList("one", "two"), String.class), new WritableValue());
+		getRidget().updateFromModel();
+		assertEquals(2, r.getChildrenCount(getWidget()));
+	}
 
 	public void testHasFocus() throws Exception {
 		final ISingleChoiceRidget choiceRidget = getRidget();
