@@ -123,7 +123,6 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 			final IController controller = (IController) node.getNavigationNodeController();
 			binding.injectRidgets(controller);
 			binding.bind(controller);
-			bindMenuAndToolItems(controller);
 			controller.afterBind();
 		}
 
@@ -193,8 +192,13 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 		initUIProcessRidget();
 	}
 
+	/**
+	 * Creates Ridgets for the menu items and the cool bar items and binds the Ridgets of the items with the UI widgets.
+	 * 
+	 * @param controller
+	 */
 	private void bindMenuAndToolItems(final IController controller) {
-		createRidgets(controller);
+		createItemRidgets(controller);
 		menuItemBindingManager.bind(controller, getUIControls());
 	}
 
@@ -260,7 +264,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 	 * 
 	 * @param controller
 	 */
-	private void createRidgets(final IController controller) {
+	private void createItemRidgets(final IController controller) {
 
 		final List<IRidget> ridgetsToRemove = new ArrayList<IRidget>();
 		final Collection<? extends IRidget> ridgets = controller.getRidgets();
@@ -567,12 +571,9 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 		public void afterActivated(final ISubModuleNode source) {
 			final List<MenuCoolBarComposite> menuCoolBarComposites = getMenuCoolBarComposites(getShell());
 			for (final MenuCoolBarComposite menuBarComp : menuCoolBarComposites) {
-				final List<ToolItem> changedItems = menuBarComp.updateMenuItems();
-				//				if (!changedItems.isEmpty()) {
+				menuBarComp.updateMenuItems();
 				final IController controller = (IController) getNavigationNode().getNavigationNodeController();
-				createRidgets(controller);
-				menuItemBindingManager.bind(controller, getUIControls());
-				//				}
+				bindMenuAndToolItems(controller);
 			}
 		}
 
