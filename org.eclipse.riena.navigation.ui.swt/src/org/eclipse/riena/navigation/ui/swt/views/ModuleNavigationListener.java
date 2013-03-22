@@ -350,7 +350,10 @@ public class ModuleNavigationListener extends SelectionAdapter implements KeyLis
 
 		protected final Display display;
 		private final Tree tree;
-		private final INavigationNode<?> node;
+		/**
+		 * @since 5.0
+		 */
+		protected final INavigationNode<?> node;
 
 		private volatile boolean isCancelled;
 
@@ -358,6 +361,9 @@ public class ModuleNavigationListener extends SelectionAdapter implements KeyLis
 			this.display = item.getDisplay();
 			this.tree = item.getParent();
 			this.node = (INavigationNode<?>) item.getData();
+			if (node == null) {
+				throw new IllegalStateException("This class can't handle a null node. Currently node is null which is probably an error."); //$NON-NLS-1$
+			}
 		}
 
 		@Override

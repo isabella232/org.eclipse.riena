@@ -16,6 +16,8 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
+import org.eclipse.riena.ui.swt.facades.SWTFacade;
+
 /**
  * This class is not API. It is a subclass of {@link Button} which works around Bug 400248.
  * <p>
@@ -57,7 +59,8 @@ public class MultilineButton extends Button {
 		}
 
 		final Point textSizeOneLine = gc.stringExtent(getText().replaceAll("\\s", "")); //$NON-NLS-1$ //$NON-NLS-2$
-		final Point textSizeWithLineBreaks = gc.textExtent(getText(), SWT.DRAW_DELIMITER);
+		//		final Point textSizeWithLineBreaks = gc.textExtent(getText(), SWT.DRAW_DELIMITER);
+		final Point textSizeWithLineBreaks = SWTFacade.getDefault().textExtent(gc, getText(), SWT.DRAW_DELIMITER);
 
 		return new Point(fromSuper.x - textSizeOneLine.x + textSizeWithLineBreaks.x, Math.max(fromSuper.y, textSizeWithLineBreaks.y));
 	}

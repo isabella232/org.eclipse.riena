@@ -54,8 +54,9 @@ public class ScrollBarNavigationCompositeDeligation extends AbstractNavigationCo
 		super.updateSize(height);
 		final int width = getNavigationComposite().getSize().x;
 		sc.setMinSize(width, height);
+
 		final int pageInc = sc.getClientArea().height;
-		sc.getVerticalBar().setPageIncrement(pageInc);
+		SWTFacade.getDefault().setPageIncrement(sc.getVerticalBar(), pageInc);
 	}
 
 	/**
