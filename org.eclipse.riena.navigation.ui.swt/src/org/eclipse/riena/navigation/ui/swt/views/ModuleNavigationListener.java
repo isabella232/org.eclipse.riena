@@ -37,23 +37,18 @@ import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 
 /**
- * Navigation for the 'submodule' tree used in {@link ModuleView}. This includes
- * both mouse navigation (selection) and keyboard navigation (key down / up).
+ * Navigation for the 'submodule' tree used in {@link ModuleView}. This includes both mouse navigation (selection) and keyboard navigation (key down / up).
  * <p>
  * This class takes care of the following cases:
  * <ul>
  * <li>node clicked / selection change: activate the node</li>
  * <li>arrow up / down: activate the node</li>
- * <li>arrow up on the first node: activate the previous module, wrapping around
- * to the last, if there is no previous one</li>
- * <li>arrow down on the last node: activate the next module, wrapping around to
- * the 1st, if there is no next one</li>
+ * <li>arrow up on the first node: activate the previous module, wrapping around to the last, if there is no previous one</li>
+ * <li>arrow down on the last node: activate the next module, wrapping around to the 1st, if there is no next one</li>
  * </ul>
  * <p>
- * Some submodule nodes can be flagged as non-selecteble. If such a node is
- * activated, then the first selectable child will be selected. This is done by
- * {@link NavigationProcessor}. Moving over such a node is not problem anymore,
- * since the activation is only triggered after a delay - not instantly.
+ * Some submodule nodes can be flagged as non-selecteble. If such a node is activated, then the first selectable child will be selected. This is done by
+ * {@link NavigationProcessor}. Moving over such a node is not problem anymore, since the activation is only triggered after a delay - not instantly.
  * 
  * @since 3.0
  */
@@ -137,8 +132,7 @@ public class ModuleNavigationListener extends SelectionAdapter implements KeyLis
 	}
 
 	private boolean isCharacterNavigationEnabled() {
-		return LnfManager.getLnf()
-				.getBooleanSetting(LnfKeyConstants.NAVIGATION_TREE_CHARACTER_SELECTION_ENABLED, false);
+		return LnfManager.getLnf().getBooleanSetting(LnfKeyConstants.NAVIGATION_TREE_CHARACTER_SELECTION_ENABLED, false);
 	}
 
 	public void focusGained(final FocusEvent e) {
@@ -196,8 +190,7 @@ public class ModuleNavigationListener extends SelectionAdapter implements KeyLis
 	}
 
 	/**
-	 * Find the first selectable TreeItem below {@code item} in the tree. Will
-	 * consider all available (=expanded) tree items.
+	 * Find the first selectable TreeItem below {@code item} in the tree. Will consider all available (=expanded) tree items.
 	 * 
 	 * @return a TreeItem, may be null
 	 */
@@ -212,8 +205,7 @@ public class ModuleNavigationListener extends SelectionAdapter implements KeyLis
 	}
 
 	/**
-	 * Find the first selectable TreeItem above {@code item} in the tree. Will
-	 * consider all available (=expanded) tree items.
+	 * Find the first selectable TreeItem above {@code item} in the tree. Will consider all available (=expanded) tree items.
 	 * 
 	 * @return a TreeItem, may be null
 	 */
@@ -312,8 +304,7 @@ public class ModuleNavigationListener extends SelectionAdapter implements KeyLis
 	/**
 	 * Activates the given node.
 	 * <p>
-	 * If the activation fails (maybe the node is not selectable), update the
-	 * selection inside the tree.
+	 * If the activation fails (maybe the node is not selectable), update the selection inside the tree.
 	 * 
 	 * @param node
 	 *            navigation node to activated
@@ -364,6 +355,10 @@ public class ModuleNavigationListener extends SelectionAdapter implements KeyLis
 			if (node == null) {
 				throw new IllegalStateException("This class can't handle a null node. Currently node is null which is probably an error."); //$NON-NLS-1$
 			}
+		}
+
+		protected INavigationNode<?> getNavigationNode() {
+			return node;
 		}
 
 		@Override
