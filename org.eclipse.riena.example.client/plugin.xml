@@ -11,6 +11,11 @@
          </run>
       </application>
    </extension>
+   <extension point="org.eclipse.rap.ui.entrypoint">
+     <entrypoint id="example.application.entrypoint"
+        applicationId="org.eclipse.riena.example.client.exampleapp"
+        path="/rienaExampleClient" />
+   </extension>
    <extension
          id="example_product"
          point="org.eclipse.core.runtime.products">

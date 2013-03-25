@@ -341,10 +341,7 @@ public class ModuleNavigationListener extends SelectionAdapter implements KeyLis
 
 		protected final Display display;
 		private final Tree tree;
-		/**
-		 * @since 5.0
-		 */
-		protected final INavigationNode<?> node;
+		private final INavigationNode<?> node;
 
 		private volatile boolean isCancelled;
 
@@ -357,6 +354,9 @@ public class ModuleNavigationListener extends SelectionAdapter implements KeyLis
 			}
 		}
 
+		/**
+		 * @since 5.0
+		 */
 		protected INavigationNode<?> getNavigationNode() {
 			return node;
 		}
