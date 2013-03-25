@@ -48,7 +48,7 @@ public class ApplicationController extends NavigationNodeController<IApplication
 	private final NodeEventDelegation contextUpdater = new NodeEventDelegation();
 
 	public IStatuslineRidget getStatusline() {
-		if (!done) {
+		if (!done && (statuslineRidget != null)) {
 			if (statuslineRidget.getStatuslineUIProcessRidget() != null) {
 				statuslineRidget.getStatuslineUIProcessRidget().setContextLocator(contextUpdater);
 			}
