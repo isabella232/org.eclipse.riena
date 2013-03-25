@@ -15,10 +15,13 @@ import java.util.EventListener;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.SWTException;
 import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.graphics.Cursor;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
@@ -615,6 +618,56 @@ public abstract class SWTFacade {
 	 */
 	public abstract void setIncrement(ScrollBar scrollBar, int value);
 
+	/**
+	 * Sets the amount that the receiver's value will be modified by when the page up/down arrows are pressed to the argument.
+	 * 
+	 * @param scrollBar
+	 *            the receiver of the new increment
+	 * @param value
+	 *            the new increment (must be greater than zero)
+	 * @since 5.0
+	 */
+	public abstract void setPageIncrement(ScrollBar scrollBar, int value);
+
+	/**
+	 * Returns the extent of the given string. Tab expansion, line delimiter and mnemonic processing are performed according to the specified flags, which can
+	 * be a combination of:
+	 * <dl>
+	 * <dt><b>DRAW_DELIMITER</b></dt>
+	 * <dd>draw multiple lines</dd>
+	 * <dt><b>DRAW_TAB</b></dt>
+	 * <dd>expand tabs</dd>
+	 * <dt><b>DRAW_MNEMONIC</b></dt>
+	 * <dd>underline the mnemonic character</dd>
+	 * <dt><b>DRAW_TRANSPARENT</b></dt>
+	 * <dd>transparent background</dd>
+	 * </dl>
+	 * <p>
+	 * The <em>extent</em> of a string is the width and height of the rectangular area it would cover if drawn in a particular font (in this case, the current
+	 * font in the receiver).
+	 * </p>
+	 * 
+	 * @param gc
+	 *            the {@link GC} to use for the calculation
+	 * @param string
+	 *            the string to measure
+	 * @param flags
+	 *            the flags specifying how to process the text
+	 * @return a point containing the extent of the string
+	 * 
+	 * @exception IllegalArgumentException
+	 *                <ul>
+	 *                <li>ERROR_NULL_ARGUMENT - if the string is null</li>
+	 *                </ul>
+	 * @exception SWTException
+	 *                <ul>
+	 *                <li>ERROR_GRAPHIC_DISPOSED - if the receiver has been disposed</li>
+	 *                </ul>
+	 * @see GC#textExtent(String, int)
+	 * @since 5.0
+	 */
+	public abstract Point textExtent(final GC gc, final String string, final int flags);
+
 	// protecected methods
 	//////////////////////
 
@@ -663,4 +716,5 @@ public abstract class SWTFacade {
 	 * @since 3.0
 	 */
 	protected abstract Object[] removeVerifyListeners(final Control control);
+
 }
