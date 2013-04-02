@@ -138,6 +138,7 @@ public abstract class AbstractDialogView extends Dialog {
 		applyTitle(getShell());
 
 		addUIControls(getShell());
+		LNF_UPDATER.updateUIControlColors(getShell());
 		bindController();
 		LNF_UPDATER.updateUIControls(getShell(), true);
 		// after binding the controller it is necessary to calculate the bounds of the dialog again

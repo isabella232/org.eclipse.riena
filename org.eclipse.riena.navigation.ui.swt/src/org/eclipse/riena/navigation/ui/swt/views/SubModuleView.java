@@ -161,16 +161,18 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 				currentController = getController();
 			}
 
+			lnfUpdater.updateUIControlColors(getContentComposite());
+
 			//bind the new controller
 			binding.bind(currentController);
 
 			//callback
 			currentController.afterBind();
 
-			lnfUpdater.updateUIControls(getParentComposite(), true);
-		} else {
-			lnfUpdater.updateUIControlsAfterBind(getContentComposite());
 		}
+
+		lnfUpdater.updateUIControlsAfterBind(getContentComposite());
+
 		//TODO is this really part of the the binding of the SubModuleView? NavigationSourceProvider is Menu-specific and should be handled in a context of Menus
 		activeNodeChanged(getNavigationNode());
 		//set block state on bind

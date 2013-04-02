@@ -47,8 +47,7 @@ import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
- * This class updates the properties of the UI controls according the settings
- * of the current Look&Feel.
+ * This class updates the properties of the UI controls according the settings of the current Look&Feel.
  */
 public final class LnFUpdater {
 
@@ -80,9 +79,8 @@ public final class LnFUpdater {
 	}
 
 	/**
-	 * Clears all cached data like the default property names and control
-	 * properties. This method is not supposed to be called from Riena at all.
-	 * It is only needed for the Riena-Toolbox to refresh the LnF.
+	 * Clears all cached data like the default property names and control properties. This method is not supposed to be called from Riena at all. It is only
+	 * needed for the Riena-Toolbox to refresh the LnF.
 	 * 
 	 * @since 3.0
 	 */
@@ -112,7 +110,7 @@ public final class LnFUpdater {
 
 		if (checkPropertyUpdateView()) {
 			setDirtyLayout(false);
-			updateUIControlsRecursive(parent);
+			updateUIControlsRecursive(parent, false);
 		} else {
 			setDirtyLayout(true);
 		}
@@ -120,6 +118,30 @@ public final class LnFUpdater {
 			updateLayout(parent);
 		}
 
+	}
+
+	/**
+	 * Updates the Color properties of all children of the given composite.
+	 * 
+	 * @param parent
+	 *            composite which children are updated.
+	 */
+	public void updateUIControlColors(final Composite parent) {
+
+		if (checkPropertyUpdateView()) {
+			updateUIControlsRecursive(parent, true);
+		}
+
+	}
+
+	/**
+	 * Updates the properties of all children of the given composite and updates the layout of the given parent.
+	 * 
+	 * @param parent
+	 *            composite which children are updated.
+	 */
+	public void updateUIControlsAfterBind(final Composite parent) {
+		updateUIControls(parent, true);
 	}
 
 	/**
@@ -141,37 +163,18 @@ public final class LnFUpdater {
 	 * @param parent
 	 *            composite which children are updated.
 	 */
-	private void updateUIControlsRecursive(final Composite parent) {
+	private void updateUIControlsRecursive(final Composite parent, final boolean onlyColor) {
 
 		final Control[] controls = parent.getChildren();
 		for (final Control uiControl : controls) {
 
-			updateUIControl(uiControl);
+			updateUIControl(uiControl, onlyColor);
 
 			if (uiControl instanceof Composite) {
-				updateUIControlsRecursive((Composite) uiControl);
+				updateUIControlsRecursive((Composite) uiControl, onlyColor);
 			}
 
 		}
-
-	}
-
-	/**
-	 * Updates the properties of all children of the given composite and updates
-	 * the layout of the given parent.
-	 * 
-	 * @param parent
-	 *            composite which children are updated.
-	 */
-	public void updateUIControlsAfterBind(final Composite parent) {
-
-		if (checkPropertyUpdateView()) {
-			setDirtyLayout(false);
-			updateUIControlsRecursive(parent);
-		} else {
-			setDirtyLayout(true);
-		}
-		updateLayout(parent);
 
 	}
 
@@ -185,16 +188,27 @@ public final class LnFUpdater {
 	}
 
 	/**
-	 * Updates the properties of the UI control according to the values of the
-	 * LnF.
+	 * Updates the properties of the UI control according to the values of the LnF.
 	 * <p>
-	 * Note: this is very frequently (basically once for each control in the UI)
-	 * so it is performance sensitive.
+	 * Note: this is very frequently (basically once for each control in the UI) so it is performance sensitive.
 	 * 
 	 * @param control
 	 *            UI control
 	 */
 	public void updateUIControl(final Control control) {
+		updateUIControl(control, false);
+	}
+
+	/**
+	 * Updates the properties of the UI control according to the values of the LnF.
+	 * <p>
+	 * Note: this is very frequently (basically once for each control in the UI) so it is performance sensitive.
+	 * 
+	 * @param control
+	 *            UI control
+	 * @param onlyColor
+	 */
+	private void updateUIControl(final Control control, final boolean onlyColor) {
 
 		if (!checkPropertyUpdateView()) {
 			return;
@@ -212,6 +226,11 @@ public final class LnFUpdater {
 		}
 		final List<PropertyDescriptor> properties = getProperties(control);
 		for (final PropertyDescriptor property : properties) {
+			if (onlyColor) {
+				if (!(property.getPropertyType() == Color.class)) {
+					return;
+				}
+			}
 			final Object newValue = getLnfValue(control, property);
 			if (newValue == null) {
 				continue;
@@ -241,8 +260,7 @@ public final class LnFUpdater {
 	}
 
 	/**
-	 * Checks if a key for the given control exists in the current Look&Feel. If
-	 * no key for the control exits, checks keys for the (optional) style exits.
+	 * Checks if a key for the given control exists in the current Look&Feel. If no key for the control exits, checks keys for the (optional) style exits.
 	 * 
 	 * @param control
 	 *            UI control
@@ -261,8 +279,7 @@ public final class LnFUpdater {
 	}
 
 	/**
-	 * Checks if a key for the given control class exists in the current
-	 * Look&Feel.
+	 * Checks if a key for the given control class exists in the current Look&Feel.
 	 * 
 	 * @param controlClass
 	 *            class of the UI control
@@ -319,18 +336,15 @@ public final class LnFUpdater {
 	}
 
 	/**
-	 * Compares the default value of the UI control and the current value of the
-	 * given property.
+	 * Compares the default value of the UI control and the current value of the given property.
 	 * 
 	 * @param control
 	 *            UI control
 	 * @param property
 	 *            property
-	 * @return {@code true} if the current value of the property isn't equals
-	 *         the default value; otherwise {@code false}.
+	 * @return {@code true} if the current value of the property isn't equals the default value; otherwise {@code false}.
 	 */
-	private boolean hasNoDefaultValue(final Control control, final PropertyDescriptor property,
-			final Object currentValue) {
+	private boolean hasNoDefaultValue(final Control control, final PropertyDescriptor property, final Object currentValue) {
 
 		final Method getter = property.getReadMethod();
 		if (getter != null) {
@@ -343,8 +357,7 @@ public final class LnFUpdater {
 	}
 
 	/**
-	 * Compares two property values. For font or color the <i>description</i> of
-	 * the resource, {@link FontData} or {@link RGB}, is used for comparison.
+	 * Compares two property values. For font or color the <i>description</i> of the resource, {@link FontData} or {@link RGB}, is used for comparison.
 	 * 
 	 * @param value1
 	 *            first property value
@@ -460,13 +473,11 @@ public final class LnFUpdater {
 	 * <li>for {@code Color} this method returns {@code RGB}</li>
 	 * </ul>
 	 * <p>
-	 * <i>This descriptions can be used to compare resources (also
-	 * disposed).</i>
+	 * <i>This descriptions can be used to compare resources (also disposed).</i>
 	 * 
 	 * @param object
 	 *            the resource
-	 * @return description of resource or the resource itself, if no description
-	 *         exists
+	 * @return description of resource or the resource itself, if no description exists
 	 */
 	private Object getResourceData(final Object object) {
 
@@ -494,8 +505,7 @@ public final class LnFUpdater {
 	 *            UI control
 	 * @param property
 	 *            property
-	 * @return value of the property or {@code null} if the property cannot
-	 *         read.
+	 * @return value of the property or {@code null} if the property cannot read.
 	 */
 	private Object getPropertyValue(final Control control, final PropertyDescriptor property) {
 
@@ -541,8 +551,7 @@ public final class LnFUpdater {
 
 	/**
 	 * Returns the properties of the class of the given control.<br>
-	 * The properties of the classes are cached. So introspection is only
-	 * necessary for new classes.
+	 * The properties of the classes are cached. So introspection is only necessary for new classes.
 	 * 
 	 * @param control
 	 *            the control
@@ -553,8 +562,7 @@ public final class LnFUpdater {
 		List<PropertyDescriptor> propertyDescriptors = controlProperties.get(controlClass);
 		if (propertyDescriptors == null) {
 			try {
-				final PropertyDescriptor[] descriptors = Introspector.getBeanInfo(controlClass)
-						.getPropertyDescriptors();
+				final PropertyDescriptor[] descriptors = Introspector.getBeanInfo(controlClass).getPropertyDescriptors();
 				propertyDescriptors = new ArrayList<PropertyDescriptor>(descriptors.length);
 				for (final PropertyDescriptor descriptor : descriptors) {
 					final Method setter = descriptor.getWriteMethod();
@@ -589,8 +597,7 @@ public final class LnFUpdater {
 	}
 
 	/**
-	 * Returns for the given control and the given property the corresponding
-	 * value of the LnF.
+	 * Returns for the given control and the given property the corresponding value of the LnF.
 	 * 
 	 * @param control
 	 *            the control
@@ -610,8 +617,7 @@ public final class LnFUpdater {
 	}
 
 	/**
-	 * Returns for the given control class and the given property the
-	 * corresponding value of the LnF.
+	 * Returns for the given control class and the given property the corresponding value of the LnF.
 	 * <p>
 	 * This method will use cached values first.
 	 * 
@@ -648,8 +654,7 @@ public final class LnFUpdater {
 	}
 
 	/**
-	 * Returns for the given control class and the given property the
-	 * corresponding value of the LnF.
+	 * Returns for the given control class and the given property the corresponding value of the LnF.
 	 * <p>
 	 * This method does not use any caching.
 	 * 
@@ -693,8 +698,7 @@ public final class LnFUpdater {
 	}
 
 	/**
-	 * Returns for the given control and the given property the corresponding
-	 * value of the LnF style.
+	 * Returns for the given control and the given property the corresponding value of the LnF style.
 	 * 
 	 * @param control
 	 *            the control with style "attribute"
@@ -724,8 +728,7 @@ public final class LnFUpdater {
 	 *            class of the UI control
 	 * @param style
 	 *            the style of widget to construct
-	 * @return instance of UI control or {@code null} if no instance can be
-	 *         created
+	 * @return instance of UI control or {@code null} if no instance can be created
 	 */
 	private Control createDefaultControl(final Class<? extends Control> controlClass, final int style) {
 
@@ -786,8 +789,7 @@ public final class LnFUpdater {
 
 	private Control getControl(final Class<? extends Control> controlClass, final Composite parent, final int style) {
 		try {
-			final Constructor<? extends Control> constructor = controlClass.getConstructor(Composite.class,
-					Integer.TYPE);
+			final Constructor<? extends Control> constructor = controlClass.getConstructor(Composite.class, Integer.TYPE);
 			return constructor.newInstance(parent, style);
 		} catch (final NoSuchMethodException e) {
 			return null;
@@ -820,18 +822,15 @@ public final class LnFUpdater {
 	}
 
 	/**
-	 * Returns whether the given property should be ignored for the given
-	 * control.
+	 * Returns whether the given property should be ignored for the given control.
 	 * <p>
-	 * Properties of the annotation {@code IgnoreLnFUpdater} should not be
-	 * changed.
+	 * Properties of the annotation {@code IgnoreLnFUpdater} should not be changed.
 	 * 
 	 * @param controlClass
 	 *            class of the UI control
 	 * @param property
 	 *            description of the property to check
-	 * @return {@code true} if property should be ignored; otherwise
-	 *         {@code false}
+	 * @return {@code true} if property should be ignored; otherwise {@code false}
 	 */
 	private boolean ignoreProperty(final Class<? extends Control> controlClass, final PropertyDescriptor property) {
 		return ignoreProperty(controlClass, property.getName());
@@ -840,14 +839,12 @@ public final class LnFUpdater {
 	/**
 	 * Returns whether the given control should be ignored.
 	 * <p>
-	 * If the the annotation {@code IgnoreLnFUpdater} has a <i>property name</i>
-	 * "*", no property of the given control should be changed. So the complete
+	 * If the the annotation {@code IgnoreLnFUpdater} has a <i>property name</i> "*", no property of the given control should be changed. So the complete
 	 * control can be ignored.
 	 * 
 	 * @param control
 	 *            UI control
-	 * @return {@code true} if control should be ignored; otherwise
-	 *         {@code false}
+	 * @return {@code true} if control should be ignored; otherwise {@code false}
 	 */
 	private boolean ignoreControl(final Control control) {
 		return ignoreProperty(control.getClass(), "*"); //$NON-NLS-1$
@@ -876,12 +873,10 @@ public final class LnFUpdater {
 	}
 
 	/**
-	 * Checks, if the value of the given property should set also if the control
-	 * already has the new value.
+	 * Checks, if the value of the given property should set also if the control already has the new value.
 	 * 
 	 * @param property
-	 * @return {@code true} set anyway; {@code false} set only if the value are
-	 *         different
+	 * @return {@code true} set anyway; {@code false} set only if the value are different
 	 */
 	private boolean isAnywayProperty(final PropertyDescriptor property) {
 		final String propName = property.getName();
