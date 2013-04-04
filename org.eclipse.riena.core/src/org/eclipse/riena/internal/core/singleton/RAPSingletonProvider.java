@@ -35,7 +35,7 @@ public final class RAPSingletonProvider {
 	private static Method getInstanceMethod;
 	private static final Map<Object, Boolean> WIRED_RAP_SINGLETONS = new WeakHashMap<Object, Boolean>();
 
-	private static final String SESSION_SINGLETON_BASE = "org.eclipse.rwt.SessionSingletonBase"; //$NON-NLS-1$
+	private static final String SESSION_SINGLETON_BASE = "org.eclipse.rap.rwt.SessionSingletonBase"; //$NON-NLS-1$
 	private static final String GET_INSTANCE = "getInstance"; //$NON-NLS-1$
 
 	static {
