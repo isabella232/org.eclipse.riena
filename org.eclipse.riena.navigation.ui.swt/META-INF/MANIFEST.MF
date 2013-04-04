@@ -21,6 +21,7 @@ Export-Package: org.eclipse.riena.internal.navigation.ui.swt;x-friends:="org.ecl
  org.eclipse.riena.navigation.ui.swt.binding,
  org.eclipse.riena.navigation.ui.swt.component;x-friends:="org.eclipse.riena.tests,org.eclipse.riena.ui.swt.rcp",
  org.eclipse.riena.navigation.ui.swt.controllers,
+ org.eclipse.riena.navigation.ui.swt.facades,
  org.eclipse.riena.navigation.ui.swt.handlers,
  org.eclipse.riena.navigation.ui.swt.lnf.renderer,
  org.eclipse.riena.navigation.ui.swt.login,
@@ -35,3 +36,4 @@ Bundle-ClassPath: .
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: junit.framework;version="3.8.2";resolution:=optional
 Bundle-Vendor: Eclipse.org - Riena
+Eclipse-BuddyPolicy: registered

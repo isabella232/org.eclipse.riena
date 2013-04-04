@@ -34,7 +34,6 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Tree;
 
 import org.eclipse.riena.navigation.ui.swt.component.SubApplicationSwitcherWidget;
-import org.eclipse.riena.navigation.ui.swt.views.ModuleNavigationListener;
 import org.eclipse.riena.ui.swt.CompletionCombo;
 import org.eclipse.riena.ui.swt.EmbeddedTitleBar;
 import org.eclipse.riena.ui.swt.InfoFlyout;
@@ -102,10 +101,11 @@ public final class SWTFacadeRCP extends SWTFacade {
 		}
 	}
 
-	@Override
-	public void attachModuleNavigationListener(final Tree tree) {
-		new ModuleNavigationListener(tree);
-	}
+	//
+	//	@Override
+	//	public void attachModuleNavigationListener(final Tree tree) {
+	//		new ModuleNavigationListener(tree);
+	//	}
 
 	@Override
 	public CompletionCombo createCompletionCombo(final Composite parent, final int style) {

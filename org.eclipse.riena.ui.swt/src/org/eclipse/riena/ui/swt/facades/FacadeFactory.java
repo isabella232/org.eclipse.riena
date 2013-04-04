@@ -29,9 +29,8 @@ public final class FacadeFactory {
 	/**
 	 * Returns an RCP or RAP specific instance of the given type.
 	 * <p>
-	 * The code will append "RAP" or "RCP" to the given type, try to load the
-	 * resulting class and invoke the 0-argument constructor. If successful it
-	 * will return an instance that implements the argument {@code type}.
+	 * The code will append "RAP" or "RCP" to the given type, try to load the resulting class and invoke the 0-argument constructor. If successful it will
+	 * return an instance that implements the argument {@code type}.
 	 * 
 	 * @param type
 	 *            the desired type; never null
@@ -39,14 +38,13 @@ public final class FacadeFactory {
 	 * @throws RuntimeException
 	 *             if no matching instance could be found
 	 */
-	static <T> T newFacade(final Class<T> type) {
+	public static <T> T newFacade(final Class<T> type) {
 		final String suffix = "rap".equals(SWT.getPlatform()) ? "RAP" : "RCP"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		final String name = type.getName() + suffix;
 		try {
 			return type.cast(type.getClassLoader().loadClass(name).newInstance());
 		} catch (final ClassCastException e) {
-			final String msg = NLS.bind(
-					"Could not create an instance of {0} because it is not a {1}", name, type.getName()); //$NON-NLS-1$
+			final String msg = NLS.bind("Could not create an instance of {0} because it is not a {1}", name, type.getName()); //$NON-NLS-1$
 			throw new RuntimeException(msg, e);
 		} catch (final Throwable throwable) {
 			final String msg = NLS.bind("Could not load {0}", name); //$NON-NLS-1$
