@@ -69,8 +69,8 @@ public class SentinelTest extends RienaTestCase {
 	 */
 	@Override
 	protected void tearDown() throws Exception {
-		super.tearDown();
 		authorizationServiceReg.unregister();
+		super.tearDown();
 	}
 
 	public void testWithoutUser() {
