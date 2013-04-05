@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 compeople AG and others.
+ * Copyright (c) 2007, 2013 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -34,6 +34,7 @@ import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.model.SubApplicationNode;
 import org.eclipse.riena.navigation.model.SubModuleNode;
+import org.eclipse.riena.navigation.ui.controllers.ApplicationController;
 import org.eclipse.riena.navigation.ui.controllers.ModuleController;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.controller.IController;
@@ -66,17 +67,23 @@ public class SubModuleViewTest extends RienaTestCase {
 		addPluginXml(SubModuleViewTest.class, "SubModuleViewTest.xml");
 
 		appNode = new ApplicationNode();
+		new ApplicationController(appNode);
 		final SubApplicationNode subAppNode = new SubApplicationNode();
 		appNode.addChild(subAppNode);
+		subAppNode.setParent(appNode);
 		final ModuleGroupNode mgNode = new ModuleGroupNode(null);
 		subAppNode.addChild(mgNode);
+		mgNode.setParent(subAppNode);
 		moduleNode = new ModuleNode(null, "TestModuleLabel");
 		mgNode.addChild(moduleNode);
+		moduleNode.setParent(mgNode);
 
 		anotherNode = new SubModuleNode(new NavigationNodeId("testId2", "2"), "TestSubModuleLabel2");
 		moduleNode.addChild(anotherNode);
+		anotherNode.setParent(moduleNode);
 		anotherNodeSameView = new SubModuleNode(new NavigationNodeId("testId", "1"), "TestSubModuleLabel3");
 		moduleNode.addChild(anotherNodeSameView);
+		anotherNodeSameView.setParent(moduleNode);
 		nodesBoundToView = new ArrayList<ISubModuleNode>();
 		nodesBoundToSharedView = new ArrayList<ISubModuleNode>();
 
@@ -84,6 +91,7 @@ public class SubModuleViewTest extends RienaTestCase {
 		node = new SubModuleNode(new NavigationNodeId("testId", "0"), "TestSubModuleLabel");
 		moduleNode.setNavigationNodeController(new ModuleController(moduleNode));
 		moduleNode.addChild(node);
+		node.setParent(moduleNode);
 		subModuleNodeView.createPartControl(new Shell());
 		node.activate();
 	}
@@ -184,6 +192,7 @@ public class SubModuleViewTest extends RienaTestCase {
 
 	public void testShared2() {
 		final SubModuleNode node = new SubModuleNode(new NavigationNodeId("testId", SubModuleView.SHARED_ID));
+		node.setParent(moduleNode);
 		final TestSharedView2 smv = new TestSharedView2(node);
 		try {
 			smv.bind(node);

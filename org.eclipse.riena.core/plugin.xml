@@ -9,6 +9,7 @@
    <extension-point id="log4jDiagnosticContext" name="Log4j Diagnostic Context" schema="schema/log4jDiagnosticContext.exsd"/>
    <extension-point id="exceptionHandlers" name="Exception handlers" schema="schema/exceptionHandlers.exsd"/>
    <extension-point id="annotatedMethodHandlers" name="Annotated method handlers" schema="schema/annotatedMethodHandlers.exsd"/>
+   <extension-point id="configuration" name="Common Riena properties configuration" schema="schema/configuration.exsd"/>
 
 	<extension
         point="org.eclipse.riena.core.startups">

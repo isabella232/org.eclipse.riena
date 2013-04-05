@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 compeople AG and others.
+ * Copyright (c) 2007, 2013 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -340,7 +340,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	}
 
 	/**
-	 * <<<<<<< HEAD Important: This method is NOT API. It is used for the e4 migration only.
+	 * Important: This method is NOT API. It is used for the e4 migration only.
 	 * 
 	 * @param node
 	 * @since 4.0
@@ -351,7 +351,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	}
 
 	/**
-	 * ======= >>>>>>> origin/master This implementation will automatically focus on the control that had previously the focus, or, the first focusable control.
+	 * This implementation will automatically focus on the control that had previously the focus, or, the first focusable control.
 	 * <p>
 	 * You may overwrite it, but it typically is not necessary to do so. If you still want to use the 'restore focus to last control' functionality, check
 	 * {@link #canRestoreFocus()} and the invoke this method.

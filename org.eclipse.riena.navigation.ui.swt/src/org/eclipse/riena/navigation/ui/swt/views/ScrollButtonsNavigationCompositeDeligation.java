@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 compeople AG and others.
+ * Copyright (c) 2007, 2013 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,8 @@ package org.eclipse.riena.navigation.ui.swt.views;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * Delegation of a composite for scrolling in the navigation with scroll buttons.
+ * Delegation of a composite for scrolling in the navigation with scroll
+ * buttons.
  * 
  * @since 3.0
  */
@@ -38,7 +39,8 @@ public class ScrollButtonsNavigationCompositeDeligation extends AbstractNavigati
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * Create the support with the scrolling logic (also the composite for scrolling with buttons).
+	 * Create the support with the scrolling logic (also the composite for
+	 * scrolling with buttons).
 	 */
 	@Override
 	protected Composite createNavigationComposite(final Composite parent) {

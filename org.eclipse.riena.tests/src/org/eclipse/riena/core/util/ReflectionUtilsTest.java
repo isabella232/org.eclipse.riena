@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 compeople AG and others.
+ * Copyright (c) 2007, 2013 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -31,25 +31,25 @@ public class ReflectionUtilsTest extends RienaTestCase {
 	 * Test creating an instance #1
 	 */
 	public void testNewInstance1() {
-		final Object o = ReflectionUtils.newInstance("java.lang.String", "Hello!");
+		final Object o = ReflectionUtils.newInstance("java.lang.String", "Hello!"); //$NON-NLS-1$ //$NON-NLS-2$
 		assertTrue(o instanceof String);
-		assertEquals(o, "Hello!");
+		assertEquals(o, "Hello!"); //$NON-NLS-1$
 	}
 
 	/**
 	 * Test creating an instance #2
 	 */
 	public void testNewInstance2() {
-		final Object o = ReflectionUtils.newInstance("java.lang.String");
+		final Object o = ReflectionUtils.newInstance("java.lang.String"); //$NON-NLS-1$
 		assertTrue(o instanceof String);
-		assertEquals(o, "");
+		assertEquals(o, ""); //$NON-NLS-1$
 	}
 
 	/**
 	 * Test creating an instance #3
 	 */
 	public void testNewInstance3() {
-		final Object o = ReflectionUtils.newInstance("java.awt.Dimension", Integer.valueOf(2), Integer.valueOf(2));
+		final Object o = ReflectionUtils.newInstance("java.awt.Dimension", Integer.valueOf(2), Integer.valueOf(2)); //$NON-NLS-1$
 		assertTrue(o instanceof Dimension);
 		final Dimension dim = (Dimension) o;
 		assertEquals(new Dimension(2, 2), dim);
@@ -59,8 +59,8 @@ public class ReflectionUtilsTest extends RienaTestCase {
 	 * Test creating an instance #4
 	 */
 	public void testNewInstance4() {
-		final String s = ReflectionUtils.newInstance(String.class, "Hello!");
-		assertEquals(s, "Hello!");
+		final String s = ReflectionUtils.newInstance(String.class, "Hello!"); //$NON-NLS-1$
+		assertEquals(s, "Hello!"); //$NON-NLS-1$
 	}
 
 	public void testNewInstance5() {
@@ -74,22 +74,21 @@ public class ReflectionUtilsTest extends RienaTestCase {
 	public void testNewInstanceHidden1() {
 		try {
 			// This does not work
-			ReflectionUtils.newInstance(ReflectionUtilsHiddenConstructor.class, "something");
-			fail("That should not work!");
+			ReflectionUtils.newInstance(ReflectionUtilsHiddenConstructor.class, "something"); //$NON-NLS-1$
+			fail("That should not work!"); //$NON-NLS-1$
 		} catch (final ReflectionFailure f) {
-			Nop.reason("Expected!");
+			Nop.reason("Expected!"); //$NON-NLS-1$
 		}
-		final Object o = ReflectionUtils.newInstanceHidden(ReflectionUtilsHiddenConstructor.class, "something");
-		assertEquals("something", o.toString());
+		final Object o = ReflectionUtils.newInstanceHidden(ReflectionUtilsHiddenConstructor.class, "something"); //$NON-NLS-1$
+		assertEquals("something", o.toString()); //$NON-NLS-1$
 	}
 
 	/**
 	 * Test creating an hidden instance #2
 	 * */
 	public void testNewInstanceHidden2() {
-		final Object o = ReflectionUtils
-				.newInstanceHidden(ReflectionUtilsHiddenConstructor.class.getName(), "anything");
-		assertEquals("anything", o.toString());
+		final Object o = ReflectionUtils.newInstanceHidden(ReflectionUtilsHiddenConstructor.class.getName(), "anything"); //$NON-NLS-1$
+		assertEquals("anything", o.toString()); //$NON-NLS-1$
 	}
 
 	/**
@@ -102,18 +101,18 @@ public class ReflectionUtilsTest extends RienaTestCase {
 	public void testInvokeHidden() throws MalformedURLException {
 
 		final URLClassLoader sysloader = (URLClassLoader) ClassLoader.getSystemClassLoader();
-		final URL url = new URL("file:c:\\");
-		ReflectionUtils.invokeHidden(sysloader, "addURL", url);
+		final URL url = new URL("file:c:\\"); //$NON-NLS-1$
+		ReflectionUtils.invokeHidden(sysloader, "addURL", url); //$NON-NLS-1$
 	}
 
 	public void testInvokeWithNull() {
-		final String str = "Hello";
-		assertFalse((Boolean) ReflectionUtils.invoke(str, "equals", (Object) null));
+		final String str = "Hello"; //$NON-NLS-1$
+		assertFalse((Boolean) ReflectionUtils.invoke(str, "equals", (Object) null)); //$NON-NLS-1$
 	}
 
 	public void testInvokeWithNoObjectParameter() {
-		final String str = "Hello";
-		assertFalse((Boolean) ReflectionUtils.invoke(str, "equalsIgnoreCase", (String) null));
+		final String str = "Hello"; //$NON-NLS-1$
+		assertFalse((Boolean) ReflectionUtils.invoke(str, "equalsIgnoreCase", (String) null)); //$NON-NLS-1$
 	}
 
 	/**
@@ -127,25 +126,24 @@ public class ReflectionUtilsTest extends RienaTestCase {
 
 		final Object object = new Thrower();
 		try {
-			ReflectionUtils.invokeHidden(object, "setUrl", MalformedURLException.class, "filez://murks.at");
-			fail("MalformedURLException expected");
+			ReflectionUtils.invokeHidden(object, "setUrl", MalformedURLException.class, "filez://murks.at"); //$NON-NLS-1$ //$NON-NLS-2$
+			fail("MalformedURLException expected"); //$NON-NLS-1$
 		} catch (final MalformedURLException expected) {
-			ok("MalformedURLException expected");
+			ok("MalformedURLException expected"); //$NON-NLS-1$
 		}
 	}
 
 	/**
-	 * Tests the method {@code invokeHidden} with primitive and no-primitive
-	 * types as arguments,
+	 * Tests the method {@code invokeHidden} with primitive and no-primitive types as arguments,
 	 */
 	public void testInvokeHiddenWithPrimitves() {
 
-		ReflectionUtils.invokeHidden(TestClass.class, "setIntegerObject", 1);
-		final Integer outInteger = ReflectionUtils.invokeHidden(TestClass.class, "getIntegerObject");
+		ReflectionUtils.invokeHidden(TestClass.class, "setIntegerObject", 1); //$NON-NLS-1$
+		final Integer outInteger = ReflectionUtils.invokeHidden(TestClass.class, "getIntegerObject"); //$NON-NLS-1$
 		assertEquals(1, outInteger.intValue());
 
-		ReflectionUtils.invokeHidden(TestClass.class, "setIntPrimitive", 23);
-		final int outInt = ReflectionUtils.invokeHidden(TestClass.class, "getIntPrimitive");
+		ReflectionUtils.invokeHidden(TestClass.class, "setIntPrimitive", 23); //$NON-NLS-1$
+		final int outInt = ReflectionUtils.invokeHidden(TestClass.class, "getIntPrimitive"); //$NON-NLS-1$
 		assertEquals(23, outInt);
 
 	}
@@ -157,9 +155,9 @@ public class ReflectionUtilsTest extends RienaTestCase {
 	 */
 	public void testInvokeHiddenClass() {
 
-		ReflectionUtils.invokeHidden(TestClass.class, "setString", new Object[] { "hihi" });
-		final String out = (String) ReflectionUtils.invokeHidden(TestClass.class, "getString");
-		assertEquals(out, "hihi");
+		ReflectionUtils.invokeHidden(TestClass.class, "setString", new Object[] { "hihi" }); //$NON-NLS-1$ //$NON-NLS-2$
+		final String out = (String) ReflectionUtils.invokeHidden(TestClass.class, "getString"); //$NON-NLS-1$
+		assertEquals(out, "hihi"); //$NON-NLS-1$
 	}
 
 	/**
@@ -170,10 +168,10 @@ public class ReflectionUtilsTest extends RienaTestCase {
 	public void testInvokeHiddenClassWithIOException() {
 
 		try {
-			ReflectionUtils.invokeHidden(Thrower.class, "throwIOException", IOException.class);
+			ReflectionUtils.invokeHidden(Thrower.class, "throwIOException", IOException.class); //$NON-NLS-1$
 			fail();
 		} catch (final IOException e) {
-			assertEquals("Yippie!", e.getMessage());
+			assertEquals("Yippie!", e.getMessage()); //$NON-NLS-1$
 		}
 	}
 
@@ -184,11 +182,23 @@ public class ReflectionUtilsTest extends RienaTestCase {
 	 */
 	public void testSetGetHiddenInstance() {
 
-		final String s = "Hallo";
-		ReflectionUtils.setHidden(s, "count", Integer.valueOf(2));
-		final Integer count = (Integer) ReflectionUtils.getHidden(s, "count");
-		assertEquals(2, count.intValue());
-		assertEquals(s, "Ha");
+		final TestClass testInstance = new TestClass("Hello"); //$NON-NLS-1$
+		ReflectionUtils.setHidden(testInstance, "privateString", "Hi"); //$NON-NLS-1$ //$NON-NLS-2$
+		final String string = (String) ReflectionUtils.getHidden(testInstance, "privateString"); //$NON-NLS-1$
+		assertEquals("Hi", string); //$NON-NLS-1$
+
+		TestClass.setIntPrimitive(1);
+		int intValue = TestClass.getIntPrimitive();
+		assertEquals(1, intValue);
+
+		ReflectionUtils.setHidden(testInstance, "intPrimitive", Integer.valueOf(2)); //$NON-NLS-1$
+		intValue = TestClass.getIntPrimitive();
+		assertEquals(2, intValue);
+
+		TestClass.setIntPrimitive(3);
+		intValue = (Integer) ReflectionUtils.getHidden(testInstance, "intPrimitive"); //$NON-NLS-1$
+		assertEquals(3, intValue);
+
 	}
 
 	/**
@@ -198,9 +208,9 @@ public class ReflectionUtilsTest extends RienaTestCase {
 	 */
 	public void testSetGetHiddenClass() {
 
-		ReflectionUtils.setHidden(TestClass.class, "string", "hallo");
-		final String out = (String) ReflectionUtils.getHidden(TestClass.class, "string");
-		assertEquals(out, "hallo");
+		ReflectionUtils.setHidden(TestClass.class, "string", "hallo"); //$NON-NLS-1$ //$NON-NLS-2$
+		final String out = (String) ReflectionUtils.getHidden(TestClass.class, "string"); //$NON-NLS-1$
+		assertEquals(out, "hallo"); //$NON-NLS-1$
 	}
 
 	/**
@@ -210,10 +220,10 @@ public class ReflectionUtilsTest extends RienaTestCase {
 	 */
 	public void testSetGetHiddenDeepField() {
 
-		final TestTestClass ttc = new TestTestClass("Hallo");
-		ReflectionUtils.setHidden(ttc, "privateString", "hurz");
-		final String hurz = (String) ReflectionUtils.getHidden(ttc, "privateString");
-		assertEquals("hurz", hurz);
+		final TestTestClass ttc = new TestTestClass("Hallo"); //$NON-NLS-1$
+		ReflectionUtils.setHidden(ttc, "privateString", "hurz"); //$NON-NLS-1$ //$NON-NLS-2$
+		final String hurz = (String) ReflectionUtils.getHidden(ttc, "privateString"); //$NON-NLS-1$
+		assertEquals("hurz", hurz); //$NON-NLS-1$
 	}
 
 	/**
@@ -223,9 +233,9 @@ public class ReflectionUtilsTest extends RienaTestCase {
 	 */
 	public void testSetGetHiddenDeepClassField() throws Throwable {
 
-		ReflectionUtils.setHidden(TestTestClass.class, "string", "hallo");
-		final String out = (String) ReflectionUtils.getHidden(TestTestClass.class, "string");
-		assertEquals(out, "hallo");
+		ReflectionUtils.setHidden(TestTestClass.class, "string", "hallo"); //$NON-NLS-1$ //$NON-NLS-2$
+		final String out = (String) ReflectionUtils.getHidden(TestTestClass.class, "string"); //$NON-NLS-1$
+		assertEquals(out, "hallo"); //$NON-NLS-1$
 	}
 
 	/**
@@ -240,7 +250,7 @@ public class ReflectionUtilsTest extends RienaTestCase {
 		HaeshMaep.created = false;
 		final Map<String, String> map = ReflectionUtils.newLazyInstance(Map.class, HaeshMaep.class);
 		assertFalse(HaeshMaep.created);
-		map.put("hi", "there");
+		map.put("hi", "there"); //$NON-NLS-1$ //$NON-NLS-2$
 		assertTrue(HaeshMaep.created);
 	}
 
@@ -256,7 +266,7 @@ public class ReflectionUtilsTest extends RienaTestCase {
 		HaeshMaep.created = false;
 		final Map<String, String> map = ReflectionUtils.newLazyInstance(Map.class, HaeshMaep.class.getName());
 		assertFalse(HaeshMaep.created);
-		map.put("hi", "there");
+		map.put("hi", "there"); //$NON-NLS-1$ //$NON-NLS-2$
 		assertTrue(HaeshMaep.created);
 	}
 
@@ -336,7 +346,7 @@ public class ReflectionUtilsTest extends RienaTestCase {
 
 		@SuppressWarnings("unused")
 		private static String throwIOException() throws IOException {
-			throw new IOException("Yippie!");
+			throw new IOException("Yippie!"); //$NON-NLS-1$
 		}
 	}
 

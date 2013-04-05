@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 compeople AG and others.
+ * Copyright (c) 2007, 2013 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,12 +14,39 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
+import org.eclipse.riena.ui.swt.ChoiceComposite;
 import org.eclipse.riena.ui.swt.utils.SWTControlFinder;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
  * Baseclass for all ChoiceRidgets.
  */
 public abstract class AbstractChoiceRidget extends AbstractSWTRidget {
+
+	protected void disposeChildren(final ChoiceComposite control) {
+		if (control != null && !control.isDisposed()) {
+			for (final Control child : control.getChildrenButtons()) {
+				child.dispose();
+			}
+		}
+	}
+
+	/**
+	 * Returns the number of the children of the given UI control.
+	 * <p>
+	 * this method is not API, visibility for testing
+	 * 
+	 * @param control
+	 *            UI control
+	 * 
+	 * @return number of children
+	 */
+	public int getChildrenCount(final ChoiceComposite control) {
+		if (SwtUtilities.isDisposed(control)) {
+			return 0;
+		}
+		return control.getChildrenButtons().length;
+	}
 
 	@Override
 	public boolean hasFocus() {
@@ -43,8 +70,7 @@ public abstract class AbstractChoiceRidget extends AbstractSWTRidget {
 	}
 
 	/**
-	 * Iterates over the child controls of a given composite and checks if one
-	 * them has the focus.
+	 * Iterates over the child controls of a given composite and checks if one them has the focus.
 	 */
 	private static class ChildFocusChecker extends SWTControlFinder {
 

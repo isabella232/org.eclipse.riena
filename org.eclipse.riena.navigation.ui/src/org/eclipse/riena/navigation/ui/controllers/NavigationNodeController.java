@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 compeople AG and others.
+ * Copyright (c) 2007, 2013 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -40,7 +40,9 @@ import org.eclipse.riena.ui.ridgets.ClassRidgetMapper;
 import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
+import org.eclipse.riena.ui.ridgets.IStatuslineRidget;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
+import org.eclipse.riena.ui.ridgets.RidgetToStatuslineSubscriber;
 import org.eclipse.riena.ui.ridgets.SubModuleUtils;
 import org.eclipse.riena.ui.ridgets.controller.IController;
 
@@ -58,6 +60,7 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	private NavigationUIFilterApplier<N> nodeListener;
 	private PropertyChangeListener propertyChangeListener;
 	private boolean configured = false;
+	private final RidgetToStatuslineSubscriber ridgetToStatuslineSubscriber = new RidgetToStatuslineSubscriber();
 
 	/**
 	 * Create a new Navigation Node view Controller. Set the navigation node later.
@@ -186,13 +189,26 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 		ridget.addPropertyChangeListener(IRidget.PROPERTY_SHOWING, propertyChangeListener);
 		ridget.addPropertyChangeListener(AbstractRidget.COMMAND_UPDATE, propertyChangeListener);
 		ridgets.put(id, ridget);
+		ridgetToStatuslineSubscriber.addRidget(ridget);
 	}
 
 	/**
+	 * {@inheritDoc}
+	 * 
 	 * @since 5.0
 	 */
 	public boolean removeRidget(final String id) {
+		ridgetToStatuslineSubscriber.removeRidget(getRidget(id));
 		return ridgets.remove(id) != null;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @since 5.0
+	 */
+	public void setStatuslineToShowMarkerMessages(final IStatuslineRidget statuslineToShowMarkerMessages) {
+		ridgetToStatuslineSubscriber.setStatuslineToShowMarkerMessages(statuslineToShowMarkerMessages, getRidgets());
 	}
 
 	/**

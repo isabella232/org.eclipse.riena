@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 compeople AG and others.
+ * Copyright (c) 2007, 2013 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -47,6 +47,12 @@ import org.eclipse.riena.ui.ridgets.nls.Messages;
  * @see ValidRangeAllowEmpty
  */
 public class ValidRange extends ValidDecimal implements IExecutableExtension {
+	/**
+	 * Value to request unlimited precision in method {@link #toBigDecimal(Number, int)}
+	 * 
+	 * @since 5.0
+	 */
+	protected static final int PRECISION_UNLIMITED = 0;
 
 	private Number min;
 	private Number max;
@@ -241,7 +247,7 @@ public class ValidRange extends ValidDecimal implements IExecutableExtension {
 	 * @since 3.0
 	 */
 	protected boolean validateRange(final BigDecimal value) {
-		return value.compareTo(toBigDecimal(min, value)) < 0 || value.compareTo(toBigDecimal(max, value)) > 0;
+		return value.compareTo(toBigDecimal(min)) < 0 || value.compareTo(toBigDecimal(max)) > 0;
 	}
 
 	/**
@@ -279,8 +285,8 @@ public class ValidRange extends ValidDecimal implements IExecutableExtension {
 	 *            a number.
 	 * 
 	 * @param precision
-	 *            The number of digits to be used for an operation. A value of 0 indicates that unlimited precision (as many digits as are required) will be
-	 *            used. Note that leading zeros (in the coefficient of a number) are never significant.
+	 *            The number of digits to be used for an operation. A value of {@link #PRECISION_UNLIMITED} indicates that unlimited precision (as many digits
+	 *            as are required) will be used. Note that leading zeros (in the coefficient of a number) are never significant.
 	 * 
 	 * @return a BigDecimal instance.
 	 * @since 3.0
@@ -290,6 +296,10 @@ public class ValidRange extends ValidDecimal implements IExecutableExtension {
 			return (BigDecimal) number;
 		} else if (number instanceof BigInteger) {
 			return new BigDecimal((BigInteger) number);
+		} else if (precision == PRECISION_UNLIMITED && number instanceof Double) {
+			return new BigDecimal(Double.toString((Double) number));
+		} else if (precision == PRECISION_UNLIMITED && number instanceof Float) {
+			return new BigDecimal(Float.toString((Float) number));
 		} else if (number instanceof Float || number instanceof Double) {
 			return new BigDecimal(number.doubleValue(), new MathContext(precision));
 		} else {

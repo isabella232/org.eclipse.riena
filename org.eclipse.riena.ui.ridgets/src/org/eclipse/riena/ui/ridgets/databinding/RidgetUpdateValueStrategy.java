@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 compeople AG and others.
+ * Copyright (c) 2007, 2013 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,8 +18,11 @@ import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 
 import org.eclipse.riena.ui.ridgets.ValueBindingSupport;
+import org.eclipse.riena.ui.ridgets.validation.IValidationCallback;
+import org.eclipse.riena.ui.ridgets.validation.ValidatorCollection;
 
 /**
  * 
@@ -106,14 +109,48 @@ public class RidgetUpdateValueStrategy extends UpdateValueStrategy {
 	@Override
 	protected IStatus doSet(final IObservableValue destination, final Object convertedValue) {
 		final IStatus status = super.doSet(destination, convertedValue);
-		return validateAfterSet(status);
+		return status.isOK() ? validateAfterSet() : status;
 	}
 
-	private IStatus validateAfterSet(final IStatus status) {
-		if (status.isOK() && afterSetValidator != null) {
-			final IObservableValue targetOV = valueBindingSupport.getTargetOV();
-			return afterSetValidator.validate(targetOV.getValue());
+	/**
+	 * Visible for testing
+	 * 
+	 * @since 5.0
+	 */
+	protected IStatus validateAfterSet() {
+		final Object value = valueBindingSupport.getTargetOV().getValue();
+		return performValidation(value, afterSetValidator);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.core.databinding.UpdateValueStrategy#validateAfterGet(java.lang.Object)
+	 */
+	@Override
+	public IStatus validateAfterGet(final Object value) {
+		return performValidation(value, afterGetValidator);
+	}
+
+	/**
+	 * Validates the given value using the given validator. If the validator is a {@link IValidatorCollection}, then the status of each validator collection
+	 * child is being set to the binding support.
+	 */
+	private IStatus performValidation(final Object value, final IValidator validator) {
+		if (validator instanceof ValidatorCollection) {
+			return ((ValidatorCollection) validator).validate(value, new IValidationCallback() {
+				public void validationRuleChecked(final IValidator validationRule, final IStatus status) {
+					valueBindingSupport.updateValidationStatus(validationRule, status);
+				}
+
+				public void validationResult(final IStatus status) {
+					// do nothing
+				}
+			});
+		} else if (validator != null) {
+			return validator.validate(value);
+		} else {
+			return Status.OK_STATUS;
 		}
-		return status;
 	}
 }

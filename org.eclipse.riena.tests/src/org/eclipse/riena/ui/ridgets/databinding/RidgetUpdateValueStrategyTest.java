@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 compeople AG and others.
+ * Copyright (c) 2007, 2013 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -20,9 +20,7 @@ import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.conversion.IConverter;
 import org.eclipse.core.databinding.conversion.NumberToStringConverter;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
@@ -86,25 +84,42 @@ public class RidgetUpdateValueStrategyTest extends TestCase {
 	}
 
 	public void testValidateAfterSetWithSetError() throws Exception {
-		final RidgetUpdateValueStrategy strategy = new RidgetUpdateValueStrategy(new ValueBindingSupport(EasyMock.createNiceMock(IObservableValue.class)));
-		final IStatus setStatus = new Status(IStatus.ERROR, "plugin.id", "some message");
-		assertSame(setStatus, ReflectionUtils.<IStatus> invokeHidden(strategy, "validateAfterSet", setStatus));
+		final IObservableValue mock = EasyMock.createNiceMock(IObservableValue.class);
+		mock.setValue(EasyMock.anyObject());
+		EasyMock.expectLastCall().andThrow(new RuntimeException("Something went wrong"));
+		EasyMock.replay(mock);
+		final RidgetUpdateValueStrategy strategy = new RidgetUpdateValueStrategy(new ValueBindingSupport(mock)) {
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see org.eclipse.riena.ui.ridgets.databinding.RidgetUpdateValueStrategy#validateAfterSet()
+			 */
+			@Override
+			protected IStatus validateAfterSet() {
+				fail("This method should not be called when doSet() returns an error status.");
+				return null;
+			}
+		};
 
-		strategy.setAfterSetValidator(EasyMock.createMock(IValidator.class));
-		assertSame(setStatus, ReflectionUtils.<Object> invokeHidden(strategy, "validateAfterSet", setStatus));
+		ReflectionUtils.invokeHidden(strategy, "doSet", mock, "one two");
 	}
 
 	public void testValidateAfterSetWithSetOk() throws Exception {
-		final RidgetUpdateValueStrategy strategy = new RidgetUpdateValueStrategy(new ValueBindingSupport(EasyMock.createNiceMock(IObservableValue.class)));
-		final IStatus setStatus = Status.OK_STATUS;
-		assertSame(setStatus, ReflectionUtils.<IStatus> invokeHidden(strategy, "validateAfterSet", setStatus));
+		final boolean[] validateAfterSetCalled = new boolean[1]; // must be final and modifiable
+		final RidgetUpdateValueStrategy strategy = new RidgetUpdateValueStrategy(new ValueBindingSupport(EasyMock.createNiceMock(IObservableValue.class))) {
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see org.eclipse.riena.ui.ridgets.databinding.RidgetUpdateValueStrategy#validateAfterSet()
+			 */
+			@Override
+			protected IStatus validateAfterSet() {
+				validateAfterSetCalled[0] = true;
+				return super.validateAfterSet();
+			}
+		};
 
-		final IStatus s1 = new Status(IStatus.ERROR, "plugin.id", "some message");
-		final IValidator validator = EasyMock.createMock(IValidator.class);
-		EasyMock.expect(validator.validate(EasyMock.anyObject())).andReturn(s1);
-		EasyMock.replay(validator);
-		strategy.setAfterSetValidator(validator);
-		assertSame(s1, ReflectionUtils.<Object> invokeHidden(strategy, "validateAfterSet", setStatus));
-		EasyMock.verify(validator);
+		ReflectionUtils.invokeHidden(strategy, "doSet", EasyMock.createNiceMock(IObservableValue.class), "one two");
+		assertTrue("validateAfterSet() must be called if doSet() returned an OK status.", validateAfterSetCalled[0]);
 	}
 }

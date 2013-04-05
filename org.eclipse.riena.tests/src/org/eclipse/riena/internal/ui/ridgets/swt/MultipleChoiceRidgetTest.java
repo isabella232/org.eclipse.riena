@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 compeople AG and others.
+ * Copyright (c) 2007, 2013 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -86,7 +86,7 @@ public final class MultipleChoiceRidgetTest extends MarkableRidgetTest {
 
 		assertFalse(choiceRidget.hasFocus());
 		getRidget().setUIControl(widget);
-		widget.getChildren()[0].setFocus();
+		widget.getChildrenButtons()[0].setFocus();
 		assertTrue(getRidget().hasFocus());
 	}
 
@@ -321,8 +321,8 @@ public final class MultipleChoiceRidgetTest extends MarkableRidgetTest {
 		assertEquals("Option successfully selected in model", 1, optionProvider.getSelectedOptions().size());
 		assertEquals("Option successfully selected in ridget", 1, ridget.getSelection().size());
 		assertEquals("PropertyChangedEvent fired", 1, events.size());
-		assertEquals("PropertyChangedEvent fired", events.get(0), IChoiceRidget.PROPERTY_SELECTION,
-				Collections.EMPTY_LIST, Arrays.asList(optionProvider.getOptions().get(0)));
+		assertEquals("PropertyChangedEvent fired", events.get(0), IChoiceRidget.PROPERTY_SELECTION, Collections.EMPTY_LIST,
+				Arrays.asList(optionProvider.getOptions().get(0)));
 	}
 
 	/**
@@ -353,15 +353,14 @@ public final class MultipleChoiceRidgetTest extends MarkableRidgetTest {
 	 */
 	public void testBindToModelUsingLabels() throws Exception {
 		final IMultipleChoiceRidget ridget = getRidget();
-		final Composite control = getWidget();
+		final ChoiceComposite control = getWidget();
 		optionProvider = new OptionProvider();
 
-		ridget.bindToModel(optionProvider.getOptions(), optionProvider.getOptionLabels(), optionProvider,
-				"selectedOptions");
+		ridget.bindToModel(optionProvider.getOptions(), optionProvider.getOptionLabels(), optionProvider, "selectedOptions");
 		ridget.updateFromModel();
 
 		final Object[] labels = optionProvider.getOptionLabels().toArray();
-		final Control[] children = control.getChildren();
+		final Control[] children = control.getChildrenButtons();
 		assertEquals(labels.length, children.length);
 		for (int i = 0; i < labels.length; i++) {
 			final String label = (String) labels[i];
@@ -440,7 +439,7 @@ public final class MultipleChoiceRidgetTest extends MarkableRidgetTest {
 		control.setBackground(colorRed);
 		getRidget().setUIControl(control);
 
-		final Control[] children = control.getChildren();
+		final Control[] children = control.getChildrenButtons();
 		assertTrue(children.length > 0);
 		for (final Control child : children) {
 			assertEquals("wrong foreground on " + child, colorGreen, child.getForeground());
@@ -461,7 +460,7 @@ public final class MultipleChoiceRidgetTest extends MarkableRidgetTest {
 		getRidget().setUIControl(control);
 
 		assertFalse(control.isEnabled());
-		final Control[] children = control.getChildren();
+		final Control[] children = control.getChildrenButtons();
 		assertTrue(children.length > 0);
 		for (final Control child : children) {
 			assertFalse("control should be disabled: " + child, child.isEnabled());
@@ -560,9 +559,9 @@ public final class MultipleChoiceRidgetTest extends MarkableRidgetTest {
 
 	public void testOutputCannotBeChangedFromUI() {
 		final IMultipleChoiceRidget ridget = getRidget();
-		final Button button1 = (Button) getWidget().getChildren()[0];
-		final Button button2 = (Button) getWidget().getChildren()[1];
-		final Button button3 = (Button) getWidget().getChildren()[2];
+		final Button button1 = (Button) getWidget().getChildrenButtons()[0];
+		final Button button2 = (Button) getWidget().getChildrenButtons()[1];
+		final Button button3 = (Button) getWidget().getChildrenButtons()[2];
 
 		assertTrue(button1.getSelection());
 		assertTrue(button2.getSelection());
@@ -599,9 +598,7 @@ public final class MultipleChoiceRidgetTest extends MarkableRidgetTest {
 	}
 
 	/**
-	 * Tests that changing the selected state via
-	 * {@link IToggleButtonRidget#setSelected(boolean) does not select the
-	 * control, when the ridget is disabled.
+	 * Tests that changing the selected state via {@link IToggleButtonRidget#setSelected(boolean) does not select the control, when the ridget is disabled.
 	 */
 	public void testDisabledRidgetDoesNotCheckControlOnRidgetSelection() {
 		final IMultipleChoiceRidget ridget = getRidget();
@@ -641,8 +638,7 @@ public final class MultipleChoiceRidgetTest extends MarkableRidgetTest {
 	}
 
 	/**
-	 * Tests that changing the selected state via a bound model, does not select
-	 * the control, when the ridget is disabled.
+	 * Tests that changing the selected state via a bound model, does not select the control, when the ridget is disabled.
 	 */
 	public void testDisabledRidgetDoesNotCheckControlOnModelSelection() {
 		final IMultipleChoiceRidget ridget = getRidget();
@@ -679,8 +675,7 @@ public final class MultipleChoiceRidgetTest extends MarkableRidgetTest {
 	}
 
 	/**
-	 * Tests that disabling the ridget does not fire 'selected' events, even
-	 * though the control is modified.
+	 * Tests that disabling the ridget does not fire 'selected' events, even though the control is modified.
 	 */
 	public void testDisabledDoesNotFireSelected() {
 		final IMultipleChoiceRidget ridget = getRidget();
@@ -699,8 +694,7 @@ public final class MultipleChoiceRidgetTest extends MarkableRidgetTest {
 	}
 
 	/**
-	 * Tests that the disabled state is applied to a new control when set into
-	 * the ridget.
+	 * Tests that the disabled state is applied to a new control when set into the ridget.
 	 */
 	public void testDisableAndClearOnBind() {
 		final IMultipleChoiceRidget ridget = getRidget();
@@ -776,7 +770,7 @@ public final class MultipleChoiceRidgetTest extends MarkableRidgetTest {
 	public void testToggleDisabledWhenOutputOnly() {
 		final IMultipleChoiceRidget ridget = getRidget();
 		final ChoiceComposite control = getWidget();
-		final Button btnFirst = (Button) control.getChildren()[0];
+		final Button btnFirst = (Button) control.getChildrenButtons()[0];
 		final String first = optionProvider.getOptions().get(0);
 		ridget.setSelection(Arrays.asList(first));
 
@@ -785,7 +779,7 @@ public final class MultipleChoiceRidgetTest extends MarkableRidgetTest {
 		ridget.setOutputOnly(true);
 		ridget.setEnabled(false);
 		ridget.setEnabled(true);
-		for (final Control child : control.getChildren()) {
+		for (final Control child : control.getChildrenButtons()) {
 			final Button button = (Button) child;
 			if (button == btnFirst) {
 				assertTrue(btnFirst.isEnabled());
@@ -815,8 +809,8 @@ public final class MultipleChoiceRidgetTest extends MarkableRidgetTest {
 
 		assertEquals(1, ridget.getSelection().size());
 		assertEquals(second, ridget.getSelection().get(0));
-		final Button btnSecond = (Button) control.getChildren()[1];
-		for (final Control child : control.getChildren()) {
+		final Button btnSecond = (Button) control.getChildrenButtons()[1];
+		for (final Control child : control.getChildrenButtons()) {
 			final Button button = (Button) child;
 			if (button == btnSecond) {
 				assertTrue(btnSecond.isEnabled());
@@ -844,8 +838,7 @@ public final class MultipleChoiceRidgetTest extends MarkableRidgetTest {
 		return events;
 	}
 
-	private void assertEquals(final String message, final PropertyChangeEvent evt, final String name,
-			final Object oldValue, final Object newValue) {
+	private void assertEquals(final String message, final PropertyChangeEvent evt, final String name, final Object oldValue, final Object newValue) {
 		assertEquals(message + " / event name", evt.getPropertyName(), name);
 		assertEquals(message + " / event old Value", evt.getOldValue(), oldValue);
 		assertEquals(message + " / event new value", evt.getNewValue(), newValue);
@@ -853,7 +846,7 @@ public final class MultipleChoiceRidgetTest extends MarkableRidgetTest {
 
 	private List<Object> getSelectedControlValues(final ChoiceComposite control) {
 		final List<Object> result = new ArrayList<Object>();
-		for (final Control child : control.getChildren()) {
+		for (final Control child : control.getChildrenButtons()) {
 			final Button button = (Button) child;
 			if (button.getSelection()) {
 				result.add(button.getData());
@@ -871,10 +864,9 @@ public final class MultipleChoiceRidgetTest extends MarkableRidgetTest {
 
 	private static final class OptionProvider {
 
-		private List<String> options = new ArrayList<String>(Arrays.asList("Option A", "Option B", "Option C",
-				"Option D", "Option E", "Option F"));
-		private List<String> optionLabels = new ArrayList<String>(Arrays.asList("Option label A", "Option label B",
-				"Option label C", "Option label D", "Option label E", "Option label F"));
+		private List<String> options = new ArrayList<String>(Arrays.asList("Option A", "Option B", "Option C", "Option D", "Option E", "Option F"));
+		private List<String> optionLabels = new ArrayList<String>(Arrays.asList("Option label A", "Option label B", "Option label C", "Option label D",
+				"Option label E", "Option label F"));
 		private List<String> selectedOptions = Arrays.asList(options.get(0), options.get(1));
 
 		public List<String> getOptions() {

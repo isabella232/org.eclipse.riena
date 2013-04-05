@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 compeople AG and others.
+ * Copyright (c) 2007, 2013 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -25,7 +25,8 @@ import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.model.NavigationModelFailure;
 
 /**
- * This class provides information about the active navigation node for updating the menus.
+ * This class provides information about the active navigation node for updating
+ * the menus.
  */
 public class NavigationSourceProvider extends AbstractSourceProvider {
 
@@ -41,8 +42,8 @@ public class NavigationSourceProvider extends AbstractSourceProvider {
 	private static final String ACTIVE_SUB_MODULE_NODE_ID = ACTIVE_SUB_MODULE_NODE + "Id"; //$NON-NLS-1$
 	private static final int EVENT_PRIORITY = 1 << 28;
 
-	private static final String[] PROVIDED_SOURCE_NAMES = new String[] { ACTIVE_SUB_APPLICATION_NODE_ID, ACTIVE_MODULE_GROUP_NODE_ID, ACTIVE_MODULE_NODE_ID,
-			ACTIVE_SUB_MODULE_NODE_ID, ACTIVE_MODULE_NODE };
+	private static final String[] PROVIDED_SOURCE_NAMES = new String[] { ACTIVE_SUB_APPLICATION_NODE_ID,
+			ACTIVE_MODULE_GROUP_NODE_ID, ACTIVE_MODULE_NODE_ID, ACTIVE_SUB_MODULE_NODE_ID, ACTIVE_MODULE_NODE };
 
 	public void dispose() {
 		isDisposed = true;
@@ -79,14 +80,15 @@ public class NavigationSourceProvider extends AbstractSourceProvider {
 		return PROVIDED_SOURCE_NAMES;
 	}
 
-	private void fireSourceChange(final INavigationNode<?> node) {
+	void fireSourceChange(final INavigationNode<?> node) {
 		final String variable = getVariableNameForNode(node);
 		fireSourceChanged(EVENT_PRIORITY, variable + "Id", getTypeNodeId(node)); //$NON-NLS-1$
 		fireSourceChanged(EVENT_PRIORITY, variable, node);
 	}
 
 	/**
-	 * Returns the type ID of the given node. An empty string is returned if the node has no ID.
+	 * Returns the type ID of the given node. An empty string is returned if the
+	 * node has no ID.
 	 * 
 	 * @param node
 	 *            navigation node
@@ -119,7 +121,8 @@ public class NavigationSourceProvider extends AbstractSourceProvider {
 	}
 
 	/**
-	 * This method should be called if a node was activated so that the value of the source can be updated.
+	 * This method should be called if a node was activated so that the value of
+	 * the source can be updated.
 	 * <p>
 	 * Also the sources of all parent nodes are updated.
 	 * 

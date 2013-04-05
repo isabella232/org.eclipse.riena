@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 compeople AG and others.
+ * Copyright (c) 2007, 2013 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -46,6 +46,26 @@ public class ValidRangeTest extends RienaTestCase {
 	 */
 	protected ValidRange createRange(final Number min, final Number max, final Locale locale) {
 		return new ValidRange(min, max, locale);
+	}
+
+	public void testValueWithLessPrecisionThanMinimumFloat() throws Exception {
+		final float min = (float) 3.51;
+		final float max = (float) 999.99;
+		final ValidRange v = createRange(min, max, Locale.US);
+
+		assertFalse(v.validate("3.5").isOK());
+		assertFalse(v.validate("3.50").isOK());
+		assertTrue(v.validate("3.51").isOK());
+	}
+
+	public void testValueWithLessPrecisionThanMinimumDouble() throws Exception {
+		final double min = 3.51;
+		final double max = 999.99;
+		final ValidRange v = createRange(min, max, Locale.US);
+
+		assertFalse(v.validate("3.5").isOK());
+		assertFalse(v.validate("3.50").isOK());
+		assertTrue(v.validate("3.51").isOK());
 	}
 
 	public void testGrouping() throws Exception {
@@ -286,6 +306,15 @@ public class ValidRangeTest extends RienaTestCase {
 	public void testDoubleValuesWithMinMaxEqualThreeDecimalPlaces() {
 		final Double min = 5000.555;
 		final Double max = 5000.555;
+		final ValidRange rule = new ValidRange(min, max, Locale.getDefault(), null, 3, 15);
+		final String value = TestUtils.getLocalizedNumber("5000,555");
+
+		assertTrue(rule.validate(value).isOK());
+	}
+
+	public void testFloatValuesWithMinMaxEqualThreeDecimalPlaces() {
+		final float min = (float) 5000.555;
+		final float max = (float) 5000.555;
 		final ValidRange rule = new ValidRange(min, max, Locale.getDefault(), null, 3, 15);
 		final String value = TestUtils.getLocalizedNumber("5000,555");
 

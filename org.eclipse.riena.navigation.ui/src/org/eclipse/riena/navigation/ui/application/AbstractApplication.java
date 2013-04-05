@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 compeople AG and others.
+ * Copyright (c) 2007, 2013 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -48,7 +48,8 @@ import org.eclipse.riena.ui.core.uiprocess.ProgressProviderBridge;
 public abstract class AbstractApplication implements IApplication, IApplicationModelCreator {
 
 	/**
-	 * The result code EXIT_ABORT can be used to indicate that the login process was aborted. As a result the application has to be terminated.
+	 * The result code EXIT_ABORT can be used to indicate that the login process
+	 * was aborted. As a result the application has to be terminated.
 	 * 
 	 * @since 3.0
 	 */
@@ -94,8 +95,10 @@ public abstract class AbstractApplication implements IApplication, IApplicationM
 	}
 
 	/**
-	 * Returns the exit Object or code of the application. May be overridden by subclasses. By default the login return code <code>EXIT_ABORT</code> is
-	 * converted to application result code <code>EXIT_OK</code>, because aborting the login process is a normal way to terminate the application.
+	 * Returns the exit Object or code of the application. May be overridden by
+	 * subclasses. By default the login return code <code>EXIT_ABORT</code> is
+	 * converted to application result code <code>EXIT_OK</code>, because
+	 * aborting the login process is a normal way to terminate the application.
 	 * 
 	 * @param result
 	 *            the login result code to convert.
@@ -121,8 +124,9 @@ public abstract class AbstractApplication implements IApplication, IApplicationM
 	private void installProgressProviderBridge() {
 		disableEclipseProgressManager();
 		/**
-		 * install the riena ProgressProvider which handles creation of IProgressMontitor instances for scheduled jobs. riena provides a special monitor for
-		 * background processing.
+		 * install the riena ProgressProvider which handles creation of
+		 * IProgressMontitor instances for scheduled jobs. riena provides a
+		 * special monitor for background processing.
 		 */
 		final ProgressProviderBridge instance = ProgressProviderBridge.instance();
 		Job.getJobManager().setProgressProvider(instance);
@@ -253,6 +257,7 @@ public abstract class AbstractApplication implements IApplication, IApplicationM
 
 	@InjectExtension
 	public void update(final ILoginDialogViewExtension[] data) {
+
 		if (data.length > 0) {
 			loginDialogViewExtension = data[0];
 		}

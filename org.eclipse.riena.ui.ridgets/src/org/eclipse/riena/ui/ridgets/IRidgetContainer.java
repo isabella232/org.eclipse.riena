@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 compeople AG and others.
+ * Copyright (c) 2007, 2013 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,8 @@
 package org.eclipse.riena.ui.ridgets;
 
 import java.util.Collection;
+
+import org.eclipse.riena.ui.core.marker.IMessageMarker;
 
 /**
  * A container for ridgets.
@@ -89,5 +91,17 @@ public interface IRidgetContainer {
 	 * @since 4.0
 	 */
 	void setConfigured(boolean configured);
+
+	/**
+	 * Set the status line, on which the messages from ridget markers will be displayed.
+	 * <p>
+	 * If a non-<code>null</code> {@link IStatuslineRidget} is set, than all ridgets with {@link IMessageMarker} within this container will automatically
+	 * display their messages in the given status line. Setting <code>null</code> will disable this functionality.
+	 * 
+	 * @param statusline
+	 *            a {@link IStatuslineRidget} to bind the ridgets to or <code>null</code> to unbind and disable automatic status line binding
+	 * @since 5.0
+	 */
+	void setStatuslineToShowMarkerMessages(IStatuslineRidget statusline);
 
 }

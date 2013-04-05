@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 compeople AG and others.
+ * Copyright (c) 2007, 2013 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,8 @@ import org.osgi.service.log.LogService;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
@@ -82,6 +84,7 @@ import org.eclipse.riena.ui.swt.InfoFlyout;
 import org.eclipse.riena.ui.swt.Statusline;
 import org.eclipse.riena.ui.swt.StatuslineSpacer;
 import org.eclipse.riena.ui.swt.facades.SWTFacade;
+import org.eclipse.riena.ui.swt.lnf.ILnfRenderer;
 import org.eclipse.riena.ui.swt.lnf.LnFUpdater;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -142,9 +145,11 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	private Point applicationSizeMinimum;
 
 	/**
-	 * @noreference This constructor is not intended to be referenced by clients.
+	 * @noreference This constructor is not intended to be referenced by
+	 *              clients.
 	 */
-	public ApplicationViewAdvisor(final IWorkbenchWindowConfigurer configurer, final ApplicationController pController, final IAdvisorHelper helper) {
+	public ApplicationViewAdvisor(final IWorkbenchWindowConfigurer configurer, final ApplicationController pController,
+			final IAdvisorHelper helper) {
 		super(configurer);
 		controller = pController;
 		binding = createBinding();
@@ -160,9 +165,10 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 * @since 4.0
 	 */
 	@InjectExtension(min = 0, max = 1)
-	public void updateStatuslineContentFactory(final IStatuslineContentFactoryExtension statuslineContentFactoryExtension) {
-		this.statuslineContentFactory = statuslineContentFactoryExtension == null ? new DefaultStatuslineContentFactory() : statuslineContentFactoryExtension
-				.createFactory();
+	public void updateStatuslineContentFactory(
+			final IStatuslineContentFactoryExtension statuslineContentFactoryExtension) {
+		this.statuslineContentFactory = statuslineContentFactoryExtension == null ? new DefaultStatuslineContentFactory()
+				: statuslineContentFactoryExtension.createFactory();
 	}
 
 	public IStatusLineContentFactory getStatuslineContentFactory() {
@@ -174,7 +180,8 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 */
 	@InjectExtension(min = 0, max = 1)
 	public void updateWindowNavigator(final IWindowNavigatorExtension windowNavigatorExtension) {
-		this.windowNavigator = windowNavigatorExtension == null ? new DefaultWindowNavigator() : windowNavigatorExtension.createWindowNavigator();
+		this.windowNavigator = windowNavigatorExtension == null ? new DefaultWindowNavigator()
+				: windowNavigatorExtension.createWindowNavigator();
 	}
 
 	private IWindowNavigator getWindowNavigator() {
@@ -257,7 +264,8 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	}
 
 	/**
-	 * Updates the size of the application window (if necessary) according to the dimension of the display.
+	 * Updates the size of the application window (if necessary) according to
+	 * the dimension of the display.
 	 * 
 	 * @param configurer
 	 */
@@ -272,8 +280,9 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		if (width > maxBounds.width) {
 			x = maxBounds.x;
 			width = maxBounds.width;
-			LOGGER.log(LogService.LOG_WARNING, "The width of the application is greater than the maximum width which is " //$NON-NLS-1$
-					+ width);
+			LOGGER.log(LogService.LOG_WARNING,
+					"The width of the application is greater than the maximum width which is " //$NON-NLS-1$
+							+ width);
 			update = true;
 		}
 
@@ -282,8 +291,9 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		if (height > maxBounds.height) {
 			y = maxBounds.y;
 			height = maxBounds.height;
-			LOGGER.log(LogService.LOG_WARNING, "The height of the application is greater than the maximum height which is " //$NON-NLS-1$
-					+ height);
+			LOGGER.log(LogService.LOG_WARNING,
+					"The height of the application is greater than the maximum height which is " //$NON-NLS-1$
+							+ height);
 			update = true;
 		}
 		final Point minSize = shell.getMinimumSize();
@@ -336,7 +346,8 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 			configurer.setTitle(label);
 		}
 		initApplicationSize(configurer);
-		if (LnfManager.getLnf().getBooleanSetting(LnfKeyConstants.SHELL_HIDE_OS_BORDER) && !TestingSupport.isTestingEnabled()) { // some testing UI tools might not work with windows w/o real decorations(menu, border, etc){
+		if (LnfManager.getLnf().getBooleanSetting(LnfKeyConstants.SHELL_HIDE_OS_BORDER)
+				&& !TestingSupport.isTestingEnabled()) { // some testing UI tools might not work with windows w/o real decorations(menu, border, etc){
 			// don't show the shell border (with the minimize, maximize and
 			// close buttons) of the operation system
 			configurer.setShellStyle(SWT.NO_TRIM | SWT.DOUBLE_BUFFERED);
@@ -345,7 +356,8 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	}
 
 	/**
-	 * Reads the two properties for the initial width and the initial height of the application.
+	 * Reads the two properties for the initial width and the initial height of
+	 * the application.
 	 * 
 	 * @param configurer
 	 */
@@ -354,15 +366,17 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		int width = Integer.getInteger(PROPERTY_RIENA_APPLICATION_WIDTH, getApplicationSizeMinimum().x);
 		if (width < getApplicationSizeMinimum().x) {
 			width = getApplicationSizeMinimum().x;
-			LOGGER.log(LogService.LOG_WARNING, "The initial width of the application is less than the minimum width which is " //$NON-NLS-1$
-					+ getApplicationSizeMinimum().x);
+			LOGGER.log(LogService.LOG_WARNING,
+					"The initial width of the application is less than the minimum width which is " //$NON-NLS-1$
+							+ getApplicationSizeMinimum().x);
 		}
 
 		int height = Integer.getInteger(PROPERTY_RIENA_APPLICATION_HEIGHT, getApplicationSizeMinimum().y);
 		if (height < getApplicationSizeMinimum().y) {
 			height = getApplicationSizeMinimum().y;
-			LOGGER.log(LogService.LOG_WARNING, "The initial height of the application is less than the minimum height which is " //$NON-NLS-1$
-					+ getApplicationSizeMinimum().y);
+			LOGGER.log(LogService.LOG_WARNING,
+					"The initial height of the application is less than the minimum height which is " //$NON-NLS-1$
+							+ getApplicationSizeMinimum().y);
 		}
 
 		configurer.setInitialSize(new Point(width, height));
@@ -370,8 +384,10 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 	private void initApplicationSizeMinimum() {
 
-		final int widthMinimum = Integer.getInteger(PROPERTY_RIENA_APPLICATION_MINIMUM_WIDTH, getApplicationDefaultSizeMinimum().x);
-		final int heightMinimum = Integer.getInteger(PROPERTY_RIENA_APPLICATION_MINIMUM_HEIGHT, getApplicationDefaultSizeMinimum().y);
+		final int widthMinimum = Integer.getInteger(PROPERTY_RIENA_APPLICATION_MINIMUM_WIDTH,
+				getApplicationDefaultSizeMinimum().x);
+		final int heightMinimum = Integer.getInteger(PROPERTY_RIENA_APPLICATION_MINIMUM_HEIGHT,
+				getApplicationDefaultSizeMinimum().y);
 		applicationSizeMinimum = new Point(widthMinimum, heightMinimum);
 	}
 
@@ -461,7 +477,8 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 */
 	private org.eclipse.riena.ui.swt.GrabCorner createGrabCorner(final Shell shell) {
 
-		if (org.eclipse.riena.ui.swt.GrabCorner.isResizeable() && LnfManager.getLnf().getBooleanSetting(LnfKeyConstants.SHELL_HIDE_OS_BORDER)) {
+		if (org.eclipse.riena.ui.swt.GrabCorner.isResizeable()
+				&& LnfManager.getLnf().getBooleanSetting(LnfKeyConstants.SHELL_HIDE_OS_BORDER)) {
 			return new org.eclipse.riena.ui.swt.GrabCorner(shell, SWT.DOUBLE_BUFFERED);
 		}
 
@@ -540,13 +557,15 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 	private int getCoolBarSeparatorPadding() {
 
-		ModuleGroupRenderer mgRenderer = (ModuleGroupRenderer) LnfManager.getLnf().getRenderer(LnfKeyConstants.MODULE_GROUP_RENDERER);
+		ModuleGroupRenderer mgRenderer = (ModuleGroupRenderer) LnfManager.getLnf().getRenderer(
+				LnfKeyConstants.MODULE_GROUP_RENDERER);
 		if (mgRenderer == null) {
 			mgRenderer = new ModuleGroupRenderer();
 		}
 		int padding = mgRenderer.getModuleGroupPadding();
 
-		EmbeddedBorderRenderer borderRenderer = (EmbeddedBorderRenderer) LnfManager.getLnf().getRenderer(LnfKeyConstants.SUB_MODULE_VIEW_BORDER_RENDERER);
+		EmbeddedBorderRenderer borderRenderer = (EmbeddedBorderRenderer) LnfManager.getLnf().getRenderer(
+				LnfKeyConstants.SUB_MODULE_VIEW_BORDER_RENDERER);
 		if (borderRenderer == null) {
 			borderRenderer = new EmbeddedBorderRenderer();
 		}
@@ -575,7 +594,8 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		final Composite composite = new Composite(parent, SWT.DOUBLE_BUFFERED);
 		composite.setLayout(new FillLayout());
 		final FormData formData = new FormData();
-		formData.top = new FormAttachment(previous, LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.TOOLBAR_WORK_AREA_VERTICAL_GAP), 0);
+		formData.top = new FormAttachment(previous, LnfManager.getLnf().getIntegerSetting(
+				LnfKeyConstants.TOOLBAR_WORK_AREA_VERTICAL_GAP), 0);
 		formData.bottom = new FormAttachment(100, -padding);
 		formData.left = new FormAttachment(0, padding);
 		formData.right = new FormAttachment(100, -padding);
@@ -592,7 +612,8 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 */
 	private int getShellPadding() {
 
-		final ShellBorderRenderer borderRenderer = (ShellBorderRenderer) LnfManager.getLnf().getRenderer(LnfKeyConstants.TITLELESS_SHELL_BORDER_RENDERER);
+		final ShellBorderRenderer borderRenderer = (ShellBorderRenderer) LnfManager.getLnf().getRenderer(
+				LnfKeyConstants.TITLELESS_SHELL_BORDER_RENDERER);
 		return borderRenderer.getCompleteBorderWidth();
 
 	}
@@ -603,7 +624,8 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 * @return renderer
 	 */
 	private ShellRenderer getShellRenderer() {
-		final ShellRenderer shellRenderer = (ShellRenderer) LnfManager.getLnf().getRenderer(LnfKeyConstants.TITLELESS_SHELL_RENDERER);
+		final ShellRenderer shellRenderer = (ShellRenderer) LnfManager.getLnf().getRenderer(
+				LnfKeyConstants.TITLELESS_SHELL_RENDERER);
 		return shellRenderer;
 	}
 
@@ -643,13 +665,15 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		}
 
 		private void show() {
-			if (controller == null || controller.getNavigationNode() == null || controller.getNavigationNode().isDisposed()) {
+			if (controller == null || controller.getNavigationNode() == null
+					|| controller.getNavigationNode().isDisposed()) {
 				return;
 			}
 			try {
 				final IViewPart vp = getNavigationViewPart();
 				if (vp == null) {
-					final NavigationViewPart navi = (NavigationViewPart) getActivePage().showView(NavigationViewPart.ID);
+					final NavigationViewPart navi = (NavigationViewPart) getActivePage()
+							.showView(NavigationViewPart.ID);
 					navi.updateNavigationSize();
 				}
 			} catch (final PartInitException e) {
@@ -721,14 +745,16 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	}
 
 	/**
-	 * This listener of a module group ensures the preparation of nodes (if necessary).
+	 * This listener of a module group ensures the preparation of nodes (if
+	 * necessary).
 	 */
 	private class MyModuleGroupNodeListener extends ModuleGroupNodeListener {
 
 		/**
 		 * {@inheritDoc}
 		 * <p>
-		 * After activation of a module group prepare - if necessary - every child (sub module) node.
+		 * After activation of a module group prepare - if necessary - every
+		 * child (sub module) node.
 		 */
 		@Override
 		public void activated(final IModuleGroupNode source) {
@@ -739,7 +765,8 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		/**
 		 * {@inheritDoc}
 		 * <p>
-		 * After the parent of a module group changed prepare - if necessary - every child node.
+		 * After the parent of a module group changed prepare - if necessary -
+		 * every child node.
 		 */
 		@Override
 		public void parentChanged(final IModuleGroupNode source) {
@@ -750,14 +777,16 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	}
 
 	/**
-	 * This listener of a module ensures the preparation of nodes (if necessary).
+	 * This listener of a module ensures the preparation of nodes (if
+	 * necessary).
 	 */
 	private class MyModuleNodeListener extends ModuleNodeListener {
 
 		/**
 		 * {@inheritDoc}
 		 * <p>
-		 * After activation of a module prepare - if necessary - every child (sub module) node.
+		 * After activation of a module prepare - if necessary - every child
+		 * (sub module) node.
 		 */
 		@Override
 		public void activated(final IModuleNode source) {
@@ -768,7 +797,8 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		/**
 		 * {@inheritDoc}
 		 * <p>
-		 * After the parent of a module changed prepare - if necessary - every child node.
+		 * After the parent of a module changed prepare - if necessary - every
+		 * child node.
 		 */
 		@Override
 		public void parentChanged(final IModuleNode source) {
@@ -779,14 +809,16 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	}
 
 	/**
-	 * This listener of a sub module ensures the preparation of nodes (if necessary).
+	 * This listener of a sub module ensures the preparation of nodes (if
+	 * necessary).
 	 */
 	private class MySubModuleNodeListener extends SubModuleNodeListener {
 
 		/**
 		 * {@inheritDoc}
 		 * <p>
-		 * After activation of a sub module prepare - if necessary - every child node.
+		 * After activation of a sub module prepare - if necessary - every child
+		 * node.
 		 */
 		@Override
 		public void activated(final ISubModuleNode source) {
@@ -797,7 +829,8 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		/**
 		 * {@inheritDoc}
 		 * <p>
-		 * After the parent of a sub module changed prepare - if necessary - every child node.
+		 * After the parent of a sub module changed prepare - if necessary -
+		 * every child node.
 		 */
 		@Override
 		public void parentChanged(final ISubModuleNode source) {
@@ -828,9 +861,11 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		}
 
 		/*
-		 * The number of children can change while iterating. Only observe the node children !before! the iteration begins. Any child added while iterating will
-		 * be handled automatically if preparation is required. Just ensure that there will be no concurrent modification of the children list while iterating
-		 * over it. Conclusion is a copy..
+		 * The number of children can change while iterating. Only observe the
+		 * node children !before! the iteration begins. Any child added while
+		 * iterating will be handled automatically if preparation is required.
+		 * Just ensure that there will be no concurrent modification of the
+		 * children list while iterating over it. Conclusion is a copy..
 		 */
 		final List<INavigationNode<?>> children = new ArrayList<INavigationNode<?>>(node.getChildren());
 		for (final INavigationNode<?> child : children) {
@@ -839,3 +874,4 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	}
 
 }
+

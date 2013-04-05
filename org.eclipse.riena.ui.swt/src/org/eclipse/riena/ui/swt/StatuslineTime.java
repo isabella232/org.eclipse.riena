@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 compeople AG and others.
+ * Copyright (c) 2007, 2013 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -48,7 +48,8 @@ public class StatuslineTime extends AbstractStatuslineComposite {
 	 * Creates a new instance of <code>StatuslineTime</code>.
 	 * 
 	 * @param parent
-	 *            a widget which will be the parent of the new instance (cannot be null)
+	 *            a widget which will be the parent of the new instance (cannot
+	 *            be null)
 	 * @param style
 	 *            the style of widget to construct
 	 */

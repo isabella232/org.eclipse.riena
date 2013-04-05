@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 compeople AG and others.
+ * Copyright (c) 2007, 2013 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import org.eclipse.core.databinding.BindingException;
 import org.eclipse.equinox.log.Logger;
 
 import org.eclipse.riena.core.Log4r;
+import org.eclipse.riena.core.util.RienaConfiguration;
 import org.eclipse.riena.internal.ui.ridgets.Activator;
 import org.eclipse.riena.navigation.ApplicationNodeManager;
 import org.eclipse.riena.navigation.IApplicationNode;
@@ -34,8 +35,11 @@ import org.eclipse.riena.ui.ridgets.IEmbeddedTitleBarRidget;
 import org.eclipse.riena.ui.ridgets.IInfoFlyoutRidget;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
+import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.IStatuslineRidget;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
+import org.eclipse.riena.ui.ridgets.RidgetToStatuslineSubscriber;
+import org.eclipse.riena.ui.ridgets.controller.AbstractWindowController;
 import org.eclipse.riena.ui.ridgets.listener.IWindowRidgetListener;
 
 /**
@@ -105,6 +109,38 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 		if (getWindowRidget() != null) {
 			getWindowRidget().addWindowRidgetListener(windowListener);
 		}
+		initializeStatuslineMessageViewer();
+	}
+
+	private void initializeStatuslineMessageViewer() {
+		if (shouldEnableStatuslineMessageViewer()) {
+			setStatuslineToShowMarkerMessages(getStatusline());
+		} else {
+			setStatuslineToShowMarkerMessages(null);
+		}
+	}
+
+	/**
+	 * Controls if the ridget messages from this controller are displayed in the status line.
+	 * <p>
+	 * This behavior is:
+	 * <ul>
+	 * <li>disabled by default,
+	 * <li>can be defined globally by setting '<code>riena.showRidgetMessagesInStatusline=true</code>' using extension point
+	 * <tt>org.eclipse.riena.core.configuration</tt>,
+	 * <li>can be defined individually (overriding the global setting) for this controller using this method.
+	 * </ul>
+	 * <p>
+	 * This method will be called by {@link #afterBind()} <strong>after</strong> {@link #configureRidgets()} was executed.
+	 * 
+	 * @return <code>true</code> if the ridget messages should be displayed in the status line
+	 * @since 5.0
+	 * @see IRidgetContainer#setStatuslineToShowMarkerMessages(IStatuslineRidget)
+	 * @see AbstractWindowController#shouldEnableStatuslineMessageViewer()
+	 */
+	protected boolean shouldEnableStatuslineMessageViewer() {
+		final String value = RienaConfiguration.getInstance().getProperty(RidgetToStatuslineSubscriber.SHOW_RIDGET_MESSAGES_IN_STATUSLINE_KEY);
+		return Boolean.parseBoolean(value);
 	}
 
 	/**

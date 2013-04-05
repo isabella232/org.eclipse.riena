@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 compeople AG and others.
+ * Copyright (c) 2007, 2013 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -28,7 +28,8 @@ import org.eclipse.riena.sample.app.client.helloworld.views.HelloWorldSubModuleV
 import org.eclipse.riena.ui.workarea.WorkareaManager;
 
 /**
- * Very simple application with only one sub application, one module group, one module and one sub module.
+ * Very simple application with only one sub application, one module group, one
+ * module and one sub module.
  */
 public class HelloWorldApplication extends SwtApplication {
 
@@ -41,7 +42,8 @@ public class HelloWorldApplication extends SwtApplication {
 	public IApplicationNode createModel() {
 
 		application = new ApplicationNode("Hello World Application"); //$NON-NLS-1$
-		final ISubApplicationNode subApplication = new SubApplicationNode(new NavigationNodeId("sapRiena"), "Riena Samples"); //$NON-NLS-1$ //$NON-NLS-2$
+		final ISubApplicationNode subApplication = new SubApplicationNode(
+				new NavigationNodeId("sapRiena"), "Riena Samples"); //$NON-NLS-1$ //$NON-NLS-2$
 		WorkareaManager.getInstance().registerDefinition(subApplication, "helloWorldSubApplication"); //$NON-NLS-1$
 		application.addChild(subApplication);
 
@@ -72,7 +74,8 @@ public class HelloWorldApplication extends SwtApplication {
 		WorkareaManager.getInstance().registerDefinition(cSearchSubModule, CustomerSearchSubModuleView.ID);
 		cSearchModule.addChild(cSearchSubModule);
 
-		final ISubApplicationNode subApplication2 = new SubApplicationNode(new NavigationNodeId("sapSimple"), "Simple Subapplication"); //$NON-NLS-1$ //$NON-NLS-2$
+		final ISubApplicationNode subApplication2 = new SubApplicationNode(
+				new NavigationNodeId("sapSimple"), "Simple Subapplication"); //$NON-NLS-1$ //$NON-NLS-2$
 		WorkareaManager.getInstance().registerDefinition(subApplication2, "org.eclipse.riena.sample.app.client.second"); //$NON-NLS-1$
 		application.addChild(subApplication2);
 		moduleGroup = new ModuleGroupNode(new NavigationNodeId("mg2")); //$NON-NLS-1$

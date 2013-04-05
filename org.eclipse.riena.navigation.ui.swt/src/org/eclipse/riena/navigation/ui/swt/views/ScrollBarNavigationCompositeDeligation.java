@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 compeople AG and others.
+ * Copyright (c) 2007, 2013 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -54,8 +54,9 @@ public class ScrollBarNavigationCompositeDeligation extends AbstractNavigationCo
 		super.updateSize(height);
 		final int width = getNavigationComposite().getSize().x;
 		sc.setMinSize(width, height);
+
 		final int pageInc = sc.getClientArea().height;
-		sc.getVerticalBar().setPageIncrement(pageInc);
+		SWTFacade.getDefault().setPageIncrement(sc.getVerticalBar(), pageInc);
 	}
 
 	/**

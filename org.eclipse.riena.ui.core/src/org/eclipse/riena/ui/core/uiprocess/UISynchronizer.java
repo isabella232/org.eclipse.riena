@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 compeople AG and others.
+ * Copyright (c) 2007, 2013 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,8 @@ import org.eclipse.riena.core.singleton.SingletonProvider;
 import org.eclipse.riena.core.wire.InjectExtension;
 
 /**
- * The {@code UISynchronizer} creates {@code IUISynchronizer} instances which can be used to perform execution of processes with in the UI.
+ * The {@code UISynchronizer} creates {@code IUISynchronizer} instances which
+ * can be used to perform execution of processes with in the UI.
  * 
  * <pre>
  * &lt;extension point=&quot;org.eclipse.riena.ui.core.uiSynchronizer&quot;&gt;
@@ -22,13 +23,16 @@ import org.eclipse.riena.core.wire.InjectExtension;
  * &lt;/extension&gt;
  * </pre>
  * 
- * In case multiple extension points exist, which define an implementation class for the {@code IUISynchronizer}, there is no guarantee which one will be used.
+ * In case multiple extension points exist, which define an implementation class
+ * for the {@code IUISynchronizer}, there is no guarantee which one will be
+ * used.
  * 
  * @since 1.2
  */
 public final class UISynchronizer {
 
-	private static final SingletonProvider<UISynchronizer> UIS = new SingletonProvider<UISynchronizer>(UISynchronizer.class);
+	private static final SingletonProvider<UISynchronizer> UIS = new SingletonProvider<UISynchronizer>(
+			UISynchronizer.class);
 
 	private IUISynchronizerExtension synchronizerExtension;
 
@@ -39,7 +43,7 @@ public final class UISynchronizer {
 	/**
 	 * Create a new configured {@code IUISynchronizer}.
 	 * 
-	 * @return a {@code IUISynchronizer}. Null if no {@link IUISynchronizer} instance available.
+	 * @return a {@code IUISynchronizer}, <code>null</code> if no {@link IUISynchronizer} instance available.
 	 */
 	public static IUISynchronizer createSynchronizer() {
 		return UIS.getInstance().create();

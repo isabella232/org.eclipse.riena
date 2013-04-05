@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 compeople AG and others.
+ * Copyright (c) 2007, 2013 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -303,11 +303,22 @@ public class ValueBindingSupport {
 					final Object value = targetOV.getValue();
 					updateValidationStatus(noErrorsRule, newStatus);
 					for (final IValidator rule : getAfterGetValidators()) {
-						updateValidationStatus(rule, rule.validate(value));
+						updateValidationStatusForRule(value, rule);
 					}
 					for (final IValidator rule : getAfterSetValidators()) {
-						updateValidationStatus(rule, rule.validate(value));
+						updateValidationStatusForRule(value, rule);
 					}
+				}
+			}
+
+			/**
+			 * if validation has already been performed by this rule, the validation result is directly reused
+			 */
+			protected void updateValidationStatusForRule(final Object value, final IValidator rule) {
+				if (rule2status.containsKey(rule)) {
+					updateValidationStatus(rule, rule2status.get(rule));
+				} else {
+					updateValidationStatus(rule, rule.validate(value));
 				}
 			}
 		});

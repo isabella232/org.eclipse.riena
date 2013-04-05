@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 compeople AG and others.
+ * Copyright (c) 2007, 2013 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -87,7 +87,8 @@ public class OptionalMarkerSubModuleView extends SubModuleView {
 
 		final Group group = UIControlsFactory.createGroup(parent, "UI-Controls:"); //$NON-NLS-1$
 		final int defaultVSpacing = new GridLayout().verticalSpacing;
-		GridLayoutFactory.swtDefaults().numColumns(2).equalWidth(false).margins(20, 20).spacing(10, defaultVSpacing).applyTo(group);
+		GridLayoutFactory.swtDefaults().numColumns(2).equalWidth(false).margins(20, 20).spacing(10, defaultVSpacing)
+				.applyTo(group);
 
 		// CompositeTable
 
@@ -110,7 +111,8 @@ public class OptionalMarkerSubModuleView extends SubModuleView {
 		GridLayoutFactory.fillDefaults().numColumns(3).equalWidth(false).applyTo(gridComposite);
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(gridComposite);
 
-		final Grid grid = OptionalUIControlsFactory.createGrid(gridComposite, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL, "grid"); //$NON-NLS-1$
+		final Grid grid = OptionalUIControlsFactory.createGrid(gridComposite, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL
+				| SWT.H_SCROLL, "grid"); //$NON-NLS-1$
 		grid.setHeaderVisible(true);
 		GridDataFactory.fillDefaults().grab(true, false).hint(SWT.DEFAULT, 150).span(3, 1).applyTo(grid);
 		final GridColumn columnWord = new GridColumn(grid, SWT.LEFT);
@@ -123,7 +125,8 @@ public class OptionalMarkerSubModuleView extends SubModuleView {
 		final Button markBtn = UIControlsFactory.createButton(gridComposite, "Mark", "markRowBtn");
 		GridDataFactory.fillDefaults().grab(false, false).hint(80, SWT.DEFAULT).applyTo(markBtn);
 		final Button unmarkBtn = UIControlsFactory.createButton(gridComposite, "Unmark", "unmarkRowBtn");
-		GridDataFactory.fillDefaults().grab(false, false).hint(80, SWT.DEFAULT).indent(15, SWT.DEFAULT).applyTo(unmarkBtn);
+		GridDataFactory.fillDefaults().grab(false, false).hint(80, SWT.DEFAULT).indent(15, SWT.DEFAULT)
+				.applyTo(unmarkBtn);
 
 		return group;
 

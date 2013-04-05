@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 compeople AG and others.
+ * Copyright (c) 2007, 2013 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -32,7 +32,8 @@ public class SwtDemoApplication extends SwtApplication {
 	@Override
 	public IApplicationNode createModel() {
 		final String bundleVersion = Activator.getDefault().getBundle().getHeaders().get("Bundle-Version"); //$NON-NLS-1$
-		final IApplicationNode applicationNode = new ApplicationNode(new NavigationNodeId("application"), "Riena Demo - " + bundleVersion); //$NON-NLS-1$ //$NON-NLS-2$
+		final IApplicationNode applicationNode = new ApplicationNode(
+				new NavigationNodeId("application"), "Riena Demo - " + bundleVersion); //$NON-NLS-1$ //$NON-NLS-2$
 		return applicationNode;
 	}
 

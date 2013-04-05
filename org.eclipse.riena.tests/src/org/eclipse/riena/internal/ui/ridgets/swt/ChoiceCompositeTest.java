@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 compeople AG and others.
+ * Copyright (c) 2007, 2013 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -56,6 +56,53 @@ public class ChoiceCompositeTest extends RienaTestCase {
 	// testing methods
 	// ////////////////
 
+	public void testCreateChildWithTextWrapMulti() {
+		final ChoiceComposite cc = new ChoiceComposite(shell, SWT.NONE, true);
+		cc.setWrapOptionsText(true);
+
+		// this must be a check box
+		assertFalse((cc.createChild("label").getStyle() & SWT.CHECK) == 0);
+		assertTrue((cc.createChild("label").getStyle() & SWT.RADIO) == 0);
+	}
+
+	public void testCreateChildWithTextWrapSingle() {
+		final ChoiceComposite cc = new ChoiceComposite(shell, SWT.NONE, false);
+		cc.setWrapOptionsText(true);
+
+		// this must be a radio button
+		assertTrue((cc.createChild("label").getStyle() & SWT.CHECK) == 0);
+		assertFalse((cc.createChild("label").getStyle() & SWT.RADIO) == 0);
+	}
+
+	public void testCenterButtonsInHorizontalLayout() throws Exception {
+		final ChoiceComposite cc = new ChoiceComposite(shell, SWT.NONE, false);
+		cc.setOrientation(SWT.HORIZONTAL);
+		cc.setWrapOptionsText(true);
+		final Button b1 = cc.createChild("multi\nline");
+		final Button b2 = cc.createChild("single-line");
+
+		cc.layout(true, true);
+
+		// the multi line button should be positioned at the top,
+		// while the single line button will be centered (begins not at the top)
+		assertTrue(b1.getBounds().y < b2.getBounds().y);
+	}
+
+	/**
+	 * Tests the workaround for Bug 400248
+	 */
+	public void testMultiLineRadioButtons() {
+		final ChoiceComposite cc = new ChoiceComposite(shell, SWT.NONE, false);
+		cc.setOrientation(SWT.HORIZONTAL);
+		cc.setWrapOptionsText(true);
+		final Button b1 = cc.createChild("multi\nline");
+		final Button b2 = cc.createChild("single-line");
+
+		cc.layout(true, true);
+
+		assertTrue(b1.getBounds().height > b2.getBounds().height);
+	}
+
 	public void testConstructor() {
 		try {
 			new ChoiceComposite(null, SWT.NONE, false);
@@ -79,14 +126,14 @@ public class ChoiceCompositeTest extends RienaTestCase {
 		control.setOrientation(SWT.HORIZONTAL);
 
 		assertEquals(SWT.HORIZONTAL, control.getOrientation());
-		assertTrue(control.getLayout() instanceof RowLayout);
-		assertEquals(SWT.HORIZONTAL, ((RowLayout) control.getLayout()).type);
+		assertTrue(control.getContentComposite().getLayout() instanceof RowLayout);
+		assertEquals(SWT.HORIZONTAL, ((RowLayout) control.getContentComposite().getLayout()).type);
 
 		control.setOrientation(SWT.VERTICAL);
 
 		assertEquals(SWT.VERTICAL, control.getOrientation());
-		assertTrue(control.getLayout() instanceof FillLayout);
-		assertEquals(SWT.VERTICAL, ((FillLayout) control.getLayout()).type);
+		assertTrue(control.getContentComposite().getLayout() instanceof FillLayout);
+		assertEquals(SWT.VERTICAL, ((FillLayout) control.getContentComposite().getLayout()).type);
 
 		try {
 			control.setOrientation(SWT.NONE);
@@ -127,7 +174,8 @@ public class ChoiceCompositeTest extends RienaTestCase {
 
 	public void testSetEnabled() {
 		final ChoiceComposite control = new ChoiceComposite(shell, SWT.NONE, false);
-		final Button child1 = new Button(control, SWT.RADIO);
+		//		final Button child1 = new Button(control, SWT.RADIO);
+		final Button child1 = control.createChild("one");
 
 		assertTrue(control.getEnabled());
 		assertTrue(child1.getEnabled());
@@ -148,11 +196,11 @@ public class ChoiceCompositeTest extends RienaTestCase {
 	 */
 	public void testSetEditable() {
 		final ChoiceComposite control = new ChoiceComposite(shell, SWT.NONE, true);
-		final Button child1 = new Button(control, SWT.CHECK);
+		final Button child1 = control.createChild("one");
 		child1.setSelection(true);
-		final Button child2 = new Button(control, SWT.CHECK);
+		final Button child2 = control.createChild("two");
 		child2.setSelection(true);
-		final Button child3 = new Button(control, SWT.CHECK);
+		final Button child3 = control.createChild("three");
 		child3.setSelection(false);
 
 		assertTrue(control.isEnabled());
@@ -206,11 +254,11 @@ public class ChoiceCompositeTest extends RienaTestCase {
 	 */
 	public void testToggleEditableWhenDisabled() {
 		final ChoiceComposite control = new ChoiceComposite(shell, SWT.NONE, true);
-		final Button child1 = new Button(control, SWT.CHECK);
+		final Button child1 = control.createChild("one");
 		child1.setSelection(true);
-		final Button child2 = new Button(control, SWT.CHECK);
+		final Button child2 = control.createChild("two");
 		child2.setSelection(true);
-		final Button child3 = new Button(control, SWT.CHECK);
+		final Button child3 = control.createChild("three");
 		child3.setSelection(false);
 
 		control.setEditable(false);
@@ -242,15 +290,15 @@ public class ChoiceCompositeTest extends RienaTestCase {
 
 		assertEquals(0, control.getMargins().x);
 		assertEquals(0, control.getMargins().y);
-		assertEquals(0, ((FillLayout) control.getLayout()).marginHeight);
-		assertEquals(0, ((FillLayout) control.getLayout()).marginWidth);
+		assertEquals(0, ((FillLayout) control.getContentComposite().getLayout()).marginHeight);
+		assertEquals(0, ((FillLayout) control.getContentComposite().getLayout()).marginWidth);
 
 		control.setMargins(10, 20);
 
 		assertEquals(10, control.getMargins().x);
 		assertEquals(20, control.getMargins().y);
-		assertEquals(10, ((FillLayout) control.getLayout()).marginHeight);
-		assertEquals(20, ((FillLayout) control.getLayout()).marginWidth);
+		assertEquals(10, ((FillLayout) control.getContentComposite().getLayout()).marginHeight);
+		assertEquals(20, ((FillLayout) control.getContentComposite().getLayout()).marginWidth);
 	}
 
 	/**
@@ -263,15 +311,15 @@ public class ChoiceCompositeTest extends RienaTestCase {
 
 		assertEquals(0, control.getMargins().x);
 		assertEquals(0, control.getMargins().y);
-		assertEquals(0, ((RowLayout) control.getLayout()).marginHeight);
-		assertEquals(0, ((RowLayout) control.getLayout()).marginWidth);
+		assertEquals(0, ((RowLayout) control.getContentComposite().getLayout()).marginHeight);
+		assertEquals(0, ((RowLayout) control.getContentComposite().getLayout()).marginWidth);
 
 		control.setMargins(10, 20);
 
 		assertEquals(10, control.getMargins().x);
 		assertEquals(20, control.getMargins().y);
-		assertEquals(10, ((RowLayout) control.getLayout()).marginHeight);
-		assertEquals(20, ((RowLayout) control.getLayout()).marginWidth);
+		assertEquals(10, ((RowLayout) control.getContentComposite().getLayout()).marginHeight);
+		assertEquals(20, ((RowLayout) control.getContentComposite().getLayout()).marginWidth);
 	}
 
 	/**
@@ -304,13 +352,13 @@ public class ChoiceCompositeTest extends RienaTestCase {
 
 		assertEquals(3, control.getSpacing().x);
 		assertEquals(0, control.getSpacing().y);
-		assertEquals(0, ((FillLayout) control.getLayout()).spacing);
+		assertEquals(0, ((FillLayout) control.getContentComposite().getLayout()).spacing);
 
 		control.setSpacing(0, 10);
 
 		assertEquals(0, control.getSpacing().x);
 		assertEquals(10, control.getSpacing().y);
-		assertEquals(10, ((FillLayout) control.getLayout()).spacing);
+		assertEquals(10, ((FillLayout) control.getContentComposite().getLayout()).spacing);
 	}
 
 	/**
@@ -323,13 +371,13 @@ public class ChoiceCompositeTest extends RienaTestCase {
 
 		assertEquals(3, control.getSpacing().x);
 		assertEquals(0, control.getSpacing().y);
-		assertEquals(3, ((RowLayout) control.getLayout()).spacing);
+		assertEquals(3, ((RowLayout) control.getContentComposite().getLayout()).spacing);
 
 		control.setSpacing(10, 0);
 
 		assertEquals(10, control.getSpacing().x);
 		assertEquals(0, control.getSpacing().y);
-		assertEquals(10, ((RowLayout) control.getLayout()).spacing);
+		assertEquals(10, ((RowLayout) control.getContentComposite().getLayout()).spacing);
 	}
 
 	/**
@@ -402,8 +450,7 @@ public class ChoiceCompositeTest extends RienaTestCase {
 	/**
 	 * As per Bug ruv301
 	 * 
-	 * control should have the same background color as its parent, if it is
-	 * disabled.
+	 * control should have the same background color as its parent, if it is disabled.
 	 */
 	public void testSetBackgroundColorWhileDisabledRespectingParentsBackground() {
 		final ChoiceComposite control = new ChoiceComposite(shell, SWT.NONE, false);

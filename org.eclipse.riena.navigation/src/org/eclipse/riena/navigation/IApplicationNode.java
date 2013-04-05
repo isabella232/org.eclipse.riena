@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 compeople AG and others.
+ * Copyright (c) 2007, 2013 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -37,13 +37,13 @@ public interface IApplicationNode extends INavigationNode<ISubApplicationNode>,
 	 */
 	void setLogo(String logoPath);
 
-	/**
-	 * Returns the configured logo for this application. If this method returns <code>null</code> (no logo configured) then the logo setting from the active LnF
-	 * must be considered.
-	 * 
-	 * @return the configured logo image or <code>null</code>
-	 * @see IApplicationNode#setLogo(String)
-	 * @since 4.0
-	 */
-	String getLogo();
+	//	/**
+	//	 * Returns the configured logo for this application. If this method returns <code>null</code> (no logo configured) then the logo setting from the active LnF
+	//	 * must be considered.
+	//	 * 
+	//	 * @return the configured logo image or <code>null</code>
+	//	 * @see IApplicationNode#setLogo(String)
+	//	 * @since 4.0
+	//	 */
+	//	String getLogo();
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 compeople AG and others.
+ * Copyright (c) 2007, 2013 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -24,6 +24,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.listener.ApplicationNodeListener;
 import org.eclipse.riena.navigation.listener.IApplicationNodeListener;
+import org.eclipse.riena.navigation.model.ApplicationNode;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellBorderRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellRenderer;
 import org.eclipse.riena.ui.swt.AbstractTitleBarMouseListener;
@@ -40,7 +41,7 @@ import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 public class TitleComposite extends Composite {
 
 	private TitlelessShellMouseListener mouseListener;
-	private final IApplicationNode node;
+	private final ApplicationNode node;
 	private IApplicationNodeListener appNodeListener;
 	private LogoComposite logoComposite;
 
@@ -52,7 +53,7 @@ public class TitleComposite extends Composite {
 	 * @param node
 	 *            node of the application
 	 */
-	public TitleComposite(final Composite parentShell, final IApplicationNode node) {
+	public TitleComposite(final Composite parentShell, final ApplicationNode node) {
 		super(parentShell, SWT.NONE);
 
 		this.node = node;

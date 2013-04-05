@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 compeople AG and others.
+ * Copyright (c) 2007, 2013 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,18 +21,24 @@ import org.eclipse.riena.core.RienaStatus;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
+import org.eclipse.riena.navigation.IApplicationNode;
+import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationProcessor;
+import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
+import org.eclipse.riena.navigation.model.ApplicationNode;
+import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
+import org.eclipse.riena.navigation.model.SubApplicationNode;
 import org.eclipse.riena.navigation.model.SubModuleNode;
+import org.eclipse.riena.navigation.ui.controllers.ApplicationController;
 import org.eclipse.riena.ui.ridgets.annotation.processor.RidgetContainerAnnotationProcessor;
 import org.eclipse.riena.ui.ridgets.controller.IController;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 
 /**
- * Abstract class for controller testing. All controller tests should use this
- * as the super class
+ * Abstract class for controller testing. All controller tests should use this as the super class
  * 
  * @since 2.0
  */
@@ -56,7 +62,17 @@ public abstract class AbstractSubModuleControllerTest<C extends IController> ext
 		assertNotNull(realm);
 		ReflectionUtils.invokeHidden(realm, "setDefault", realm); //$NON-NLS-1$
 
+		final IApplicationNode appNode = new ApplicationNode();
+		new ApplicationController(appNode);
+		final ISubApplicationNode subApp = new SubApplicationNode();
+		subApp.setParent(appNode);
+		appNode.addChild(subApp);
+		final IModuleGroupNode group = new ModuleGroupNode();
+		group.setParent(subApp);
+		subApp.addChild(group);
 		final IModuleNode module = new ModuleNode();
+		module.setParent(group);
+		group.addChild(module);
 		final ISubModuleNode node = new SubModuleNode();
 		node.setParent(module);
 		module.addChild(node);

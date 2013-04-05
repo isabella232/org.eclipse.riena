@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 compeople AG and others.
+ * Copyright (c) 2007, 2013 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -35,11 +35,6 @@ public class Activator extends AbstractRienaUIPlugin {
 	public Activator() {
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.core.runtime.Plugins#start(org.osgi.framework.BundleContext)
-	 */
 	@Override
 	public void start(final BundleContext context) throws Exception {
 		super.start(context);
@@ -48,11 +43,6 @@ public class Activator extends AbstractRienaUIPlugin {
 		SwtControlRidgetMapper.getInstance().addMapping(Grid.class, GridRidget.class);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
-	 */
 	@Override
 	public void stop(final BundleContext context) throws Exception {
 		plugin = null;

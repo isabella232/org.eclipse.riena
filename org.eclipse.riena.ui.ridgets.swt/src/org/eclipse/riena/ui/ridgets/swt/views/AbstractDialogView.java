@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 compeople AG and others.
+ * Copyright (c) 2007, 2013 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -70,7 +70,9 @@ public abstract class AbstractDialogView extends Dialog {
 	private static final LnFUpdater LNF_UPDATER = LnFUpdater.getInstance();
 	/**
 	 * @since 5.0
+	 * @deprecated use {@link AbstractWindowController#RIDGET_ID_STATUSLINE}
 	 */
+	@Deprecated
 	public static final String STATUSLINE_BINDING_ID = "dlg_statusline"; //$NON-NLS-1$
 
 	private final RienaWindowRenderer dlgRenderer;
@@ -136,6 +138,7 @@ public abstract class AbstractDialogView extends Dialog {
 		applyTitle(getShell());
 
 		addUIControls(getShell());
+		LNF_UPDATER.updateUIControlColors(getShell());
 		bindController();
 		LNF_UPDATER.updateUIControls(getShell(), true);
 		// after binding the controller it is necessary to calculate the bounds of the dialog again
@@ -254,7 +257,7 @@ public abstract class AbstractDialogView extends Dialog {
 			lineFormData.right = new FormAttachment(100, -lineRightOffset);
 			lineFormData.left = new FormAttachment(0, 0);
 			line.setLayoutData(lineFormData);
-			addUIControl(line, STATUSLINE_BINDING_ID);
+			addUIControl(line, AbstractWindowController.RIDGET_ID_STATUSLINE);
 		}
 		createContentComposite(mainComposite);
 		return mainComposite;

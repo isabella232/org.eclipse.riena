@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 compeople AG and others.
+ * Copyright (c) 2007, 2013 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,14 +18,18 @@ import java.util.Map;
 import org.eclipse.core.runtime.Assert;
 
 import org.eclipse.riena.core.RienaStatus;
+import org.eclipse.riena.core.util.RienaConfiguration;
 import org.eclipse.riena.ui.core.context.IContext;
 import org.eclipse.riena.ui.ridgets.ClassRidgetMapper;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IDefaultActionManager;
 import org.eclipse.riena.ui.ridgets.IRidget;
+import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.IShellRidget;
+import org.eclipse.riena.ui.ridgets.IStatuslineRidget;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
+import org.eclipse.riena.ui.ridgets.RidgetToStatuslineSubscriber;
 
 /**
  * Controller for a view that is or has a window.
@@ -46,6 +50,14 @@ public abstract class AbstractWindowController implements IController, IContext 
 	 * The ridget id to use for the window ridget.
 	 */
 	public static final String RIDGET_ID_WINDOW = "windowRidget"; //$NON-NLS-1$
+
+	/**
+	 * The ridget id to use for the statusline.
+	 * 
+	 * @since 5.0
+	 */
+	// if changing this constant, also adjust AbstractDialogView.RIDGET_ID_STATUSLINE
+	public static final String RIDGET_ID_STATUSLINE = "dlg_statusline"; //$NON-NLS-1$
 
 	/**
 	 * Return code to indicate that the window was a OK-ed (value: {@value} ).
@@ -71,6 +83,7 @@ public abstract class AbstractWindowController implements IController, IContext 
 	private boolean configured = false;
 
 	private IDefaultActionManager actionManager;
+	private final RidgetToStatuslineSubscriber ridgetToStatusLineSubscriber = new RidgetToStatuslineSubscriber();
 
 	public AbstractWindowController() {
 		super();
@@ -99,13 +112,26 @@ public abstract class AbstractWindowController implements IController, IContext 
 
 	public void addRidget(final String id, final IRidget ridget) {
 		ridgets.put(id, ridget);
+		ridgetToStatusLineSubscriber.addRidget(ridget);
 	}
 
 	/**
+	 * {@inheritDoc}
+	 * 
 	 * @since 5.0
 	 */
 	public boolean removeRidget(final String id) {
+		ridgetToStatusLineSubscriber.removeRidget(getRidget(id));
 		return ridgets.remove(id) != null;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @since 5.0
+	 */
+	public void setStatuslineToShowMarkerMessages(final IStatuslineRidget statuslineToShowMarkerMessages) {
+		ridgetToStatusLineSubscriber.setStatuslineToShowMarkerMessages(statuslineToShowMarkerMessages, getRidgets());
 	}
 
 	public void afterBind() {
@@ -114,6 +140,34 @@ public abstract class AbstractWindowController implements IController, IContext 
 		if (actionManager != null) {
 			actionManager.activate();
 		}
+
+		if (shouldEnableStatuslineMessageViewer()) {
+			setStatuslineToShowMarkerMessages((IStatuslineRidget) getRidget(RIDGET_ID_STATUSLINE));
+		} else {
+			setStatuslineToShowMarkerMessages(null);
+		}
+	}
+
+	/**
+	 * Controls if the ridget messages from this dialog are displayed in the status line (if any).
+	 * <p>
+	 * This behavior is:
+	 * <ul>
+	 * <li>disabled by default,
+	 * <li>can be defined globally by setting '<code>riena.showRidgetMessagesInStatusline=true</code>' using extension point
+	 * <tt>org.eclipse.riena.core.configuration</tt>,
+	 * <li>can be defined individually (overriding the global setting) for this dialog using this method.
+	 * </ul>
+	 * <p>
+	 * This method will be called by {@link #afterBind()} <strong>after</strong> {@link #configureRidgets()} was executed.
+	 * 
+	 * @return <code>true</code> if the ridget messages should be displayed in the status line
+	 * @since 5.0
+	 * @see IRidgetContainer#setStatuslineToShowMarkerMessages(IStatuslineRidget)
+	 */
+	protected boolean shouldEnableStatuslineMessageViewer() {
+		final String value = RienaConfiguration.getInstance().getProperty(RidgetToStatuslineSubscriber.SHOW_RIDGET_MESSAGES_IN_STATUSLINE_KEY);
+		return Boolean.parseBoolean(value);
 	}
 
 	public void configureRidgets() {

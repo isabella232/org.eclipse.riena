@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2007, 2013 compeople AG and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    compeople AG - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.riena.ui.swt;
 
 import java.util.ArrayList;
@@ -468,12 +478,16 @@ public class BorderDrawer implements Listener {
 				&& visibleControlArea.width + specialWidgetWidthAdjustment + 2 * getControlToDecorate().getBorderWidth() == getControlToDecorate().getBounds().width) {
 			visibleControlArea.width += specialWidgetWidthAdjustment;
 		} else if (getControlToDecorate() instanceof CompletionCombo) {
-			if (((Composite) getControlToDecorate()).getChildren().length == 3) {
+			final Control[] children = ((Composite) getControlToDecorate()).getChildren();
+			if (children.length == 3) {
 				// we also have a label
-				visibleControlArea.x -= 16;
-				visibleControlArea.width += 16;
-			} else if (visibleControlArea.width + specialWidgetWidthAdjustment + 2 * getControlToDecorate().getBorderWidth() + 1 >= getControlToDecorate()
-					.getBounds().width) {
+				// to understand this code, look at CompletionCombo.computeSize(...)
+				final GC gc = new GC(children[0]);
+				final int spacer = gc.stringExtent(" ").x; //$NON-NLS-1$
+				gc.dispose();
+				visibleControlArea.width += children[0].getBounds().width + spacer - 1;
+			}
+			if (visibleControlArea.width + specialWidgetWidthAdjustment + 2 * getControlToDecorate().getBorderWidth() + 1 >= getControlToDecorate().getBounds().width) {
 				visibleControlArea.width += specialWidgetWidthAdjustment + 1;
 			}
 		}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 compeople AG and others.
+ * Copyright (c) 2007, 2013 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,8 +19,10 @@ import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Cursor;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -32,7 +34,6 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Tree;
 
 import org.eclipse.riena.navigation.ui.swt.component.SubApplicationSwitcherWidget;
-import org.eclipse.riena.navigation.ui.swt.views.ModuleNavigationListener;
 import org.eclipse.riena.ui.swt.CompletionCombo;
 import org.eclipse.riena.ui.swt.EmbeddedTitleBar;
 import org.eclipse.riena.ui.swt.InfoFlyout;
@@ -100,10 +101,11 @@ public final class SWTFacadeRCP extends SWTFacade {
 		}
 	}
 
-	@Override
-	public void attachModuleNavigationListener(final Tree tree) {
-		new ModuleNavigationListener(tree);
-	}
+	//
+	//	@Override
+	//	public void attachModuleNavigationListener(final Tree tree) {
+	//		new ModuleNavigationListener(tree);
+	//	}
 
 	@Override
 	public CompletionCombo createCompletionCombo(final Composite parent, final int style) {
@@ -225,6 +227,21 @@ public final class SWTFacadeRCP extends SWTFacade {
 		scrollBar.setIncrement(value);
 	}
 
+	@Override
+	public void setPageIncrement(final ScrollBar scrollBar, final int value) {
+		scrollBar.setPageIncrement(value);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.ui.swt.facades.SWTFacade#textExtent(org.eclipse.swt.graphics.GC, java.lang.String, int)
+	 */
+	@Override
+	public Point textExtent(final GC gc, final String string, final int flags) {
+		return gc.textExtent(string, flags);
+	}
+
 	// protected methods
 	////////////////////
 
@@ -259,5 +276,4 @@ public final class SWTFacadeRCP extends SWTFacade {
 		}
 		return result;
 	}
-
 }

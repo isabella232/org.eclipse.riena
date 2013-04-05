@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 compeople AG and others.
+ * Copyright (c) 2007, 2013 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -51,7 +51,8 @@ public class DetachedSubModuleView extends SubModuleView {
 	//////////////////
 
 	/**
-	 * Listens to selection / de-selection / disposal of this view's navigation node and shows / hides / disposes the detached views.
+	 * Listens to selection / de-selection / disposal of this view's navigation
+	 * node and shows / hides / disposes the detached views.
 	 */
 	private final class NodeListener extends SimpleNavigationNodeAdapter {
 

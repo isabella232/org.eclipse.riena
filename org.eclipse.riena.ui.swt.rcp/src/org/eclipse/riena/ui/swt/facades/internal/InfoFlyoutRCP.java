@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 compeople AG and others.
+ * Copyright (c) 2007, 2013 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -47,16 +47,24 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
  */
 public class InfoFlyoutRCP extends InfoFlyout {
 
-	private static final Integer PAUSE_ANIMATION_TIME = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.INFO_FLYOUT_PAUSE_ANIMATION_TIME);
-	private static final Integer WAIT_ANIMATION_TIME = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.INFO_FLYOUT_WAIT_ANIMATION_TIME);
-	private static final Integer SHOW_HIDE_ANIMATION_TIME = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.INFO_FLYOUT_SHOW_AND_HIDE_ANIMATION_TIME);
+	private static final Integer PAUSE_ANIMATION_TIME = LnfManager.getLnf().getIntegerSetting(
+			LnfKeyConstants.INFO_FLYOUT_PAUSE_ANIMATION_TIME);
+	private static final Integer WAIT_ANIMATION_TIME = LnfManager.getLnf().getIntegerSetting(
+			LnfKeyConstants.INFO_FLYOUT_WAIT_ANIMATION_TIME);
+	private static final Integer SHOW_HIDE_ANIMATION_TIME = LnfManager.getLnf().getIntegerSetting(
+			LnfKeyConstants.INFO_FLYOUT_SHOW_AND_HIDE_ANIMATION_TIME);
 	private static final int WIDTH = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.INFO_FLYOUT_WIDTH);
 	private static final int HEIGHT = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.INFO_FLYOUT_HEIGHT);
-	private static final int SHELL_RIGHT_INDENT = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.INFO_FLYOUT_RIGHT_INDENT);
-	private static final int ICON_LEFT_MARGIN = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.INFO_FLYOUT_LEFT_MARGIN);
-	private static final int TEXT_LEFT_MARGIN = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.INFO_FLYOUT_ICON_TEXT_GAP);
-	private static final int INFO_FLYOUT_RIGHT_MARGIN = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.INFO_FLYOUT_RIGHT_MARGIN);
-	private static final int RIGHT_LABEL_WIDTH = WIDTH - INFO_FLYOUT_RIGHT_MARGIN - TEXT_LEFT_MARGIN - ICON_LEFT_MARGIN - 30;
+	private static final int SHELL_RIGHT_INDENT = LnfManager.getLnf().getIntegerSetting(
+			LnfKeyConstants.INFO_FLYOUT_RIGHT_INDENT);
+	private static final int ICON_LEFT_MARGIN = LnfManager.getLnf().getIntegerSetting(
+			LnfKeyConstants.INFO_FLYOUT_LEFT_MARGIN);
+	private static final int TEXT_LEFT_MARGIN = LnfManager.getLnf().getIntegerSetting(
+			LnfKeyConstants.INFO_FLYOUT_ICON_TEXT_GAP);
+	private static final int INFO_FLYOUT_RIGHT_MARGIN = LnfManager.getLnf().getIntegerSetting(
+			LnfKeyConstants.INFO_FLYOUT_RIGHT_MARGIN);
+	private static final int RIGHT_LABEL_WIDTH = WIDTH - INFO_FLYOUT_RIGHT_MARGIN - TEXT_LEFT_MARGIN - ICON_LEFT_MARGIN
+			- 30;
 
 	private String message;
 	private String icon;
@@ -160,18 +168,20 @@ public class InfoFlyoutRCP extends InfoFlyout {
 		tHide = new Timeline(shell);
 		tWaitAtEnd = new Timeline(shell);
 
-		tShow.addPropertyToInterpolate(Timeline.<Point> property("location").fromCurrent().to(new Point(xPosition, endY))); //$NON-NLS-1$
+		tShow.addPropertyToInterpolate(Timeline
+				.<Point> property("location").fromCurrent().to(new Point(xPosition, endY))); //$NON-NLS-1$
 		tShow.addPropertyToInterpolate(Timeline.<Point> property("size").fromCurrent() //$NON-NLS-1$
 				.to(new Point(WIDTH, HEIGHT)));
 
-		tHide.addPropertyToInterpolate(Timeline.<Point> property("location").fromCurrent().to(new Point(xPosition, startY))); //$NON-NLS-1$
+		tHide.addPropertyToInterpolate(Timeline
+				.<Point> property("location").fromCurrent().to(new Point(xPosition, startY))); //$NON-NLS-1$
 		tHide.addPropertyToInterpolate(Timeline.<Point> property("size").fromCurrent() //$NON-NLS-1$
 				.to(new Point(WIDTH, 0)));
 
 		tShow.addCallback(new TimelineCallbackAdapter() {
 			@Override
-			public void onTimelineStateChanged(final TimelineState oldState, final TimelineState newState, final float durationFraction,
-					final float timelinePosition) {
+			public void onTimelineStateChanged(final TimelineState oldState, final TimelineState newState,
+					final float durationFraction, final float timelinePosition) {
 				if (newState == TimelineState.DONE) {
 					tWait.play();
 				}
@@ -180,8 +190,8 @@ public class InfoFlyoutRCP extends InfoFlyout {
 
 		tWait.addCallback(new TimelineCallbackAdapter() {
 			@Override
-			public void onTimelineStateChanged(final TimelineState oldState, final TimelineState newState, final float durationFraction,
-					final float timelinePosition) {
+			public void onTimelineStateChanged(final TimelineState oldState, final TimelineState newState,
+					final float durationFraction, final float timelinePosition) {
 				if (newState == TimelineState.DONE) {
 					tHide.play();
 				}
@@ -190,8 +200,8 @@ public class InfoFlyoutRCP extends InfoFlyout {
 
 		tHide.addCallback(new TimelineCallbackAdapter() {
 			@Override
-			public void onTimelineStateChanged(final TimelineState oldState, final TimelineState newState, final float durationFraction,
-					final float timelinePosition) {
+			public void onTimelineStateChanged(final TimelineState oldState, final TimelineState newState,
+					final float durationFraction, final float timelinePosition) {
 				if (newState == TimelineState.DONE) {
 					tWaitAtEnd.play();
 
@@ -201,8 +211,8 @@ public class InfoFlyoutRCP extends InfoFlyout {
 
 		tWaitAtEnd.addCallback(new TimelineCallbackAdapter() {
 			@Override
-			public void onTimelineStateChanged(final TimelineState oldState, final TimelineState newState, final float durationFraction,
-					final float timelinePosition) {
+			public void onTimelineStateChanged(final TimelineState oldState, final TimelineState newState,
+					final float durationFraction, final float timelinePosition) {
 				if (newState == TimelineState.DONE) {
 					synchronized (this) {
 						latch.countDown();
@@ -224,8 +234,10 @@ public class InfoFlyoutRCP extends InfoFlyout {
 	private void updateLayoutData() {
 		final int topIndent = (HEIGHT - rightLabel.getBounds().height) / 2;
 
-		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).indent(ICON_LEFT_MARGIN, topIndent).applyTo(leftLabel);
-		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).indent(TEXT_LEFT_MARGIN, topIndent).hint(RIGHT_LABEL_WIDTH, SWT.DEFAULT).applyTo(rightLabel);
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).indent(ICON_LEFT_MARGIN, topIndent)
+				.applyTo(leftLabel);
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).indent(TEXT_LEFT_MARGIN, topIndent)
+				.hint(RIGHT_LABEL_WIDTH, SWT.DEFAULT).applyTo(rightLabel);
 	}
 
 	private void updateLocation() {

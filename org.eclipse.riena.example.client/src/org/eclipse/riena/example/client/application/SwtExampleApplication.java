@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 compeople AG and others.
+ * Copyright (c) 2007, 2013 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -63,6 +63,10 @@ public class SwtExampleApplication extends SwtApplication {
 
 	@Override
 	public void configure() {
+		setDummyPermissions();
+	}
+
+	private void setDummyPermissions() {
 		final ISubjectHolder subjectHolder = Service.get(ISubjectHolder.class);
 		final IPermissionCache pmCache = Service.get(IPermissionCache.class);
 		final Subject subject = new Subject();
@@ -76,7 +80,8 @@ public class SwtExampleApplication extends SwtApplication {
 		subjectHolder.setSubject(subject);
 		final Permissions p = new Permissions();
 		/*
-		 * sample for Permission controlled UIFilters. Disable code to add filter to Buttons-Demo in Playground
+		 * sample for Permission controlled UIFilters. Disable code to add
+		 * filter to Buttons-Demo in Playground
 		 */
 		p.add(new RuntimePermission("navi", "newx")); //$NON-NLS-1$ //$NON-NLS-2$
 		pmCache.putPermissions(principal, p);
@@ -88,7 +93,8 @@ public class SwtExampleApplication extends SwtApplication {
 
 		final String bundleVersion = Activator.getDefault().getBundle().getHeaders().get("Bundle-Version"); //$NON-NLS-1$
 
-		final IApplicationNode applicationNode = new ApplicationNode(new NavigationNodeId("application"), "Example & Playground - " + bundleVersion); //$NON-NLS-1$ //$NON-NLS-2$
+		final IApplicationNode applicationNode = new ApplicationNode(
+				new NavigationNodeId("application"), "Example & Playground - " + bundleVersion); //$NON-NLS-1$ //$NON-NLS-2$
 		applicationNode.setIcon(ExampleIcons.ICON_APPLICATION);
 
 		// Navigation SubApplication

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 compeople AG and others.
+ * Copyright (c) 2007, 2013 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -255,7 +255,6 @@ public class SwtApplication extends AbstractApplication {
 
 	private void initializeLoginNonActivityTimer(final Display display, final IApplicationNode pNode, final IApplicationContext context) {
 		pNode.addListener(new ApplicationNodeListener() {
-
 			@Override
 			public void afterActivated(final IApplicationNode source) {
 				final ILoginExecutor<Integer> loginExecutor = new ILoginExecutor<Integer>() {

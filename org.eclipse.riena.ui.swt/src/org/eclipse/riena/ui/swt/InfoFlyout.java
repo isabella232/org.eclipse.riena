@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 compeople AG and others.
+ * Copyright (c) 2007, 2013 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -16,7 +16,8 @@ import org.eclipse.riena.ui.swt.utils.IPropertyNameProvider;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
- * This widget implements a message that pops-up on top of the SubModuleView. No user interaction is possible and it closes after a few seconds.
+ * This widget implements a message that pops-up on top of the SubModuleView. No
+ * user interaction is possible and it closes after a few seconds.
  * <p>
  * It is possible to set a message and an icon.
  * 

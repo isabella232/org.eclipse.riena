@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 compeople AG and others.
+ * Copyright (c) 2007, 2013 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -35,7 +35,7 @@ public final class RAPSingletonProvider {
 	private static Method getInstanceMethod;
 	private static final Map<Object, Boolean> WIRED_RAP_SINGLETONS = new WeakHashMap<Object, Boolean>();
 
-	private static final String SESSION_SINGLETON_BASE = "org.eclipse.rwt.SessionSingletonBase"; //$NON-NLS-1$
+	private static final String SESSION_SINGLETON_BASE = "org.eclipse.rap.rwt.SessionSingletonBase"; //$NON-NLS-1$
 	private static final String GET_INSTANCE = "getInstance"; //$NON-NLS-1$
 
 	static {

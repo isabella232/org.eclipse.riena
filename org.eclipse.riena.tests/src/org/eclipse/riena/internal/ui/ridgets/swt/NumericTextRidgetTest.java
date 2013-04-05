@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 compeople AG and others.
+ * Copyright (c) 2007, 2013 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -821,7 +821,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		ridget.addValidationRule(new EndsWithFive(), ValidationTime.ON_UPDATE_TO_MODEL);
 		ridget.bindToModel(bean, IntegerBean.PROP_VALUE);
 
-		assertFalse(ridget.isErrorMarked());
+		assertTrue(ridget.isErrorMarked());
 		assertFalse(ridget.isDirectWriting());
 
 		UITestHelper.sendString(control.getDisplay(), "98765\t");
