@@ -17,7 +17,7 @@ import org.eclipse.riena.navigation.IApplicationNode;
  * <p>
  * Note: This interface is used for the E4 support only.
  * 
- * @since 4.0
+ * @since 5.0
  * 
  */
 public interface IApplicationModelCreator {

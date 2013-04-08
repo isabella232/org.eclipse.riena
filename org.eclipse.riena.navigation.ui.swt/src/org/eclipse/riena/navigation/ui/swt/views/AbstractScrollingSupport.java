@@ -264,7 +264,7 @@ public abstract class AbstractScrollingSupport {
 	}
 
 	/**
-	 * @since 4.0
+	 * @since 5.0
 	 */
 	protected Shell getActiveShell() {
 		final IWorkbenchWindow activeWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();

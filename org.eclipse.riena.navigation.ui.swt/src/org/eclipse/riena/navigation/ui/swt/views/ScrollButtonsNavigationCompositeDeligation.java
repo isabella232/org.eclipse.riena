@@ -50,7 +50,7 @@ public class ScrollButtonsNavigationCompositeDeligation extends AbstractNavigati
 	}
 
 	/**
-	 * @since 4.0
+	 * @since 5.0
 	 */
 	protected ScrollButtonsSupport createScrollingSupport() {
 		return new ScrollButtonsSupport(getSuperParent(), getNavigationProvider());

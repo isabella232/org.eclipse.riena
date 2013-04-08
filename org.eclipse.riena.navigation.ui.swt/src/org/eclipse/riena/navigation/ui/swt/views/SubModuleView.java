@@ -153,6 +153,9 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 		});
 	}
 
+	/**
+	 * @since 5.0
+	 */
 	public void setE4Runtime(final boolean e4Runtime) {
 		this.e4Runtime = e4Runtime;
 	}
@@ -162,7 +165,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	}
 
 	/**
-	 * @since 4.0
+	 * @since 5.0
 	 */
 	public void bind(final ISubModuleNode node) {
 
@@ -316,7 +319,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	}
 
 	/**
-	 * @since 4.0
+	 * @since 5.0
 	 */
 	public ISubModuleNode getNavigationNode() {
 		if (navigationNode != null) {
@@ -343,7 +346,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	 * Important: This method is NOT API. It is used for the e4 migration only.
 	 * 
 	 * @param node
-	 * @since 4.0
+	 * @since 5.0
 	 * @see SubModuleView#navigationNode
 	 */
 	public void setNavigationNode(final ISubModuleNode navigationNode) {
@@ -443,7 +446,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	}
 
 	/**
-	 * @since 4.0
+	 * @since 5.0
 	 */
 	protected IShellProvider getShellProvider() {
 		return shellProvider;
@@ -881,7 +884,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	/**
 	 * Triggered by "prepareNode" for nodes to be prepared which already have an instantiated view. In those cases createPartControl is not called.
 	 * 
-	 * @since 4.0
+	 * @since 5.0
 	 */
 	public void prepareNode(final ISubModuleNode node) {
 		final IController controller = createController(node);

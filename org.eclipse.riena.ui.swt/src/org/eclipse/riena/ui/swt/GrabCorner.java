@@ -44,7 +44,7 @@ public class GrabCorner extends Composite {
 	}
 
 	/**
-	 * @since 4.0
+	 * @since 5.0
 	 */
 	public GrabCorner(final Composite parent, final int style, final boolean isOnMainWindow) {
 		super(parent, style);

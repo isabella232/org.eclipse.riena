@@ -37,6 +37,7 @@ public final class FacadeFactory {
 	 * @return an instance of type; never null
 	 * @throws RuntimeException
 	 *             if no matching instance could be found
+	 * @since 5.0
 	 */
 	public static <T> T newFacade(final Class<T> type) {
 		final String suffix = "rap".equals(SWT.getPlatform()) ? "RAP" : "RCP"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
