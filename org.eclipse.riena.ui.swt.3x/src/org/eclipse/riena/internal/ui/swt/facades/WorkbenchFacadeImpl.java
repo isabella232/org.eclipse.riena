@@ -17,7 +17,7 @@ import org.eclipse.ui.internal.WorkbenchPage;
 /**
  * Eclipse 3.x specific implementation.
  */
-public class RcpFacadeImpl extends RcpFacade {
+public class WorkbenchFacadeImpl extends WorkbenchFacade {
 
 	/*
 	 * (non-Javadoc)

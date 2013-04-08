@@ -21,7 +21,7 @@ import org.eclipse.ui.IWorkbenchPage;
  * 
  * @since 5.0
  */
-public abstract class RcpFacade {
+public abstract class WorkbenchFacade {
 
 	/**
 	 * Returns an instance of the given type.
@@ -33,9 +33,9 @@ public abstract class RcpFacade {
 	 * @throws RuntimeException
 	 *             if no matching instance could be found
 	 */
-	public static RcpFacade getInstance() {
+	public static WorkbenchFacade getInstance() {
 		final String suffix = "Impl"; //$NON-NLS-1$
-		final Class<RcpFacade> type = RcpFacade.class;
+		final Class<WorkbenchFacade> type = WorkbenchFacade.class;
 		final String name = type.getName() + suffix;
 		try {
 			return type.cast(type.getClassLoader().loadClass(name).newInstance());

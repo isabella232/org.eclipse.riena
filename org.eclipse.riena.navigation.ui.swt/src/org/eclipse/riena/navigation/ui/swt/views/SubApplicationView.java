@@ -45,7 +45,7 @@ import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.internal.navigation.ui.swt.Activator;
 import org.eclipse.riena.internal.ui.ridgets.swt.AbstractItemRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.uiprocess.UIProcessRidget;
-import org.eclipse.riena.internal.ui.swt.facades.RcpFacade;
+import org.eclipse.riena.internal.ui.swt.facades.WorkbenchFacade;
 import org.eclipse.riena.navigation.ApplicationModelFailure;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
@@ -711,7 +711,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 		final IWorkbenchPage page = getActivePage();
 		final IViewReference viewRef = page.findViewReference(id, secondary);
 		if (viewRef != null) {
-			RcpFacade.getInstance().showView(page, viewRef);
+			WorkbenchFacade.getInstance().showView(page, viewRef);
 		}
 	}
 
