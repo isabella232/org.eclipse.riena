@@ -27,7 +27,7 @@ public abstract class InfoFlyout implements IPropertyNameProvider {
 
 	private String bindingId;
 	/**
-	 * @since 4.0
+	 * @since 5.0
 	 */
 	protected int positionCorrectionY;
 
@@ -57,7 +57,7 @@ public abstract class InfoFlyout implements IPropertyNameProvider {
 	/**
 	 * @param positionCorrectionY
 	 *            the positionCorrectionY to set
-	 * @since 4.0
+	 * @since 5.0
 	 */
 	public void setPositionCorrectionY(final int positionCorrectionY) {
 		this.positionCorrectionY = positionCorrectionY;

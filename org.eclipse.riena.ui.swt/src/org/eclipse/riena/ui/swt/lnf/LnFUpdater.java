@@ -125,6 +125,7 @@ public final class LnFUpdater {
 	 * 
 	 * @param parent
 	 *            composite which children are updated.
+	 * @since 5.0
 	 */
 	public void updateUIControlColors(final Composite parent) {
 

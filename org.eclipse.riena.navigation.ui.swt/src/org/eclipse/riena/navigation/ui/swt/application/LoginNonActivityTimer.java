@@ -19,7 +19,7 @@ import org.eclipse.riena.core.exception.ExceptionFailure;
 import org.eclipse.riena.ui.swt.facades.SWTFacade;
 
 /**
- * @since 4.0
+ * @since 5.0
  */
 public class LoginNonActivityTimer implements Runnable {
 	public interface ILoginExecutor<LOGIN_RESULT> {

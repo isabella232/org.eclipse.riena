@@ -82,6 +82,9 @@ public class UICallbackDispatcher extends ProgressProvider implements IUIMonitor
 		return progressMonitor;
 	}
 
+	/**
+	 * @since 5.0
+	 */
 	public IProgressMonitor createThreadSwitcher() {
 		if (null == getSyncher()) {
 			// no synchronizer available

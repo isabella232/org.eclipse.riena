@@ -56,6 +56,9 @@ public class SubApplicationController extends NavigationNodeController<ISubAppli
 		installNavigationListeners();
 	}
 
+	/**
+	 * @since 5.0
+	 */
 	public void installNavigationListeners() {
 		if (null != navigationTreeObserver) {
 			return;

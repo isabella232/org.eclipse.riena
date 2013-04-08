@@ -74,7 +74,7 @@ public abstract class AbstractApplication implements IApplication, IApplicationM
 	/**
 	 * Important: This method is NOT API. It is used for the 3.x/e4 split.
 	 * 
-	 * @since 4.0
+	 * @since 5.0
 	 */
 	public void initApplicationNode(final IApplicationNode applicationNode) {
 		if (applicationNode == null) {
@@ -150,7 +150,7 @@ public abstract class AbstractApplication implements IApplication, IApplicationM
 	 * Overwrite to create own application model
 	 * 
 	 * @return IApplicationModelProvider - root of the configured application model
-	 * @since 4.0
+	 * @since 5.0
 	 */
 	public IApplicationNode createModel() {
 		final IApplicationNode applicationModel = new ApplicationNode(new NavigationNodeId(ApplicationNode.DEFAULT_APPLICATION_TYPEID));
@@ -239,14 +239,23 @@ public abstract class AbstractApplication implements IApplication, IApplicationM
 		return false;
 	}
 
+	/**
+	 * @since 5.0
+	 */
 	protected Integer doPerformLogin(final IApplicationContext context) {
 		return EXIT_OK;
 	}
 
+	/**
+	 * @since 5.0
+	 */
 	protected Integer doPerformSplashLogin(final IApplicationContext context) {
 		return EXIT_OK;
 	}
 
+	/**
+	 * @since 5.0
+	 */
 	protected Integer performLogin(final IApplicationContext context) throws Exception {
 		if (isSplashLogin(context)) {
 			return doPerformSplashLogin(context);
@@ -267,6 +276,9 @@ public abstract class AbstractApplication implements IApplication, IApplicationM
 		Wire.instance(this).andStart(Activator.getDefault().getContext());
 	}
 
+	/**
+	 * @since 5.0
+	 */
 	public void configure() {
 	}
 }

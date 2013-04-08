@@ -21,6 +21,8 @@ import org.eclipse.riena.ui.swt.lnf.LnfManager;
 
 /**
  * This listener paints the shell (the border of the shell).
+ * 
+ * @since 5.0
  */
 public class ShellPaintListener implements PaintListener {
 
