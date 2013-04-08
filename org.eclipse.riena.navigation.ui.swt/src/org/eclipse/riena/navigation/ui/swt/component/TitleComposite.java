@@ -20,7 +20,6 @@ import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.listener.ApplicationNodeListener;
@@ -54,7 +53,7 @@ public class TitleComposite extends Composite {
 	 * @param node
 	 *            node of the application
 	 */
-	public TitleComposite(final Shell parentShell, final ApplicationNode node) {
+	public TitleComposite(final Composite parentShell, final ApplicationNode node) {
 		super(parentShell, SWT.NONE);
 
 		this.node = node;
@@ -68,7 +67,7 @@ public class TitleComposite extends Composite {
 	 * 
 	 * @param parentShell
 	 */
-	private void init(final Shell parentShell) {
+	private void init(final Composite parentShell) {
 		// force result's background into logo and switcher
 		setBackgroundMode(SWT.INHERIT_FORCE);
 		// sets the background of the composite

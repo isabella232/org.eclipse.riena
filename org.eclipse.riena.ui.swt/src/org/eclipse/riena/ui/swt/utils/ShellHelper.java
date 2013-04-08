@@ -82,7 +82,7 @@ public class ShellHelper {
 	public static Rectangle calcMaxBounds(final Shell shell) {
 		final Rectangle clientBounds = shell.getMonitor().getClientArea();
 		final Rectangle newBounds = new Rectangle(clientBounds.x, clientBounds.y, clientBounds.width, clientBounds.height);
-		if (isTaskbarHidden()) {
+		if (isTaskbarHidden(shell)) {
 			newBounds.x += 1;
 			newBounds.y += 1;
 			newBounds.width -= 2;
@@ -99,13 +99,8 @@ public class ShellHelper {
 	 * 
 	 * @return {@code true} if task bar is hidden; otherwise {@code false}
 	 */
-	private static boolean isTaskbarHidden() {
+	private static boolean isTaskbarHidden(final Shell shell) {
 		if (!Util.isWindows()) {
-			return false;
-		}
-		final Shell shell = RcpUtilities.getWorkbenchShell();
-		if (shell == null) {
-			LOGGER.log(LogService.LOG_WARNING, "No shell of the application found!"); //$NON-NLS-1$
 			return false;
 		}
 		final Rectangle clientBounds = shell.getMonitor().getClientArea();
@@ -117,7 +112,9 @@ public class ShellHelper {
 	 * Returns whether the shell is currently maximized or not.
 	 * 
 	 * @return {@code true} if the shell is maximized; {@code false} if the shell isn't maximized.
+	 * @deprecated use ShellHelper.isMaximized(shell) instead
 	 */
+	@Deprecated
 	public static boolean isShellMaximzed() {
 		final Shell shell = RcpUtilities.getWorkbenchShell();
 		if (shell == null) {
@@ -134,12 +131,12 @@ public class ShellHelper {
 	 *            shell to check
 	 * @return {@code true} if the shell is maximized; {@code false} if the shell isn't maximized.
 	 */
-	private static boolean isMaximzed(final Shell shell) {
+	public static boolean isMaximzed(final Shell shell) {
 		if ((shell == null) || shell.isDisposed()) {
 			LOGGER.log(LogService.LOG_WARNING, "shell equals null or is disposed!"); //$NON-NLS-1$
 			return false;
 		}
-		if (isShellTitleless()) {
+		if (isTitleless(shell)) {
 			Rectangle clientBounds = shell.getMonitor().getClientArea();
 			if (clientBounds.equals(shell.getBounds())) {
 				return true;

@@ -35,12 +35,6 @@ public class Activator extends AbstractRienaUIPlugin {
 	public Activator() {
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.core.runtime.Plugins#start(org.osgi.framework.BundleContext)
-	 */
 	@Override
 	public void start(final BundleContext context) throws Exception {
 		super.start(context);
@@ -49,12 +43,6 @@ public class Activator extends AbstractRienaUIPlugin {
 		SwtControlRidgetMapper.getInstance().addMapping(Grid.class, GridRidget.class);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
-	 */
 	@Override
 	public void stop(final BundleContext context) throws Exception {
 		plugin = null;

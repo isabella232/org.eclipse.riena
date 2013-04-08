@@ -1505,22 +1505,20 @@
          </subModule>
       </assembly2>
     </extension>
-<!--
-    <extension
+    <!--extension
           point="org.eclipse.riena.navigation.ui.loginDialogViewDefinition">
        <loginDialogViewDefinition
-             nonActivityDuration="3000"
+             nonActivityDuration="120000"
              viewClass="org.eclipse.riena.example.client.views.LoginDialogView">
        </loginDialogViewDefinition>
-    </extension>
--->
-     <extension
+    </extension-->
+     <!--extension
           point="org.eclipse.riena.navigation.ui.swt.loginSplashViewDefinition">
        <loginSplashViewDefinition
-             nonActivityDuration="0"
+             nonActivityDuration="120000"
              viewClass="org.eclipse.riena.example.client.views.LoginSplashView">
        </loginSplashViewDefinition>
-    </extension>
+    </extension-->
     <extension
           id="LocalCallback"
           point="org.eclipse.equinox.security.callbackHandler">
@@ -1632,5 +1630,11 @@
             key="riena.showRidgetMessagesInStatusline"
             value="true">
       </property>
+   </extension>
+   <extension
+         point="org.eclipse.riena.e4.launcher.applicationModelCreators">
+      <modelCreator
+            class="org.eclipse.riena.example.client.application.SwtExampleApplication">
+      </modelCreator>
    </extension>
 </plugin>

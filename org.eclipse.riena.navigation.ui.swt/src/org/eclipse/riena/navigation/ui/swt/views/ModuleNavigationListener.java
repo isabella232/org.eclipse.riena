@@ -363,6 +363,9 @@ public class ModuleNavigationListener extends SelectionAdapter implements KeyLis
 
 		@Override
 		public void run() {
+			if (!node.getParent().isActivated()) {
+				return;
+			}
 			try {
 				sleep(TIMEOUT_MS);
 			} catch (final InterruptedException iex) {

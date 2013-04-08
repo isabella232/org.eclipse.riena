@@ -56,7 +56,7 @@ public class DetachedSubModuleView extends SubModuleView {
 	 */
 	private final class NodeListener extends SimpleNavigationNodeAdapter {
 
-		private final DetachedViewsManager dvManager = new DetachedViewsManager(getSite());
+		private final DetachedViewsManager dvManager = new DetachedViewsManager(getShellProvider().getShell());
 
 		@Override
 		public void activated(final INavigationNode<?> source) {

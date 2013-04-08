@@ -244,7 +244,7 @@ public class InfoFlyoutRCP extends InfoFlyout {
 		final Shell topLevelShell = parent.getShell();
 		topLevelShellBounds = topLevelShell.getBounds();
 		xPosition = topLevelShellBounds.x + topLevelShellBounds.width - WIDTH - SHELL_RIGHT_INDENT;
-		startY = parent.getDisplay().map(parent.getParent(), null, parent.getBounds()).y;
+		startY = parent.getDisplay().map(parent.getParent(), null, parent.getBounds()).y + positionCorrectionY;
 		endY = startY - HEIGHT;
 
 		shell.setSize(WIDTH, 0);

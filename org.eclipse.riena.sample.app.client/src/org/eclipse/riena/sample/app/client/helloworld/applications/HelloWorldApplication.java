@@ -39,7 +39,7 @@ public class HelloWorldApplication extends SwtApplication {
 	 * Creates the model of the application "Hello world".
 	 */
 	@Override
-	protected IApplicationNode createModel() {
+	public IApplicationNode createModel() {
 
 		application = new ApplicationNode("Hello World Application"); //$NON-NLS-1$
 		final ISubApplicationNode subApplication = new SubApplicationNode(

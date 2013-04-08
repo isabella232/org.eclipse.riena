@@ -26,6 +26,10 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 public abstract class InfoFlyout implements IPropertyNameProvider {
 
 	private String bindingId;
+	/**
+	 * @since 4.0
+	 */
+	protected int positionCorrectionY;
 
 	/**
 	 * See {@link UIControlsFactory#createInfoFlyout(Composite)}.
@@ -48,6 +52,15 @@ public abstract class InfoFlyout implements IPropertyNameProvider {
 
 	public final String getPropertyName() {
 		return bindingId;
+	}
+
+	/**
+	 * @param positionCorrectionY
+	 *            the positionCorrectionY to set
+	 * @since 4.0
+	 */
+	public void setPositionCorrectionY(final int positionCorrectionY) {
+		this.positionCorrectionY = positionCorrectionY;
 	}
 
 	/**

@@ -67,7 +67,9 @@ public class DetachedViewsManager {
 	 * 
 	 * @param site
 	 *            the workbench site; never null
+	 * @deprecated This constructor will not work in e4. Use <tt>DetachedViewsManager(Shell s)</tt>
 	 */
+	@Deprecated
 	public DetachedViewsManager(final IWorkbenchSite site) {
 		this(site.getShell());
 	}

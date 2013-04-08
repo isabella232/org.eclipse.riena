@@ -25,7 +25,6 @@ import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.PlatformUI;
 
 import org.eclipse.riena.beans.common.SingleSelectionListBean;
 import org.eclipse.riena.beans.common.StringBean;
@@ -89,7 +88,7 @@ public class TextDateSubModuleController extends SubModuleController {
 		justSpaces.bindToModel(new StringBean("  .  .    "), StringBean.PROP_VALUE); //$NON-NLS-1$
 		justSpaces.updateFromModel();
 
-		fontManager = new FontManager(PlatformUI.getWorkbench().getDisplay());
+		fontManager = new FontManager(Display.getCurrent());
 		fontManager.addRidget(justEights);
 		fontManager.addRidget(justSpaces);
 

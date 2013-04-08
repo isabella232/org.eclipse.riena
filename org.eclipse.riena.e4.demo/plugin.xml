@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            class="org.eclipse.riena.navigation.ui.swt.views.SubApplicationView"
+            id="org.eclipse.riena.e4.demo.perspective1"
+            name="name">
+      </perspective>
+      <perspective
+            class="org.eclipse.riena.navigation.ui.swt.views.SubApplicationView"
+            id="org.eclipse.riena.e4.demo.perspective2"
+            name="name">
+      </perspective>
+      <perspective
+            class="org.eclipse.riena.navigation.ui.swt.views.SubApplicationView"
+            id="org.eclipse.riena.e4.demo.perspective3"
+            name="name">
+      </perspective>
+   </extension>
+   <extension
+         point="org.eclipse.riena.navigation.assemblies2">
+      <assembly2
+            id="de.compeople.e4.plugin.assembly2.one"
+            name="Assembly One"
+            parentNodeId="application"
+            startOrder="1">
+         <subApplication
+               name="Subapp 1"
+               nodeId="de.compeople.e4.plugin.subApplication.subapp1"
+               perspectiveId="org.eclipse.riena.e4.demo.perspective1">
+            <moduleGroup
+                  name="ModuleGroup 1"
+                  nodeId="de.compeople.e4.plugin.moduleGroup.one">
+               <module
+                     closable="true"
+                     name="Module One"
+                     nodeId="de.compeople.e4.plugin.module.one">
+                  <subModule
+                        closable="false"
+                        controller="org.eclipse.riena.e4.demo.controller.Controller1"
+                        expanded="false"
+                        name="SubModule One"
+                        nodeId="de.compeople.e4.plugin.subModule.one"
+                        selectable="true"
+                        sharedView="false"
+                        viewId="org.eclipse.riena.e4.demo.view1"
+                        visible="true">
+                  </subModule>
+                  <subModule
+                        closable="false"
+                        controller="org.eclipse.riena.e4.demo.controller.Controller2"
+                        expanded="false"
+                        name="SubModule Two"
+                        nodeId="de.compeople.e4.plugin.subModule.two"
+                        selectable="true"
+                        sharedView="false"
+                        viewId="org.eclipse.riena.e4.demo.view2"
+                        visible="true">
+                  </subModule>
+               </module>
+            </moduleGroup>
+         </subApplication>
+         <subApplication
+               name="Subapp 2"
+               nodeId="de.compeople.e4.plugin.subApplication.subapp2"
+               perspectiveId="org.eclipse.riena.e4.demo.perspective2">
+            <moduleGroup
+                  name="ModuleGroup 21"
+                  nodeId="de.compeople.e4.plugin.moduleGroup.2one">
+               <module
+                     closable="true"
+                     name="Module 2One"
+                     nodeId="de.compeople.e4.plugin.module.2one">
+                  <subModule
+                        closable="false"
+                        controller="org.eclipse.riena.e4.demo.controller.Controller21"
+                        expanded="false"
+                        name="SubModule 2One"
+                        nodeId="de.compeople.e4.plugin.subModule.2one"
+                        selectable="true"
+                        sharedView="false"
+                        viewId="org.eclipse.riena.e4.demo.view3"
+                        visible="true">
+                  </subModule>
+               </module>
+            </moduleGroup>
+         </subApplication>
+      </assembly2>
+      <assembly2
+            assembler="org.eclipse.riena.e4.demo.assembler.ProgrammaticAssembler"
+            id="org.eclipse.riena.e4.demo.assembly22"
+            name="Assembly Two"
+            parentNodeId="application"
+            startOrder="1">
+      </assembly2>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            allowMultiple="true"
+            class="org.eclipse.riena.e4.demo.parts.ContentPart1"
+            id="org.eclipse.riena.e4.demo.view1"
+            name="name"
+            restorable="true">
+      </view>
+      <view
+            allowMultiple="true"
+            class="org.eclipse.riena.e4.demo.parts.ContentPart2"
+            id="org.eclipse.riena.e4.demo.view2"
+            name="name"
+            restorable="true">
+      </view>
+      <view
+            allowMultiple="true"
+            class="org.eclipse.riena.e4.demo.parts.ContentPart21"
+            id="org.eclipse.riena.e4.demo.view3"
+            name="name"
+            restorable="true">
+      </view>
+      <view
+            allowMultiple="true"
+            class="org.eclipse.riena.e4.demo.parts.ContentPart31"
+            id="org.eclipse.riena.e4.demo.view4"
+            name="name"
+            restorable="true">
+      </view>
+   </extension>
+
+</plugin>

@@ -21,6 +21,7 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -35,6 +36,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.ISourceProvider;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.services.ISourceProviderService;
@@ -76,7 +78,7 @@ import org.eclipse.riena.ui.workarea.WorkareaManager;
 /**
  * Abstract implementation for a sub module view
  */
-public abstract class SubModuleView extends ViewPart implements INavigationNodeView<SubModuleNode> {
+public abstract class SubModuleView extends ViewPart implements INavigationNodeView<ISubModuleNode> {
 	/**
 	 * @since 3.0
 	 */
@@ -124,6 +126,18 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	private NavigationSourceProvider navigationSourceProvider;
 	private SubModuleNodesListener subModuleNodeListener;
 	private Cursor oldCursor;
+	/**
+	 * used for the e4 migration
+	 * <p>
+	 * Setting this field to something not <code>null</code> ensures that the getNavigationNode() method returns this value. If this value is <code>null</code>
+	 * the method behaves like implemented in Riena for Eclipse 3.x
+	 */
+	private ISubModuleNode navigationNode;
+	/**
+	 * used for the e4 migration
+	 */
+	private IShellProvider shellProvider;
+	private boolean e4Runtime = false;
 
 	/**
 	 * Creates a new instance of {@code SubModuleView}.
@@ -132,13 +146,25 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 		binding = createBinding();
 		focusListener = new FocusListener();
 		isBlocked = false;
+		setShellProvider(new IShellProvider() {
+			public Shell getShell() {
+				return getSite().getShell();
+			}
+		});
+	}
+
+	public void setE4Runtime(final boolean e4Runtime) {
+		this.e4Runtime = e4Runtime;
 	}
 
 	public void addUpdateListener(final IComponentUpdateListener listener) {
 		throw new UnsupportedOperationException();
 	}
 
-	public void bind(final SubModuleNode node) {
+	/**
+	 * @since 4.0
+	 */
+	public void bind(final ISubModuleNode node) {
 
 		// create new controller if not existent for new node
 		if ((getNavigationNode() != null) && (getController() == null)) {
@@ -150,7 +176,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 			//"old" node bound?
 			if (currentController != null) {
 				// old node disposed?
-				if (currentController.getNavigationNode().isDisposed()) {
+				if (currentController.getNavigationNode().isDisposed() && !e4Runtime) {
 					return;
 				}
 				// unbind "old" node
@@ -161,18 +187,16 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 				currentController = getController();
 			}
 
-			lnfUpdater.updateUIControlColors(getContentComposite());
-
 			//bind the new controller
 			binding.bind(currentController);
 
 			//callback
 			currentController.afterBind();
 
+			lnfUpdater.updateUIControls(getParentComposite(), true);
+		} else {
+			lnfUpdater.updateUIControlsAfterBind(getContentComposite());
 		}
-
-		lnfUpdater.updateUIControlsAfterBind(getContentComposite());
-
 		//TODO is this really part of the the binding of the SubModuleView? NavigationSourceProvider is Menu-specific and should be handled in a context of Menus
 		activeNodeChanged(getNavigationNode());
 		//set block state on bind
@@ -291,7 +315,13 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 		return null;
 	}
 
-	public SubModuleNode getNavigationNode() {
+	/**
+	 * @since 4.0
+	 */
+	public ISubModuleNode getNavigationNode() {
+		if (navigationNode != null) {
+			return navigationNode;
+		}
 
 		if (getViewSite() == null) {
 			return getFallbackNavigationNode();
@@ -307,6 +337,17 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 			result = getFallbackNavigationNode();
 		}
 		return result;
+	}
+
+	/**
+	 * Important: This method is NOT API. It is used for the e4 migration only.
+	 * 
+	 * @param node
+	 * @since 4.0
+	 * @see SubModuleView#navigationNode
+	 */
+	public void setNavigationNode(final ISubModuleNode navigationNode) {
+		this.navigationNode = navigationNode;
 	}
 
 	/**
@@ -399,6 +440,17 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 				unBlockView();
 			}
 		}
+	}
+
+	/**
+	 * @since 4.0
+	 */
+	protected IShellProvider getShellProvider() {
+		return shellProvider;
+	}
+
+	private void setShellProvider(final IShellProvider shellProvider) {
+		this.shellProvider = shellProvider;
 	}
 
 	private void unBlockView() {
@@ -829,9 +881,9 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	/**
 	 * Triggered by "prepareNode" for nodes to be prepared which already have an instantiated view. In those cases createPartControl is not called.
 	 * 
-	 * @since 3.0
+	 * @since 4.0
 	 */
-	public void prepareNode(final SubModuleNode node) {
+	public void prepareNode(final ISubModuleNode node) {
 		final IController controller = createController(node);
 		if (controller != null) {
 			binding.injectRidgets(controller);

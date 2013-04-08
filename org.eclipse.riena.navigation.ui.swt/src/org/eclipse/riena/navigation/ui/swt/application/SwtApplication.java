@@ -19,8 +19,6 @@ import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
@@ -29,7 +27,6 @@ import org.eclipse.ui.application.IActionBarConfigurer;
 import org.eclipse.ui.internal.Workbench;
 
 import org.eclipse.riena.core.Log4r;
-import org.eclipse.riena.core.exception.ExceptionFailure;
 import org.eclipse.riena.core.util.ReflectionFailure;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.core.wire.InjectExtension;
@@ -42,6 +39,7 @@ import org.eclipse.riena.navigation.listener.ApplicationNodeListener;
 import org.eclipse.riena.navigation.ui.application.AbstractApplication;
 import org.eclipse.riena.navigation.ui.controllers.ApplicationController;
 import org.eclipse.riena.navigation.ui.login.ILoginDialogView;
+import org.eclipse.riena.navigation.ui.swt.application.LoginNonActivityTimer.ILoginExecutor;
 import org.eclipse.riena.navigation.ui.swt.login.ILoginSplashViewExtension;
 import org.eclipse.riena.navigation.ui.swt.splashHandlers.AbstractLoginSplashHandler;
 import org.eclipse.riena.navigation.ui.swt.views.ApplicationAdvisor;
@@ -49,13 +47,13 @@ import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.utils.ImageStore;
 
 /**
- * Creates and starts an empty swt application Subclass to create own model or
- * controller.
+ * Creates and starts an empty swt application Subclass to create own model or controller.
  */
 public class SwtApplication extends AbstractApplication {
 
 	protected ILoginSplashViewExtension loginSplashViewExtension;
-	private LoginNonActivityTimer loginNonActivityTimer;
+
+	// private LoginNonActivityTimer loginNonActivityTimer;
 
 	@Override
 	protected void initializeUI() {
@@ -66,8 +64,7 @@ public class SwtApplication extends AbstractApplication {
 	public Object createView(final IApplicationContext context, final IApplicationNode pNode) {
 		final Display display = Display.getCurrent();
 		try {
-			final ApplicationAdvisor advisor = new ApplicationAdvisor(createApplicationController(pNode),
-					new AdvisorHelper());
+			final ApplicationAdvisor advisor = new ApplicationAdvisor(createApplicationController(pNode), new AdvisorHelper());
 			initializeLoginNonActivityTimer(display, pNode, context);
 			final int returnCode = PlatformUI.createAndRunWorkbench(display, advisor);
 			if (returnCode == PlatformUI.RETURN_RESTART) {
@@ -94,12 +91,10 @@ public class SwtApplication extends AbstractApplication {
 	/**
 	 * Return the default keyboard scheme for this applications.
 	 * <p>
-	 * Subclasses defining their own scheme using the '...' extension point,
-	 * should override this method and return the appropriate id.
+	 * Subclasses defining their own scheme using the '...' extension point, should override this method and return the appropriate id.
 	 * <p>
-	 * When defining your own scheme, you can specify '...' as the parent
-	 * scheme, to inherit the default Riena keybindings. If you wish to start
-	 * with a blank scheme, leave the parent attribute empty.
+	 * When defining your own scheme, you can specify '...' as the parent scheme, to inherit the default Riena keybindings. If you wish to start with a blank
+	 * scheme, leave the parent attribute empty.
 	 * <p>
 	 * Example:
 	 * 
@@ -170,14 +165,14 @@ public class SwtApplication extends AbstractApplication {
 			PlatformUI.getWorkbench().close();
 		} else {
 			RcpUtilities.getWorkbenchShell().setMinimized(false);
-			loginNonActivityTimer.schedule();
+			//			loginNonActivityTimer.schedule();
 		}
 	}
 
 	@Override
-	protected Object doPerformLogin(final IApplicationContext context) {
+	protected Integer doPerformLogin(final IApplicationContext context) {
 		final Realm realm = SWTObservables.getRealm(getDisplay());
-		// TODO Is really necessary that the loginDialogViewExtension is used here. Shouldn�t it be done it the super class??
+		// TODO Is really necessary that the loginDialogViewExtension is used here. Should not it be done it the super class??
 		final ILoginDialogView loginDialogView = loginDialogViewExtension.createViewClass();
 		do {
 			Realm.runWithDefault(realm, new Runnable() {
@@ -191,7 +186,7 @@ public class SwtApplication extends AbstractApplication {
 	}
 
 	@Override
-	protected Object doPerformSplashLogin(final IApplicationContext context) {
+	protected Integer doPerformSplashLogin(final IApplicationContext context) {
 
 		final Shell shell = new Shell(getDisplay(), SWT.NO_TRIM | SWT.APPLICATION_MODAL);
 		initilizeShellBackgroundImage(shell, getBackgroundImagePath(context));
@@ -258,23 +253,55 @@ public class SwtApplication extends AbstractApplication {
 		return result;
 	}
 
-	private void initializeLoginNonActivityTimer(final Display display, final IApplicationNode pNode,
-			final IApplicationContext context) {
+	private void initializeLoginNonActivityTimer(final Display display, final IApplicationNode pNode, final IApplicationContext context) {
 		pNode.addListener(new ApplicationNodeListener() {
 			@Override
 			public void afterActivated(final IApplicationNode source) {
-				if (isSplashLogin(context) && loginSplashViewExtension.getNonActivityDuration() > 0) {
-					loginNonActivityTimer = new LoginNonActivityTimer(display, context, loginSplashViewExtension
-							.getNonActivityDuration());
-					loginNonActivityTimer.schedule();
-				} else if (isDialogLogin(context) && loginDialogViewExtension.getNonActivityDuration() > 0) {
+				final ILoginExecutor<Integer> loginExecutor = new ILoginExecutor<Integer>() {
+
+					public void prePerformLogin() throws Exception {
+						SwtApplication.this.prePerformLogin(context);
+					}
+
+					public void postPerformLogin(final Integer result) throws Exception {
+						SwtApplication.this.postPerformLogin(context, result);
+					}
+
+					public Integer performLogin() {
+						try {
+							return SwtApplication.this.performLogin(context);
+						} catch (final Exception e) {
+							throw new RuntimeException(e);
+						}
+					}
+
+					public int getNonActivityDuration() {
+						if (isSplashLogin(context)) {
+							return loginSplashViewExtension.getNonActivityDuration();
+						}
+						if (isDialogLogin(context)) {
+							return loginDialogViewExtension.getNonActivityDuration();
+						}
+						return 0;
+					}
+				};
+				if (isSplashLogin(context)) {
+					startNonActivityTimer(display, loginExecutor);
+				} else if (isDialogLogin(context)) {
 					// TODO See todo in method doPerformLogin(IApplicationContext context)
-					loginNonActivityTimer = new LoginNonActivityTimer(display, context, loginDialogViewExtension
-							.getNonActivityDuration());
-					loginNonActivityTimer.schedule();
+					startNonActivityTimer(display, loginExecutor);
 				}
 			}
 		});
+	}
+
+	private boolean startNonActivityTimer(final Display display, final ILoginExecutor<Integer> loginExecutor) {
+		if (loginDialogViewExtension.getNonActivityDuration() > 0) {
+			new LoginNonActivityTimer(display, loginExecutor, loginSplashViewExtension.getNonActivityDuration()).schedule();
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	private void initializeLoginSplashViewDefinition() {
@@ -300,80 +327,80 @@ public class SwtApplication extends AbstractApplication {
 		}
 	}
 
-	private static final class EventListener implements Listener {
-		private boolean activity;
-		private long activityTime;
+	//	private static final class EventListener implements Listener {
+	//		private boolean activity;
+	//		private long activityTime;
+	//
+	//		private EventListener() {
+	//			activity = false;
+	//			activityTime = -1;
+	//		}
+	//
+	//		public void handleEvent(final Event event) {
+	//			activity = true;
+	//			activityTime = System.currentTimeMillis();
+	//		}
+	//	}
 
-		private EventListener() {
-			activity = false;
-			activityTime = -1;
-		}
-
-		public void handleEvent(final Event event) {
-			activity = true;
-			activityTime = System.currentTimeMillis();
-		}
-	}
-
-	private final class LoginNonActivityTimer implements Runnable {
-		private final Display display;
-		private final IApplicationContext context;
-		private EventListener eventListener;
-		private final int nonActivityDuration;
-
-		private LoginNonActivityTimer(final Display display, final IApplicationContext context,
-				final int nonActivityDuration) {
-			super();
-
-			this.display = display;
-			this.context = context;
-			this.nonActivityDuration = nonActivityDuration;
-			initializeEventListener();
-		}
-
-		public void run() {
-			try {
-				if (eventListener.activity) {
-					schedule();
-					return;
-				}
-
-				prePerformLogin(context);
-				postPerformLogin(context, performLogin(context));
-			} catch (final Exception e) {
-				throw new ExceptionFailure(e.getLocalizedMessage(), e);
-			}
-		}
-
-		private void initializeEventListener() {
-			eventListener = new EventListener();
-			display.addFilter(SWT.KeyDown, eventListener);
-			display.addFilter(SWT.KeyUp, eventListener);
-			display.addFilter(SWT.MouseDoubleClick, eventListener);
-			display.addFilter(SWT.MouseDown, eventListener);
-			display.addFilter(SWT.MouseUp, eventListener);
-			display.addFilter(SWT.Traverse, eventListener);
-			final SWTFacade facade = SWTFacade.getDefault();
-			facade.addFilterMouseExit(display, eventListener);
-			facade.addFilterMouseMove(display, eventListener);
-			facade.addFilterMouseWheel(display, eventListener);
-		}
-
-		private void schedule() {
-			initializeForSchedule();
-			display.timerExec(getTimerDelay(), this);
-		}
-
-		private void initializeForSchedule() {
-			if (eventListener.activityTime == -1) {// initialize on first schedule
-				eventListener.activityTime = System.currentTimeMillis();
-			}
-			eventListener.activity = false;
-		}
-
-		private int getTimerDelay() {
-			return nonActivityDuration - (int) (System.currentTimeMillis() - eventListener.activityTime);
-		}
-	}
+	//	private final class LoginNonActivityTimer implements Runnable {
+	//		private final Display display;
+	//		private final IApplicationContext context;
+	//		private EventListener eventListener;
+	//		private final int nonActivityDuration;
+	//
+	//		private LoginNonActivityTimer(final Display display, final IApplicationContext context,
+	//				final int nonActivityDuration) {
+	//			super();
+	//
+	//			this.display = display;
+	//			this.context = context;
+	//			this.nonActivityDuration = nonActivityDuration;
+	//			initializeEventListener();
+	//		}
+	//
+	//		public void run() {
+	//			try {
+	//				if (eventListener.activity) {
+	//					schedule();
+	//					return;
+	//				}
+	//
+	//				prePerformLogin(context);
+	//				postPerformLogin(context, performLogin(context));
+	//			} catch (final Exception e) {
+	//				throw new ExceptionFailure(e.getLocalizedMessage(), e);
+	//			}
+	//		}
+	//
+	//		private void initializeEventListener() {
+	//			eventListener = new EventListener();
+	//			display.addFilter(SWT.KeyDown, eventListener);
+	//			display.addFilter(SWT.KeyUp, eventListener);
+	//			display.addFilter(SWT.MouseDoubleClick, eventListener);
+	//			display.addFilter(SWT.MouseDown, eventListener);
+	//			display.addFilter(SWT.MouseUp, eventListener);
+	//			display.addFilter(SWT.Traverse, eventListener);
+	//			final SWTFacade facade = SWTFacade.getDefault();
+	//			facade.addFilterMouseExit(display, eventListener);
+	//			facade.addFilterMouseMove(display, eventListener);
+	//			facade.addFilterMouseWheel(display, eventListener);
+	//		}
+	//
+	//		private void schedule() {
+	//			initializeForSchedule();
+	//			display.timerExec(getTimerDelay(), this);
+	//		}
+	//
+	//		private void initializeForSchedule() {
+	//			if (eventListener.activityTime == -1) {// initialize on first schedule
+	//				eventListener.activityTime = System.currentTimeMillis();
+	//			}
+	//			eventListener.activity = false;
+	//		}
+	//
+	//		private int getTimerDelay() {
+	//			return nonActivityDuration - (int) (System.currentTimeMillis() - eventListener.activityTime);
+	//		}
+	//	}
 
 }

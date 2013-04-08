@@ -58,6 +58,11 @@ public class SwtExampleApplication extends SwtApplication {
 	@Override
 	protected void initializeUI() {
 		super.initializeUI();
+		configure();
+	}
+
+	@Override
+	public void configure() {
 		setDummyPermissions();
 	}
 
@@ -83,7 +88,7 @@ public class SwtExampleApplication extends SwtApplication {
 	}
 
 	@Override
-	protected IApplicationNode createModel() {
+	public IApplicationNode createModel() {
 		ISubApplicationNode subApplication = null;
 
 		final String bundleVersion = Activator.getDefault().getBundle().getHeaders().get("Bundle-Version"); //$NON-NLS-1$

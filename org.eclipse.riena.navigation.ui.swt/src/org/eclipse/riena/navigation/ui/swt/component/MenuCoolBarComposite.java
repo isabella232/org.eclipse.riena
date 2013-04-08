@@ -40,14 +40,14 @@ import org.eclipse.riena.ui.swt.lnf.LnfManager;
  * This composites has a list of the top-level menus of the Riena menu bar (a cool bar with an item for every top-level menu).
  */
 public class MenuCoolBarComposite extends Composite {
-
 	static final String MENU_DATA_KEY = "Menu"; //$NON-NLS-1$
 
-	private final IWorkbenchWindow window;
+	//	private final IWorkbenchWindow window;
 
 	private CoolItem menuCoolItem;
 	private ToolBar menuToolBar;
 	private CoolBar menuCoolBar;
+	private final IEntriesProvider provider;
 
 	// private final Map<MenuManager, MenuManagerState> menuManagerOldState;
 
@@ -61,11 +61,39 @@ public class MenuCoolBarComposite extends Composite {
 	 * @param window
 	 *            an IWorkbenchWindow instance, used to determine the menu entries. May be null.
 	 * @since 3.0
+	 * @deprecated use {@link MenuCoolBarComposite#MenuCoolBarComposite(Composite, int, IEntriesProvider)} instead
 	 */
+	@Deprecated
 	public MenuCoolBarComposite(final Composite parent, final int style, final IWorkbenchWindow window) {
+		this(parent, style, new IEntriesProvider() {
+			/**
+			 * Returns the top-level menu entries.
+			 */
+			@SuppressWarnings("restriction")
+			public IContributionItem[] getTopLevelEntries() {
+				if (window instanceof WorkbenchWindow) {
+					final MenuManager menuManager = ((WorkbenchWindow) window).getMenuManager();
+					return menuManager.getItems();
+				}
+				return new IContributionItem[0];
+			}
+		});
+	}
+
+	/**
+	 * Creates an new instance of {@code MenuCoolBarComposite} given its parent and a style value describing its behavior and appearance.
+	 * 
+	 * @param parent
+	 *            a composite which will be the parent of the new instance (cannot be null)
+	 * @param style
+	 *            the style of widget to construct
+	 * @param provider
+	 *            the menu entries provider
+	 */
+	public MenuCoolBarComposite(final Composite parent, final int style, final IEntriesProvider provider) {
 		super(parent, style);
+		this.provider = provider;
 		setLayout(new FillLayout());
-		this.window = window;
 		create();
 	}
 
@@ -139,7 +167,7 @@ public class MenuCoolBarComposite extends Composite {
 	}
 
 	private void fillMenuBar(final ToolBarMenuListener listener) {
-		for (final IContributionItem contribItem : getTopLevelMenuEntries()) {
+		for (final IContributionItem contribItem : provider.getTopLevelEntries()) {
 			if (contribItem instanceof MenuManager) {
 				createAndAddMenu((MenuManager) contribItem, listener);
 			}
@@ -150,15 +178,4 @@ public class MenuCoolBarComposite extends Composite {
 		return LnfManager.getLnf().getFont(LnfKeyConstants.MENUBAR_FONT);
 	}
 
-	/**
-	 * Returns the top-level menu entries.
-	 */
-	@SuppressWarnings("restriction")
-	private IContributionItem[] getTopLevelMenuEntries() {
-		if (window instanceof WorkbenchWindow) {
-			final MenuManager menuManager = ((WorkbenchWindow) window).getMenuManager();
-			return menuManager.getItems();
-		}
-		return new IContributionItem[0];
-	}
 }

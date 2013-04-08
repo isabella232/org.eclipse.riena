@@ -288,16 +288,16 @@ public abstract class AbstractTitleBarMouseListener implements MouseListener, Mo
 	}
 
 	private void move(final MouseEvent e) {
-		final boolean wasMaximized = ShellHelper.isShellMaximzed();
 		final Point moveEndPoint = new Point(e.x, e.y);
 		final Control control = (Control) e.getSource();
 		final Shell shell = getShell(control);
+		final boolean wasMaximized = ShellHelper.isMaximzed(shell);
 		final int xMove = moveStartPoint.x - moveEndPoint.x;
 		final int yMove = moveStartPoint.y - moveEndPoint.y;
 		final int x = shell.getLocation().x - xMove;
 		final int y = shell.getLocation().y - yMove;
 		shell.setLocation(x, y);
-		if (wasMaximized != ShellHelper.isShellMaximzed()) {
+		if (wasMaximized != ShellHelper.isMaximzed(shell)) {
 			redrawButtons(e);
 		}
 	}

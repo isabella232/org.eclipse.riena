@@ -40,7 +40,7 @@ Export-Package: org.eclipse.riena.core,
  org.eclipse.riena.internal.core.wire;x-friends:="org.eclipse.riena.tests"
 Require-Bundle: org.eclipse.core.runtime;visibility:=reexport,
  org.eclipse.core.variables;visibility:=reexport,
- org.eclipse.equinox.log;visibility:=reexport,
+ org.eclipse.equinox.log;resolution:=optional;visibility:=reexport,
  org.easymock;resolution:=optional;visibility:=reexport,
  org.junit;bundle-version="4.10.0";resolution:=optional;visibility:=reexport
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

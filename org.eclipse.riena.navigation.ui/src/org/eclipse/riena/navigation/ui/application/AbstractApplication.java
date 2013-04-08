@@ -45,7 +45,7 @@ import org.eclipse.riena.ui.core.uiprocess.ProgressProviderBridge;
  * Abstract application defining the basic structure of a Riena application
  */
 @SuppressWarnings("restriction")
-public abstract class AbstractApplication implements IApplication {
+public abstract class AbstractApplication implements IApplication, IApplicationModelCreator {
 
 	/**
 	 * The result code EXIT_ABORT can be used to indicate that the login process
@@ -67,16 +67,24 @@ public abstract class AbstractApplication implements IApplication {
 		}
 		initializeUI();
 		final IApplicationNode applicationNode = createModel();
+		initApplicationNode(applicationNode);
+		return createView(context, applicationNode);
+	}
+
+	/**
+	 * Important: This method is NOT API. It is used for the 3.x/e4 split.
+	 * 
+	 * @since 4.0
+	 */
+	public void initApplicationNode(final IApplicationNode applicationNode) {
 		if (applicationNode == null) {
-			throw new RuntimeException(
-					"Application did not return an ApplicationModel in method 'createModel' but returned NULL. Cannot continue"); //$NON-NLS-1$
+			throw new RuntimeException("Application did not return an ApplicationModel in method 'createModel' but returned NULL. Cannot continue"); //$NON-NLS-1$
 		}
 		applyUserInterfaceFilters(applicationNode);
 		ApplicationNodeManager.registerApplicationNode(applicationNode);
 		createStartupNodes(applicationNode);
 		initializeNode(applicationNode);
 		installProgressProviderBridge();
-		return createView(context, applicationNode);
 	}
 
 	private void applyUserInterfaceFilters(final IApplicationNode applicationNode) {
@@ -141,12 +149,11 @@ public abstract class AbstractApplication implements IApplication {
 	/**
 	 * Overwrite to create own application model
 	 * 
-	 * @return IApplicationModelProvider - root of the configured application
-	 *         model
+	 * @return IApplicationModelProvider - root of the configured application model
+	 * @since 4.0
 	 */
-	protected IApplicationNode createModel() {
-		final IApplicationNode applicationModel = new ApplicationNode(new NavigationNodeId(
-				ApplicationNode.DEFAULT_APPLICATION_TYPEID));
+	public IApplicationNode createModel() {
+		final IApplicationNode applicationModel = new ApplicationNode(new NavigationNodeId(ApplicationNode.DEFAULT_APPLICATION_TYPEID));
 		return applicationModel;
 	}
 
@@ -232,18 +239,15 @@ public abstract class AbstractApplication implements IApplication {
 		return false;
 	}
 
-	protected Object doPerformLogin(final IApplicationContext context) {
-
+	protected Integer doPerformLogin(final IApplicationContext context) {
 		return EXIT_OK;
 	}
 
-	protected Object doPerformSplashLogin(final IApplicationContext context) {
-
+	protected Integer doPerformSplashLogin(final IApplicationContext context) {
 		return EXIT_OK;
 	}
 
-	protected Object performLogin(final IApplicationContext context) throws Exception {
-
+	protected Integer performLogin(final IApplicationContext context) throws Exception {
 		if (isSplashLogin(context)) {
 			return doPerformSplashLogin(context);
 		} else {
@@ -261,5 +265,8 @@ public abstract class AbstractApplication implements IApplication {
 
 	protected void initializeLoginViewDefinition() {
 		Wire.instance(this).andStart(Activator.getDefault().getContext());
+	}
+
+	public void configure() {
 	}
 }

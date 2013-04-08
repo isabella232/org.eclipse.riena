@@ -102,7 +102,7 @@ public abstract class AbstractTitleBarRenderer extends AbstractLnfRenderer {
 		}
 
 		setActive(true);
-		setMaximized(ShellHelper.isShellMaximzed());
+		setMaximized(ShellHelper.isMaximzed(shell));
 		resetBounds();
 
 		paintBackground(gc);

@@ -101,6 +101,10 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), ApplicationViewAdvisor.class);
 	/**
+	 * Binding ID
+	 */
+	private static final String INFO_FLYOUT_BINDING_ID = "infoFlyout"; //$NON-NLS-1$
+	/**
 	 * System property defining the initial width of the application window.
 	 */
 	private static final String PROPERTY_RIENA_APPLICATION_WIDTH = "riena.application.width"; //$NON-NLS-1$
@@ -211,7 +215,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 	private void createInfoFlyout(final Composite mainComposite) {
 		final InfoFlyout flyout = UIControlsFactory.createInfoFlyout(mainComposite);
-		binding.addUIControl(flyout, "infoFlyout"); //$NON-NLS-1$
+		binding.addUIControl(flyout, INFO_FLYOUT_BINDING_ID);
 	}
 
 	@Override
@@ -869,37 +873,5 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		}
 	}
 
-	/**
-	 * This listener paints the shell (the border of the shell).
-	 */
-	private static class ShellPaintListener implements PaintListener {
-
-		public void paintControl(final PaintEvent e) {
-			onPaint(e);
-		}
-
-		/**
-		 * Paints the border of the (titleless) shell.
-		 * 
-		 * @param e
-		 *            event
-		 */
-		private void onPaint(final PaintEvent e) {
-			if (e.getSource() instanceof Control) {
-				final Control shell = (Control) e.getSource();
-
-				final Rectangle shellBounds = shell.getBounds();
-				final Rectangle bounds = new Rectangle(0, 0, shellBounds.width, shellBounds.height);
-
-				final ILnfRenderer borderRenderer = LnfManager.getLnf().getRenderer(
-						LnfKeyConstants.TITLELESS_SHELL_BORDER_RENDERER);
-				borderRenderer.setBounds(bounds);
-				// TODO [ev] gc is sometimes disposed -- looks like a RAP bug, adding a workaround, need to file bug
-				if (!e.gc.isDisposed()) {
-					borderRenderer.paint(e.gc, null);
-				}
-			}
-		}
-	}
-
 }
+

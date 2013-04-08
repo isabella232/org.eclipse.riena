@@ -43,7 +43,7 @@ public final class UISynchronizer {
 	/**
 	 * Create a new configured {@code IUISynchronizer}.
 	 * 
-	 * @return a {@code IUISynchronizer}
+	 * @return a {@code IUISynchronizer}, <code>null</code> if no {@link IUISynchronizer} instance available.
 	 */
 	public static IUISynchronizer createSynchronizer() {
 		return UIS.getInstance().create();
@@ -53,8 +53,7 @@ public final class UISynchronizer {
 		if (synchronizerExtension != null) {
 			return synchronizerExtension.createUISynchronizer();
 		}
-		throw new IllegalStateException(
-				"There is NO IUISynchronizer defined, but it must. Use extension point 'uiSynchronizer' to do this."); //$NON-NLS-1$
+		return null;
 	}
 
 	/**
