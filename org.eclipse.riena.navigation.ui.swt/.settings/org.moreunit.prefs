@@ -1,4 +1,4 @@
-#Wed Jan 14 14:46:14 CET 2009
 eclipse.preferences.version=1
+org.moreunit.preferences.version=2
 org.moreunit.unitsourcefolder=org.eclipse.riena.navigation.ui.swt\:src\:org.eclipse.riena.tests\:src
 org.moreunit.useprojectsettings=true
