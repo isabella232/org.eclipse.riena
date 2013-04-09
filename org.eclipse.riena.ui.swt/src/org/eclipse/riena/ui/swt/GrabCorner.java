@@ -91,8 +91,7 @@ public class GrabCorner extends Composite {
 	}
 
 	/**
-	 * Returns the size of the grab corner (including the border (right,bottom)
-	 * of the shell)
+	 * Returns the size of the grab corner (including the border (right,bottom) of the shell)
 	 * 
 	 * @return size of grab corner
 	 */
@@ -127,9 +126,7 @@ public class GrabCorner extends Composite {
 	 * @return grab corner image
 	 */
 	private Image getGrabCornerImage() {
-		Image image = LnfManager.getLnf().getImage(
-				isMainShell ? LnfKeyConstants.TITLELESS_SHELL_GRAB_CORNER_IMAGE
-						: LnfKeyConstants.DIALOG_GRAB_CORNER_IMAGE);
+		Image image = LnfManager.getLnf().getImage(isMainShell ? LnfKeyConstants.TITLELESS_SHELL_GRAB_CORNER_IMAGE : LnfKeyConstants.DIALOG_GRAB_CORNER_IMAGE);
 		if (image == null) {
 			image = ImageStore.getInstance().getMissingImage();
 		}
@@ -142,8 +139,7 @@ public class GrabCorner extends Composite {
 	 * @return border width
 	 */
 	private static int getShellBorderWidth() {
-		final DialogBorderRenderer borderRenderer = (DialogBorderRenderer) LnfManager.getLnf().getRenderer(
-				LnfKeyConstants.TITLELESS_SHELL_BORDER_RENDERER);
+		final DialogBorderRenderer borderRenderer = (DialogBorderRenderer) LnfManager.getLnf().getRenderer(LnfKeyConstants.TITLELESS_SHELL_BORDER_RENDERER);
 		return borderRenderer != null ? borderRenderer.getBorderWidth() : 0;
 	}
 

@@ -155,6 +155,7 @@ public class ShellHelper {
 	 * @param shell
 	 *            shell to check
 	 * @return {@code true} not default shell style (no title bar etc.); {@code false] default shell style
+
 	 */
 	private static boolean isTitleless(final Shell shell) {
 		if ((shell == null) || shell.isDisposed()) {
@@ -163,20 +164,6 @@ public class ShellHelper {
 		}
 		final int style = shell.getStyle();
 		return (style & SWT.NO_TRIM) == SWT.NO_TRIM;
-	}
-
-	/**
-	 * Returns whether the shell has the default shell style with (title bar, border, system menu etc.) or not.
-	 * 
-	 * @return {@code true} not default shell style (no title bar etc.); {@code false] default shell style
-	 */
-	private static boolean isShellTitleless() {
-		final Shell shell = RcpUtilities.getWorkbenchShell();
-		if (shell == null) {
-			LOGGER.log(LogService.LOG_WARNING, "No shell of the application found!"); //$NON-NLS-1$
-			return false;
-		}
-		return isTitleless(shell);
 	}
 
 	/**

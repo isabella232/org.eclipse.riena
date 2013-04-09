@@ -35,7 +35,6 @@ public class UICallbackDispatcher extends ProgressProvider implements IUIMonitor
 	private final IUISynchronizer synchronizer;
 	private final List<IUIMonitor> uiMonitors;
 	private final ProcessInfo pInfo;
-	private IProgressMonitor progressMonitor;
 	private JobChangeAdapter jobListener;
 
 	/**
@@ -77,7 +76,7 @@ public class UICallbackDispatcher extends ProgressProvider implements IUIMonitor
 
 	@Override
 	public final IProgressMonitor createMonitor(final Job job) {
-		progressMonitor = createThreadSwitcher();
+		final IProgressMonitor progressMonitor = createThreadSwitcher();
 		observeJob(job);
 		return progressMonitor;
 	}
