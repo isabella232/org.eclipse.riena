@@ -418,6 +418,9 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 	 * interface
 	 */
 	public void removeProgressVisualizer(final IProgressVisualizer visualizer) {
+		if (visualizer == null) {
+			return;
+		}
 		removeVisualizerFromContextData(visualizer);
 		removeVisualizerProgress(visualizer);
 		cleanContext();
