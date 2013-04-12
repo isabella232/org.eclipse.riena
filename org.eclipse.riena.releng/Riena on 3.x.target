@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?pde version="3.8"?>
+
+<target name="Riena on 3.x" sequenceNumber="16">
+<locations>
+<location path="${project_loc:org.eclipse.riena.build3}/prebuild/plugins" type="Directory"/>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.rcp.id" version="3.8.2.M20130131-0800"/>
+<unit id="org.eclipse.rcp.source.feature.group" version="3.8.2.v20130118-180157-96BuGOZFxwOAeG8Ofmqicz0tPK"/>
+<unit id="org.eclipse.rcp.sdk.id" version="3.8.2.M20130131-0800"/>
+<unit id="org.eclipse.equinox.sdk.feature.group" version="3.8.0.v20121212-203907-7M7fA78g4_y-edvtH0ZcEC5NOFTB"/>
+<repository location="http://download.eclipse.org/eclipse/updates/3.8"/>
+</location>
+</locations>
+</target>
