@@ -123,6 +123,10 @@ public class SwtUISynchronizer implements IUISynchronizer {
 				}
 			}
 
+			if (getDisplay() == null) {
+				return;
+			}
+
 			synchronized (SwtUISynchronizer.class) {
 
 				// notify job waiters (syncExec)
@@ -131,10 +135,6 @@ public class SwtUISynchronizer implements IUISynchronizer {
 					final SwtUISynchronizer.FutureSyncLatch futureSyncLatch = syncIter.next();
 					futureSyncLatch.countDown();
 					syncIter.remove();
-				}
-
-				if (getDisplay() == null) {
-					return;
 				}
 
 				// execute jobs (asyncExec)
