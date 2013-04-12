@@ -2,6 +2,7 @@
 <?eclipse version="3.2"?>
 <plugin>
    <extension-point id="loginDialogViewDefinition" name="LoginDialogView Definition" schema="schema/loginDialogViewDefinition.exsd"/>
+   <extension-point id="applicationModelCreators" name="Application Model Creators" schema="schema/applicationModelCreators.exsd"/>
    <extension
          point="org.eclipse.riena.ui.filter.ruleMapper">
       <mapper>

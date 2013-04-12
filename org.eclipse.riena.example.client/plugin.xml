@@ -11,11 +11,6 @@
          </run>
       </application>
    </extension>
-   <extension point="org.eclipse.rap.ui.entrypoint">
-     <entrypoint id="example.application.entrypoint"
-        applicationId="org.eclipse.riena.example.client.exampleapp"
-        path="/rienaExampleClient" />
-   </extension>
    <extension
          id="example_product"
          point="org.eclipse.core.runtime.products">
@@ -1632,9 +1627,15 @@
       </property>
    </extension>
    <extension
-         point="org.eclipse.riena.e4.launcher.applicationModelCreators">
+         point="org.eclipse.riena.navigation.ui.applicationModelCreators">
       <modelCreator
             class="org.eclipse.riena.example.client.application.SwtExampleApplication">
       </modelCreator>
    </extension>
+   <!-- comment in for Riena on RAP --> 
+   <!--extension point="org.eclipse.rap.ui.entrypoint">
+     <entrypoint id="example.application.entrypoint"
+        applicationId="org.eclipse.riena.example.client.exampleapp"
+        path="/rienaExampleClient" />
+   </extension-->
 </plugin>
