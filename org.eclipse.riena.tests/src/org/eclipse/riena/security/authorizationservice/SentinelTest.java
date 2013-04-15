@@ -69,6 +69,7 @@ public class SentinelTest extends RienaTestCase {
 	 */
 	@Override
 	protected void tearDown() throws Exception {
+		Service.get(ISubjectHolder.class).setSubject(null);
 		authorizationServiceReg.unregister();
 		super.tearDown();
 	}
