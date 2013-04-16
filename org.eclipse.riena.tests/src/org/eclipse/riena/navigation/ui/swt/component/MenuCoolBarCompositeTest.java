@@ -14,6 +14,7 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.ToolBarContributionItem;
 import org.eclipse.swt.SWT;
@@ -25,7 +26,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.swt.widgets.TypedListener;
-import org.eclipse.ui.IWorkbenchWindow;
 
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.collect.UITestCase;
@@ -55,7 +55,12 @@ public class MenuCoolBarCompositeTest extends TestCase {
 	 */
 	public void testMenuCoolBarComposite() {
 
-		final MenuCoolBarComposite composite = new MenuCoolBarComposite(shell, SWT.NONE, (IWorkbenchWindow) null);
+		final IEntriesProvider entriesProvider = new IEntriesProvider() {
+			public IContributionItem[] getTopLevelEntries() {
+				return new IContributionItem[0];
+			}
+		};
+		final MenuCoolBarComposite composite = new MenuCoolBarComposite(shell, SWT.NONE, entriesProvider);
 		final ToolBar toolBar = ReflectionUtils.getHidden(composite, "menuToolBar");
 		checkListenerCountAndType(toolBar, SWT.MouseDown);
 		checkListenerCountAndType(toolBar, SWT.MouseEnter);
@@ -88,8 +93,13 @@ public class MenuCoolBarCompositeTest extends TestCase {
 	 */
 	public void testCreateAndAddMenu() {
 
+		final IEntriesProvider entriesProvider = new IEntriesProvider() {
+			public IContributionItem[] getTopLevelEntries() {
+				return new IContributionItem[0];
+			}
+		};
+		final MenuCoolBarComposite composite = new MenuCoolBarComposite(shell, SWT.NONE, entriesProvider);
 		final SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
-		final MenuCoolBarComposite composite = new MenuCoolBarComposite(shell, SWT.NONE, (IWorkbenchWindow) null);
 
 		final MenuManager manager = getMenuManager("TestMenu", "0815");
 		final ToolItem topItem = ReflectionUtils.invokeHidden(composite, "createAndAddMenu", manager, new ToolBarMenuListener());
@@ -107,7 +117,12 @@ public class MenuCoolBarCompositeTest extends TestCase {
 	 */
 	public void testGetTopLevelItems() {
 
-		final MenuCoolBarComposite composite = new MenuCoolBarComposite(shell, SWT.NONE, (IWorkbenchWindow)  null);
+		final IEntriesProvider entriesProvider = new IEntriesProvider() {
+			public IContributionItem[] getTopLevelEntries() {
+				return new IContributionItem[0];
+			}
+		};
+		final MenuCoolBarComposite composite = new MenuCoolBarComposite(shell, SWT.NONE, entriesProvider);
 
 		final MenuManager manager = getMenuManager("TestMenu", "0815");
 		final ToolItem topItem = ReflectionUtils.invokeHidden(composite, "createAndAddMenu", manager, new ToolBarMenuListener());

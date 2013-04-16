@@ -167,6 +167,9 @@ public class MenuCoolBarComposite extends Composite {
 	}
 
 	private void fillMenuBar(final ToolBarMenuListener listener) {
+		if (provider == null) {
+			return;
+		}
 		for (final IContributionItem contribItem : provider.getTopLevelEntries()) {
 			if (contribItem instanceof MenuManager) {
 				createAndAddMenu((MenuManager) contribItem, listener);

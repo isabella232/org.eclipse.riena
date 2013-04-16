@@ -15,6 +15,7 @@ import java.util.List;
 import junit.framework.TestCase;
 
 import org.eclipse.jface.action.ContributionItem;
+import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.CoolBar;
@@ -24,7 +25,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.ui.IPageLayout;
-import org.eclipse.ui.IWorkbenchWindow;
 
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.collect.UITestCase;
@@ -40,6 +40,7 @@ import org.eclipse.riena.navigation.model.NavigationProcessor;
 import org.eclipse.riena.navigation.model.SubApplicationNode;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubApplicationController;
+import org.eclipse.riena.navigation.ui.swt.component.IEntriesProvider;
 import org.eclipse.riena.navigation.ui.swt.component.MenuCoolBarComposite;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewId;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
@@ -119,7 +120,12 @@ public class SubApplicationViewTest extends TestCase {
 		assertNotNull(composites);
 		assertTrue(composites.isEmpty());
 
-		final MenuCoolBarComposite menuComposite = new MenuCoolBarComposite(comp1, SWT.NONE,(IWorkbenchWindow)  null);
+		final IEntriesProvider entriesProvider = new IEntriesProvider() {
+			public IContributionItem[] getTopLevelEntries() {
+				return new IContributionItem[0];
+			}
+		};
+		final MenuCoolBarComposite menuComposite = new MenuCoolBarComposite(comp1, SWT.NONE, entriesProvider);
 
 		composites = ReflectionUtils.invokeHidden(view, "getMenuCoolBarComposites", shell);
 		assertNotNull(composites);
@@ -140,7 +146,12 @@ public class SubApplicationViewTest extends TestCase {
 		assertNotNull(coolBars);
 		assertTrue(coolBars.isEmpty());
 
-		new MenuCoolBarComposite(comp1, SWT.NONE,(IWorkbenchWindow)  null);
+		final IEntriesProvider entriesProvider = new IEntriesProvider() {
+			public IContributionItem[] getTopLevelEntries() {
+				return new IContributionItem[0];
+			}
+		};
+		new MenuCoolBarComposite(comp1, SWT.NONE, entriesProvider);
 		coolBars = ReflectionUtils.invokeHidden(view, "getCoolBars", shell);
 		assertNotNull(coolBars);
 		assertTrue(coolBars.isEmpty());
@@ -224,8 +235,7 @@ public class SubApplicationViewTest extends TestCase {
 		IRidget ridget = controller.getRidget(IActionRidget.BASE_ID_MENUACTION + "4711");
 		assertNotNull(ridget);
 		assertTrue(ridget instanceof MenuItemRidget);
-		assertEquals(IActionRidget.BASE_ID_MENUACTION + "4711", SWTBindingPropertyLocator.getInstance()
-				.locateBindingProperty(menuItem));
+		assertEquals(IActionRidget.BASE_ID_MENUACTION + "4711", SWTBindingPropertyLocator.getInstance().locateBindingProperty(menuItem));
 
 		final CoolBar coolBar = new CoolBar(shell, SWT.NONE);
 		final ToolBar toolBar = new ToolBar(coolBar, SWT.NONE);
@@ -239,8 +249,7 @@ public class SubApplicationViewTest extends TestCase {
 		ridget = controller.getRidget(IActionRidget.BASE_ID_TOOLBARACTION + "0815");
 		assertNotNull(ridget);
 		assertTrue(ridget instanceof ToolItemRidget);
-		assertEquals(IActionRidget.BASE_ID_TOOLBARACTION + "0815", SWTBindingPropertyLocator.getInstance()
-				.locateBindingProperty(toolItem));
+		assertEquals(IActionRidget.BASE_ID_TOOLBARACTION + "0815", SWTBindingPropertyLocator.getInstance().locateBindingProperty(toolItem));
 
 	}
 
@@ -261,8 +270,7 @@ public class SubApplicationViewTest extends TestCase {
 		final IRidget ridget = controller.getRidget(IActionRidget.BASE_ID_MENUACTION + "4711");
 		assertNotNull(ridget);
 		assertTrue(ridget instanceof MenuItemRidget);
-		assertEquals(IActionRidget.BASE_ID_MENUACTION + "4711", SWTBindingPropertyLocator.getInstance()
-				.locateBindingProperty(item));
+		assertEquals(IActionRidget.BASE_ID_MENUACTION + "4711", SWTBindingPropertyLocator.getInstance().locateBindingProperty(item));
 
 	}
 
@@ -335,9 +343,7 @@ public class SubApplicationViewTest extends TestCase {
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see org.eclipse.riena.navigation.ui.swt.views.SubApplicationView#
-		 * getSharedCount
-		 * (org.eclipse.riena.navigation.ui.swt.presentation.SwtViewId)
+		 * @see org.eclipse.riena.navigation.ui.swt.views.SubApplicationView# getSharedCount (org.eclipse.riena.navigation.ui.swt.presentation.SwtViewId)
 		 */
 		@Override
 		protected int getViewUserCount(final SwtViewId id) {
@@ -347,9 +353,7 @@ public class SubApplicationViewTest extends TestCase {
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see
-		 * org.eclipse.riena.navigation.ui.swt.views.SubApplicationView#hideView
-		 * (org.eclipse.riena.navigation.ui.swt.presentation.SwtViewId)
+		 * @see org.eclipse.riena.navigation.ui.swt.views.SubApplicationView#hideView (org.eclipse.riena.navigation.ui.swt.presentation.SwtViewId)
 		 */
 		@Override
 		protected void hideView(final SwtViewId id) {
@@ -359,9 +363,7 @@ public class SubApplicationViewTest extends TestCase {
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see
-		 * org.eclipse.riena.navigation.ui.swt.views.SubApplicationView#doBaseLayout
-		 * (org.eclipse.ui.IPageLayout)
+		 * @see org.eclipse.riena.navigation.ui.swt.views.SubApplicationView#doBaseLayout (org.eclipse.ui.IPageLayout)
 		 */
 		@Override
 		protected void doBaseLayout(final IPageLayout layout) {
@@ -370,8 +372,7 @@ public class SubApplicationViewTest extends TestCase {
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see org.eclipse.riena.navigation.ui.swt.views.SubApplicationView#
-		 * locateSubApplication(org.eclipse.ui.IPageLayout)
+		 * @see org.eclipse.riena.navigation.ui.swt.views.SubApplicationView# locateSubApplication(org.eclipse.ui.IPageLayout)
 		 */
 		@Override
 		protected ISubApplicationNode locateSubApplication(final IPageLayout layout) {
@@ -381,9 +382,7 @@ public class SubApplicationViewTest extends TestCase {
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see
-		 * org.eclipse.riena.navigation.ui.swt.views.SubApplicationView#getViewId
-		 * (org.eclipse.riena.navigation.ISubModuleNode)
+		 * @see org.eclipse.riena.navigation.ui.swt.views.SubApplicationView#getViewId (org.eclipse.riena.navigation.ISubModuleNode)
 		 */
 		@Override
 		protected SwtViewId getViewId(final ISubModuleNode node) {
