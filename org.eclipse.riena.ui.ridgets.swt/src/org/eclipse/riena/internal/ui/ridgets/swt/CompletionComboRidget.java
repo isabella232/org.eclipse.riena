@@ -10,8 +10,11 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import org.eclipse.core.databinding.UpdateValueStrategy;
+import org.eclipse.core.databinding.conversion.Converter;
 import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.core.databinding.observable.list.IObservableList;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.jface.databinding.swt.ISWTObservableValue;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.swt.events.ModifyEvent;
@@ -64,6 +67,25 @@ public class CompletionComboRidget extends AbstractComboRidget implements ICompl
 			control.setFlashDelegate(flashDelegate);
 		}
 		super.bindUIControl();
+	}
+
+	@Override
+	protected void addConverter(final UpdateValueStrategy targetToModelStrategy, final IObservableValue selectionValue) {
+		final Object selectionType = selectionValue.getValueType();
+		targetToModelStrategy.setConverter(new Converter(Object.class, selectionType) {
+			public Object convert(final Object fromObject) {
+				if (fromObject == null) {
+					return null;
+				}
+				if (fromObject.getClass() == getToType()) {
+					return fromObject;
+				}
+				if (fromObject.toString().isEmpty()) {
+					return null;
+				}
+				return fromObject;
+			}
+		});
 	}
 
 	@Override

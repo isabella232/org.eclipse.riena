@@ -58,8 +58,7 @@ import org.eclipse.riena.ui.ridgets.swt.nls.Messages;
 import org.eclipse.riena.ui.swt.CompletionCombo;
 
 /**
- * Superclass of ComboRidget that does not depend on the Combo SWT control. May
- * be reused for custom Combo controls.
+ * Superclass of ComboRidget that does not depend on the Combo SWT control. May be reused for custom Combo controls.
  */
 public abstract class AbstractComboRidget extends AbstractSWTRidget implements IComboRidget {
 	/**
@@ -77,8 +76,7 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	/** Selection validator that allows or cancels a selection request. */
 	private final SelectionBindingValidator selectionValidator;
 	/**
-	 * Listener that can undo a user's selection if the ridget is in 'readOnly'
-	 * mode.
+	 * Listener that can undo a user's selection if the ridget is in 'readOnly' mode.
 	 */
 	private final SelectionEnforcer selectionEnforcer;
 	/** IValueChangeListener that fires a selection event on change. */
@@ -96,15 +94,13 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	/** The selected option (model). */
 	private IObservableValue selectionValue;
 	/**
-	 * Optional IColumnFormatter providing an Image or Text for each model
-	 * entry.
+	 * Optional IColumnFormatter providing an Image or Text for each model entry.
 	 */
 	private IColumnFormatter formatter;
 	/** A string used for converting from Object to String */
 	private String renderingMethod;
 	/**
-	 * Converts from objects (rowObsservables) to strings (Combo) using the
-	 * renderingMethod.
+	 * Converts from objects (rowObsservables) to strings (Combo) using the renderingMethod.
 	 */
 	private IConverter objToStrConverter;
 	/**
@@ -112,30 +108,24 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	 */
 	private IConverter strToObjConverter;
 	/**
-	 * The list of items to show in the combo. These entries are created from
-	 * the optionValues by applying the current conversion stategy to them.
+	 * The list of items to show in the combo. These entries are created from the optionValues by applying the current conversion stategy to them.
 	 */
 	private List<String> items;
 	/**
-	 * Binding between the rowObservables and the list of choices from the
-	 * model. May be null, when there is no model.
+	 * Binding between the rowObservables and the list of choices from the model. May be null, when there is no model.
 	 */
 	private Binding listBindingExternal;
 	/**
-	 * Binding between the selection in the combo and the selectionObservable.
-	 * May be null, when there is no control or model.
+	 * Binding between the selection in the combo and the selectionObservable. May be null, when there is no control or model.
 	 */
 	private Binding selectionBindingInternal;
 	/**
-	 * Binding between the selectionObservable and the selection in the model.
-	 * May be null, when there is no model.
+	 * Binding between the selectionObservable and the selection in the model. May be null, when there is no model.
 	 */
 	private Binding selectionBindingExternal;
 	/**
-	 * If true, it will cause an error marker to be shown, once the selected
-	 * value in the combo is no longer available in the list of selectable
-	 * values. This can occur if the selection was removed from the bound model
-	 * and {@link #updateFromModel()} is called.
+	 * If true, it will cause an error marker to be shown, once the selected value in the combo is no longer available in the list of selectable values. This
+	 * can occur if the selection was removed from the bound model and {@link #updateFromModel()} is called.
 	 * <p>
 	 * The default setting is false.
 	 * 
@@ -147,8 +137,7 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	 */
 	private ErrorMarker selectionMismatchMarker;
 	/**
-	 * The text value shown in the combo. Note: this is not necessarily a valid
-	 * selection. Use {@link #getSelection()} to get the current selection.
+	 * The text value shown in the combo. Note: this is not necessarily a valid selection. Use {@link #getSelection()} to get the current selection.
 	 */
 	private String text;
 
@@ -190,13 +179,12 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 			if (getUIControl() != null) {
 				applyEnabled();
 			}
-			listBindingExternal = dbc
-					.bindList(rowObservables, optionValues,
-							new UpdateListStrategy(UpdateListStrategy.POLICY_ON_REQUEST), new UpdateListStrategy(
-									UpdateListStrategy.POLICY_ON_REQUEST));
-			selectionBindingExternal = dbc.bindValue(selectionObservable, selectionValue, new UpdateValueStrategy(
-					UpdateValueStrategy.POLICY_UPDATE).setAfterGetValidator(selectionValidator),
-					new UpdateValueStrategy(UpdateValueStrategy.POLICY_ON_REQUEST));
+			listBindingExternal = dbc.bindList(rowObservables, optionValues, new UpdateListStrategy(UpdateListStrategy.POLICY_ON_REQUEST),
+					new UpdateListStrategy(UpdateListStrategy.POLICY_ON_REQUEST));
+			final UpdateValueStrategy targetToModel = new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE).setAfterGetValidator(selectionValidator);
+			addConverter(targetToModel, selectionValue);
+			final UpdateValueStrategy modelToTarget = new UpdateValueStrategy(UpdateValueStrategy.POLICY_ON_REQUEST);
+			selectionBindingExternal = dbc.bindValue(selectionObservable, selectionValue, targetToModel, modelToTarget);
 			// Ensure valueChangeNotifier is not added more that once. 
 			selectionObservable.removeValueChangeListener(valueChangeNotifier);
 			// We have to add the notifier after installing selectionBindingExternal,   
@@ -205,6 +193,10 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 			selectionObservable.addValueChangeListener(valueChangeNotifier);
 		}
 		selectionEnforcer.saveSelection();
+	}
+
+	protected void addConverter(final UpdateValueStrategy targetToModelStrategy, final IObservableValue selectionValue) {
+		// default: do nothing
 	}
 
 	@Override
@@ -223,8 +215,7 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	}
 
 	/**
-	 * Provides access to an optional {@link IColumnFormatter} that provides an
-	 * Image or Text for each model entry of the Combo.
+	 * Provides access to an optional {@link IColumnFormatter} that provides an Image or Text for each model entry of the Combo.
 	 * 
 	 * @return an {@link IColumnFormatter} or null (if not set)
 	 * 
@@ -237,11 +228,8 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * Implementation note: the {@link ISelectionListener} will receive a list
-	 * with the selected values. Since the combo only supports a single
-	 * selection, the value will be the one element in the list. If there is no
-	 * selection or the 'empty' selection entry is selected, the list will be
-	 * empty.
+	 * Implementation note: the {@link ISelectionListener} will receive a list with the selected values. Since the combo only supports a single selection, the
+	 * value will be the one element in the list. If there is no selection or the 'empty' selection entry is selected, the list will be empty.
 	 */
 	public void addSelectionListener(final ISelectionListener selectionListener) {
 		Assert.isNotNull(selectionListener, "selectionListener is null"); //$NON-NLS-1$
@@ -262,8 +250,8 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		}
 	}
 
-	public void bindToModel(final IObservableList optionValues, final Class<? extends Object> rowClass,
-			final String renderingMethod, final IObservableValue selectionValue) {
+	public void bindToModel(final IObservableList optionValues, final Class<? extends Object> rowClass, final String renderingMethod,
+			final IObservableValue selectionValue) {
 		unbindUIControl();
 
 		this.optionValues = optionValues;
@@ -283,13 +271,11 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 			setUIControlToModelConverter(converterFactory.createToFromConverter());
 			setModelToUIControlConverter(converterFactory.createFromToConverter());
 		}
-		bindToModel(listHolder, SelectableListHolder.PROP_LIST, listHolder.getGuessedType(), null, listHolder,
-				SelectableListHolder.SELECTION_PROPERTY);
+		bindToModel(listHolder, SelectableListHolder.PROP_LIST, listHolder.getGuessedType(), null, listHolder, SelectableListHolder.SELECTION_PROPERTY);
 	}
 
-	public void bindToModel(final Object listHolder, final String listPropertyName,
-			final Class<? extends Object> rowClass, final String renderingMethod, final Object selectionHolder,
-			final String selectionPropertyName) {
+	public void bindToModel(final Object listHolder, final String listPropertyName, final Class<? extends Object> rowClass, final String renderingMethod,
+			final Object selectionHolder, final String selectionPropertyName) {
 		IObservableList listObservableValue;
 		if (AbstractSWTWidgetRidget.isBean(rowClass)) {
 			listObservableValue = BeansObservables.observeList(listHolder, listPropertyName);
@@ -355,8 +341,7 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	public void setMarkSelectionMismatch(final boolean mark) {
 		if (mark != markSelectionMismatch) {
 			if (mark && selectionMismatchMarker == null) {
-				selectionMismatchMarker = new ErrorMessageMarker(
-						Messages.AbstractComboRidget_markerMessage_selectionMismatch);
+				selectionMismatchMarker = new ErrorMessageMarker(Messages.AbstractComboRidget_markerMessage_selectionMismatch);
 			}
 			markSelectionMismatch = mark;
 			applyMarkSelectionMismatch();
@@ -454,8 +439,7 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	protected abstract void addSelectionListener(SelectionListener listener);
 
 	/**
-	 * Attach a text modify listener to the combo. The listener must invoke
-	 * {@code ridget.setText(...)} if the control's text is modified.
+	 * Attach a text modify listener to the combo. The listener must invoke {@code ridget.setText(...)} if the control's text is modified.
 	 */
 	protected abstract void addTextModifyListener();
 
@@ -493,14 +477,12 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	protected abstract void selectInUIControl(int index);
 
 	/**
-	 * @return The index of the item in the controls list or -1 if no such item
-	 *         is found.
+	 * @return The index of the item in the controls list or -1 if no such item is found.
 	 */
 	protected abstract int indexOfInUIControl(String item);
 
 	/**
-	 * Removes all of the items from the controls list and clears the controls
-	 * text field.
+	 * Removes all of the items from the controls list and clears the controls text field.
 	 */
 	protected abstract void removeAllFromUIControl();
 
@@ -545,8 +527,7 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	 * <b>Implementation note</b>: This method is invoked when
 	 * <ul>
 	 * <li>a control is bound to the ridget</li>
-	 * <li>the 'output only' or 'enabled' markers change state. For some combo
-	 * widgets, not editable implies disabled so the two states overlap.</li>
+	 * <li>the 'output only' or 'enabled' markers change state. For some combo widgets, not editable implies disabled so the two states overlap.</li>
 	 * </ul>
 	 * 
 	 * @since 3.0
@@ -585,8 +566,7 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	}
 
 	/**
-	 * Restores the list of items / selection in the combo, when the ridget is
-	 * enabled.
+	 * Restores the list of items / selection in the combo, when the ridget is enabled.
 	 */
 	private void bindControlToSelectionAndUpdate() {
 		if (getUIControl() != null) {
@@ -594,8 +574,7 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 			updateValueToItem();
 			/* re-create selectionBinding */
 			final ISWTObservableValue controlSelection = getUIControlSelectionObservable();
-			final UpdateValueStrategy controlSelectionBindingStrategy = new UpdateValueStrategy(
-					UpdateValueStrategy.POLICY_UPDATE);
+			final UpdateValueStrategy controlSelectionBindingStrategy = new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE);
 			controlSelectionBindingStrategy.setConverter(strToObjConverter).setAfterGetValidator(selectionValidator);
 			controlSelectionBindingStrategy.setBeforeSetValidator(new IValidator() {
 
@@ -607,9 +586,8 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 				}
 			});
 			final DataBindingContext dbc = new DataBindingContext();
-			selectionBindingInternal = dbc.bindValue(controlSelection, selectionObservable,
-					controlSelectionBindingStrategy,
-					new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE).setConverter(objToStrConverter));
+			selectionBindingInternal = dbc.bindValue(controlSelection, selectionObservable, controlSelectionBindingStrategy, new UpdateValueStrategy(
+					UpdateValueStrategy.POLICY_UPDATE).setConverter(objToStrConverter));
 			/* update selection in combo */
 			selectionBindingInternal.updateModelToTarget();
 		}
@@ -643,8 +621,7 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	 * 
 	 * @param item
 	 *            item of combo box
-	 * @return value relevant object; {@code null} or empty string if no
-	 *         relevant object exists
+	 * @return value relevant object; {@code null} or empty string if no relevant object exists
 	 */
 	private Object getValueFromItem(final String item) {
 
@@ -791,9 +768,7 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	}
 
 	/**
-	 * TwoWayAdapter that saves the current selection, when outputOnly changes
-	 * and applies it again after the user tries to select an entry in the
-	 * combo.
+	 * TwoWayAdapter that saves the current selection, when outputOnly changes and applies it again after the user tries to select an entry in the combo.
 	 * 
 	 * @since 3.0
 	 */

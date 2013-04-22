@@ -14,7 +14,10 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import org.eclipse.core.databinding.BindingException;
+import org.eclipse.core.databinding.UpdateValueStrategy;
+import org.eclipse.core.databinding.conversion.Converter;
 import org.eclipse.core.databinding.observable.list.IObservableList;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.jface.databinding.swt.ISWTObservableValue;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.swt.SWT;
@@ -71,6 +74,25 @@ public class CComboRidget extends AbstractComboRidget implements ICComboRidget {
 		if (getUIControl() != null) {
 			updateBgColor(isEnabled());
 		}
+	}
+
+	@Override
+	protected void addConverter(final UpdateValueStrategy targetToModelStrategy, final IObservableValue selectionValue) {
+		final Object selectionType = selectionValue.getValueType();
+		targetToModelStrategy.setConverter(new Converter(Object.class, selectionType) {
+			public Object convert(final Object fromObject) {
+				if (fromObject == null) {
+					return null;
+				}
+				if (fromObject.getClass() == getToType()) {
+					return fromObject;
+				}
+				if (fromObject.toString().isEmpty()) {
+					return null;
+				}
+				return fromObject;
+			}
+		});
 	}
 
 	@Override
