@@ -388,15 +388,23 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	/**
 	 * Returns the status line ridget.
 	 * 
-	 * @return the status line ridget.
+	 * @return the status line ridget or <code>null</code> if no status line exists
 	 * @since 4.0
 	 */
 	protected IStatuslineRidget getStatusline() {
-		return getApplicationController().getStatusline();
+		final ApplicationController applicationController = getApplicationController();
+		if (applicationController == null) {
+			return null;
+		}
+		return applicationController.getStatusline();
 	}
 
 	private ApplicationController getApplicationController() {
-		return (ApplicationController) getNavigationNode().getParentOfType(IApplicationNode.class).getNavigationNodeController();
+		final IApplicationNode application = getNavigationNode().getParentOfType(IApplicationNode.class);
+		if (application == null) {
+			return null;
+		}
+		return (ApplicationController) application.getNavigationNodeController();
 	}
 
 	/**
