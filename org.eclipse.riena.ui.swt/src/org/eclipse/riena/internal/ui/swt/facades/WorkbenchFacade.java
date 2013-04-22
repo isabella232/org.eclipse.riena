@@ -11,6 +11,7 @@
 package org.eclipse.riena.internal.ui.swt.facades;
 
 import org.eclipse.osgi.util.NLS;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbenchPage;
 
@@ -52,5 +53,12 @@ public abstract class WorkbenchFacade {
 	 * Opens a view by calling a specific 3x or e4 implementation.
 	 */
 	public abstract void showView(IWorkbenchPage page, IViewReference viewRef);
+
+	/**
+	 * Retrieves the current active {@link Shell}. This method must be called from the UI thread.
+	 * 
+	 * @return the active shell or <code>null</code>
+	 */
+	public abstract Shell getActiveShell();
 
 }

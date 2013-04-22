@@ -21,11 +21,11 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
-import org.eclipse.ui.PlatformUI;
 
 import org.eclipse.riena.beans.common.AbstractBean;
 import org.eclipse.riena.beans.common.TypedComparator;
 import org.eclipse.riena.example.client.views.SystemPropertiesSubModuleView;
+import org.eclipse.riena.internal.ui.swt.facades.WorkbenchFacade;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.IActionListener;
@@ -204,7 +204,7 @@ public class SystemPropertiesSubModuleController extends SubModuleController {
 	private final class DoubleClickListener implements IActionListener {
 
 		public void callback() {
-			final Shell shell = PlatformUI.getWorkbench().getDisplay().getActiveShell();
+			final Shell shell = WorkbenchFacade.getInstance().getActiveShell();
 			final String title = "Information"; //$NON-NLS-1$
 			String message = "The key ''{0}'' is selected and has the value ''{1}''"; //$NON-NLS-1$
 			message = NLS.bind(message, valueBean.getKey(), valueBean.getValue());
