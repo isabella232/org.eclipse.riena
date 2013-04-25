@@ -137,7 +137,7 @@ public class FilterExampleSubModuleController extends SubModuleController {
 
 	private void doFilter(final FilterId filterId, final String buttonRidgetId) {
 
-		final IToggleButtonRidget menuToolAction = getRidget(IToggleButtonRidget.class, buttonRidgetId);
+		final IToggleButtonRidget action = getRidget(IToggleButtonRidget.class, buttonRidgetId);
 
 		final IApplicationNode applNode = getNavigationNode().getParentOfType(IApplicationNode.class);
 		final IUIFilterContainer container = Service.get(IUIFilterProvider.class).provideFilter(filterId.toString());
@@ -145,14 +145,14 @@ public class FilterExampleSubModuleController extends SubModuleController {
 		final Collection<String> targetNodeIds = container.getFilterTargetNodeIds();
 		for (final String targetNodeId : targetNodeIds) {
 			final INavigationNode<?> node = NavigationNodeUtility.findNodesByLongId(targetNodeId, applNode).get(0);
-			if (menuToolAction.isSelected()) {
+			if (action.isSelected()) {
 				node.addFilter(filter);
 			} else {
 				node.removeFilter(filter.getFilterID());
 			}
 		}
 
-		updateToggleText(menuToolAction);
+		updateToggleText(action);
 
 	}
 
