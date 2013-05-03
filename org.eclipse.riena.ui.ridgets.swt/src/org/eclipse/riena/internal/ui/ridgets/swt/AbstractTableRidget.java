@@ -69,6 +69,7 @@ import org.eclipse.riena.ui.core.marker.RowErrorMessageMarker;
 import org.eclipse.riena.ui.ridgets.IColumnFormatter;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
+import org.eclipse.riena.ui.ridgets.ITableFormatter;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTWidgetRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSelectableIndexedRidget;
@@ -94,6 +95,7 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 	private boolean nativeToolTip = true;
 	private boolean isSortedAscending;
 	private int sortedColumn;
+	private ITableFormatter tableFormatter;
 	private final Map<Integer, Boolean> sortableColumnsMap;
 	private final Map<Integer, Boolean> editableColumnsMap;
 	private final Map<Integer, Comparator<?>> comparatorMap;
@@ -323,6 +325,10 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 		formatterMap.put(key, formatter);
 	}
 
+	public void setTableFormatter(final ITableFormatter formatter) {
+		tableFormatter = formatter;
+	}
+
 	public void clearColumnFormatters() {
 		formatterMap.clear();
 	}
@@ -501,6 +507,7 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 				tableLabelProvider = (TableRidgetLabelProvider) viewer.getLabelProvider();
 				final IColumnFormatter[] formatters = getColumnFormatters(tableLabelProvider.getColumnCount());
 				tableLabelProvider.setFormatters(formatters);
+				tableLabelProvider.setTableFormatter(tableFormatter);
 			}
 			viewer.setInput(viewerObservables);
 		} finally {

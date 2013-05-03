@@ -35,6 +35,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.internal.ui.swt.utils.RcpUtilities;
 import org.eclipse.riena.ui.ridgets.IColumnFormatter;
+import org.eclipse.riena.ui.ridgets.ITableFormatter;
+import org.eclipse.riena.ui.ridgets.swt.TableFormatter;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
@@ -53,10 +55,12 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 public class TableRidgetLabelProvider extends ObservableMapLabelProvider implements ITableColorProvider, ITableFontProvider {
 
 	private final static Logger LOGGER = Log4r.getLogger(TableRidgetLabelProvider.class);
+	private final static ITableFormatter DEFAULT_TABLE_FORMATTER = new TableFormatter();
 
 	private final int numColumns;
 	private final IObservableMap[] attributeMap;
 	private IColumnFormatter[] formatters;
+	private ITableFormatter tableFormatter;
 	private Map<Object, Image> imageMap;
 	private boolean checkBoxInFirstColumn;
 
@@ -97,35 +101,37 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 
 	@Override
 	public Image getColumnImage(final Object element, final int columnIndex) {
+
+		Object formatterImage = null;
+		final IColumnFormatter formatter = getFormatter(columnIndex);
+		if (formatter != null) {
+			formatterImage = formatter.getImage(element);
+		} else {
+			formatterImage = getTableFormatter().getImage(element, columnIndex);
+		}
 		Image result = null;
-		if (columnIndex < attributeMap.length) {
-			final IColumnFormatter formatter = this.formatters[columnIndex];
-			if (formatter != null) {
-				final Object formatterImage = formatter.getImage(element);
-				if (formatterImage instanceof Image) {
-					result = (Image) formatterImage;
-				} else if (formatterImage instanceof ImageData) {
-					final ImageData formatterImageData = (ImageData) formatterImage;
-					final Display display = getDisplay();
-					if (display != null) {
-						final Image oldImage = imageMap.get(element);
-						if (!SwtUtilities.isDisposed(oldImage)) {
-							oldImage.dispose();
-						}
-						result = new Image(display, formatterImageData);
-						imageMap.put(element, result);
-					}
+		if (formatterImage instanceof Image) {
+			result = (Image) formatterImage;
+		} else if (formatterImage instanceof ImageData) {
+			final ImageData formatterImageData = (ImageData) formatterImage;
+			final Display display = getDisplay();
+			if (display != null) {
+				final Image oldImage = imageMap.get(element);
+				if (!SwtUtilities.isDisposed(oldImage)) {
+					oldImage.dispose();
 				}
+				result = new Image(display, formatterImageData);
+				imageMap.put(element, result);
 			}
-			if (result == null) {
-				final Object value = attributeMap[columnIndex].get(element);
-				if (value instanceof Boolean) {
-					if ((columnIndex == 0) && isCheckBoxInFirstColumn()) {
-						return null;
-					}
-					final String key = ((Boolean) value).booleanValue() ? SharedImages.IMG_CHECKED : SharedImages.IMG_UNCHECKED;
-					result = Activator.getSharedImage(key);
+		}
+		if (result == null && columnIndex < attributeMap.length) {
+			final Object value = attributeMap[columnIndex].get(element);
+			if (value instanceof Boolean) {
+				if ((columnIndex == 0) && isCheckBoxInFirstColumn()) {
+					return null;
 				}
+				final String key = ((Boolean) value).booleanValue() ? SharedImages.IMG_CHECKED : SharedImages.IMG_UNCHECKED;
+				result = Activator.getSharedImage(key);
 			}
 		}
 		return result;
@@ -182,6 +188,8 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 		final IColumnFormatter formatter = getFormatter(columnIndex);
 		if (formatter != null) {
 			result = formatter.getText(element);
+		} else {
+			result = getTableFormatter().getText(element, columnIndex);
 		}
 		if (result == null) {
 			result = super.getColumnText(element, columnIndex);
@@ -197,24 +205,42 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 
 	public Color getForeground(final Object element, final int columnIndex) {
 		final IColumnFormatter formatter = getFormatter(columnIndex);
+		Object color;
 		if (formatter != null) {
-			return (Color) formatter.getForeground(element);
+			color = formatter.getForeground(element);
+		} else {
+			color = getTableFormatter().getForeground(element, columnIndex);
+		}
+		if (color instanceof Color) {
+			return (Color) color;
 		}
 		return null;
 	}
 
 	public Color getBackground(final Object element, final int columnIndex) {
 		final IColumnFormatter formatter = getFormatter(columnIndex);
+		Object color;
 		if (formatter != null) {
-			return (Color) formatter.getBackground(element);
+			color = formatter.getBackground(element);
+		} else {
+			color = getTableFormatter().getBackground(element, columnIndex);
+		}
+		if (color instanceof Color) {
+			return (Color) color;
 		}
 		return null;
 	}
 
 	public Font getFont(final Object element, final int columnIndex) {
 		final IColumnFormatter formatter = getFormatter(columnIndex);
+		Object font;
 		if (formatter != null) {
-			return (Font) formatter.getFont(element);
+			font = formatter.getFont(element);
+		} else {
+			font = getTableFormatter().getFont(element, columnIndex);
+		}
+		if (font instanceof Font) {
+			return (Font) font;
 		}
 		return null;
 	}
@@ -251,8 +277,9 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 		final IColumnFormatter formatter = getFormatter(columnIndex);
 		if (formatter != null) {
 			return formatter.getToolTip(element);
+		} else {
+			return getTableFormatter().getToolTip(element, columnIndex);
 		}
-		return null;
 	}
 
 	/**
@@ -271,11 +298,14 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 
 	public Image getToolTipImage(final Object object, final int columnIndex) {
 		final IColumnFormatter formatter = getFormatter(columnIndex);
+		Object image;
 		if (formatter != null) {
-			final Object image = formatter.getToolTipImage(object);
-			if (image instanceof Image) {
-				return (Image) image;
-			}
+			image = formatter.getToolTipImage(object);
+		} else {
+			image = getTableFormatter().getToolTipImage(object, columnIndex);
+		}
+		if (image instanceof Image) {
+			return (Image) image;
 		}
 		return null;
 	}
@@ -293,11 +323,14 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 	 */
 	public Color getToolTipBackgroundColor(final Object object, final int columnIndex) {
 		final IColumnFormatter formatter = getFormatter(columnIndex);
+		Object color;
 		if (formatter != null) {
-			final Object color = formatter.getToolTipBackgroundColor(object);
-			if (color instanceof Color) {
-				return (Color) color;
-			}
+			color = formatter.getToolTipBackgroundColor(object);
+		} else {
+			color = getTableFormatter().getToolTipBackgroundColor(object, columnIndex);
+		}
+		if (color instanceof Color) {
+			return (Color) color;
 		}
 		return null;
 	}
@@ -314,11 +347,14 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 	 */
 	public Color getToolTipForegroundColor(final Object object, final int columnIndex) {
 		final IColumnFormatter formatter = getFormatter(columnIndex);
+		Object color;
 		if (formatter != null) {
-			final Object color = formatter.getToolTipForegroundColor(object);
-			if (color instanceof Color) {
-				return (Color) color;
-			}
+			color = formatter.getToolTipForegroundColor(object);
+		} else {
+			color = getTableFormatter().getToolTipForegroundColor(object, columnIndex);
+		}
+		if (color instanceof Color) {
+			return (Color) color;
 		}
 		return null;
 	}
@@ -334,11 +370,14 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 	 */
 	public Font getToolTipFont(final Object object, final int columnIndex) {
 		final IColumnFormatter formatter = getFormatter(columnIndex);
+		Object font;
 		if (formatter != null) {
-			final Object font = formatter.getToolTipFont(object);
-			if (font instanceof Font) {
-				return (Font) font;
-			}
+			font = formatter.getToolTipFont(object);
+		} else {
+			font = getTableFormatter().getToolTipFont(object, columnIndex);
+		}
+		if (font instanceof Font) {
+			return (Font) font;
 		}
 		return null;
 	}
@@ -356,11 +395,14 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 	 */
 	public Point getToolTipShift(final Object object, final int columnIndex) {
 		final IColumnFormatter formatter = getFormatter(columnIndex);
+		Object point;
 		if (formatter != null) {
-			final Object point = formatter.getToolTipShift(object);
-			if (point instanceof Point) {
-				return (Point) point;
-			}
+			point = formatter.getToolTipShift(object);
+		} else {
+			point = getTableFormatter().getToolTipShift(object, columnIndex);
+		}
+		if (point instanceof Point) {
+			return (Point) point;
 		}
 		return null;
 	}
@@ -378,8 +420,9 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 		final IColumnFormatter formatter = getFormatter(columnIndex);
 		if (formatter != null) {
 			return formatter.getToolTipTimeDisplayed(object);
+		} else {
+			return getTableFormatter().getToolTipTimeDisplayed(object, columnIndex);
 		}
-		return 0;
 	}
 
 	/**
@@ -395,8 +438,9 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 		final IColumnFormatter formatter = getFormatter(columnIndex);
 		if (formatter != null) {
 			return formatter.getToolTipDisplayDelayTime(object);
+		} else {
+			return getTableFormatter().getToolTipDisplayDelayTime(object, columnIndex);
 		}
-		return 0;
 	}
 
 	/**
@@ -413,15 +457,26 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 		final IColumnFormatter formatter = getFormatter(columnIndex);
 		if (formatter != null) {
 			return formatter.getToolTipStyle(object);
+		} else {
+			return getTableFormatter().getToolTipStyle(object, columnIndex);
 		}
-		return SWT.SHADOW_NONE;
 	}
 
 	// protected methods
 	////////////////////
 
+	/**
+	 * @return a formatter that was set or {@code null} if formatter of the column wasn't set
+	 */
 	protected IColumnFormatter getFormatter(final int columnIndex) {
 		return columnIndex < formatters.length ? formatters[columnIndex] : null;
+	}
+
+	/**
+	 * @return a formatter that was set or a default formatter (never return {@code null})
+	 */
+	protected ITableFormatter getTableFormatter() {
+		return tableFormatter != null ? tableFormatter : DEFAULT_TABLE_FORMATTER;
 	}
 
 	// helping methods
@@ -436,6 +491,10 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 				formatters.length));
 		this.formatters = new IColumnFormatter[formatters.length];
 		System.arraycopy(formatters, 0, this.formatters, 0, this.formatters.length);
+	}
+
+	public void setTableFormatter(final ITableFormatter formatter) {
+		tableFormatter = formatter;
 	}
 
 	public boolean isCheckBoxInFirstColumn() {

@@ -107,6 +107,15 @@ public interface ITableRidget extends ISelectableIndexedRidget, ISortableByColum
 	void clearColumnFormatters();
 
 	/**
+	 * Set the formatter to be used for the table.
+	 * 
+	 * @param formatter
+	 *            formatter of the table
+	 * @since 5.0
+	 */
+	void setTableFormatter(ITableFormatter formatter);
+
+	/**
 	 * Adjust the column widths of the ridget's table control according to the information in the {@code widths} array.
 	 * <p>
 	 * When running on SWT: {@code widths} may only contain subclasses of ColumnLayoutData. The following layout managers are supported: TableLayout,

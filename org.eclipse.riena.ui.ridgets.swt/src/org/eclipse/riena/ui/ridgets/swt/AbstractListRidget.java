@@ -47,11 +47,11 @@ import org.eclipse.riena.ui.ridgets.IColumnFormatter;
 import org.eclipse.riena.ui.ridgets.IListRidget;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
+import org.eclipse.riena.ui.ridgets.ITableFormatter;
 import org.eclipse.riena.ui.ridgets.listener.ClickEvent;
 
 /**
- * An abstract Ridget for lists that does not depend on the class
- * org.eclipse.swt.widgets.List. May be used for Ridgets for custom lists.
+ * An abstract Ridget for lists that does not depend on the class org.eclipse.swt.widgets.List. May be used for Ridgets for custom lists.
  */
 public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget implements IListRidget {
 	protected SelectionListener selectionTypeEnforcer;
@@ -59,10 +59,8 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 	private DataBindingContext dbc;
 	private Binding viewerSSB;
 	/*
-	 * Binds the viewer's multiple selection to the multiple selection
-	 * observable. This binding hsa to be disposed when the ridget is set to
-	 * output-only, to avoid updating the model. It has to be recreated when the
-	 * ridget is set to not-output-only.
+	 * Binds the viewer's multiple selection to the multiple selection observable. This binding hsa to be disposed when the ridget is set to output-only, to
+	 * avoid updating the model. It has to be recreated when the ridget is set to not-output-only.
 	 */
 	private Binding viewerMSB;
 	private Class<?> rowBeanClass;
@@ -71,11 +69,11 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 	 */
 	private IObservableList modelObservables;
 	/*
-	 * Data the viewer is bound to. It is updated from modelObservables on
-	 * updateFromModel().
+	 * Data the viewer is bound to. It is updated from modelObservables on updateFromModel().
 	 */
 	private IObservableList viewerObservables;
 	private String renderingMethod;
+	private ITableFormatter formatter;
 
 	private boolean isSortedAscending;
 	private int sortedColumn;
@@ -111,15 +109,13 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 		});
 	}
 
-	public void bindToModel(final IObservableList rowValues, final Class<? extends Object> rowClass,
-			final String columnPropertyName) {
+	public void bindToModel(final IObservableList rowValues, final Class<? extends Object> rowClass, final String columnPropertyName) {
 		Assert.isNotNull(columnPropertyName, "columnPropertyName"); //$NON-NLS-1$
 		final String[] columns = { columnPropertyName };
 		bindToModel(rowValues, rowClass, columns, null);
 	}
 
-	public void bindToModel(final Object listHolder, final String listPropertyName,
-			final Class<? extends Object> rowClass, final String columnPropertyName) {
+	public void bindToModel(final Object listHolder, final String listPropertyName, final Class<? extends Object> rowClass, final String columnPropertyName) {
 		Assert.isNotNull(columnPropertyName, "columnPropertyName"); //$NON-NLS-1$
 		final String[] columns = { columnPropertyName };
 		bindToModel(listHolder, listPropertyName, rowClass, columns, null);
@@ -139,8 +135,8 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 	 * 
 	 * @see #bindToModel(IObservableList, Class, String)
 	 */
-	public void bindToModel(final IObservableList rowValues, final Class<? extends Object> rowClass,
-			final String[] columnPropertyNames, final String[] columnHeaders) {
+	public void bindToModel(final IObservableList rowValues, final Class<? extends Object> rowClass, final String[] columnPropertyNames,
+			final String[] columnHeaders) {
 		unbindUIControl();
 
 		rowBeanClass = rowClass;
@@ -158,8 +154,8 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 	 * 
 	 * @see #bindToModel(Object, String, Class, String)
 	 */
-	public void bindToModel(final Object listHolder, final String listPropertyName,
-			final Class<? extends Object> rowClass, final String[] columnPropertyNames, final String[] columnHeaders) {
+	public void bindToModel(final Object listHolder, final String listPropertyName, final Class<? extends Object> rowClass, final String[] columnPropertyNames,
+			final String[] columnHeaders) {
 		IObservableList rowValues;
 		if (AbstractSWTWidgetRidget.isBean(rowClass)) {
 			rowValues = BeansObservables.observeList(listHolder, listPropertyName);
@@ -370,9 +366,8 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 		dbc = new DataBindingContext();
 		// viewer to single selection binding
 		final IObservableValue viewerSelection = ViewersObservables.observeSingleSelection(getViewer());
-		viewerSSB = dbc.bindValue(viewerSelection, getSingleSelectionObservable(), new UpdateValueStrategy(
-				UpdateValueStrategy.POLICY_UPDATE).setAfterGetValidator(new OutputAwareValidator(this)),
-				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
+		viewerSSB = dbc.bindValue(viewerSelection, getSingleSelectionObservable(), new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE)
+				.setAfterGetValidator(new OutputAwareValidator(this)), new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
 		// viewer to multiple selection binding
 		viewerMSB = null;
 		if (!isOutputOnly()) {
@@ -457,12 +452,23 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 	 * {@inheritDoc}
 	 * 
 	 * @throws UnsupportedOperationException
-	 *             is always throw because the ListRidget doesn't support
-	 *             editing.
+	 *             is always throw because the ListRidget doesn't support editing.
 	 * 
 	 * @since 4.0
 	 */
 	public void setColumnEditable(final int columnIndex, final boolean editable) {
+		throw new UnsupportedOperationException("not supported"); //$NON-NLS-1$
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @throws UnsupportedOperationException
+	 *             this is not supported by this ridget
+	 * @since 5.0
+	 * 
+	 */
+	public void setTableFormatter(final ITableFormatter formatter) {
 		throw new UnsupportedOperationException("not supported"); //$NON-NLS-1$
 	}
 
@@ -475,8 +481,8 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 		if (viewerMSB == null && dbc != null && hasViewer()) {
 			final StructuredSelection currentSelection = new StructuredSelection(getSelection());
 			final IViewerObservableList viewerSelections = ViewersObservables.observeMultiSelection(getViewer());
-			viewerMSB = dbc.bindList(viewerSelections, getMultiSelectionObservable(), new UpdateListStrategy(
-					UpdateListStrategy.POLICY_UPDATE), new UpdateListStrategy(UpdateListStrategy.POLICY_UPDATE));
+			viewerMSB = dbc.bindList(viewerSelections, getMultiSelectionObservable(), new UpdateListStrategy(UpdateListStrategy.POLICY_UPDATE),
+					new UpdateListStrategy(UpdateListStrategy.POLICY_UPDATE));
 			getViewer().setSelection(currentSelection);
 		}
 	}

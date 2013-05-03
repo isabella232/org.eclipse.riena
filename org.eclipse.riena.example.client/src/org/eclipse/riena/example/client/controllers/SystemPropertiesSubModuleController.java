@@ -14,6 +14,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.Set;
 
 import org.eclipse.core.databinding.observable.list.WritableList;
@@ -24,6 +25,7 @@ import org.eclipse.swt.widgets.Table;
 
 import org.eclipse.riena.beans.common.AbstractBean;
 import org.eclipse.riena.beans.common.TypedComparator;
+import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.example.client.views.SystemPropertiesSubModuleView;
 import org.eclipse.riena.internal.ui.swt.facades.WorkbenchFacade;
 import org.eclipse.riena.navigation.ISubModuleNode;
@@ -34,7 +36,9 @@ import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
+import org.eclipse.riena.ui.ridgets.swt.TableFormatter;
 import org.eclipse.riena.ui.swt.RienaMessageDialog;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
 
 /**
  * Controller for the {@link SystemPropertiesSubModuleView} example.
@@ -43,6 +47,7 @@ public class SystemPropertiesSubModuleController extends SubModuleController {
 
 	/** Manages a collection of PropertyBeans */
 	private final List<KeyValueBean> properties;
+	private final Properties sysProperties;
 	/** Bean for holding the value being edited. */
 	private final KeyValueBean valueBean;
 	/** IActionListener for double click on the table */
@@ -56,10 +61,34 @@ public class SystemPropertiesSubModuleController extends SubModuleController {
 	}
 
 	public SystemPropertiesSubModuleController(final ISubModuleNode navigationNode) {
+
 		super(navigationNode);
-		properties = new ArrayList<KeyValueBean>();
 		valueBean = new KeyValueBean();
 		doubleClickListener = new DoubleClickListener();
+
+		properties = new ArrayList<KeyValueBean>();
+		sysProperties = System.getProperties();
+		final Set<Object> keys = sysProperties.keySet();
+		for (final Object key : keys) {
+			final KeyValueBean bean = new KeyValueBean();
+			bean.setKey((String) key);
+			bean.setValue(System.getProperty((String) key));
+			properties.add(bean);
+		}
+
+	}
+
+	private boolean isNewKey(final KeyValueBean keyValue) {
+		return sysProperties.get(keyValue.getKey()) == null;
+	}
+
+	private boolean isNewValue(final KeyValueBean keyValue) {
+		final Object value = sysProperties.get(keyValue.getKey());
+		if (value instanceof String) {
+			return !StringUtils.equals((String) value, keyValue.getValue());
+		} else {
+			return false;
+		}
 	}
 
 	/**
@@ -104,14 +133,6 @@ public class SystemPropertiesSubModuleController extends SubModuleController {
 		final IToggleButtonRidget toggleDoubleClick = getRidget(IToggleButtonRidget.class, "toggleDoubleClick"); //$NON-NLS-1$
 		final IActionRidget buttonSave = getRidget(IActionRidget.class, "buttonSave"); //$NON-NLS-1$
 
-		final Set<Object> keys = System.getProperties().keySet();
-		for (final Object key : keys) {
-			final KeyValueBean bean = new KeyValueBean();
-			bean.setKey((String) key);
-			bean.setValue(System.getProperty((String) key));
-			properties.add(bean);
-		}
-
 		tableProperties.addPropertyChangeListener(ITableRidget.PROPERTY_SELECTION, new PropertyChangeListener() {
 			public void propertyChange(final PropertyChangeEvent evt) {
 				final List<Object> selection = tableProperties.getSelection();
@@ -122,6 +143,7 @@ public class SystemPropertiesSubModuleController extends SubModuleController {
 				}
 			}
 		});
+		tableProperties.setTableFormatter(new MyTableFormatter());
 
 		buttonAdd.setText("&Add"); //$NON-NLS-1$
 		buttonAdd.addListener(new IActionListener() {
@@ -212,4 +234,22 @@ public class SystemPropertiesSubModuleController extends SubModuleController {
 		}
 
 	}
+
+	private final class MyTableFormatter extends TableFormatter {
+
+		@Override
+		public Object getForeground(final Object element, final int columnIndex) {
+			if (element instanceof KeyValueBean) {
+				final KeyValueBean keyValue = (KeyValueBean) element;
+				if (isNewKey(keyValue)) {
+					return LnfManager.getLnf().getColor("red");
+				}
+				if ((columnIndex == 1) && isNewValue(keyValue)) {
+					return LnfManager.getLnf().getColor("blue");
+				}
+			}
+			return super.getForeground(element, columnIndex);
+		}
+	}
+
 }

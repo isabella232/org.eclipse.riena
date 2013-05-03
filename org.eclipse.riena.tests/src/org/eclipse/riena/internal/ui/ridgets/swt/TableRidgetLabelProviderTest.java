@@ -25,6 +25,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.riena.beans.common.WordNode;
@@ -33,6 +34,7 @@ import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.collect.UITestCase;
 import org.eclipse.riena.ui.ridgets.IColumnFormatter;
 import org.eclipse.riena.ui.ridgets.swt.ColumnFormatter;
+import org.eclipse.riena.ui.ridgets.swt.TableFormatter;
 
 /**
  * Tests for the class {@link TableRidgetLabelProvider}.
@@ -44,8 +46,13 @@ public class TableRidgetLabelProviderTest extends TestCase {
 	private WordNode elementB;
 	private Color colorA;
 	private Color colorB;
+	private Color colorC;
 	private Font fontA;
 	private Font fontB;
+	private Font fontC;
+	private Point pointA;
+	private Point pointB;
+	private Point pointC;
 	private IObservableMap[] attrMaps;
 	private IColumnFormatter[] formatters;
 	private IColumnFormatter[] noFormatters;
@@ -57,8 +64,13 @@ public class TableRidgetLabelProviderTest extends TestCase {
 		ReflectionUtils.invokeHidden(realm, "setDefault", realm); //$NON-NLS-1$
 		colorA = display.getSystemColor(SWT.COLOR_RED);
 		colorB = display.getSystemColor(SWT.COLOR_GREEN);
+		colorC = display.getSystemColor(SWT.COLOR_BLUE);
 		fontA = new Font(display, "Arial", 12, SWT.NORMAL); //$NON-NLS-1$
 		fontB = new Font(display, "Courier", 12, SWT.NORMAL); //$NON-NLS-1$
+		fontC = new Font(display, "Courier", 24, SWT.NORMAL); //$NON-NLS-1$
+		pointA = new Point(1, 1);
+		pointB = new Point(2, 2);
+		pointC = new Point(3, 3);
 
 		final IObservableSet elements = createElements();
 		final String[] columnProperties = { "word", "upperCase" }; //$NON-NLS-1$ //$NON-NLS-2$
@@ -226,6 +238,20 @@ public class TableRidgetLabelProviderTest extends TestCase {
 		assertNotSame(siExpanded, siCollaped);
 
 		assertEquals(null, labelProvider.getColumnImage(elementA, 99));
+
+		final Image siLeaf = Activator.getSharedImage(SharedImages.IMG_LEAF);
+		assertNotNull(siLeaf);
+
+		labelProvider.setTableFormatter(new TableFormatter() {
+			@Override
+			public Object getImage(final Object element, final int columnIndex) {
+				return columnIndex == 99 ? Activator.getSharedImage(SharedImages.IMG_LEAF) : super.getImage(element, columnIndex);
+			}
+		});
+
+		assertEquals(null, labelProvider.getColumnImage(elementA, 98));
+		assertEquals(siLeaf, labelProvider.getColumnImage(elementA, 99));
+
 	}
 
 	public void testGetForegroundWithFormatter() {
@@ -238,6 +264,17 @@ public class TableRidgetLabelProviderTest extends TestCase {
 		assertSame(colorB, labelProvider.getForeground(elementB, 1));
 
 		assertEquals(null, labelProvider.getForeground(elementA, 99));
+
+		labelProvider.setTableFormatter(new TableFormatter() {
+			@Override
+			public Object getForeground(final Object element, final int columnIndex) {
+				return columnIndex == 99 ? colorC : super.getForeground(element, columnIndex);
+			}
+		});
+
+		assertEquals(null, labelProvider.getForeground(elementA, 98));
+		assertEquals(colorC, labelProvider.getForeground(elementA, 99));
+
 	}
 
 	public void testGetBackgroundWithFormatter() {
@@ -250,6 +287,17 @@ public class TableRidgetLabelProviderTest extends TestCase {
 		assertSame(colorB, labelProvider.getBackground(elementB, 1));
 
 		assertEquals(null, labelProvider.getBackground(elementA, 99));
+
+		labelProvider.setTableFormatter(new TableFormatter() {
+			@Override
+			public Object getBackground(final Object element, final int columnIndex) {
+				return columnIndex == 99 ? colorC : super.getBackground(element, columnIndex);
+			}
+		});
+
+		assertEquals(null, labelProvider.getBackground(elementA, 98));
+		assertEquals(colorC, labelProvider.getBackground(elementA, 99));
+
 	}
 
 	public void testGetFontWithFormatter() {
@@ -262,6 +310,201 @@ public class TableRidgetLabelProviderTest extends TestCase {
 		assertSame(fontB, labelProvider.getFont(elementB, 1));
 
 		assertEquals(null, labelProvider.getFont(elementA, 99));
+
+		labelProvider.setTableFormatter(new TableFormatter() {
+			@Override
+			public Object getFont(final Object element, final int columnIndex) {
+				return columnIndex == 99 ? fontC : super.getFont(element, columnIndex);
+			}
+		});
+
+		assertEquals(null, labelProvider.getFont(elementA, 98));
+		assertEquals(fontC, labelProvider.getFont(elementA, 99));
+
+	}
+
+	public void testGetToolTipBackgroundColor() {
+		final TableRidgetLabelProvider labelProvider = new TableRidgetLabelProvider(attrMaps, formatters);
+
+		assertNull(labelProvider.getToolTipBackgroundColor(elementA, 0));
+		assertNull(labelProvider.getToolTipBackgroundColor(elementB, 0));
+
+		assertSame(colorC, labelProvider.getToolTipBackgroundColor(elementA, 1));
+		assertSame(colorB, labelProvider.getToolTipBackgroundColor(elementB, 1));
+
+		assertEquals(null, labelProvider.getToolTipBackgroundColor(elementA, 99));
+
+		labelProvider.setTableFormatter(new TableFormatter() {
+			@Override
+			public Object getToolTipBackgroundColor(final Object element, final int columnIndex) {
+				return columnIndex == 99 ? colorA : super.getToolTipBackgroundColor(element, columnIndex);
+			}
+		});
+
+		assertEquals(null, labelProvider.getToolTipBackgroundColor(elementA, 98));
+		assertEquals(colorA, labelProvider.getToolTipBackgroundColor(elementA, 99));
+
+	}
+
+	public void testGetToolTipForegroundColor() {
+		final TableRidgetLabelProvider labelProvider = new TableRidgetLabelProvider(attrMaps, formatters);
+
+		assertNull(labelProvider.getToolTipForegroundColor(elementA, 0));
+		assertNull(labelProvider.getToolTipForegroundColor(elementB, 0));
+
+		assertSame(colorC, labelProvider.getToolTipForegroundColor(elementA, 1));
+		assertSame(colorB, labelProvider.getToolTipForegroundColor(elementB, 1));
+
+		assertEquals(null, labelProvider.getToolTipForegroundColor(elementA, 99));
+
+		labelProvider.setTableFormatter(new TableFormatter() {
+			@Override
+			public Object getToolTipForegroundColor(final Object element, final int columnIndex) {
+				return columnIndex == 99 ? colorA : super.getToolTipForegroundColor(element, columnIndex);
+			}
+		});
+
+		assertEquals(null, labelProvider.getToolTipForegroundColor(elementA, 98));
+		assertEquals(colorA, labelProvider.getToolTipForegroundColor(elementA, 99));
+
+	}
+
+	public void testGetToolTipFont() {
+		final TableRidgetLabelProvider labelProvider = new TableRidgetLabelProvider(attrMaps, formatters);
+
+		assertNull(labelProvider.getToolTipFont(elementA, 0));
+		assertNull(labelProvider.getToolTipFont(elementB, 0));
+
+		assertSame(fontC, labelProvider.getToolTipFont(elementA, 1));
+		assertSame(fontB, labelProvider.getToolTipFont(elementB, 1));
+
+		assertEquals(null, labelProvider.getToolTipFont(elementA, 99));
+
+		labelProvider.setTableFormatter(new TableFormatter() {
+			@Override
+			public Object getToolTipFont(final Object element, final int columnIndex) {
+				return columnIndex == 99 ? fontA : super.getToolTipFont(element, columnIndex);
+			}
+		});
+
+		assertEquals(null, labelProvider.getToolTipFont(elementA, 98));
+		assertEquals(fontA, labelProvider.getToolTipFont(elementA, 99));
+
+	}
+
+	public void testGetToolTipShift() {
+		final TableRidgetLabelProvider labelProvider = new TableRidgetLabelProvider(attrMaps, formatters);
+
+		assertNull(labelProvider.getToolTipShift(elementA, 0));
+		assertNull(labelProvider.getToolTipShift(elementB, 0));
+
+		assertSame(pointA, labelProvider.getToolTipShift(elementA, 1));
+		assertSame(pointB, labelProvider.getToolTipShift(elementB, 1));
+
+		assertEquals(null, labelProvider.getToolTipShift(elementA, 99));
+
+		labelProvider.setTableFormatter(new TableFormatter() {
+			@Override
+			public Object getToolTipShift(final Object element, final int columnIndex) {
+				return columnIndex == 99 ? pointC : super.getToolTipShift(element, columnIndex);
+			}
+		});
+
+		assertEquals(null, labelProvider.getToolTipShift(elementA, 98));
+		assertEquals(pointC, labelProvider.getToolTipShift(elementA, 99));
+
+	}
+
+	public void testGetToolTipTimeDisplayed() {
+		final TableRidgetLabelProvider labelProvider = new TableRidgetLabelProvider(attrMaps, formatters);
+
+		assertEquals(0, labelProvider.getToolTipTimeDisplayed(elementA, 0));
+		assertEquals(0, labelProvider.getToolTipTimeDisplayed(elementB, 0));
+
+		assertEquals(4711, labelProvider.getToolTipTimeDisplayed(elementA, 1));
+		assertEquals(815, labelProvider.getToolTipTimeDisplayed(elementB, 1));
+
+		assertEquals(0, labelProvider.getToolTipTimeDisplayed(elementA, 99));
+
+		labelProvider.setTableFormatter(new TableFormatter() {
+			@Override
+			public int getToolTipTimeDisplayed(final Object element, final int columnIndex) {
+				return columnIndex == 99 ? 123 : super.getToolTipTimeDisplayed(element, columnIndex);
+			}
+		});
+
+		assertEquals(0, labelProvider.getToolTipTimeDisplayed(elementA, 98));
+		assertEquals(123, labelProvider.getToolTipTimeDisplayed(elementA, 99));
+
+	}
+
+	public void testGetToolTipDisplayDelayTime() {
+		final TableRidgetLabelProvider labelProvider = new TableRidgetLabelProvider(attrMaps, formatters);
+
+		assertEquals(0, labelProvider.getToolTipDisplayDelayTime(elementA, 0));
+		assertEquals(0, labelProvider.getToolTipDisplayDelayTime(elementB, 0));
+
+		assertEquals(11, labelProvider.getToolTipDisplayDelayTime(elementA, 1));
+		assertEquals(22, labelProvider.getToolTipDisplayDelayTime(elementB, 1));
+
+		assertEquals(0, labelProvider.getToolTipDisplayDelayTime(elementA, 99));
+
+		labelProvider.setTableFormatter(new TableFormatter() {
+			@Override
+			public int getToolTipDisplayDelayTime(final Object element, final int columnIndex) {
+				return columnIndex == 99 ? 33 : super.getToolTipDisplayDelayTime(element, columnIndex);
+			}
+		});
+
+		assertEquals(0, labelProvider.getToolTipDisplayDelayTime(elementA, 98));
+		assertEquals(33, labelProvider.getToolTipDisplayDelayTime(elementA, 99));
+
+	}
+
+	public void testGetToolTipStyle() {
+		final TableRidgetLabelProvider labelProvider = new TableRidgetLabelProvider(attrMaps, formatters);
+
+		assertEquals(SWT.SHADOW_NONE, labelProvider.getToolTipStyle(elementA, 0));
+		assertEquals(SWT.SHADOW_NONE, labelProvider.getToolTipStyle(elementB, 0));
+
+		assertEquals(SWT.SHADOW_IN, labelProvider.getToolTipStyle(elementA, 1));
+		assertEquals(SWT.SHADOW_OUT, labelProvider.getToolTipStyle(elementB, 1));
+
+		assertEquals(SWT.SHADOW_NONE, labelProvider.getToolTipStyle(elementA, 99));
+
+		labelProvider.setTableFormatter(new TableFormatter() {
+			@Override
+			public int getToolTipStyle(final Object element, final int columnIndex) {
+				return columnIndex == 99 ? SWT.LEFT : super.getToolTipStyle(element, columnIndex);
+			}
+		});
+
+		assertEquals(SWT.SHADOW_NONE, labelProvider.getToolTipStyle(elementA, 98));
+		assertEquals(SWT.LEFT, labelProvider.getToolTipStyle(elementA, 99));
+
+	}
+
+	public void testGetToolTipText() {
+		final TableRidgetLabelProvider labelProvider = new TableRidgetLabelProvider(attrMaps, formatters);
+
+		assertEquals(null, labelProvider.getToolTipText(elementA, 0));
+		assertEquals(null, labelProvider.getToolTipText(elementB, 0));
+
+		assertEquals("a", labelProvider.getToolTipText(elementA, 1)); //$NON-NLS-1$
+		assertEquals("bb", labelProvider.getToolTipText(elementB, 1)); //$NON-NLS-1$
+
+		assertEquals(null, labelProvider.getToolTipText(elementA, 99));
+
+		labelProvider.setTableFormatter(new TableFormatter() {
+			@Override
+			public String getToolTip(final Object element, final int columnIndex) {
+				return columnIndex == 99 ? "cCc" : super.getToolTip(element, columnIndex); //$NON-NLS-1$
+			}
+		});
+
+		assertEquals(null, labelProvider.getToolTipText(elementA, 98));
+		assertEquals("cCc", labelProvider.getToolTipText(elementA, 99)); //$NON-NLS-1$
+
 	}
 
 	// helping methods
@@ -309,6 +552,55 @@ public class TableRidgetLabelProviderTest extends TestCase {
 			final WordNode wordNode = (WordNode) element;
 			return "alpha".equalsIgnoreCase(wordNode.getWord()) ? fontA : fontB; //$NON-NLS-1$
 		}
+
+		@Override
+		public String getToolTip(final Object element) {
+			final WordNode wordNode = (WordNode) element;
+			return "alpha".equalsIgnoreCase(wordNode.getWord()) ? "a" : "bb"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		}
+
+		@Override
+		public int getToolTipDisplayDelayTime(final Object element) {
+			final WordNode wordNode = (WordNode) element;
+			return "alpha".equalsIgnoreCase(wordNode.getWord()) ? 11 : 22; //$NON-NLS-1$
+		}
+
+		@Override
+		public Point getToolTipShift(final Object element) {
+			final WordNode wordNode = (WordNode) element;
+			return "alpha".equalsIgnoreCase(wordNode.getWord()) ? pointA : pointB; //$NON-NLS-1$
+		}
+
+		@Override
+		public int getToolTipStyle(final Object element) {
+			final WordNode wordNode = (WordNode) element;
+			return "alpha".equalsIgnoreCase(wordNode.getWord()) ? SWT.SHADOW_IN : SWT.SHADOW_OUT; //$NON-NLS-1$
+		}
+
+		@Override
+		public Color getToolTipBackgroundColor(final Object element) {
+			final WordNode wordNode = (WordNode) element;
+			return "alpha".equalsIgnoreCase(wordNode.getWord()) ? colorC : colorB; //$NON-NLS-1$
+		}
+
+		@Override
+		public Object getToolTipFont(final Object element) {
+			final WordNode wordNode = (WordNode) element;
+			return "alpha".equalsIgnoreCase(wordNode.getWord()) ? fontC : fontB; //$NON-NLS-1$
+		}
+
+		@Override
+		public Color getToolTipForegroundColor(final Object element) {
+			final WordNode wordNode = (WordNode) element;
+			return "alpha".equalsIgnoreCase(wordNode.getWord()) ? colorC : colorB; //$NON-NLS-1$
+		}
+
+		@Override
+		public int getToolTipTimeDisplayed(final Object element) {
+			final WordNode wordNode = (WordNode) element;
+			return "alpha".equalsIgnoreCase(wordNode.getWord()) ? 4711 : 815; //$NON-NLS-1$
+		}
+
 	}
 
 }
