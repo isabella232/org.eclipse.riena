@@ -12,10 +12,14 @@ package org.eclipse.riena.internal.ui.swt.utils;
 
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.PlatformUI;
+
+import org.eclipse.riena.internal.ui.swt.facades.WorkbenchFacade;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
  * A collection of utility methods for RCP.
+ * <p>
+ * TODO investigate if this class can be removed. Can {@link WorkbenchFacade} be used instead?
  */
 public final class RcpUtilities {
 
@@ -39,12 +43,7 @@ public final class RcpUtilities {
 			return myShell;
 		}
 
-		if (PlatformUI.isWorkbenchRunning() && PlatformUI.getWorkbench().getActiveWorkbenchWindow() != null) {
-			return PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
-		} else {
-			return null;
-		}
-
+		return WorkbenchFacade.getInstance().getActiveWindowShell();
 	}
 
 	/**
@@ -54,14 +53,11 @@ public final class RcpUtilities {
 	 *         Workbench
 	 */
 	public static Display getDisplay() {
-		if (myShell != null) {
+		if (!SwtUtilities.isDisposed(myShell)) {
 			return myShell.getDisplay();
 		}
-		if (PlatformUI.isWorkbenchRunning() && PlatformUI.getWorkbench().getDisplay() != null) {
-			return PlatformUI.getWorkbench().getDisplay();
-		} else {
-			return null;
-		}
+
+		return WorkbenchFacade.getInstance().getWorkbenchDisplay();
 	}
 
 	/**
@@ -70,10 +66,10 @@ public final class RcpUtilities {
 	 * @return true if Display is available
 	 */
 	public static boolean hasDisplay() {
-		if (myShell != null) {
+		if (!SwtUtilities.isDisposed(myShell)) {
 			return myShell.getDisplay() != null;
 		}
-		return PlatformUI.isWorkbenchRunning() && PlatformUI.getWorkbench().getDisplay() != null;
+		return WorkbenchFacade.getInstance().getWorkbenchDisplay() != null;
 	}
 
 	public static void setShell(final Shell shell) {

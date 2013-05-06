@@ -15,8 +15,8 @@ import java.util.List;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.PlatformUI;
 
+import org.eclipse.riena.internal.ui.swt.facades.WorkbenchFacade;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationContext;
 import org.eclipse.riena.navigation.INavigationNode;
@@ -47,7 +47,7 @@ public class UIProcessesModuleController extends SWTModuleController {
 		for (final UIProcess process : processes) {
 			final Job job = process.getJob();
 			if (job.getState() == Job.RUNNING) {
-				final Shell shell = PlatformUI.getWorkbench().getDisplay().getActiveShell();
+				final Shell shell = WorkbenchFacade.getInstance().getActiveShell();
 				final String title = "Running Jobs"; //$NON-NLS-1$
 				String message = "Dispose was canceled\nbecause job ''{0}'' is still running!"; //$NON-NLS-1$
 				message = NLS.bind(message, job.getName());

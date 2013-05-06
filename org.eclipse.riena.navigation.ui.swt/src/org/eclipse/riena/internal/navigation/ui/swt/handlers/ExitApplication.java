@@ -16,9 +16,9 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.runtime.IProduct;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 
+import org.eclipse.riena.internal.ui.swt.facades.WorkbenchFacade;
 import org.eclipse.riena.navigation.ui.swt.nls.Messages;
 import org.eclipse.riena.ui.swt.RienaMessageDialog;
 
@@ -30,10 +30,9 @@ public class ExitApplication extends AbstractHandler {
 	public Object execute(final ExecutionEvent event) throws ExecutionException {
 		final Shell shell = HandlerUtil.getActiveShell(event);
 		final String message = String.format(Messages.ExitApplication_exit, getName());
-		final boolean isConfirmed = RienaMessageDialog
-				.openConfirm(shell, Messages.ExitApplication_confirmExit, message);
+		final boolean isConfirmed = RienaMessageDialog.openConfirm(shell, Messages.ExitApplication_confirmExit, message);
 		if (isConfirmed) {
-			PlatformUI.getWorkbench().close();
+			WorkbenchFacade.getInstance().closeWorkbench();
 		}
 		return null;
 	}
