@@ -23,9 +23,8 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.PlatformUI;
 
+import org.eclipse.riena.internal.ui.swt.facades.WorkbenchFacade;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
@@ -253,22 +252,14 @@ public abstract class AbstractScrollingSupport {
 			// 282089: check this window is has the focus, to avoid scrolling when
 			// the mouse pointer happens to be over another overlapping window
 			final Control control = (Control) event.widget;
-			final boolean isActive = control.getShell() == getActiveShell();
+			final Shell activeShell = WorkbenchFacade.getInstance().getActiveWindowShell();
+			final boolean isActive = control.getShell() == activeShell;
 			// 282091: check that this navigation component is visible. Since
-			// we are using a display filter the navigation componentes of _each_
-			// subapplicatio are notified when scrolling!
+			// we are using a display filter the navigation components of _each_
+			// subapplication are notified when scrolling!
 			final boolean isVisible = getNavigationComponent().isVisible();
 			return isCurrent && isActive && isVisible;
 		}
 
 	}
-
-	/**
-	 * @since 5.0
-	 */
-	protected Shell getActiveShell() {
-		final IWorkbenchWindow activeWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-		return activeWindow != null ? activeWindow.getShell() : null;
-	}
-
 }
