@@ -238,7 +238,7 @@ public class SystemPropertiesSubModuleController extends SubModuleController {
 	private final class MyTableFormatter extends TableFormatter {
 
 		@Override
-		public Object getForeground(final Object element, final int columnIndex) {
+		public Object getForeground(final Object element, final Object cellElement, final int columnIndex) {
 			if (element instanceof KeyValueBean) {
 				final KeyValueBean keyValue = (KeyValueBean) element;
 				if (isNewKey(keyValue)) {
@@ -248,7 +248,7 @@ public class SystemPropertiesSubModuleController extends SubModuleController {
 					return LnfManager.getLnf().getColor("blue");
 				}
 			}
-			return super.getForeground(element, columnIndex);
+			return super.getForeground(element, cellElement, columnIndex);
 		}
 	}
 
