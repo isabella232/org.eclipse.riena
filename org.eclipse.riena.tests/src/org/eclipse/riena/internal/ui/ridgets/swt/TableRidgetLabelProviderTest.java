@@ -244,8 +244,8 @@ public class TableRidgetLabelProviderTest extends TestCase {
 
 		labelProvider.setTableFormatter(new TableFormatter() {
 			@Override
-			public Object getImage(final Object element, final int columnIndex) {
-				return columnIndex == 99 ? Activator.getSharedImage(SharedImages.IMG_LEAF) : super.getImage(element, columnIndex);
+			public Object getImage(final Object rowElement, final Object cellElement, final int columnIndex) {
+				return columnIndex == 99 ? Activator.getSharedImage(SharedImages.IMG_LEAF) : super.getImage(rowElement, cellElement, columnIndex);
 			}
 		});
 
@@ -267,8 +267,8 @@ public class TableRidgetLabelProviderTest extends TestCase {
 
 		labelProvider.setTableFormatter(new TableFormatter() {
 			@Override
-			public Object getForeground(final Object element, final int columnIndex) {
-				return columnIndex == 99 ? colorC : super.getForeground(element, columnIndex);
+			public Object getForeground(final Object rowElement, final Object cellElement, final int columnIndex) {
+				return columnIndex == 99 ? colorC : super.getForeground(rowElement, cellElement, columnIndex);
 			}
 		});
 
@@ -290,8 +290,8 @@ public class TableRidgetLabelProviderTest extends TestCase {
 
 		labelProvider.setTableFormatter(new TableFormatter() {
 			@Override
-			public Object getBackground(final Object element, final int columnIndex) {
-				return columnIndex == 99 ? colorC : super.getBackground(element, columnIndex);
+			public Object getBackground(final Object rowElement, final Object cellElement, final int columnIndex) {
+				return columnIndex == 99 ? colorC : super.getBackground(rowElement, cellElement, columnIndex);
 			}
 		});
 
@@ -313,8 +313,8 @@ public class TableRidgetLabelProviderTest extends TestCase {
 
 		labelProvider.setTableFormatter(new TableFormatter() {
 			@Override
-			public Object getFont(final Object element, final int columnIndex) {
-				return columnIndex == 99 ? fontC : super.getFont(element, columnIndex);
+			public Object getFont(final Object rowElement, final Object cellElement, final int columnIndex) {
+				return columnIndex == 99 ? fontC : super.getFont(rowElement, cellElement, columnIndex);
 			}
 		});
 
@@ -336,8 +336,8 @@ public class TableRidgetLabelProviderTest extends TestCase {
 
 		labelProvider.setTableFormatter(new TableFormatter() {
 			@Override
-			public Object getToolTipBackgroundColor(final Object element, final int columnIndex) {
-				return columnIndex == 99 ? colorA : super.getToolTipBackgroundColor(element, columnIndex);
+			public Object getToolTipBackgroundColor(final Object rowElement, final Object cellElement, final int columnIndex) {
+				return columnIndex == 99 ? colorA : super.getToolTipBackgroundColor(rowElement, cellElement, columnIndex);
 			}
 		});
 
@@ -359,8 +359,8 @@ public class TableRidgetLabelProviderTest extends TestCase {
 
 		labelProvider.setTableFormatter(new TableFormatter() {
 			@Override
-			public Object getToolTipForegroundColor(final Object element, final int columnIndex) {
-				return columnIndex == 99 ? colorA : super.getToolTipForegroundColor(element, columnIndex);
+			public Object getToolTipForegroundColor(final Object rowElement, final Object cellElement, final int columnIndex) {
+				return columnIndex == 99 ? colorA : super.getToolTipForegroundColor(rowElement, cellElement, columnIndex);
 			}
 		});
 
@@ -382,8 +382,8 @@ public class TableRidgetLabelProviderTest extends TestCase {
 
 		labelProvider.setTableFormatter(new TableFormatter() {
 			@Override
-			public Object getToolTipFont(final Object element, final int columnIndex) {
-				return columnIndex == 99 ? fontA : super.getToolTipFont(element, columnIndex);
+			public Object getToolTipFont(final Object rowElement, final Object cellElement, final int columnIndex) {
+				return columnIndex == 99 ? fontA : super.getToolTipFont(rowElement, cellElement, columnIndex);
 			}
 		});
 
@@ -405,8 +405,8 @@ public class TableRidgetLabelProviderTest extends TestCase {
 
 		labelProvider.setTableFormatter(new TableFormatter() {
 			@Override
-			public Object getToolTipShift(final Object element, final int columnIndex) {
-				return columnIndex == 99 ? pointC : super.getToolTipShift(element, columnIndex);
+			public Object getToolTipShift(final Object rowElement, final Object cellElement, final int columnIndex) {
+				return columnIndex == 99 ? pointC : super.getToolTipShift(rowElement, cellElement, columnIndex);
 			}
 		});
 
@@ -428,8 +428,8 @@ public class TableRidgetLabelProviderTest extends TestCase {
 
 		labelProvider.setTableFormatter(new TableFormatter() {
 			@Override
-			public int getToolTipTimeDisplayed(final Object element, final int columnIndex) {
-				return columnIndex == 99 ? 123 : super.getToolTipTimeDisplayed(element, columnIndex);
+			public int getToolTipTimeDisplayed(final Object rowElement, final Object cellElement, final int columnIndex) {
+				return columnIndex == 99 ? 123 : super.getToolTipTimeDisplayed(rowElement, cellElement, columnIndex);
 			}
 		});
 
@@ -451,8 +451,8 @@ public class TableRidgetLabelProviderTest extends TestCase {
 
 		labelProvider.setTableFormatter(new TableFormatter() {
 			@Override
-			public int getToolTipDisplayDelayTime(final Object element, final int columnIndex) {
-				return columnIndex == 99 ? 33 : super.getToolTipDisplayDelayTime(element, columnIndex);
+			public int getToolTipDisplayDelayTime(final Object rowElement, final Object cellElement, final int columnIndex) {
+				return columnIndex == 99 ? 33 : super.getToolTipDisplayDelayTime(rowElement, cellElement, columnIndex);
 			}
 		});
 
@@ -474,8 +474,8 @@ public class TableRidgetLabelProviderTest extends TestCase {
 
 		labelProvider.setTableFormatter(new TableFormatter() {
 			@Override
-			public int getToolTipStyle(final Object element, final int columnIndex) {
-				return columnIndex == 99 ? SWT.LEFT : super.getToolTipStyle(element, columnIndex);
+			public int getToolTipStyle(final Object rowElement, final Object cellElement, final int columnIndex) {
+				return columnIndex == 99 ? SWT.LEFT : super.getToolTipStyle(rowElement, cellElement, columnIndex);
 			}
 		});
 
@@ -497,8 +497,8 @@ public class TableRidgetLabelProviderTest extends TestCase {
 
 		labelProvider.setTableFormatter(new TableFormatter() {
 			@Override
-			public String getToolTip(final Object element, final int columnIndex) {
-				return columnIndex == 99 ? "cCc" : super.getToolTip(element, columnIndex); //$NON-NLS-1$
+			public String getToolTip(final Object rowElement, final Object cellElement, final int columnIndex) {
+				return columnIndex == 99 ? "cCc" : super.getToolTip(rowElement, cellElement, columnIndex); //$NON-NLS-1$
 			}
 		});
 

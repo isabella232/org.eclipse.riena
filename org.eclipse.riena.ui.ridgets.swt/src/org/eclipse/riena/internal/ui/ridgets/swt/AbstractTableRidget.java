@@ -47,6 +47,7 @@ import org.eclipse.jface.viewers.ColumnLayoutData;
 import org.eclipse.jface.viewers.ColumnPixelData;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.EditingSupport;
+import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.ViewerColumn;
 import org.eclipse.swt.SWT;
@@ -450,9 +451,33 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 		final TableRidgetLabelProvider labelProvider = createLabelProvider(viewerCP);
 		viewer.setLabelProvider(labelProvider);
 		viewer.setContentProvider(viewerCP);
+		configureLableProvider(labelProvider);
 		viewer.setInput(viewerObservables);
 		applyComparator(comparatorMap);
 		viewConfigured = true;
+	}
+
+	private void refreshViewer(final AbstractTableViewer viewer) {
+		viewer.getControl().setRedraw(false); // prevent flicker during update
+		final boolean scrollBarVisibleBeforeRefresh = isVerticalScrollBarVisible(viewer.getControl());
+		final StructuredSelection currentSelection = new StructuredSelection(getSelection());
+		try {
+			configureLableProvider(viewer.getLabelProvider());
+			viewer.setInput(viewerObservables);
+		} finally {
+			viewer.setSelection(currentSelection);
+			viewer.getControl().setRedraw(true);
+			layoutIfScrollBarVisibilityChanged(viewer.getControl(), scrollBarVisibleBeforeRefresh);
+		}
+	}
+
+	private void configureLableProvider(final IBaseLabelProvider labelProvider) {
+		if (labelProvider instanceof TableRidgetLabelProvider) {
+			final TableRidgetLabelProvider tableLabelProvider = (TableRidgetLabelProvider) labelProvider;
+			final IColumnFormatter[] formatters = getColumnFormatters(tableLabelProvider.getColumnCount());
+			tableLabelProvider.setFormatters(formatters);
+			tableLabelProvider.setTableFormatter(tableFormatter);
+		}
 	}
 
 	@Override
@@ -495,26 +520,6 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 			}
 		});
 		return labelProvider;
-	}
-
-	private void refreshViewer(final AbstractTableViewer viewer) {
-		viewer.getControl().setRedraw(false); // prevent flicker during update
-		final boolean scrollBarVisibleBeforeRefresh = isVerticalScrollBarVisible(viewer.getControl());
-		final StructuredSelection currentSelection = new StructuredSelection(getSelection());
-		try {
-			TableRidgetLabelProvider tableLabelProvider = null;
-			if (viewer.getLabelProvider() instanceof TableRidgetLabelProvider) {
-				tableLabelProvider = (TableRidgetLabelProvider) viewer.getLabelProvider();
-				final IColumnFormatter[] formatters = getColumnFormatters(tableLabelProvider.getColumnCount());
-				tableLabelProvider.setFormatters(formatters);
-				tableLabelProvider.setTableFormatter(tableFormatter);
-			}
-			viewer.setInput(viewerObservables);
-		} finally {
-			viewer.setSelection(currentSelection);
-			viewer.getControl().setRedraw(true);
-			layoutIfScrollBarVisibilityChanged(viewer.getControl(), scrollBarVisibleBeforeRefresh);
-		}
 	}
 
 	/**
