@@ -22,68 +22,68 @@ public class TableFormatter implements ITableFormatter {
 
 	private static final IColumnFormatter DEFAULT_FOMATTER = new ColumnFormatter();
 
-	public String getText(final Object element, final int columnIndex) {
-		return DEFAULT_FOMATTER.getText(element);
+	public String getText(final Object rowElement, final Object cellElement, final int columnIndex) {
+		return DEFAULT_FOMATTER.getText(rowElement);
 	}
 
-	public Object getImage(final Object element, final int columnIndex) {
-		return DEFAULT_FOMATTER.getImage(element);
+	public Object getImage(final Object rowElement, final Object cellElement, final int columnIndex) {
+		return DEFAULT_FOMATTER.getImage(rowElement);
 	}
 
-	public Object getForeground(final Object element, final int columnIndex) {
-		return DEFAULT_FOMATTER.getForeground(element);
+	public Object getForeground(final Object rowElement, final Object cellElement, final int columnIndex) {
+		return DEFAULT_FOMATTER.getForeground(rowElement);
 	}
 
-	public Object getBackground(final Object element, final int columnIndex) {
-		return DEFAULT_FOMATTER.getBackground(element);
+	public Object getBackground(final Object rowElement, final Object cellElement, final int columnIndex) {
+		return DEFAULT_FOMATTER.getBackground(rowElement);
 	}
 
-	public Object getFont(final Object element, final int columnIndex) {
-		return DEFAULT_FOMATTER.getFont(element);
+	public Object getFont(final Object rowElement, final Object cellElement, final int columnIndex) {
+		return DEFAULT_FOMATTER.getFont(rowElement);
 	}
 
-	public int getHorizontalAlignment(final Object element, final int columnIndex) {
-		return DEFAULT_FOMATTER.getHorizontalAlignment(element);
+	public int getHorizontalAlignment(final Object rowElement, final Object cellElement, final int columnIndex) {
+		return DEFAULT_FOMATTER.getHorizontalAlignment(rowElement);
 	}
 
-	public int getLeftIndent(final Object element, final int columnIndex) {
-		return DEFAULT_FOMATTER.getLeftIndent(element);
+	public int getLeftIndent(final Object rowElement, final Object cellElement, final int columnIndex) {
+		return DEFAULT_FOMATTER.getLeftIndent(rowElement);
 	}
 
-	public String getToolTip(final Object element, final int columnIndex) {
-		return DEFAULT_FOMATTER.getToolTip(element);
+	public String getToolTip(final Object rowElement, final Object cellElement, final int columnIndex) {
+		return DEFAULT_FOMATTER.getToolTip(rowElement);
 	}
 
-	public Object getToolTipImage(final Object element, final int columnIndex) {
-		return DEFAULT_FOMATTER.getToolTipImage(element);
+	public Object getToolTipImage(final Object rowElement, final Object cellElement, final int columnIndex) {
+		return DEFAULT_FOMATTER.getToolTipImage(rowElement);
 	}
 
-	public Object getToolTipBackgroundColor(final Object element, final int columnIndex) {
-		return DEFAULT_FOMATTER.getToolTipBackgroundColor(element);
+	public Object getToolTipBackgroundColor(final Object rowElement, final Object cellElement, final int columnIndex) {
+		return DEFAULT_FOMATTER.getToolTipBackgroundColor(rowElement);
 	}
 
-	public Object getToolTipForegroundColor(final Object element, final int columnIndex) {
-		return DEFAULT_FOMATTER.getToolTipForegroundColor(element);
+	public Object getToolTipForegroundColor(final Object rowElement, final Object cellElement, final int columnIndex) {
+		return DEFAULT_FOMATTER.getToolTipForegroundColor(rowElement);
 	}
 
-	public Object getToolTipFont(final Object element, final int columnIndex) {
-		return DEFAULT_FOMATTER.getToolTipFont(element);
+	public Object getToolTipFont(final Object rowElement, final Object cellElement, final int columnIndex) {
+		return DEFAULT_FOMATTER.getToolTipFont(rowElement);
 	}
 
-	public Object getToolTipShift(final Object element, final int columnIndex) {
-		return DEFAULT_FOMATTER.getToolTipTimeDisplayed(element);
+	public Object getToolTipShift(final Object rowElement, final Object cellElement, final int columnIndex) {
+		return DEFAULT_FOMATTER.getToolTipTimeDisplayed(rowElement);
 	}
 
-	public int getToolTipTimeDisplayed(final Object element, final int columnIndex) {
-		return DEFAULT_FOMATTER.getToolTipTimeDisplayed(element);
+	public int getToolTipTimeDisplayed(final Object rowElement, final Object cellElement, final int columnIndex) {
+		return DEFAULT_FOMATTER.getToolTipTimeDisplayed(rowElement);
 	}
 
-	public int getToolTipDisplayDelayTime(final Object element, final int columnIndex) {
-		return DEFAULT_FOMATTER.getToolTipDisplayDelayTime(element);
+	public int getToolTipDisplayDelayTime(final Object rowElement, final Object cellElement, final int columnIndex) {
+		return DEFAULT_FOMATTER.getToolTipDisplayDelayTime(rowElement);
 	}
 
-	public int getToolTipStyle(final Object element, final int columnIndex) {
-		return DEFAULT_FOMATTER.getToolTipStyle(element);
+	public int getToolTipStyle(final Object rowElement, final Object cellElement, final int columnIndex) {
+		return DEFAULT_FOMATTER.getToolTipStyle(rowElement);
 	}
 
 }
