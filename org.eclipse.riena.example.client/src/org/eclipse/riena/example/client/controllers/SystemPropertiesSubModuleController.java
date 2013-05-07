@@ -20,11 +20,15 @@ import java.util.Set;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.osgi.util.NLS;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 
 import org.eclipse.riena.beans.common.AbstractBean;
 import org.eclipse.riena.beans.common.TypedComparator;
+import org.eclipse.riena.core.util.Nop;
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.example.client.views.SystemPropertiesSubModuleView;
 import org.eclipse.riena.internal.ui.swt.facades.WorkbenchFacade;
@@ -55,6 +59,7 @@ public class SystemPropertiesSubModuleController extends SubModuleController {
 	private ITableRidget tableProperties;
 	private ITextRidget textKey;
 	private ITextRidget textValue;
+	private final Font italicFont;
 
 	public SystemPropertiesSubModuleController() {
 		this(null);
@@ -65,6 +70,11 @@ public class SystemPropertiesSubModuleController extends SubModuleController {
 		super(navigationNode);
 		valueBean = new KeyValueBean();
 		doubleClickListener = new DoubleClickListener();
+
+		final Font tableFont = LnfManager.getLnf().getFont("Table.font");
+		final FontData fontData = tableFont.getFontData()[0];
+		fontData.setStyle(SWT.ITALIC);
+		italicFont = new Font(tableFont.getDevice(), fontData);
 
 		properties = new ArrayList<KeyValueBean>();
 		sysProperties = System.getProperties();
@@ -178,6 +188,7 @@ public class SystemPropertiesSubModuleController extends SubModuleController {
 				tableProperties.updateFromModel();
 			}
 		});
+
 	}
 
 	// helping classes
@@ -238,9 +249,24 @@ public class SystemPropertiesSubModuleController extends SubModuleController {
 	private final class MyTableFormatter extends TableFormatter {
 
 		@Override
-		public Object getForeground(final Object element, final int columnIndex) {
-			if (element instanceof KeyValueBean) {
-				final KeyValueBean keyValue = (KeyValueBean) element;
+		public Object getFont(final Object rowElement, final Object cellElement, final int columnIndex) {
+			if (cellElement instanceof String) {
+				if (columnIndex == 1) {
+					try {
+						Double.parseDouble((String) cellElement);
+						return italicFont;
+					} catch (final NumberFormatException e) {
+						Nop.reason("No number, use default font.");
+					}
+				}
+			}
+			return super.getFont(rowElement, cellElement, columnIndex);
+		}
+
+		@Override
+		public Object getForeground(final Object rowElement, final Object cellElement, final int columnIndex) {
+			if (rowElement instanceof KeyValueBean) {
+				final KeyValueBean keyValue = (KeyValueBean) rowElement;
 				if (isNewKey(keyValue)) {
 					return LnfManager.getLnf().getColor("red");
 				}
@@ -248,8 +274,9 @@ public class SystemPropertiesSubModuleController extends SubModuleController {
 					return LnfManager.getLnf().getColor("blue");
 				}
 			}
-			return super.getForeground(element, columnIndex);
+			return super.getForeground(rowElement, cellElement, columnIndex);
 		}
+
 	}
 
 }
