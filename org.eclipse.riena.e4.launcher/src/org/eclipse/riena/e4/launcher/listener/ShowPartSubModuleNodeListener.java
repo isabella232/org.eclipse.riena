@@ -1,7 +1,5 @@
 package org.eclipse.riena.e4.launcher.listener;
 
-import java.util.Map.Entry;
-
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
@@ -48,10 +46,10 @@ public class ShowPartSubModuleNodeListener extends SubModuleNodeListener {
 	}
 
 	private void updateNavigationSourceProvider(final ISubModuleNode source) {
-		navigationSourceProvider.activeNodeChanged(source);
-		for (final Entry<String, Object> e : navigationSourceProvider.getCurrentState().entrySet()) {
-			context.set(e.getKey(), e.getValue());
-		}
+		//		navigationSourceProvider.activeNodeChanged(source);
+		//		for (final Entry<String, Object> e : navigationSourceProvider.getCurrentState().entrySet()) {
+		//			context.set(e.getKey(), e.getValue());
+		//		}
 	}
 
 	/**
