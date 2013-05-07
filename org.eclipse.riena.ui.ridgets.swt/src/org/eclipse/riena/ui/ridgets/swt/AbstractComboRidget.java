@@ -195,6 +195,9 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		selectionEnforcer.saveSelection();
 	}
 
+	/**
+	 * @since 5.0
+	 */
 	protected void addConverter(final UpdateValueStrategy targetToModelStrategy, final IObservableValue selectionValue) {
 		// default: do nothing
 	}
