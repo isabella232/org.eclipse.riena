@@ -229,7 +229,7 @@ public final class LnFUpdater {
 		for (final PropertyDescriptor property : properties) {
 			if (onlyColor) {
 				if (!(property.getPropertyType() == Color.class)) {
-					return;
+					continue;
 				}
 			}
 			final Object newValue = getLnfValue(control, property);

@@ -329,6 +329,11 @@ public class MarkerSupport extends BasicMarkerSupport {
 		return internalData.get(key);
 	}
 
+	/// Control data
+	private void setData(final String key, final Object value) {
+		internalData.put(key, value);
+	}
+
 	private boolean isButton(final Control control) {
 		return control instanceof Button || getRidget() instanceof AbstractActionRidget;
 	}
@@ -349,11 +354,6 @@ public class MarkerSupport extends BasicMarkerSupport {
 			result = !iter.next().isDisabled();
 		}
 		return result;
-	}
-
-	/// Control data
-	private void setData(final String key, final Object value) {
-		internalData.put(key, value);
 	}
 
 	private void updateError(final Control control) {
