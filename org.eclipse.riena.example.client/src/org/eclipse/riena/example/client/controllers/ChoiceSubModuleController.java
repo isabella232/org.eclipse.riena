@@ -260,7 +260,7 @@ public class ChoiceSubModuleController extends SubModuleController {
 	}
 
 	public enum CarModels {
-		ASTON_MARTIN("Aston Martin V-12 Vanquish"), LOTUS("Lotus Esprit Turbo"), BMW("BMW Z8"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		ASTON_MARTIN("Aston Martin\nV-12 Vanquish"), LOTUS("Lotus\nEsprit Turbo"), BMW("BMW\nZ8"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		private String label;
 

@@ -11,6 +11,7 @@
 package org.eclipse.riena.internal.ui.swt;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Button;
@@ -38,6 +39,18 @@ public class MultilineButton extends Button {
 	public MultilineButton(final Composite parent, final int style) {
 		super(parent, style);
 		gc = new GC(this);
+		gc.setFont(getFont());
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.swt.widgets.Control#setFont(org.eclipse.swt.graphics.Font)
+	 */
+	@Override
+	public void setFont(final Font font) {
+		super.setFont(font);
+		gc.setFont(font);
 	}
 
 	@Override
@@ -58,8 +71,7 @@ public class MultilineButton extends Button {
 			return fromSuper;
 		}
 
-		final Point textSizeOneLine = gc.stringExtent(getText().replaceAll("\\s", "")); //$NON-NLS-1$ //$NON-NLS-2$
-		//		final Point textSizeWithLineBreaks = gc.textExtent(getText(), SWT.DRAW_DELIMITER);
+		final Point textSizeOneLine = gc.stringExtent(getText().replaceAll("\\r|\\n", "")); //$NON-NLS-1$ //$NON-NLS-2$
 		final Point textSizeWithLineBreaks = SWTFacade.getDefault().textExtent(gc, getText(), SWT.DRAW_DELIMITER);
 
 		return new Point(fromSuper.x - textSizeOneLine.x + textSizeWithLineBreaks.x, Math.max(fromSuper.y, textSizeWithLineBreaks.y));

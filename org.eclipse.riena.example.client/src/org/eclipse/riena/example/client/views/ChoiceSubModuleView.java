@@ -58,15 +58,16 @@ public class ChoiceSubModuleView extends SubModuleView {
 		final Group group = UIControlsFactory.createGroup(parent, "James' Car Configurator:"); //$NON-NLS-1$
 		GridLayoutFactory.fillDefaults().margins(20, 20).numColumns(2).spacing(20, 20).applyTo(group);
 
-		final GridDataFactory choiceLayoutFactory = GridDataFactory.fillDefaults().align(SWT.FILL, SWT.BEGINNING)
-				.grab(true, false);
+		final GridDataFactory choiceLayoutFactory = GridDataFactory.fillDefaults().align(SWT.FILL, SWT.BEGINNING).grab(true, false);
 
 		// next row
 
 		final Label lblModel = UIControlsFactory.createLabel(group, "Model"); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.BEGINNING).applyTo(lblModel);
 
-		final Composite compositeCarModel = new ChoiceComposite(group, SWT.NONE, false);
+		final ChoiceComposite compositeCarModel = new ChoiceComposite(group, SWT.NONE, false);
+		compositeCarModel.setWrapOptionsText(true);
+		compositeCarModel.setSpacing(0, 15);
 		choiceLayoutFactory.applyTo(compositeCarModel);
 		addUIControl(compositeCarModel, "compositeCarModel"); //$NON-NLS-1$
 
