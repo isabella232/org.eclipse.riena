@@ -24,7 +24,6 @@ import org.eclipse.core.runtime.Assert;
 
 import org.eclipse.riena.core.RienaStatus;
 import org.eclipse.riena.core.marker.IMarker;
-import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.navigation.INavigationContext;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationNodeController;
@@ -40,8 +39,10 @@ import org.eclipse.riena.ui.ridgets.ClassRidgetMapper;
 import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
+import org.eclipse.riena.ui.ridgets.IRidgetResolver;
 import org.eclipse.riena.ui.ridgets.IStatuslineRidget;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
+import org.eclipse.riena.ui.ridgets.RidgetResolver;
 import org.eclipse.riena.ui.ridgets.RidgetToStatuslineSubscriber;
 import org.eclipse.riena.ui.ridgets.SubModuleUtils;
 import org.eclipse.riena.ui.ridgets.controller.IController;
@@ -54,6 +55,10 @@ import org.eclipse.riena.ui.ridgets.controller.IController;
  */
 public abstract class NavigationNodeController<N extends INavigationNode<?>> extends TypecastingObject implements INavigationNodeController, IController,
 		IContext {
+	/**
+	 * @since 5.0
+	 */
+	protected IRidgetResolver ridgetResolver = new RidgetResolver();
 
 	private N navigationNode;
 	private Map<String, IRidget> ridgets;
@@ -223,17 +228,8 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	 * 
 	 * @since 3.0
 	 */
-	@SuppressWarnings("unchecked")
 	public <R extends IRidget> R getRidget(final String id) {
-		IRidget result = ridgets.get(id);
-		if (result == null && id.indexOf('.') != -1) {
-			final IRidgetContainer parent = getContainer(id);
-			if (parent != null) {
-				final String childId = getChildId(id);
-				result = parent.getRidget(childId);
-			}
-		}
-		return (R) result;
+		return (R) ridgetResolver.getRidget(id, ridgets);
 	}
 
 	/**
@@ -264,48 +260,10 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 				throw new RuntimeException(e);
 			}
 
-			final String childId = getChildId(id);
-			if (childId.equals(id)) {
-				addRidget(id, ridget);
-			} else {
-				final IRidgetContainer container = getContainer(id);
-				if (container != null) {
-					container.addRidget(childId, ridget);
-				} else {
-					// TODO
-					addRidget(id, ridget);
-				}
-			}
+			ridgetResolver.addRidget(id, ridget, this, ridgets);
 		}
 
 		return ridget;
-	}
-
-	private String getChildId(final String id) {
-		if (StringUtils.isEmpty(id)) {
-			return id;
-		}
-		if (id.indexOf('.') != -1) {
-			return id.substring(id.lastIndexOf('.') + 1);
-		}
-		return id;
-	}
-
-	private IRidgetContainer getContainer(final String id) {
-
-		if (StringUtils.isEmpty(id)) {
-			return null;
-		}
-		if (id.indexOf('.') != -1) {
-			final String parentId = id.substring(0, id.lastIndexOf('.'));
-			final IRidget parent = ridgets.get(parentId);
-			if (parent instanceof IRidgetContainer) {
-				return ((IRidgetContainer) parent);
-			}
-		}
-
-		return null;
-
 	}
 
 	public Collection<? extends IRidget> getRidgets() {
