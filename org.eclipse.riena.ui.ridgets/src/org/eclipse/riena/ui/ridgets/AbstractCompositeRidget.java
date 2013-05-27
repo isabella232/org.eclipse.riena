@@ -78,7 +78,7 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	 */
 	public boolean removeRidget(final String id) {
 		ridgetToStatuslineSubscriber.removeRidget(getRidget(id));
-		return ridgets.remove(id) != null;
+		return ridgetResolver.removeRidget(id, ridgets) != null;
 	}
 
 	/**

@@ -50,7 +50,7 @@ import org.eclipse.riena.ui.ridgets.IMenuItemRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
-import org.eclipse.riena.ui.ridgets.RidgetResolver;
+import org.eclipse.riena.ui.ridgets.ComplexRidgetResolver;
 import org.eclipse.riena.ui.ridgets.listener.IFocusListener;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
@@ -239,7 +239,7 @@ public class NavigationNodeControllerTest extends RienaTestCase {
 	 *             handled by JUnit
 	 */
 	public void testGetChildId() throws Exception {
-		final RidgetResolver ridgetResolver = ReflectionUtils.getHidden(controller, "ridgetResolver");
+		final ComplexRidgetResolver ridgetResolver = ReflectionUtils.getHidden(controller, "ridgetResolver");
 
 		String childId = ReflectionUtils.invokeHidden(ridgetResolver, "getChildId", "aa.bbb.cccc"); //$NON-NLS-1$ //$NON-NLS-2$
 		assertEquals("cccc", childId); //$NON-NLS-1$
@@ -256,7 +256,7 @@ public class NavigationNodeControllerTest extends RienaTestCase {
 	 *             handled by JUnit
 	 */
 	public void testGetContainer() throws Exception {
-		final RidgetResolver ridgetResolver = ReflectionUtils.getHidden(controller, "ridgetResolver"); //$NON-NLS-1$
+		final ComplexRidgetResolver ridgetResolver = ReflectionUtils.getHidden(controller, "ridgetResolver"); //$NON-NLS-1$
 		final Map<String, IRidget> ridgets = ReflectionUtils.getHidden(controller, "ridgets"); //$NON-NLS-1$
 
 		IRidgetContainer container = ReflectionUtils.invokeHidden(ridgetResolver, "getContainer", "container.child", ridgets); //$NON-NLS-1$ //$NON-NLS-2$

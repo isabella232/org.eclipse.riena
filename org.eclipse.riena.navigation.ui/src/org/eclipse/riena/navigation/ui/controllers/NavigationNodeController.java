@@ -42,7 +42,7 @@ import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.IRidgetResolver;
 import org.eclipse.riena.ui.ridgets.IStatuslineRidget;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
-import org.eclipse.riena.ui.ridgets.RidgetResolver;
+import org.eclipse.riena.ui.ridgets.ComplexRidgetResolver;
 import org.eclipse.riena.ui.ridgets.RidgetToStatuslineSubscriber;
 import org.eclipse.riena.ui.ridgets.SubModuleUtils;
 import org.eclipse.riena.ui.ridgets.controller.IController;
@@ -58,7 +58,7 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	/**
 	 * @since 5.0
 	 */
-	protected IRidgetResolver ridgetResolver = new RidgetResolver();
+	protected IRidgetResolver ridgetResolver = new ComplexRidgetResolver();
 
 	private N navigationNode;
 	private Map<String, IRidget> ridgets;

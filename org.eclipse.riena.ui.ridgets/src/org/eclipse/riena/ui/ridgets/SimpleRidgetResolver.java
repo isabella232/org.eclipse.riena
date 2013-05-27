@@ -36,4 +36,13 @@ public class SimpleRidgetResolver implements IRidgetResolver {
 	public <R extends IRidget> IRidget addRidget(final String id, final R ridget, final IRidgetContainer toContainer, final Map<String, IRidget> ridgets) {
 		return ridgets.put(id, ridget);
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.ui.ridgets.IRidgetResolver#removeRidget(java.lang.String, java.util.Map)
+	 */
+	public IRidget removeRidget(final String id, final Map<String, IRidget> ridgets) {
+		return ridgets.remove(id);
+	}
 }

@@ -20,7 +20,7 @@ import org.eclipse.riena.core.util.StringUtils;
  * 
  * @since 5.0
  */
-public class RidgetResolver implements IRidgetResolver {
+public class ComplexRidgetResolver implements IRidgetResolver {
 
 	public IRidget getRidget(final String id, final Map<String, IRidget> ridgets) {
 		IRidget result = ridgets.get(id);
@@ -39,18 +39,39 @@ public class RidgetResolver implements IRidgetResolver {
 
 		final String childId = getChildId(id);
 		if (childId.equals(id)) {
-			toContainer.addRidget(id, ridget);
+			ridgets.put(id, ridget);
 		} else {
 			final IRidgetContainer container = getContainer(id, ridgets);
 			if (container != null) {
 				container.addRidget(childId, ridget);
 			} else {
 				// TODO
-				toContainer.addRidget(id, ridget);
+				ridgets.put(id, ridget);
 			}
 		}
 
 		return oldRidget;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.ui.ridgets.IRidgetResolver#removeRidget(java.lang.String, java.util.Map)
+	 */
+	public IRidget removeRidget(final String id, final Map<String, IRidget> ridgets) {
+		final String childId = getChildId(id);
+		if (childId.equals(id)) {
+			return ridgets.remove(id);
+		}
+
+		final IRidgetContainer container = getContainer(id, ridgets);
+		if (container != null) {
+			final IRidget result = container.getRidget(childId);
+			container.removeRidget(childId);
+			return result;
+		}
+
+		return null;
 	}
 
 	private static String getChildId(final String id) {

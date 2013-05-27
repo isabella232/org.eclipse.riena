@@ -44,4 +44,13 @@ public interface IRidgetResolver {
 	 */
 	<R extends IRidget> IRidget addRidget(String id, R ridget, IRidgetContainer toContainer, Map<String, IRidget> ridgets);
 
+	/**
+	 * Removes the given ridget.
+	 * 
+	 * @param ridgets
+	 *            the ridgets list
+	 * @return the removed ridget or <code>null</code>
+	 */
+	IRidget removeRidget(String id, Map<String, IRidget> ridgets);
+
 }
