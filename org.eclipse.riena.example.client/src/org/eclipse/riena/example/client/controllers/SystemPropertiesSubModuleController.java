@@ -25,6 +25,9 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
+import org.eclipse.ui.ISourceProvider;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.services.ISourceProviderService;
 
 import org.eclipse.riena.beans.common.AbstractBean;
 import org.eclipse.riena.beans.common.TypedComparator;
@@ -60,6 +63,7 @@ public class SystemPropertiesSubModuleController extends SubModuleController {
 	private ITextRidget textKey;
 	private ITextRidget textValue;
 	private final Font italicFont;
+	private SystemPropertySourceProvider systemPropertySourceProvider;
 
 	public SystemPropertiesSubModuleController() {
 		this(null);
@@ -71,7 +75,7 @@ public class SystemPropertiesSubModuleController extends SubModuleController {
 		valueBean = new KeyValueBean();
 		doubleClickListener = new DoubleClickListener();
 
-		final Font tableFont = LnfManager.getLnf().getFont("Table.font");
+		final Font tableFont = LnfManager.getLnf().getFont("Table.font"); //$NON-NLS-1$
 		final FontData fontData = tableFont.getFontData()[0];
 		fontData.setStyle(SWT.ITALIC);
 		italicFont = new Font(tableFont.getDevice(), fontData);
@@ -185,6 +189,8 @@ public class SystemPropertiesSubModuleController extends SubModuleController {
 		buttonSave.addListener(new IActionListener() {
 			public void callback() {
 				valueBean.update();
+				System.setProperty(valueBean.getKey(), valueBean.getValue());
+				propertyChanged(valueBean.getKey());
 				tableProperties.updateFromModel();
 			}
 		});
@@ -256,7 +262,7 @@ public class SystemPropertiesSubModuleController extends SubModuleController {
 						Double.parseDouble((String) cellElement);
 						return italicFont;
 					} catch (final NumberFormatException e) {
-						Nop.reason("No number, use default font.");
+						Nop.reason("No number, use default font."); //$NON-NLS-1$
 					}
 				}
 			}
@@ -268,15 +274,43 @@ public class SystemPropertiesSubModuleController extends SubModuleController {
 			if (rowElement instanceof KeyValueBean) {
 				final KeyValueBean keyValue = (KeyValueBean) rowElement;
 				if (isNewKey(keyValue)) {
-					return LnfManager.getLnf().getColor("red");
+					return LnfManager.getLnf().getColor("red"); //$NON-NLS-1$
 				}
 				if ((columnIndex == 1) && isNewValue(keyValue)) {
-					return LnfManager.getLnf().getColor("blue");
+					return LnfManager.getLnf().getColor("blue"); //$NON-NLS-1$
 				}
 			}
 			return super.getForeground(rowElement, cellElement, columnIndex);
 		}
 
+	}
+
+	private SystemPropertySourceProvider getSystemPropertySourceProvider() {
+		// TODO PlatformUI.getWorkbench() and e4 ?!?!
+		final ISourceProviderService sourceProviderService = (ISourceProviderService) PlatformUI.getWorkbench().getService(ISourceProviderService.class);
+		if (sourceProviderService == null) {
+			return null;
+		}
+		final ISourceProvider[] sourceProviders = sourceProviderService.getSourceProviders();
+		for (final ISourceProvider sourceProvider : sourceProviders) {
+			if (sourceProvider instanceof SystemPropertySourceProvider) {
+				return (SystemPropertySourceProvider) sourceProvider;
+			}
+		}
+		return null;
+	}
+
+	private void propertyChanged(final String propName) {
+		if (systemPropertySourceProvider == null) {
+			systemPropertySourceProvider = getSystemPropertySourceProvider();
+		}
+		if (systemPropertySourceProvider != null) {
+			if (!systemPropertySourceProvider.isDisposed()) {
+				systemPropertySourceProvider.propertyChanged(propName);
+			} else {
+				systemPropertySourceProvider = null;
+			}
+		}
 	}
 
 }

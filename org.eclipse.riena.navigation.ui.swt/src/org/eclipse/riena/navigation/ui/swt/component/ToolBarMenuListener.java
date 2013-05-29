@@ -11,6 +11,7 @@
 package org.eclipse.riena.navigation.ui.swt.component;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseTrackListener;
@@ -92,7 +93,13 @@ public class ToolBarMenuListener implements MouseListener, SelectionListener, Mo
 	private void showMenu(final ToolItem toolItem) {
 		final Rectangle itemBounds = toolItem.getBounds();
 		final Point loc = toolItem.getParent().toDisplay(itemBounds.x, itemBounds.height + itemBounds.y);
-		final Object data = toolItem.getData(MenuCoolBarComposite.MENU_DATA_KEY);
+		Object data = toolItem.getData(MenuCoolBarComposite.MENU_DATA_KEY);
+		if (data == null) {
+			if (toolItem.getData() instanceof MenuManager) {
+				final MenuManager menuManager = (MenuManager) toolItem.getData();
+				data = menuManager.getMenu();
+			}
+		}
 		Assert.isTrue(data instanceof Menu, "Every tool item must know its associated menu object under the key: " + MenuCoolBarComposite.MENU_DATA_KEY); //$NON-NLS-1$
 		final Menu menu = (Menu) data;
 		menu.setLocation(loc);

@@ -481,7 +481,7 @@
       </command>
       <command
             id="org.eclipse.riena.example.client.activeSubModuleCommand"
-            name="Active Sub-Module (Combo)">
+            name="Active Sub-Module (Choice)">
       </command>
       <command
             id="org.eclipse.riena.example.client.zoomOutCommand"
@@ -532,14 +532,6 @@
                      mnemonic="O"
                      style="push">
                </command>
-               <visibleWhen
-                     checkEnabled="false">
-                  <not>
-                     <reference
-                           definitionId="org.eclipse.riena.example.client.navigationSubAppVisible">
-                     </reference>
-                  </not>
-               </visibleWhen>
             </menu>
             <command 
             	commandId="org.eclipse.riena.example.client.closeModuleCommand"
@@ -593,6 +585,14 @@
                   mnemonic="A"
                   style="push">
             </command>
+               <visibleWhen
+                     checkEnabled="false">
+                  <not>
+                     <reference
+                           definitionId="org.eclipse.riena.example.client.contextVisible">
+                     </reference>
+                  </not>
+               </visibleWhen>
          </menu>
          <menu
                id="navigationMenu"
@@ -1586,7 +1586,16 @@
            </equals>
         </with>
      </definition>
-	</extension>
+     <definition
+           id="org.eclipse.riena.example.client.contextVisible">
+        <with
+              variable="user.name">
+             <equals
+                 value="hide">
+             </equals>
+        </with>
+     </definition>
+   </extension>
    <extension
          point="org.eclipse.core.expressions.propertyTesters">
       <propertyTester
@@ -1632,6 +1641,35 @@
             class="org.eclipse.riena.example.client.application.SwtExampleApplication">
       </modelCreator>
    </extension>
+   
+   <extension
+         point="org.eclipse.ui.services">
+      <sourceProvider
+            provider="org.eclipse.riena.example.client.controllers.SystemPropertySourceProvider">
+         <variable
+               name="java.version"
+               priorityLevel="activeSite">
+         </variable>
+         <variable
+               name="os.version"
+               priorityLevel="activeSite">
+         </variable>
+         <variable
+               name="os.name"
+               priorityLevel="activeSite">
+         </variable>
+         <variable
+               name="user.language"
+               priorityLevel="activeSite">
+         </variable>
+         <variable
+               name="user.name"
+               priorityLevel="activeSite">
+         </variable>
+      </sourceProvider>
+   </extension>
+   
+   
    <!-- comment in for Riena on RAP --> 
    <!--extension point="org.eclipse.rap.ui.entrypoint">
      <entrypoint id="example.application.entrypoint"
