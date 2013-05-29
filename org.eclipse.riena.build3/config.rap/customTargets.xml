@@ -75,6 +75,12 @@
 
 	<target name="prepareTarget" unless="has.target">
 		<delete dir="${builder}/../target/rap/eclipse"/>
+
+		<echo>prepare target, copy dropins, unzip rap runtime </echo>
+		<copy todir="${builder}/../target/rap/eclipse/plugins">
+		    <fileset dir="${builder}/../target/dropins"/>
+		  </copy>
+		
 		<unzip
 			dest="${builder}/../target/rap/eclipse"
 			src="${builder}/../target/rap-2.1.0-N-20130520-1326.zip" />

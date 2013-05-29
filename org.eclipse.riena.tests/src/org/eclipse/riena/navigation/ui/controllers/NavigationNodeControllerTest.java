@@ -14,6 +14,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.Collection;
+import java.util.Map;
 
 import org.eclipse.core.databinding.BindingException;
 import org.eclipse.core.databinding.observable.Realm;
@@ -49,6 +50,7 @@ import org.eclipse.riena.ui.ridgets.IMenuItemRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
+import org.eclipse.riena.ui.ridgets.ComplexRidgetResolver;
 import org.eclipse.riena.ui.ridgets.listener.IFocusListener;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
@@ -237,11 +239,12 @@ public class NavigationNodeControllerTest extends RienaTestCase {
 	 *             handled by JUnit
 	 */
 	public void testGetChildId() throws Exception {
+		final ComplexRidgetResolver ridgetResolver = ReflectionUtils.getHidden(controller, "ridgetResolver");
 
-		String childId = ReflectionUtils.invokeHidden(controller, "getChildId", "aa.bbb.cccc"); //$NON-NLS-1$ //$NON-NLS-2$
+		String childId = ReflectionUtils.invokeHidden(ridgetResolver, "getChildId", "aa.bbb.cccc"); //$NON-NLS-1$ //$NON-NLS-2$
 		assertEquals("cccc", childId); //$NON-NLS-1$
 
-		childId = ReflectionUtils.invokeHidden(controller, "getChildId", "def"); //$NON-NLS-1$ //$NON-NLS-2$
+		childId = ReflectionUtils.invokeHidden(ridgetResolver, "getChildId", "def"); //$NON-NLS-1$ //$NON-NLS-2$
 		assertEquals("def", childId); //$NON-NLS-1$
 
 	}
@@ -253,17 +256,19 @@ public class NavigationNodeControllerTest extends RienaTestCase {
 	 *             handled by JUnit
 	 */
 	public void testGetContainer() throws Exception {
+		final ComplexRidgetResolver ridgetResolver = ReflectionUtils.getHidden(controller, "ridgetResolver"); //$NON-NLS-1$
+		final Map<String, IRidget> ridgets = ReflectionUtils.getHidden(controller, "ridgets"); //$NON-NLS-1$
 
-		IRidgetContainer container = ReflectionUtils.invokeHidden(controller, "getContainer", "container.child"); //$NON-NLS-1$ //$NON-NLS-2$
+		IRidgetContainer container = ReflectionUtils.invokeHidden(ridgetResolver, "getContainer", "container.child", ridgets); //$NON-NLS-1$ //$NON-NLS-2$
 		assertNull(container);
 
 		final ICompositeRidget composite = new org.eclipse.riena.internal.ui.ridgets.swt.CompositeRidget();
 		controller.addRidget("container", composite); //$NON-NLS-1$
 
-		container = ReflectionUtils.invokeHidden(controller, "getContainer", "container.child"); //$NON-NLS-1$ //$NON-NLS-2$
+		container = ReflectionUtils.invokeHidden(ridgetResolver, "getContainer", "container.child", ridgets); //$NON-NLS-1$ //$NON-NLS-2$
 		assertSame(composite, container);
 
-		container = ReflectionUtils.invokeHidden(controller, "getContainer", "container"); //$NON-NLS-1$ //$NON-NLS-2$
+		container = ReflectionUtils.invokeHidden(ridgetResolver, "getContainer", "container", ridgets); //$NON-NLS-1$ //$NON-NLS-2$
 		assertNull(container);
 
 	}

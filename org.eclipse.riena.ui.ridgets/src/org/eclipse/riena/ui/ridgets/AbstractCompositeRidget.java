@@ -36,6 +36,12 @@ import org.eclipse.riena.internal.ui.ridgets.Activator;
 public abstract class AbstractCompositeRidget extends AbstractRidget implements IComplexRidget {
 	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), AbstractCompositeRidget.class);
 
+	/**
+	 * @see ComplexRidgetResolver
+	 * @see SimpleRidgetResolver
+	 */
+	private IRidgetResolver ridgetResolver = new ComplexRidgetResolver();
+
 	private final PropertyChangeListener propertyChangeListener;
 	private final Map<String, IRidget> ridgets;
 
@@ -59,7 +65,7 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	}
 
 	public void addRidget(final String id, final IRidget ridget) {
-		final IRidget oldRidget = ridgets.put(id, ridget);
+		final IRidget oldRidget = getRidgetResolver().addRidget(id, ridget, this, ridgets);
 		if (null == oldRidget) {
 			ridget.addPropertyChangeListener(propertyChangeListener);
 		} else {
@@ -73,7 +79,7 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	 */
 	public boolean removeRidget(final String id) {
 		ridgetToStatuslineSubscriber.removeRidget(getRidget(id));
-		return ridgets.remove(id) != null;
+		return getRidgetResolver().removeRidget(id, ridgets) != null;
 	}
 
 	/**
@@ -114,7 +120,7 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	}
 
 	public <R extends IRidget> R getRidget(final String id) {
-		return (R) ridgets.get(id);
+		return (R) getRidgetResolver().getRidget(id, ridgets);
 	}
 
 	/**
@@ -415,6 +421,23 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	 */
 	public boolean isConfigured() {
 		return configured;
+	}
+
+	/**
+	 * @return the ridgetResolver
+	 * @since 5.0
+	 */
+	public IRidgetResolver getRidgetResolver() {
+		return ridgetResolver;
+	}
+
+	/**
+	 * @param ridgetResolver
+	 *            the ridgetResolver to set
+	 * @since 5.0
+	 */
+	public void setRidgetResolver(final IRidgetResolver ridgetResolver) {
+		this.ridgetResolver = ridgetResolver;
 	}
 
 }
