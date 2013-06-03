@@ -4,6 +4,7 @@
    <extension-point id="correspondingLabel" name="Corresponding Label Configuration" schema="schema/correspondingLabel.exsd"/>
    <extension-point id="labelFinderStrategy" name="Corresponding Label Strategy" schema="schema/labelFinderStrategy.exsd"/>
    <extension-point id="annotationHandler" name="Annotation Handler for Ridget Containers" schema="schema/annotationHandler.exsd"/>
+   <extension-point id="bindingSupportProvider" name="BindingSupportProvider" schema="schema/bindingSupportProvider.exsd"/>
 
     <extension
          point="org.eclipse.riena.ui.ridgets.annotationHandler">

@@ -13,6 +13,7 @@ package org.eclipse.riena.ui.ridgets.swt;
 import org.eclipse.core.databinding.conversion.IConverter;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 
+import org.eclipse.riena.ui.ridgets.IValueBindingSupportProvider;
 import org.eclipse.riena.ui.ridgets.IValueRidget;
 import org.eclipse.riena.ui.ridgets.ValueBindingSupport;
 
@@ -24,8 +25,20 @@ public abstract class AbstractValueRidget extends AbstractSWTRidget implements I
 	private final ValueBindingSupport valueBindingSupport;
 
 	public AbstractValueRidget() {
-		valueBindingSupport = new ValueBindingSupport(this.getRidgetObservable());
+		valueBindingSupport = createValueBindingSupport();
 		valueBindingSupport.setMarkable(this);
+	}
+
+	/**
+	 * Creates a new instance of value binding support. Therefore the ridget tries to delegate to an OSGi-service. If no service could be found, the default
+	 * {@link ValueBindingSupport} will be created.
+	 * 
+	 * @return valueBindingSupport The new instance of the binding support. Never <code>null</code>.
+	 * @since 5.0
+	 */
+	protected ValueBindingSupport createValueBindingSupport() {
+		final ValueBindingSupport bindingSupport = IValueBindingSupportProvider.ExtensionAccess.createInstance(this.getClass(), this.getRidgetObservable());
+		return bindingSupport != null ? bindingSupport : new ValueBindingSupport(this.getRidgetObservable());
 	}
 
 	/**
