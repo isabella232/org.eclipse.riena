@@ -389,9 +389,9 @@ public class RienaMenuHelper {
 
 	private ISourceProvider[] getSourceProviders() {
 		try {
-			ISourceProviderService sourceProviderService;
-			// TODO PlatformUI.getWorkbench() and e4 ?!?!
-			sourceProviderService = (ISourceProviderService) PlatformUI.getWorkbench().getService(ISourceProviderService.class);
+			final ISourceProviderService sourceProviderService = (ISourceProviderService) PlatformUI.getWorkbench().getService(ISourceProviderService.class);
+			//			final ISourceProviderService sourceProviderService = (ISourceProviderService) WorkbenchFacade.getInstance()
+			//					.getService(ISourceProviderService.class);
 			if (sourceProviderService == null) {
 				return new ISourceProvider[0];
 			} else {
