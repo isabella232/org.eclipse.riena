@@ -24,14 +24,13 @@ import org.eclipse.riena.core.util.Nop;
 import org.eclipse.riena.internal.core.Activator;
 
 /**
- * The {@code JavaLogCatcher} can attach to the Java logging and route the log
- * events into Riena's logging.
+ * The {@code JavaLogCatcher} can attach to the Java logging and route the log events into Riena's logging.
  */
 public class JavaLogCatcher implements ILogCatcher {
 
 	private Handler javaLogginghandler;
-	private Logger rootLogger;
-	private Level rootLevel;
+	protected Logger rootLogger;
+	protected Level rootLevel;
 
 	/*
 	 * (non-Javadoc)
@@ -39,14 +38,21 @@ public class JavaLogCatcher implements ILogCatcher {
 	 * @see org.eclipse.riena.core.logging.ILogCatcher#attach()
 	 */
 	public void attach() {
+		prepareJulLogging();
+		javaLogginghandler = new JavaLoggingHandler();
+		rootLogger.addHandler(javaLogginghandler);
+	}
+
+	/**
+	 * Allow customization for Java Util Logging.
+	 */
+	protected void prepareJulLogging() {
 		LogManager.getLogManager().reset();
 		rootLogger = Logger.getLogger(""); //$NON-NLS-1$
 		rootLevel = rootLogger.getLevel();
 		// we want it all, we want it all, we want it now
 		// filtering is done by the equinox logger
 		rootLogger.setLevel(Level.ALL);
-		javaLogginghandler = new JavaLoggingHandler();
-		rootLogger.addHandler(javaLogginghandler);
 	}
 
 	/*
@@ -59,6 +65,13 @@ public class JavaLogCatcher implements ILogCatcher {
 			return;
 		}
 		rootLogger.removeHandler(javaLogginghandler);
+		cleanupJulLogging();
+	}
+
+	/**
+	 * Allow customization of cleaning up Java Util Logging.
+	 */
+	protected void cleanupJulLogging() {
 		rootLogger.setLevel(rootLevel);
 	}
 
@@ -94,8 +107,7 @@ public class JavaLogCatcher implements ILogCatcher {
 			}
 
 			// find corresponding equinox logger
-			final org.eclipse.equinox.log.Logger logger = Log4r.getLogger(Activator.getDefault(),
-					record.getLoggerName());
+			final org.eclipse.equinox.log.Logger logger = Log4r.getLogger(Activator.getDefault(), record.getLoggerName());
 
 			if (!logger.isLoggable(equinoxLoglevel)) {
 				return;
