@@ -17,14 +17,15 @@ import org.eclipse.core.databinding.observable.value.WritableValue;
 
 import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.NonGatherableTestCase;
+import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.internal.ui.ridgets.swt.TextRidget;
 import org.eclipse.riena.ui.ridgets.swt.DefaultRealm;
 
 /**
  * Tests for the ValueBindingSupport.
  */
-// @NonUITestCase
-@NonGatherableTestCase(" This test case works local but not on the build server!!!")
+@NonUITestCase
+// @NonGatherableTestCase(" This test case works local but not on the build server!!!")
 public class ValueBindingSupportProviderTest extends RienaTestCase {
 
 	private DefaultRealm realm;
@@ -50,7 +51,7 @@ public class ValueBindingSupportProviderTest extends RienaTestCase {
 
 	@Test
 	public void testGetCustomValueBindingSupport() throws Exception {
-		addPluginXml("bindingSupportExtension.xml"); //$NON-NLS-1$
+		addPluginXml(ValueBindingSupportProviderTest.class, "bindingSupportExtension.xml"); //$NON-NLS-1$
 		final ValueBindingSupport bindingSupport = IValueBindingSupportProvider.ExtensionAccess.createInstance(ITextRidget.class, new WritableValue());
 		assertSame(CustomValueBindingSupport.class, bindingSupport.getClass());
 		removeExtension("org.eclipse.riena.ui.ridgets.ValueBindingSupportProviderTest"); //$NON-NLS-1$
@@ -58,7 +59,7 @@ public class ValueBindingSupportProviderTest extends RienaTestCase {
 
 	@Test
 	public void testGetCustomValueBindingSupportThrowsException() throws Exception {
-		addPluginXml("bindingSupportExtensionThrowsException.xml"); //$NON-NLS-1$
+		addPluginXml(ValueBindingSupportProviderTest.class, "bindingSupportExtensionThrowsException.xml"); //$NON-NLS-1$
 		final ValueBindingSupport bindingSupport = IValueBindingSupportProvider.ExtensionAccess.createInstance(ITextRidget.class, new WritableValue());
 		assertNull(bindingSupport);
 		removeExtension("org.eclipse.riena.ui.ridgets.ValueBindingSupportProviderTest"); //$NON-NLS-1$
@@ -72,7 +73,7 @@ public class ValueBindingSupportProviderTest extends RienaTestCase {
 		assertSame(ValueBindingSupport.class, ridget.getValueBindingSupport().getClass());
 
 		// test case 2: Custom support it used
-		addPluginXml("bindingSupportExtension.xml"); //$NON-NLS-1$
+		addPluginXml(ValueBindingSupportProviderTest.class, "bindingSupportExtension.xml"); //$NON-NLS-1$
 		final TextRidget ridget2 = new TextRidget();
 		assertSame(CustomValueBindingSupport.class, ridget2.getValueBindingSupport().getClass());
 		removeExtension("org.eclipse.riena.ui.ridgets.ValueBindingSupportProviderTest"); //$NON-NLS-1$
