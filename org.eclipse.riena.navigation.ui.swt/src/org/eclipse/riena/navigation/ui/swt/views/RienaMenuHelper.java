@@ -15,8 +15,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import org.osgi.service.log.LogService;
-
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.MenuManager;
@@ -31,13 +29,12 @@ import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.ui.ISourceProvider;
 import org.eclipse.ui.ISourceProviderListener;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.services.ISourceProviderService;
 
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.internal.navigation.ui.swt.Activator;
 import org.eclipse.riena.internal.ui.ridgets.swt.AbstractItemRidget;
+import org.eclipse.riena.internal.ui.swt.facades.WorkbenchFacade;
 import org.eclipse.riena.navigation.ui.swt.component.MenuCoolBarComposite;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
@@ -55,8 +52,6 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
  * 
  */
 public class RienaMenuHelper {
-
-	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), RienaMenuHelper.class);
 
 	private static IBindingManager menuItemBindingManager;
 	private static int itemId = 0;
@@ -388,19 +383,6 @@ public class RienaMenuHelper {
 	}
 
 	private ISourceProvider[] getSourceProviders() {
-		try {
-			final ISourceProviderService sourceProviderService = (ISourceProviderService) PlatformUI.getWorkbench().getService(ISourceProviderService.class);
-			//			final ISourceProviderService sourceProviderService = (ISourceProviderService) WorkbenchFacade.getInstance()
-			//					.getService(ISourceProviderService.class);
-			if (sourceProviderService == null) {
-				return new ISourceProvider[0];
-			} else {
-				return sourceProviderService.getSourceProviders();
-			}
-		} catch (final IllegalStateException ex) {
-			LOGGER.log(LogService.LOG_ERROR, "No service for ISourceProviderService!", ex); //$NON-NLS-1$
-			return new ISourceProvider[0];
-		}
+		return WorkbenchFacade.getInstance().getSourceProviders();
 	}
-
 }

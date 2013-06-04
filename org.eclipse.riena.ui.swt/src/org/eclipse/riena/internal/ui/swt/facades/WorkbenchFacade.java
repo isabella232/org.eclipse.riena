@@ -13,6 +13,7 @@ package org.eclipse.riena.internal.ui.swt.facades;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.ISourceProvider;
 import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbenchPage;
 
@@ -82,5 +83,7 @@ public abstract class WorkbenchFacade {
 	 * @return the display of the workbench or <code>null</code>
 	 */
 	public abstract Display getWorkbenchDisplay();
+
+	public abstract ISourceProvider[] getSourceProviders();
 
 }
