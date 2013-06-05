@@ -26,8 +26,6 @@ import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.ISourceProvider;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.services.ISourceProviderService;
 
 import org.eclipse.riena.beans.common.AbstractBean;
 import org.eclipse.riena.beans.common.TypedComparator;
@@ -37,6 +35,7 @@ import org.eclipse.riena.example.client.views.SystemPropertiesSubModuleView;
 import org.eclipse.riena.internal.ui.swt.facades.WorkbenchFacade;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
+import org.eclipse.riena.navigation.ui.swt.views.RienaMenuHelper;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
@@ -286,12 +285,8 @@ public class SystemPropertiesSubModuleController extends SubModuleController {
 	}
 
 	private SystemPropertySourceProvider getSystemPropertySourceProvider() {
-		// TODO PlatformUI.getWorkbench() and e4 ?!?!
-		final ISourceProviderService sourceProviderService = (ISourceProviderService) PlatformUI.getWorkbench().getService(ISourceProviderService.class);
-		if (sourceProviderService == null) {
-			return null;
-		}
-		final ISourceProvider[] sourceProviders = sourceProviderService.getSourceProviders();
+		final RienaMenuHelper menuBindHelper = new RienaMenuHelper();
+		final ISourceProvider[] sourceProviders = menuBindHelper.getSourceProviders();
 		for (final ISourceProvider sourceProvider : sourceProviders) {
 			if (sourceProvider instanceof SystemPropertySourceProvider) {
 				return (SystemPropertySourceProvider) sourceProvider;

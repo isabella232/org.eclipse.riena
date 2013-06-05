@@ -15,7 +15,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import org.eclipse.equinox.log.Logger;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.swt.SWT;
@@ -30,9 +29,7 @@ import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.ui.ISourceProvider;
 import org.eclipse.ui.ISourceProviderListener;
 
-import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.util.StringUtils;
-import org.eclipse.riena.internal.navigation.ui.swt.Activator;
 import org.eclipse.riena.internal.ui.ridgets.swt.AbstractItemRidget;
 import org.eclipse.riena.internal.ui.swt.facades.WorkbenchFacade;
 import org.eclipse.riena.navigation.ui.swt.component.MenuCoolBarComposite;
@@ -382,7 +379,7 @@ public class RienaMenuHelper {
 		}
 	}
 
-	private ISourceProvider[] getSourceProviders() {
+	public ISourceProvider[] getSourceProviders() {
 		return WorkbenchFacade.getInstance().getSourceProviders();
 	}
 }

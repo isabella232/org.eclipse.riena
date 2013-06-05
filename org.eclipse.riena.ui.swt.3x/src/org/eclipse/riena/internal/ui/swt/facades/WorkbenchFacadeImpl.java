@@ -96,7 +96,6 @@ public class WorkbenchFacadeImpl extends WorkbenchFacade {
 	@Override
 	public ISourceProvider[] getSourceProviders() {
 		try {
-			// final ISourceProviderService sourceProviderService = (ISourceProviderService) PlatformUI.getWorkbench().getService(ISourceProviderService.class);
 			final ISourceProviderService sourceProviderService = getSourceProviderService();
 			if (sourceProviderService == null) {
 				return new ISourceProvider[0];
