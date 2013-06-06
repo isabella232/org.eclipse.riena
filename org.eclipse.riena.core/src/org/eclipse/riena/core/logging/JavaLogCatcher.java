@@ -29,7 +29,13 @@ import org.eclipse.riena.internal.core.Activator;
 public class JavaLogCatcher implements ILogCatcher {
 
 	private Handler javaLogginghandler;
+	/**
+	 * @since 5.0
+	 */
 	protected Logger rootLogger;
+	/**
+	 * @since 5.0
+	 */
 	protected Level rootLevel;
 
 	/*
@@ -45,6 +51,8 @@ public class JavaLogCatcher implements ILogCatcher {
 
 	/**
 	 * Allow customization for Java Util Logging.
+	 * 
+	 * @since 5.0
 	 */
 	protected void prepareJulLogging() {
 		LogManager.getLogManager().reset();
@@ -70,6 +78,8 @@ public class JavaLogCatcher implements ILogCatcher {
 
 	/**
 	 * Allow customization of cleaning up Java Util Logging.
+	 * 
+	 * @since 5.0
 	 */
 	protected void cleanupJulLogging() {
 		rootLogger.setLevel(rootLevel);

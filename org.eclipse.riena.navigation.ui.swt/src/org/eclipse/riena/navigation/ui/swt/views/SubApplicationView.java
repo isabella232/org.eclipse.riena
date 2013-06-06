@@ -69,7 +69,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 
 	private final AbstractViewBindingDelegate binding;
 	private final RienaMenuHelper menuBindHelper;
-	private final MenuSourceProviderListener menuSourceProviderListener;
+	private final ISourceProviderListener menuSourceProviderListener;
 	private SubApplicationController subApplicationController;
 	private SubApplicationListener subApplicationListener;
 	private SubApplicationNode subApplicationNode;
