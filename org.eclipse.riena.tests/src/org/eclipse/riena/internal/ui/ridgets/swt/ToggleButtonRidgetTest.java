@@ -26,6 +26,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
 
+import org.eclipse.riena.beans.common.BooleanBean;
 import org.eclipse.riena.core.marker.AbstractMarker;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
@@ -66,6 +67,44 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 	@Override
 	protected Button getWidget() {
 		return (Button) super.getWidget();
+	}
+
+	public void testEnableDisableModelSynchronization() throws Exception {
+		final BooleanBean model = new BooleanBean(false);
+		final IToggleButtonRidget r = getRidget();
+		r.bindToModel(model, "value");
+		r.updateFromModel();
+		final Button w = getWidget();
+
+		assertFalse(model.isValue());
+		assertFalse(r.isSelected());
+		assertFalse(w.getSelection());
+
+		w.setSelection(true);
+		fireSelection(w);
+		assertTrue(model.isValue());
+		assertTrue(r.isSelected());
+		assertTrue(w.getSelection());
+
+		r.setEnabled(false);
+		model.setValue(false);
+		r.updateFromModel();
+		assertFalse(model.isValue());
+		assertFalse(r.isSelected());
+		assertFalse(r.isEnabled());
+		assertFalse(w.getSelection());
+
+		r.setEnabled(true);
+		r.updateFromModel();
+		assertFalse(model.isValue());
+		assertFalse(r.isSelected());
+		assertFalse(w.getSelection());
+
+		w.setSelection(true);
+		fireSelection(w);
+		assertTrue(model.isValue());
+		assertTrue(r.isSelected());
+		assertTrue(w.getSelection());
 	}
 
 	public void testRidgetMapping() {
