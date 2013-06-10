@@ -12,6 +12,7 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import static org.eclipse.riena.ui.swt.utils.SwtUtilities.*;
 
+import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +27,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Control;
 
+import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractToggleButtonRidget;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
@@ -43,7 +45,7 @@ public class ToggleButtonRidget extends AbstractToggleButtonRidget {
 	 */
 	private static final String TOGGLE_BUTTON_RIDGET = "tbr"; //$NON-NLS-1$
 
-	private IObservableValue selectionObservable;
+	private SelectionObservableWithOutputOnly selectionObservable;
 
 	@Override
 	protected void bindUIControl() {
@@ -69,6 +71,23 @@ public class ToggleButtonRidget extends AbstractToggleButtonRidget {
 	@Override
 	public Button getUIControl() {
 		return (Button) super.getUIControl();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.ui.ridgets.swt.AbstractToggleButtonRidget#propertyEnabledChanged(java.beans.PropertyChangeEvent)
+	 */
+	@Override
+	protected void propertyEnabledChanged(final PropertyChangeEvent evt) {
+		super.propertyEnabledChanged(evt);
+		
+		// if we just got enabled, we have to "invalidate" the cached value in our observable
+		final boolean nu = evt.getNewValue() != null ? (Boolean) evt.getNewValue() : false;
+		final boolean old = evt.getNewValue() != null ? (Boolean) evt.getOldValue() : false;
+		if (nu && !old && selectionObservable != null) {
+			selectionObservable.resetCachedValue();
+		}
 	}
 
 	@Override
@@ -236,6 +255,16 @@ public class ToggleButtonRidget extends AbstractToggleButtonRidget {
 			Assert.isNotNull(source);
 			this.button = source;
 			this.button.addSelectionListener(this);
+		}
+
+		/**
+		 * Resets the superclass field "cachedValue". Alternatively, it would be sufficient to set the field to <code>null</code> by reflection, but we want to avoid such a hack.
+		 * 
+		 * @see SimplePropertyObservableValue
+		 * @see ReflectionUtils#setHidden(Object, String, Object)
+		 */
+		private void resetCachedValue() {
+			super.doGetValue();
 		}
 
 		@Override

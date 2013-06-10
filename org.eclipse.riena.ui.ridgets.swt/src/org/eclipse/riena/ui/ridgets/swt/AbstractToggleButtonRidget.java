@@ -67,8 +67,7 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 		useRidgetIcon = false;
 		addPropertyChangeListener(IRidget.PROPERTY_ENABLED, new PropertyChangeListener() {
 			public void propertyChange(final PropertyChangeEvent evt) {
-				final boolean isEnabled = ((Boolean) evt.getNewValue()).booleanValue();
-				updateSelection(isEnabled);
+				propertyEnabledChanged(evt);
 			}
 		});
 		addPropertyChangeListener(IMarkableRidget.PROPERTY_OUTPUT_ONLY, new PropertyChangeListener() {
@@ -218,6 +217,19 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 			controlBinding.dispose();
 			controlBinding = null;
 		}
+	}
+
+	/**
+	 * This method is called when a {@link PropertyChangeEvent} is received for the property {@link IRidget#PROPERTY_ENABLED}
+	 * 
+	 * @param evt
+	 *            the event, received by the {@link PropertyChangeListener}
+	 * @see IRidget#PROPERTY_ENABLED
+	 * @since 5.0
+	 */
+	protected void propertyEnabledChanged(final PropertyChangeEvent evt) {
+		final boolean isEnabled = ((Boolean) evt.getNewValue()).booleanValue();
+		updateSelection(isEnabled);
 	}
 
 	// protected abstract methods

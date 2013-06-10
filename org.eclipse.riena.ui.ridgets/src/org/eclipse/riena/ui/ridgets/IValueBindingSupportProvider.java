@@ -12,6 +12,7 @@ package org.eclipse.riena.ui.ridgets;
 
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 
@@ -57,9 +58,14 @@ public interface IValueBindingSupportProvider {
 		 * @return valueBindingSupport
 		 */
 		public static ValueBindingSupport createInstance(final Class<? extends IRidget> ridgetClass, final IObservableValue ridgetObservable) {
+			final IExtensionRegistry extensionRegistry = Platform.getExtensionRegistry();
+			if (extensionRegistry == null) {
+
+				return null;
+			}
+
 			ValueBindingSupport result = null;
-			final IConfigurationElement[] elements = Platform.getExtensionRegistry().getConfigurationElementsFor(
-					"org.eclipse.riena.ui.ridgets.bindingSupportProvider"); //$NON-NLS-1$
+			final IConfigurationElement[] elements = extensionRegistry.getConfigurationElementsFor("org.eclipse.riena.ui.ridgets.bindingSupportProvider"); //$NON-NLS-1$
 			if (elements.length > 0) {
 				try {
 					final IValueBindingSupportProvider bindingSupport = (IValueBindingSupportProvider) elements[0].createExecutableExtension(ATTR_CLASS);
