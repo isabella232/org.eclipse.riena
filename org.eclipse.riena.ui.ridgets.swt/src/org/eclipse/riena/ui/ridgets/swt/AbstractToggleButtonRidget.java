@@ -225,6 +225,7 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 	 * @param evt
 	 *            the event, received by the {@link PropertyChangeListener}
 	 * @see IRidget#PROPERTY_ENABLED
+	 * @since 5.0
 	 */
 	protected void propertyEnabledChanged(final PropertyChangeEvent evt) {
 		final boolean isEnabled = ((Boolean) evt.getNewValue()).booleanValue();
