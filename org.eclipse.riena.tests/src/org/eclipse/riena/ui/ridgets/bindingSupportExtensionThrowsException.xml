@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
 <plugin>
-      <extension
-      	 id="org.eclipse.riena.ui.ridgets.ValueBindingSupportProviderTest"
-         point="org.eclipse.riena.ui.ridgets.bindingSupportProvider">
-      <provider
-            class="org.eclipse.riena.ui.ridgets.CustomValueBindingSupportProvider_NOEXISTS">
-      </provider>
-   </extension>
+
+	<extension
+		id="org.eclipse.riena.ui.ridgets.ValueBindingSupportProviderTest"
+		point="org.eclipse.riena.ui.ridgets.bindingSupportProvider">
+		<provider
+			class="org.eclipse.riena.ui.ridgets.CustomValueBindingSupportProvider_NOEXISTS">
+		</provider>
+	</extension>
+	
 </plugin>

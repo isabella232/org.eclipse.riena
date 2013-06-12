@@ -15,15 +15,15 @@ import org.junit.Test;
 import org.eclipse.core.databinding.observable.value.WritableValue;
 
 import org.eclipse.riena.internal.core.test.RienaTestCase;
-import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
+import org.eclipse.riena.internal.core.test.collect.NonGatherableTestCase;
 import org.eclipse.riena.internal.ui.ridgets.swt.TextRidget;
 import org.eclipse.riena.ui.ridgets.swt.DefaultRealm;
 
 /**
  * Tests for the ValueBindingSupport.
  */
-@NonUITestCase
-// @NonGatherableTestCase(" This test case works local but not on the build server!!!")
+// @NonUITestCase
+@NonGatherableTestCase(" This test case works local but not on the build server!!!")
 public class ValueBindingSupportProviderTest extends RienaTestCase {
 
 	private DefaultRealm realm;

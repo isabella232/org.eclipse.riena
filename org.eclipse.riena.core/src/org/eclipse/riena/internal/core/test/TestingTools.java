@@ -14,7 +14,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -244,28 +243,17 @@ public class TestingTools {
 	public void addPluginXml(final Class<?> forLoad, final String pluginResource) {
 
 		try {
-			final FileOutputStream output = new FileOutputStream("c:\\temp\\addPluginXml.system.out.txt");
-			final PrintStream printOut = new PrintStream(output);
-			System.setOut(printOut);
-
 			final IExtensionRegistry registry = RegistryFactory.getRegistry();
 			@IgnoreFindBugs(value = "OBL_UNSATISFIED_OBLIGATION", justification = "stream will be closed by getResourceAsStream()")
 			final InputStream inputStream = forLoad.getResourceAsStream(pluginResource);
 			final IContributor contributor = ContributorFactoryOSGi.createContributor(getContext().getBundle());
 
 			startJobTracking();
-			System.out.println("TestingTools.addPluginXml()#1");
-			output.flush();
-			printOut.flush();
 			final boolean success = registry.addContribution(inputStream, contributor, false, pluginResource, null,
 					((ExtensionRegistry) registry).getTemporaryUserToken());
 			stopJobTracking();
 			testCase.assertTrue(success);
-			System.out.println("TestingTools.addPluginXml()#2");
-			output.flush();
-			printOut.flush();
 			joinTrackedJobs();
-			output.close();
 		} catch (final Exception e) {
 		}
 	}
@@ -298,9 +286,7 @@ public class TestingTools {
 		protected void joinJobs() {
 			for (final Job job : jobs) {
 				try {
-					System.out.println("TestingTools.ExtensionRegistryChangeJobTracker.joinJobs() BEFORE: " + job.toString());
 					job.join();
-					System.out.println("TestingTools.ExtensionRegistryChangeJobTracker.joinJobs() AFTER: " + job.toString());
 				} catch (final InterruptedException e) {
 					throw new MurphysLawFailure("Joining jobs failed", e); //$NON-NLS-1$
 				}
