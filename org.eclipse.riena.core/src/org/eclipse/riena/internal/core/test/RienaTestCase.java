@@ -149,6 +149,7 @@ public abstract class RienaTestCase extends TestCase {
 	 * @throws InterruptedException
 	 */
 	protected void addPluginXml(final Class<?> forLoad, final String pluginResource) {
+		System.out.println("RienaTestCase.addPluginXml()");
 		tools.addPluginXml(forLoad, pluginResource);
 	}
 

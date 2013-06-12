@@ -50,6 +50,7 @@ public class ValueBindingSupportProviderTest extends RienaTestCase {
 
 	@Test
 	public void testGetCustomValueBindingSupport() throws Exception {
+		System.out.println("ValueBindingSupportProviderTest.testGetCustomValueBindingSupport()");
 		addPluginXml(ValueBindingSupportProviderTest.class, "bindingSupportExtension.xml"); //$NON-NLS-1$
 		final ValueBindingSupport bindingSupport = IValueBindingSupportProvider.ExtensionAccess.createInstance(ITextRidget.class, new WritableValue());
 		assertSame(CustomValueBindingSupport.class, bindingSupport.getClass());

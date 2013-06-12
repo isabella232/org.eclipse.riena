@@ -241,12 +241,17 @@ public class TestingTools {
 	 * @throws InterruptedException
 	 */
 	public void addPluginXml(final Class<?> forLoad, final String pluginResource) {
+		System.out.println("TestingTools.addPluginXml()#1");
 		final IExtensionRegistry registry = RegistryFactory.getRegistry();
+		System.out.println("TestingTools.addPluginXml()#2");
 		@IgnoreFindBugs(value = "OBL_UNSATISFIED_OBLIGATION", justification = "stream will be closed by getResourceAsStream()")
 		final InputStream inputStream = forLoad.getResourceAsStream(pluginResource);
+		System.out.println("TestingTools.addPluginXml()#3");
 		final IContributor contributor = ContributorFactoryOSGi.createContributor(getContext().getBundle());
+		System.out.println("TestingTools.addPluginXml()#4");
 
 		startJobTracking();
+		System.out.println("TestingTools.addPluginXml()#5");
 		final boolean success = registry.addContribution(inputStream, contributor, false, pluginResource, null,
 				((ExtensionRegistry) registry).getTemporaryUserToken());
 		stopJobTracking();
