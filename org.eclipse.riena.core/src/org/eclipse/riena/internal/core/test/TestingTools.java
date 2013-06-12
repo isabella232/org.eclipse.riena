@@ -248,31 +248,22 @@ public class TestingTools {
 			final PrintStream printOut = new PrintStream(output);
 			System.setOut(printOut);
 
-			System.out.println("TestingTools.addPluginXml()#1");
-			output.flush();
-			printOut.flush();
 			final IExtensionRegistry registry = RegistryFactory.getRegistry();
-			System.out.println("TestingTools.addPluginXml()#2");
-			output.flush();
-			printOut.flush();
 			@IgnoreFindBugs(value = "OBL_UNSATISFIED_OBLIGATION", justification = "stream will be closed by getResourceAsStream()")
 			final InputStream inputStream = forLoad.getResourceAsStream(pluginResource);
-			System.out.println("TestingTools.addPluginXml()#3");
-			output.flush();
-			printOut.flush();
 			final IContributor contributor = ContributorFactoryOSGi.createContributor(getContext().getBundle());
-			System.out.println("TestingTools.addPluginXml()#4");
-			output.flush();
-			printOut.flush();
 
 			startJobTracking();
-			System.out.println("TestingTools.addPluginXml()#5");
+			System.out.println("TestingTools.addPluginXml()#1");
 			output.flush();
 			printOut.flush();
 			final boolean success = registry.addContribution(inputStream, contributor, false, pluginResource, null,
 					((ExtensionRegistry) registry).getTemporaryUserToken());
 			stopJobTracking();
 			testCase.assertTrue(success);
+			System.out.println("TestingTools.addPluginXml()#2");
+			output.flush();
+			printOut.flush();
 			joinTrackedJobs();
 			output.close();
 		} catch (final Exception e) {

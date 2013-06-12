@@ -10,13 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
-
 import org.junit.Test;
 
-import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.WritableValue;
 
 import org.eclipse.riena.internal.core.test.RienaTestCase;
@@ -54,34 +49,10 @@ public class ValueBindingSupportProviderTest extends RienaTestCase {
 
 	@Test
 	public void testGetCustomValueBindingSupport() throws Exception {
-		try {
-			final FileOutputStream output = new FileOutputStream("c:\\temp\\testGetCustomValueBindingSupport.system.out.txt");
-			final PrintStream printOut = new PrintStream(output);
-			System.setOut(printOut);
-
-			System.out.println("ValueBindingSupportProviderTest.testGetCustomValueBindingSupport() #1");
-			output.flush();
-			printOut.flush();
-			addPluginXml(ValueBindingSupportProviderTest.class, "bindingSupportExtension.xml"); //$NON-NLS-1$
-			System.out.println("ValueBindingSupportProviderTest.testGetCustomValueBindingSupport() #2");
-			output.flush();
-			printOut.flush();
-			final ValueBindingSupport bindingSupport = IValueBindingSupportProvider.ExtensionAccess.createInstance(ITextRidget.class, new WritableValue());
-			System.out.println("ValueBindingSupportProviderTest.testGetCustomValueBindingSupport() #3");
-			output.flush();
-			printOut.flush();
-			assertSame(CustomValueBindingSupport.class, bindingSupport.getClass());
-			System.out.println("ValueBindingSupportProviderTest.testGetCustomValueBindingSupport() #4");
-			output.flush();
-			printOut.flush();
-			removeExtension("org.eclipse.riena.ui.ridgets.ValueBindingSupportProviderTest"); //$NON-NLS-1$
-			System.out.println("ValueBindingSupportProviderTest.testGetCustomValueBindingSupport() #5");
-			output.flush();
-			printOut.flush();
-
-			output.close();
-		} catch (final FileNotFoundException e) {
-		}
+		addPluginXml(ValueBindingSupportProviderTest.class, "bindingSupportExtension.xml"); //$NON-NLS-1$
+		final ValueBindingSupport bindingSupport = IValueBindingSupportProvider.ExtensionAccess.createInstance(ITextRidget.class, new WritableValue());
+		assertSame(CustomValueBindingSupport.class, bindingSupport.getClass());
+		removeExtension("org.eclipse.riena.ui.ridgets.ValueBindingSupportProviderTest"); //$NON-NLS-1$
 	}
 
 	@Test
@@ -104,37 +75,5 @@ public class ValueBindingSupportProviderTest extends RienaTestCase {
 		final TextRidget ridget2 = new TextRidget();
 		assertSame(CustomValueBindingSupport.class, ridget2.getValueBindingSupport().getClass());
 		removeExtension("org.eclipse.riena.ui.ridgets.ValueBindingSupportProviderTest"); //$NON-NLS-1$
-	}
-
-	/**
-	 * Custom binding support provider for tests.
-	 */
-	public static class CustomValueBindingSupportProvider implements IValueBindingSupportProvider {
-
-		public ValueBindingSupport createInstance(final Class<? extends IRidget> ridgetClass, final IObservableValue ridgetObservable) {
-			return new CustomValueBindingSupport(ridgetObservable);
-		}
-
-	}
-
-	/**
-	 * Custom binding support for tests.
-	 */
-	public static class CustomValueBindingSupport extends ValueBindingSupport {
-
-		/**
-		 * @param target
-		 */
-		public CustomValueBindingSupport(final IObservableValue target) {
-			super(target);
-		}
-
-		/**
-		 * @param target
-		 * @param model
-		 */
-		public CustomValueBindingSupport(final IObservableValue target, final IObservableValue model) {
-			super(target, model);
-		}
 	}
 }

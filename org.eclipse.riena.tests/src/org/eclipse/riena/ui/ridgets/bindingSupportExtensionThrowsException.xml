@@ -5,7 +5,7 @@
       	 id="org.eclipse.riena.ui.ridgets.ValueBindingSupportProviderTest"
          point="org.eclipse.riena.ui.ridgets.bindingSupportProvider">
       <provider
-            class="org.eclipse.riena.ui.ridgets.ValueBindingSupportProviderTest$CustomValueBindingSupportProvider_NOEXISTS">
+            class="org.eclipse.riena.ui.ridgets.CustomValueBindingSupportProvider_NOEXISTS">
       </provider>
    </extension>
 </plugin>
