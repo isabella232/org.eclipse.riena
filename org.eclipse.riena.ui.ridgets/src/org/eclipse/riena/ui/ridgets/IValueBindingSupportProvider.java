@@ -60,7 +60,6 @@ public interface IValueBindingSupportProvider {
 		public static ValueBindingSupport createInstance(final Class<? extends IRidget> ridgetClass, final IObservableValue ridgetObservable) {
 			final IExtensionRegistry extensionRegistry = Platform.getExtensionRegistry();
 			if (extensionRegistry == null) {
-
 				return null;
 			}
 

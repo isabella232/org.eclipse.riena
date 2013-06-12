@@ -282,7 +282,9 @@ public class TestingTools {
 		protected void joinJobs() {
 			for (final Job job : jobs) {
 				try {
+					System.out.println("TestingTools.ExtensionRegistryChangeJobTracker.joinJobs() BEFORE: " + job.toString());
 					job.join();
+					System.out.println("TestingTools.ExtensionRegistryChangeJobTracker.joinJobs() AFTER: " + job.toString());
 				} catch (final InterruptedException e) {
 					throw new MurphysLawFailure("Joining jobs failed", e); //$NON-NLS-1$
 				}
