@@ -10,6 +10,10 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
+
 import org.junit.Test;
 
 import org.eclipse.core.databinding.observable.value.IObservableValue;
@@ -50,11 +54,22 @@ public class ValueBindingSupportProviderTest extends RienaTestCase {
 
 	@Test
 	public void testGetCustomValueBindingSupport() throws Exception {
-		System.out.println("ValueBindingSupportProviderTest.testGetCustomValueBindingSupport()");
+		try {
+			final FileOutputStream output = new FileOutputStream("c:\\temp\\testGetCustomValueBindingSupport.system.out.txt");
+			final PrintStream printOut = new PrintStream(output);
+			System.setOut(printOut);
+		} catch (final FileNotFoundException e) {
+		}
+
+		System.out.println("ValueBindingSupportProviderTest.testGetCustomValueBindingSupport() #1");
 		addPluginXml(ValueBindingSupportProviderTest.class, "bindingSupportExtension.xml"); //$NON-NLS-1$
+		System.out.println("ValueBindingSupportProviderTest.testGetCustomValueBindingSupport() #2");
 		final ValueBindingSupport bindingSupport = IValueBindingSupportProvider.ExtensionAccess.createInstance(ITextRidget.class, new WritableValue());
+		System.out.println("ValueBindingSupportProviderTest.testGetCustomValueBindingSupport() #3");
 		assertSame(CustomValueBindingSupport.class, bindingSupport.getClass());
+		System.out.println("ValueBindingSupportProviderTest.testGetCustomValueBindingSupport() #4");
 		removeExtension("org.eclipse.riena.ui.ridgets.ValueBindingSupportProviderTest"); //$NON-NLS-1$
+		System.out.println("ValueBindingSupportProviderTest.testGetCustomValueBindingSupport() #5");
 	}
 
 	@Test

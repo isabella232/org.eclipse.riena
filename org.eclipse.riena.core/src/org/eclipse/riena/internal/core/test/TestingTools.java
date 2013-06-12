@@ -11,9 +11,11 @@
 package org.eclipse.riena.internal.core.test;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -241,6 +243,14 @@ public class TestingTools {
 	 * @throws InterruptedException
 	 */
 	public void addPluginXml(final Class<?> forLoad, final String pluginResource) {
+
+		try {
+			final FileOutputStream output = new FileOutputStream("c:\\temp\\addPluginXml.system.out.txt");
+			final PrintStream printOut = new PrintStream(output);
+			System.setOut(printOut);
+		} catch (final FileNotFoundException e) {
+		}
+
 		System.out.println("TestingTools.addPluginXml()#1");
 		final IExtensionRegistry registry = RegistryFactory.getRegistry();
 		System.out.println("TestingTools.addPluginXml()#2");
