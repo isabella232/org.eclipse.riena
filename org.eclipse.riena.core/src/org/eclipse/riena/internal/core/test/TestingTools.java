@@ -11,7 +11,6 @@
 package org.eclipse.riena.internal.core.test;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -248,25 +247,36 @@ public class TestingTools {
 			final FileOutputStream output = new FileOutputStream("c:\\temp\\addPluginXml.system.out.txt");
 			final PrintStream printOut = new PrintStream(output);
 			System.setOut(printOut);
-		} catch (final FileNotFoundException e) {
+
+			System.out.println("TestingTools.addPluginXml()#1");
+			output.flush();
+			printOut.flush();
+			final IExtensionRegistry registry = RegistryFactory.getRegistry();
+			System.out.println("TestingTools.addPluginXml()#2");
+			output.flush();
+			printOut.flush();
+			@IgnoreFindBugs(value = "OBL_UNSATISFIED_OBLIGATION", justification = "stream will be closed by getResourceAsStream()")
+			final InputStream inputStream = forLoad.getResourceAsStream(pluginResource);
+			System.out.println("TestingTools.addPluginXml()#3");
+			output.flush();
+			printOut.flush();
+			final IContributor contributor = ContributorFactoryOSGi.createContributor(getContext().getBundle());
+			System.out.println("TestingTools.addPluginXml()#4");
+			output.flush();
+			printOut.flush();
+
+			startJobTracking();
+			System.out.println("TestingTools.addPluginXml()#5");
+			output.flush();
+			printOut.flush();
+			final boolean success = registry.addContribution(inputStream, contributor, false, pluginResource, null,
+					((ExtensionRegistry) registry).getTemporaryUserToken());
+			stopJobTracking();
+			testCase.assertTrue(success);
+			joinTrackedJobs();
+			output.close();
+		} catch (final Exception e) {
 		}
-
-		System.out.println("TestingTools.addPluginXml()#1");
-		final IExtensionRegistry registry = RegistryFactory.getRegistry();
-		System.out.println("TestingTools.addPluginXml()#2");
-		@IgnoreFindBugs(value = "OBL_UNSATISFIED_OBLIGATION", justification = "stream will be closed by getResourceAsStream()")
-		final InputStream inputStream = forLoad.getResourceAsStream(pluginResource);
-		System.out.println("TestingTools.addPluginXml()#3");
-		final IContributor contributor = ContributorFactoryOSGi.createContributor(getContext().getBundle());
-		System.out.println("TestingTools.addPluginXml()#4");
-
-		startJobTracking();
-		System.out.println("TestingTools.addPluginXml()#5");
-		final boolean success = registry.addContribution(inputStream, contributor, false, pluginResource, null,
-				((ExtensionRegistry) registry).getTemporaryUserToken());
-		stopJobTracking();
-		testCase.assertTrue(success);
-		joinTrackedJobs();
 	}
 
 	private void startJobTracking() {
