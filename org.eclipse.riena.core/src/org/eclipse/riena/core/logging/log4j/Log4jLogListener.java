@@ -56,11 +56,9 @@ import org.eclipse.riena.internal.core.logging.log4j.ILog4jDiagnosticContextExte
 import org.eclipse.riena.internal.core.logging.log4j.ILog4jLogListenerConfigurationExtension;
 
 /**
- * The <code>Log4LogListener</code> reroutes all logging within Riena into the
- * Log4J logging system.<br>
- * To activate it is necessary to contribute to the extension point
- * "org.eclipse.riena.core.logging.listeners". Within that configuration it is
- * possible to pass a ´log4j.xml´ as a resource to configure Log4j, e.g.
+ * The <code>Log4LogListener</code> reroutes all logging within Riena into the Log4J logging system.<br>
+ * To activate it is necessary to contribute to the extension point "org.eclipse.riena.core.logging.listeners". Within that configuration it is possible to pass
+ * a ´log4j.xml´ as a resource to configure Log4j, e.g.
  * 
  * <pre>
  * &lt;extension point=&quot;org.eclipse.riena.core.logListeners&quot;&gt;
@@ -71,8 +69,7 @@ import org.eclipse.riena.internal.core.logging.log4j.ILog4jLogListenerConfigurat
  * &lt;/extension&gt;
  * </pre>
  * 
- * Additionally it is possible to contribute multiple Log4j xml configuration
- * files from various bundles and fragments with the extension point
+ * Additionally it is possible to contribute multiple Log4j xml configuration files from various bundles and fragments with the extension point
  * "org.eclipse.riena.core.log4jConfiguration", e.g.:
  * 
  * <pre>
@@ -81,9 +78,7 @@ import org.eclipse.riena.internal.core.logging.log4j.ILog4jLogListenerConfigurat
  * &lt;/extension&gt;
  * </pre>
  * 
- * <b>Note:</b> The logger configuration (log4j.xml) might contain substitution
- * strings, e.g. to specify the target log location of a {@code FileAppender},
- * e.g.
+ * <b>Note:</b> The logger configuration (log4j.xml) might contain substitution strings, e.g. to specify the target log location of a {@code FileAppender}, e.g.
  * 
  * <pre>
  * &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
@@ -102,8 +97,7 @@ import org.eclipse.riena.internal.core.logging.log4j.ILog4jLogListenerConfigurat
  * &lt;/log4j:configuration&gt;
  * </pre>
  * 
- * Such substitutions can be defined with {@code StringVariableManager}
- * extension points, e.g.
+ * Such substitutions can be defined with {@code StringVariableManager} extension points, e.g.
  * 
  * <pre>
  * &lt;extension point=&quot;org.eclipse.core.variables.valueVariables&quot;&gt;
@@ -130,7 +124,7 @@ public class Log4jLogListener implements LogListener, IExecutableExtension {
 	public void logged(final LogEntry entry) {
 		final ExtendedLogEntry extendedEntry = (ExtendedLogEntry) entry;
 		final String loggerName = extendedEntry.getLoggerName();
-		final Logger logger = Logger.getLogger(loggerName != null ? loggerName : "*unknown-logger-name*"); //$NON-NLS-1$
+		final Logger logger = Logger.getLogger(loggerName != null ? loggerName : "unknown-logger-name"); //$NON-NLS-1$
 
 		final Level level;
 		switch (extendedEntry.getLevel()) {
@@ -164,8 +158,7 @@ public class Log4jLogListener implements LogListener, IExecutableExtension {
 		}
 	}
 
-	public void setInitializationData(final IConfigurationElement config, final String propertyName, Object data)
-			throws CoreException {
+	public void setInitializationData(final IConfigurationElement config, final String propertyName, Object data) throws CoreException {
 		if (data == null) {
 			data = DEFAULT_CONFIGURATION;
 		}
@@ -188,10 +181,9 @@ public class Log4jLogListener implements LogListener, IExecutableExtension {
 		if (url != null) {
 			configure(createDocument(url).getDocumentElement());
 		} else {
-			new ConsoleLogger(Log4jLogListener.class.getName()).log(LogService.LOG_ERROR,
-					"Could not find specified log4j configuration '" + configuration //$NON-NLS-1$
-							+ "' within bundle '" //$NON-NLS-1$
-							+ bundle.getSymbolicName() + "'."); //$NON-NLS-1$
+			new ConsoleLogger(Log4jLogListener.class.getName()).log(LogService.LOG_ERROR, "Could not find specified log4j configuration '" + configuration //$NON-NLS-1$
+					+ "' within bundle '" //$NON-NLS-1$
+					+ bundle.getSymbolicName() + "'."); //$NON-NLS-1$
 		}
 	}
 
@@ -213,8 +205,7 @@ public class Log4jLogListener implements LogListener, IExecutableExtension {
 			throw new CoreException(new Status(IStatus.ERROR, Activator.getDefault().getBundle().getSymbolicName(),
 					"Could not configure log4j. Unable to parse xml configuration.", e)); //$NON-NLS-1$
 		} catch (final IOException e) {
-			throw new CoreException(new Status(IStatus.ERROR, Activator.getDefault().getBundle().getSymbolicName(),
-					"Could not configure log4j.", e)); //$NON-NLS-1$
+			throw new CoreException(new Status(IStatus.ERROR, Activator.getDefault().getBundle().getSymbolicName(), "Could not configure log4j.", e)); //$NON-NLS-1$
 		}
 	}
 
@@ -261,8 +252,7 @@ public class Log4jLogListener implements LogListener, IExecutableExtension {
 		private static final int SYSLOG_APPENDER_LOG_USER = 1 << 3;
 
 		/**
-		 * Create a generic custom log level.We assume that the custom osgi log
-		 * levels are all below 1!
+		 * Create a generic custom log level.We assume that the custom osgi log levels are all below 1!
 		 * 
 		 * @param osgiLogLevel
 		 * @return
@@ -290,11 +280,9 @@ public class Log4jLogListener implements LogListener, IExecutableExtension {
 	}
 
 	/**
-	 * Handle injections from logging configuration extension point. Those
-	 * extending configurations must be applied AFTER creating the 'root'
-	 * configuration which is initiated by the framework through
-	 * {@link #setInitializationData(IConfigurationElement, String, Object)}
-	 * when creating this {@link IExecutableExtension}.
+	 * Handle injections from logging configuration extension point. Those extending configurations must be applied AFTER creating the 'root' configuration
+	 * which is initiated by the framework through {@link #setInitializationData(IConfigurationElement, String, Object)} when creating this
+	 * {@link IExecutableExtension}.
 	 * 
 	 * @param extensions
 	 * @throws CoreException
@@ -309,7 +297,6 @@ public class Log4jLogListener implements LogListener, IExecutableExtension {
 
 	@InjectExtension(min = 0, max = 1)
 	public void update(final ILog4jDiagnosticContextExtension log4jDiagnosticContextExtension) {
-		log4jDiagnosticContext = log4jDiagnosticContextExtension == null ? null : log4jDiagnosticContextExtension
-				.createDiagnosticContext();
+		log4jDiagnosticContext = log4jDiagnosticContextExtension == null ? null : log4jDiagnosticContextExtension.createDiagnosticContext();
 	}
 }
