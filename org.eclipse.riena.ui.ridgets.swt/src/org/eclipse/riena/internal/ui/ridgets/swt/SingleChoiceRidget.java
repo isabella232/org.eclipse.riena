@@ -13,6 +13,8 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.databinding.Binding;
@@ -38,6 +40,7 @@ import org.eclipse.swt.widgets.Event;
 
 import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.ui.ridgets.IChoiceRidget;
+import org.eclipse.riena.ui.ridgets.IElementComparer;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
@@ -67,6 +70,8 @@ public class SingleChoiceRidget extends AbstractChoiceRidget implements ISingleC
 
 	/** A list of selection listeners. */
 	private ListenerList<ISelectionListener> selectionListeners;
+
+	private IElementComparer comparer;
 
 	public SingleChoiceRidget() {
 		optionsObservable = new WritableList();
@@ -160,6 +165,61 @@ public class SingleChoiceRidget extends AbstractChoiceRidget implements ISingleC
 		bindToModel(list, optionLabels, selectionValue);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.ui.ridgets.IChoiceRidget#setComparer(org.eclipse.riena.ui.ridgets.IElementComparer)
+	 */
+	public void setComparer(final IElementComparer comparer) {
+		this.comparer = comparer;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.ui.ridgets.IChoiceRidget#getComparer()
+	 */
+	public IElementComparer getComparer() {
+		return comparer;
+	}
+
+	/**
+	 * Checks whether a given elements is contained in a given collection. If an {@link IElementComparer} is set, it will be called to compare each collection
+	 * element to the given element.
+	 * 
+	 * @param element
+	 * @param collection
+	 * @return <code>true</code> if the given element, or one that is equal to it, is contained in the collection
+	 */
+	protected boolean isElementContained(final Object element, final Collection<?> collection) {
+		if (getComparer() == null) {
+			return collection.contains(element);
+		} else {
+			final Iterator<?> i = collection.iterator();
+			while (i.hasNext()) {
+				if (areElementsEqual(element, i.next())) {
+					return true;
+				}
+			}
+			return false;
+		}
+	}
+
+	/**
+	 * Compares two given elements for equality. If an {@link IElementComparer} is set, it will be called to compare.
+	 * 
+	 * @param element1
+	 * @param element2
+	 * @return <code>true</code> if the given elements are equal
+	 */
+	protected boolean areElementsEqual(final Object element1, final Object element2) {
+		if (getComparer() != null) {
+			return getComparer().equals(element1, element2);
+		} else {
+			return element1 != null && element1.equals(element2) || element1 == null && element2 == null;
+		}
+	}
+
 	@Override
 	public void updateFromModel() {
 		assertIsBoundToModel();
@@ -179,7 +239,7 @@ public class SingleChoiceRidget extends AbstractChoiceRidget implements ISingleC
 		}
 		// remove unavailable element and re-apply selection
 		Object newSelection = oldSelection;
-		if (newSelection != null && !optionsObservable.contains(newSelection)) {
+		if (newSelection != null && !isElementContained(newSelection, optionsObservable)) {
 			selectionObservable.setValue(null);
 			newSelection = null;
 		}
@@ -192,7 +252,7 @@ public class SingleChoiceRidget extends AbstractChoiceRidget implements ISingleC
 
 	public void setSelection(final Object candidate) {
 		assertIsBoundToModel();
-		if (candidate != null && !optionsObservable.contains(candidate)) {
+		if (candidate != null && !isElementContained(candidate, optionsObservable)) {
 			throw new BindingException("candidate not in option list: " + candidate); //$NON-NLS-1$
 		}
 		final Object oldSelection = selectionObservable.getValue();
@@ -352,7 +412,7 @@ public class SingleChoiceRidget extends AbstractChoiceRidget implements ISingleC
 			final Object value = selectionObservable.getValue();
 			for (final Control child : control.getChildrenButtons()) {
 				final Button button = (Button) child;
-				final boolean isSelected = canSelect && ((value != null && value.equals(child.getData())) || (value == null && child.getData() == null));
+				final boolean isSelected = canSelect && areElementsEqual(value, child.getData());
 				button.setSelection(isSelected);
 			}
 		}

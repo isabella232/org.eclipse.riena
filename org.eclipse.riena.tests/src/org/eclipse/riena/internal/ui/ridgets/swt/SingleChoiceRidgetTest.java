@@ -18,7 +18,9 @@ import java.util.List;
 
 import org.eclipse.core.databinding.beans.PojoObservables;
 import org.eclipse.core.databinding.observable.Realm;
+import org.eclipse.core.databinding.observable.list.AbstractObservableList;
 import org.eclipse.core.databinding.observable.list.WritableList;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
@@ -31,6 +33,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.internal.ui.swt.test.UITestHelper;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
+import org.eclipse.riena.ui.ridgets.IElementComparer;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
@@ -77,6 +80,54 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 
 	// testing methods
 	// ////////////////
+
+	public void testSetComparer() throws Exception {
+		final ISingleChoiceRidget r = getRidget();
+
+		final IObservableValue selectionValue = new WritableValue(null, Object.class);
+		final SwappingElementsModel model = new SwappingElementsModel();
+		r.setComparer(new IElementComparer() {
+			public boolean equals(final Object a, final Object b) {
+				return a == null && b == null || a != null && a.equals(b) || areOne(a, b) || areTwo(a, b);
+			}
+
+			private boolean areOne(final Object a, final Object b) {
+				final String str = "one";
+				final int i = 1;
+				return eq(str, i, a, b) || eq(str, i, b, a);
+			}
+
+			private boolean areTwo(final Object a, final Object b) {
+				final String str = "two";
+				final int i = 2;
+				return eq(str, i, a, b) || eq(str, i, b, a);
+			}
+
+			protected boolean eq(final String str, final int i, final Object o1, final Object o2) {
+				return str.equals(o1) && o2 instanceof Integer && (Integer) o2 == i;
+			}
+		});
+
+		r.bindToModel(model, selectionValue);
+		r.updateFromModel();
+
+		assertNull(selectionValue.getValue());
+		r.setSelection(1);
+		assertEquals(1, selectionValue.getValue());
+
+		Button b = (Button) getWidget().getChildrenButtons()[0];
+		assertEquals("1", b.getText());
+		assertTrue(b.getSelection());
+
+		// now change the elements without new binding of the ridget
+		model.swapElements();
+		r.updateFromModel();
+		assertEquals(1, selectionValue.getValue());
+
+		b = (Button) getWidget().getChildrenButtons()[0];
+		assertEquals("one", b.getText());
+		assertTrue(b.getSelection());
+	}
 
 	public void testChildrenCount() {
 		final AbstractChoiceRidget r = (AbstractChoiceRidget) getRidget();
@@ -837,4 +888,26 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 		}
 	};
 
+	private static class SwappingElementsModel extends AbstractObservableList {
+		private Object[] elements = { 1, 2 };
+
+		public Object getElementType() {
+			return Object.class;
+		}
+
+		@Override
+		protected int doGetSize() {
+			return elements.length;
+		}
+
+		@Override
+		public Object get(final int index) {
+			return elements[index];
+		}
+
+		public void swapElements() {
+			elements = new Object[] { "one", "two" };
+		}
+
+	}
 }

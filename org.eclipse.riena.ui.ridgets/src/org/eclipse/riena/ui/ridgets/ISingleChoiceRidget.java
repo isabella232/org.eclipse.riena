@@ -114,4 +114,22 @@ public interface ISingleChoiceRidget extends IChoiceRidget {
 	 * @since 3.0
 	 */
 	void setEmptySelectionItem(final Object emptySelectionItem);
+
+	/**
+	 * Sets the comparer to use for comparing elements, or <code>null</code> to use the default <code>equals</code> method on the elements themselves.
+	 * 
+	 * @param comparer
+	 *            the comparer to use for comparing elements or <code>null</code>
+	 * @since 5.0
+	 */
+	void setComparer(IElementComparer comparer);
+
+	/**
+	 * Returns the comparer to use for comparing elements, or <code>null</code> if none has been set. If specified, the viewer uses this to compare elements
+	 * rather than the elements' own equals method.
+	 * 
+	 * @return the comparer to use for comparing elements or <code>null</code>
+	 * @since 5.0
+	 */
+	IElementComparer getComparer();
 }
