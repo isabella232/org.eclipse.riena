@@ -47,7 +47,11 @@ public class FunctionResolverTest extends RienaTestCase {
 		final String property = System.getProperty("osgi.instance.area"); //$NON-NLS-1$
 		final URL url = new URL(property);
 		final String expected = new File(url.getPath()).getCanonicalPath().replace('\\', '/');
-		assertEquals(expected,
-				VariableManagerUtil.substitute("${fn:toFile,${java.system.property:osgi.instance.area}}")); //$NON-NLS-1$
+		assertEquals(expected, VariableManagerUtil.substitute("${fn:toFile,${java.system.property:osgi.instance.area}}")); //$NON-NLS-1$
+	}
+
+	public void testResolveUNCToFile() throws CoreException, IOException {
+		System.setProperty("uncFileName", "file://RUV/PGL/ZI/SE/PUMA"); //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals("//RUV/PGL/ZI/SE/PUMA", VariableManagerUtil.substitute("${fn:toFile,${java.system.property:uncFileName}}")); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 }
