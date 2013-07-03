@@ -16,11 +16,11 @@ import java.util.List;
 
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
+import org.eclipse.nebula.widgets.compositetable.AbstractNativeHeader;
+import org.eclipse.nebula.widgets.compositetable.CompositeTable;
+import org.eclipse.nebula.widgets.compositetable.ResizableGridRowLayout;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.nebula.widgets.compositetable.AbstractNativeHeader;
-import org.eclipse.swt.nebula.widgets.compositetable.CompositeTable;
-import org.eclipse.swt.nebula.widgets.compositetable.ResizableGridRowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
