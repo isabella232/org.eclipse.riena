@@ -27,25 +27,17 @@ import org.eclipse.riena.core.exception.Failure;
 import org.eclipse.riena.core.wire.Wire;
 
 /**
- * The utility class {@code Companion} tries to mimic the companion object known
- * from Scala.
+ * The utility class {@code Companion} tries to mimic the companion object known from Scala.
  * <p>
- * With this it is possible to create a single instance for any (a few
- * restrictions of course) given class. It should be noted that this is
- * different from the <i>singleton pattern</i> where the class which implements
- * the singleton has to have a static {@code getInstance()} method. The
- * {@code Companion} does not need this!
+ * With this it is possible to create a single instance for any (a few restrictions of course) given class. It should be noted that this is different from the
+ * <i>singleton pattern</i> where the class which implements the singleton has to have a static {@code getInstance()} method. The {@code Companion} does not
+ * need this!
  * <p>
- * However, classes that can be used with the {@code Companion} must implement a
- * default constructor. The default constructor can be {@code private} or
- * {@code protected} if there is no security policy preventing to change the
- * accessibility.
+ * However, classes that can be used with the {@code Companion} must implement a default constructor. The default constructor can be {@code private} or
+ * {@code protected} if there is no security policy preventing to change the accessibility.
  * <p>
- * The {@code Companion} also <b>wires</b> its single object. The companion
- * object will be hold as long as the bundle containing the companion class is
- * active.<br>
- * This behavior ensures that also the class may be garbage collected and thus
- * the whole bundle could be stopped.
+ * The {@code Companion} also <b>wires</b> its single object. The companion object will be hold as long as the bundle containing the companion class is active.<br>
+ * This behavior ensures that also the class may be garbage collected and thus the whole bundle could be stopped.
  * 
  * @since 4.0
  */
@@ -86,6 +78,12 @@ public final class Companion {
 				register(companionClass, companion);
 			}
 			return companion;
+		}
+	}
+
+	public static synchronized void reset() {
+		synchronized (LOCK) {
+			CLASS_TO_COMPANION.clear();
 		}
 	}
 
