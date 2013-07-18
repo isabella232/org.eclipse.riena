@@ -46,14 +46,13 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.TypedListener;
 
 import org.eclipse.riena.ui.swt.facades.SWTFacade;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
- * A button with only an image. (No (button) border, no text). If the button has
- * the style {@code SWT.HOT}, the button has a border and a background like
- * other SWT buttons if the mouse pointer is over the button (hot/hover).
+ * A button with only an image. (No (button) border, no text). If the button has the style {@code SWT.HOT}, the button has a border and a background like other
+ * SWT buttons if the mouse pointer is over the button (hot/hover).
  * <p>
- * The button can have different image for different button states (e.g. pressed
- * or disabled).
+ * The button can have different image for different button states (e.g. pressed or disabled).
  * 
  * @since 2.0
  * 
@@ -91,16 +90,13 @@ public class ImageButton extends Composite {
 	private List<SelectionListener> selectionListeners;
 
 	/**
-	 * Creates a new instance of {@code ImageButton}, initializes the button
-	 * states and adds listeners.
+	 * Creates a new instance of {@code ImageButton}, initializes the button states and adds listeners.
 	 * 
 	 * @param parent
-	 *            a widget which will be the parent of the new
-	 *            {@code ImageButton} (cannot be null)
+	 *            a widget which will be the parent of the new {@code ImageButton} (cannot be null)
 	 * @param style
-	 *            the style of widget to construct; SWT.HOT adds a button border
-	 *            and buttons background that is only visible if the mouse
-	 *            pointer is over the {@code ImageButton}.
+	 *            the style of widget to construct; SWT.HOT adds a button border and buttons background that is only visible if the mouse pointer is over the
+	 *            {@code ImageButton}.
 	 */
 	public ImageButton(final Composite parent, final int style) {
 		super(parent, style | SWT.DOUBLE_BUFFERED);
@@ -117,8 +113,7 @@ public class ImageButton extends Composite {
 	}
 
 	/**
-	 * Adds the given to the collection of listeners who will be notified when
-	 * this {@code ImageButton} was selected.
+	 * Adds the given to the collection of listeners who will be notified when this {@code ImageButton} was selected.
 	 * 
 	 * @param listener
 	 *            listener to add
@@ -135,8 +130,7 @@ public class ImageButton extends Composite {
 	}
 
 	/**
-	 * Computes the size of this {@code ImageButton} according the size of the
-	 * image (the maximal widths and height of the images).
+	 * Computes the size of this {@code ImageButton} according the size of the image (the maximal widths and height of the images).
 	 * 
 	 * @param wHint
 	 *            hint for width
@@ -163,7 +157,7 @@ public class ImageButton extends Composite {
 			}
 		}
 
-		if (hoverButton != null) {
+		if (!SwtUtilities.isDisposed(hoverButton)) {
 			final Point btnSize = hoverButton.computeSize(SWT.DEFAULT, SWT.DEFAULT);
 			if (size.x < btnSize.x) {
 				size.x = btnSize.x;
@@ -214,8 +208,7 @@ public class ImageButton extends Composite {
 	}
 
 	/**
-	 * Returns the image of the button, if the mouse pointer is over it and the
-	 * it has the focus.
+	 * Returns the image of the button, if the mouse pointer is over it and the it has the focus.
 	 * 
 	 * @return hover and focused image
 	 */
@@ -251,20 +244,17 @@ public class ImageButton extends Composite {
 	}
 
 	/**
-	 * Returns whether the ideal height should or shouldn't be used for this
-	 * {@code ImageButton}. The {@code ImageButton} will have the same height as
-	 * other push buttons.
+	 * Returns whether the ideal height should or shouldn't be used for this {@code ImageButton}. The {@code ImageButton} will have the same height as other
+	 * push buttons.
 	 * 
-	 * @return useIdealHight {@code true} use ideal height; otherwise
-	 *         {@code false}
+	 * @return useIdealHight {@code true} use ideal height; otherwise {@code false}
 	 */
 	public boolean isUseIdealHeight() {
 		return useIdealHeight;
 	}
 
 	/**
-	 * Removes the given from the collection of listeners who will be notified
-	 * when this {@code ImageButton} was selected.
+	 * Removes the given from the collection of listeners who will be notified when this {@code ImageButton} was selected.
 	 * 
 	 * @param listener
 	 *            listener to remove
@@ -281,7 +271,7 @@ public class ImageButton extends Composite {
 	@Override
 	public void setBackground(final Color color) {
 		super.setBackground(color);
-		if (hoverButton != null) {
+		if (!SwtUtilities.isDisposed(hoverButton)) {
 			hoverButton.setBackground(color);
 		}
 	}
@@ -333,8 +323,7 @@ public class ImageButton extends Composite {
 	}
 
 	/**
-	 * Sets the image of the button, if the mouse pointer is over it and the it
-	 * has the focus.
+	 * Sets the image of the button, if the mouse pointer is over it and the it has the focus.
 	 * 
 	 * @param image
 	 *            the image to set
@@ -377,9 +366,8 @@ public class ImageButton extends Composite {
 	}
 
 	/**
-	 * Sets whether the ideal height should or shouldn't be used for this
-	 * {@code ImageButton}. The {@code ImageButton} will have the same height as
-	 * other push buttons.<br>
+	 * Sets whether the ideal height should or shouldn't be used for this {@code ImageButton}. The {@code ImageButton} will have the same height as other push
+	 * buttons.<br>
 	 * 
 	 * @param useIdealHeight
 	 *            {@code true} use ideal height; otherwise {@code false}
@@ -392,8 +380,7 @@ public class ImageButton extends Composite {
 	//////////////////
 
 	/**
-	 * Adds the "hover" button. The hover button is only visible if the mouse
-	 * pointer is over this UI control.
+	 * Adds the "hover" button. The hover button is only visible if the mouse pointer is over this UI control.
 	 */
 	private void addHoverButton() {
 		hoverButton = new Button(this, SWT.PUSH);
@@ -407,8 +394,7 @@ public class ImageButton extends Composite {
 	}
 
 	/**
-	 * Adds listeners to this {@code ImageButton} and to the "hover" button (if
-	 * exists).
+	 * Adds listeners to this {@code ImageButton} and to the "hover" button (if exists).
 	 */
 	private void addListeners() {
 		final SWTFacade swtFacade = SWTFacade.getDefault();
@@ -420,7 +406,7 @@ public class ImageButton extends Composite {
 		addMouseListener(mouseListener);
 		swtFacade.addMouseTrackListener(this, mouseListener);
 		swtFacade.addMouseMoveListener(this, mouseListener);
-		if (hoverButton != null) {
+		if (!SwtUtilities.isDisposed(hoverButton)) {
 			hoverButton.addMouseListener(mouseListener);
 			swtFacade.addMouseTrackListener(hoverButton, mouseListener);
 			swtFacade.addMouseMoveListener(hoverButton, mouseListener);
@@ -501,8 +487,7 @@ public class ImageButton extends Composite {
 	}
 
 	/**
-	 * Returns the ideal height of an image button according to the height of a
-	 * push button.
+	 * Returns the ideal height of an image button according to the height of a push button.
 	 * 
 	 * @return ideal height
 	 */
@@ -516,8 +501,7 @@ public class ImageButton extends Composite {
 	}
 
 	/**
-	 * Returns the image that will be draw according to the current state of the
-	 * button.
+	 * Returns the image that will be draw according to the current state of the button.
 	 * 
 	 * @return image to draw
 	 */
@@ -567,8 +551,7 @@ public class ImageButton extends Composite {
 	/**
 	 * Returns whether the style of the button has {@code SWT.HOT}.
 	 * 
-	 * @return {@code true} if style has {@code SWT.HOT}; otherwise
-	 *         {@code false}
+	 * @return {@code true} if style has {@code SWT.HOT}; otherwise {@code false}
 	 */
 	private boolean hasHotStyle() {
 		final int style = getStyle();
@@ -585,13 +568,11 @@ public class ImageButton extends Composite {
 	}
 
 	/**
-	 * Returns whether the given point is inside or outside the bounds of the
-	 * button.
+	 * Returns whether the given point is inside or outside the bounds of the button.
 	 * 
 	 * @param point
 	 *            position of the mouse pointer
-	 * @return {@code true} if point is inside the button; otherwise
-	 *         {@code false}
+	 * @return {@code true} if point is inside the button; otherwise {@code false}
 	 */
 	private boolean isOverButton(final Point point) {
 		return (point.x <= getBounds().width && point.x >= 0) && (point.y <= getBounds().height && point.y >= 0);
@@ -600,8 +581,7 @@ public class ImageButton extends Composite {
 	/**
 	 * Returns whether the mouse pointer is or isn't over the button.
 	 * 
-	 * @return {@code true} if the mouse point is over the button; otherwise
-	 *         {@code false}
+	 * @return {@code true} if the mouse point is over the button; otherwise {@code false}
 	 */
 	private boolean isHover() {
 		return hover;
@@ -617,8 +597,7 @@ public class ImageButton extends Composite {
 	}
 
 	/**
-	 * After the widget was disposed all listeners will be removed and the array
-	 * with the images will be cleared.
+	 * After the widget was disposed all listeners will be removed and the array with the images will be cleared.
 	 * 
 	 * @param event
 	 *            an event containing information about the dispose
@@ -641,7 +620,7 @@ public class ImageButton extends Composite {
 
 		updateHoverState();
 
-		if (hoverButton != null && hoverButton.isVisible()) {
+		if (!SwtUtilities.isDisposed(hoverButton) && hoverButton.isVisible()) {
 			return;
 		}
 
@@ -655,8 +634,7 @@ public class ImageButton extends Composite {
 	}
 
 	/**
-	 * Removes all listeners form this {@code ImageButton} and from the "hover"
-	 * button (if exists).
+	 * Removes all listeners form this {@code ImageButton} and from the "hover" button (if exists).
 	 */
 	private void removeListeners() {
 		final SWTFacade swtFacade = SWTFacade.getDefault();
@@ -682,7 +660,7 @@ public class ImageButton extends Composite {
 		}
 
 		if (mouseListener != null) {
-			if (hoverButton != null) {
+			if (!SwtUtilities.isDisposed(hoverButton)) {
 				hoverButton.removeMouseListener(mouseListener);
 				swtFacade.removeMouseTrackListener(hoverButton, mouseListener);
 				swtFacade.removeMouseMoveListener(hoverButton, mouseListener);
@@ -703,8 +681,7 @@ public class ImageButton extends Composite {
 	 * Sets whether the button has the focus or hasn't the focus.
 	 * 
 	 * @param focused
-	 *            {@code true} if the button has the focus; otherwise
-	 *            {@code false}
+	 *            {@code true} if the button has the focus; otherwise {@code false}
 	 */
 	private void setFocused(final boolean focused) {
 		if (isFocused() != focused) {
@@ -717,8 +694,7 @@ public class ImageButton extends Composite {
 	 * Sets whether the mouse pointer is or isn't over the button.
 	 * 
 	 * @param hover
-	 *            {@code true} if the mouse point is over the button; otherwise
-	 *            {@code false}
+	 *            {@code true} if the mouse point is over the button; otherwise {@code false}
 	 * 
 	 */
 	private void setHover(final boolean hover) {
@@ -763,7 +739,7 @@ public class ImageButton extends Composite {
 	 * Shows or hides the "hover" button depending in the hover state.
 	 */
 	private void updateHoverButton() {
-		if (hoverButton != null) {
+		if (!SwtUtilities.isDisposed(hoverButton)) {
 			final boolean visible = isHover() || isPressed();
 			if (visible != hoverButton.isVisible()) {
 				hoverButton.setVisible(visible);
@@ -777,12 +753,9 @@ public class ImageButton extends Composite {
 	/**
 	 * Updates the hover state (flag/property {@code hover}).
 	 * <p>
-	 * The update is necessary if the button (or a parent of the button) was
-	 * disabled. After the button was disabled a mouse exit will be fired and so
-	 * the hover state will be false. After the button was enabled no mouse
-	 * event will be fired and so the hover state won't be true. Because of this
-	 * problem at other situations this method must be called to update the
-	 * hover state.
+	 * The update is necessary if the button (or a parent of the button) was disabled. After the button was disabled a mouse exit will be fired and so the hover
+	 * state will be false. After the button was enabled no mouse event will be fired and so the hover state won't be true. Because of this problem at other
+	 * situations this method must be called to update the hover state.
 	 */
 	private void updateHoverState() {
 
@@ -823,8 +796,7 @@ public class ImageButton extends Composite {
 	}
 
 	/**
-	 * Presses the button after the space key was pressed and fires a selection
-	 * event after the space key was released.
+	 * Presses the button after the space key was pressed and fires a selection event after the space key was released.
 	 */
 	private final class ButtonKeyListener implements KeyListener {
 
@@ -859,8 +831,7 @@ public class ImageButton extends Composite {
 		}
 
 		/**
-		 * Ignores mouse events if the component is null, not enabled, or the
-		 * event is not associated with the left mouse button.
+		 * Ignores mouse events if the component is null, not enabled, or the event is not associated with the left mouse button.
 		 */
 		private boolean ignore(final KeyEvent e) {
 			return e.character != ' ';
@@ -941,8 +912,7 @@ public class ImageButton extends Composite {
 		/**
 		 * {@inheritDoc}
 		 * <p>
-		 * Sets or removes the hover state of the button according the mouse
-		 * pointer is over the button.
+		 * Sets or removes the hover state of the button according the mouse pointer is over the button.
 		 */
 		public void mouseMove(final MouseEvent e) {
 			if (!isEnabled()) {
@@ -967,8 +937,7 @@ public class ImageButton extends Composite {
 		/**
 		 * {@inheritDoc}
 		 * <p>
-		 * Fires a selection event if the button is pressed and the mouse
-		 * pointer is over the button.<br>
+		 * Fires a selection event if the button is pressed and the mouse pointer is over the button.<br>
 		 * Removes the pressed state of the button.
 		 */
 		public void mouseUp(final MouseEvent e) {
@@ -986,8 +955,7 @@ public class ImageButton extends Composite {
 		}
 
 		/**
-		 * Ignores mouse events if the event is not associated with the left
-		 * mouse button.
+		 * Ignores mouse events if the event is not associated with the left mouse button.
 		 * 
 		 * @param e
 		 *            mouse event
@@ -1005,7 +973,7 @@ public class ImageButton extends Composite {
 		 * @return {@code true} ignore event; otherwise {@code false}
 		 */
 		private boolean ignoreWidget(final MouseEvent e) {
-			if (hoverButton != null) {
+			if (!SwtUtilities.isDisposed(hoverButton)) {
 				if (hoverButton.isVisible()) {
 					return e.widget != hoverButton;
 				} else {
@@ -1018,8 +986,7 @@ public class ImageButton extends Composite {
 	}
 
 	/**
-	 * This listener paints the {@code ImageButton} after a paint event was
-	 * fired.
+	 * This listener paints the {@code ImageButton} after a paint event was fired.
 	 */
 	private final class PaintDelegation implements PaintListener {
 		/**
@@ -1041,7 +1008,9 @@ public class ImageButton extends Composite {
 	public void setToolTipText(final String string) {
 		super.setToolTipText(string);
 		if (hasHotStyle()) {
-			hoverButton.setToolTipText(string);
+			if (!SwtUtilities.isDisposed(hoverButton)) {
+				hoverButton.setToolTipText(string);
+			}
 		}
 
 	}
