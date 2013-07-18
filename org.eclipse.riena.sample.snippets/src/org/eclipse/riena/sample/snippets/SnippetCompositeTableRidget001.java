@@ -15,11 +15,11 @@ import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.core.databinding.observable.list.WritableList;
+import org.eclipse.nebula.widgets.compositetable.AbstractNativeHeader;
+import org.eclipse.nebula.widgets.compositetable.CompositeTable;
+import org.eclipse.nebula.widgets.compositetable.ResizableGridRowLayout;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.nebula.widgets.compositetable.AbstractNativeHeader;
-import org.eclipse.swt.nebula.widgets.compositetable.CompositeTable;
-import org.eclipse.swt.nebula.widgets.compositetable.ResizableGridRowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -107,8 +107,7 @@ public final class SnippetCompositeTableRidget001 {
 	/**
 	 * Row for a {@link ICompositeTableRidget}.
 	 * <p>
-	 * Implementation note: class must be public and have a zero-argument public
-	 * constructor. Instances will be created by reflection.
+	 * Implementation note: class must be public and have a zero-argument public constructor. Instances will be created by reflection.
 	 */
 	public static final class RowRidget extends AbstractCompositeRidget implements IRowRidget {
 		private Person rowData;

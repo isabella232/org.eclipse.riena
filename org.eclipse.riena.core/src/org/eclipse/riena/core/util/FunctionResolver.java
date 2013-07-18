@@ -11,7 +11,7 @@
 package org.eclipse.riena.core.util;
 
 import java.io.File;
-import java.net.URL;
+import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,6 +20,7 @@ import org.osgi.framework.FrameworkUtil;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.URIUtil;
 import org.eclipse.core.variables.IDynamicVariable;
 import org.eclipse.core.variables.IDynamicVariableResolver;
 
@@ -38,8 +39,7 @@ import org.eclipse.core.variables.IDynamicVariableResolver;
  * ${fn:toFile,${java.system.property:osgi.instance.area}}
  * </pre>
  * 
- * Currently available is only the function "toFile" which expects one argument
- * that is the URL representation of a file and it returns the canonical form of
+ * Currently available is only the function "toFile" which expects one argument that is the URL representation of a file and it returns the canonical form of
  * the file representation.
  * 
  * @since 3.0
@@ -77,8 +77,8 @@ public class FunctionResolver implements IDynamicVariableResolver {
 	}
 
 	private CoreException createCoreException(final String message, final Throwable t) {
-		return new CoreException(new Status(Status.ERROR, FrameworkUtil.getBundle(FunctionResolver.class)
-				.getSymbolicName(), FunctionResolver.class.getSimpleName() + " " + message, t)); //$NON-NLS-1$
+		return new CoreException(new Status(Status.ERROR, FrameworkUtil.getBundle(FunctionResolver.class).getSymbolicName(),
+				FunctionResolver.class.getSimpleName() + " " + message, t)); //$NON-NLS-1$
 	}
 
 	private interface IFun {
@@ -89,8 +89,8 @@ public class FunctionResolver implements IDynamicVariableResolver {
 
 		public String apply(final String[] arguments) throws Exception {
 			Assert.isLegal(arguments.length == 1, "exactly one argument expected (a file URL)"); //$NON-NLS-1$
-			final URL url = new URL(arguments[0]);
-			return new File(url.getPath()).getAbsolutePath().replace('\\', '/');
+			final URI uri = URIUtil.fromString(arguments[0]);
+			return new File(uri.getPath()).getAbsolutePath().replace('\\', '/');
 		}
 	}
 }

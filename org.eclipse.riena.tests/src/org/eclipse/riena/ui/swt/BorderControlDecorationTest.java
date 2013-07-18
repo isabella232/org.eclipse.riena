@@ -12,10 +12,10 @@ package org.eclipse.riena.ui.swt;
 
 import junit.framework.TestCase;
 
+import org.eclipse.nebula.widgets.compositetable.AbsoluteLayout;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.nebula.widgets.compositetable.AbsoluteLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;

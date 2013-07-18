@@ -18,13 +18,13 @@ import java.util.List;
 
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.list.IObservableList;
+import org.eclipse.nebula.widgets.compositetable.AbstractNativeHeader;
+import org.eclipse.nebula.widgets.compositetable.CompositeTable;
+import org.eclipse.nebula.widgets.compositetable.ResizableGridRowLayout;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
-import org.eclipse.swt.nebula.widgets.compositetable.AbstractNativeHeader;
-import org.eclipse.swt.nebula.widgets.compositetable.CompositeTable;
-import org.eclipse.swt.nebula.widgets.compositetable.ResizableGridRowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
@@ -134,8 +134,7 @@ public class CompositeTableRidgetTest extends AbstractTableListRidgetTest {
 			ridget.setUIControl(widget);
 
 			final MyModel model = new MyModel();
-			ridget.bindToModel(model, "persons", Person.class, RowRidget.class, new String[] { "First Name",
-					"Last Name" });
+			ridget.bindToModel(model, "persons", Person.class, RowRidget.class, new String[] { "First Name", "Last Name" });
 			ridget.updateFromModel();
 
 			shell.setSize(130, 100);
@@ -405,8 +404,7 @@ public class CompositeTableRidgetTest extends AbstractTableListRidgetTest {
 
 		ridget.setSortedAscending(true);
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_SORT_ASCENDING,
-				Boolean.TRUE, Boolean.FALSE));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_SORT_ASCENDING, Boolean.TRUE, Boolean.FALSE));
 
 		ridget.setSortedAscending(false);
 
@@ -416,8 +414,7 @@ public class CompositeTableRidgetTest extends AbstractTableListRidgetTest {
 		ridget.setSortedAscending(false);
 
 		verifyPropertyChangeEvents();
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_SORT_ASCENDING,
-				Boolean.FALSE, Boolean.TRUE));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_SORT_ASCENDING, Boolean.FALSE, Boolean.TRUE));
 
 		ridget.setSortedAscending(true);
 
@@ -434,8 +431,7 @@ public class CompositeTableRidgetTest extends AbstractTableListRidgetTest {
 
 		assertEquals(-1, ridget.getSortedColumn());
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_SORTED_COLUMN,
-				Integer.valueOf(-1), Integer.valueOf(0)));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_SORTED_COLUMN, Integer.valueOf(-1), Integer.valueOf(0)));
 
 		ridget.setSortedColumn(0);
 
@@ -445,8 +441,7 @@ public class CompositeTableRidgetTest extends AbstractTableListRidgetTest {
 		ridget.setSortedColumn(0);
 
 		verifyPropertyChangeEvents();
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_SORTED_COLUMN,
-				Integer.valueOf(0), Integer.valueOf(1)));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_SORTED_COLUMN, Integer.valueOf(0), Integer.valueOf(1)));
 
 		ridget.setSortedColumn(1);
 
@@ -461,8 +456,7 @@ public class CompositeTableRidgetTest extends AbstractTableListRidgetTest {
 		ridget.setColumnSortable(0, true);
 
 		verifyPropertyChangeEvents();
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_COLUMN_SORTABILITY, null,
-				Integer.valueOf(0)));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_COLUMN_SORTABILITY, null, Integer.valueOf(0)));
 
 		ridget.setColumnSortable(0, false);
 
@@ -472,8 +466,7 @@ public class CompositeTableRidgetTest extends AbstractTableListRidgetTest {
 		ridget.setColumnSortable(0, false);
 
 		verifyPropertyChangeEvents();
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_COLUMN_SORTABILITY, null,
-				Integer.valueOf(0)));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_COLUMN_SORTABILITY, null, Integer.valueOf(0)));
 
 		ridget.setColumnSortable(0, true);
 
