@@ -1319,12 +1319,24 @@ public abstract class CompletionCombo extends Composite {
 			dropDown(false);
 			break;
 		case SWT.Selection:
+			if (SwtUtilities.isDisposed(text) || SwtUtilities.isDisposed(list)) {
+				return;
+			}
 			final int index = getSelectionIndex(list);
 			if (index == -1) {
 				return;
 			}
 			setImage(index);
-			text.setText(getItem(list, index));
+			try {
+				text.setText(getItem(list, index));
+			} catch (final NullPointerException ex) {
+				// At this point the widget may have been disposed.
+				// If so, do not continue.
+				if (isDisposed()) {
+					return;
+				}
+				throw ex;
+			}
 			defaultTextSelection();
 			//setSelection(list, index);
 			Event e = new Event();
@@ -1384,6 +1396,9 @@ public abstract class CompletionCombo extends Composite {
 			}
 			if ((event.character == SWT.DEL || event.character == SWT.BS) && autoCompletionMode == AutoCompletionMode.FIRST_LETTER_MATCH) {
 				clearImage();
+				if (SwtUtilities.isDisposed(text) || SwtUtilities.isDisposed(list)) {
+					return;
+				}
 				text.setText(""); //$NON-NLS-1$
 				deselectAll(list);
 				dropDown(false);
@@ -1417,6 +1432,9 @@ public abstract class CompletionCombo extends Composite {
 				// up or down manually -- the default behavior scrolls the list
 				// but does not move the selection!
 				event.doit = false;
+				if (SwtUtilities.isDisposed(list)) {
+					return;
+				}
 				final int selection = getSelectionIndex(list);
 				if (selection > -1) {
 					final int newIndex = (event.count < 0) ? selection + 1 : selection - 1;
@@ -2519,7 +2537,7 @@ public abstract class CompletionCombo extends Composite {
 	}
 
 	private void setImage(final int index) {
-		if (label != null) {
+		if (!SwtUtilities.isDisposed(label)) {
 			label.setImage(getImage(list, index));
 		}
 	}

@@ -56,6 +56,7 @@ import org.eclipse.riena.ui.ridgets.listener.ISelectionListener;
 import org.eclipse.riena.ui.ridgets.listener.SelectionEvent;
 import org.eclipse.riena.ui.ridgets.swt.nls.Messages;
 import org.eclipse.riena.ui.swt.CompletionCombo;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
  * Superclass of ComboRidget that does not depend on the Combo SWT control. May be reused for custom Combo controls.
@@ -167,7 +168,7 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 
 	@Override
 	protected void bindUIControl() {
-		if (getUIControl() != null) {
+		if (!SwtUtilities.isDisposed(getUIControl())) {
 			applyText();
 			addTextModifyListener();
 			addSelectionListener(selectionEnforcer);
@@ -176,7 +177,7 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		if (optionValues != null) {
 			// These bindings are only necessary when we have a model
 			final DataBindingContext dbc = new DataBindingContext();
-			if (getUIControl() != null) {
+			if (!SwtUtilities.isDisposed(getUIControl())) {
 				applyEnabled();
 			}
 			listBindingExternal = dbc.bindList(rowObservables, optionValues, new UpdateListStrategy(UpdateListStrategy.POLICY_ON_REQUEST),
@@ -356,7 +357,7 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		final Object oldSelection = selectionObservable.getValue();
 		if (oldSelection != newSelection) {
 			if (newSelection == null || !rowObservables.contains(newSelection)) {
-				if (getUIControl() != null) {
+				if (!SwtUtilities.isDisposed(getUIControl())) {
 					clearUIControlListSelection();
 				}
 			}
@@ -549,7 +550,7 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	}
 
 	private void applyText() {
-		if (getUIControl() != null) {
+		if (!SwtUtilities.isDisposed(getUIControl())) {
 			if (!StringUtils.equals(text, getUIControlText())) {
 				setTextToControl(text);
 			}

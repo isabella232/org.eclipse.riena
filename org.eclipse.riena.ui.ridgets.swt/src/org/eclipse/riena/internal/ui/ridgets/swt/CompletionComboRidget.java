@@ -27,6 +27,7 @@ import org.eclipse.riena.ui.ridgets.ICompletionComboRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractComboRidget;
 import org.eclipse.riena.ui.swt.CompletionCombo;
 import org.eclipse.riena.ui.swt.IFlashDelegate;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
  * Ridget for {@link CompletionCombo} widgets.
@@ -95,6 +96,9 @@ public class CompletionComboRidget extends AbstractComboRidget implements ICompl
 
 	@Override
 	protected void clearUIControlListSelection() {
+		if ( SwtUtilities.isDisposed(getUIControl()) ) {
+			return;
+		}
 		getUIControl().deselectAll();
 		// Workaround for an SWT feature: when the user clicks in the list,
 		// an asynchronous selection event is added to the end of the event 
