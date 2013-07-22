@@ -46,6 +46,7 @@ public final class OptionalUIControlsFactory extends UIControlsFactory {
 	 *            The suggested default is SWT.NONE
 	 * 
 	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.NONE
+	 * @since 5.0
 	 */
 	public static CompositeTable createCompositeTable(final Composite parent, final int style) {
 		return registerConstruction(new CompositeTable(parent, style));

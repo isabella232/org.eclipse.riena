@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde version="3.8"?>
 
-<target name="Riena on E4" sequenceNumber="21">
+<target name="Riena on E4" sequenceNumber="23">
 <locations>
-<location path="${project_loc:org.eclipse.riena.build3}/prebuild/plugins" type="Directory"/>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.rcp.feature.group" version="4.3.0.v20130605-2000"/>
 <unit id="org.eclipse.rcp.source.feature.group" version="4.3.0.v20130605-2000"/>
@@ -11,5 +10,6 @@
 <unit id="org.eclipse.equinox.sdk.feature.group" version="3.9.0.v20130604-2047"/>
 <repository location="http://download.eclipse.org/releases/kepler"/>
 </location>
+<location path="${project_loc:org.eclipse.riena.build3}/prebuild/plugins" type="Directory"/>
 </locations>
 </target>

@@ -81,6 +81,9 @@ public final class Companion {
 		}
 	}
 
+	/**
+	 * @since 5.0
+	 */
 	public static synchronized void reset() {
 		synchronized (LOCK) {
 			CLASS_TO_COMPANION.clear();
