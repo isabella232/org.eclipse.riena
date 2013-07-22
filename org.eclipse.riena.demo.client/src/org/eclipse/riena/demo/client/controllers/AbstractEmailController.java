@@ -33,7 +33,7 @@ import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.annotation.OnActionCallback;
 
 /**
- * abstract email controller
+ * abstract email controller A
  */
 public class AbstractEmailController extends SubModuleController {
 
@@ -107,8 +107,7 @@ public class AbstractEmailController extends SubModuleController {
 					System.out.println("customer " + customer); //$NON-NLS-1$
 
 					if (customer != null) {
-						getNavigationNode().navigate(
-								new NavigationNodeId("riena.demo.client.CustomerRecord", selectedEmailAddress), //$NON-NLS-1$
+						getNavigationNode().navigate(new NavigationNodeId("riena.demo.client.CustomerRecord", selectedEmailAddress), //$NON-NLS-1$
 								new NavigationArgument(customer));
 					}
 				}
