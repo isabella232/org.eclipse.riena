@@ -19,7 +19,7 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
-import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
+import org.eclipse.riena.core.test.collect.NonUITestCase;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.model.ApplicationNode;

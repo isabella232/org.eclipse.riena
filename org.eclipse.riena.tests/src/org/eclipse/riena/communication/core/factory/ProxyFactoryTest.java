@@ -12,8 +12,8 @@ package org.eclipse.riena.communication.core.factory;
 
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.core.exception.IExceptionHandler;
-import org.eclipse.riena.internal.core.test.RienaTestCase;
-import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
+import org.eclipse.riena.core.test.RienaTestCase;
+import org.eclipse.riena.core.test.collect.NonUITestCase;
 
 /**
  * Test the {@code ProxyFactory}

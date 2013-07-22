@@ -12,8 +12,8 @@ package org.eclipse.riena.core.util;
 
 import junit.framework.TestCase;
 
+import org.eclipse.riena.core.test.collect.NonUITestCase;
 import org.eclipse.riena.core.util.ObjectCounter;
-import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 
 /**
  * Test the {@code ObjectCounter}.

@@ -8,23 +8,20 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.internal.core.test;
+package org.eclipse.riena.core.test;
 
-import junit.framework.Assert;
+import junit.framework.TestCase;
 
-import org.eclipse.riena.internal.core.test.TestingTools.TestCaseWrapper;
+import org.eclipse.riena.core.test.TestingTools.TestCaseWrapper;
 
 /**
  *
  */
-public class JUnit4Wrapper implements TestCaseWrapper {
+public class JUnit3Wrapper implements TestCaseWrapper {
 
-	private final RienaTestCaseJUnit4 testCase;
+	private final RienaTestCase testCase;
 
-	/**
-	 * @param rienaTestCaseJUnit4
-	 */
-	public JUnit4Wrapper(final RienaTestCaseJUnit4 testCase) {
+	JUnit3Wrapper(final RienaTestCase testCase) {
 		this.testCase = testCase;
 	}
 
@@ -34,7 +31,7 @@ public class JUnit4Wrapper implements TestCaseWrapper {
 	 * @see org.eclipse.riena.internal.core.test.TestingTools.TestCaseWrapper#getName()
 	 */
 	public String getName() {
-		return testCase.name.getMethodName();
+		return testCase.getName();
 	}
 
 	/*
@@ -43,7 +40,7 @@ public class JUnit4Wrapper implements TestCaseWrapper {
 	 * @see org.eclipse.riena.internal.core.test.TestingTools.TestCaseWrapper#fail(java.lang.String)
 	 */
 	public void fail(final String string) {
-		Assert.fail(string);
+		TestCase.fail(string);
 	}
 
 	/*
@@ -52,7 +49,7 @@ public class JUnit4Wrapper implements TestCaseWrapper {
 	 * @see org.eclipse.riena.internal.core.test.TestingTools.TestCaseWrapper#assertTrue(boolean)
 	 */
 	public void assertTrue(final boolean success) {
-		Assert.assertTrue(success);
+		TestCase.assertTrue(success);
 	}
 
 	/*
@@ -61,7 +58,7 @@ public class JUnit4Wrapper implements TestCaseWrapper {
 	 * @see org.eclipse.riena.internal.core.test.TestingTools.TestCaseWrapper#assertNotNull(java.lang.Object)
 	 */
 	public void assertNotNull(final Object o) {
-		Assert.assertNotNull(o);
+		TestCase.assertNotNull(o);
 	}
 
 	/*

@@ -17,7 +17,7 @@ import java.util.List;
 import junit.framework.TestCase;
 
 import org.eclipse.riena.beans.common.Person;
-import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
+import org.eclipse.riena.core.test.collect.NonUITestCase;
 
 /**
  * Nomen est omen!

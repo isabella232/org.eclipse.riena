@@ -17,8 +17,8 @@ import org.eclipse.core.databinding.observable.Realm;
 
 import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.beans.common.PersonFactory;
-import org.eclipse.riena.internal.core.test.RienaTestCase;
-import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
+import org.eclipse.riena.core.test.RienaTestCase;
+import org.eclipse.riena.core.test.collect.NonUITestCase;
 import org.eclipse.riena.ui.ridgets.IRidgetContentFilterHolder;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSelectableRidget;

@@ -13,10 +13,10 @@ package org.eclipse.riena.communication.core.hooks;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.riena.core.test.RienaTestCase;
+import org.eclipse.riena.core.test.collect.NonUITestCase;
 import org.eclipse.riena.internal.communication.core.factory.ICallHookExtension;
 import org.eclipse.riena.internal.communication.core.factory.OrderedCallHooksExecuter;
-import org.eclipse.riena.internal.core.test.RienaTestCase;
-import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 
 @SuppressWarnings("restriction")
 @NonUITestCase

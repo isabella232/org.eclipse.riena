@@ -14,9 +14,9 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import org.eclipse.riena.internal.core.test.collect.TestCollector;
+import org.eclipse.riena.core.test.collect.TestCollector;
+import org.eclipse.riena.core.test.collect.UITestCase;
 import org.eclipse.riena.internal.core.test.collect.TestCollectorTest;
-import org.eclipse.riena.internal.core.test.collect.UITestCase;
 
 /**
  * A dummy JUnit4 test case which should be found by the {@link TestCollector} <br/>

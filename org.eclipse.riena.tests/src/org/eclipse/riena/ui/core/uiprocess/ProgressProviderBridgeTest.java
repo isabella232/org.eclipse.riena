@@ -17,8 +17,8 @@ import junit.framework.TestCase;
 import org.eclipse.core.runtime.jobs.Job;
 
 import org.eclipse.riena.core.singleton.SingletonProvider;
+import org.eclipse.riena.core.test.collect.NonUITestCase;
 import org.eclipse.riena.core.util.ReflectionUtils;
-import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.ui.swt.uiprocess.SwtUISynchronizer;
 
 /**

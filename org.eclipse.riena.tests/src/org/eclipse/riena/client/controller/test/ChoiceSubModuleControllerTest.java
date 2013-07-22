@@ -14,7 +14,7 @@ import java.util.Arrays;
 
 import org.eclipse.riena.client.controller.test.ChoiceSubModuleController.CarModels;
 import org.eclipse.riena.client.controller.test.ChoiceSubModuleController.CarOptions;
-import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
+import org.eclipse.riena.core.test.collect.NonUITestCase;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.swt.controllers.AbstractSubModuleControllerTest;
 import org.eclipse.riena.ui.ridgets.IActionRidget;

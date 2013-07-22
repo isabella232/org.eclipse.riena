@@ -22,8 +22,8 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl;
 
 import org.eclipse.riena.communication.core.factory.Register;
-import org.eclipse.riena.internal.core.test.RienaTestCase;
-import org.eclipse.riena.internal.core.test.collect.ManualTestCase;
+import org.eclipse.riena.core.test.RienaTestCase;
+import org.eclipse.riena.core.test.collect.ManualTestCase;
 import org.eclipse.riena.sample.app.common.BigIntegerContainer;
 import org.eclipse.riena.sample.app.common.ITestcasesWS;
 

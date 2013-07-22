@@ -16,7 +16,7 @@ import java.util.TimeZone;
 
 import junit.framework.TestCase;
 
-import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
+import org.eclipse.riena.core.test.collect.NonUITestCase;
 
 /**
  * Tests for the classes {@link DateToStringConverter} and

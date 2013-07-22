@@ -18,7 +18,7 @@ import org.osgi.service.prefs.Preferences;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 
-import org.eclipse.riena.internal.core.test.collect.ManualTestCase;
+import org.eclipse.riena.core.test.collect.ManualTestCase;
 
 /**
  * Prints out the complete preference tree.

@@ -19,10 +19,10 @@ import junit.framework.AssertionFailedError;
 import org.osgi.framework.ServiceRegistration;
 
 import org.eclipse.riena.core.injector.Inject;
+import org.eclipse.riena.core.test.RienaTestCase;
+import org.eclipse.riena.core.test.collect.NonUITestCase;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.core.util.WeakRef;
-import org.eclipse.riena.internal.core.test.RienaTestCase;
-import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 
 /**
  * Tests the {@code ServiceInjector} with respect to the {@code WeakRef} to the

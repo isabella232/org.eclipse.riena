@@ -12,8 +12,8 @@ package org.eclipse.riena.core.marker;
 
 import junit.framework.TestCase;
 
+import org.eclipse.riena.core.test.collect.NonUITestCase;
 import org.eclipse.riena.core.util.Nop;
-import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.ui.core.marker.RowErrorMessageMarker;
 
 /**

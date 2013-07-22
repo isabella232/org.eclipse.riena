@@ -11,10 +11,10 @@
 package org.eclipse.riena.internal.security.common.authorization;
 
 import org.eclipse.riena.core.cache.GenericObjectCache;
+import org.eclipse.riena.core.test.RienaTestCase;
+import org.eclipse.riena.core.test.collect.NonUITestCase;
 import org.eclipse.riena.core.util.ContainerModel;
 import org.eclipse.riena.core.util.ReflectionUtils;
-import org.eclipse.riena.internal.core.test.RienaTestCase;
-import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 
 /**
  * Test the {@code PermissionCache}.

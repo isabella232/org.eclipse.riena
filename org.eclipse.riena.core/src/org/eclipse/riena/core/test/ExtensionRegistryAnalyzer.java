@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.internal.core.test;
+package org.eclipse.riena.core.test;
 
 import java.util.Arrays;
 import java.util.Comparator;

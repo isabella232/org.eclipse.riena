@@ -12,7 +12,7 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import junit.framework.TestCase;
 
-import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
+import org.eclipse.riena.core.test.collect.NonUITestCase;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTWidgetRidget;
 
 /**

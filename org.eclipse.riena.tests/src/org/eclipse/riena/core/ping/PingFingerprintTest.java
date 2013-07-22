@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.core.ping;
 
-import org.eclipse.riena.internal.core.test.RienaTestCase;
-import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
+import org.eclipse.riena.core.test.RienaTestCase;
+import org.eclipse.riena.core.test.collect.NonUITestCase;
 
 /**
  * Tests class {@link PingFingerprint PingFingerprint}.

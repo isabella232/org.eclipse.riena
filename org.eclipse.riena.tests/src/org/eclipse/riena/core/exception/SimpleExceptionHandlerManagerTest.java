@@ -24,11 +24,11 @@ import org.eclipse.equinox.log.Logger;
 
 import org.eclipse.riena.core.injector.InjectionFailure;
 import org.eclipse.riena.core.service.Service;
+import org.eclipse.riena.core.test.RienaTestCase;
+import org.eclipse.riena.core.test.collect.NonUITestCase;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.exceptionmanager.IExceptionHandlerExtension;
 import org.eclipse.riena.internal.core.exceptionmanager.SimpleExceptionHandlerManager;
-import org.eclipse.riena.internal.core.test.RienaTestCase;
-import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 
 /**
  * 

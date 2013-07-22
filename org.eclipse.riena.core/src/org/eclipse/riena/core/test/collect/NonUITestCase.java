@@ -8,25 +8,22 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.internal.core.test.collect;
+package org.eclipse.riena.core.test.collect;
 
 import java.lang.annotation.ElementType;
+import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Marks a {@code TestCase} as an test that should not be gathered by the
- * {@code TestCollector}.
+ * Marks a {@code TestCase} as an non-UI test.
+ * 
+ * @see UITestCase
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface NonGatherableTestCase {
+@Inherited
+public @interface NonUITestCase {
 
-	/**
-	 * Attach a reason why this test case shall not be executed.
-	 * 
-	 * @return
-	 */
-	String value();
 }

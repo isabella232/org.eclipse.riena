@@ -12,10 +12,10 @@ package org.eclipse.riena.ui.swt.facades;
 
 import org.eclipse.swt.SWT;
 
+import org.eclipse.riena.core.test.RienaTestCase;
+import org.eclipse.riena.core.test.collect.NonUITestCase;
 import org.eclipse.riena.core.util.InvocationTargetFailure;
 import org.eclipse.riena.core.util.ReflectionUtils;
-import org.eclipse.riena.internal.core.test.RienaTestCase;
-import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 
 /**
  * Test the {@code FacadeFactory}.

@@ -15,10 +15,10 @@ import java.lang.reflect.Method;
 import org.eclipse.riena.core.injector.service.FilterInjector;
 import org.eclipse.riena.core.injector.service.RankingInjector;
 import org.eclipse.riena.core.injector.service.ServiceInjector;
+import org.eclipse.riena.core.test.RienaTestCase;
+import org.eclipse.riena.core.test.collect.NonUITestCase;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.core.util.WeakRef;
-import org.eclipse.riena.internal.core.test.RienaTestCase;
-import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.internal.core.wire.ServiceInjectorBuilder;
 
 /**

@@ -19,7 +19,7 @@ import junit.framework.TestCase;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 
-import org.eclipse.riena.internal.core.test.collect.UITestCase;
+import org.eclipse.riena.core.test.collect.UITestCase;
 import org.eclipse.riena.ui.ridgets.ILabelRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;

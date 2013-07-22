@@ -12,9 +12,9 @@ package org.eclipse.riena.navigation.ui.swt.views;
 
 import org.eclipse.swt.widgets.Shell;
 
+import org.eclipse.riena.core.test.RienaTestCase;
+import org.eclipse.riena.core.test.collect.UITestCase;
 import org.eclipse.riena.core.wire.Wire;
-import org.eclipse.riena.internal.core.test.RienaTestCase;
-import org.eclipse.riena.internal.core.test.collect.UITestCase;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.model.ModuleGroupNode;

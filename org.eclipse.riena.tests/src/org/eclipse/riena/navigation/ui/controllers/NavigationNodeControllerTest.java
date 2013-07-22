@@ -26,9 +26,9 @@ import org.eclipse.swt.widgets.Text;
 
 import org.eclipse.riena.core.RienaStatus;
 import org.eclipse.riena.core.marker.IMarker;
+import org.eclipse.riena.core.test.RienaTestCase;
+import org.eclipse.riena.core.test.collect.UITestCase;
 import org.eclipse.riena.core.util.ReflectionUtils;
-import org.eclipse.riena.internal.core.test.RienaTestCase;
-import org.eclipse.riena.internal.core.test.collect.UITestCase;
 import org.eclipse.riena.internal.ui.ridgets.swt.LabelRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.TextRidget;
 import org.eclipse.riena.navigation.INavigationNodeController;

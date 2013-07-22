@@ -12,7 +12,7 @@ package org.eclipse.riena.ui.ridgets.validation;
 
 import java.util.Locale;
 
-import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
+import org.eclipse.riena.core.test.collect.NonUITestCase;
 
 /**
  * Tests for the {@link ValidRangeAllowEmpty} rule.

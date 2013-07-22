@@ -14,9 +14,9 @@ import org.apache.log4j.MDC;
 
 import org.eclipse.core.runtime.CoreException;
 
+import org.eclipse.riena.core.test.RienaTestCase;
+import org.eclipse.riena.core.test.collect.NonUITestCase;
 import org.eclipse.riena.core.util.VariableManagerUtil;
-import org.eclipse.riena.internal.core.test.RienaTestCase;
-import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 
 /**
  * Test the {@code Log4jMDCDiagnosticContext}.

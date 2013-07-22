@@ -15,8 +15,8 @@ import java.net.UnknownHostException;
 
 import org.eclipse.core.runtime.CoreException;
 
-import org.eclipse.riena.internal.core.test.RienaTestCase;
-import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
+import org.eclipse.riena.core.test.RienaTestCase;
+import org.eclipse.riena.core.test.collect.NonUITestCase;
 
 /**
  * Test the {@code JavaSystemPropertiesResolver}.

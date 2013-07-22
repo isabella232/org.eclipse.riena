@@ -13,8 +13,8 @@ package org.eclipse.riena.core.injector.extension;
 import java.io.IOException;
 
 import org.eclipse.riena.core.injector.Inject;
-import org.eclipse.riena.internal.core.test.RienaTestCase;
-import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
+import org.eclipse.riena.core.test.RienaTestCase;
+import org.eclipse.riena.core.test.collect.NonUITestCase;
 
 /**
  * Test the {@code ExtensionInjector} with respect to the onceOnly feature.

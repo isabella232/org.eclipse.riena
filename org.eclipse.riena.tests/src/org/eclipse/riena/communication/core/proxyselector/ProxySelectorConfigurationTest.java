@@ -16,10 +16,10 @@ import java.net.ProxySelector;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import org.eclipse.riena.core.test.RienaTestCase;
+import org.eclipse.riena.core.test.collect.NonUITestCase;
 import org.eclipse.riena.internal.communication.core.proxyselector.IProxySelectorExtension;
 import org.eclipse.riena.internal.communication.core.proxyselector.ProxySelectorConfiguration;
-import org.eclipse.riena.internal.core.test.RienaTestCase;
-import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 
 /**
  * Test the {@code ProxySelectorConfiguration}.

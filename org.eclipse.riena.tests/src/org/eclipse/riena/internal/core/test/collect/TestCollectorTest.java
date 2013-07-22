@@ -21,6 +21,9 @@ import org.junit.Test;
 
 import org.osgi.framework.Bundle;
 
+import org.eclipse.riena.core.test.collect.NonUITestCase;
+import org.eclipse.riena.core.test.collect.TestCollector;
+import org.eclipse.riena.core.test.collect.UITestCase;
 import org.eclipse.riena.internal.core.test.collect.testpackage.JUnit3DummyBadlyNamed;
 import org.eclipse.riena.internal.core.test.collect.testpackage.JUnit3DummyTest;
 import org.eclipse.riena.internal.core.test.collect.testpackage.JUnit4DummyBadlyNamed;

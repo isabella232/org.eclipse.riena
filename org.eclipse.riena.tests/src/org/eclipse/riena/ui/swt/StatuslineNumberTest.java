@@ -17,7 +17,7 @@ import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
-import org.eclipse.riena.internal.core.test.collect.UITestCase;
+import org.eclipse.riena.core.test.collect.UITestCase;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**

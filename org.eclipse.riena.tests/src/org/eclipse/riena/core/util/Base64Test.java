@@ -16,8 +16,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Random;
 
-import org.eclipse.riena.internal.core.test.RienaTestCase;
-import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
+import org.eclipse.riena.core.test.RienaTestCase;
+import org.eclipse.riena.core.test.collect.NonUITestCase;
 
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;

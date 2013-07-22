@@ -14,7 +14,7 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.eclipse.riena.internal.core.test.collect.NonGatherableTestCase;
+import org.eclipse.riena.core.test.collect.NonGatherableTestCase;
 
 /**
  * 

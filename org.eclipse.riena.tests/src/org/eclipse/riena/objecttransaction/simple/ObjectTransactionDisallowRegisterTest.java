@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.objecttransaction.simple;
 
-import org.eclipse.riena.internal.core.test.RienaTestCase;
-import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
+import org.eclipse.riena.core.test.RienaTestCase;
+import org.eclipse.riena.core.test.collect.NonUITestCase;
 import org.eclipse.riena.objecttransaction.IObjectTransaction;
 import org.eclipse.riena.objecttransaction.ObjectTransactionFactory;
 import org.eclipse.riena.objecttransaction.simple.value.Addresse;

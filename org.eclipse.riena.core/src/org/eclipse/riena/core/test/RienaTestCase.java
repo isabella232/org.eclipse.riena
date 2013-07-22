@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.internal.core.test;
+package org.eclipse.riena.core.test;
 
 import java.io.File;
 
@@ -243,7 +243,7 @@ public abstract class RienaTestCase extends TestCase {
 	 * @throws BundleException
 	 */
 	protected void doWithBundles(final String includePattern, final String excludePattern, final IClosure closure) throws BundleException {
-		tools.doWithBundles(includePattern, excludePattern, new org.eclipse.riena.internal.core.test.TestingTools.IClosure() {
+		tools.doWithBundles(includePattern, excludePattern, new org.eclipse.riena.core.test.TestingTools.IClosure() {
 			public void execute(final Bundle bundle) throws BundleException {
 				closure.execute(bundle);
 			}

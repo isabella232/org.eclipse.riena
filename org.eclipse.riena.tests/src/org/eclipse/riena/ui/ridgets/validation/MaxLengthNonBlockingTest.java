@@ -12,7 +12,7 @@ package org.eclipse.riena.ui.ridgets.validation;
 
 import org.eclipse.core.runtime.IStatus;
 
-import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
+import org.eclipse.riena.core.test.collect.NonUITestCase;
 
 /**
  * Tests for the {@link MaxLengthNonBlocking} rule.

@@ -17,12 +17,12 @@ import javax.net.ssl.HostnameVerifier;
 
 import org.osgi.framework.Bundle;
 
+import org.eclipse.riena.core.test.RienaTestCase;
+import org.eclipse.riena.core.test.collect.NonUITestCase;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.core.wire.Wire;
 import org.eclipse.riena.internal.communication.core.ssl.ISSLPropertiesExtension;
 import org.eclipse.riena.internal.communication.core.ssl.SSLConfiguration;
-import org.eclipse.riena.internal.core.test.RienaTestCase;
-import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.tests.nanohttp.TestServer;
 

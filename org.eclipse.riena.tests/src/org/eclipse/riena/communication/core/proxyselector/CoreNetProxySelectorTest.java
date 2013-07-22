@@ -18,8 +18,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 
-import org.eclipse.riena.internal.core.test.RienaTestCase;
-import org.eclipse.riena.internal.core.test.collect.ManualTestCase;
+import org.eclipse.riena.core.test.RienaTestCase;
+import org.eclipse.riena.core.test.collect.ManualTestCase;
 import org.eclipse.riena.tests.nanohttp.TestServer;
 
 /**

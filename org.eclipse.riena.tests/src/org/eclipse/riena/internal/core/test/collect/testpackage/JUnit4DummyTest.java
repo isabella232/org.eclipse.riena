@@ -14,7 +14,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import org.eclipse.riena.internal.core.test.collect.TestCollector;
+import org.eclipse.riena.core.test.collect.TestCollector;
 import org.eclipse.riena.internal.core.test.collect.TestCollectorTest;
 
 /**

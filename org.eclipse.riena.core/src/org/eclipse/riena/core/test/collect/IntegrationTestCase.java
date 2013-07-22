@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.internal.core.test.collect;
+package org.eclipse.riena.core.test.collect;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;

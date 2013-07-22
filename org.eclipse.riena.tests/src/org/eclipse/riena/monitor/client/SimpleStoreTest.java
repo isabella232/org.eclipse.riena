@@ -15,9 +15,9 @@ import java.io.IOException;
 
 import org.eclipse.core.runtime.CoreException;
 
+import org.eclipse.riena.core.test.RienaTestCase;
+import org.eclipse.riena.core.test.collect.NonUITestCase;
 import org.eclipse.riena.core.util.ReflectionUtils;
-import org.eclipse.riena.internal.core.test.RienaTestCase;
-import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.monitor.common.Collectible;
 
 /**

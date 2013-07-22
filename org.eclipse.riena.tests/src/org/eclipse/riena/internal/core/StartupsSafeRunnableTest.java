@@ -12,9 +12,9 @@ package org.eclipse.riena.internal.core;
 
 import org.osgi.framework.Bundle;
 
+import org.eclipse.riena.core.test.RienaTestCase;
+import org.eclipse.riena.core.test.collect.NonUITestCase;
 import org.eclipse.riena.internal.core.IRienaStartupExtension.When;
-import org.eclipse.riena.internal.core.test.RienaTestCase;
-import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 
 /**
  * Tests of the class {@link StartupsSafeRunnable}.

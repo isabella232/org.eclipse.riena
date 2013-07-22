@@ -18,8 +18,8 @@ import org.osgi.framework.ServiceRegistration;
 
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.injector.InjectionFailure;
-import org.eclipse.riena.internal.core.test.RienaTestCase;
-import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
+import org.eclipse.riena.core.test.RienaTestCase;
+import org.eclipse.riena.core.test.collect.NonUITestCase;
 
 /**
  * Tests the {@code ServiceInjector}.

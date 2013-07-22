@@ -20,10 +20,10 @@ import junit.framework.AssertionFailedError;
 import org.eclipse.core.runtime.IRegistryEventListener;
 
 import org.eclipse.riena.core.injector.Inject;
+import org.eclipse.riena.core.test.RienaTestCase;
+import org.eclipse.riena.core.test.collect.NonUITestCase;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.core.util.WeakRef;
-import org.eclipse.riena.internal.core.test.RienaTestCase;
-import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 
 /**
  * Test the {@code ExtensionInjector} with respect to the {@code WeakRef} to the

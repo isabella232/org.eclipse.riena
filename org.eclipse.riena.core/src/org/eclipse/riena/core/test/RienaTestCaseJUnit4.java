@@ -8,20 +8,29 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.internal.core.test.collect;
+package org.eclipse.riena.core.test;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Inherited;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.rules.TestName;
 
 /**
- * Marks a {@code TestCase} as an manual test.
+ *
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-@Inherited
-public @interface ManualTestCase {
+public class RienaTestCaseJUnit4 {
+	@Rule
+	public TestName name = new TestName();
+	protected final TestingTools tools = new TestingTools(new JUnit4Wrapper(this));
 
+	@Before
+	public void setUp() {
+		tools.setUp();
+	}
+
+	@After
+	public void tearDown() {
+		tools.tearDown();
+
+	}
 }

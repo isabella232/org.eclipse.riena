@@ -18,8 +18,8 @@ import java.util.GregorianCalendar;
 
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.factory.Register;
-import org.eclipse.riena.internal.core.test.RienaTestCase;
-import org.eclipse.riena.internal.core.test.collect.ManualTestCase;
+import org.eclipse.riena.core.test.RienaTestCase;
+import org.eclipse.riena.core.test.collect.ManualTestCase;
 import org.eclipse.riena.sample.app.common.calendar.ITestGregorianCalendar;
 
 /**

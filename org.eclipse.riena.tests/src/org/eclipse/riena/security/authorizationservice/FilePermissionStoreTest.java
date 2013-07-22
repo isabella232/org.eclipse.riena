@@ -23,7 +23,7 @@ import junit.framework.TestCase;
 
 import org.xml.sax.SAXException;
 
-import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
+import org.eclipse.riena.core.test.collect.NonUITestCase;
 import org.eclipse.riena.security.common.authentication.SimplePrincipal;
 import org.eclipse.riena.security.simpleservices.authorizationservice.store.FilePermissionStore;
 

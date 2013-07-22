@@ -26,9 +26,9 @@ package org.eclipse.riena.core.util;
 
 import java.util.List;
 
+import org.eclipse.riena.core.test.RienaTestCase;
+import org.eclipse.riena.core.test.collect.NonUITestCase;
 import org.eclipse.riena.core.util.Orderer.OrdererFailure;
-import org.eclipse.riena.internal.core.test.RienaTestCase;
-import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 
 /**
  * Tests for the {@link org.apache.hivemind.order.Orderer}.

@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Widget;
 
 import org.eclipse.riena.beans.common.StringBean;
-import org.eclipse.riena.internal.core.test.collect.UITestCase;
+import org.eclipse.riena.core.test.collect.UITestCase;
 import org.eclipse.riena.internal.ui.swt.test.UITestHelper;
 import org.eclipse.riena.ui.ridgets.ILinkRidget;
 import org.eclipse.riena.ui.ridgets.listener.ISelectionListener;

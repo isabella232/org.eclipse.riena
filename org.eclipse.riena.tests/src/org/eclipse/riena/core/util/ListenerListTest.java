@@ -13,8 +13,8 @@ package org.eclipse.riena.core.util;
 import java.util.EventListener;
 import java.util.Iterator;
 
-import org.eclipse.riena.internal.core.test.RienaTestCase;
-import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
+import org.eclipse.riena.core.test.RienaTestCase;
+import org.eclipse.riena.core.test.collect.NonUITestCase;
 import org.eclipse.riena.ui.ridgets.listener.IWindowRidgetListener;
 
 /**

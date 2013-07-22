@@ -13,8 +13,8 @@ package org.eclipse.riena.core.injector.service;
 import junit.framework.Test;
 import junit.framework.TestCase;
 
-import org.eclipse.riena.internal.core.test.collect.NonGatherableTestCase;
-import org.eclipse.riena.internal.core.test.collect.TestCollector;
+import org.eclipse.riena.core.test.collect.NonGatherableTestCase;
+import org.eclipse.riena.core.test.collect.TestCollector;
 import org.eclipse.riena.internal.tests.Activator;
 
 /**

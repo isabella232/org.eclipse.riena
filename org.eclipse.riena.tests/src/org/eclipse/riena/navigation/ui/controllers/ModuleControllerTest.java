@@ -16,7 +16,7 @@ import junit.framework.TestCase;
 
 import org.eclipse.swt.widgets.Shell;
 
-import org.eclipse.riena.internal.core.test.collect.UITestCase;
+import org.eclipse.riena.core.test.collect.UITestCase;
 import org.eclipse.riena.internal.ui.ridgets.swt.ShellRidget;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.NavigationNodeId;

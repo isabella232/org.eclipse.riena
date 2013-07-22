@@ -28,9 +28,9 @@ import com.caucho.hessian.io.SerializerFactory;
 
 import org.eclipse.core.runtime.Assert;
 
+import org.eclipse.riena.core.test.RienaTestCase;
+import org.eclipse.riena.core.test.collect.NonUITestCase;
 import org.eclipse.riena.core.util.ReflectionUtils;
-import org.eclipse.riena.internal.core.test.RienaTestCase;
-import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 
 /**
  * Abstract {@code TestCase} supporting tests of Hessian serializer factories.

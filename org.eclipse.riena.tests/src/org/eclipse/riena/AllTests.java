@@ -13,10 +13,10 @@ package org.eclipse.riena;
 import junit.framework.Test;
 import junit.framework.TestCase;
 
-import org.eclipse.riena.internal.core.test.collect.NonGatherableTestCase;
-import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
-import org.eclipse.riena.internal.core.test.collect.TestCollector;
-import org.eclipse.riena.internal.core.test.collect.UITestCase;
+import org.eclipse.riena.core.test.collect.NonGatherableTestCase;
+import org.eclipse.riena.core.test.collect.NonUITestCase;
+import org.eclipse.riena.core.test.collect.TestCollector;
+import org.eclipse.riena.core.test.collect.UITestCase;
 import org.eclipse.riena.internal.tests.Activator;
 
 /**

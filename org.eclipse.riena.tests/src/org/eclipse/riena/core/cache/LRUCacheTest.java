@@ -10,9 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.core.cache;
 
+import org.eclipse.riena.core.test.RienaTestCase;
+import org.eclipse.riena.core.test.collect.ManualTestCase;
 import org.eclipse.riena.core.util.Nop;
-import org.eclipse.riena.internal.core.test.RienaTestCase;
-import org.eclipse.riena.internal.core.test.collect.ManualTestCase;
 
 /**
  * Tests the LRUCache class.

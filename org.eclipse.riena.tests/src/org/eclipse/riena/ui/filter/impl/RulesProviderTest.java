@@ -13,7 +13,7 @@ package org.eclipse.riena.ui.filter.impl;
 import junit.framework.TestCase;
 
 import org.eclipse.riena.core.marker.IMarker;
-import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
+import org.eclipse.riena.core.test.collect.NonUITestCase;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.core.marker.HiddenMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
