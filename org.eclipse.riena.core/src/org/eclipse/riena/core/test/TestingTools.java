@@ -48,6 +48,8 @@ import org.eclipse.riena.internal.core.ignore.IgnoreFindBugs;
 /**
  * Base class for test cases.<br>
  * It extends the {@link junit.framework.TestCase} with a few helpers.
+ * 
+ * @since 5.0
  */
 // this is for org.eclipse.core.internal.registry.ExtensionRegistry
 @SuppressWarnings("restriction")

@@ -16,8 +16,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Marks a {@code TestCase} as an test that should not be gathered by the
- * {@code TestCollector}.
+ * Marks a {@code TestCase} as an test that should not be gathered by the {@code TestCollector}.
+ * 
+ * @since 5.0
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)

@@ -17,10 +17,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Marks a {@code TestCase} as an UI test. A UI test is a test that opens a
- * shell to create a testing environment that allows to test aspects of UI
- * widgets that could not be tested otherwise. Examples are focus handling or
- * functionality that depends on the actual visibility.
+ * Marks a {@code TestCase} as an UI test. A UI test is a test that opens a shell to create a testing environment that allows to test aspects of UI widgets that
+ * could not be tested otherwise. Examples are focus handling or functionality that depends on the actual visibility.
+ * 
+ * @since 5.0
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)

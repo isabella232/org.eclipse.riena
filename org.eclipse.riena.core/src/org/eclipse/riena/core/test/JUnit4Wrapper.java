@@ -15,7 +15,7 @@ import junit.framework.Assert;
 import org.eclipse.riena.core.test.TestingTools.TestCaseWrapper;
 
 /**
- *
+ * @since 5.0
  */
 public class JUnit4Wrapper implements TestCaseWrapper {
 

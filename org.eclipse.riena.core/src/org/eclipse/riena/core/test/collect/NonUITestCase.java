@@ -20,6 +20,7 @@ import java.lang.annotation.Target;
  * Marks a {@code TestCase} as an non-UI test.
  * 
  * @see UITestCase
+ * @since 5.0
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
