@@ -25,6 +25,9 @@
       <widget
             class="org.eclipse.swt.widgets.Label">
       </widget>
+      <widget
+            class="org.eclipse.swt.widgets.Link">
+      </widget>
    </extension>
 
 </plugin>

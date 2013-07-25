@@ -46,6 +46,7 @@ import org.eclipse.riena.ui.ridgets.IDateTextRidget;
 import org.eclipse.riena.ui.ridgets.IDateTimeRidget;
 import org.eclipse.riena.ui.ridgets.IDecimalTextRidget;
 import org.eclipse.riena.ui.ridgets.IGroupedTreeTableRidget;
+import org.eclipse.riena.ui.ridgets.ILinkRidget;
 import org.eclipse.riena.ui.ridgets.IListRidget;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IMultipleChoiceRidget;
@@ -58,9 +59,13 @@ import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
 import org.eclipse.riena.ui.ridgets.ITreeRidget;
+import org.eclipse.riena.ui.ridgets.listener.ISelectionListener;
+import org.eclipse.riena.ui.ridgets.listener.SelectionEvent;
+import org.eclipse.riena.ui.ridgets.swt.optional.ICompositeTableRidget;
 import org.eclipse.riena.ui.ridgets.tree2.ITreeNode;
 import org.eclipse.riena.ui.ridgets.tree2.TreeNode;
 import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
+import org.eclipse.riena.ui.swt.RienaMessageDialog;
 
 /**
  * Controller for the {@link MarkerSubModuleView} example.
@@ -109,8 +114,7 @@ public class MarkerSubModuleController extends SubModuleController {
 		comboAge.setSelection(1);
 
 		final ICompletionComboRidget comboStyle = getRidget(ICompletionComboRidget.class, "comboStyle"); //$NON-NLS-1$
-		final List<String> styles = Arrays.asList(new String[] {
-				"<none>", "Bordeaux", "Beaujolaix", "Merlot", "Pinot Noire", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		final List<String> styles = Arrays.asList(new String[] { "<none>", "Bordeaux", "Beaujolaix", "Merlot", "Pinot Noire", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 				"Syrah" }); //$NON-NLS-1$
 		comboStyle.bindToModel(new WritableList(styles, String.class), String.class, null, new WritableValue());
 		comboStyle.updateFromModel();
@@ -150,8 +154,7 @@ public class MarkerSubModuleController extends SubModuleController {
 
 		final ITreeRidget treePersons = getRidget(ITreeRidget.class, "treePersons"); //$NON-NLS-1$
 		treePersons.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
-		treePersons.bindToModel(createTreeRoots(), ITreeNode.class, ITreeNode.PROPERTY_CHILDREN,
-				ITreeNode.PROPERTY_PARENT, ITreeNode.PROPERTY_VALUE);
+		treePersons.bindToModel(createTreeRoots(), ITreeNode.class, ITreeNode.PROPERTY_CHILDREN, ITreeNode.PROPERTY_PARENT, ITreeNode.PROPERTY_VALUE);
 		treePersons.updateFromModel();
 
 		final IGroupedTreeTableRidget treeWCols = getRidget(IGroupedTreeTableRidget.class, "treeWCols"); //$NON-NLS-1$
@@ -159,11 +162,21 @@ public class MarkerSubModuleController extends SubModuleController {
 		treeWCols.setGroupingEnabled(true);
 		colValues = new String[] { "word", "ACount" }; //$NON-NLS-1$ //$NON-NLS-2$
 		final String[] colHeaders2 = new String[] { "Word", "#A" }; //$NON-NLS-1$ //$NON-NLS-2$
-		treeWCols.bindToModel(createTreeTableRoots(), WordNode.class, ITreeNode.PROPERTY_CHILDREN,
-				ITreeNode.PROPERTY_PARENT, colValues, colHeaders2);
+		treeWCols.bindToModel(createTreeTableRoots(), WordNode.class, ITreeNode.PROPERTY_CHILDREN, ITreeNode.PROPERTY_PARENT, colValues, colHeaders2);
 		treeWCols.updateFromModel();
 
 		final IActionRidget buttonPush = getRidget(IActionRidget.class, "buttonPush"); //$NON-NLS-1$
+
+		final ILinkRidget link = getRidget(ILinkRidget.class, "link"); //$NON-NLS-1$
+		link.setText("eclipse", "http://eclipse.org"); //$NON-NLS-1$//$NON-NLS-2$
+
+		final ISelectionListener listener = new ISelectionListener() {
+			public void ridgetSelected(final SelectionEvent event) {
+				final String linkUrl = (String) event.getNewSelection().get(0);
+				RienaMessageDialog.openInformation(null, "Link pressed", "ULR: " + linkUrl); //$NON-NLS-1$ //$NON-NLS-2$
+			}
+		};
+		link.addSelectionListener(listener);
 
 		final IToggleButtonRidget buttonToggleA = getRidget(IToggleButtonRidget.class, "buttonToggleA"); //$NON-NLS-1$
 		final IToggleButtonRidget buttonToggleB = getRidget(IToggleButtonRidget.class, "buttonToggleB"); //$NON-NLS-1$
@@ -177,10 +190,9 @@ public class MarkerSubModuleController extends SubModuleController {
 		final IToggleButtonRidget buttonCheckB = getRidget(IToggleButtonRidget.class, "buttonCheckB"); //$NON-NLS-1$
 		buttonCheckA.setSelected(true);
 
-		final IRidget[] markables = new IRidget[] { textName, textPrice, textAmount, textDate, dtDate, dtPicker,
-				comboAge, comboStyle, comboSize, choiceType, choiceFlavor, listPersons, tablePersons, treePersons,
-				treeWCols, buttonToggleA, buttonToggleB, buttonPush, buttonRadioA, buttonRadioB, buttonCheckA,
-				buttonCheckB };
+		final IRidget[] markables = new IRidget[] { textName, textPrice, textAmount, textDate, dtDate, dtPicker, comboAge, comboStyle, comboSize, choiceType,
+				choiceFlavor, listPersons, tablePersons, treePersons, treeWCols, buttonToggleA, buttonToggleB, buttonPush, link, buttonRadioA, buttonRadioB,
+				buttonCheckA, buttonCheckB };
 
 		final IToggleButtonRidget checkMandatory = getRidget(IToggleButtonRidget.class, "checkMandatory"); //$NON-NLS-1$
 		final IToggleButtonRidget checkError = getRidget(IToggleButtonRidget.class, "checkError"); //$NON-NLS-1$
@@ -394,8 +406,7 @@ public class MarkerSubModuleController extends SubModuleController {
 	}
 
 	/**
-	 * A row ridget with two text ridgets for use with
-	 * {@link ICompositeTableRidget}.
+	 * A row ridget with two text ridgets for use with {@link ICompositeTableRidget}.
 	 */
 	public static final class RowRidget extends AbstractCompositeRidget implements IRowRidget {
 		private Person rowData;

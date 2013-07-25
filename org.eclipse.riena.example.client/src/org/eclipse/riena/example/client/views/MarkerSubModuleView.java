@@ -83,8 +83,7 @@ public class MarkerSubModuleView extends SubModuleView {
 	protected Group createControlsGroup(final Composite parent) {
 		final Group group = UIControlsFactory.createGroup(parent, "UI-Controls:"); //$NON-NLS-1$
 		final int defaultVSpacing = new GridLayout().verticalSpacing;
-		GridLayoutFactory.swtDefaults().numColumns(2).equalWidth(false).margins(20, 20).spacing(10, defaultVSpacing)
-				.applyTo(group);
+		GridLayoutFactory.swtDefaults().numColumns(2).equalWidth(false).margins(20, 20).spacing(10, defaultVSpacing).applyTo(group);
 
 		final GridDataFactory hFillFactory = GridDataFactory.fillDefaults().grab(true, false);
 
@@ -122,14 +121,12 @@ public class MarkerSubModuleView extends SubModuleView {
 		hFillFactory.applyTo(ccomboSize);
 
 		UIControlsFactory.createLabel(group, "Type:", "labelchoiceType"); //$NON-NLS-1$ //$NON-NLS-2$
-		final ChoiceComposite choiceType = UIControlsFactory.createChoiceComposite(group, SWT.BORDER, false,
-				"choiceType"); //$NON-NLS-1$
+		final ChoiceComposite choiceType = UIControlsFactory.createChoiceComposite(group, SWT.BORDER, false, "choiceType"); //$NON-NLS-1$
 		choiceType.setOrientation(SWT.HORIZONTAL);
 		hFillFactory.applyTo(choiceType);
 
 		UIControlsFactory.createLabel(group, "Flavor:", "labelchoiceFlavor"); //$NON-NLS-1$ //$NON-NLS-2$
-		final ChoiceComposite choiceFlavor = UIControlsFactory.createChoiceComposite(group, SWT.BORDER, true,
-				"choiceFlavor"); //$NON-NLS-1$
+		final ChoiceComposite choiceFlavor = UIControlsFactory.createChoiceComposite(group, SWT.BORDER, true, "choiceFlavor"); //$NON-NLS-1$
 		choiceFlavor.setOrientation(SWT.HORIZONTAL);
 		hFillFactory.applyTo(choiceFlavor);
 
@@ -141,8 +138,7 @@ public class MarkerSubModuleView extends SubModuleView {
 		final int hHint = UIControlsFactory.getHeightHint(listPersons, 5);
 		hFillFactory.hint(150, hHint).applyTo(listPersons);
 
-		final Table tablePersons = UIControlsFactory.createTable(cmpReviewed, SWT.V_SCROLL | SWT.BORDER
-				| SWT.FULL_SELECTION, "tablePersons"); //$NON-NLS-1$
+		final Table tablePersons = UIControlsFactory.createTable(cmpReviewed, SWT.V_SCROLL | SWT.BORDER | SWT.FULL_SELECTION, "tablePersons"); //$NON-NLS-1$
 		tablePersons.setLinesVisible(true);
 		final TableColumn tac1 = new TableColumn(tablePersons, SWT.NONE);
 		tac1.setWidth(100);
@@ -153,12 +149,10 @@ public class MarkerSubModuleView extends SubModuleView {
 		UIControlsFactory.createLabel(group, ""); //$NON-NLS-1$
 		final Composite cmpReviewed2 = createComposite(group, 2, true);
 
-		final Tree treePersons = UIControlsFactory.createTree(cmpReviewed2, SWT.V_SCROLL | SWT.BORDER
-				| SWT.FULL_SELECTION, "treePersons"); //$NON-NLS-1$
+		final Tree treePersons = UIControlsFactory.createTree(cmpReviewed2, SWT.V_SCROLL | SWT.BORDER | SWT.FULL_SELECTION, "treePersons"); //$NON-NLS-1$
 		hFillFactory.hint(150, hHint).applyTo(treePersons);
 
-		final Tree treeWCols = UIControlsFactory.createTree(cmpReviewed2, SWT.V_SCROLL | SWT.BORDER
-				| SWT.FULL_SELECTION | SWT.MULTI, "treeWCols"); //$NON-NLS-1$
+		final Tree treeWCols = UIControlsFactory.createTree(cmpReviewed2, SWT.V_SCROLL | SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI, "treeWCols"); //$NON-NLS-1$
 		treeWCols.setLinesVisible(true);
 		treeWCols.setHeaderVisible(true);
 		final TreeColumn trc1 = new TreeColumn(treeWCols, SWT.NONE);
@@ -167,7 +161,7 @@ public class MarkerSubModuleView extends SubModuleView {
 		trc2.setWidth(40);
 		hFillFactory.hint(200, hHint).applyTo(treeWCols);
 
-		UIControlsFactory.createLabel(group, "Toggle Buttons:", "labelbuttonToggle"); //$NON-NLS-1$ //$NON-NLS-2$
+		UIControlsFactory.createLabel(group, "Toggle Buttons:", "labelbuttonToggleA"); //$NON-NLS-1$ //$NON-NLS-2$
 		final Composite cmpButtons = createComposite(group, 6, false);
 		UIControlsFactory.createButtonToggle(cmpButtons, "ToggleA", "buttonToggleA"); //$NON-NLS-1$ //$NON-NLS-2$
 		UIControlsFactory.createButtonToggle(cmpButtons, "ToggleB", "buttonToggleB"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -179,13 +173,15 @@ public class MarkerSubModuleView extends SubModuleView {
 		UIControlsFactory.createLabel(group, "Push Buttons:", "labelbuttonPush"); //$NON-NLS-1$ //$NON-NLS-2$
 		UIControlsFactory.createButton(group, "Push", "buttonPush"); //$NON-NLS-1$ //$NON-NLS-2$
 
+		UIControlsFactory.createLabel(group, "Link:", "labellink"); //$NON-NLS-1$ //$NON-NLS-2$
+		UIControlsFactory.createLink(group, SWT.FLAT, "link"); //$NON-NLS-1$
+
 		return group;
 	}
 
 	protected Composite createComposite(final Group group, final int numColumns, final boolean equalWidth) {
 		final Composite composite = UIControlsFactory.createComposite(group);
-		GridLayoutFactory.fillDefaults().numColumns(numColumns).equalWidth(equalWidth).spacing(10, 0)
-				.applyTo(composite);
+		GridLayoutFactory.fillDefaults().numColumns(numColumns).equalWidth(equalWidth).spacing(10, 0).applyTo(composite);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(composite);
 		return composite;
 	}
