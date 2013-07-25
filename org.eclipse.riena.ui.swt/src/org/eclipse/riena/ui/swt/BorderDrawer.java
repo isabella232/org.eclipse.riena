@@ -159,6 +159,8 @@ public class BorderDrawer implements Listener {
 			registerToControl(control.getParent(), SWTFacade.Paint);
 		} else if (!useVisibleControlArea) {
 			registerToControlAndChildren(control, SWTFacade.Paint);
+		} else if (control instanceof ChoiceComposite) {
+			registerToControl(((ChoiceComposite) control).getContentComposite(), SWTFacade.Paint);
 		} else {
 			registerToControl(control, SWTFacade.Paint);
 		}
