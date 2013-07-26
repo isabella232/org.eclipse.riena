@@ -41,6 +41,7 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.TypedListener;
 import org.eclipse.swt.widgets.Widget;
 
 import org.eclipse.riena.ui.swt.facades.ClipboardFacade;
@@ -541,7 +542,14 @@ public abstract class CompletionCombo extends Composite {
 	 * @see ModifyListener
 	 * @see #removeModifyListener
 	 */
-	public abstract void addModifyListener(final ModifyListener listener);
+	public void addModifyListener(final ModifyListener listener) {
+		checkWidget();
+		if (listener == null) {
+			SWT.error(SWT.ERROR_NULL_ARGUMENT);
+		}
+		final TypedListener typedListener = new TypedListener(listener);
+		addListener(SWT.Modify, typedListener);
+	}
 
 	/**
 	 * Adds the listener to the collection of listeners who will be notified when the user changes the receiver's selection, by sending it one of the messages
@@ -568,7 +576,15 @@ public abstract class CompletionCombo extends Composite {
 	 * @see #removeSelectionListener
 	 * @see SelectionEvent
 	 */
-	public abstract void addSelectionListener(final SelectionListener listener);
+	public void addSelectionListener(final SelectionListener listener) {
+		checkWidget();
+		if (listener == null) {
+			SWT.error(SWT.ERROR_NULL_ARGUMENT);
+		}
+		final TypedListener typedListener = new TypedListener(listener);
+		addListener(SWT.Selection, typedListener);
+		addListener(SWT.DefaultSelection, typedListener);
+	}
 
 	/**
 	 * Adds the listener to the collection of listeners who will be notified when the receiver's text is verified, by sending it one of the messages defined in
@@ -590,7 +606,14 @@ public abstract class CompletionCombo extends Composite {
 	 * @see VerifyListener
 	 * @see #removeVerifyListener
 	 */
-	public abstract void addVerifyListener(final VerifyListener listener);
+	public void addVerifyListener(final VerifyListener listener) {
+		checkWidget();
+		if (listener == null) {
+			SWT.error(SWT.ERROR_NULL_ARGUMENT);
+		}
+		final TypedListener typedListener = new TypedListener(listener);
+		addListener(SWT.Verify, typedListener);
+	}
 
 	/**
 	 * Adds the given {@link DropDownListener} to the listeners list.
@@ -1525,7 +1548,13 @@ public abstract class CompletionCombo extends Composite {
 	 * @see ModifyListener
 	 * @see #addModifyListener
 	 */
-	public abstract void removeModifyListener(final ModifyListener listener);
+	public void removeModifyListener(final ModifyListener listener) {
+		checkWidget();
+		if (listener == null) {
+			SWT.error(SWT.ERROR_NULL_ARGUMENT);
+		}
+		removeListener(SWT.Modify, listener);
+	}
 
 	/**
 	 * Removes the listener from the collection of listeners who will be notified when the user changes the receiver's selection.
@@ -1546,7 +1575,14 @@ public abstract class CompletionCombo extends Composite {
 	 * @see SelectionListener
 	 * @see #addSelectionListener
 	 */
-	public abstract void removeSelectionListener(final SelectionListener listener);
+	public void removeSelectionListener(final SelectionListener listener) {
+		checkWidget();
+		if (listener == null) {
+			SWT.error(SWT.ERROR_NULL_ARGUMENT);
+		}
+		removeListener(SWT.Selection, listener);
+		removeListener(SWT.DefaultSelection, listener);
+	}
 
 	/**
 	 * Removes the listener from the collection of listeners who will be notified when the control is verified.
@@ -1567,7 +1603,13 @@ public abstract class CompletionCombo extends Composite {
 	 * @see VerifyListener
 	 * @see #addVerifyListener
 	 */
-	public abstract void removeVerifyListener(final VerifyListener listener);
+	public void removeVerifyListener(final VerifyListener listener) {
+		checkWidget();
+		if (listener == null) {
+			SWT.error(SWT.ERROR_NULL_ARGUMENT);
+		}
+		removeListener(SWT.Verify, listener);
+	}
 
 	/**
 	 * Adds the given {@link DropDownListener} to the listeners list.
