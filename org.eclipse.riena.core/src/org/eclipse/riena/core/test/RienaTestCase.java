@@ -21,9 +21,10 @@ import org.osgi.framework.BundleException;
 /**
  * Base class for test cases.<br>
  * It extends the {@link junit.framework.TestCase} with a few helpers.
+ * 
+ * @since 5.0
  */
 // this is for org.eclipse.core.internal.registry.ExtensionRegistry
-@SuppressWarnings("restriction")
 public abstract class RienaTestCase extends TestCase {
 	protected final TestingTools tools = new TestingTools(new JUnit3Wrapper(this));
 
