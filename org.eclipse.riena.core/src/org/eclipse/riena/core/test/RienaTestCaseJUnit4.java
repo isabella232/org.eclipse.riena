@@ -16,7 +16,7 @@ import org.junit.Rule;
 import org.junit.rules.TestName;
 
 /**
- *
+ * @since 5.0
  */
 public class RienaTestCaseJUnit4 {
 	@Rule

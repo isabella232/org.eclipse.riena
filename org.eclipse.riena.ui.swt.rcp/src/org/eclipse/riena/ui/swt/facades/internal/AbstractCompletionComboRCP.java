@@ -19,9 +19,6 @@ import org.eclipse.swt.accessibility.AccessibleControlEvent;
 import org.eclipse.swt.accessibility.AccessibleEvent;
 import org.eclipse.swt.accessibility.AccessibleTextAdapter;
 import org.eclipse.swt.accessibility.AccessibleTextEvent;
-import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Button;
@@ -29,7 +26,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.widgets.TypedListener;
 
 import org.eclipse.riena.ui.swt.CompletionCombo;
 
@@ -49,65 +45,6 @@ abstract class AbstractCompletionComboRCP extends CompletionCombo {
 	protected AbstractCompletionComboRCP(final Composite parent, final int style) {
 		super(parent, style);
 		initAccessible();
-	}
-
-	@Override
-	public void addModifyListener(final ModifyListener listener) {
-		checkWidget();
-		if (listener == null) {
-			SWT.error(SWT.ERROR_NULL_ARGUMENT);
-		}
-		final TypedListener typedListener = new TypedListener(listener);
-		addListener(SWT.Modify, typedListener);
-	}
-
-	@Override
-	public void addSelectionListener(final SelectionListener listener) {
-		checkWidget();
-		if (listener == null) {
-			SWT.error(SWT.ERROR_NULL_ARGUMENT);
-		}
-		final TypedListener typedListener = new TypedListener(listener);
-		addListener(SWT.Selection, typedListener);
-		addListener(SWT.DefaultSelection, typedListener);
-	}
-
-	@Override
-	public void addVerifyListener(final VerifyListener listener) {
-		checkWidget();
-		if (listener == null) {
-			SWT.error(SWT.ERROR_NULL_ARGUMENT);
-		}
-		final TypedListener typedListener = new TypedListener(listener);
-		addListener(SWT.Verify, typedListener);
-	}
-
-	@Override
-	public void removeModifyListener(final ModifyListener listener) {
-		checkWidget();
-		if (listener == null) {
-			SWT.error(SWT.ERROR_NULL_ARGUMENT);
-		}
-		removeListener(SWT.Modify, listener);
-	}
-
-	@Override
-	public void removeSelectionListener(final SelectionListener listener) {
-		checkWidget();
-		if (listener == null) {
-			SWT.error(SWT.ERROR_NULL_ARGUMENT);
-		}
-		removeListener(SWT.Selection, listener);
-		removeListener(SWT.DefaultSelection, listener);
-	}
-
-	@Override
-	public void removeVerifyListener(final VerifyListener listener) {
-		checkWidget();
-		if (listener == null) {
-			SWT.error(SWT.ERROR_NULL_ARGUMENT);
-		}
-		removeListener(SWT.Verify, listener);
 	}
 
 	@Override

@@ -31,6 +31,8 @@ import org.eclipse.riena.core.util.Iter;
 
 /**
  * A helper for collecting test classes.
+ * 
+ * @since 5.0
  */
 public final class TestCollector {
 
