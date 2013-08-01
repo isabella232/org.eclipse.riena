@@ -26,8 +26,7 @@ import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
- * Demonstrates shared views (i.e. one view instance, with several distrinct
- * controllers and data).
+ * Demonstrates shared views (i.e. one view instance, with several distrinct controllers and data).
  */
 public class SharedViewDemoSubModuleView extends SubModuleView {
 
@@ -46,21 +45,25 @@ public class SharedViewDemoSubModuleView extends SubModuleView {
 		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 		addUIControl(parent, "view"); //$NON-NLS-1$
 
-		GridLayoutFactory.fillDefaults().numColumns(2).margins(20, 20).applyTo(parent);
+		GridLayoutFactory.fillDefaults().numColumns(3).margins(20, 20).applyTo(parent);
 
 		final String text = String.format("(Instance %d Data)", instanceIndex); //$NON-NLS-1$
 		final Label lblInfo = UIControlsFactory.createLabel(parent, text);
-		GridDataFactory.fillDefaults().span(2, 1).applyTo(lblInfo);
+		GridDataFactory.fillDefaults().span(3, 1).applyTo(lblInfo);
 
-		UIControlsFactory.createLabel(parent, "&First Name:"); //$NON-NLS-1$
+		UIControlsFactory.createLabel(parent, "First &Name:"); //$NON-NLS-1$
 		final Text txtFirst = UIControlsFactory.createText(parent, SWT.SINGLE, "txtFirst"); //$NON-NLS-1$
-		GridDataFactory.fillDefaults().hint(200, SWT.DEFAULT).applyTo(txtFirst);
+		GridDataFactory.fillDefaults().hint(200, SWT.DEFAULT).span(2, 1).applyTo(txtFirst);
 
 		UIControlsFactory.createLabel(parent, "&Last Name:"); //$NON-NLS-1$
 		final Text txtLast = UIControlsFactory.createText(parent, SWT.SINGLE, "txtLast"); //$NON-NLS-1$
-		GridDataFactory.fillDefaults().hint(200, SWT.DEFAULT).applyTo(txtLast);
+		GridDataFactory.fillDefaults().hint(200, SWT.DEFAULT).span(2, 1).applyTo(txtLast);
 
-		UIControlsFactory.createButton(parent, "Default Button", "btnDefault"); //$NON-NLS-1$ //$NON-NLS-2$
+		UIControlsFactory.createLabel(parent, "Gender:"); //$NON-NLS-1$
+		UIControlsFactory.createButtonRadio(parent, "&female", "btnFemale"); //$NON-NLS-1$ //$NON-NLS-2$
+		UIControlsFactory.createButtonRadio(parent, "&male", "btnMale"); //$NON-NLS-1$ //$NON-NLS-2$
+
+		UIControlsFactory.createButton(parent, "Default &Button", "btnDefault"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	@Override

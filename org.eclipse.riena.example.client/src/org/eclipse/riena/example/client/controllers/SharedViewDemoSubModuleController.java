@@ -19,6 +19,7 @@ import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.ICompositeRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
+import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
 
 /**
  * Controller for {@link SharedViewDemoSubModuleView}.
@@ -33,7 +34,7 @@ public class SharedViewDemoSubModuleController extends SubModuleController {
 
 	public SharedViewDemoSubModuleController(final ISubModuleNode navigationNode) {
 		super(navigationNode);
-		personBean = new Person("Max", "Muster"); //$NON-NLS-1$ //$NON-NLS-2$
+		personBean = new Person("", "", null); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	@Override
@@ -42,8 +43,22 @@ public class SharedViewDemoSubModuleController extends SubModuleController {
 		txtFirst.bindToModel(personBean, Person.PROPERTY_FIRSTNAME);
 
 		final ITextRidget txtLast = getRidget(ITextRidget.class, "txtLast"); //$NON-NLS-1$
-		txtLast.addMarker(new MandatoryMarker());
+		MandatoryMarker marker = new M1();
+		txtLast.addMarker(marker);
+		marker.setAttribute("ID", txtLast.getID());
 		txtLast.bindToModel(personBean, Person.PROPERTY_LASTNAME);
+
+		final IToggleButtonRidget btnFemale = getRidget(IToggleButtonRidget.class, "btnFemale"); //$NON-NLS-1$
+		marker = new M2();
+		btnFemale.addMarker(marker);
+		marker.setAttribute("ID", btnFemale.getID());
+		btnFemale.bindToModel(this, "female"); //$NON-NLS-1$
+
+		final IToggleButtonRidget btnMale = getRidget(IToggleButtonRidget.class, "btnMale"); //$NON-NLS-1$
+		marker = new M3();
+		btnMale.addMarker(marker);
+		marker.setAttribute("ID", btnMale.getID());
+		btnFemale.bindToModel(this, "male"); //$NON-NLS-1$
 
 		final IActionRidget btnDefault = getRidget(IActionRidget.class, "btnDefault"); //$NON-NLS-1$
 		addDefaultAction(getRidget(ICompositeRidget.class, "view"), btnDefault); //$NON-NLS-1$
@@ -52,5 +67,57 @@ public class SharedViewDemoSubModuleController extends SubModuleController {
 				System.out.println(btnDefault.getText() + " pushed."); //$NON-NLS-1$
 			}
 		});
+		updateAllRidgetsFromModel();
 	}
+
+	public boolean isMale() {
+		return Person.MALE.equals(personBean.getGender());
+	}
+
+	public void setMale(final boolean male) {
+		if (male) {
+			personBean.setGender(Person.MALE);
+		}
+	}
+
+	public boolean isFemale() {
+		return Person.FEMALE.equals(personBean.getGender());
+	}
+
+	public void setFemale(final boolean female) {
+		if (female) {
+			personBean.setGender(Person.FEMALE);
+		}
+	}
+
+	public class M1 extends MandatoryMarker {
+
+		@Override
+		public void setDisabled(final boolean disabled) {
+			super.setDisabled(disabled);
+			System.out.println("SharedViewDemoSubModuleController.M1.setDisabled() " + disabled);
+		}
+
+	}
+
+	public class M2 extends MandatoryMarker {
+
+		@Override
+		public void setDisabled(final boolean disabled) {
+			super.setDisabled(disabled);
+			System.out.println("SharedViewDemoSubModuleController.M2.setDisabled() " + disabled);
+		}
+
+	}
+
+	public class M3 extends MandatoryMarker {
+
+		@Override
+		public void setDisabled(final boolean disabled) {
+			super.setDisabled(disabled);
+			System.out.println("SharedViewDemoSubModuleController.M3.setDisabled() " + disabled);
+		}
+
+	}
+
 }

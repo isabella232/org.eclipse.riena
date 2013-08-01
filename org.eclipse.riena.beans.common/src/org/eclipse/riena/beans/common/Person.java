@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.runtime.Assert;
-
 /**
  * List element of the list held by the <code>PersonManager</code>
  */
@@ -114,6 +113,14 @@ public class Person extends AbstractBean {
 		gender = MALE;
 		address = new Address();
 		hobby = new HobbyProvider().getHobbies().get(1);
+	}
+
+	/**
+	 * @since 5.0
+	 */
+	public Person(final String lastname, final String firstname, final String gender) {
+		this(lastname, firstname);
+		this.gender = gender;
 	}
 
 	/**
