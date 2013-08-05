@@ -43,21 +43,15 @@ public class SharedViewDemoSubModuleController extends SubModuleController {
 		txtFirst.bindToModel(personBean, Person.PROPERTY_FIRSTNAME);
 
 		final ITextRidget txtLast = getRidget(ITextRidget.class, "txtLast"); //$NON-NLS-1$
-		MandatoryMarker marker = new M1();
-		txtLast.addMarker(marker);
-		marker.setAttribute("ID", txtLast.getID());
+		txtLast.addMarker(new MandatoryMarker());
 		txtLast.bindToModel(personBean, Person.PROPERTY_LASTNAME);
 
 		final IToggleButtonRidget btnFemale = getRidget(IToggleButtonRidget.class, "btnFemale"); //$NON-NLS-1$
-		marker = new M2();
-		btnFemale.addMarker(marker);
-		marker.setAttribute("ID", btnFemale.getID());
+		btnFemale.addMarker(new MandatoryMarker());
 		btnFemale.bindToModel(this, "female"); //$NON-NLS-1$
 
 		final IToggleButtonRidget btnMale = getRidget(IToggleButtonRidget.class, "btnMale"); //$NON-NLS-1$
-		marker = new M3();
-		btnMale.addMarker(marker);
-		marker.setAttribute("ID", btnMale.getID());
+		btnMale.addMarker(new MandatoryMarker());
 		btnFemale.bindToModel(this, "male"); //$NON-NLS-1$
 
 		final IActionRidget btnDefault = getRidget(IActionRidget.class, "btnDefault"); //$NON-NLS-1$
@@ -88,36 +82,6 @@ public class SharedViewDemoSubModuleController extends SubModuleController {
 		if (female) {
 			personBean.setGender(Person.FEMALE);
 		}
-	}
-
-	public class M1 extends MandatoryMarker {
-
-		@Override
-		public void setDisabled(final boolean disabled) {
-			super.setDisabled(disabled);
-			System.out.println("SharedViewDemoSubModuleController.M1.setDisabled() " + disabled);
-		}
-
-	}
-
-	public class M2 extends MandatoryMarker {
-
-		@Override
-		public void setDisabled(final boolean disabled) {
-			super.setDisabled(disabled);
-			System.out.println("SharedViewDemoSubModuleController.M2.setDisabled() " + disabled);
-		}
-
-	}
-
-	public class M3 extends MandatoryMarker {
-
-		@Override
-		public void setDisabled(final boolean disabled) {
-			super.setDisabled(disabled);
-			System.out.println("SharedViewDemoSubModuleController.M3.setDisabled() " + disabled);
-		}
-
 	}
 
 }
