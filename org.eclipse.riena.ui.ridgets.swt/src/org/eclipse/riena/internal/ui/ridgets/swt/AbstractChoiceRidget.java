@@ -10,11 +10,14 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import org.eclipse.core.databinding.observable.list.WritableList;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.ui.swt.ChoiceComposite;
+import org.eclipse.riena.ui.swt.lnf.LnFUpdater;
 import org.eclipse.riena.ui.swt.utils.SWTControlFinder;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
@@ -22,6 +25,80 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
  * Baseclass for all ChoiceRidgets.
  */
 public abstract class AbstractChoiceRidget extends AbstractSWTRidget {
+	protected static final String CHOICE_RIDGET_LISTENER = "choiceRidget.listener"; //$NON-NLS-1$
+	protected final static LnFUpdater LNF_UPDATER = LnFUpdater.getInstance();
+
+	protected String[] optionLabels;
+
+	/** The list of available options. */
+	protected WritableList optionsObservable = new WritableList();
+
+	public AbstractChoiceRidget() {
+		optionsObservable = new WritableList();
+	}
+
+	protected void layoutNewChildren() {
+		final ChoiceComposite control = (ChoiceComposite) getUIControl();
+		if (SwtUtilities.isDisposed(control)) {
+			return;
+		}
+		final Control[] childrenButtonsOld = control.getChildrenButtons();
+		final int oldCount = childrenButtonsOld.length;
+		final int newCount = optionsObservable.toArray().length;
+
+		//		disposeChildren(control);
+		createChildren(control, true);
+
+		if (oldCount != newCount) {
+			// if the number of children has changed
+			// update the layout of the parent composite
+			control.getParent().layout(true, false);
+		}
+	}
+
+	protected void createChildren(final ChoiceComposite control) {
+		createChildren(control, false);
+	}
+
+	protected void createChildren(final ChoiceComposite control, final boolean reuseButtons) {
+		if (control != null && !control.isDisposed()) {
+			final Object[] values = optionsObservable.toArray();
+			final Control[] childrenOld = control.getChildrenButtons();
+
+			int i;
+			for (i = 0; i < values.length; i++) {
+				final Object value = values[i];
+				final String caption = optionLabels != null ? optionLabels[i] : String.valueOf(value);
+
+				Button button;
+				if (reuseButtons && i < childrenOld.length) {
+					button = (Button) childrenOld[i];
+					unconfigureOptionButton(button);
+					button.setText(caption);
+				} else {
+					button = control.createChild(caption);
+				}
+				button.setData(value);
+				configureOptionButton(button);
+			}
+
+			if (reuseButtons) {
+				// dispose buttons that are not needed anymore
+				while (i < childrenOld.length) {
+					childrenOld[i++].dispose();
+				}
+			}
+
+			updateSelection(control);
+			LNF_UPDATER.updateUIControls(control, true);
+		}
+	}
+
+	protected abstract void updateSelection(final ChoiceComposite control);
+
+	protected abstract void configureOptionButton(final Button button);
+
+	protected abstract void unconfigureOptionButton(final Button button);
 
 	protected void disposeChildren(final ChoiceComposite control) {
 		if (control != null && !control.isDisposed()) {

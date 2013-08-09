@@ -30,6 +30,7 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
@@ -44,29 +45,22 @@ import org.eclipse.riena.ui.ridgets.listener.ISelectionListener;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.ui.ridgets.swt.MarkerSupport;
 import org.eclipse.riena.ui.swt.ChoiceComposite;
-import org.eclipse.riena.ui.swt.lnf.LnFUpdater;
 
 /**
  * Ridget for a {@link ChoiceComposite} widget with multiple selection.
  */
 public class MultipleChoiceRidget extends AbstractChoiceRidget implements IMultipleChoiceRidget {
 
-	private final static LnFUpdater LNF_UPDATER = LnFUpdater.getInstance();
-
-	/** The list of available options. */
-	private final WritableList optionsObservable;
 	/** The selected option. */
 	private final WritableList selectionObservable;
 
 	private Binding optionsBinding;
 	private Binding selectionBinding;
-	private String[] optionLabels;
 
 	/** A list of selection listeners. */
 	private ListenerList<ISelectionListener> selectionListeners;
 
 	public MultipleChoiceRidget() {
-		optionsObservable = new WritableList();
 		selectionObservable = new WritableList();
 		selectionObservable.addChangeListener(new IChangeListener() {
 			public void handleChange(final ChangeEvent event) {
@@ -165,16 +159,7 @@ public class MultipleChoiceRidget extends AbstractChoiceRidget implements IMulti
 		optionsBinding.updateModelToTarget();
 		final List<?> oldSelection = new ArrayList<Object>(selectionObservable);
 		selectionBinding.updateModelToTarget();
-		final ChoiceComposite control = getUIControl();
-		final int oldCount = getChildrenCount(control);
-		disposeChildren(control);
-		createChildren(control);
-		final int newCount = getChildrenCount(control);
-		if (oldCount != newCount) {
-			// if the number of children has changed
-			// update the layout of the parent composite
-			control.getParent().layout(true, false);
-		}
+		layoutNewChildren();
 		// remove unavailable elements and re-apply selection
 		for (final Object candidate : oldSelection) {
 			if (!optionsObservable.contains(candidate)) {
@@ -292,44 +277,44 @@ public class MultipleChoiceRidget extends AbstractChoiceRidget implements IMulti
 		bindUIControl();
 	}
 
-	private void createChildren(final ChoiceComposite control) {
-		if (control != null && !control.isDisposed()) {
-			final Object[] values = optionsObservable.toArray();
-			for (int i = 0; i < values.length; i++) {
-				final Object value = values[i];
-				final String caption = optionLabels != null ? optionLabels[i] : String.valueOf(value);
-
-				final Button button = control.createChild(caption);
-				button.setData(value);
-				button.addSelectionListener(new SelectionAdapter() {
-					@SuppressWarnings("unchecked")
-					@Override
-					public void widgetSelected(final SelectionEvent e) {
-						final Button button = (Button) e.widget;
-						final Object data = button.getData();
-						if (!isOutputOnly()) {
-							if (button.getSelection()) {
-								if (!selectionObservable.contains(data)) {
-									final List<?> oldSelection = new ArrayList<Object>(selectionObservable);
-									selectionObservable.add(data);
-									firePropertyChange(PROPERTY_SELECTION, oldSelection, selectionObservable);
-								}
-							} else {
-								final List<?> oldSelection = new ArrayList<Object>(selectionObservable);
-								selectionObservable.remove(data);
-								firePropertyChange(PROPERTY_SELECTION, oldSelection, selectionObservable);
-							}
-							if (!button.isDisposed()) {
-								// this is a workaround to make composite table aware of focus changes, Bug #264627
-								fireFocusIn(button.getParent());
-							}
+	@Override
+	protected void configureOptionButton(final Button button) {
+		final SelectionAdapter listener = new SelectionAdapter() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void widgetSelected(final SelectionEvent e) {
+				final Button button = (Button) e.widget;
+				final Object data = button.getData();
+				if (!isOutputOnly()) {
+					if (button.getSelection()) {
+						if (!selectionObservable.contains(data)) {
+							final List<?> oldSelection = new ArrayList<Object>(selectionObservable);
+							selectionObservable.add(data);
+							firePropertyChange(PROPERTY_SELECTION, oldSelection, selectionObservable);
 						}
+					} else {
+						final List<?> oldSelection = new ArrayList<Object>(selectionObservable);
+						selectionObservable.remove(data);
+						firePropertyChange(PROPERTY_SELECTION, oldSelection, selectionObservable);
 					}
-				});
+					if (!button.isDisposed()) {
+						// this is a workaround to make composite table aware of focus changes, Bug #264627
+						fireFocusIn(button.getParent());
+					}
+				}
 			}
-			updateSelection(control);
-			LNF_UPDATER.updateUIControls(control, true);
+		};
+		button.addSelectionListener(listener);
+		button.setData(CHOICE_RIDGET_LISTENER, listener);
+	}
+
+	@Override
+	protected void unconfigureOptionButton(final Button button) {
+		final Object data = button.getData(CHOICE_RIDGET_LISTENER);
+		if (data instanceof SelectionListener) {
+			button.removeSelectionListener((SelectionListener) data);
 		}
+		button.setData(CHOICE_RIDGET_LISTENER, null);
 	}
 
 	private void fireFocusIn(final Control control) {
@@ -353,7 +338,8 @@ public class MultipleChoiceRidget extends AbstractChoiceRidget implements IMulti
 	 * Iterates over the composite's children, disabling all buttons, except the one that has value as it's data element. If the ridget is not enabled, it may
 	 * deselect all buttons, as mandated by {@link MarkerSupport#isHideDisabledRidgetContent()}.
 	 */
-	private void updateSelection(final ChoiceComposite control) {
+	@Override
+	protected void updateSelection(final ChoiceComposite control) {
 		final boolean canSelect = isEnabled() || !MarkerSupport.isHideDisabledRidgetContent();
 		if (control != null && !control.isDisposed()) {
 			for (final Control child : control.getChildrenButtons()) {

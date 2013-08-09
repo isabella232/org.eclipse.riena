@@ -34,6 +34,7 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
@@ -48,23 +49,17 @@ import org.eclipse.riena.ui.ridgets.listener.ISelectionListener;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.ui.ridgets.swt.MarkerSupport;
 import org.eclipse.riena.ui.swt.ChoiceComposite;
-import org.eclipse.riena.ui.swt.lnf.LnFUpdater;
 
 /**
  * Ridget for a {@link ChoiceComposite} widget with single selection.
  */
 public class SingleChoiceRidget extends AbstractChoiceRidget implements ISingleChoiceRidget {
 
-	private final static LnFUpdater LNF_UPDATER = LnFUpdater.getInstance();
-
-	/** The list of available options. */
-	private final WritableList optionsObservable;
 	/** The selected option. */
 	private final WritableValue selectionObservable;
 
 	private Binding optionsBinding;
 	private Binding selectionBinding;
-	private String[] optionLabels;
 
 	private Object emptySelectionItem;
 
@@ -74,7 +69,6 @@ public class SingleChoiceRidget extends AbstractChoiceRidget implements ISingleC
 	private IElementComparer comparer;
 
 	public SingleChoiceRidget() {
-		optionsObservable = new WritableList();
 		selectionObservable = new WritableValue();
 		selectionObservable.addChangeListener(new IChangeListener() {
 			public void handleChange(final ChangeEvent event) {
@@ -227,16 +221,7 @@ public class SingleChoiceRidget extends AbstractChoiceRidget implements ISingleC
 		optionsBinding.updateModelToTarget();
 		final Object oldSelection = selectionObservable.getValue();
 		selectionBinding.updateModelToTarget();
-		final ChoiceComposite control = getUIControl();
-		final int oldCount = getChildrenCount(control);
-		disposeChildren(control);
-		createChildren(control);
-		final int newCount = getChildrenCount(control);
-		if (oldCount != newCount) {
-			// if the number of children has changed
-			// update the layout of the parent composite
-			control.getParent().layout(true, false);
-		}
+		layoutNewChildren();
 		// remove unavailable element and re-apply selection
 		Object newSelection = oldSelection;
 		if (newSelection != null && !isElementContained(newSelection, optionsObservable)) {
@@ -352,33 +337,33 @@ public class SingleChoiceRidget extends AbstractChoiceRidget implements ISingleC
 		bindUIControl();
 	}
 
-	private void createChildren(final ChoiceComposite control) {
-		if (control != null && !control.isDisposed()) {
-			final Object[] values = optionsObservable.toArray();
-			for (int i = 0; i < values.length; i++) {
-				final Object value = values[i];
-				final String caption = optionLabels != null ? optionLabels[i] : String.valueOf(value);
-
-				final Button button = control.createChild(caption);
-				button.setData(value);
-				button.addSelectionListener(new SelectionAdapter() {
-					@Override
-					public void widgetSelected(final SelectionEvent e) {
-						final Button button = (Button) e.widget;
-						final Object data = button.getData();
-						if (button.getSelection() && !isOutputOnly()) {
-							// this is a workaround to make composite table aware of focus changes, Bug #264627
-							SingleChoiceRidget.this.setSelection(data);
-							if (!button.isDisposed()) {
-								fireFocusIn(button.getParent());
-							}
-						}
+	@Override
+	protected void configureOptionButton(final Button button) {
+		final SelectionAdapter listener = new SelectionAdapter() {
+			@Override
+			public void widgetSelected(final SelectionEvent e) {
+				final Button button = (Button) e.widget;
+				final Object data = button.getData();
+				if (button.getSelection() && !isOutputOnly()) {
+					// this is a workaround to make composite table aware of focus changes, Bug #264627
+					SingleChoiceRidget.this.setSelection(data);
+					if (!button.isDisposed()) {
+						fireFocusIn(button.getParent());
 					}
-				});
+				}
 			}
-			updateSelection(control);
-			LNF_UPDATER.updateUIControls(control, true);
+		};
+		button.addSelectionListener(listener);
+		button.setData(CHOICE_RIDGET_LISTENER, listener);
+	}
+
+	@Override
+	protected void unconfigureOptionButton(final Button button) {
+		final Object data = button.getData(CHOICE_RIDGET_LISTENER);
+		if (data instanceof SelectionListener) {
+			button.removeSelectionListener((SelectionListener) data);
 		}
+		button.setData(CHOICE_RIDGET_LISTENER, null);
 	}
 
 	private void fireFocusIn(final Control control) {
@@ -406,7 +391,8 @@ public class SingleChoiceRidget extends AbstractChoiceRidget implements ISingleC
 	 * Iterates over the composite's children, disabling all buttons, except the one that has value as it's data element. If the ridget is not enabled, it may
 	 * deselect all buttons, as mandated by {@link MarkerSupport#isHideDisabledRidgetContent()}.
 	 */
-	private void updateSelection(final ChoiceComposite control) {
+	@Override
+	protected void updateSelection(final ChoiceComposite control) {
 		final boolean canSelect = isEnabled() || !MarkerSupport.isHideDisabledRidgetContent();
 		if (control != null && !control.isDisposed()) {
 			final Object value = selectionObservable.getValue();
