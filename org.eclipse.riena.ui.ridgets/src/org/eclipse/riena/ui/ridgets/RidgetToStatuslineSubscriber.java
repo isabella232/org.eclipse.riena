@@ -12,20 +12,15 @@ package org.eclipse.riena.ui.ridgets;
 
 import java.util.Collection;
 
+import org.eclipse.riena.core.util.RienaConfiguration;
 import org.eclipse.riena.ui.ridgets.marker.StatuslineMessageMarkerViewer;
 
 /**
  * @since 5.0
  */
 public class RidgetToStatuslineSubscriber {
-	/**
-	 * Key for the property which controls if ridget marker messages automatically are displayed in the status line.
-	 * <p>
-	 * The configuration for this property must be set to the extension point <tt>org.eclipse.riena.core.configuration</tt>
-	 * <p>
-	 * The default for this property (if not set) is <code>false</code>.
-	 */
-	public static final String SHOW_RIDGET_MESSAGES_IN_STATUSLINE_KEY = "riena.showRidgetMessagesInStatusline"; //$NON-NLS-1$
+
+	public static final String SHOW_RIDGET_MESSAGES_IN_STATUSLINE_KEY = RienaConfiguration.SHOW_RIDGET_MESSAGES_IN_STATUSLINE_KEY;
 
 	private StatuslineMessageMarkerViewer messageViewer;
 

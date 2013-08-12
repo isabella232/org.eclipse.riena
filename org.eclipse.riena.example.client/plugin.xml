@@ -1634,6 +1634,10 @@
             key="riena.showRidgetMessagesInStatusline"
             value="true">
       </property>
+      <property
+            key="riena.maxStockedViews"
+            value="10">
+      </property>
    </extension>
    <extension
          point="org.eclipse.riena.navigation.ui.applicationModelCreators">

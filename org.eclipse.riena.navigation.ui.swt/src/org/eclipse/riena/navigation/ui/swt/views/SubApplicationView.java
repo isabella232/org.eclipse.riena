@@ -10,8 +10,10 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.views;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 import org.osgi.service.log.LogService;
 
@@ -30,6 +32,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
 import org.eclipse.riena.core.Log4r;
+import org.eclipse.riena.core.util.RienaConfiguration;
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.internal.navigation.ui.swt.Activator;
 import org.eclipse.riena.internal.ui.ridgets.swt.uiprocess.UIProcessRidget;
@@ -67,6 +70,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 
 	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), SubApplicationView.class);
 
+	private final LinkedList<SwtViewId> subModuleViewStock;
 	private final AbstractViewBindingDelegate binding;
 	private final RienaMenuHelper menuBindHelper;
 	private final ISourceProviderListener menuSourceProviderListener;
@@ -78,6 +82,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 	 * Creates a new instance of {@code SubApplicationView}.
 	 */
 	public SubApplicationView() {
+		subModuleViewStock = new LinkedList<SwtViewId>();
 		binding = createBinding();
 		menuBindHelper = new RienaMenuHelper();
 		menuSourceProviderListener = new MenuSourceProviderListener();
@@ -393,9 +398,12 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 	 *            the id of the view extension to use
 	 * @param secondaryId
 	 *            the secondary id to use
+	 * @return {@code true} if the view was hidden successfully.
+	 * 
 	 * @since 3.0
 	 */
-	private void hideView(final String id, final String secondary) {
+	private boolean hideView(final String id, final String secondary) {
+		boolean successful = false;
 		final IViewReference viewRef = getActivePage().findViewReference(id, secondary);
 		if (viewRef != null) {
 			final IViewPart view = viewRef.getView(false);
@@ -403,14 +411,25 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 				((INavigationNodeView<?>) view).unbind();
 			}
 			getActivePage().hideView(view);
+			removeFromStock(new SwtViewId(id, secondary));
+			successful = true;
 		}
+		return successful;
 	}
 
 	/**
-	 * @since 3.0
+	 * Hides the view in the active page.
+	 * 
+	 * @param id
+	 *            ID of the view
+	 * 
+	 * @return {@code true} if the view was hidden successfully.
+	 * 
+	 * @since 5.0
+	 * 
 	 */
-	protected void hideView(final SwtViewId id) {
-		hideView(id.getId(), id.getSecondary());
+	protected boolean hideView(final SwtViewId id) {
+		return hideView(id.getId(), id.getSecondary());
 	}
 
 	private void showView(final SwtViewId id) {
@@ -430,6 +449,26 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 		final IViewReference viewRef = page.findViewReference(id, secondary);
 		if (viewRef != null) {
 			WorkbenchFacade.getInstance().showView(page, viewRef);
+			if (id != NavigationViewPart.ID) {
+				final SwtViewId swtViewId = new SwtViewId(id, secondary);
+				addToStock(swtViewId);
+				hideUnusedView();
+			}
+		}
+	}
+
+	/**
+	 * Hides (disposes) the longest unused view, if the maximum number of stocked views is reached.
+	 */
+	private void hideUnusedView() {
+		final SwtViewId firstView = getFirstOfStock();
+		SwtViewId swtViewId = getLastOfStock();
+		while ((swtViewId != null) && (!firstView.equals(swtViewId))) {
+			if (!hideView(swtViewId)) {
+				// view wasn't hidden
+				addToStock(swtViewId);
+			}
+			swtViewId = getLastOfStock();
 		}
 	}
 
@@ -539,6 +578,69 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 			update(sourcePriority);
 		}
 
+	}
+
+	/**
+	 * Add the given view to the to beginning to the stock.
+	 * 
+	 * @param viewId
+	 *            ID of the view
+	 */
+	private void addToStock(final SwtViewId viewId) {
+		removeFromStock(viewId);
+		subModuleViewStock.addFirst(viewId);
+	}
+
+	/**
+	 * Returns the first view of the stock.
+	 * 
+	 * @return ID of the first view
+	 * 
+	 * @throws NoSuchElementException
+	 *             if this list is empty
+	 */
+	private SwtViewId getFirstOfStock() {
+		return subModuleViewStock.getFirst();
+	}
+
+	/**
+	 * Returns the last view of the stock...
+	 * 
+	 * @return ID of the last view or ...
+	 */
+	private SwtViewId getLastOfStock() {
+		if (getMaxStockedViews() <= 0) {
+			return null;
+		}
+		if (getMaxStockedViews() >= subModuleViewStock.size()) {
+			return null;
+		}
+		return subModuleViewStock.getLast();
+	}
+
+	/**
+	 * Removes the given view form the stock.
+	 * 
+	 * @param viewId
+	 *            ID of the view
+	 * @return {@code true} if the stock contained the given view
+	 */
+	private boolean removeFromStock(final SwtViewId viewId) {
+		return subModuleViewStock.remove(viewId);
+	}
+
+	/**
+	 * Returns the maximal number of views that will be stocked.
+	 * 
+	 * @return maximal number of stocked views; 0 for indefinitely number of stocked views
+	 */
+	private int getMaxStockedViews() {
+		final String value = RienaConfiguration.getInstance().getProperty(RienaConfiguration.MAX_STOCKED_VIEWS_KEY);
+		try {
+			return Integer.parseInt(value);
+		} catch (final NumberFormatException e) {
+			return 0;
+		}
 	}
 
 }

@@ -54,8 +54,7 @@ public class SwtViewId {
 	}
 
 	/**
-	 * Returns the compound ID, a string with the ID and the secondary ID
-	 * seperated by a colon.
+	 * Returns the compound ID, a string with the ID and the secondary ID seperated by a colon.
 	 * 
 	 * @return compound ID
 	 */
@@ -91,6 +90,55 @@ public class SwtViewId {
 	 */
 	private void setSecondary(final String secondary) {
 		this.secondary = secondary;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((secondary == null) ? 0 : secondary.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		final SwtViewId other = (SwtViewId) obj;
+		if (id == null) {
+			if (other.id != null) {
+				return false;
+			}
+		} else if (!id.equals(other.id)) {
+			return false;
+		}
+		if (secondary == null) {
+			if (other.secondary != null) {
+				return false;
+			}
+		} else if (!secondary.equals(other.secondary)) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public String toString() {
+
+		final StringBuilder sb = new StringBuilder("ID: "); //$NON-NLS-1$
+		sb.append(getId());
+		sb.append(", secondary ID: "); //$NON-NLS-1$
+		sb.append(getSecondary());
+
+		return sb.toString();
 	}
 
 }

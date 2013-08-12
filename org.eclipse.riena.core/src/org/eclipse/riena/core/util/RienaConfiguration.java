@@ -18,7 +18,25 @@ import org.eclipse.riena.core.wire.InjectExtension;
  * 
  * @since 5.0
  */
-public class RienaConfiguration {
+public final class RienaConfiguration {
+
+	/**
+	 * Key for the property which controls if ridget marker messages automatically are displayed in the status line.
+	 * <p>
+	 * The configuration for this property must be set to the extension point <tt>org.eclipse.riena.core.configuration</tt>
+	 * <p>
+	 * The default for this property (if not set) is <code>false</code>.
+	 */
+	public static final String SHOW_RIDGET_MESSAGES_IN_STATUSLINE_KEY = "riena.showRidgetMessagesInStatusline"; //$NON-NLS-1$
+	/**
+	 * Key for the maximum number of sub-module views that will be stocked.
+	 * <p>
+	 * The configuration for this property must be set to the extension point <tt>org.eclipse.riena.core.configuration</tt>
+	 * <p>
+	 * The default for this property (if not set) is <code>0</code>. <code>0</code> means a indefinitely number of views are in the stock.
+	 */
+	public static final String MAX_STOCKED_VIEWS_KEY = "riena.maxStockedViews"; //$NON-NLS-1$
+
 	private final static SingletonProvider<RienaConfiguration> IS = new SingletonProvider<RienaConfiguration>(RienaConfiguration.class);
 	private IConfigurationExtension[] extensions;
 
