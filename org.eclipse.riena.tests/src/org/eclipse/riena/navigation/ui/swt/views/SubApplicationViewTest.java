@@ -217,6 +217,8 @@ public class SubApplicationViewTest extends TestCase {
 		ret = ReflectionUtils.invokeHidden(view, "getMaxStockedViews"); //$NON-NLS-1$
 		assertEquals(4711, ret);
 
+		RienaConfiguration.getInstance().update(null);
+
 	}
 
 	/**
@@ -324,6 +326,8 @@ public class SubApplicationViewTest extends TestCase {
 		ReflectionUtils.invokeHidden(view, "removeFromStock", id1); //$NON-NLS-1$
 		retId = ReflectionUtils.invokeHidden(view, "getLastOfStock"); //$NON-NLS-1$
 		assertNull(retId);
+
+		RienaConfiguration.getInstance().update(null);
 
 	}
 

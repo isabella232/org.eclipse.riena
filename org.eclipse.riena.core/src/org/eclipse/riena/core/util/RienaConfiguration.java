@@ -62,6 +62,9 @@ public final class RienaConfiguration {
 	 * @return the property value or <code>null</code> if a property with that key is not defined
 	 */
 	public String getProperty(final String key) {
+		if (extensions == null) {
+			return null;
+		}
 		for (final IConfigurationExtension e : extensions) {
 			if (e.getKey().equals(key)) {
 				return e.getValue();
