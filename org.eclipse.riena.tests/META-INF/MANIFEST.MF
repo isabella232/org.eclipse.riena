@@ -16,13 +16,13 @@ Require-Bundle: org.apache.log4j;resolution:=optional,
  org.eclipse.riena.security.server,
  org.eclipse.riena.security.services,
  org.eclipse.riena.security.ui,
- org.eclipse.nebula.widgets.grid;resolution:=optional,
  org.eclipse.riena.navigation.ui,
  com.ibm.icu;bundle-version="4.4.2"
 Bundle-ActivationPolicy: lazy
 Eclipse-RegisterBuddy: org.eclipse.riena.security.common
 Export-Package: org.eclipse.riena,
- org.eclipse.riena.internal.ui.ridgets.swt;x-internal:=true
+ org.eclipse.riena.internal.ui.ridgets.swt;x-friends:="org.eclipse.riena.tests.optional,de.compeople.scp.tests",
+ org.eclipse.riena.ui.tests.base;x-friends:="org.eclipse.riena.tests.optional"
 Import-Package: junit.framework;version="3.8.2",
  org.eclipse.equinox.security.auth,
  org.osgi.service.log

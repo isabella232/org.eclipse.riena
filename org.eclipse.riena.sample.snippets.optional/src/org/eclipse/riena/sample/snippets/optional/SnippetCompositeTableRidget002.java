@@ -8,10 +8,11 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.sample.snippets;
+package org.eclipse.riena.sample.snippets.optional;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.eclipse.core.databinding.observable.list.WritableList;
@@ -38,15 +39,15 @@ import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 
 /**
- * A composite table ridget with a row of text fields.
+ * A composite table ridget with sorting.
  */
-public final class SnippetCompositeTableRidget001 {
+public final class SnippetCompositeTableRidget002 {
 
 	static {
 		SwtControlRidgetMapper.getInstance().addMapping(CompositeTable.class, CompositeTableRidget.class);
 	}
 
-	private SnippetCompositeTableRidget001() {
+	private SnippetCompositeTableRidget002() {
 		// "utility class"
 	}
 
@@ -107,7 +108,7 @@ public final class SnippetCompositeTableRidget001 {
 	/**
 	 * Row for a {@link ICompositeTableRidget}.
 	 * <p>
-	 * Implementation note: class must be public and have a zero-argument public constructor. Instances will be created by reflection.
+	 * Implementation note: class must be public and have a zero-argument publuc constructor. Instances will be created by reflection.
 	 */
 	public static final class RowRidget extends AbstractCompositeRidget implements IRowRidget {
 		private Person rowData;
@@ -134,6 +135,8 @@ public final class SnippetCompositeTableRidget001 {
 		shell.setLayout(new FillLayout());
 
 		final CompositeTable table = new CompositeTable(shell, SWT.NONE);
+		// Step 1: your header must extends AbstractNativeHeader, to have provide
+		// clickable column headers, so that the user can change the sorting
 		new Header(table, SWT.NONE);
 		new Row(table, SWT.NONE);
 		table.setRunTime(true);
@@ -142,6 +145,14 @@ public final class SnippetCompositeTableRidget001 {
 		final WritableList input = new WritableList(PersonFactory.createPersonList(), Person.class);
 		ridget.bindToModel(input, Person.class, RowRidget.class);
 		ridget.updateFromModel();
+
+		// Step 2: install comparators
+		ridget.setComparator(0, new FirstNameComparator());
+		ridget.setComparator(1, new LastNameComparator());
+
+		// Step 3: set the default sort order (optional)
+		ridget.setSortedColumn(0);
+		ridget.setSortedAscending(true);
 
 		shell.setSize(400, 160);
 		shell.open();
@@ -152,5 +163,30 @@ public final class SnippetCompositeTableRidget001 {
 		}
 
 		display.dispose();
+	}
+
+	// helping classes
+	//////////////////
+
+	/**
+	 * Compare two persons by first name.
+	 */
+	private static final class FirstNameComparator implements Comparator<Object> {
+		public int compare(final Object o1, final Object o2) {
+			final Person p1 = (Person) o1;
+			final Person p2 = (Person) o2;
+			return p1.getFirstname().compareTo(p2.getFirstname());
+		}
+	}
+
+	/**
+	 * Compare two persons by last name.
+	 */
+	private static final class LastNameComparator implements Comparator<Object> {
+		public int compare(final Object o1, final Object o2) {
+			final Person p1 = (Person) o1;
+			final Person p2 = (Person) o2;
+			return p1.getLastname().compareTo(p2.getLastname());
+		}
 	}
 }

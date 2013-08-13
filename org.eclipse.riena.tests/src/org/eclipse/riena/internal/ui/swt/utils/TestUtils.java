@@ -17,7 +17,6 @@ import java.util.Locale;
 
 import junit.framework.Assert;
 
-import org.eclipse.nebula.widgets.grid.Grid;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Table;
@@ -42,8 +41,7 @@ public final class TestUtils {
 	}
 
 	/**
-	 * For a given Tree or Table, tests that the layouting results in
-	 * correctly-calculated column widths.
+	 * For a given Tree or Table, tests that the layouting results in correctly-calculated column widths.
 	 * 
 	 * @param control
 	 *            the Tree or Table widget to check
@@ -57,15 +55,13 @@ public final class TestUtils {
 		for (int column = 0; column < numberOfCols; column++) {
 			final int actual = getColumnWidth(control, column);
 			// take into account rounding errors, e.g. total width 85 => col widths (29, 28, 28)
-			final String message = String.format(
-					"col %d, expected %d <= x <= %d but was %d", column, expected, (expected + 1), actual); //$NON-NLS-1$
+			final String message = String.format("col %d, expected %d <= x <= %d but was %d", column, expected, (expected + 1), actual); //$NON-NLS-1$
 			Assert.assertTrue(message, (expected <= actual && actual <= expected + 1));
 		}
 	}
 
 	/**
-	 * Asserts that the given ridget has {@code expectedCount} mandatory markers
-	 * with the given {@code disabledState}.
+	 * Asserts that the given ridget has {@code expectedCount} mandatory markers with the given {@code disabledState}.
 	 * 
 	 * @param ridget
 	 *            never null
@@ -74,8 +70,7 @@ public final class TestUtils {
 	 * @param disabledState
 	 *            the expected disabled state value
 	 */
-	public static void assertMandatoryMarker(final IMarkableRidget ridget, final int expectedCount,
-			final boolean disabledState) {
+	public static void assertMandatoryMarker(final IMarkableRidget ridget, final int expectedCount, final boolean disabledState) {
 		final Collection<MandatoryMarker> markers = ridget.getMarkersOfType(MandatoryMarker.class);
 		Assert.assertEquals(expectedCount, markers.size());
 		final Iterator<MandatoryMarker> iter = markers.iterator();
@@ -86,8 +81,7 @@ public final class TestUtils {
 	}
 
 	/**
-	 * Asserts that given ridget has a certain number of markers of the given
-	 * type
+	 * Asserts that given ridget has a certain number of markers of the given type
 	 * 
 	 * @param ridget
 	 *            a IMarkable ridget; never null
@@ -110,8 +104,7 @@ public final class TestUtils {
 	}
 
 	/**
-	 * Asserts that an IMessageMarker with the given message is contained in the
-	 * ridget.
+	 * Asserts that an IMessageMarker with the given message is contained in the ridget.
 	 * 
 	 * @param ridget
 	 *            a IMarkable ridget; never null
@@ -133,13 +126,10 @@ public final class TestUtils {
 	}
 
 	/**
-	 * Asserts that in the given {@code control} the text and cursor position
-	 * match the expected {@code before} value. It then applies the given key
-	 * sequence and asserts that the resulting text and cursor position matches
-	 * the expected {@code after} value.
+	 * Asserts that in the given {@code control} the text and cursor position match the expected {@code before} value. It then applies the given key sequence
+	 * and asserts that the resulting text and cursor position matches the expected {@code after} value.
 	 * <p>
-	 * One can use one '^' character to denote the expected cursor position, or
-	 * two '^' characters to denote the expected selection.
+	 * One can use one '^' character to denote the expected cursor position, or two '^' characters to denote the expected selection.
 	 * <p>
 	 * Example:
 	 * 
@@ -171,13 +161,10 @@ public final class TestUtils {
 	}
 
 	/**
-	 * Asserts that in the given {@code control} the text and cursor position
-	 * match the expected {@code before} value. It then applies the given
-	 * keyCode and asserts that the resulting text and cursor position matches
-	 * the expected {@code after} value.
+	 * Asserts that in the given {@code control} the text and cursor position match the expected {@code before} value. It then applies the given keyCode and
+	 * asserts that the resulting text and cursor position matches the expected {@code after} value.
 	 * <p>
-	 * One can use one '^' character to denote the expected cursor position, or
-	 * two '^' characters to denote the expected selection.
+	 * One can use one '^' character to denote the expected cursor position, or two '^' characters to denote the expected selection.
 	 * <p>
 	 * Example:
 	 * 
@@ -222,9 +209,8 @@ public final class TestUtils {
 	}
 
 	/**
-	 * Return a localized version of a String representation of a number. The
-	 * returned string will use the grouping separator and decimal separator for
-	 * the current locale.
+	 * Return a localized version of a String representation of a number. The returned string will use the grouping separator and decimal separator for the
+	 * current locale.
 	 * <p>
 	 * Examples:
 	 * <ul>
@@ -233,8 +219,7 @@ public final class TestUtils {
 	 * </ul>
 	 * 
 	 * @param number
-	 *            a String representation of a number, where '.' is used as the
-	 *            grouping separator and ',' is used as the decimal separator.
+	 *            a String representation of a number, where '.' is used as the grouping separator and ',' is used as the decimal separator.
 	 * @return a localized String representation of a number
 	 */
 	public static String getLocalizedNumber(final String number) {
@@ -290,8 +275,6 @@ public final class TestUtils {
 			return ((Tree) control).getColumn(colIndex).getWidth();
 		} else if (control instanceof Table) {
 			return ((Table) control).getColumn(colIndex).getWidth();
-		} else if (control instanceof Grid) {
-			return ((Grid) control).getColumn(colIndex).getWidth();
 		}
 		throw new IllegalArgumentException("unsupported control: " + control); //$NON-NLS-1$
 	}

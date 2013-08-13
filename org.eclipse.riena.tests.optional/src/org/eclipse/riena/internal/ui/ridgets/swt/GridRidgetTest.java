@@ -16,6 +16,8 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
+import junit.framework.Assert;
+
 import org.eclipse.core.databinding.observable.ChangeEvent;
 import org.eclipse.core.databinding.observable.IChangeListener;
 import org.eclipse.core.databinding.observable.list.IObservableList;
@@ -27,7 +29,9 @@ import org.eclipse.nebula.widgets.grid.GridItem;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Table;
 
 import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.beans.common.PersonManager;
@@ -36,7 +40,6 @@ import org.eclipse.riena.beans.common.TypedComparator;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.ui.ridgets.swt.optional.GridRidget;
 import org.eclipse.riena.internal.ui.swt.test.UITestHelper;
-import org.eclipse.riena.internal.ui.swt.utils.TestUtils;
 import org.eclipse.riena.ui.common.ISortableByColumn;
 import org.eclipse.riena.ui.core.marker.RowErrorMessageMarker;
 import org.eclipse.riena.ui.ridgets.IColumnFormatter;
@@ -942,7 +945,27 @@ public class GridRidgetTest extends AbstractTableListRidgetTest {
 		assertEquals(null, control.getParent().getLayout());
 		assertEquals(null, control.getLayout());
 
-		TestUtils.assertColumnWidths(control, 3);
+		assertColumnWidths(control, 3);
+	}
+
+	/**
+	 * For a Grid, tests that the layouting results in correctly-calculated column widths.
+	 * 
+	 * @param control
+	 *            the Grid widget to check
+	 * @param numberOfCols
+	 *            the number of columns that the widget displays
+	 */
+	private static void assertColumnWidths(final Control control, final int numberOfCols) {
+		final int expected = control.getSize().x / numberOfCols;
+		Assert.assertTrue(String.valueOf(expected), expected > 0);
+
+		for (int column = 0; column < numberOfCols; column++) {
+			final int actual = ((Grid) control).getColumn(column).getWidth();
+			// take into account rounding errors, e.g. total width 85 => col widths (29, 28, 28)
+			final String message = String.format("col %d, expected %d <= x <= %d but was %d", column, expected, (expected + 1), actual); //$NON-NLS-1$
+			Assert.assertTrue(message, (expected <= actual && actual <= expected + 1));
+		}
 	}
 
 	/**
