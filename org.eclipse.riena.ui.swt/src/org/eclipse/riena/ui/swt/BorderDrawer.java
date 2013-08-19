@@ -260,7 +260,7 @@ public class BorderDrawer implements Listener {
 	public void paintControl(final Event event) {
 		if (computeBorderArea) {
 			Rectangle visibleControlArea;
-			if (!useVisibleControlArea || getControlToDecorate() instanceof CCombo || isMasterDetails) {
+			if (!useVisibleControlArea || getControlToDecorate() instanceof CCombo || isMasterDetails || getControlToDecorate() instanceof ChoiceComposite) {
 				if (getControlToDecorate() instanceof Composite) {
 					visibleControlArea = ((Composite) getControlToDecorate()).getClientArea();
 				} else {
