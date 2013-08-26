@@ -27,6 +27,7 @@ import org.eclipse.riena.core.Log4r;
 /**
  * Eclipse 3.x specific implementation.
  */
+@SuppressWarnings("restriction")
 public class WorkbenchFacadeImpl extends WorkbenchFacade {
 
 	private static final Logger LOGGER = Log4r.getLogger(WorkbenchFacadeImpl.class);
