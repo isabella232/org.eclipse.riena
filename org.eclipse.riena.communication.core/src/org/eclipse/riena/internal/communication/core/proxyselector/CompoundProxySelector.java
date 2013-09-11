@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.communication.core.proxyselector;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.net.Proxy;
 import java.net.ProxySelector;
@@ -23,9 +24,10 @@ import java.util.Set;
 
 import org.eclipse.core.runtime.Assert;
 
+import org.eclipse.riena.core.util.IOUtils;
+
 /**
- * The {@code CompoundProxySelector} gathers all the proxies from the given
- * {@code ProxySelector}s from the list given at instance creation.
+ * The {@code CompoundProxySelector} gathers all the proxies from the given {@code ProxySelector}s from the list given at instance creation.
  */
 public class CompoundProxySelector extends ProxySelector {
 
@@ -77,6 +79,15 @@ public class CompoundProxySelector extends ProxySelector {
 		// This assumes that they can deal with failed proxies they have not delivered.
 		for (final ProxySelector proxySelector : proxySelectors) {
 			proxySelector.connectFailed(uri, sa, ioe);
+		}
+	}
+
+	public void uninstall() {
+		// Check for ProxySelectors that implement the optional Closeable interface and close them.
+		for (final ProxySelector proxySelector : proxySelectors) {
+			if (proxySelector instanceof Closeable) {
+				IOUtils.close((Closeable) proxySelector);
+			}
 		}
 	}
 

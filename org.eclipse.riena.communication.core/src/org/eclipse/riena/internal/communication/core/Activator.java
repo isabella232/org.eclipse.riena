@@ -53,8 +53,7 @@ public class Activator extends RienaActivator {
 		serviceRegistry.start();
 
 		final Hashtable<String, Object> properties = RienaConstants.newDefaultServiceProperties();
-		regServiceRegistry = context.registerService(IRemoteServiceRegistry.class.getName(), serviceRegistry,
-				properties);
+		regServiceRegistry = context.registerService(IRemoteServiceRegistry.class.getName(), serviceRegistry, properties);
 
 		// SSL configuration
 		configureSSL();
@@ -92,6 +91,8 @@ public class Activator extends RienaActivator {
 
 		serviceRegistry.stop();
 		serviceRegistry = null;
+
+		proxySelectorConfiguration.uninstall();
 
 		Activator.plugin = null;
 		super.stop(context);

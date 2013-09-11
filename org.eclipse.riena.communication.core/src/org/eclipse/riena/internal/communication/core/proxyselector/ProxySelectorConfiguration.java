@@ -35,6 +35,7 @@ public class ProxySelectorConfiguration {
 
 	@InjectExtension()
 	public void configure(final IProxySelectorExtension[] proxySelectorExtensions) {
+		uninstall(ProxySelector.getDefault());
 		if (proxySelectorExtensions == null || proxySelectorExtensions.length == 0) {
 			ProxySelector.setDefault(previousProxySlector);
 			return;
@@ -57,4 +58,14 @@ public class ProxySelectorConfiguration {
 		ProxySelector.setDefault(new CompoundProxySelector(proxySelectors));
 	}
 
+	public void uninstall() {
+		uninstall(ProxySelector.getDefault());
+		ProxySelector.setDefault(previousProxySlector);
+	}
+
+	private void uninstall(final ProxySelector proxySelector) {
+		if (proxySelector instanceof CompoundProxySelector) {
+			((CompoundProxySelector) proxySelector).uninstall();
+		}
+	}
 }
