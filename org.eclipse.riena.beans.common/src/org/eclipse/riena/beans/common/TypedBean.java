@@ -50,7 +50,7 @@ public class TypedBean<T> extends AbstractBean {
 	 * @param value
 	 */
 	public TypedBean(final T value) {
-		Assert.isNotNull(value, "For a <null> value please us the TypedBean(final Class<T> type) constructor"); //$NON-NLS-1$
+		Assert.isNotNull(value, "For a <null> value please use the TypedBean(final Class<T> type) constructor"); //$NON-NLS-1$
 		this.value = value;
 		guessType(value);
 	}
