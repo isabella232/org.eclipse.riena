@@ -524,6 +524,15 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 		try {
 			final BigDecimal oldExtrValue = converttValue(oldValue);
 			final BigDecimal newExtrValue = converttValue(newValue);
+
+			if (oldExtrValue == null && newExtrValue == null) {
+				return false;
+			}
+
+			if (oldExtrValue == null || newExtrValue == null) {
+				return true;
+			}
+
 			return oldExtrValue.compareTo(newExtrValue) != 0;
 		} catch (final NumberFormatException nfe) {
 			return true;
@@ -538,7 +547,7 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 		value = value.replaceAll(String.valueOf("\\" + GROUPING_SEPARATOR), ""); //$NON-NLS-1$ //$NON-NLS-2$
 		value = value.replaceAll(String.valueOf("\\" + DECIMAL_SEPARATOR), String.valueOf(GROUPING_SEPARATOR)); //$NON-NLS-1$
 		if (String.valueOf(GROUPING_SEPARATOR).equals(value)) {
-			value = "0"; //$NON-NLS-1$
+			return null;
 		}
 		return new BigDecimal(value);
 

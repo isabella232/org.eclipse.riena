@@ -209,8 +209,8 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		assertFalse(callExternalValueChanged(oldValue, newValue));
 		assertTrue(callExternalValueChanged(oldValue, newValue + "01"));
 		assertFalse(callExternalValueChanged(oldValue, "0" + newValue));
-		assertFalse(callExternalValueChanged(",", "0"));
-		assertFalse(callExternalValueChanged(",", "0,00000"));
+		assertTrue(callExternalValueChanged(",", "0"));
+		assertTrue(callExternalValueChanged(",", "0,00000"));
 
 	}
 
