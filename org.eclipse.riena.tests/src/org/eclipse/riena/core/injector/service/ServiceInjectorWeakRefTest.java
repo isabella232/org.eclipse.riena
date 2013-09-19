@@ -25,8 +25,7 @@ import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.core.util.WeakRef;
 
 /**
- * Tests the {@code ServiceInjector} with respect to the {@code WeakRef} to the
- * target.
+ * Tests the {@code ServiceInjector} with respect to the {@code WeakRef} to the target.
  */
 @NonUITestCase
 public class ServiceInjectorWeakRefTest extends RienaTestCase {
@@ -44,12 +43,13 @@ public class ServiceInjectorWeakRefTest extends RienaTestCase {
 		testWeakRef(true);
 	}
 
+	@SuppressWarnings("nls")
 	private void testWeakRef(final boolean withNulling) throws IOException {
 		printTestName();
 		Target target = new Target();
 
 		final DepOne depOne = new DepOne();
-		final ServiceRegistration reg = getContext().registerService(DepOne.class.getName(), depOne, null);
+		final ServiceRegistration<?> reg = getContext().registerService(DepOne.class.getName(), depOne, null);
 		ServiceInjector shot = null;
 		try {
 			shot = Inject.service(DepOne.class.getName()).into(target).andStart(getContext());
@@ -63,7 +63,7 @@ public class ServiceInjectorWeakRefTest extends RienaTestCase {
 			final WeakRef<Object> targetRef = ReflectionUtils.getHidden(shot, "targetRef");
 			assertNull(targetRef.get());
 			final Object state = ReflectionUtils.getHidden(shot, "state");
-			assertEquals("STOPPED", state.toString());
+			assertTrue(state.toString().equals("STOPPED") || state.toString().equals("STOPPING"));
 		} finally {
 			shot.stop();
 			reg.unregister();
