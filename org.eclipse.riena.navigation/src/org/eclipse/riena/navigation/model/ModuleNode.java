@@ -11,6 +11,7 @@
 package org.eclipse.riena.navigation.model;
 
 import java.util.Iterator;
+import java.util.LinkedList;
 
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
@@ -191,4 +192,22 @@ public class ModuleNode extends NavigationNode<IModuleNode, ISubModuleNode, IMod
 		this.closable = closeable;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.navigation.model.NavigationNode#setLabel(java.lang.String)
+	 */
+	@Override
+	public void setLabel(final String label) {
+		super.setLabel(label);
+		fireHierarchyLabelChange();
+	}
+
+	private void fireHierarchyLabelChange() {
+		for (final ISubModuleNode child : new LinkedList<ISubModuleNode>(getChildren())) {
+			if (child instanceof SubModuleNode) {
+				((SubModuleNode) child).notifyHierarchyLabelChangeListeners(this);
+			}
+		}
+	}
 }

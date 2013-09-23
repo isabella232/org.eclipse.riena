@@ -10,6 +10,11 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.model;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import org.eclipse.riena.navigation.IHierarchyChangeListener;
+import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.listener.ISubModuleNodeListener;
@@ -23,6 +28,7 @@ public class SubModuleNode extends NavigationNode<ISubModuleNode, ISubModuleNode
 	private boolean selectable = true;
 	private boolean closeSubTree = false;
 	private boolean closable = false;
+	private final List<IHierarchyChangeListener> hierarchyListeners = new LinkedList<IHierarchyChangeListener>();
 
 	/**
 	 * Creates a SubModuleNode.
@@ -111,4 +117,58 @@ public class SubModuleNode extends NavigationNode<ISubModuleNode, ISubModuleNode
 		this.closable = closeable;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.navigation.model.NavigationNode#setLabel(java.lang.String)
+	 */
+	@Override
+	public void setLabel(final String label) {
+		super.setLabel(label);
+		fireHierarchyLabelChange();
+	}
+
+	/**
+	 * Adds a {@link IHierarchyChangeListener}
+	 * 
+	 * @param hierarchyListener
+	 *            not <code>null</code>
+	 * @since 5.0
+	 */
+	public void addHierarchyChangeListener(final IHierarchyChangeListener hierarchyListener) {
+		hierarchyListeners.add(hierarchyListener);
+	}
+
+	/**
+	 * Removes a {@link IHierarchyChangeListener}
+	 * 
+	 * @since 5.0
+	 */
+	public void removeHierarchyChangeListener(final IHierarchyChangeListener hierarchyListener) {
+		hierarchyListeners.remove(hierarchyListener);
+	}
+
+	/**
+	 * Invokes the {@link IHierarchyChangeListener}s registered to this node, then recursively calls all children.
+	 * @param changedNode
+	 */
+	void notifyHierarchyLabelChangeListeners(final INavigationNode<?> changedNode) {
+		for (final IHierarchyChangeListener l : new LinkedList<IHierarchyChangeListener>(hierarchyListeners)) {
+			l.labelChanged(changedNode);
+		}
+
+		for (final ISubModuleNode child : new LinkedList<ISubModuleNode>(getChildren())) {
+			if (child instanceof SubModuleNode) {
+				((SubModuleNode) child).notifyHierarchyLabelChangeListeners(this);
+			}
+		}
+	}
+
+	private void fireHierarchyLabelChange() {
+		for (final ISubModuleNode child : new LinkedList<ISubModuleNode>(getChildren())) {
+			if (child instanceof SubModuleNode) {
+				((SubModuleNode) child).notifyHierarchyLabelChangeListeners(this);
+			}
+		}
+	}
 }

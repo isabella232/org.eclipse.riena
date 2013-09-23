@@ -23,10 +23,12 @@ import org.eclipse.riena.core.util.RienaConfiguration;
 import org.eclipse.riena.internal.ui.ridgets.Activator;
 import org.eclipse.riena.navigation.ApplicationNodeManager;
 import org.eclipse.riena.navigation.IApplicationNode;
+import org.eclipse.riena.navigation.IHierarchyChangeListener;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
+import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.ui.ridgets.AbstractRidget;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IComplexRidget;
@@ -301,6 +303,15 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 				}
 			}
 		});
+
+		if (navigationNode instanceof SubModuleNode) {
+			((SubModuleNode) navigationNode).addHierarchyChangeListener(new IHierarchyChangeListener() {
+				@Override
+				public void labelChanged(final INavigationNode<?> node) {
+					updateWindowTitle();
+				}
+			});
+		}
 	}
 
 	/**
