@@ -66,6 +66,13 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 
 	private final WindowListener windowListener;
 
+	/**
+	 * <code>true</code> when the title has to be computed upon next activation
+	 * 
+	 * @since 5.0
+	 */
+	protected boolean titleInvalid;
+
 	public SubModuleController() {
 		this(null);
 	}
@@ -283,6 +290,10 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 
 			@Override
 			public void afterActivated(final ISubModuleNode source) {
+				if (titleInvalid) {
+					updateWindowTitle();
+				}
+
 				if (actionManager != null) {
 					actionManager.activate();
 				}
@@ -308,7 +319,14 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 			((SubModuleNode) navigationNode).addHierarchyChangeListener(new IHierarchyChangeListener() {
 				@Override
 				public void labelChanged(final INavigationNode<?> node) {
-					updateWindowTitle();
+					if (isActivated()) {
+						// if node is active, we have to update the title now
+						updateWindowTitle();
+					} else {
+						// otherwise we just invalidate the title, so it can be recomputed on next activation
+						titleInvalid = true;
+					}
+					//					updateWindowTitle();
 				}
 			});
 		}
@@ -460,6 +478,7 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 				((SubModuleController) subModule.getNavigationNodeController()).updateWindowTitle();
 			}
 		}
+		titleInvalid = false;
 	}
 
 	private class WindowListener implements IWindowRidgetListener {
