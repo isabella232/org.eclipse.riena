@@ -62,6 +62,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	private String textValue = EMPTY_STRING;
 	private boolean isDirectWriting;
 	private IConverter inputConverter;
+	private boolean ignoreEnterKey;
 	private final static boolean DEFAULT_DIRECTWRITING = getDefaultTextRidgetDirectWritingEnabled();
 
 	/**
@@ -173,6 +174,14 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 		control.removeFocusListener(focusListener);
 		control.removeModifyListener(modifyListener);
 		control.removeVerifyListener(verifyListener);
+	}
+
+	/**
+	 * @param ignoreEnterKey
+	 *            <code>true</code> if the text value should not be written to the model on ENTER key press
+	 */
+	public void setIgnoreEnterKey(final boolean ignoreEnterKey) {
+		this.ignoreEnterKey = ignoreEnterKey;
 	}
 
 	// helping methods
@@ -374,7 +383,9 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	}
 
 	protected void enterKeyReleased() {
-		updateTextValue();
+		if (!ignoreEnterKey) {
+			updateTextValue();
+		}
 	}
 
 	// helping classes
