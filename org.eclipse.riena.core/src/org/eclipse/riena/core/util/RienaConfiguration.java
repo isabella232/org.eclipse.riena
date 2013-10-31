@@ -21,6 +21,15 @@ import org.eclipse.riena.core.wire.InjectExtension;
 public final class RienaConfiguration {
 
 	/**
+	 * Controls whether the text ridget writes its value to the model on ENTER key events in multiline text fields.
+	 * <p>
+	 * The configuration for this property must be set to the extension point <tt>org.eclipse.riena.core.configuration</tt>
+	 * <p>
+	 * The default for this property (if not set) is <code>false</code>.
+	 */
+	public static final String MULTILINE_TEXT_IGNORE_ENTER_KEY = "riena.ITextRidget.multilineIgnoreEnterKey"; //$NON-NLS-1$
+
+	/**
 	 * Key for the property which controls if ridget marker messages automatically are displayed in the status line.
 	 * <p>
 	 * The configuration for this property must be set to the extension point <tt>org.eclipse.riena.core.configuration</tt>

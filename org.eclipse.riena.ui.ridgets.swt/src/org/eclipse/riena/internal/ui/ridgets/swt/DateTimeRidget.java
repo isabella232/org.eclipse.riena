@@ -280,4 +280,25 @@ public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeR
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.ui.ridgets.ITextRidget#setMultilineIgnoreEnterKey(boolean)
+	 */
+	@Override
+	public void setMultilineIgnoreEnterKey(final boolean multilineIgnoreEnterKey) {
+		// this setting has no effect on date text fields
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.ui.ridgets.ITextRidget#isMultilineIgnoreEnterKey()
+	 */
+	@Override
+	public boolean isMultilineIgnoreEnterKey() {
+		// this setting has no effect on date text fields
+		return false;
+	}
+
 }

@@ -1638,6 +1638,10 @@
             key="riena.maxStockedViews"
             value="10">
       </property>
+      <property
+            key="riena.ITextRidget.multilineIgnoreEnterKey"
+            value="true">
+      </property>
    </extension>
    <extension
          point="org.eclipse.riena.navigation.ui.applicationModelCreators">

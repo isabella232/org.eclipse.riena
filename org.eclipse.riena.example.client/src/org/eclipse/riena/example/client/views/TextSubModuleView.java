@@ -52,12 +52,6 @@ public class TextSubModuleView extends SubModuleView {
 		final Text textModel2 = UIControlsFactory.createText(parent);
 		addUIControl(textModel2, "textModel2"); //$NON-NLS-1$
 
-		UIControlsFactory.createLabel(parent, "Text Area:"); //$NON-NLS-1$
-		final Text textArea = UIControlsFactory.createText(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
-		final int heightHint = (textArea.getLineHeight() * 5) + (textArea.getBorderWidth() * 2);
-		GridDataFactory.fillDefaults().hint(SWT.DEFAULT, heightHint).applyTo(textArea);
-		addUIControl(textArea, "textArea"); //$NON-NLS-1$
-
 		UIControlsFactory.createLabel(parent, "Password Field:"); //$NON-NLS-1$
 		final Text textPassword = UIControlsFactory.createText(parent, SWT.SINGLE | SWT.PASSWORD);
 		textPassword.setEchoChar('*');
@@ -74,6 +68,20 @@ public class TextSubModuleView extends SubModuleView {
 		UIControlsFactory.createButton(parent, "setParentLabel", "setparentlabel"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		addUIControl(UIControlsFactory.createMessageBox(parent), "messageBox");
+
+		UIControlsFactory.createLabel(parent, "Text Area:"); //$NON-NLS-1$
+		final Text textArea = UIControlsFactory.createText(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
+		final int heightHint = (textArea.getLineHeight() * 5) + (textArea.getBorderWidth() * 2);
+		GridDataFactory.fillDefaults().hint(SWT.DEFAULT, heightHint).applyTo(textArea);
+		addUIControl(textArea, "textArea"); //$NON-NLS-1$
+		UIControlsFactory.createLabel(parent, "");
+		addUIControl(UIControlsFactory.createButtonCheck(parent, "multilineIgnoreEnterKey", "multilineIgnoreEnterKey"));
+
+		UIControlsFactory.createLabel(parent, "Model:"); //$NON-NLS-1$
+		final Text textAreaModel = UIControlsFactory.createText(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
+		GridDataFactory.fillDefaults().hint(SWT.DEFAULT, heightHint).applyTo(textAreaModel);
+		addUIControl(textAreaModel, "textAreaModel"); //$NON-NLS-1$
+
 	}
 
 }

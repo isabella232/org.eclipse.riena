@@ -29,8 +29,10 @@ import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 
+import org.eclipse.riena.core.util.RienaConfiguration;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
@@ -62,7 +64,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	private String textValue = EMPTY_STRING;
 	private boolean isDirectWriting;
 	private IConverter inputConverter;
-	private boolean ignoreEnterKey;
+	private boolean multilineIgnoreEnterKey;
 	private final static boolean DEFAULT_DIRECTWRITING = getDefaultTextRidgetDirectWritingEnabled();
 
 	/**
@@ -100,6 +102,8 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 				forceTextToControl(textValue);
 			}
 		});
+
+		multilineIgnoreEnterKey = Boolean.valueOf(RienaConfiguration.getInstance().getProperty(RienaConfiguration.MULTILINE_TEXT_IGNORE_ENTER_KEY));
 	}
 
 	protected TextRidget(final String initialValue) {
@@ -176,12 +180,22 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 		control.removeVerifyListener(verifyListener);
 	}
 
-	/**
-	 * @param ignoreEnterKey
-	 *            <code>true</code> if the text value should not be written to the model on ENTER key press
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.ui.ridgets.ITextRidget#setMultilineIgnoreEnterKey(boolean)
 	 */
-	public void setIgnoreEnterKey(final boolean ignoreEnterKey) {
-		this.ignoreEnterKey = ignoreEnterKey;
+	public void setMultilineIgnoreEnterKey(final boolean multilineIgnoreEnterKey) {
+		this.multilineIgnoreEnterKey = multilineIgnoreEnterKey;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.ui.ridgets.ITextRidget#isMultilineIgnoreEnterKey()
+	 */
+	public boolean isMultilineIgnoreEnterKey() {
+		return multilineIgnoreEnterKey;
 	}
 
 	// helping methods
@@ -383,9 +397,19 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	}
 
 	protected void enterKeyReleased() {
-		if (!ignoreEnterKey) {
-			updateTextValue();
+		if (multilineIgnoreEnterKey && isMultiline()) {
+			return;
 		}
+		updateTextValue();
+	}
+
+	/**
+	 * @return <code>true</code> if the ridget is bound to a multiline text field (style is {@link SWT#MULTI})
+	 * 
+	 */
+	private boolean isMultiline() {
+		final Control textField = getUIControl();
+		return textField != null && (textField.getStyle() & SWT.MULTI) != 0;
 	}
 
 	// helping classes

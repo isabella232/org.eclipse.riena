@@ -96,4 +96,28 @@ public interface ITextRidget extends IEditableRidget, IMarkableRidget {
 	 */
 	void removeClickListener(IClickListener listener);
 
+	/**
+	 * This flag controls whether the text ridget writes its value to the model on ENTER key events in multiline text fields. This setting is intended for use
+	 * with multiline text fields only and will be ignored if the ridget is bound to a singleline text field.
+	 * <p/>
+	 * A global default for can be set using the extension point <tt>org.eclipse.riena.core.configuration</tt> by setting
+	 * <code>riena.ITextRidget.multilineIgnoreEnterKey=true</code>.
+	 * 
+	 * @param multilineIgnoreEnterKey
+	 *            <code>true</code> if the text value should not be written to the model on ENTER key press
+	 * @since 5.0
+	 */
+	void setMultilineIgnoreEnterKey(boolean multilineIgnoreEnterKey);
+
+	/**
+	 * This flag controls whether the text ridget writes its value to the model on ENTER key events in multiline text fields. This setting is intended for use
+	 * with multiline text fields only and will be ignored if the ridget is bound to a singleline text field.
+	 * <p/>
+	 * A global default for can be set using the extension point <tt>org.eclipse.riena.core.configuration</tt> by setting
+	 * <code>riena.ITextRidget.multilineIgnoreEnterKey=true</code>.
+	 * 
+	 * @return If <code>true</code>, the text value will not be written to the model on ENTER key events if the ridget is bound to a multiline text field.
+	 * @since 5.0
+	 */
+	boolean isMultilineIgnoreEnterKey();
 }

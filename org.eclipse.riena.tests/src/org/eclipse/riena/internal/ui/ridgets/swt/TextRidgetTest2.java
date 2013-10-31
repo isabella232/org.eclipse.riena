@@ -104,6 +104,30 @@ public final class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	}
 
 	/**
+	 * In this test, we have a single line text field as created in {@link #createWidget(Composite)}. So the flag <tt>multilineIgnoreEnterKey</tt> should be
+	 * always ignored.
+	 */
+	public void testMultilineIgnoreEnterKey() throws Exception {
+		// default is multilineIgnoreEnterKey=false
+		final Text control = getWidget();
+		assertTrue("This test case expects a single line text field.", (control.getStyle() & SWT.MULTI) == 0);
+
+		final ITextRidget ridget = getRidget();
+		ridget.bindToModel(bean, TestBean.PROPERTY);
+		control.setFocus();
+
+		assertEquals(null, bean.getProperty());
+		UITestHelper.sendString(control.getDisplay(), "1\r");
+		assertEquals("1", bean.getProperty());
+
+		// now setting the flag, which must be ignored
+		ridget.setMultilineIgnoreEnterKey(true);
+		assertEquals("1", bean.getProperty());
+		UITestHelper.sendString(control.getDisplay(), "2\r");
+		assertEquals("12", bean.getProperty());
+	}
+
+	/**
 	 * This test verifies that validate() is not being called too often since this may have negative effect on the performance.
 	 */
 	public void testDontValidateMoreThanOnceAfterUpdateToModel() throws Exception {

@@ -17,6 +17,7 @@ import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IMessageBoxRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
+import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
 import org.eclipse.riena.ui.ridgets.listener.ClickEvent;
 import org.eclipse.riena.ui.ridgets.listener.IClickListener;
 
@@ -77,5 +78,17 @@ public class TextSubModuleController extends SubModuleController {
 						getNavigationNode().getParent().setLabel("new ParentLabel " + System.currentTimeMillis()); //$NON-NLS-1$
 					}
 				});
+
+		final ITextRidget textAreaModel = getRidget(ITextRidget.class, "textAreaModel"); //$NON-NLS-1$
+		textAreaModel.setOutputOnly(true);
+		textAreaModel.setText("type something\nmultiline"); //$NON-NLS-1$
+
+		final ITextRidget textArea = getRidget(ITextRidget.class, "textArea"); //$NON-NLS-1$
+		textArea.bindToModel(textAreaModel, ITextRidget.PROPERTY_TEXT);
+		textArea.updateFromModel();
+
+		final IToggleButtonRidget multilineIgnoreEnterKey = getRidget(IToggleButtonRidget.class, "multilineIgnoreEnterKey"); //$NON-NLS-1$
+		multilineIgnoreEnterKey.bindToModel(textArea, "multilineIgnoreEnterKey");
+		multilineIgnoreEnterKey.updateFromModel();
 	}
 }
