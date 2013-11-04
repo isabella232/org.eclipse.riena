@@ -21,7 +21,7 @@ import org.eclipse.riena.internal.ui.swt.test.UITestHelper;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 
-public class TextRidgetTestMultiline extends AbstractSWTRidgetTest {
+public class TextRidgetMultilineTest extends AbstractSWTRidgetTest {
 
 	private TestBean bean;
 
