@@ -18,7 +18,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.eclipse.core.runtime.Assert;
 
@@ -36,16 +35,16 @@ import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.ridgets.AbstractRidget;
 import org.eclipse.riena.ui.ridgets.ClassRidgetMapper;
+import org.eclipse.riena.ui.ridgets.ComplexRidgetResolver;
 import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
-import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.IRidgetResolver;
 import org.eclipse.riena.ui.ridgets.IStatuslineRidget;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
-import org.eclipse.riena.ui.ridgets.ComplexRidgetResolver;
 import org.eclipse.riena.ui.ridgets.RidgetToStatuslineSubscriber;
 import org.eclipse.riena.ui.ridgets.SubModuleUtils;
 import org.eclipse.riena.ui.ridgets.controller.IController;
+import org.eclipse.riena.ui.ridgets.marker.MarkerUtil;
 
 /**
  * An abstract controller superclass that manages the navigation node of a controller.
@@ -270,38 +269,6 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 		return ridgets.values();
 	}
 
-	private void addRidgetMarkers(final IRidget ridget, final List<IMarker> combinedMarkers) {
-		if (ridget instanceof IBasicMarkableRidget && ((IBasicMarkableRidget) ridget).isVisible() && ((IBasicMarkableRidget) ridget).isEnabled()) {
-			addRidgetMarkers((IBasicMarkableRidget) ridget, combinedMarkers);
-		} else if (ridget instanceof IRidgetContainer) {
-			addRidgetMarkers((IRidgetContainer) ridget, combinedMarkers);
-		}
-	}
-
-	private void addRidgetMarkers(final IBasicMarkableRidget ridget, final List<IMarker> combinedMarkers) {
-		combinedMarkers.addAll(getNotHiddenMarkers(ridget));
-	}
-
-	private List<? extends IMarker> getNotHiddenMarkers(final IBasicMarkableRidget ridget) {
-		final Collection<? extends IMarker> markers = ridget.getMarkers();
-		final List<? extends IMarker> notHiddenMarkers = new ArrayList<IMarker>(markers);
-		final Set<Class<IMarker>> hiddenTypes = ridget.getHiddenMarkerTypes();
-		for (final Class<IMarker> hiddenType : hiddenTypes) {
-			for (final IMarker marker : markers) {
-				if (hiddenType.isAssignableFrom(marker.getClass())) {
-					notHiddenMarkers.remove(marker);
-				}
-			}
-		}
-		return notHiddenMarkers;
-	}
-
-	private void addRidgetMarkers(final IRidgetContainer ridgetContainer, final List<IMarker> combinedMarkers) {
-		for (final IRidget ridget : ridgetContainer.getRidgets()) {
-			addRidgetMarkers(ridget, combinedMarkers);
-		}
-	}
-
 	/**
 	 * The idea in this method is to have at most one marker of each type (to avoid firing too many events when redundantly adding/removing markers of the same
 	 * type)
@@ -311,7 +278,7 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 		final Collection<MandatoryMarker> mandatoryInRidgets = new ArrayList<MandatoryMarker>();
 
 		// add error and/or mandatory marker, if a Ridget has an error marker and/or a (enabled) mandatory marker
-		for (final IMarker marker : getRidgetMarkers()) {
+		for (final IMarker marker : MarkerUtil.getRidgetMarkers(this)) {
 			if (marker instanceof ErrorMarker) {
 				errorInRidgets.add((ErrorMarker) marker);
 			} else if (marker instanceof MandatoryMarker) {
@@ -376,12 +343,6 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 		}
 	}
 
-	private List<IMarker> getRidgetMarkers() {
-		final List<IMarker> combinedMarkers = new ArrayList<IMarker>();
-		addRidgetMarkers(this, combinedMarkers);
-		return combinedMarkers;
-	}
-
 	protected void updateIcon(final IWindowRidget windowRidget) {
 		if (windowRidget == null) {
 			return;
@@ -389,10 +350,6 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 		final String nodeIcon = getNavigationNode().getIcon();
 		windowRidget.setIcon(nodeIcon);
 	}
-
-	// public IProgressVisualizer getProgressVisualizer(Object context) {
-	// return new ProgressVisualizer();
-	// }
 
 	public void setBlocked(final boolean blocked) {
 		if (getNavigationNode() != null) {

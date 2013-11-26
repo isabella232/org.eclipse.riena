@@ -57,6 +57,10 @@ public interface IMarkableRidget extends IBasicMarkableRidget {
 	 * {@link #getMarkersOfType(Class)}.
 	 * 
 	 * @return <code>true</code> if mandatory otherwise <code>false</code>.
+	 * 
+	 * 
+	 * Note: this method does not check whether the MandatoryMarkers that it finds might have a disabled flag set (in the marker). We also couldnt find
+	 *             code that calls this method.
 	 */
 	boolean isMandatory();
 
