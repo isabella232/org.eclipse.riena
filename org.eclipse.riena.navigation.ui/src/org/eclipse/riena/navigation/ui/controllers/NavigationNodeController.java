@@ -278,7 +278,7 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 		final Collection<MandatoryMarker> mandatoryInRidgets = new ArrayList<MandatoryMarker>();
 
 		// add error and/or mandatory marker, if a Ridget has an error marker and/or a (enabled) mandatory marker
-		for (final IMarker marker : MarkerUtil.getRidgetMarkers(this)) {
+		for (final IMarker marker : getRidgetMarkers()) {
 			if (marker instanceof ErrorMarker) {
 				errorInRidgets.add((ErrorMarker) marker);
 			} else if (marker instanceof MandatoryMarker) {
@@ -341,6 +341,13 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 			getNavigationNode().removeMarker(disabledMandatoryInNode.iterator().next());
 			getNavigationNode().addMarker(mandatoryInRidgets.iterator().next());
 		}
+	}
+
+	/**
+	 * this method is invoked by test code, so do not inline it
+	 */
+	private List<IMarker> getRidgetMarkers() {
+		return MarkerUtil.getRidgetMarkers(this);
 	}
 
 	protected void updateIcon(final IWindowRidget windowRidget) {
