@@ -16,8 +16,14 @@ import org.osgi.framework.BundleException;
 import org.osgi.framework.FrameworkUtil;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.osgi.framework.internal.core.AbstractBundle;
+import org.eclipse.osgi.service.resolver.BundleDescription;
+import org.eclipse.osgi.service.resolver.NativeCodeSpecification;
+import org.eclipse.osgi.service.resolver.PlatformAdmin;
+import org.eclipse.osgi.service.resolver.State;
+import org.eclipse.osgi.service.resolver.VersionConstraint;
+import org.eclipse.osgi.util.NLS;
 
+import org.eclipse.riena.core.service.Service;
 import org.eclipse.riena.core.util.VariableManagerUtil;
 import org.eclipse.riena.internal.core.Activator;
 
@@ -54,6 +60,12 @@ public final class RienaStatus {
 	 * @since 3.0
 	 */
 	public static final String UNKNOWN_STAGE = "<unknown>"; //$NON-NLS-1$
+
+	private static final String BUNDLE_UNRESOLVED_EXCEPTION = "The bundle \"{0}\" could not be resolved"; //$NON-NLS-1$
+
+	private static final String BUNDLE_UNRESOLVED_STATE_CONFLICT = "The state indicates the bundle is resolved"; //$NON-NLS-1$
+
+	private static final String BUNDLE_UNRESOLVED_UNSATISFIED_CONSTRAINT_EXCEPTION = "The bundle \"{0}\" could not be resolved. Reason: {1}"; //$NON-NLS-1$
 
 	private RienaStatus() {
 		// Utility
@@ -144,7 +156,6 @@ public final class RienaStatus {
 	 * 
 	 * @since 4.0
 	 */
-	@SuppressWarnings("restriction")
 	public static String reportUnresolvedBundles() {
 		final Bundle coreBundle = FrameworkUtil.getBundle(RienaStatus.class);
 		if (coreBundle == null) {
@@ -161,17 +172,54 @@ public final class RienaStatus {
 					bob.append("Unresolved bundles:").append("\n"); //$NON-NLS-1$//$NON-NLS-2$
 				}
 				bob.append(" - ").append(bundle.getSymbolicName()).append(" is not resolved"); //$NON-NLS-1$ //$NON-NLS-2$
-				if (bundle instanceof AbstractBundle) {
-					final BundleException resolutionFailureException = ((AbstractBundle) bundle)
-							.getResolutionFailureException();
+
+				try {
+					final PlatformAdmin platformAdmin = Service.get(bundleContext, PlatformAdmin.class);
+					final BundleException resolutionFailureException = getResolutionFailureException(bundle, platformAdmin);
 					if (resolutionFailureException != null) {
 						bob.append(" because: ").append(resolutionFailureException.getMessage()); //$NON-NLS-1$
 					}
+				} catch (final Exception e) {
+					bob.append("A problem occured while trying to compute the reason. " + e.getMessage()); //$NON-NLS-1$
 				}
+
 				bob.append("\n"); //$NON-NLS-1$
 			}
 		}
 		return bob.length() == 0 ? null : bob.toString();
 	}
 
+	private static BundleException getResolutionFailureException(final Bundle bundle, final PlatformAdmin platformAdmin) {
+		final State state = platformAdmin.getState();
+		final BundleDescription bundleDescription = state.getBundle(bundle.getBundleId());
+		if (bundleDescription == null) {
+			return new BundleException(NLS.bind(BUNDLE_UNRESOLVED_EXCEPTION, bundle.toString()), BundleException.RESOLVE_ERROR);
+		}
+		// just a sanity check - this would be an inconsistency between the framework and the state
+		if (bundleDescription.isResolved()) {
+			return new BundleException(BUNDLE_UNRESOLVED_STATE_CONFLICT, BundleException.RESOLVE_ERROR);
+		}
+		return getResolverError(bundle, bundleDescription, platformAdmin);
+	}
+
+	private static BundleException getResolverError(final Bundle bundle, final BundleDescription bundleDesc,
+			final PlatformAdmin platformAdmin) {
+		final VersionConstraint[] errors = platformAdmin.getStateHelper().getUnsatisfiedConstraints(bundleDesc);
+		//		final ResolverError[] errors = state.getResolverErrors(bundleDesc);
+		if (errors == null || errors.length == 0) {
+			return new BundleException(NLS.bind(BUNDLE_UNRESOLVED_EXCEPTION, bundle.toString()), BundleException.RESOLVE_ERROR);
+		}
+		final StringBuffer message = new StringBuffer();
+		int errorType = BundleException.RESOLVE_ERROR;
+		for (int i = 0; i < errors.length; i++) {
+			if (errors[i] instanceof NativeCodeSpecification) {
+				errorType = BundleException.NATIVECODE_ERROR;
+			}
+			message.append(errors[i].toString());
+			if (i < errors.length - 1) {
+				message.append(", "); //$NON-NLS-1$
+			}
+		}
+		return new BundleException(NLS.bind(BUNDLE_UNRESOLVED_UNSATISFIED_CONSTRAINT_EXCEPTION, bundle.toString(), message.toString()), errorType);
+	}
 }
