@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Riena Common Beans Plug-in 
 Bundle-SymbolicName: org.eclipse.riena.beans.common
-Bundle-Version: 5.0.0.qualifier
+Bundle-Version: 6.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.eclipse.riena.beans.common
 Require-Bundle: org.eclipse.riena.core

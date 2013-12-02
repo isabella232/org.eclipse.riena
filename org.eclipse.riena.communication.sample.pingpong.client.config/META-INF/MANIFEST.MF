@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Riena Communication Sample PingPong Client Config Plug-in
 Bundle-SymbolicName: org.eclipse.riena.communication.sample.pingpong.client.config;singleton:=true
-Bundle-Version: 5.0.0.qualifier
+Bundle-Version: 6.0.0.qualifier
 Bundle-Activator: org.eclipse.riena.internal.communication.sample.pingpong.client.config.Activator
 Bundle-ActivationPolicy: lazy
 Import-Package: org.osgi.framework;version="1.4.0"
