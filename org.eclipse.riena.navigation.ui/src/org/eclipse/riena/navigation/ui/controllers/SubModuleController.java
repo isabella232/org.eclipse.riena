@@ -69,7 +69,7 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	/**
 	 * <code>true</code> when the title has to be computed upon next activation
 	 * 
-	 * @since 5.0
+	 * @since 6.0
 	 */
 	protected boolean titleInvalid;
 
