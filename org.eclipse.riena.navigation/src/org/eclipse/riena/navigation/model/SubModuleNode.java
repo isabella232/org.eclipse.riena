@@ -133,7 +133,7 @@ public class SubModuleNode extends NavigationNode<ISubModuleNode, ISubModuleNode
 	 * 
 	 * @param hierarchyListener
 	 *            not <code>null</code>
-	 * @since 5.0
+	 * @since 6.0
 	 */
 	public void addHierarchyChangeListener(final IHierarchyChangeListener hierarchyListener) {
 		hierarchyListeners.add(hierarchyListener);
@@ -142,7 +142,7 @@ public class SubModuleNode extends NavigationNode<ISubModuleNode, ISubModuleNode
 	/**
 	 * Removes a {@link IHierarchyChangeListener}
 	 * 
-	 * @since 5.0
+	 * @since 6.0
 	 */
 	public void removeHierarchyChangeListener(final IHierarchyChangeListener hierarchyListener) {
 		hierarchyListeners.remove(hierarchyListener);

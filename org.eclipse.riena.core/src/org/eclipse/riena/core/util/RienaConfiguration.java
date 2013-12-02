@@ -26,6 +26,8 @@ public final class RienaConfiguration {
 	 * The configuration for this property must be set to the extension point <tt>org.eclipse.riena.core.configuration</tt>
 	 * <p>
 	 * The default for this property (if not set) is <code>false</code>.
+	 * 
+	 * @since 6.0
 	 */
 	public static final String MULTILINE_TEXT_IGNORE_ENTER_KEY = "riena.ITextRidget.multilineIgnoreEnterKey"; //$NON-NLS-1$
 

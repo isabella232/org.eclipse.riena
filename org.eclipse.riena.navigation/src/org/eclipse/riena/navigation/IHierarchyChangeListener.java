@@ -15,7 +15,7 @@ import org.eclipse.riena.navigation.model.NavigationNode;
 /**
  * Events that occur in a {@link NavigationNode}'s parents hierarchy.
  * 
- * @since 5.0
+ * @since 6.0
  * 
  */
 public interface IHierarchyChangeListener {

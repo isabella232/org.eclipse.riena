@@ -105,7 +105,7 @@ public interface ITextRidget extends IEditableRidget, IMarkableRidget {
 	 * 
 	 * @param multilineIgnoreEnterKey
 	 *            <code>true</code> if the text value should not be written to the model on ENTER key press
-	 * @since 5.0
+	 * @since 6.0
 	 */
 	void setMultilineIgnoreEnterKey(boolean multilineIgnoreEnterKey);
 
@@ -117,7 +117,7 @@ public interface ITextRidget extends IEditableRidget, IMarkableRidget {
 	 * <code>riena.ITextRidget.multilineIgnoreEnterKey=true</code>.
 	 * 
 	 * @return If <code>true</code>, the text value will not be written to the model on ENTER key events if the ridget is bound to a multiline text field.
-	 * @since 5.0
+	 * @since 6.0
 	 */
 	boolean isMultilineIgnoreEnterKey();
 }

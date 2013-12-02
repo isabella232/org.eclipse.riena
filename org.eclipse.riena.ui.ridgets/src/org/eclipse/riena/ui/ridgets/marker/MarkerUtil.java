@@ -23,7 +23,7 @@ import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 /**
  * Utility class for working with markers.
  * 
- * @since 5.0
+ * @since 6.0
  * 
  */
 public class MarkerUtil {
