@@ -12,24 +12,14 @@ package org.eclipse.riena.navigation.ui.swt.views;
 
 import java.util.List;
 
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
 
-import org.eclipse.riena.internal.ui.swt.facades.WorkbenchFacade;
+import org.eclipse.riena.internal.ui.swt.MouseWheelAdapter;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
-import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
@@ -39,6 +29,10 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
  */
 public abstract class AbstractScrollingSupport {
 
+	/**
+	 * @deprecated use {@link MouseWheelAdapter#SCROLLING_STEP}
+	 */
+	@Deprecated
 	protected static final int SCROLLING_STEP = 20;
 	protected final IModuleNavigationComponentProvider navigationComponentProvider;
 
@@ -199,67 +193,26 @@ public abstract class AbstractScrollingSupport {
 	// helping methods
 	//////////////////
 
-	private void initMouseWheelObserver(final Composite navigationComponent) {
-		if (SwtUtilities.isDisposed(navigationComponent)) {
+	private void initMouseWheelObserver(final Composite control) {
+		if (SwtUtilities.isDisposed(control)) {
 			return;
 		}
-		final Display display = navigationComponent.getDisplay();
-		final MouseWheelAdapter wheelAdapter = new MouseWheelAdapter();
-		SWTFacade.getDefault().addFilterMouseWheel(display, wheelAdapter);
-		navigationComponent.addDisposeListener(new DisposeListener() {
-			public void widgetDisposed(final DisposeEvent e) {
-				SWTFacade.getDefault().removeFilterMouseWheel(display, wheelAdapter);
+		new MouseWheelAdapter(control, new MouseWheelAdapter.Scroller() {
+
+			@Override
+			public boolean mayScroll() {
+				return AbstractScrollingSupport.this.mayScroll();
+			}
+
+			@Override
+			public void scrollUp(final int scrollingStep) {
+				AbstractScrollingSupport.this.scrollUp(scrollingStep);
+			}
+
+			@Override
+			public void scrollDown(final int scrollingStep) {
+				AbstractScrollingSupport.this.scrollDown(scrollingStep);
 			}
 		});
-	}
-
-	private final class MouseWheelAdapter implements Listener {
-
-		// for saving last event time
-		private int lastEventTime = 0;
-
-		public void handleEvent(final Event event) {
-			// only go further if the event has a new time stamp
-			if (mayScroll() && acceptEvent(event)) {
-				lastEventTime = event.time;
-				final Rectangle navigationComponentBounds = getNavigationComponent().getBounds();
-
-				// convert navigation bounds relative to display
-				final Point navigationPtAtDisplay = getNavigationComponent().toDisplay(0, 0);
-				navigationComponentBounds.x = navigationPtAtDisplay.x;
-				navigationComponentBounds.y = navigationPtAtDisplay.y;
-
-				if (event.widget instanceof Control) {
-					final Control widget = (Control) event.widget;
-					// convert widget event point relative to display
-					final Point evtPt = widget.toDisplay(event.getBounds().x, event.getBounds().y);
-					// now check if inside navigation
-					if (navigationComponentBounds.contains(evtPt.x, evtPt.y)) {
-						if (event.count > 0) {
-							scrollUp(SCROLLING_STEP);
-						} else {
-							scrollDown(SCROLLING_STEP);
-						}
-					}
-
-				}
-			}
-		}
-
-		private boolean acceptEvent(final Event event) {
-			// check that this is the latest event
-			final boolean isCurrent = event.time > lastEventTime;
-			// 282089: check this window is has the focus, to avoid scrolling when
-			// the mouse pointer happens to be over another overlapping window
-			final Control control = (Control) event.widget;
-			final Shell activeShell = WorkbenchFacade.getInstance().getActiveWindowShell();
-			final boolean isActive = control.getShell() == activeShell;
-			// 282091: check that this navigation component is visible. Since
-			// we are using a display filter the navigation components of _each_
-			// subapplication are notified when scrolling!
-			final boolean isVisible = getNavigationComponent().isVisible();
-			return isCurrent && isActive && isVisible;
-		}
-
 	}
 }
