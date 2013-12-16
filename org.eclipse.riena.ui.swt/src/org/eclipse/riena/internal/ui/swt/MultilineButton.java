@@ -49,8 +49,8 @@ public class MultilineButton extends Button {
 	 */
 	@Override
 	public void setFont(final Font font) {
-		super.setFont(font);
 		gc.setFont(font);
+		super.setFont(font);
 	}
 
 	@Override
@@ -74,6 +74,10 @@ public class MultilineButton extends Button {
 		final Point textSizeOneLine = gc.stringExtent(getText().replaceAll("\\r|\\n", "")); //$NON-NLS-1$ //$NON-NLS-2$
 		final Point textSizeWithLineBreaks = SWTFacade.getDefault().textExtent(gc, getText(), SWT.DRAW_DELIMITER);
 
-		return new Point(fromSuper.x - textSizeOneLine.x + textSizeWithLineBreaks.x, Math.max(fromSuper.y, textSizeWithLineBreaks.y));
+		int width = fromSuper.x - textSizeOneLine.x + textSizeWithLineBreaks.x;
+		// workaround for windows 7 with classic look
+		// to avoid unwanted wrapping, we increase the with by a pixel
+		width += 1;
+		return new Point(width, Math.max(fromSuper.y, textSizeWithLineBreaks.y));
 	}
 }
