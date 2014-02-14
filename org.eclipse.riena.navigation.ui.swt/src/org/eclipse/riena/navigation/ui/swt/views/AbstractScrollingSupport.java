@@ -15,11 +15,11 @@ import java.util.List;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Tree;
 
-import org.eclipse.riena.internal.ui.swt.MouseWheelAdapter;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
+import org.eclipse.riena.ui.swt.utils.MouseWheelAdapter;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
