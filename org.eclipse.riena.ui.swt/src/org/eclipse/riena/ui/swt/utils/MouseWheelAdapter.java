@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.utils;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Point;
@@ -41,26 +42,30 @@ public class MouseWheelAdapter implements Listener {
 		boolean mayScroll();
 
 		/**
-		 * @param scrollingStep
+		 * @param pixels
 		 *            the pixels to scroll up
 		 */
-		void scrollUp(int scrollingStep);
+		void scrollUp(int pixels);
 
 		/**
-		 * @param scrollingStep
+		 * @param pixels
 		 *            the pixels to scroll down
 		 */
-		void scrollDown(int scrollingStep);
+		void scrollDown(int pixels);
 
 	}
 
 	/**
 	 * The pixels to scroll for one mouse wheel step
+	 * 
+	 * @deprecated Using an absolute mouse wheel scrolling step ignores the system's mouse wheel setting. Use {@link #setScrollingSpeed(int)} instead.
 	 */
+	@Deprecated
 	public static final int SCROLLING_STEP = 20;
 
 	private final Control control;
 	private final Scroller scroller;
+	private int scrollingSpeed = 7;
 
 	public MouseWheelAdapter(final Control control, final Scroller scroller) {
 		this.control = control;
@@ -73,6 +78,28 @@ public class MouseWheelAdapter implements Listener {
 				SWTFacade.getDefault().removeFilterMouseWheel(display, MouseWheelAdapter.this);
 			}
 		});
+	}
+
+	/**
+	 * The scrolling speed is the non-accelerated pixels count to scroll for one mouse wheel step. The absolute (accelerated) scrolling speed is this value
+	 * multiplied by the system mouse wheel setting.
+	 * 
+	 * @return the scrollSpeed
+	 */
+	public int getScrollingSpeed() {
+		return scrollingSpeed;
+	}
+
+	/**
+	 * The scrolling speed is the non-accelerated pixels count to scroll for one mouse wheel step. The absolute (accelerated) scrolling speed is this value
+	 * multiplied by the system mouse wheel setting.
+	 * 
+	 * @param scrollingSpeed
+	 *            a positive value or <code>0</code> to disable scrolling
+	 */
+	public void setScrollingSpeed(final int scrollingSpeed) {
+		Assert.isLegal(scrollingSpeed >= 0, "The scrolling speed must be a non-negative value."); //$NON-NLS-1$
+		this.scrollingSpeed = scrollingSpeed;
 	}
 
 	// for saving last event time
@@ -96,9 +123,9 @@ public class MouseWheelAdapter implements Listener {
 				// now check if inside navigation
 				if (navigationComponentBounds.contains(evtPt.x, evtPt.y)) {
 					if (event.count > 0) {
-						scroller.scrollUp(SCROLLING_STEP);
+						scroller.scrollUp(event.count * scrollingSpeed);
 					} else {
-						scroller.scrollDown(SCROLLING_STEP);
+						scroller.scrollDown(-event.count * scrollingSpeed);
 					}
 				}
 
