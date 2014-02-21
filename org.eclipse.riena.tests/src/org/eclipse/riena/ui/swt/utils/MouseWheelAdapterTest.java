@@ -13,6 +13,7 @@ package org.eclipse.riena.ui.swt.utils;
 import junit.framework.TestCase;
 
 import org.easymock.EasyMock;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import org.eclipse.swt.widgets.Display;
@@ -60,6 +61,7 @@ public class MouseWheelAdapterTest extends TestCase {
 	}
 
 	@Test
+	@Ignore
 	public void testSetScrollingSpeed() throws Exception {
 		EasyMock.expect(scroller.mayScroll()).andReturn(true);
 		final int speed = 15;
