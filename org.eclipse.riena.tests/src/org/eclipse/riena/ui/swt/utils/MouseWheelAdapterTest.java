@@ -39,6 +39,7 @@ public class MouseWheelAdapterTest extends TestCase {
 		super.setUp();
 		display = Display.getDefault();
 		shell = new Shell(display);
+		shell.open();
 
 		scroller = EasyMock.createMock(Scroller.class);
 		mouseWheelAdapter = new MouseWheelAdapter(shell, scroller);
@@ -70,6 +71,8 @@ public class MouseWheelAdapterTest extends TestCase {
 		event.time = 1;
 		event.widget = shell;
 		event.count = OS_SETTING_MOUSE_WHEEL;
+		event.x = shell.getLocation().x + 1;
+		event.y = shell.getLocation().y + 1;
 		mouseWheelAdapter.handleEvent(event);
 
 		EasyMock.verify(scroller);
