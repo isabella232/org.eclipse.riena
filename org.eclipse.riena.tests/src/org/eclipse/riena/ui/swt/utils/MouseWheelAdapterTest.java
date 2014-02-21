@@ -19,11 +19,13 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
 
+import org.eclipse.riena.core.test.collect.UITestCase;
 import org.eclipse.riena.ui.swt.utils.MouseWheelAdapter.Scroller;
 
 /**
  * Tests for the class {@link MouseWheelAdapter}
  */
+@UITestCase
 public class MouseWheelAdapterTest extends TestCase {
 	private static final int OS_SETTING_MOUSE_WHEEL = 3;
 
