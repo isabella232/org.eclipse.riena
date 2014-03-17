@@ -1,0 +1,31 @@
+<!DOCTYPE html "-//W3C//DTD XHTML 1.0 Strict//EN" 
+ 
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<title>Riena Shared Browser Example</title>
+		
+		<script type="text/javascript">
+		
+		    var active;
+		    function setactive(id) {
+		    	if(active != null) active.innerHTML = active.id;
+		    	active = document.getElementById(id);
+		    	active.innerHTML = '<h1>' + id + '</h1>';
+		    }
+ 
+
+		</script>
+
+	</head>
+
+	<body>
+		<h1>Shared Browser Demo</h1>
+		Name: <input id="txtName" type="text" onkeyup="btnCreateGroup.disabled = (txtName.value.length == 0)" />
+		<button title="Enter a name and click" disabled="false" id="btnCreateGroup" type="button" onclick="jsCreateModuleGroup(txtName.value); txtName.value = '';">Create Module Group</button>
+	</body>
+
+</html>

@@ -453,6 +453,13 @@
             name="org.eclipse.riena.example.client.view.changeLogo"
             restorable="true">
       </view>
+      <view
+            allowMultiple="true"
+            class="org.eclipse.riena.example.client.views.SharedBrowserView"
+            id="org.eclipse.riena.example.client.views.SharedBrowserView"
+            name="Shared Browser"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -1169,6 +1176,32 @@
                viewId="org.eclipse.riena.example.client.view.changeLogo"
                visible="true">
          </subModule>
+      </assembly2>
+      <assembly2
+            id="org.eclipse.riena.example.client.assembly.sharedBrowser"
+            name="Shared Browsers"
+            parentNodeId="playground"
+            startOrder="101">
+         <moduleGroup
+               name="Shared Browsers"
+               nodeId="org.eclipse.riena.example.client.sharedBrowsers.moduleGroup">
+            <module
+                  closable="true"
+                  name="Shared Browsers"
+                  nodeId="org.eclipse.riena.example.client.module.sharedBrowsers">
+               <subModule
+                     closable="true"
+                     controller="org.eclipse.riena.example.client.controllers.SharedBrowserController"
+                     expanded="false"
+                     name="Shared Browser"
+                     nodeId="org.eclipse.riena.example.client.subModule.sharedBrowser"
+                     selectable="true"
+                     sharedView="true"
+                     viewId="org.eclipse.riena.example.client.views.SharedBrowserView"
+                     visible="true">
+               </subModule>
+            </module>
+         </moduleGroup>
       </assembly2>
    </extension>
    <extension

@@ -23,6 +23,7 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.riena.core.singleton.SessionSingletonProvider;
 import org.eclipse.riena.core.singleton.SingletonProvider;
 import org.eclipse.riena.navigation.ApplicationModelFailure;
+import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationNodeId;
@@ -136,8 +137,18 @@ public class SwtViewProvider {
 				viewCounter.put(viewId, 0);
 			}
 			if (viewCounter.get(viewId) == 0) {
+				final String secondary;
+
+				final IModuleGroupNode group = submodule.getParentOfType(IModuleGroupNode.class);
+				if (group != null && group.getContext("shared.views.context") instanceof String) {
+					secondary = (String) group.getContext("shared.views.context");
+					// fix counters
+				} else {
+					secondary = "shared"; //$NON-NLS-1$
+				}
+
 				// first node with this view
-				swtViewId = new SwtViewId(viewId, "shared"); //$NON-NLS-1$
+				swtViewId = new SwtViewId(viewId, secondary);
 				views.put(submodule, swtViewId);
 				viewCounter.put(viewId, 1);
 			} else {

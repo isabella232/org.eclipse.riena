@@ -1,0 +1,34 @@
+<!DOCTYPE html "-//W3C//DTD XHTML 1.0 Strict//EN" 
+ 
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<title>Riena Shared Browser Example</title>
+		
+		<script type="text/javascript">
+		
+		    function appendtolog(text) {
+		    	var oldValue = document.getElementById('txtLog').value;
+		    	document.getElementById('txtLog').value = oldValue + text + '\n';
+		    }
+ 
+
+		</script>
+
+	</head>
+
+	<body onload="document.getElementById('txtLog').value = 'browser refreshed\n'">
+		<h1>Webapp</h1>
+		<p/>
+		
+		<button id="btn1" type="button" onclick="theJavaFunction('btn1')">Activate page 1</button>
+		<button id="btn2" type="button" onclick="theJavaFunction('btn2')">Activate page 2</button>
+		
+		<p/>
+		<textarea id="txtLog" rows="10" cols="50" ></textarea>
+	</body>
+
+</html>

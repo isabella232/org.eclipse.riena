@@ -132,4 +132,21 @@ public interface IBrowserRidget extends IValueRidget {
 	 *            such as 'about:blank'.
 	 */
 	void setUrl(String newUrl);
+
+	/**
+	 * Executes the given script on the page in the browser.
+	 * 
+	 * @param script
+	 *            the script to execute
+	 * @return <code>true</code> if the script was successfully executed.
+	 * @since 6.0
+	 */
+	boolean execute(String script);
+
+	/**
+	 * @param functionName
+	 * @param controller
+	 * @since 6.0
+	 */
+	void mapScriptFunction(String functionName, Object controller);
 }
