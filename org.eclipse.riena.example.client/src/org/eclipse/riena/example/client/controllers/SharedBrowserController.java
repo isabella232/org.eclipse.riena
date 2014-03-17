@@ -86,7 +86,9 @@ public class SharedBrowserController extends SubModuleController {
 	@Override
 	public void afterBind() {
 		super.afterBind();
-		browser.execute("appendtolog('node activated: " + getNavigationNode().getNodeId().getInstanceId() + "');"); //$NON-NLS-1$ //$NON-NLS-2$
+		if (getNavigationNode().getParentOfType(IModuleGroupNode.class).getContext(SHARED_BROWSERS_MODEL) != null) {
+			browser.execute("appendtolog('node activated: " + getNavigationNode().getNodeId().getInstanceId() + "');"); //$NON-NLS-1$ //$NON-NLS-2$
+		}
 	}
 
 	/**
@@ -145,7 +147,13 @@ public class SharedBrowserController extends SubModuleController {
 			final File tempFile = File.createTempFile(name, ".html"); //$NON-NLS-1$
 			os = new FileOutputStream(tempFile);
 			IOUtils.copy(is, os);
-			return tempFile.toURI().toURL().toString();
+			String result = tempFile.toURI().toURL().toString();
+
+			// this is needed to avoid initial browser refresh on submodule creation
+			if (result.startsWith("file:/") && !result.startsWith("file:///")) {
+				result = "file:///" + result.substring("file:/".length());
+			}
+			return result;
 		} catch (final IOException e) {
 			throw new MurphysLawFailure("", e); //$NON-NLS-1$
 		} finally {

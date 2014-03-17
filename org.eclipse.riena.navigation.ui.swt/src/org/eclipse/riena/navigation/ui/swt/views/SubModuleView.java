@@ -285,7 +285,9 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	 */
 	protected void registerView() {
 		if (getViewSite() != null) {
-			SwtViewProvider.getInstance().registerView(getViewSite().getId(), this);
+			String id = getViewSite().getId();
+			String secondaryId = getViewSite().getSecondaryId();
+			SwtViewProvider.getInstance().registerView(id, secondaryId, this);
 		}
 	}
 
@@ -306,7 +308,8 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 		super.dispose();
 		if (getViewSite() != null) {
 			final String id = getViewSite().getId();
-			SwtViewProvider.getInstance().unregisterView(id);
+			final String secondaryId = getViewSite().getId();
+			SwtViewProvider.getInstance().unregisterView(id, secondaryId);
 		}
 	}
 
@@ -608,7 +611,8 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	 * @return the subModule node if found
 	 */
 	protected ISubModuleNode getSubModuleNode(final String nodeId, final String secondaryId) {
-		return SwtViewProvider.getInstance().getNavigationNode(nodeId, secondaryId, ISubModuleNode.class, !SHARED_ID.equals(secondaryId));
+		final boolean ignoreSharedState = secondaryId == null || !secondaryId.startsWith(SubModuleView.SHARED_ID);
+		return SwtViewProvider.getInstance().getNavigationNode(nodeId, secondaryId, ISubModuleNode.class, ignoreSharedState);
 	}
 
 	// helping methods

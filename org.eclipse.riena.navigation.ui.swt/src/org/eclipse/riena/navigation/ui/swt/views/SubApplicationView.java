@@ -513,9 +513,12 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 		try {
 			final IWorkbenchPage page = getActivePage();
 			IViewPart viewPart = null;
-			if (SubModuleView.SHARED_ID.equals(secondary)) {
-				viewPart = SwtViewProvider.getInstance().getRegisteredView(id);
+			if (secondary != null && secondary.startsWith(SubModuleView.SHARED_ID)) {
+				viewPart = SwtViewProvider.getInstance().getRegisteredView(id, secondary);
 			}
+			//			if (SubModuleView.SHARED_ID.equals(secondary)) {
+			//				viewPart = SwtViewProvider.getInstance().getRegisteredView(id);
+			//			}
 			if (viewPart == null) {
 				final IPerspectiveDescriptor activePerspective = getActivePerspective();
 				final IPerspectiveDescriptor subAppPerspective = getPerspectiveOfSubApplication(getNavigationNode());
