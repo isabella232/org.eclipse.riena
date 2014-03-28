@@ -66,9 +66,4 @@ public class SharedViewDemoSubModuleView extends SubModuleView {
 		UIControlsFactory.createButton(parent, "Default &Button", "btnDefault"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
-	@Override
-	public void setFocus() {
-		super.setFocus();
-	}
-
 }
