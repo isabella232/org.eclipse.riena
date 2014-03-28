@@ -194,11 +194,7 @@ public class SubModuleViewTest extends RienaTestCase {
 		final SubModuleNode node = new SubModuleNode(new NavigationNodeId("testId", SubModuleView.SHARED_ID));
 		node.setParent(moduleNode);
 		final TestSharedView2 smv = new TestSharedView2(node);
-		try {
-			smv.bind(node);
-		} catch (final Exception e) {
-			fail();
-		}
+		smv.bind(node);
 		assertTrue(smv.bindCalled);
 
 	}
@@ -211,6 +207,8 @@ public class SubModuleViewTest extends RienaTestCase {
 		public TestSharedView2(final SubModuleNode node) {
 			this.node = node;
 			ReflectionUtils.setHidden(this, "contentComposite", parentComposite);
+			final Object blockHelper = ReflectionUtils.getHidden(this, "blockHelper"); //$NON-NLS-1$
+			ReflectionUtils.setHidden(blockHelper, "contentComposite", parentComposite);
 		}
 
 		@Override
