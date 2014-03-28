@@ -30,6 +30,8 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 
+import org.eclipse.riena.ui.ridgets.IRidget;
+import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.controller.AbstractWindowController;
 import org.eclipse.riena.ui.swt.GrabCorner;
 import org.eclipse.riena.ui.swt.IStatusLineContentFactory;
@@ -81,6 +83,7 @@ public abstract class AbstractDialogView extends Dialog {
 	private String title;
 	private boolean isClosing;
 	private final boolean statusLine;
+	private final BlockHelper blockHelper;
 
 	private static Shell getShellByGuessing() {
 		if (PlatformUI.isWorkbenchRunning()) {
@@ -116,7 +119,31 @@ public abstract class AbstractDialogView extends Dialog {
 		title = ""; //$NON-NLS-1$
 		dlgRenderer = new RienaWindowRenderer(this, isPaintTitlebar());
 		controlledView = new ControlledView();
-		controlledView.setController(createController());
+		final AbstractWindowController controller = createController();
+		blockHelper = new BlockHelper() {
+
+			@Override
+			protected boolean shouldRestoreFocus() {
+				return true;
+			}
+
+			@Override
+			protected Control getParentComposite() {
+				return getContents();
+			}
+
+			@Override
+			protected IRidget getFocusRidget() {
+				return null;
+			}
+
+			@Override
+			protected IRidgetContainer getController() {
+				return AbstractDialogView.this.getController();
+			}
+		};
+		controller.setBlocker(blockHelper);
+		controlledView.setController(controller);
 	}
 
 	protected AbstractDialogView(final Shell parentShell) {
@@ -165,6 +192,10 @@ public abstract class AbstractDialogView extends Dialog {
 
 	@Override
 	public boolean close() {
+		if (blockHelper.isBlocked()) {
+			return false;
+		}
+
 		final AbstractWindowController controller = getController();
 		isClosing = true;
 		setReturnCode(controller.getReturnCode());
@@ -260,6 +291,7 @@ public abstract class AbstractDialogView extends Dialog {
 			addUIControl(line, AbstractWindowController.RIDGET_ID_STATUSLINE);
 		}
 		createContentComposite(mainComposite);
+		blockHelper.registerOnContentComposite(parent);
 		return mainComposite;
 	}
 

@@ -23,17 +23,12 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
@@ -57,12 +52,13 @@ import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProvider;
 import org.eclipse.riena.navigation.ui.swt.presentation.stack.TitlelessStackPresentation;
-import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
+import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.SubModuleUtils;
 import org.eclipse.riena.ui.ridgets.controller.IController;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.AbstractViewBindingDelegate;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtBindingDelegate;
+import org.eclipse.riena.ui.ridgets.swt.views.BlockHelper;
 import org.eclipse.riena.ui.swt.EmbeddedTitleBar;
 import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.lnf.LnFUpdater;
@@ -94,8 +90,6 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 
 	private final AbstractViewBindingDelegate binding;
 
-	private final FocusListener focusListener;
-
 	private SubModuleController currentController;
 
 	/**
@@ -111,21 +105,10 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	private Composite parentComposite;
 	private Composite contentComposite;
 
-	private boolean isBlocked;
-
-	/**
-	 * Keep a reference to the control that was last focused for a given controller id.
-	 * 
-	 * @see #getControllerId()
-	 * @see #canRestoreFocus()
-	 */
-	private final Map<Integer, Control> focusControlMap = new HashMap<Integer, Control>(1);
-
 	private NavigationTreeObserver navigationTreeObserver;
 
 	private NavigationSourceProvider navigationSourceProvider;
 	private SubModuleNodesListener subModuleNodeListener;
-	private Cursor oldCursor;
 	/**
 	 * used for the e4 migration
 	 * <p>
@@ -139,13 +122,36 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	private IShellProvider shellProvider;
 	private boolean e4Runtime = false;
 
+	private final BlockHelper blockHelper;
+
 	/**
 	 * Creates a new instance of {@code SubModuleView}.
 	 */
 	public SubModuleView() {
+		blockHelper = new BlockHelper() {
+
+			@Override
+			protected IRidgetContainer getController() {
+				return SubModuleView.this.getController();
+			}
+
+			@Override
+			protected Control getParentComposite() {
+				return SubModuleView.this.getParentComposite();
+			}
+
+			@Override
+			protected boolean shouldRestoreFocus() {
+				return SubModuleView.this.shouldRestoreFocus();
+			}
+
+			@Override
+			protected IRidget getFocusRidget() {
+				return SubModuleView.this.getFocusRidget();
+			}
+
+		};
 		binding = createBinding();
-		focusListener = new FocusListener();
-		isBlocked = false;
 		setShellProvider(new IShellProvider() {
 			public Shell getShell() {
 				return getSite().getShell();
@@ -253,6 +259,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 		} else {
 			contentComposite = parent;
 		}
+		blockHelper.registerOnContentComposite(contentComposite);
 
 		contentComposite.setData(TitlelessStackPresentation.DATA_KEY_CONTENT_COMPOSITE, true);
 		createWorkarea(contentComposite);
@@ -272,12 +279,6 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 			}
 		}
 
-		contentComposite.getDisplay().addFilter(SWT.FocusIn, focusListener);
-		contentComposite.addDisposeListener(new DisposeListener() {
-			public void widgetDisposed(final DisposeEvent event) {
-				event.widget.getDisplay().removeFilter(SWT.FocusIn, focusListener);
-			}
-		});
 	}
 
 	/**
@@ -363,27 +364,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	 */
 	@Override
 	public void setFocus() {
-		if (canRestoreFocus()) {
-			final Integer id = Integer.valueOf(getControllerId());
-			final Control lastFocusedControl = focusControlMap.get(id);
-			lastFocusedControl.setFocus();
-		} else if (canFocusOnRidget()) {
-			getFocusRidget().requestFocus();
-		} else {
-			contentComposite.setFocus();
-		}
-	}
-
-	private boolean canFocusOnRidget() {
-		boolean result = false;
-		final IRidget ridget = getFocusRidget();
-		if (ridget != null) {
-			result = ridget.isFocusable() && ridget.isEnabled() && ridget.isVisible();
-			if (ridget instanceof IMarkableRidget) {
-				result &= !((IMarkableRidget) ridget).isOutputOnly();
-			}
-		}
-		return result;
+		blockHelper.setFocus();
 	}
 
 	private IRidget getFocusRidget() {
@@ -438,13 +419,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	protected abstract void basicCreatePartControl(Composite parent);
 
 	protected void blockView(final boolean block) {
-		if (!getParentComposite().isDisposed()) {
-			if (block) {
-				blockView();
-			} else {
-				unBlockView();
-			}
-		}
+		blockHelper.setBlocked(block);
 	}
 
 	/**
@@ -458,59 +433,8 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 		this.shellProvider = shellProvider;
 	}
 
-	private void unBlockView() {
-		isBlocked = false;
-		getParentComposite().setCursor(oldCursor);
-		contentComposite.setEnabled(true);
-
-		contentComposite.setRedraw(false);
-		contentComposite.setRedraw(true);
-		if (shouldRestoreFocus() && canRestoreFocus()) {
-			setFocus();
-		}
-		oldCursor = null;
-		// Update markers here, because for some controls (ChoiceComposite, CComboRidget, DatePickerComposite) the mandatory marker was not visualized
-		// after unblock when set while block
-		// ruv 356
-		if (getController() != null) {
-			for (final IRidget ridget : getController().getRidgets()) {
-				if (ridget instanceof IMarkableRidget) {
-					((IMarkableRidget) ridget).updateMarkers();
-				}
-			}
-			getController().restoreFocusRequestFromRidget(getController().getRidgets());
-		}
-	}
-
-	private void blockView() {
-		if (!isBlocked) {
-			oldCursor = getParentComposite().getCursor();
-
-			if (getController() != null) {
-				for (final IRidget ridget : getController().getRidgets()) {
-					if (ridget.hasFocus()) {
-						final Object uiControl = ridget.getUIControl();
-						if (uiControl instanceof Control) {
-							saveFocus((Control) uiControl);
-						}
-					}
-				}
-			}
-			getParentComposite().setCursor(getWaitCursor());
-			contentComposite.setEnabled(false);
-			isBlocked = true;
-		}
-	}
-
-	/**
-	 * Returns true if {@link #setFocus()} can restore the focus to the control that last had the focus in this view; false otherwise.
-	 * 
-	 * @since 1.2
-	 */
 	protected final boolean canRestoreFocus() {
-		final Integer id = Integer.valueOf(getControllerId());
-		final Control control = focusControlMap.get(id);
-		return !SwtUtilities.isDisposed(control);
+		return blockHelper.canRestoreFocus();
 	}
 
 	/**
@@ -710,14 +634,6 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	}
 
 	/**
-	 * Returns the id (hashcode) of the controller if available, or zero.
-	 */
-	private int getControllerId() {
-		final SubModuleController controller = getController();
-		return controller == null ? 0 : controller.hashCode();
-	}
-
-	/**
 	 * @return a fallback navigation node for views that are not associated with a node in the navigation tree.
 	 */
 	private SubModuleNode getFallbackNavigationNode() {
@@ -755,10 +671,6 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 		return rcpSubModuleNode;
 	}
 
-	private Cursor getWaitCursor() {
-		return contentComposite.getDisplay().getSystemCursor(SWT.CURSOR_WAIT);
-	}
-
 	/**
 	 * Returns true if we are running without the navigation tree
 	 */
@@ -781,38 +693,6 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 
 	// helping classes
 	//////////////////
-
-	/**
-	 * Keeps track of the last focused control within this view.
-	 */
-	private final class FocusListener implements Listener {
-		public void handleEvent(final Event event) {
-			if (contentComposite.isVisible() && event.widget instanceof Control) {
-				final Control control = (Control) event.widget;
-				if (contains(contentComposite, control)) {
-					saveFocus(control);
-				}
-			}
-		}
-
-		private boolean contains(final Composite container, final Control control) {
-			boolean result = false;
-			Composite parent = control.getParent();
-			// what if the contentComposite fires the event itself?
-			while (!result && parent != null) {
-				result = container == parent;
-				parent = parent.getParent();
-			}
-			return result;
-		}
-	}
-
-	private void saveFocus(final Control control) {
-		final int id = getControllerId();
-		if (id != 0) {
-			focusControlMap.put(Integer.valueOf(id), control);
-		}
-	}
 
 	/**
 	 * @since 3.0

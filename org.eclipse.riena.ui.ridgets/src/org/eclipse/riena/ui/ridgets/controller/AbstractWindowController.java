@@ -36,6 +36,17 @@ import org.eclipse.riena.ui.ridgets.RidgetToStatuslineSubscriber;
  * 
  */
 public abstract class AbstractWindowController implements IController, IContext {
+	/**
+	 * Implementations handle the <tt>'blocked'</tt> state.
+	 * 
+	 * @see IController#setBlocked(boolean)
+	 * @since 6.0
+	 */
+	public interface Blocker {
+		void setBlocked(boolean blocked);
+
+		boolean isBlocked();
+	}
 
 	/**
 	 * @since 3.0
@@ -78,7 +89,7 @@ public abstract class AbstractWindowController implements IController, IContext 
 	private final Map<String, IRidget> ridgets;
 	private final Map<String, Object> context;
 	private IWindowRidget windowRidget;
-	private boolean blocked;
+	private Blocker blocker;
 	private int returnCode;
 	private boolean configured = false;
 
@@ -278,13 +289,41 @@ public abstract class AbstractWindowController implements IController, IContext 
 		return returnCode;
 	}
 
-	public boolean isBlocked() {
-		return this.blocked;
+	/**
+	 * @param blocker
+	 *            the blocker to set
+	 * @since 6.0
+	 */
+	public void setBlocker(final Blocker blocker) {
+		this.blocker = blocker;
 	}
 
+	/**
+	 * Set a {@link Blocker} implementation to handle the <tt>'blocked'</tt> state or <code>null</code> if blocking is not relevant.
+	 * 
+	 * @since 6.0
+	 */
+	public Blocker getBlocker() {
+		return blocker;
+	}
+
+	@Override
+	public boolean isBlocked() {
+		return blocker != null && blocker.isBlocked();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * Calls to this method are ignored if no {@link Blocker} is set.
+	 * 
+	 * @see Blocker
+	 */
+	@Override
 	public void setBlocked(final boolean blocked) {
-		this.blocked = blocked;
-		// TODO: implement
+		if (blocker != null) {
+			blocker.setBlocked(blocked);
+		}
 	}
 
 	/**

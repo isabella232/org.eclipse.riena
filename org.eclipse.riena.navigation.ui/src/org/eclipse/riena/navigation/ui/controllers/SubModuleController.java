@@ -29,9 +29,7 @@ import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.model.SubModuleNode;
-import org.eclipse.riena.ui.ridgets.AbstractRidget;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
-import org.eclipse.riena.ui.ridgets.IComplexRidget;
 import org.eclipse.riena.ui.ridgets.IDefaultActionManager;
 import org.eclipse.riena.ui.ridgets.IEmbeddedTitleBarRidget;
 import org.eclipse.riena.ui.ridgets.IInfoFlyoutRidget;
@@ -42,6 +40,7 @@ import org.eclipse.riena.ui.ridgets.IStatuslineRidget;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
 import org.eclipse.riena.ui.ridgets.RidgetToStatuslineSubscriber;
 import org.eclipse.riena.ui.ridgets.controller.AbstractWindowController;
+import org.eclipse.riena.ui.ridgets.controller.ControllerHelper;
 import org.eclipse.riena.ui.ridgets.listener.IWindowRidgetListener;
 
 /**
@@ -257,20 +256,7 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	 * @since 4.0
 	 */
 	public void restoreFocusRequestFromRidget(final Collection<? extends IRidget> collection) {
-		for (final IRidget ridget : collection) {
-			if (ridget instanceof IComplexRidget) {
-				restoreFocusRequestFromRidget(((IComplexRidget) ridget).getRidgets());
-			} else {
-				if (ridget instanceof AbstractRidget) {
-					if (((AbstractRidget) ridget).isRetryRequestFocus()) {
-						if (!getNavigationNode().isBlocked()) {
-							ridget.requestFocus();
-						}
-						((AbstractRidget) ridget).setRetryRequestFocus(false);
-					}
-				}
-			}
-		}
+		ControllerHelper.restoreFocusRequestFromRidget(collection, getNavigationNode().isBlocked());
 	}
 
 	@Override

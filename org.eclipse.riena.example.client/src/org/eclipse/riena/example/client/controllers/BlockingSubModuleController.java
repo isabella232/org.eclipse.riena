@@ -11,6 +11,10 @@
 package org.eclipse.riena.example.client.controllers;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 
 import org.eclipse.riena.example.client.views.BlockingSubModuleView;
 import org.eclipse.riena.navigation.IApplicationNode;
@@ -23,6 +27,9 @@ import org.eclipse.riena.ui.core.uiprocess.UIProcess;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.ILabelRidget;
+import org.eclipse.riena.ui.ridgets.controller.AbstractWindowController;
+import org.eclipse.riena.ui.ridgets.swt.views.AbstractDialogView;
+import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
  * Example for blocking different parts of the user interface.
@@ -35,8 +42,11 @@ public class BlockingSubModuleController extends SubModuleController {
 	public static final String RIDGET_BLOCK_SUB_MODULE = "blockSubModule"; //$NON-NLS-1$
 	public static final String RIDGET_BLOCK_SUB_APP = "blockSubApplication"; //$NON-NLS-1$
 	public static final String RIDGET_BLOCK_APPLICATION = "blockApplication"; //$NON-NLS-1$
+	public static final String RIDGET_BLOCK_DIALOG = "blockDialog"; //$NON-NLS-1$
 	public static final String RIDGET_DISABLE_MODULE = "disableModule"; //$NON-NLS-1$
 	public static final String RIDGET_STATUS = "status"; //$NON-NLS-1$
+	private static final String BTN_BLOCK = "btnBlock"; //$NON-NLS-1$
+	private static final String DIALOG_STATUS = "dialogStatus"; //$NON-NLS-1$
 
 	private ILabelRidget status;
 
@@ -92,6 +102,14 @@ public class BlockingSubModuleController extends SubModuleController {
 			}
 		});
 
+		final IActionRidget disableDialog = getRidget(IActionRidget.class, RIDGET_BLOCK_DIALOG);
+		disableDialog.setText("Block dialog"); //$NON-NLS-1$
+		disableDialog.addListener(new IActionListener() {
+			public void callback() {
+				new MyDialogView().open();
+			}
+		});
+
 		status = getRidget(ILabelRidget.class, RIDGET_STATUS);
 	}
 
@@ -124,6 +142,76 @@ public class BlockingSubModuleController extends SubModuleController {
 
 	// helping classes
 	//////////////////
+
+	private static class MyDialogView extends AbstractDialogView {
+
+		protected MyDialogView() {
+			super(null);
+		}
+
+		@Override
+		protected Control buildView(final Composite parent) {
+			parent.setLayout(new FillLayout());
+
+			final Composite c = UIControlsFactory.createComposite(parent);
+			UIControlsFactory.createLabel(c, "Click on the button to block the dialog for 10s", DIALOG_STATUS); //$NON-NLS-1$
+			UIControlsFactory.createButton(c, "Block", BTN_BLOCK); //$NON-NLS-1$
+			c.setLayout(new GridLayout());
+			return c;
+		}
+
+		@Override
+		protected AbstractWindowController createController() {
+			return new MyDialogController();
+		}
+
+	}
+
+	private static class MyDialogController extends AbstractWindowController {
+		@Override
+		public void configureRidgets() {
+			super.configureRidgets();
+
+			getRidget(IActionRidget.class, BTN_BLOCK).addListener(new IActionListener() {
+				@Override
+				public void callback() {
+					new DialogBlockingProcess(MyDialogController.this).start();
+				}
+			});
+		}
+	}
+
+	private static class DialogBlockingProcess extends UIProcess {
+
+		private final MyDialogController dialogController;
+
+		public DialogBlockingProcess(final MyDialogController dialogController) {
+			super("Blocking Dialog"); //$NON-NLS-1$
+			this.dialogController = dialogController;
+		}
+
+		@Override
+		public void initialUpdateUI(final int totalWork) {
+			dialogController.getRidget(ILabelRidget.class, DIALOG_STATUS).setText("Blocking for 10s, dialog is not closeable"); //$NON-NLS-1$
+			dialogController.setBlocked(true);
+		}
+
+		@Override
+		public void finalUpdateUI() {
+			dialogController.setBlocked(false);
+			dialogController.getRidget(ILabelRidget.class, DIALOG_STATUS).setText("Unblocked, dialog can be closed"); //$NON-NLS-1$
+		}
+
+		@Override
+		public boolean runJob(final IProgressMonitor monitor) {
+			try {
+				Thread.sleep(10000);
+			} catch (final InterruptedException e) {
+				return false;
+			}
+			return true;
+		}
+	}
 
 	/**
 	 * Blocks the given {@link INavigationNode} for a number of seconds.
