@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +26,6 @@ import org.eclipse.swt.browser.LocationEvent;
 import org.eclipse.swt.browser.LocationListener;
 
 import org.eclipse.riena.core.util.ListenerList;
-import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
 import org.eclipse.riena.ui.ridgets.IBrowserRidget;
@@ -56,17 +53,17 @@ public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget
 	private static final String PROPERTY_URL_INTERNAL = "urlInternal"; //$NON-NLS-1$
 
 	private final InternalLocationListener internalLocationListener;
-	private final Map<String, Object> scriptFunctionMappings;
+	private final Map<String, IBrowserRidgetFunction> scriptFunctionMappings;
 
 	private String url;
 	private String text;
 
-	private ArrayList<BrowserFunction> browserFunctions;
+	private final Map<String, BrowserFunction> browserFunctions;
 
 	public BrowserRidget() {
 		internalLocationListener = new InternalLocationListener();
-		scriptFunctionMappings = Collections.synchronizedMap(new HashMap<String, Object>());
-		browserFunctions = new ArrayList<BrowserFunction>();
+		scriptFunctionMappings = Collections.synchronizedMap(new HashMap<String, IBrowserRidgetFunction>());
+		browserFunctions = new HashMap<String, BrowserFunction>();
 	}
 
 	@Override
@@ -81,9 +78,8 @@ public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget
 			updateUIControl();
 			control.addLocationListener(internalLocationListener);
 
-			browserFunctions = new ArrayList<BrowserFunction>();
-			for (final Entry<String, Object> mapping : scriptFunctionMappings.entrySet()) {
-				browserFunctions.add(addBrowerFunction(mapping.getKey(), mapping.getValue()));
+			for (final Entry<String, IBrowserRidgetFunction> mapping : scriptFunctionMappings.entrySet()) {
+				browserFunctions.put(mapping.getKey(), addBrowerFunction(mapping.getKey(), mapping.getValue()));
 			}
 		}
 	}
@@ -99,7 +95,7 @@ public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget
 	}
 
 	private void disposeBrowserFunctions() {
-		for (final BrowserFunction browserFunction : browserFunctions) {
+		for (final BrowserFunction browserFunction : browserFunctions.values()) {
 			browserFunction.dispose();
 		}
 		browserFunctions.clear();
@@ -316,14 +312,26 @@ public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget
 	 * @see org.eclipse.riena.ui.ridgets.IBrowserRidget#bindScriptFunction(java.lang.String, java.lang.Object)
 	 */
 	@Override
-	public void mapScriptFunction(final String functionName, final Object controller) {
+	public void mapScriptFunction(final String functionName, final IBrowserRidgetFunction controller) {
 		scriptFunctionMappings.put(functionName, controller);
 		if (getUIControl() != null) {
-			addBrowerFunction(functionName, controller);
+			browserFunctions.put(functionName, addBrowerFunction(functionName, controller));
 		}
 	}
 
-	private BrowserFunction addBrowerFunction(final String functionName, final Object controller) {
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.ui.ridgets.IBrowserRidget#unmapScriptFunction(java.lang.String)
+	 */
+	@Override
+	public void unmapScriptFunction(final String functionName) {
+		if (scriptFunctionMappings.remove(functionName) != null && getUIControl() != null) {
+			browserFunctions.remove(functionName).dispose();
+		}
+	}
+
+	private BrowserFunction addBrowerFunction(final String functionName, final IBrowserRidgetFunction controller) {
 		return new BrowserFunction(getUIControl(), functionName) {
 			/*
 			 * (non-Javadoc)
@@ -332,7 +340,7 @@ public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget
 			 */
 			@Override
 			public Object function(final Object[] arguments) {
-				return ReflectionUtils.invoke(controller, functionName, Arrays.asList(arguments));
+				return controller.execute(arguments);
 			}
 		};
 	}

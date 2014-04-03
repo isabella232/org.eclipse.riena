@@ -5,7 +5,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.List;
 
 import org.eclipse.riena.core.exception.MurphysLawFailure;
 import org.eclipse.riena.core.util.IOUtils;
@@ -20,6 +19,7 @@ import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.IBrowserRidget;
+import org.eclipse.riena.ui.ridgets.IBrowserRidget.IBrowserRidgetFunction;
 import org.eclipse.riena.ui.workarea.WorkareaManager;
 
 /**
@@ -68,12 +68,23 @@ public class SharedBrowserController extends SubModuleController {
 		if (model == null) {
 			// we're on the title page
 			browser.setUrl(getHtmlPageURL("sharedbrowser_title.html")); //$NON-NLS-1$
-			browser.mapScriptFunction("jsCreateModuleGroup", this); //$NON-NLS-1$
+			browser.mapScriptFunction("jsCreateModuleGroup", new IBrowserRidgetFunction() { //$NON-NLS-1$
+						@Override
+						public Object execute(final Object[] jsParams) {
+							return jsCreateModuleGroup(jsParams);
+						}
+					});
 		} else {
 			// we're somewhere in the webapp
 			browser.bindToModel(model, "browserURL"); //$NON-NLS-1$
 			browser.updateFromModel();
-			browser.mapScriptFunction("theJavaFunction", this); //$NON-NLS-1$
+			browser.mapScriptFunction("theJavaFunction", new IBrowserRidgetFunction() { //$NON-NLS-1$
+						@Override
+						public Object execute(final Object[] jsParams) {
+							return theJavaFunction(jsParams);
+						}
+
+					});
 		}
 
 	}
@@ -94,8 +105,8 @@ public class SharedBrowserController extends SubModuleController {
 	/**
 	 * This function is available in the browser widget and can be called from JavaScript
 	 */
-	public Object theJavaFunction(final List<Object> args) {
-		final String idClicked = (String) args.get(0);
+	public Object theJavaFunction(final Object[] args) {
+		final String idClicked = (String) args[0];
 		final IModuleNode parent = getNavigationNode().getParentOfType(IModuleNode.class);
 		if ("btn1".equals(idClicked)) {
 			parent.getChild(0).activate();
@@ -108,8 +119,8 @@ public class SharedBrowserController extends SubModuleController {
 	/**
 	 * This function is available in the browser widget and can be called from JavaScript
 	 */
-	public Object jsCreateModuleGroup(final List<Object> args) {
-		final String name = (String) args.get(0);
+	public Object jsCreateModuleGroup(final Object[] args) {
+		final String name = (String) args[0];
 
 		final ModuleGroupNode group = new ModuleGroupNode();
 		group.setContext("shared.views.context", name);
