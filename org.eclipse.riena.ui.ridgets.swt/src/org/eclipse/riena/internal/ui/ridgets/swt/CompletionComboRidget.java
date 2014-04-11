@@ -96,7 +96,7 @@ public class CompletionComboRidget extends AbstractComboRidget implements ICompl
 
 	@Override
 	protected void clearUIControlListSelection() {
-		if ( SwtUtilities.isDisposed(getUIControl()) ) {
+		if (SwtUtilities.isDisposed(getUIControl())) {
 			return;
 		}
 		getUIControl().deselectAll();
@@ -168,6 +168,11 @@ public class CompletionComboRidget extends AbstractComboRidget implements ICompl
 	}
 
 	@Override
+	protected void setItemsToControl(final Object[] arrItems) {
+		setItemsToControl(getStringArray(arrItems));
+	}
+
+	@Override
 	protected void setTextToControl(final String text) {
 		getUIControl().setText(text);
 	}
@@ -180,7 +185,7 @@ public class CompletionComboRidget extends AbstractComboRidget implements ICompl
 	// helping methods
 	//////////////////
 
-	private Image[] getImages(final String[] arrItems) {
+	protected Image[] getImages(final Object[] arrItems) {
 		Image[] result = null;
 		final IColumnFormatter formatter = getColumnFormatter();
 		if (formatter != null) {

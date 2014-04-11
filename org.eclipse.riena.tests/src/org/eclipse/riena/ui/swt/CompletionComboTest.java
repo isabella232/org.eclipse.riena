@@ -106,14 +106,16 @@ public class CompletionComboTest extends TestCase {
 		shell.setEnabled(true);
 
 		assertTrue(combo.isEnabled());
-		final Text textControl = ReflectionUtils.invokeHidden(combo, "getTextControl");
+		final Text textControl = ReflectionUtils.invokeHidden(combo, "getTextControl"); //$NON-NLS-1$
 		assertTrue(textControl.isEnabled());
-		final Button buttonControl = ReflectionUtils.invokeHidden(combo, "getButtonControl");
+		final Button buttonControl = ReflectionUtils.invokeHidden(combo, "getButtonControl"); //$NON-NLS-1$
 		assertTrue(buttonControl.isEnabled());
 	}
 
 	/**
 	 * Tests the method {@code setFocus()}.
+	 * 
+	 * @throws InterruptedException
 	 */
 	public void testSetFocus() {
 
@@ -125,29 +127,27 @@ public class CompletionComboTest extends TestCase {
 		text.setFocus();
 		combo.setAutoCompletionMode(AutoCompletionMode.ALLOW_MISSMATCH);
 		combo.setFocus();
-		assertTrue(((Text) ReflectionUtils.invokeHidden(combo, "getTextControl")).isFocusControl());
+		assertTrue(((Text) ReflectionUtils.invokeHidden(combo, "getTextControl")).isFocusControl()); //$NON-NLS-1$
 
 		text.setFocus();
 		combo.setAutoCompletionMode(AutoCompletionMode.FIRST_LETTER_MATCH);
 		combo.setFocus();
-		assertTrue(((Text) ReflectionUtils.invokeHidden(combo, "getTextControl")).isFocusControl());
-
+		assertTrue(((Text) ReflectionUtils.invokeHidden(combo, "getTextControl")).isFocusControl()); //$NON-NLS-1$
 		text.setFocus();
 		combo.setAutoCompletionMode(AutoCompletionMode.NO_MISSMATCH);
 		combo.setFocus();
-		assertTrue(((Text) ReflectionUtils.invokeHidden(combo, "getTextControl")).isFocusControl());
+		assertTrue(((Text) ReflectionUtils.invokeHidden(combo, "getTextControl")).isFocusControl()); //$NON-NLS-1$
 
 		text.setFocus();
 		combo.setEnabled(false);
 		combo.setFocus();
-		assertFalse(((Text) ReflectionUtils.invokeHidden(combo, "getTextControl")).isFocusControl());
+		assertFalse(((Text) ReflectionUtils.invokeHidden(combo, "getTextControl")).isFocusControl()); //$NON-NLS-1$
 
 		text.setFocus();
 		combo.setEnabled(true);
 		combo.setVisible(false);
 		combo.setFocus();
-		assertFalse(((Text) ReflectionUtils.invokeHidden(combo, "getTextControl")).isFocusControl());
-
+		assertFalse(((Text) ReflectionUtils.invokeHidden(combo, "getTextControl")).isFocusControl()); //$NON-NLS-1$
 	}
 
 }

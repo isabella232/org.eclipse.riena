@@ -174,6 +174,11 @@ public class CComboRidget extends AbstractComboRidget implements ICComboRidget {
 	}
 
 	@Override
+	protected void setItemsToControl(final Object[] arrItems) {
+		setItemsToControl(getStringArray(arrItems));
+	}
+
+	@Override
 	protected void setTextToControl(final String text) {
 		getUIControl().setText(text);
 	}

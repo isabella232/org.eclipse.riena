@@ -117,6 +117,11 @@ public class ComboRidget extends AbstractComboRidget {
 	}
 
 	@Override
+	protected void setItemsToControl(final Object[] arrItems) {
+		setItemsToControl(getStringArray(arrItems));
+	}
+
+	@Override
 	protected void setTextToControl(final String text) {
 		getUIControl().setText(text);
 	}

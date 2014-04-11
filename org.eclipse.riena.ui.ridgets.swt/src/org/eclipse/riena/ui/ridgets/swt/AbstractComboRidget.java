@@ -13,6 +13,7 @@ package org.eclipse.riena.ui.ridgets.swt;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.core.databinding.Binding;
@@ -108,10 +109,6 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	 * Converts from strings (Combo) to objects (rowObservables).
 	 */
 	private IConverter strToObjConverter;
-	/**
-	 * The list of items to show in the combo. These entries are created from the optionValues by applying the current conversion stategy to them.
-	 */
-	private List<String> items;
 	/**
 	 * Binding between the rowObservables and the list of choices from the model. May be null, when there is no model.
 	 */
@@ -406,7 +403,6 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		selectionValidator.enableBinding(false);
 		try {
 			listBindingExternal.updateModelToTarget();
-			items = new ArrayList<String>();
 			updateValueToItem();
 		} finally {
 			selectionValidator.enableBinding(true);
@@ -515,6 +511,8 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	 * @since 1.2
 	 */
 	protected abstract void setItemsToControl(String[] arrItems);
+
+	protected abstract void setItemsToControl(Object[] arrItems);
 
 	/**
 	 * Set the given {@code text} to the combo.
@@ -682,23 +680,31 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	}
 
 	private void updateValueToItem() {
-		if (items != null) {
-			items.clear();
-			try {
-				for (final Object value : rowObservables) {
-					if (value == null || value.toString() == null) {
-						throw new NullPointerException("The item value for a model element is null"); //$NON-NLS-1$
-					}
-					final String item = (String) objToStrConverter.convert(value);
-					items.add(item);
-				}
-			} finally {
-				if (getUIControl() != null) {
-					final String[] arrItems = items.toArray(new String[items.size()]);
-					setItemsToControl(arrItems);
-				}
+		final List<Object> items = new ArrayList<Object>();
+		try {
+			items.addAll(getItemsFromModel());
+		} finally {
+			if (getUIControl() != null) {
+				final Object[] arrItems = items.toArray(new Object[items.size()]);
+				setItemsToControl(arrItems);
 			}
 		}
+	}
+
+	protected List<Object> getItemsFromModel() {
+		final List<Object> items = new ArrayList<Object>();
+		for (final Object value : rowObservables) {
+			if (value == null || value.toString() == null) {
+				throw new NullPointerException("The item value for a model element is null"); //$NON-NLS-1$
+			}
+			final String item = (String) objToStrConverter.convert(value);
+			items.add(item);
+		}
+		return items;
+	}
+
+	protected String[] getStringArray(final Object[] array) {
+		return Arrays.copyOf(array, array.length, String[].class);
 	}
 
 	// helping classes
