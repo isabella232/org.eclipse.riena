@@ -26,7 +26,7 @@ import org.eclipse.riena.ui.workarea.WorkareaManager;
  * Demonstrates browser instance sharing without losing the browser session
  */
 public class SharedBrowserController extends SubModuleController {
-
+	private static final String WEBAPP_TARGET = "webapp.target"; //$NON-NLS-1$
 	private static final String SHARED_BROWSERS_MODEL = "sharedBrowsers.model"; //$NON-NLS-1$
 
 	static class Model {
@@ -41,7 +41,7 @@ public class SharedBrowserController extends SubModuleController {
 		}
 	}
 
-	private int personCounter;
+	private static int personCounter;
 	private IBrowserRidget browser;
 
 	public SharedBrowserController() {
@@ -78,10 +78,17 @@ public class SharedBrowserController extends SubModuleController {
 			// we're somewhere in the webapp
 			browser.bindToModel(model, "browserURL"); //$NON-NLS-1$
 			browser.updateFromModel();
-			browser.mapScriptFunction("theJavaFunction", new IBrowserRidgetFunction() { //$NON-NLS-1$
+			browser.mapScriptFunction("initSubModules", new IBrowserRidgetFunction() { //$NON-NLS-1$
 						@Override
 						public Object execute(final Object[] jsParams) {
-							return theJavaFunction(jsParams);
+							return initSubModules(jsParams);
+						}
+
+					});
+			browser.mapScriptFunction("itemSelected", new IBrowserRidgetFunction() { //$NON-NLS-1$
+						@Override
+						public Object execute(final Object[] jsParams) {
+							return itemSelected(jsParams);
 						}
 
 					});
@@ -98,21 +105,44 @@ public class SharedBrowserController extends SubModuleController {
 	public void afterBind() {
 		super.afterBind();
 		if (getNavigationNode().getParentOfType(IModuleGroupNode.class).getContext(SHARED_BROWSERS_MODEL) != null) {
-			browser.execute("appendtolog('node activated: " + getNavigationNode().getNodeId().getInstanceId() + "');"); //$NON-NLS-1$ //$NON-NLS-2$
+			browser.execute("showContent('" + getNavigationNode().getContext(WEBAPP_TARGET) + "');"); //$NON-NLS-1$//$NON-NLS-2$
 		}
+	}
+
+	private Object itemSelected(final Object[] args) {
+		final String selected = (String) args[0];
+		if (selected == null) {
+			return null;
+		}
+
+		for (final Object child : getNavigationNode().getParent().getChildren()) {
+			if (child instanceof ISubModuleNode && selected.equals(((ISubModuleNode) child).getContext(WEBAPP_TARGET))) {
+				((ISubModuleNode) child).activate();
+				break;
+			}
+		}
+
+		return null;
 	}
 
 	/**
 	 * This function is available in the browser widget and can be called from JavaScript
 	 */
-	public Object theJavaFunction(final Object[] args) {
-		final String idClicked = (String) args[0];
-		final IModuleNode parent = getNavigationNode().getParentOfType(IModuleNode.class);
-		if ("btn1".equals(idClicked)) {
-			parent.getChild(0).activate();
-		} else {
-			parent.getChild(1).activate();
+	public Object initSubModules(final Object[] args) {
+		if (args.length != 2 || !(args[0] instanceof Object[]) || !(args[1] instanceof Object[])) {
+			throw new IllegalArgumentException("Invalid JavaScript arguments."); //$NON-NLS-1$
 		}
+
+		final Object[] ids = (Object[]) args[0];
+		final Object[] labels = (Object[]) args[1];
+
+		getNavigationNode().setLabel((String) labels[0]);
+		getNavigationNode().setContext(WEBAPP_TARGET, ids[0]);
+
+		for (int i = 1; i < ids.length; i++) {
+			createSubModuleNode(getNavigationNode().getParentOfType(IModuleNode.class), (String) labels[i], ids[i]);
+		}
+
 		return null;
 	}
 
@@ -128,22 +158,25 @@ public class SharedBrowserController extends SubModuleController {
 		group.addChild(module);
 
 		final Model model = new Model();
-		model.setBrowserURL(getHtmlPageURL("sharedbrowser_webapp.html")); //$NON-NLS-1$
+		model.setBrowserURL(getHtmlPageURL("sample-page.html")); //$NON-NLS-1$
 		group.setContext(SHARED_BROWSERS_MODEL, model);
 
 		getNavigationNode().getParentOfType(ISubApplicationNode.class).addChild(group);
 
-		ISubModuleNode nextSubModuleNode = new SubModuleNode(new NavigationNodeId("onePerson", Integer //$NON-NLS-1$
-				.toString(personCounter++)), "Page 1"); //$NON-NLS-1$
-		module.addChild(nextSubModuleNode);
-		WorkareaManager.getInstance().registerDefinition(nextSubModuleNode, getClass(), SharedBrowserView.class.getName(), true).setRequiredPreparation(true);
-		nextSubModuleNode = new SubModuleNode(new NavigationNodeId("onePerson", Integer //$NON-NLS-1$
-				.toString(personCounter++)), "Page 2"); //$NON-NLS-1$
-		module.addChild(nextSubModuleNode);
-		WorkareaManager.getInstance().registerDefinition(nextSubModuleNode, getClass(), SharedBrowserView.class.getName(), true).setRequiredPreparation(true);
+		createSubModuleNode(module, "Webapp", null);
 		group.activate();
 
 		return null;
+	}
+
+	private void createSubModuleNode(final IModuleNode parent, final String label, final Object webappTarget) {
+		System.err.println("Creating " + label);
+
+		final ISubModuleNode node = new SubModuleNode(new NavigationNodeId("onePerson", Integer //$NON-NLS-1$
+				.toString(personCounter++)), label);
+		node.setContext(WEBAPP_TARGET, webappTarget);
+		parent.addChild(node);
+		WorkareaManager.getInstance().registerDefinition(node, getClass(), SharedBrowserView.class.getName(), true).setRequiredPreparation(true);
 	}
 
 	/**

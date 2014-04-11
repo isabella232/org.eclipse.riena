@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    
+    <title>Riena tab example</title>
+
+    <style type="text/css">
+	      body { font-size: 80%; font-family: 'Lucida Grande', Verdana, Arial, Sans-Serif; }
+	      ul#tabs { list-style-type: none; margin: 30px 0 0 0; padding: 0 0 0.3em 0; }
+	      ul#tabs li { display: inline; }
+	      ul#tabs li a { color: #62454a; background-color: #dedbde; border: 1px solid #c9c3ba; border-bottom: none; padding: 0.3em; text-decoration: none; }
+	      ul#tabs li a:hover { background-color: #e1f0ee; }
+	      ul#tabs li a.selected { color: #000; background-color: #e1f0ee; font-weight: bold; padding: 0.7em 0.3em 0.38em 0.3em; }
+	      div.tabContent { border: 1px solid #a9c3ba; padding: 0.5em; background-color: #e1f0ee; }
+	      div.tabContent.hide { display: none; }
+    </style>
+
+    <script type="text/javascript">
+	    var tabLinksArray = new Array();
+	    var contentDivsArray = new Array();
+
+	    function init() {
+	      var elementIds = new Array();
+	      var elementLabels = new Array();
+	      var elementsCount = 0;
+	
+	      var tabListItems = document.getElementById('tabs').childNodes;
+	      for ( var i = 0; i < tabListItems.length; i++ ) {
+	        if ( tabListItems[i].nodeName == "LI" ) {
+	          var tabLink = getFirstChildWithTagName( tabListItems[i], 'A' );
+	          var id = getHash( tabLink.getAttribute('href') );
+	          tabLinksArray[id] = tabLink;
+	          contentDivsArray[id] = document.getElementById( id );
+	          elementIds[elementsCount] = id;
+	          elementLabels[elementsCount++] = tabLink.innerHTML;
+	        }
+	      }
+
+	      var i = 0;
+	      for ( var id in tabLinksArray ) {
+	        tabLinksArray[id].onclick = showTab;
+	        tabLinksArray[id].onfocus = function() { this.blur() };
+	        if ( i == 0 ) tabLinksArray[id].className = 'selected';
+	        i++;
+	      }
+	
+	      var i = 0;
+	      for ( var id in contentDivsArray ) {
+	        if ( i != 0 ) contentDivsArray[id].className = 'tabContent hide';
+	        i++;
+	      }
+	      
+	      // Send tabs list to the Riena app
+	      initSubModules(elementIds, elementLabels);
+	    }
+    
+	    function showTab() {
+	      var selectedId = getHash( this.getAttribute('href') );
+	      showContent(selectedId);
+	      itemSelected(selectedId);
+	      
+	      return false;
+	    }
+
+	    function showContent( selectedId ) {
+	      for ( var id in contentDivsArray ) {
+	        if ( id == selectedId ) {
+	          tabLinksArray[id].className = 'selected';
+	          contentDivsArray[id].className = 'tabContent';
+	        } else {
+	          tabLinksArray[id].className = '';
+	          contentDivsArray[id].className = 'tabContent hide';
+	        }
+	      }
+	    }
+
+	    function getFirstChildWithTagName( element, tagName ) {
+	      for ( var i = 0; i < element.childNodes.length; i++ ) {
+	        if ( element.childNodes[i].nodeName == tagName ) return element.childNodes[i];
+	      }
+	    }
+
+	    function getHash( url ) {
+	      var hashPos = url.lastIndexOf ( '#' );
+	      return url.substring( hashPos + 1 );
+	    }
+    </script>
+  </head>
+
+  <body onload="init()">
+    <h1>Riena tab example</h1>
+
+    <ul id="tabs">
+      <li><a href="#about">About Riena</a></li>
+      <li><a href="#advantages">Advantages of Riena</a></li>
+      <li><a href="#usage">Using Riena</a></li>
+    </ul>
+
+    <div class="tabContent" id="about">
+      <h2>About Riena</h2>
+      <div>
+        <p>The Riena platform is the foundation for building multi-tier enterprise client/server applications. 
+		As such Riena is broadening the usage of the service oriented architecture of OSGi/Equinox by providing access to local and remote services 
+		in a transparent way. Using this uniform programming model, the components of Riena and the business components of the enterprise application 
+		can be developed regardless of their target location. Components are later easily placed on client or server depending on the business requirements.</p>
+      </div>
+    </div>
+
+    <div class="tabContent" id="advantages">
+      <h2>Advantages Riena</h2>
+      <div>
+        <p>As an example the Riena user interface components will support a business process oriented user interface visualization and navigation metaphor
+		which can be used as alternative to the default workbench layout.</p>
+      </div>
+    </div>
+
+    <div class="tabContent" id="usage">
+      <h2>Using Riena</h2>
+      <div>
+        <p>For more information about Riena, its component and the plan checkout our <a  target="_blank" href="http://wiki.eclipse.org/Riena_Project">wiki</a></p>
+      </div>
+    </div>
+
+  </body>
+</html>
