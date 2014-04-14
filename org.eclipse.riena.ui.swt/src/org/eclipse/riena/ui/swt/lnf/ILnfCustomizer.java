@@ -10,9 +10,10 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.lnf;
 
+import org.eclipse.swt.graphics.Point;
+
 /**
- * The {@code ILnfCustomizer} allows to customize certain Look and Feels, i.e.
- * {@code RienaDefaultLnf} or sub-classes of it.
+ * The {@code ILnfCustomizer} allows to customize certain Look and Feels, i.e. {@code RienaDefaultLnf} or sub-classes of it.
  */
 public interface ILnfCustomizer {
 
@@ -32,9 +33,7 @@ public interface ILnfCustomizer {
 	 *            the key for the resource
 	 * @param resource
 	 *            the resource
-	 * @return the previously associated resource (already disposed) with the
-	 *         given {@code key} or {@code null} if there was no previously
-	 *         resource.
+	 * @return the previously associated resource (already disposed) with the given {@code key} or {@code null} if there was no previously resource.
 	 */
 	ILnfResource<?> putLnfResource(String key, ILnfResource<?> resource);
 
@@ -54,9 +53,18 @@ public interface ILnfCustomizer {
 	 *            the key for the settings object
 	 * @param setting
 	 *            the setting object
-	 * @return the previously associated setting object with the given
-	 *         {@code key}
+	 * @return the previously associated setting object with the given {@code key}
 	 */
 	Object putLnfSetting(String key, Object setting);
+
+	/**
+	 * Returns the x- and the y-factor which are used to scale pixels.<br>
+	 * If the returned values equal zero the default calculations of the factors will be used.
+	 * 
+	 * @param dpi
+	 *            dots per inch
+	 * @return x- and y-factor
+	 */
+	float[] getDpiFactors(Point dpi);
 
 }

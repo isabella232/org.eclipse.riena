@@ -107,6 +107,13 @@
             id="org.eclipse.riena.example.client.views.LayoutSubModuleView"
             name="org.eclipse.riena.example.client.views.LayoutSubModuleView">
       </view>
+      <view
+            allowMultiple="true"
+            class="org.eclipse.riena.example.client.views.DpiLayoutSubModuleView"
+            id="org.eclipse.riena.example.client.views.DpiLayoutSubModuleView"
+            name="org.eclipse.riena.example.client.views.DpiLayoutSubModuleView"
+            restorable="true">
+      </view>
       <view allowMultiple="true"
             class="org.eclipse.riena.example.client.views.LinkSubModuleView"
             id="org.eclipse.riena.example.client.views.LinkSubModuleView"

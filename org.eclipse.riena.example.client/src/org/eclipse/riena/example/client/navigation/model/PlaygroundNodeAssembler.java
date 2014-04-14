@@ -71,6 +71,7 @@ import org.eclipse.riena.example.client.views.DateTimeSubModuleView;
 import org.eclipse.riena.example.client.views.DefaultButtonSubModuleView;
 import org.eclipse.riena.example.client.views.DetachedSubModuleView;
 import org.eclipse.riena.example.client.views.DialogSubModuleView;
+import org.eclipse.riena.example.client.views.DpiLayoutSubModuleView;
 import org.eclipse.riena.example.client.views.FocusableSubModuleView;
 import org.eclipse.riena.example.client.views.InfoFlyoutSubModuleView;
 import org.eclipse.riena.example.client.views.LayoutSubModuleView;
@@ -216,6 +217,10 @@ public class PlaygroundNodeAssembler extends AbstractNavigationAssembler {
 		final ISubModuleNode layoutSubModule = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.example.layout"), "Layout"); //$NON-NLS-1$ //$NON-NLS-2$
 		workarea.registerDefinition(layoutSubModule, LayoutSubModuleController.class, LayoutSubModuleView.ID, false);
 		playgroundModule.addChild(layoutSubModule);
+
+		final ISubModuleNode dpiLayoutSubModule = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.example.dpiLayout"), "DPI Layout"); //$NON-NLS-1$ //$NON-NLS-2$
+		workarea.registerDefinition(dpiLayoutSubModule, DpiLayoutSubModuleView.ID);
+		playgroundModule.addChild(dpiLayoutSubModule);
 
 		final ISubModuleNode linkSubModule = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.example.link"), "Link and Browser"); //$NON-NLS-1$ //$NON-NLS-2$
 		workarea.registerDefinition(linkSubModule, LinkSubModuleController.class, LinkSubModuleView.ID, false);

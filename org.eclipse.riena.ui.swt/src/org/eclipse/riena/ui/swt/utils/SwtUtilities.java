@@ -19,6 +19,7 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.graphics.Resource;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Tree;
@@ -27,6 +28,7 @@ import org.eclipse.swt.widgets.Widget;
 
 import org.eclipse.riena.core.cache.LRUHashMap;
 import org.eclipse.riena.ui.swt.facades.GCFacade;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
 
 /**
  * A collection of utility methods for SWT.
@@ -36,6 +38,9 @@ public final class SwtUtilities {
 	private static final String THREE_DOTS = "..."; //$NON-NLS-1$
 	private static final Map<GCString, Integer> TEXT_WIDTH_CACHE = LRUHashMap.createLRUHashMap(2048);
 	private static final Map<GCChar, Integer> CHAR_WIDTH_CACHE = LRUHashMap.createLRUHashMap(1024);
+	private final static float DEFAULT_DPI_X = 96.0f;
+	private final static float DEFAULT_DPI_Y = 96.0f;
+	private static float cacheDpiFactors[] = new float[] { 0.0f, 0.0f };
 
 	/**
 	 * This class contains only static methods. So it is not necessary to create an instance.
@@ -239,6 +244,104 @@ public final class SwtUtilities {
 	 */
 	public static boolean isDisposed(final Resource resource) {
 		return !((resource != null) && (!resource.isDisposed()));
+	}
+
+	/**
+	 * Returns a point whose x coordinate is the horizontal dots per inch of the (current or default) display, and whose y coordinate is the vertical dots per
+	 * inch of the display.
+	 * 
+	 * @return the horizontal and vertical DPI
+	 */
+	public static Point getDpi() {
+		return getDpi(null);
+	}
+
+	/**
+	 * Returns a point whose x coordinate is the horizontal dots per inch of the display, and whose y coordinate is the vertical dots per inch of the display.
+	 * 
+	 * @param widget
+	 *            if widget is not {@code null} return DPI of the display that's associated with the widget; otherwise return the DPI of the current or default
+	 *            display
+	 * @return the horizontal and vertical DPI
+	 */
+	public static Point getDpi(final Widget widget) {
+		Display display = null;
+		if (widget != null) {
+			display = widget.getDisplay();
+		}
+		if (display == null) {
+			display = Display.getCurrent();
+		}
+		if (display == null) {
+			display = Display.getDefault();
+		}
+		Assert.isNotNull(display, "No display exits"); //$NON-NLS-1$
+		return display.getDPI();
+
+	}
+
+	/**
+	 * Returns the scaling factors which can be used to scale pixel values the same amount as the current DPI differs from the standard DPI (on Windows: 96
+	 * DPI).
+	 * 
+	 * @return x-factor and y-factors
+	 */
+	public static float[] getDpiFactors() {
+		return getDpiFactors(null);
+	}
+
+	/**
+	 * Returns the scaling factors which can be used to scale pixel values the same amount as the current DPI differs from the standard DPI (on Windows: 96
+	 * DPI).
+	 * 
+	 * @return x-factor and y-factors
+	 */
+	public static float[] getDpiFactors(final Widget widget) {
+		if ((cacheDpiFactors[0] <= 0.001f) || (cacheDpiFactors[1] <= 0.001f)) {
+			final Point dpi = getDpi(widget);
+			final float[] lnfDpiFactors = LnfManager.getLnf().getDpiFactors(dpi);
+			if (lnfDpiFactors.length == 2) {
+				cacheDpiFactors[0] = lnfDpiFactors[0];
+				cacheDpiFactors[1] = lnfDpiFactors[1];
+			}
+		}
+		if ((cacheDpiFactors[0] <= 0.001f) || (cacheDpiFactors[1] <= 0.001f)) {
+			final Point dpi = getDpi(widget);
+			cacheDpiFactors[0] = dpi.x / DEFAULT_DPI_X;
+			cacheDpiFactors[1] = dpi.y / DEFAULT_DPI_Y;
+		}
+		return cacheDpiFactors;
+	}
+
+	/**
+	 * Scales the given value in X-direction.
+	 * 
+	 * @param x
+	 *            value to scale
+	 * @return scaled value
+	 */
+	public static int convertXToDpi(final int x) {
+		final float factorX = getDpiFactors()[0];
+		return convertPixelToDpi(x, factorX);
+	}
+
+	/**
+	 * Scales the given value in Y-direction.
+	 * 
+	 * @param y
+	 *            value to scale
+	 * @return scaled value
+	 */
+	public static int convertYToDpi(final int y) {
+		final float factorY = getDpiFactors()[1];
+		return convertPixelToDpi(y, factorY);
+	}
+
+	private static int convertPixelToDpi(final int px, final float factor) {
+		if (px < 0) {
+			return -(int) (-px * factor + 0.5);
+		}
+		return (int) (px * factor + 0.5);
 	}
 
 	/**

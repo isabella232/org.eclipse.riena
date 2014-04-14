@@ -27,6 +27,7 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Resource;
 
 import org.eclipse.riena.core.Log4r;
@@ -102,8 +103,7 @@ public class RienaDefaultLnf implements ILnfCustomizer {
 	}
 
 	/**
-	 * Initializes the Look and Feel. Fills the tables of resources and
-	 * renderers.
+	 * Initializes the Look and Feel. Fills the tables of resources and renderers.
 	 */
 	public void initialize() {
 		if (!isInitialized()) {
@@ -133,8 +133,7 @@ public class RienaDefaultLnf implements ILnfCustomizer {
 	}
 
 	/**
-	 * Uninitializes the Look and Feel. Disposes resources and clears the tables
-	 * of resources and renderers.
+	 * Uninitializes the Look and Feel. Disposes resources and clears the tables of resources and renderers.
 	 */
 	public void uninitialize() {
 		resourceTable.clear();
@@ -179,14 +178,12 @@ public class RienaDefaultLnf implements ILnfCustomizer {
 	}
 
 	/**
-	 * Returns the marker support that will be used according to the Look&Feel
-	 * setting ({@code LnfKeyConstants.MARKER_SUPPORT_ID}) and for the given
-	 * Ridget class.
+	 * Returns the marker support that will be used according to the Look&Feel setting ({@code LnfKeyConstants.MARKER_SUPPORT_ID}) and for the given Ridget
+	 * class.
 	 * 
 	 * @param ridgetClass
 	 *            class of the Ridget
-	 * @return marker support or {@code null} if no appropriate marker support
-	 *         was found
+	 * @return marker support or {@code null} if no appropriate marker support was found
 	 * @since 2.0
 	 */
 	public AbstractMarkerSupport getMarkerSupport(final Class<? extends IRidget> ridgetClass) {
@@ -226,8 +223,7 @@ public class RienaDefaultLnf implements ILnfCustomizer {
 	 * 
 	 * @param key
 	 *            key whose associated resource is to be returned.
-	 * @return the resource to which this map maps the specified key, or
-	 *         <code>null</code> if the map contains no mapping for this key.
+	 * @return the resource to which this map maps the specified key, or <code>null</code> if the map contains no mapping for this key.
 	 */
 	public Resource getResource(final String key) {
 		final ILnfResource<?> value = resourceTable.get(key);
@@ -243,8 +239,7 @@ public class RienaDefaultLnf implements ILnfCustomizer {
 	 * 
 	 * @param key
 	 *            key whose associated color is to be returned.
-	 * @return the color to which this map maps the specified key, or
-	 *         <code>null</code> if the map contains no mapping for this key.
+	 * @return the color to which this map maps the specified key, or <code>null</code> if the map contains no mapping for this key.
 	 */
 	public Color getColor(final String key) {
 		return getColor(key, null);
@@ -255,8 +250,7 @@ public class RienaDefaultLnf implements ILnfCustomizer {
 	 * 
 	 * @param key
 	 *            key whose associated color is to be returned.
-	 * @return the color to which this map maps the specified key, or the
-	 *         {@code defaultValue} if the map contains no mapping for this key.
+	 * @return the color to which this map maps the specified key, or the {@code defaultValue} if the map contains no mapping for this key.
 	 * 
 	 * @since 2.0
 	 */
@@ -273,8 +267,7 @@ public class RienaDefaultLnf implements ILnfCustomizer {
 	 * 
 	 * @param key
 	 *            key whose associated font is to be returned.
-	 * @return the font to which this map maps the specified key, or
-	 *         <code>null</code> if the map contains no mapping for this key.
+	 * @return the font to which this map maps the specified key, or <code>null</code> if the map contains no mapping for this key.
 	 */
 	public Font getFont(final String key) {
 		final Resource value = getResource(key);
@@ -286,22 +279,18 @@ public class RienaDefaultLnf implements ILnfCustomizer {
 	}
 
 	/**
-	 * Returns the font for the given key. The passed properties height and
-	 * style will be applied to the font. <br>
+	 * Returns the font for the given key. The passed properties height and style will be applied to the font. <br>
 	 * 
 	 * @param key
 	 *            key whose associated font is to be returned.
 	 * @param height
-	 *            the font height to use. If it is < 0, the
-	 *            <code>LnfKeyConstants.FONTDESCRIPTOR_DEFAULT_HEIGHT</code>
-	 *            will be used. See also {@link FontData#setHeight(int)}.
+	 *            the font height to use. If it is < 0, the <code>LnfKeyConstants.FONTDESCRIPTOR_DEFAULT_HEIGHT</code> will be used. See also
+	 *            {@link FontData#setHeight(int)}.
 	 * @param style
-	 *            the font style to use. See also {@link FontData#setStyle(int)}
-	 *            .
+	 *            the font style to use. See also {@link FontData#setStyle(int)} .
 	 * 
-	 * @return the font to which this map maps the specified key with differing
-	 *         height and style, or <code>null</code> if the map contains no
-	 *         mapping for this lnfKeyConstants key.
+	 * @return the font to which this map maps the specified key with differing height and style, or <code>null</code> if the map contains no mapping for this
+	 *         lnfKeyConstants key.
 	 * @since 1.2
 	 */
 	public Font getFont(final String key, final int height, final int style) {
@@ -314,8 +303,7 @@ public class RienaDefaultLnf implements ILnfCustomizer {
 	 * 
 	 * @param key
 	 *            key whose associated image is to be returned.
-	 * @return the image to which this map maps the specified key, or
-	 *         <code>null</code> if the map contains no mapping for this key.
+	 * @return the image to which this map maps the specified key, or <code>null</code> if the map contains no mapping for this key.
 	 */
 	public Image getImage(final String key) {
 		final Resource value = getResource(key);
@@ -331,8 +319,7 @@ public class RienaDefaultLnf implements ILnfCustomizer {
 	 * 
 	 * @param key
 	 *            key whose associated renderer is to be returned.
-	 * @return the renderer to which this renderer maps the specified key, or
-	 *         <code>null</code> if the map contains no mapping for this key.
+	 * @return the renderer to which this renderer maps the specified key, or <code>null</code> if the map contains no mapping for this key.
 	 */
 	public ILnfRenderer getRenderer(final String key) {
 		return rendererTable.get(key);
@@ -343,8 +330,7 @@ public class RienaDefaultLnf implements ILnfCustomizer {
 	 * 
 	 * @param key
 	 *            key whose associated setting is to be returned.
-	 * @return the setting to which this setting maps the specified key, or
-	 *         <code>null</code> if the map contains no mapping for this key.
+	 * @return the setting to which this setting maps the specified key, or <code>null</code> if the map contains no mapping for this key.
 	 */
 	public Object getSetting(final String key) {
 		return settingTable.get(key);
@@ -355,8 +341,7 @@ public class RienaDefaultLnf implements ILnfCustomizer {
 	 * 
 	 * @param key
 	 *            key whose associated setting is to be returned.
-	 * @return the setting to which this setting maps the specified key, or
-	 *         <code>null</code> if the map contains no mapping for this key.
+	 * @return the setting to which this setting maps the specified key, or <code>null</code> if the map contains no mapping for this key.
 	 */
 	public Integer getIntegerSetting(final String key) {
 		final Object value = getSetting(key);
@@ -384,15 +369,13 @@ public class RienaDefaultLnf implements ILnfCustomizer {
 	}
 
 	/**
-	 * Returns the integer value of the setting for the given key. If no value
-	 * is set, the given default value is returned.
+	 * Returns the integer value of the setting for the given key. If no value is set, the given default value is returned.
 	 * 
 	 * @param key
 	 *            key whose associated setting is to be returned.
 	 * @param defaultValue
 	 *            value to return, if no value is set
-	 * @return the setting to which this setting maps the specified key, or the
-	 *         default value if the map contains no mapping for this key.
+	 * @return the setting to which this setting maps the specified key, or the default value if the map contains no mapping for this key.
 	 * @since 1.2
 	 */
 	public Integer getIntegerSetting(final String key, final Integer defaultValue) {
@@ -408,8 +391,7 @@ public class RienaDefaultLnf implements ILnfCustomizer {
 	 * 
 	 * @param key
 	 *            key whose associated setting is to be returned.
-	 * @return the setting to which this setting maps the specified key, or
-	 *         <code>false</code> if the map contains no mapping for this key.
+	 * @return the setting to which this setting maps the specified key, or <code>false</code> if the map contains no mapping for this key.
 	 */
 	public Boolean getBooleanSetting(final String key) {
 		final Object value = getSetting(key);
@@ -430,8 +412,7 @@ public class RienaDefaultLnf implements ILnfCustomizer {
 	 *            key whose associated setting is to be returned.
 	 * @param defaultValue
 	 *            value to return, if no value is set
-	 * @return the setting to which this setting maps the specified key, or the
-	 *         {@code defaultValue} if the map contains no mapping for this key.
+	 * @return the setting to which this setting maps the specified key, or the {@code defaultValue} if the map contains no mapping for this key.
 	 * @since 1.2
 	 */
 	public Boolean getBooleanSetting(final String key, final boolean defaultValue) {
@@ -447,8 +428,7 @@ public class RienaDefaultLnf implements ILnfCustomizer {
 	 * 
 	 * @param key
 	 *            key whose associated setting is to be returned.
-	 * @return the setting to which this setting maps the specified key, or
-	 *         <code>null</code> if the map contains no mapping for this key.
+	 * @return the setting to which this setting maps the specified key, or <code>null</code> if the map contains no mapping for this key.
 	 */
 	public String getStringSetting(final String key) {
 		final Object value = getSetting(key);
@@ -469,8 +449,7 @@ public class RienaDefaultLnf implements ILnfCustomizer {
 	 *            key whose associated setting is to be returned.
 	 * @param defaultValue
 	 *            value to return, if no value is set
-	 * @return the setting to which this setting maps the specified key, or
-	 *         <code>null</code> if the map contains no mapping for this key.
+	 * @return the setting to which this setting maps the specified key, or <code>null</code> if the map contains no mapping for this key.
 	 */
 	public String getStringSetting(final String key, final String defaultValue) {
 		final Object value = getSetting(key);
@@ -500,8 +479,7 @@ public class RienaDefaultLnf implements ILnfCustomizer {
 	/**
 	 * Sets the theme to be used by the Look and Feel.
 	 * <p>
-	 * <b>Note:</b> Setting (changing) a new theme might result in system
-	 * resources such as colors, fonts and images which will not be disposed.
+	 * <b>Note:</b> Setting (changing) a new theme might result in system resources such as colors, fonts and images which will not be disposed.
 	 * 
 	 * @param newTheme
 	 *            the theme to be used
@@ -537,6 +515,13 @@ public class RienaDefaultLnf implements ILnfCustomizer {
 	 */
 	protected String getLnfId() {
 		return ""; //$NON-NLS-1$
+	}
+
+	/**
+	 * @see org.eclipse.riena.ui.swt.lnf.ILnfCustomizer#getDpiFactors(org.eclipse.swt.graphics.Point)
+	 */
+	public float[] getDpiFactors(final Point dpi) {
+		return new float[] { 0.0f, 0.0f };
 	}
 
 }
