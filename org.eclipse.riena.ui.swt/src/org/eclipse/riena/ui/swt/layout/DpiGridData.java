@@ -54,32 +54,31 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 	 * @param gridData
 	 */
 	DpiGridData(final GridData gridData) {
-		final float[] dpiFactors = SwtUtilities.getDpiFactors();
 		GridData tmpGridData = gridData;
 		if (tmpGridData == null) {
 			tmpGridData = new GridData();
 		}
 		this.exclude = tmpGridData.exclude;
-		this.widthHint = getDpiHint(tmpGridData.widthHint, dpiFactors[0]);
-		this.heightHint = getDpiHint(tmpGridData.heightHint, dpiFactors[1]);
-		this.minimumWidth = Math.round(tmpGridData.minimumWidth * dpiFactors[0]);
-		this.minimumHeight = Math.round(tmpGridData.minimumHeight * dpiFactors[1]);
-		this.horizontalIndent = Math.round(tmpGridData.horizontalIndent * dpiFactors[0]);
-		this.verticalIndent = Math.round(tmpGridData.verticalIndent * dpiFactors[1]);
+		if (tmpGridData.widthHint == SWT.DEFAULT) {
+			this.widthHint = tmpGridData.widthHint;
+		} else {
+			this.widthHint = SwtUtilities.convertXToDpi(tmpGridData.widthHint);
+		}
+		if (tmpGridData.heightHint == SWT.DEFAULT) {
+			this.heightHint = tmpGridData.heightHint;
+		} else {
+			this.heightHint = SwtUtilities.convertYToDpi(tmpGridData.heightHint);
+		}
+		this.minimumWidth = SwtUtilities.convertXToDpi(tmpGridData.minimumWidth);
+		this.minimumHeight = SwtUtilities.convertYToDpi(tmpGridData.minimumHeight);
+		this.horizontalIndent = SwtUtilities.convertXToDpi(tmpGridData.horizontalIndent);
+		this.verticalIndent = SwtUtilities.convertYToDpi(tmpGridData.verticalIndent);
 		this.grabExcessHorizontalSpace = tmpGridData.grabExcessHorizontalSpace;
 		this.grabExcessVerticalSpace = tmpGridData.grabExcessVerticalSpace;
 		this.horizontalSpan = tmpGridData.horizontalSpan;
 		this.verticalSpan = tmpGridData.verticalSpan;
 		this.horizontalAlignment = tmpGridData.horizontalAlignment;
 		this.verticalAlignment = tmpGridData.verticalAlignment;
-	}
-
-	private int getDpiHint(final int hint, final float factor) {
-		if (hint == SWT.DEFAULT) {
-			return hint;
-		} else {
-			return Math.round(hint * factor);
-		}
 	}
 
 	void computeSize(final Control control, final int wHint, final int hHint, final boolean flushCache) {

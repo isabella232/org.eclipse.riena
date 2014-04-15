@@ -37,6 +37,13 @@ public class SwtUtilitiesTest extends TestCase {
 		ReflectionUtils.setHidden(SwtUtilities.class, "cacheDpiFactors", new float[] { 0.0f, 0.0f }); //$NON-NLS-1$
 	}
 
+	@Override
+	protected void tearDown() throws Exception {
+		// clear cache 
+		ReflectionUtils.setHidden(SwtUtilities.class, "cacheDpiFactors", new float[] { 0.0f, 0.0f }); //$NON-NLS-1$
+		super.tearDown();
+	}
+
 	/**
 	 * Test of the method {@code SwtUtilities.isDisposed(Widget)};
 	 */

@@ -777,7 +777,7 @@ public class DpiGridLayout extends Layout {
 		int x = marginLeft + marginWidth * 2 + marginRight;
 		x = SwtUtilities.convertXToDpi(x);
 		int y = marginTop + marginHeight * 2 + marginBottom;
-		y = SwtUtilities.convertXToDpi(y);
+		y = SwtUtilities.convertYToDpi(y);
 		return new Point(x, y);
 	}
 
