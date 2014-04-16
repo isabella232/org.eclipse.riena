@@ -20,6 +20,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.Scrollable;
 
+import org.eclipse.riena.internal.ui.swt.layout.DpiGridData;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**

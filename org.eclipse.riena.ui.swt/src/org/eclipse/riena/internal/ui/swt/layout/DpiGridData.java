@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.swt.layout;
+package org.eclipse.riena.internal.ui.swt.layout;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
@@ -23,21 +23,21 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
  */
 public final class DpiGridData {
 
-	final boolean exclude;
-	final int widthHint;
-	final int heightHint;
-	final int minimumWidth;
-	final int minimumHeight;
-	final int horizontalIndent;
-	final int verticalIndent;
-	final boolean grabExcessHorizontalSpace;
-	final boolean grabExcessVerticalSpace;
-	final int horizontalSpan;
-	final int verticalSpan;
-	final int verticalAlignment;
-	final int horizontalAlignment;
+	public final boolean exclude;
+	public final int widthHint;
+	public final int heightHint;
+	public final int minimumWidth;
+	public final int minimumHeight;
+	public final int horizontalIndent;
+	public final int verticalIndent;
+	public final boolean grabExcessHorizontalSpace;
+	public final boolean grabExcessVerticalSpace;
+	public final int horizontalSpan;
+	public final int verticalSpan;
+	public final int verticalAlignment;
+	public final int horizontalAlignment;
 
-	int cacheWidth = -1, cacheHeight = -1;
+	public int cacheWidth = -1, cacheHeight = -1;
 	private int defaultWhint, defaultHhint, defaultWidth = -1, defaultHeight = -1;
 	private int currentWhint, currentHhint, currentWidth = -1, currentHeight = -1;
 
@@ -81,7 +81,7 @@ public final class DpiGridData {
 		this.verticalAlignment = tmpGridData.verticalAlignment;
 	}
 
-	void computeSize(final Control control, final int wHint, final int hHint, final boolean flushCache) {
+	public void computeSize(final Control control, final int wHint, final int hHint, final boolean flushCache) {
 		if (cacheWidth != -1 && cacheHeight != -1) {
 			return;
 		}
@@ -108,7 +108,7 @@ public final class DpiGridData {
 		cacheHeight = currentHeight;
 	}
 
-	void flushCache() {
+	public void flushCache() {
 		cacheWidth = cacheHeight = -1;
 		defaultWidth = defaultHeight = -1;
 		currentWidth = currentHeight = -1;

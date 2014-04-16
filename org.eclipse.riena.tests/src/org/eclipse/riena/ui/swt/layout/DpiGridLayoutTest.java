@@ -21,6 +21,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.riena.core.test.collect.UITestCase;
 import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.internal.ui.swt.layout.DpiGridData;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
