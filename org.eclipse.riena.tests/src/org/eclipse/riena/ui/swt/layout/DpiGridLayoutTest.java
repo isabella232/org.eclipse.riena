@@ -89,10 +89,8 @@ public class DpiGridLayoutTest extends TestCase {
 		label.setLayoutData(new GridData(12, 34));
 		data = ReflectionUtils.invokeHidden(layout, "getDpiGridData", label); //$NON-NLS-1$
 		assertNotNull(data);
-		final int width = ReflectionUtils.getHidden(data, "widthHint"); //$NON-NLS-1$
-		assertEquals(24, width);
-		final int height = ReflectionUtils.getHidden(data, "heightHint"); //$NON-NLS-1$
-		assertEquals(102, height);
+		assertEquals(24, data.widthHint);
+		assertEquals(102, data.heightHint);
 
 		final DpiGridData dpiGridData = ReflectionUtils.newInstanceHidden(DpiGridData.class);
 		label.setLayoutData(dpiGridData);
@@ -121,10 +119,8 @@ public class DpiGridLayoutTest extends TestCase {
 		DpiGridData data = ReflectionUtils.invokeHidden(layout, "getData", grid, 0, 0, 1, 1, true); //$NON-NLS-1$
 		data = ReflectionUtils.invokeHidden(layout, "getDpiGridData", label); //$NON-NLS-1$
 		assertNotNull(data);
-		final int width = ReflectionUtils.getHidden(data, "widthHint"); //$NON-NLS-1$
-		assertEquals(24, width);
-		final int height = ReflectionUtils.getHidden(data, "heightHint"); //$NON-NLS-1$
-		assertEquals(102, height);
+		assertEquals(24, data.widthHint);
+		assertEquals(102, data.heightHint);
 
 	}
 
