@@ -24,7 +24,7 @@ import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
- *
+ * Tests the class {@linkplain DpiGridLayout}.
  */
 @UITestCase
 public class DpiGridLayoutTest extends TestCase {

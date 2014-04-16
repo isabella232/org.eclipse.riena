@@ -21,7 +21,7 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
  * This class is a wrapper of the (final) class {@linkplain GridData}.<br>
  * The fields of {@code GridData} are copied. The pixel values are converted into DPI depending values.
  */
-/* package */class DpiGridData {
+public final class DpiGridData {
 
 	final boolean exclude;
 	final int widthHint;
@@ -44,7 +44,7 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 	/**
 	 * Constructs a new instance of DpiGridData using default values.
 	 */
-	DpiGridData() {
+	public DpiGridData() {
 		this(null);
 	}
 
@@ -53,7 +53,7 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 	 * 
 	 * @param gridData
 	 */
-	DpiGridData(final GridData gridData) {
+	public DpiGridData(final GridData gridData) {
 		GridData tmpGridData = gridData;
 		if (tmpGridData == null) {
 			tmpGridData = new GridData();
