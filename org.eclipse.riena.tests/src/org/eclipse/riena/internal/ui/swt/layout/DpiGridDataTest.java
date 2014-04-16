@@ -23,7 +23,7 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
  * Tests of the class {@linkplain DpiGridData}.
  */
 @UITestCase
-public class DpiGirdDataTest extends TestCase {
+public class DpiGridDataTest extends TestCase {
 
 	@Override
 	protected void setUp() throws Exception {
