@@ -79,7 +79,8 @@ public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget
 			control.addLocationListener(internalLocationListener);
 
 			for (final Entry<String, IBrowserRidgetFunction> mapping : scriptFunctionMappings.entrySet()) {
-				browserFunctions.put(mapping.getKey(), addBrowerFunction(mapping.getKey(), mapping.getValue()));
+				final BrowserFunction swtBrowerFunction = addSWTBrowerFunction(mapping.getKey(), mapping.getValue());
+				browserFunctions.put(mapping.getKey(), swtBrowerFunction);
 			}
 		}
 	}
@@ -312,10 +313,11 @@ public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget
 	 * @see org.eclipse.riena.ui.ridgets.IBrowserRidget#bindScriptFunction(java.lang.String, java.lang.Object)
 	 */
 	@Override
-	public void mapScriptFunction(final String functionName, final IBrowserRidgetFunction controller) {
-		scriptFunctionMappings.put(functionName, controller);
+	public void mapScriptFunction(final String functionName, final IBrowserRidgetFunction function) {
+		scriptFunctionMappings.put(functionName, function);
 		if (getUIControl() != null) {
-			browserFunctions.put(functionName, addBrowerFunction(functionName, controller));
+			final BrowserFunction swtBrowerFunction = addSWTBrowerFunction(functionName, function);
+			browserFunctions.put(functionName, swtBrowerFunction);
 		}
 	}
 
@@ -331,7 +333,7 @@ public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget
 		}
 	}
 
-	private BrowserFunction addBrowerFunction(final String functionName, final IBrowserRidgetFunction controller) {
+	private BrowserFunction addSWTBrowerFunction(final String functionName, final IBrowserRidgetFunction controller) {
 		return new BrowserFunction(getUIControl(), functionName) {
 			/*
 			 * (non-Javadoc)

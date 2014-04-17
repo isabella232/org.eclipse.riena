@@ -11,11 +11,13 @@ import org.eclipse.riena.core.util.IOUtils;
 import org.eclipse.riena.example.client.views.SharedBrowserView;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
+import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
+import org.eclipse.riena.navigation.model.SimpleNavigationNodeAdapter;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.IBrowserRidget;
@@ -26,7 +28,10 @@ import org.eclipse.riena.ui.workarea.WorkareaManager;
  * Demonstrates browser instance sharing without losing the browser session
  */
 public class SharedBrowserController extends SubModuleController {
-	private static final String WEBAPP_TARGET = "webapp.target"; //$NON-NLS-1$
+	/**
+	 * The tab id as defined in <tt>sample-page.html</tt> (about, advantages or usage)
+	 */
+	private static final String TAB_ID = "webapp.target"; //$NON-NLS-1$
 	private static final String SHARED_BROWSERS_MODEL = "sharedBrowsers.model"; //$NON-NLS-1$
 
 	static class Model {
@@ -94,29 +99,31 @@ public class SharedBrowserController extends SubModuleController {
 					});
 		}
 
-	}
+		getNavigationNode().addSimpleListener(new SimpleNavigationNodeAdapter() {
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see org.eclipse.riena.navigation.model.SimpleNavigationNodeAdapter#afterActivated (org.eclipse.riena.navigation.INavigationNode)
+			 */
+			@Override
+			public void afterActivated(final INavigationNode<?> source) {
+				super.afterActivated(source);
+				if (getNavigationNode().getParentOfType(IModuleGroupNode.class).getContext(SHARED_BROWSERS_MODEL) != null) {
+					browser.execute("showContent('" + getNavigationNode().getContext(TAB_ID) + "');"); //$NON-NLS-1$//$NON-NLS-2$
+				}
+			}
+		});
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.navigation.ui.controllers.SubModuleController#afterBind()
-	 */
-	@Override
-	public void afterBind() {
-		super.afterBind();
-		if (getNavigationNode().getParentOfType(IModuleGroupNode.class).getContext(SHARED_BROWSERS_MODEL) != null) {
-			browser.execute("showContent('" + getNavigationNode().getContext(WEBAPP_TARGET) + "');"); //$NON-NLS-1$//$NON-NLS-2$
-		}
 	}
 
 	private Object itemSelected(final Object[] args) {
-		final String selected = (String) args[0];
-		if (selected == null) {
+		final String selectedTabId = (String) args[0];
+		if (selectedTabId == null) {
 			return null;
 		}
 
 		for (final Object child : getNavigationNode().getParent().getChildren()) {
-			if (child instanceof ISubModuleNode && selected.equals(((ISubModuleNode) child).getContext(WEBAPP_TARGET))) {
+			if (child instanceof ISubModuleNode && selectedTabId.equals(((ISubModuleNode) child).getContext(TAB_ID))) {
 				((ISubModuleNode) child).activate();
 				break;
 			}
@@ -137,10 +144,10 @@ public class SharedBrowserController extends SubModuleController {
 		final Object[] labels = (Object[]) args[1];
 
 		getNavigationNode().setLabel((String) labels[0]);
-		getNavigationNode().setContext(WEBAPP_TARGET, ids[0]);
+		getNavigationNode().setContext(TAB_ID, ids[0]);
 
 		for (int i = 1; i < ids.length; i++) {
-			createSubModuleNode(getNavigationNode().getParentOfType(IModuleNode.class), (String) labels[i], ids[i]);
+			createSubModuleNode(getNavigationNode().getParentOfType(IModuleNode.class), (String) labels[i], (String) ids[i]);
 		}
 
 		return null;
@@ -153,7 +160,7 @@ public class SharedBrowserController extends SubModuleController {
 		final String name = (String) args[0];
 
 		final ModuleGroupNode group = new ModuleGroupNode();
-		group.setContext("shared.views.context", name);
+		group.setContext(ISubModuleNode.SHARED_VIEWS_CONTEXT_KEY, name);
 		final ModuleNode module = new ModuleNode("Shared Brower (" + name + ")"); //$NON-NLS-1$ //$NON-NLS-2$
 		group.addChild(module);
 
@@ -169,12 +176,11 @@ public class SharedBrowserController extends SubModuleController {
 		return null;
 	}
 
-	private void createSubModuleNode(final IModuleNode parent, final String label, final Object webappTarget) {
-		System.err.println("Creating " + label);
-
+	private void createSubModuleNode(final IModuleNode parent, final String label, final String tabId) {
+		// there is a submodule for each tab in the webapp
 		final ISubModuleNode node = new SubModuleNode(new NavigationNodeId("onePerson", Integer //$NON-NLS-1$
 				.toString(personCounter++)), label);
-		node.setContext(WEBAPP_TARGET, webappTarget);
+		node.setContext(TAB_ID, tabId);
 		parent.addChild(node);
 		WorkareaManager.getInstance().registerDefinition(node, getClass(), SharedBrowserView.class.getName(), true).setRequiredPreparation(true);
 	}

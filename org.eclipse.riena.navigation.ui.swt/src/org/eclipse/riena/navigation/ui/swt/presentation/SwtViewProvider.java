@@ -137,9 +137,13 @@ public class SwtViewProvider {
 			if (viewCounter.get(viewId) == 0) {
 				String secondary = SubModuleView.SHARED_ID;
 
+				// if the shared view should be a Group Shared View, then a secondary
+				// id must be set to the parent IModuleGroupNode,
+				// otherwise the secondary id remains "shared" and the view is globally shared
 				final IModuleGroupNode group = submodule.getParentOfType(IModuleGroupNode.class);
-				if (group != null && group.getContext("shared.views.context") instanceof String) {
-					secondary += ("." + (String) group.getContext("shared.views.context"));
+				if (group != null && group.getContext(ISubModuleNode.SHARED_VIEWS_CONTEXT_KEY) instanceof String) {
+					secondary = secondary + "."; //$NON-NLS-1$
+					secondary = secondary + (String) group.getContext(ISubModuleNode.SHARED_VIEWS_CONTEXT_KEY);
 				}
 
 				// first node with this view
