@@ -1,0 +1,218 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    
+    <title>Riena tab example</title>
+
+    <style type="text/css">
+	BODY
+{
+	font-size: 80%;
+	font-family: "Lucida Grande", Verdana, Arial, Sans-Serif;
+}
+#tabs
+{
+	text-align: center;
+	list-style: none;
+	margin: 6px;
+	padding: 0;
+	line-height: 24px;
+	height: 26px;
+	overflow: hidden;
+	font-size: 12px;
+	font-family: verdana;
+	position: relative;
+}
+#tabs LI
+{
+	border: 1px solid #AAA;
+	background: #D1D1D1;
+	background: -o-linear-gradient(top, #ECECEC 50%, #D1D1D1 100%);
+	background: -ms-linear-gradient(top, #ECECEC 50%, #D1D1D1 100%);
+	background: -moz-linear-gradient(top, #ECECEC 50%, #D1D1D1 100%);
+	background: -webkit-linear-gradient(top, #ECECEC 50%, #D1D1D1 100%);
+	background: linear-gradient(top, #ECECEC 50%, #D1D1D1 100%);
+	display: inline-block;
+	position: relative;
+	z-index: 0;
+	border-top-left-radius: 6px;
+	border-top-right-radius: 6px;
+	box-shadow: 0 3px 3px rgba(0, 0, 0, 0.4), inset 0 1px 0 #FFF;
+	text-shadow: 0 1px #FFF;
+	margin: 0 -5px;
+	padding: 0 20px;
+}
+#tabs A
+{
+	color: #555;
+	text-decoration: none;
+}
+#tabs LI.selected
+{
+	background: #FFF;
+	color: #333;
+	z-index: 2;
+	border-bottom-color: #FFF;
+}
+#tabs:before
+{
+	position: absolute;
+	content: " ";
+	width: 100%;
+	bottom: 0;
+	left: 0;
+	border-bottom: 1px solid #AAA;
+	z-index: 1;
+}
+#tabs LI:before, #tabsli:after
+{
+	border: 1px solid #AAA;
+	position: absolute;
+	bottom: -1px;
+	width: 5px;
+	height: 5px;
+	content: " ";
+}
+#tabs LI:before
+{
+	left: -6px;
+	border-bottom-right-radius: 6px;
+	border-width: 0 1px 1px 0;
+	box-shadow: 2px 2px 0 #D1D1D1;
+}
+#tabs LI:after
+{
+	right: -6px;
+	border-bottom-left-radius: 6px;
+	border-width: 0 0 1px 1px;
+	box-shadow: -2px 2px 0 #D1D1D1;
+}
+#tabs LI.selected:before
+{
+	box-shadow: 2px 2px 0 #FFF;
+}
+#tabs LI.selected:after
+{
+	box-shadow: -2px 2px 0 #FFF;
+}
+DIV.tabContent
+{
+	border: 6px solid #ACA9C3;
+	padding: 0.5em;
+	background-color: #E9E8F7;
+}
+DIV.tabContent.hide
+{
+	display: none;
+}
+
+	</style>
+
+    <script type="text/javascript">
+	    var tabLinksArray = new Array();
+	    var contentDivsArray = new Array();
+
+	    function init() {
+	      var elementIds = new Array();
+	      var elementLabels = new Array();
+	      var elementsCount = 0;
+	
+	      var tabListItems = document.getElementById('tabs').childNodes;
+	      for ( var i = 0; i < tabListItems.length; i++ ) {
+	        if ( tabListItems[i].nodeName == "LI" ) {
+	          var tabLink = getFirstChildWithTagName( tabListItems[i], 'A' );
+	          var id = getHash( tabLink.getAttribute('href') );
+	          tabLinksArray[id] = tabLink;
+	          contentDivsArray[id] = document.getElementById( id );
+	          elementIds[elementsCount] = id;
+	          elementLabels[elementsCount++] = tabLink.innerHTML;
+	        }
+	      }
+
+	      var i = 0;
+	      for ( var id in tabLinksArray ) {
+	        tabLinksArray[id].onclick = showTab;
+	        tabLinksArray[id].onfocus = function() { this.blur() };
+	        if ( i == 0 ) tabLinksArray[id].parentNode.className = 'selected';
+	        i++;
+	      }
+	
+	      var i = 0;
+	      for ( var id in contentDivsArray ) {
+	        if ( i != 0 ) contentDivsArray[id].className = 'tabContent hide';
+	        i++;
+	      }
+	      
+	      // Send tabs list to the Riena app
+	      initSubModules(elementIds, elementLabels);
+	    }
+    
+	    function showTab() {
+	      var selectedId = getHash( this.getAttribute('href') );
+	      showContent(selectedId);
+	      itemSelected(selectedId);
+	      
+	      return false;
+	    }
+
+	    function showContent( selectedId ) {
+	      for ( var id in contentDivsArray ) {
+	        if ( id == selectedId ) {
+	          tabLinksArray[id].parentNode.className = 'selected';
+	          contentDivsArray[id].className = 'tabContent';
+	        } else {
+	          tabLinksArray[id].parentNode.className = '';
+	          contentDivsArray[id].className = 'tabContent hide';
+	        }
+	      }
+	    }
+
+	    function getFirstChildWithTagName( element, tagName ) {
+	      for ( var i = 0; i < element.childNodes.length; i++ ) {
+	        if ( element.childNodes[i].nodeName == tagName ) return element.childNodes[i];
+	      }
+	    }
+
+	    function getHash( url ) {
+	      var hashPos = url.lastIndexOf ( '#' );
+	      return url.substring( hashPos + 1 );
+	    }
+    </script>
+  </head>
+
+  <body onload="init()">
+    <h1>Riena tab example</h1>
+
+    <ul id="tabs">
+      <li><a href="#about">About Riena</a></li>
+      <li><a href="#advantages">Advantages of Riena</a></li>
+      <li><a href="#usage">Using Riena</a></li>
+    </ul>
+
+    <div class="tabContent" id="about">
+      <h2>About Riena</h2>
+      <div>
+        <p>The Riena platform is the foundation for building multi-tier enterprise client/server applications. 
+		As such Riena is broadening the usage of the service oriented architecture of OSGi/Equinox by providing access to local and remote services 
+		in a transparent way. Using this uniform programming model, the components of Riena and the business components of the enterprise application 
+		can be developed regardless of their target location. Components are later easily placed on client or server depending on the business requirements.</p>
+      </div>
+    </div>
+
+    <div class="tabContent" id="advantages">
+      <h2>Advantages Riena</h2>
+      <div>
+        <p>As an example the Riena user interface components will support a business process oriented user interface visualization and navigation metaphor
+		which can be used as alternative to the default workbench layout.</p>
+      </div>
+    </div>
+
+    <div class="tabContent" id="usage">
+      <h2>Using Riena</h2>
+      <div>
+        <p>For more information about Riena, its component and the plan checkout our <a  target="_blank" href="http://wiki.eclipse.org/Riena_Project">wiki</a></p>
+      </div>
+    </div>
+
+  </body>
+</html>

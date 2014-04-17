@@ -1,0 +1,31 @@
+<!DOCTYPE html "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		
+		<style type="text/css">
+			body { font-size: 80%; font-family: 'Lucida Grande', Verdana, Arial, Sans-Serif; border: 1px solid #a9c3ba; padding: 0.5em; background-color: #e1f0ee; }
+    	</style>
+		
+		<title>Riena Shared Browser Example</title>
+		
+	</head>
+
+	<body>
+		<h1>Shared Browser Demo</h1>
+		<i>This content as well as the other Shared Browser Demo submodules is completely displayed by browser ridgets.</i>
+		</p>
+		This example demonstrates <b>module group shared views</b>.
+		<p/>Enter a session name in the text box below and click the button to start the session.
+		A new module group will open and the children submodules will be dynamically created out of the web page content.
+		Navigation is possible from within the web page and from the Riena navigation tree.
+		<p/>
+		Name: <input id="txtName" type="text" onkeyup="btnCreateGroup.disabled = (txtName.value.length == 0)" />
+		<button title="Enter a name and click" disabled="false" id="btnCreateGroup" type="button" onclick="jsCreateModuleGroup(txtName.value); txtName.value = '';">Create Module Group</button>
+		<p/>
+		The submodules of each created module will share a browser instance. However the browser instance will not be shared among modules.
+	</body>
+
+</html>

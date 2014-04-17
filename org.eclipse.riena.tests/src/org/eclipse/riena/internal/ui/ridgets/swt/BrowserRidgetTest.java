@@ -11,9 +11,11 @@
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.beans.PropertyChangeEvent;
+import java.util.Map;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
+import org.eclipse.swt.browser.BrowserFunction;
 import org.eclipse.swt.browser.LocationListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -23,6 +25,7 @@ import org.eclipse.riena.core.test.collect.UITestCase;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.ui.swt.test.UITestHelper;
 import org.eclipse.riena.ui.ridgets.IBrowserRidget;
+import org.eclipse.riena.ui.ridgets.IBrowserRidget.IBrowserRidgetFunction;
 import org.eclipse.riena.ui.ridgets.listener.ILocationListener;
 import org.eclipse.riena.ui.ridgets.listener.LocationEvent;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
@@ -68,6 +71,49 @@ public class BrowserRidgetTest extends AbstractSWTRidgetTest {
 	public void testRequestFocus() {
 		// skipping testRequestFocus() because of Bug 84532
 		ok();
+	}
+
+	public void testMapScriptFunctionRidget() {
+		final IBrowserRidget r = new BrowserRidget();
+		final Map<String, BrowserFunction> functions = ReflectionUtils.getHidden(r, "browserFunctions"); //$NON-NLS-1$
+
+		assertNull(r.getUIControl());
+		assertTrue(functions.isEmpty());
+
+		final String functionName = "f1"; //$NON-NLS-1$
+		r.mapScriptFunction(functionName, new IBrowserRidgetFunction() {
+			public Object execute(final Object[] jsParams) {
+				return null;
+			}
+		});
+		assertTrue(functions.isEmpty());
+
+		// bind
+		r.setUIControl(new Browser(getShell(), SWT.NONE));
+		assertEquals(1, functions.size());
+		assertEquals(functionName, functions.get(functionName).getName());
+
+		// unbind
+		r.setUIControl(null);
+		assertTrue(functions.isEmpty());
+
+		// bind again, function should be created again
+		r.setUIControl(new Browser(getShell(), SWT.NONE));
+		assertEquals(1, functions.size());
+		assertEquals(functionName, functions.get(functionName).getName());
+
+		// unmap function while ridget is bound to the ui control
+		r.unmapScriptFunction(functionName);
+		assertTrue(functions.isEmpty());
+
+		// map function while ridget is bound to the ui control
+		r.mapScriptFunction(functionName, new IBrowserRidgetFunction() {
+			public Object execute(final Object[] jsParams) {
+				return null;
+			}
+		});
+		assertEquals(1, functions.size());
+		assertEquals(functionName, functions.get(functionName).getName());
 	}
 
 	public void testBindToModel() {
