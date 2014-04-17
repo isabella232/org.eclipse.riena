@@ -518,6 +518,11 @@ public class RienaDefaultLnf implements ILnfCustomizer {
 	}
 
 	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * This default implementation always returns zero factors. So the default, the calculated factors are used.
+	 * </p>
+	 * 
 	 * @see org.eclipse.riena.ui.swt.lnf.ILnfCustomizer#getDpiFactors(org.eclipse.swt.graphics.Point)
 	 */
 	public float[] getDpiFactors(final Point dpi) {

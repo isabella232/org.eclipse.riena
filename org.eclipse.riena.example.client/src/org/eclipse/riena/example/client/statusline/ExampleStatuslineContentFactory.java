@@ -16,6 +16,7 @@ import org.eclipse.riena.ui.swt.DefaultStatuslineContentFactory;
 import org.eclipse.riena.ui.swt.IStatusLineContentFactory;
 import org.eclipse.riena.ui.swt.Statusline;
 import org.eclipse.riena.ui.swt.StatuslineNumber;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
  * Example implementation of {@link IStatusLineContentFactory}
@@ -28,7 +29,7 @@ public class ExampleStatuslineContentFactory extends DefaultStatuslineContentFac
 
 			@Override
 			protected int getFixWidthLabel() {
-				return 115;
+				return SwtUtilities.convertXToDpi(115);
 			}
 		};
 	}

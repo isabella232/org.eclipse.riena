@@ -1498,7 +1498,7 @@
             parentNodeId="module121">
          <subModule
                controller="org.eclipse.riena.example.client.controllers.OnePersonSubModuleController"
-               icon="person.gif"
+               icon="person"
                name="One Person"
                requiresPreparation="true"
                sharedView="false"
