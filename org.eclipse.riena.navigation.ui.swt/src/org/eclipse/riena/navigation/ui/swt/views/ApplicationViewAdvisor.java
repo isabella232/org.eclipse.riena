@@ -92,6 +92,7 @@ import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 import org.eclipse.riena.ui.swt.utils.ImageStore;
 import org.eclipse.riena.ui.swt.utils.ShellHelper;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.riena.ui.swt.utils.TestingSupport;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 import org.eclipse.riena.ui.swt.utils.WidgetIdentificationSupport;
@@ -400,7 +401,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		final IStatusLineContentFactory statusLineFactory = getStatuslineContentFactory();
 		final Statusline statusLine = new Statusline(shell, SWT.None, StatuslineSpacer.class, statusLineFactory);
 		final FormData fd = new FormData();
-		fd.height = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.STATUSLINE_HEIGHT);
+		fd.height = SwtUtilities.convertYToDpi(LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.STATUSLINE_HEIGHT));
 		final Rectangle navigationBounds = TitlelessStackPresentation.calcNavigationBounds(shell);
 		fd.left = new FormAttachment(0, navigationBounds.x);
 		if (grabCorner != null) {
@@ -409,7 +410,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 			final int padding = getShellPadding();
 			fd.right = new FormAttachment(100, -padding);
 		}
-		fd.bottom = new FormAttachment(100, -5);
+		fd.bottom = new FormAttachment(100, SwtUtilities.convertYToDpi(-5));
 		statusLine.setLayoutData(fd);
 		addUIControl(statusLine, "statusline"); //$NON-NLS-1$
 
@@ -528,9 +529,9 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		final Composite separator = UIControlsFactory.createSeparator(parent, SWT.HORIZONTAL);
 		FormData formData = new FormData();
 		formData.top = new FormAttachment(previous);
-		formData.left = new FormAttachment(0, 2);
-		formData.right = new FormAttachment(100, -2);
-		formData.height = 2;
+		formData.left = new FormAttachment(0, SwtUtilities.convertYToDpi(2));
+		formData.right = new FormAttachment(100, SwtUtilities.convertXToDpi(-2));
+		formData.height = SwtUtilities.convertYToDpi(2);
 		separator.setLayoutData(formData);
 		previous = separator;
 

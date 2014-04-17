@@ -51,6 +51,7 @@ import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
  * <pre>
@@ -123,7 +124,7 @@ public class TitlelessStackPresentation extends StackPresentation {
 	 * Bottom padding of the navigation/the sub-module view.<br>
 	 * Gap between bottom shell border and sub-module view.
 	 */
-	public static final int PADDING_BOTTOM = 2;
+	public static final int PADDING_BOTTOM = SwtUtilities.convertYToDpi(2);
 
 	/**
 	 * Gap between navigation and sub-module view
@@ -450,7 +451,9 @@ public class TitlelessStackPresentation extends StackPresentation {
 			final Point size = getModuleGroupRenderer().computeSize(gc, SWT.DEFAULT, SWT.DEFAULT);
 			final int x = getShellNavigationGap();
 			final int width = size.x + (isNavigationFastViewEnabled() ? 2 * AbstractNavigationCompositeDeligation.BORDER_MARGIN : 0);
-			final int height = parent.getBounds().height - PADDING_BOTTOM - LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.STATUSLINE_HEIGHT);
+			Integer statuslineHeight = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.STATUSLINE_HEIGHT);
+			statuslineHeight = SwtUtilities.convertYToDpi(statuslineHeight);
+			final int height = parent.getBounds().height - PADDING_BOTTOM - statuslineHeight;
 			return new Rectangle(x, 0, width, height);
 		} finally {
 			gc.dispose();
