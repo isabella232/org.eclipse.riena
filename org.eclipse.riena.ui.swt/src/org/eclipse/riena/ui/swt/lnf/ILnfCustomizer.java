@@ -67,4 +67,15 @@ public interface ILnfCustomizer {
 	 */
 	float[] getDpiFactors(Point dpi);
 
+	/**
+	 * Returns the suffix of a scaled icon.
+	 * 
+	 * @param dpiFactors
+	 *            x- and the y-factor which are used to scale pixels
+	 * @return suffix
+	 * 
+	 * @see ILnfCustomizer#getDpiFactors(org.eclipse.swt.graphics.Point)
+	 */
+	String getIconScaleSuffix(final float[] dpiFactors);
+
 }

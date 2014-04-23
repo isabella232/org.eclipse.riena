@@ -12,6 +12,7 @@ package org.eclipse.riena.example.client.controllers;
 
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
+import org.eclipse.riena.ui.core.resource.IconSize;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IImageButtonRidget;
@@ -22,9 +23,12 @@ import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
  */
 public class RidgetsSubModuleController extends SubModuleController {
 
-	private final static String ICON_SAMPLE = "sample.gif"; //$NON-NLS-1$
-	private final static String ICON_RED = "ledred.png"; //$NON-NLS-1$
-	private final static String ICON_GREEN = "ledlightgreen.png"; //$NON-NLS-1$
+	//	private final static String ICON_SAMPLE = "sample.gif"; //$NON-NLS-1$
+	//	private final static String ICON_RED = "ledred.png"; //$NON-NLS-1$
+	//	private final static String ICON_GREEN = "ledlightgreen.png"; //$NON-NLS-1$
+	private final static String ICON_SAMPLE = "0140"; //$NON-NLS-1$
+	private final static String ICON_RED = "0142"; //$NON-NLS-1$
+	private final static String ICON_GREEN = "0141"; //$NON-NLS-1$
 
 	private final RidgetsModel model;
 
@@ -46,7 +50,7 @@ public class RidgetsSubModuleController extends SubModuleController {
 
 		final IToggleButtonRidget toggleOne = getRidget(IToggleButtonRidget.class, "toggleOne"); //$NON-NLS-1$
 		toggleOne.setText("&Toggle 1"); //$NON-NLS-1$
-		toggleOne.setIcon(ICON_SAMPLE);
+		toggleOne.setIcon(ICON_SAMPLE, IconSize.A16);
 		toggleOne.bindToModel(model, "toggleOneSelected"); //$NON-NLS-1$
 		toggleOne.updateFromModel();
 
@@ -62,10 +66,10 @@ public class RidgetsSubModuleController extends SubModuleController {
 
 		final IActionRidget buttonOne = getRidget(IActionRidget.class, "buttonOne"); //$NON-NLS-1$
 		buttonOne.setText("Button 1"); //$NON-NLS-1$
-		buttonOne.setIcon(ICON_SAMPLE);
+		buttonOne.setIcon(ICON_SAMPLE, IconSize.A16);
 		buttonOne.addListener(new IActionListener() {
 			public void callback() {
-				buttonOne.setIcon(ICON_RED);
+				buttonOne.setIcon(ICON_RED, IconSize.A16);
 				System.out.println("Button clicked..."); //$NON-NLS-1$
 			}
 		});
@@ -74,7 +78,7 @@ public class RidgetsSubModuleController extends SubModuleController {
 		buttonTwo.setText("Button 2"); //$NON-NLS-1$
 		buttonTwo.addListener(new IActionListener() {
 			public void callback() {
-				buttonTwo.setIcon(ICON_GREEN);
+				buttonTwo.setIcon(ICON_GREEN, IconSize.A16);
 				System.out.println("Button clicked..."); //$NON-NLS-1$
 			}
 		});

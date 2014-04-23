@@ -32,6 +32,7 @@ import org.eclipse.swt.widgets.Widget;
 
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.core.util.ListenerList;
+import org.eclipse.riena.internal.ui.ridgets.swt.Activator;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.ErrorMessageMarker;
@@ -503,7 +504,7 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	}
 
 	protected Image getManagedImage(final String key) {
-		Image image = ImageStore.getInstance().getImage(key);
+		Image image = Activator.getSharedImage(key);
 		if (image == null) {
 			image = ImageStore.getInstance().getMissingImage();
 		}

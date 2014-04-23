@@ -529,4 +529,13 @@ public class RienaDefaultLnf implements ILnfCustomizer {
 		return new float[] { 0.0f, 0.0f };
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.riena.ui.swt.lnf.ILnfCustomizer#getIconScaleSuffix(float[])
+	 */
+	public String getIconScaleSuffix(final float[] dpiFactors) {
+		return null;
+	}
+
 }

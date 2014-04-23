@@ -15,7 +15,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.eclipse.riena.example.client.application.ExampleIcons;
 import org.eclipse.riena.example.client.controllers.NavigateSubModuleController;
 import org.eclipse.riena.example.client.views.NavigateSubModuleView;
 import org.eclipse.riena.navigation.AbstractNavigationAssembler;
@@ -47,15 +46,13 @@ public class NavigateNodeAssembler extends AbstractNavigationAssembler {
 		final IModuleGroupNode moduleGroup = new ModuleGroupNode(nodeId);
 		moduleGroup.setPresentWithSingleModule(false);
 
-		final IModuleNode module = new ModuleNode(
-				new NavigationNodeId("org.eclipse.riena.example.navigate.module"), "Navigate"); //$NON-NLS-1$ //$NON-NLS-2$
-		module.setIcon(ExampleIcons.ICON_GREEN_LED);
+		final IModuleNode module = new ModuleNode(new NavigationNodeId("org.eclipse.riena.example.navigate.module"), "Navigate"); //$NON-NLS-1$ //$NON-NLS-2$
+		module.setIcon("0140a"); //$NON-NLS-1$
 		moduleGroup.addChild(module);
 
-		final ISubModuleNode subModule = new SubModuleNode(new NavigationNodeId(
-				"org.eclipse.riena.example.navigate.form"), "Navigate"); //$NON-NLS-1$ //$NON-NLS-2$
-		final IWorkareaDefinition def = WorkareaManager.getInstance().registerDefinition(subModule,
-				NavigateSubModuleController.class, NavigateSubModuleView.ID);
+		final ISubModuleNode subModule = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.example.navigate.form"), "Navigate"); //$NON-NLS-1$ //$NON-NLS-2$
+		final IWorkareaDefinition def = WorkareaManager.getInstance()
+				.registerDefinition(subModule, NavigateSubModuleController.class, NavigateSubModuleView.ID);
 		def.setRequiredPreparation(true);
 
 		module.addChild(subModule);

@@ -28,12 +28,11 @@ import org.eclipse.riena.ui.core.resource.IIconManager;
 import org.eclipse.riena.ui.core.resource.IconManagerProvider;
 import org.eclipse.riena.ui.core.resource.IconSize;
 import org.eclipse.riena.ui.core.resource.IconState;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
 
 /**
- * The ImageStore returns the images for given names. The images are loaded form
- * and cached. The ImageStore extends the images name, if a state (@see
- * {@link ImageState}) like pressed of hover is given. If the image name has no
- * file extension, the extension ".png" will be added.
+ * The ImageStore returns the images for given names. The images are loaded form and cached. The ImageStore extends the images name, if a state (@see
+ * {@link ImageState}) like pressed of hover is given. If the image name has no file extension, the extension ".png" will be added.
  */
 public final class ImageStore {
 
@@ -58,8 +57,7 @@ public final class ImageStore {
 	}
 
 	/**
-	 * Returns the image for the given image name and with the given file
-	 * extension.
+	 * Returns the image for the given image name and with the given file extension.
 	 * 
 	 * @param imageName
 	 *            name (ID) of the image
@@ -68,8 +66,15 @@ public final class ImageStore {
 	 * @return image or {@code null} if no image exists for the given name.
 	 */
 	public Image getImage(final String imageName, final ImageFileExtension fileExtension) {
-		String fullName = getFullName(imageName, fileExtension);
+
+		String fullName = getFullScaledName(imageName, fileExtension);
 		Image image = loadImage(fullName);
+		if (image != null) {
+			return image;
+		}
+
+		fullName = getFullName(imageName, fileExtension);
+		image = loadImage(fullName);
 		if (image == null) {
 			final String defaultIconName = getDefaultIconMangerImageName(imageName);
 			if (!StringUtils.equals(defaultIconName, imageName)) {
@@ -77,7 +82,9 @@ public final class ImageStore {
 				image = loadImage(fullName);
 			}
 		}
+
 		return image;
+
 	}
 
 	/**
@@ -102,6 +109,10 @@ public final class ImageStore {
 
 		final IIconManager defaultIconManager = IconManagerProvider.getInstance().getDefaultIconManager();
 		final String defaultIconName = defaultIconManager.getIconID(name, size, state);
+
+		if (!imageExists(defaultIconName)) {
+			return name;
+		}
 
 		return defaultIconName;
 
@@ -136,7 +147,6 @@ public final class ImageStore {
 		}
 
 		String fullName = imageName;
-		// scaling ?!?
 
 		if (imageName.indexOf('.') < 0) {
 			if (fileExtension != null) {
@@ -148,10 +158,29 @@ public final class ImageStore {
 
 	}
 
+	private String getFullScaledName(final String imageName, final ImageFileExtension fileExtension) {
+
+		if (StringUtils.isEmpty(imageName)) {
+			return null;
+		}
+		if (imageName.indexOf('.') >= 0) {
+			return null;
+		}
+		if (fileExtension == null) {
+			return null;
+		}
+
+		String fullName = addImageScaleSuffix(imageName);
+		if (fullName != null) {
+			return fullName += "." + fileExtension.getFileNameExtension(); //$NON-NLS-1$
+		}
+		return null;
+
+	}
+
 	/**
-	 * Returns the image for the given name. If the image isn't cached, the
-	 * image is loaded form the resources and stores in the cache of the
-	 * {@code ImageStore}.
+	 * Returns the image for the given name. If the image isn't cached, the image is loaded form the resources and stores in the cache of the {@code ImageStore}
+	 * .
 	 * 
 	 * @param fullName
 	 *            full name of the image (file name)
@@ -181,9 +210,8 @@ public final class ImageStore {
 	}
 
 	/**
-	 * Returns a descriptor of the image for the given name. The file of the
-	 * image is searched in every given bundle + icon path. The icon paths are
-	 * define via extension points.
+	 * Returns a descriptor of the image for the given name. The file of the image is searched in every given bundle + icon path. The icon paths are define via
+	 * extension points.
 	 * 
 	 * @param fullName
 	 *            full name of the image (file name)
@@ -225,6 +253,35 @@ public final class ImageStore {
 			missingImage = ImageDescriptor.getMissingImageDescriptor().createImage();
 		}
 		return missingImage;
+	}
+
+	public String addImageScaleSuffix(final String imageName) {
+
+		final float[] dpiFactors = SwtUtilities.getDpiFactors();
+		String suffix = LnfManager.getLnf().getIconScaleSuffix(dpiFactors);
+		if (!StringUtils.isEmpty(suffix)) {
+			final String scaledName = imageName + suffix;
+			if (imageExists(scaledName)) {
+				return scaledName;
+			}
+		}
+
+		suffix = LnfManager.getLnf().getIconScaleSuffix(new float[] { 0.0f });
+		if (!StringUtils.isEmpty(suffix)) {
+			final String scaledName = imageName + suffix;
+			if (imageExists(scaledName)) {
+				return scaledName;
+			}
+		}
+
+		return imageName;
+
+	}
+
+	private synchronized boolean imageExists(final String imageName) {
+		final String fullName = getFullName(imageName, ImageFileExtension.PNG);
+		final ImageDescriptor descriptor = getImageDescriptor(fullName);
+		return (descriptor != null);
 	}
 
 	@InjectExtension

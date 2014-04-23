@@ -69,8 +69,7 @@ public class Activator extends AbstractRienaUIPlugin {
 	}
 
 	/**
-	 * Return a "shared" image instance using the given colorKey. Shared images
-	 * are managed automatically and must not be disposed by client code.
+	 * Return a "shared" image instance using the given colorKey. Shared images are managed automatically and must not be disposed by client code.
 	 * 
 	 * @param imageKey
 	 *            a non-null String; see {@link SharedImages} for valid keys
@@ -87,13 +86,15 @@ public class Activator extends AbstractRienaUIPlugin {
 		Image image = sharedImages.get(imageKey);
 		if (image == null) {
 			image = ImageStore.getInstance().getImage(imageKey);
+			if (image != null) {
+				sharedImages.put(imageKey, image);
+			}
 		}
 		return image;
 	}
 
 	/**
-	 * Return a "shared" color instance using the given colorKey. Shared colors
-	 * are managed automatically and must not be disposed by client code.
+	 * Return a "shared" color instance using the given colorKey. Shared colors are managed automatically and must not be disposed by client code.
 	 * <p>
 	 * Example:
 	 * 
@@ -118,8 +119,7 @@ public class Activator extends AbstractRienaUIPlugin {
 
 	/**
 	 * Method to add default mappings used in the {@link ClassRidgetMapper}. <br>
-	 * Example: ClassRidgetMapper.getInstance().addMapping(IComboRidget.class,
-	 * ComboRidget.class)
+	 * Example: ClassRidgetMapper.getInstance().addMapping(IComboRidget.class, ComboRidget.class)
 	 */
 	private void initializeDefaultClassRidgetMappings() {
 		// add mappings here
