@@ -16,13 +16,18 @@ import org.eclipse.riena.navigation.listener.ISubModuleNodeListener;
 /**
  * A Node containing other sub sub module nodes.
  */
-public interface ISubModuleNode extends INavigationNode<ISubModuleNode>,
-		INavigationNodeListenerable<ISubModuleNode, ISubModuleNode, ISubModuleNodeListener> {
+public interface ISubModuleNode extends INavigationNode<ISubModuleNode>, INavigationNodeListenerable<ISubModuleNode, ISubModuleNode, ISubModuleNodeListener> {
 
 	/**
-	 * Indicates whether this Node is selectable or not. If this has children
-	 * and is not selectable, then the first child will be selected in
-	 * navigation.
+	 * Key for the secondary view id, relevant for <tt>Group Shared Views</tt>.
+	 * 
+	 * @see INavigationNode#setContext(String, Object)
+	 * @since 6.0
+	 */
+	public static final String SHARED_VIEWS_CONTEXT_KEY = "shared.views.context"; //$NON-NLS-1$
+
+	/**
+	 * Indicates whether this Node is selectable or not. If this has children and is not selectable, then the first child will be selected in navigation.
 	 * 
 	 * @return {@code true} if selectable, otherwise {@code false}
 	 * @since 1.2
@@ -39,30 +44,25 @@ public interface ISubModuleNode extends INavigationNode<ISubModuleNode>,
 	void setSelectable(boolean selectable);
 
 	/**
-	 * Returns whether the tree should be closed on a navigation event. This
-	 * only works if
-	 * <code>LnfKeyConstants.SUB_MODULE_TREE_SHOW_ONE_SUB_TREE</code> is set to
-	 * true.
+	 * Returns whether the tree should be closed on a navigation event. This only works if <code>LnfKeyConstants.SUB_MODULE_TREE_SHOW_ONE_SUB_TREE</code> is set
+	 * to true.
 	 * 
 	 * @since 3.0
 	 */
 	boolean isCloseSubTree();
 
 	/**
-	 * Sets whether the tree should be closed on a navigation event. This only
-	 * works if <code>LnfKeyConstants.SUB_MODULE_TREE_SHOW_ONE_SUB_TREE</code>
-	 * is set to true.
+	 * Sets whether the tree should be closed on a navigation event. This only works if <code>LnfKeyConstants.SUB_MODULE_TREE_SHOW_ONE_SUB_TREE</code> is set to
+	 * true.
 	 * 
 	 * @since 3.0
 	 */
 	void setCloseSubTree(boolean close);
 
 	/**
-	 * Indicates whether the user should have an opportunity to close the
-	 * subModule.
+	 * Indicates whether the user should have an opportunity to close the subModule.
 	 * 
-	 * @return {@code true} if the subModule should never be closed; by default
-	 *         is {@code false}
+	 * @return {@code true} if the subModule should never be closed; by default is {@code false}
 	 * @since 3.0
 	 */
 	boolean isClosable();

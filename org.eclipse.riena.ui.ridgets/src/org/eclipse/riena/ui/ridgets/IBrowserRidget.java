@@ -22,6 +22,26 @@ import org.eclipse.riena.ui.ridgets.listener.ILocationListener;
 public interface IBrowserRidget extends IValueRidget {
 
 	/**
+	 * Implementations represent Java-side "functions" that are invokable from JavaScript.
+	 * 
+	 * @since 6.0
+	 * @see IBrowserRidget#mapScriptFunction(String, IBrowserRidgetFunction)
+	 */
+	interface IBrowserRidgetFunction {
+
+		/**
+		 * Executes a function, which is triggered by JavaScript from within the browser.
+		 * 
+		 * @param jsParams
+		 *            the parameters, passed to the JavaScript function
+		 * @return the result to return the the JavaScript caller
+		 * 
+		 * @see IBrowserRidget#mapScriptFunction(String, IBrowserRidgetFunction)
+		 */
+		Object execute(Object[] jsParams);
+	}
+
+	/**
 	 * Property name of the url property ({@value} ).
 	 * 
 	 * @see #getUrl()
@@ -132,4 +152,36 @@ public interface IBrowserRidget extends IValueRidget {
 	 *            such as 'about:blank'.
 	 */
 	void setUrl(String newUrl);
+
+	/**
+	 * Executes the given script on the page in the browser.
+	 * 
+	 * @param script
+	 *            the script to execute
+	 * @return <code>true</code> if the script was successfully executed.
+	 * @since 6.0
+	 */
+	boolean execute(String script);
+
+	/**
+	 * Makes a JavaScript function available in the browser. This way it is possible to call a Java-side implementation for this function.
+	 * 
+	 * @param functionName
+	 *            the name under which the function can be called from within the browser.
+	 * @param controller
+	 *            the function implementation
+	 * @since 6.0
+	 * @see IBrowserRidgetFunction
+	 */
+	void mapScriptFunction(String functionName, IBrowserRidgetFunction controller);
+
+	/**
+	 * Removes the JavaScript function, so that is not callable from within the browser anymore. If there is no function with the given name, calling this
+	 * method has no effect.
+	 * 
+	 * @param functionName
+	 *            the name under which the function can be called from within the browser.
+	 * @since 6.0
+	 */
+	void unmapScriptFunction(String functionName);
 }

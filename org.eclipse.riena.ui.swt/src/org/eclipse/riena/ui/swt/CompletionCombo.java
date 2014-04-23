@@ -885,12 +885,8 @@ public abstract class CompletionCombo extends Composite {
 			createPopup(items, images, selectionIndex);
 		}
 
-		final Point size = getSize();
-		int itemCount = getItemCount(list);
-		itemCount = (itemCount == 0) ? visibleItemCount : Math.min(visibleItemCount, itemCount);
-		final int itemHeight = getItemHeight(list) * itemCount;
-		final Point listSize = list.computeSize(SWT.DEFAULT, itemHeight, false);
-		list.setBounds(1, 1, Math.max(size.x - 2, listSize.x), listSize.y);
+		final Point listSize = computeListSize(list, visibleItemCount);
+		list.setBounds(1, 1, listSize.x, listSize.y);
 
 		// always select the first element, if selection is empty and [
 		// autocompletion mode is FIRST_LETTER_MATCH
@@ -903,6 +899,16 @@ public abstract class CompletionCombo extends Composite {
 		if (index != -1) {
 			setTopIndex(list, index);
 		}
+		popup.setBounds(computePopupBounds());
+		popup.setVisible(true);
+		if (isFocusControl()) {
+			setFocus();
+		}
+
+		onAfterDropDown(list);
+	}
+
+	private Rectangle computePopupBounds() {
 		final Display display = getDisplay();
 		final Rectangle listRect = list.getBounds();
 		final Rectangle parentRect = display.map(getParent(), null, getBounds());
@@ -918,11 +924,25 @@ public abstract class CompletionCombo extends Composite {
 		if (x + width > displayRect.x + displayRect.width) {
 			x = displayRect.x + displayRect.width - listRect.width;
 		}
-		popup.setBounds(x, y, width, height);
-		popup.setVisible(true);
-		if (isFocusControl()) {
-			setFocus();
-		}
+		return new Rectangle(x, y, width, height);
+	}
+
+	/**
+	 * @since 6.0
+	 */
+	protected Point computeListSize(final Control list, final int visibleItemCount) {
+		final Point size = getSize();
+		int itemCount = getItemCount(list);
+		itemCount = (itemCount == 0) ? visibleItemCount : Math.min(visibleItemCount, itemCount);
+		final int itemHeight = getItemHeight(list) * itemCount;
+		final Point listSize = list.computeSize(SWT.DEFAULT, itemHeight, false);
+		return new Point(Math.max(size.x - 2, listSize.x), listSize.y);
+	}
+
+	/**
+	 * @since 6.0
+	 */
+	protected void onAfterDropDown(final Control list) {
 	}
 
 	private void notifyDropDownListeners() {
@@ -2285,7 +2305,7 @@ public abstract class CompletionCombo extends Composite {
 		return prefix;
 	}
 
-	private void clearImage() {
+	protected void clearImage() {
 		if (label != null) {
 			label.setImage(null);
 		}
@@ -2562,7 +2582,7 @@ public abstract class CompletionCombo extends Composite {
 		return result;
 	}
 
-	private void updateInputChars(final String string) {
+	protected void updateInputChars(final String string) {
 		for (int i = 0; i < string.length(); i++) {
 			final char ch = string.charAt(i);
 			if (!Character.isLetterOrDigit(ch)) {

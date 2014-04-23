@@ -17,6 +17,7 @@ import org.eclipse.riena.navigation.ApplicationModelFailure;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.model.SubModuleNode;
+import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 
 /**
  * Tests for the SwtViewProvider.
@@ -58,11 +59,11 @@ public class SwtViewProviderTest extends RienaTestCase {
 
 		final SwtViewId swtViewId1 = swtPresentationManager.getSwtViewId(node1);
 		assertEquals("org.eclipse.riena.navigation.ui.swt.views.TestView", swtViewId1.getId());
-		assertEquals("shared", swtViewId1.getSecondary());
+		assertEquals(SubModuleView.SHARED_ID, swtViewId1.getSecondary());
 
 		final SwtViewId swtViewId2 = swtPresentationManager.getSwtViewId(node2);
 		assertEquals("org.eclipse.riena.navigation.ui.swt.views.TestView", swtViewId2.getId());
-		assertEquals("shared", swtViewId2.getSecondary());
+		assertEquals(SubModuleView.SHARED_ID, swtViewId2.getSecondary());
 	}
 
 	public void testGetSwtViewIdNotSharedView() throws Exception {

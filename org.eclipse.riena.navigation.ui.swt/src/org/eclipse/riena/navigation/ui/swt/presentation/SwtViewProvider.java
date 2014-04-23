@@ -23,6 +23,7 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.riena.core.singleton.SessionSingletonProvider;
 import org.eclipse.riena.core.singleton.SingletonProvider;
 import org.eclipse.riena.navigation.ApplicationModelFailure;
+import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationNodeId;
@@ -40,8 +41,7 @@ public class SwtViewProvider {
 	private final HashMap<String, Boolean> viewShared;
 	private INavigationNode<?> currentPrepared = null;
 
-	private static final SingletonProvider<SwtViewProvider> SVP = new SessionSingletonProvider<SwtViewProvider>(
-			SwtViewProvider.class);
+	private static final SingletonProvider<SwtViewProvider> SVP = new SessionSingletonProvider<SwtViewProvider>(SwtViewProvider.class);
 
 	/**
 	 * Gets the singleton SwtViewProvider.
@@ -94,8 +94,7 @@ public class SwtViewProvider {
 	/**
 	 * @since 3.0
 	 */
-	public void replaceNavigationNodeId(final INavigationNode<?> node, final NavigationNodeId oldId,
-			final NavigationNodeId newId) {
+	public void replaceNavigationNodeId(final INavigationNode<?> node, final NavigationNodeId oldId, final NavigationNodeId newId) {
 		node.setNodeId(oldId);
 		final SwtViewId swtViewId = views.remove(node);
 		if (swtViewId != null) {
@@ -136,8 +135,19 @@ public class SwtViewProvider {
 				viewCounter.put(viewId, 0);
 			}
 			if (viewCounter.get(viewId) == 0) {
+				String secondary = SubModuleView.SHARED_ID;
+
+				// if the shared view should be a Group Shared View, then a secondary
+				// id must be set to the parent IModuleGroupNode,
+				// otherwise the secondary id remains "shared" and the view is globally shared
+				final IModuleGroupNode group = submodule.getParentOfType(IModuleGroupNode.class);
+				if (group != null && group.getContext(ISubModuleNode.SHARED_VIEWS_CONTEXT_KEY) instanceof String) {
+					secondary = secondary + "."; //$NON-NLS-1$
+					secondary = secondary + (String) group.getContext(ISubModuleNode.SHARED_VIEWS_CONTEXT_KEY);
+				}
+
 				// first node with this view
-				swtViewId = new SwtViewId(viewId, "shared"); //$NON-NLS-1$
+				swtViewId = new SwtViewId(viewId, secondary);
 				views.put(submodule, swtViewId);
 				viewCounter.put(viewId, 1);
 			} else {
@@ -184,15 +194,13 @@ public class SwtViewProvider {
 		return getNavigationNode(pId, null, pClass);
 	}
 
-	public <N extends INavigationNode<?>> N getNavigationNode(final String pId, final String secondary,
-			final Class<N> pClass) {
+	public <N extends INavigationNode<?>> N getNavigationNode(final String pId, final String secondary, final Class<N> pClass) {
 		return getNavigationNode(pId, secondary, pClass, false);
 
 	}
 
 	@SuppressWarnings("unchecked")
-	public <N extends INavigationNode<?>> N getNavigationNode(final String pId, final String secondary,
-			final Class<N> pClass, final boolean ignoreSharedState) {
+	public <N extends INavigationNode<?>> N getNavigationNode(final String pId, final String secondary, final Class<N> pClass, final boolean ignoreSharedState) {
 		for (final Entry<INavigationNode<?>, SwtViewId> entry : views.entrySet()) {
 			if (entry.getValue() == null) {
 				continue;
@@ -214,14 +222,12 @@ public class SwtViewProvider {
 	}
 
 	/**
-	 * Locates all {@link INavigationNode} instances in the application
-	 * navigation model which reference the given {@link SwtViewId}. Disposed
-	 * nodes are not considered.
+	 * Locates all {@link INavigationNode} instances in the application navigation model which reference the given {@link SwtViewId}. Disposed nodes are not
+	 * considered.
 	 * 
 	 * @param id
 	 *            the {@link SwtViewId}
-	 * @return a list of {@link INavigationNode}s as "users" of the given
-	 *         {@link SwtViewId}
+	 * @return a list of {@link INavigationNode}s as "users" of the given {@link SwtViewId}
 	 * @since 3.0
 	 */
 	public List<INavigationNode<?>> getViewUsers(final SwtViewId id) {
@@ -251,7 +257,7 @@ public class SwtViewProvider {
 		return currentPrepared;
 	}
 
-	private final Map<String, SubModuleView> registerdViewInstances = new HashMap<String, SubModuleView>();
+	private final Map<SwtViewId, SubModuleView> registerdViewInstances = new HashMap<SwtViewId, SubModuleView>();
 
 	/**
 	 * Registers the given view as being created
@@ -260,28 +266,30 @@ public class SwtViewProvider {
 	 *            the id of the view
 	 * @param subModuleView
 	 *            the {@link SubModuleView} instance
-	 * @since 3.0
+	 * @since 6.0
 	 */
-	public void registerView(final String id, final SubModuleView subModuleView) {
-		registerdViewInstances.put(id, subModuleView);
+	public void registerView(final String id, final String secondaryId, final SubModuleView subModuleView) {
+		registerdViewInstances.put(new SwtViewId(id, secondaryId), subModuleView);
 	}
 
 	/**
 	 * Returns the {@link SubModuleView} associated with the given id
 	 * 
-	 * @since 3.0
+	 * @param secondary
+	 * 
+	 * @since 6.0
 	 */
-	public SubModuleView getRegisteredView(final String id) {
-		return registerdViewInstances.get(id);
+	public SubModuleView getRegisteredView(final String id, final String secondaryId) {
+		return registerdViewInstances.get(new SwtViewId(id, secondaryId));
 	}
 
 	/**
 	 * Unregisters the {@link SubModuleView} associated with the given id
 	 * 
-	 * @since 3.0
+	 * @since 6.0
 	 */
-	public void unregisterView(final String id) {
-		registerdViewInstances.remove(id);
+	public void unregisterView(final String id, final String secondaryId) {
+		registerdViewInstances.remove(new SwtViewId(id, secondaryId));
 
 	}
 }
