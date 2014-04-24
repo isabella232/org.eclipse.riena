@@ -110,10 +110,6 @@ public final class ImageStore {
 		final IIconManager defaultIconManager = IconManagerProvider.getInstance().getDefaultIconManager();
 		final String defaultIconName = defaultIconManager.getIconID(name, size, state);
 
-		if (!imageExists(defaultIconName)) {
-			return name;
-		}
-
 		return defaultIconName;
 
 	}
