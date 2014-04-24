@@ -18,6 +18,7 @@ import org.eclipse.equinox.log.Logger;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
 
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.singleton.SingletonProvider;
@@ -253,8 +254,8 @@ public final class ImageStore {
 
 	public String addImageScaleSuffix(final String imageName) {
 
-		final float[] dpiFactors = SwtUtilities.getDpiFactors();
-		String suffix = LnfManager.getLnf().getIconScaleSuffix(dpiFactors);
+		final Point dpi = SwtUtilities.getDpi();
+		String suffix = LnfManager.getLnf().getIconScaleSuffix(dpi);
 		if (!StringUtils.isEmpty(suffix)) {
 			final String scaledName = imageName + suffix;
 			if (imageExists(scaledName)) {
@@ -262,7 +263,7 @@ public final class ImageStore {
 			}
 		}
 
-		suffix = LnfManager.getLnf().getIconScaleSuffix(new float[] { 0.0f });
+		suffix = LnfManager.getLnf().getIconScaleSuffix(new Point(0, 0));
 		if (!StringUtils.isEmpty(suffix)) {
 			final String scaledName = imageName + suffix;
 			if (imageExists(scaledName)) {
