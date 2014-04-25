@@ -79,6 +79,8 @@ public interface IBrowserRidget extends IValueRidget {
 	 * Return the text last set into the ridget or null.
 	 * <p>
 	 * The default value is null.
+	 * <p>
+	 * check https://bugs.eclipse.org/bugs/show_bug.cgi?id=433526 if you get a org.eclipse.swt.SWTException: Failed to change Variant type result = -2147352571
 	 * 
 	 * @since 2.0
 	 */
@@ -132,6 +134,8 @@ public interface IBrowserRidget extends IValueRidget {
 	 * Note: currently there is no synchronisation. Invoking setText(...) while
 	 * a page is loaded asynchronously from setUrl(...) call may have undefined
 	 * results.
+	 * <p>
+	 * check https://bugs.eclipse.org/bugs/show_bug.cgi?id=433526 if you get a org.eclipse.swt.SWTException: Failed to change Variant type result = -2147352571
 	 * 
 	 * @param text
 	 *            a String of HTML content.

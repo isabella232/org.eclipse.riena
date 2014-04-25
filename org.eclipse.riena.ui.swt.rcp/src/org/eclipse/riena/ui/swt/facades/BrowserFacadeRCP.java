@@ -20,6 +20,8 @@ public class BrowserFacadeRCP extends BrowserFacade {
 
 	@Override
 	public String getText(final Browser browser) {
+		// check https://bugs.eclipse.org/bugs/show_bug.cgi?id=433526
+		// if you get a org.eclipse.swt.SWTException: Failed to change Variant type result = -2147352571
 		return browser.getText();
 	}
 
