@@ -254,20 +254,22 @@ public final class ImageStore {
 
 	public String addImageScaleSuffix(final String imageName) {
 
-		final Point dpi = SwtUtilities.getDpi();
-		String suffix = LnfManager.getLnf().getIconScaleSuffix(dpi);
-		if (!StringUtils.isEmpty(suffix)) {
-			final String scaledName = imageName + suffix;
-			if (imageExists(scaledName)) {
-				return scaledName;
+		if (LnfManager.isLnfCreated()) {
+			final Point dpi = SwtUtilities.getDpi();
+			String suffix = LnfManager.getLnf().getIconScaleSuffix(dpi);
+			if (!StringUtils.isEmpty(suffix)) {
+				final String scaledName = imageName + suffix;
+				if (imageExists(scaledName)) {
+					return scaledName;
+				}
 			}
-		}
 
-		suffix = LnfManager.getLnf().getIconScaleSuffix(new Point(0, 0));
-		if (!StringUtils.isEmpty(suffix)) {
-			final String scaledName = imageName + suffix;
-			if (imageExists(scaledName)) {
-				return scaledName;
+			suffix = LnfManager.getLnf().getIconScaleSuffix(new Point(0, 0));
+			if (!StringUtils.isEmpty(suffix)) {
+				final String scaledName = imageName + suffix;
+				if (imageExists(scaledName)) {
+					return scaledName;
+				}
 			}
 		}
 

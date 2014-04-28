@@ -25,32 +25,24 @@ import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 import org.eclipse.riena.ui.swt.utils.BundleUtil;
 
 /**
- * The {@code LnfManager} manages the current look and feel of the riena
- * (navigation) widgets.
+ * The {@code LnfManager} manages the current look and feel of the riena (navigation) widgets.
  * <p>
- * The {@code LnfManager} has the term of a default look-and-feel (L&F). The
- * default L&F is initially set by Riena to {@code RienaDefaultLnf}. But the
- * default L&F may also be overridden by frameworks based on Riena. That allows
- * them to define their own default L&F.
+ * The {@code LnfManager} has the term of a default look-and-feel (L&F). The default L&F is initially set by Riena to {@code RienaDefaultLnf}. But the default
+ * L&F may also be overridden by frameworks based on Riena. That allows them to define their own default L&F.
  * <p>
- * <b>Note:</b> Changing the L&F within a running application might result in
- * system resources such as colors, fonts and images which will not be disposed.
+ * <b>Note:</b> Changing the L&F within a running application might result in system resources such as colors, fonts and images which will not be disposed.
  * <p>
- * However, applications can again override the default L&F. This can be done by
- * either setting the system property "riena.lnf" or by specifying their L&F
- * with the methods {@code LnfManager.setLnf()}.
+ * However, applications can again override the default L&F. This can be done by either setting the system property "riena.lnf" or by specifying their L&F with
+ * the methods {@code LnfManager.setLnf()}.
  * <p>
- * When specifying the L&F class via a string (either system property or one of
- * the above mentioned methods) the string should conform to:
+ * When specifying the L&F class via a string (either system property or one of the above mentioned methods) the string should conform to:
  * 
  * <pre>
  * lnf := [ Bundle-Symbolic-Name &quot;:&quot; ] LnF-Class-Name
  * </pre>
  * 
- * Where Bundle-Symbolic-Name allows to load the L&F class from the bundle with
- * this symbolic name.<br>
- * If the Bundle-Symbolic-Name is omitted the {@code LnfManager} tries to load
- * the Lnf class with the {LnfMangager}'s class loader.
+ * Where Bundle-Symbolic-Name allows to load the L&F class from the bundle with this symbolic name.<br>
+ * If the Bundle-Symbolic-Name is omitted the {@code LnfManager} tries to load the Lnf class with the {LnfMangager}'s class loader.
  */
 public final class LnfManagerInternal {
 
@@ -84,16 +76,12 @@ public final class LnfManagerInternal {
 	}
 
 	/**
-	 * Set the new look and feel specified by the given class name (see class
-	 * header JavaDoc).
+	 * Set the new look and feel specified by the given class name (see class header JavaDoc).
 	 * <p>
-	 * <b>Note:</b> Changing the L&F in a running application might result in
-	 * system resources such as colors, fonts and images which will not be
-	 * disposed.
+	 * <b>Note:</b> Changing the L&F in a running application might result in system resources such as colors, fonts and images which will not be disposed.
 	 * 
 	 * @param currentLnfClassName
-	 *            a string specifying the name of the class that implements the
-	 *            look and feel
+	 *            a string specifying the name of the class that implements the look and feel
 	 */
 	public void setLnf(final String currentLnfClassName) {
 		setLnf(createLnf(currentLnfClassName));
@@ -102,12 +90,9 @@ public final class LnfManagerInternal {
 	/**
 	 * Sets the new look and feel.
 	 * <p>
-	 * If this is set, it will override the default look and feel. See class
-	 * header JavaDoc for details.
+	 * If this is set, it will override the default look and feel. See class header JavaDoc for details.
 	 * <p>
-	 * <b>Note:</b> Changing the L&F in a running application might result in
-	 * system resources such as colors, fonts and images which will not be
-	 * disposed.
+	 * <b>Note:</b> Changing the L&F in a running application might result in system resources such as colors, fonts and images which will not be disposed.
 	 * 
 	 * @param currentLnf
 	 *            new look and feel to install.
@@ -136,8 +121,7 @@ public final class LnfManagerInternal {
 	}
 
 	/**
-	 * Returns the current look and feel. If no look and feel is set, the
-	 * default look and feel is returned.
+	 * Returns the current look and feel. If no look and feel is set, the default look and feel is returned.
 	 * 
 	 * @return current look and feel
 	 */
@@ -158,6 +142,10 @@ public final class LnfManagerInternal {
 			}
 		}
 		return currentLnf;
+	}
+
+	public boolean isLnfCreated() {
+		return (currentLnf != null);
 	}
 
 	/**
@@ -183,14 +171,12 @@ public final class LnfManagerInternal {
 			final String className = parts[1];
 			final Bundle bundle = Platform.getBundle(bundleSymbolicName);
 			if (!BundleUtil.isReady(bundle)) {
-				throw new LnfManagerFailure(
-						"can't load LnfClass '" + className + "' from bundle " + bundleSymbolicName + " because bundle is not ready."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				throw new LnfManagerFailure("can't load LnfClass '" + className + "' from bundle " + bundleSymbolicName + " because bundle is not ready."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			}
 			try {
 				lnfClass = bundle.loadClass(className);
 			} catch (final ClassNotFoundException e) {
-				throw new LnfManagerFailure(
-						"can't load LnfClass '" + className + "' from bundle " + bundleSymbolicName + ".", e); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				throw new LnfManagerFailure("can't load LnfClass '" + className + "' from bundle " + bundleSymbolicName + ".", e); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			}
 		} else {
 			lnfClass = loadClass(lnfClassName);
