@@ -228,7 +228,7 @@ public class DpiGridLayout extends Layout {
 			if (data == null) {
 				final GridData gridData = new GridData();
 				child.setLayoutData(gridData);
-				data = new DpiGridData(gridData);
+				data = getDpiGridData(child);
 			}
 			if (flushCache) {
 				data.flushCache();
