@@ -167,7 +167,7 @@ public final class ImageStore {
 			return null;
 		}
 
-		String fullName = addImageScaleSuffix(imageName);
+		String fullName = addImageScaleSuffix(imageName, fileExtension);
 		if (fullName != null) {
 			return fullName += "." + fileExtension.getFileNameExtension(); //$NON-NLS-1$
 		}
@@ -252,14 +252,14 @@ public final class ImageStore {
 		return missingImage;
 	}
 
-	public String addImageScaleSuffix(final String imageName) {
+	public String addImageScaleSuffix(final String imageName, final ImageFileExtension fileExtension) {
 
 		if (LnfManager.isLnfCreated()) {
 			final Point dpi = SwtUtilities.getDpi();
 			String suffix = LnfManager.getLnf().getIconScaleSuffix(dpi);
 			if (!StringUtils.isEmpty(suffix)) {
 				final String scaledName = imageName + suffix;
-				if (imageExists(scaledName)) {
+				if (imageExists(scaledName, fileExtension)) {
 					return scaledName;
 				}
 			}
@@ -267,7 +267,7 @@ public final class ImageStore {
 			suffix = LnfManager.getLnf().getIconScaleSuffix(new Point(0, 0));
 			if (!StringUtils.isEmpty(suffix)) {
 				final String scaledName = imageName + suffix;
-				if (imageExists(scaledName)) {
+				if (imageExists(scaledName, fileExtension)) {
 					return scaledName;
 				}
 			}
@@ -277,8 +277,8 @@ public final class ImageStore {
 
 	}
 
-	private synchronized boolean imageExists(final String imageName) {
-		final String fullName = getFullName(imageName, ImageFileExtension.PNG);
+	private synchronized boolean imageExists(final String imageName, final ImageFileExtension fileExtension) {
+		final String fullName = getFullName(imageName, fileExtension);
 		final ImageDescriptor descriptor = getImageDescriptor(fullName);
 		return (descriptor != null);
 	}
