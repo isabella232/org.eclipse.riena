@@ -286,8 +286,8 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	 */
 	protected void registerView() {
 		if (getViewSite() != null) {
-			String id = getViewSite().getId();
-			String secondaryId = getViewSite().getSecondaryId();
+			final String id = getViewSite().getId();
+			final String secondaryId = getViewSite().getSecondaryId();
 			SwtViewProvider.getInstance().registerView(id, secondaryId, this);
 		}
 	}
@@ -309,7 +309,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 		super.dispose();
 		if (getViewSite() != null) {
 			final String id = getViewSite().getId();
-			final String secondaryId = getViewSite().getId();
+			final String secondaryId = getViewSite().getSecondaryId();
 			SwtViewProvider.getInstance().unregisterView(id, secondaryId);
 		}
 	}
