@@ -25,6 +25,8 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.swt.widgets.Widget;
 
+import org.eclipse.riena.ui.swt.layout.DpiTableLayout;
+
 /**
  * Helper class for layouting columns in a Table or Tree.
  */
@@ -133,7 +135,7 @@ public final class ColumnUtils {
 		final Composite parent = control.getParent();
 		if (control.getLayout() instanceof TableLayout) {
 			// TableLayout: use columnData instance for each column, apply to control
-			final TableLayout layout = new TableLayout();
+			final TableLayout layout = new DpiTableLayout();
 			for (int index = 0; index < expectedCols; index++) {
 				layout.addColumnData(columnData[index]);
 			}
