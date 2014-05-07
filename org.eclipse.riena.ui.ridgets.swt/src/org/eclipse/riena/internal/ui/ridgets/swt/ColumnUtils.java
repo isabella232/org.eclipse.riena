@@ -11,6 +11,7 @@
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.jface.layout.AbstractColumnLayout;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.layout.TreeColumnLayout;
 import org.eclipse.jface.util.Util;
@@ -25,6 +26,7 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.swt.widgets.Widget;
 
+import org.eclipse.riena.ui.swt.layout.DpiTableColumnLayout;
 import org.eclipse.riena.ui.swt.layout.DpiTableLayout;
 
 /**
@@ -144,7 +146,7 @@ public final class ColumnUtils {
 		} else if ((control instanceof Tree && control.getLayout() == null && parent.getLayout() == null && parent.getChildren().length == 1)
 				|| parent.getLayout() instanceof TreeColumnLayout) {
 			// TreeColumnLayout: use columnData instance for each column, apply to parent
-			final TreeColumnLayout layout = getOrCreateTreeColumnLayout(parent);
+			final AbstractColumnLayout layout = getOrCreateTreeColumnLayout(parent);
 			for (int index = 0; index < expectedCols; index++) {
 				final Widget column = controlWrapper.getColumn(index);
 				layout.setColumnData(column, columnData[index]);
@@ -157,9 +159,9 @@ public final class ColumnUtils {
 			parent.setLayout(layout);
 			parent.layout();
 		} else if ((control instanceof Table && control.getLayout() == null && parent.getLayout() == null && parent.getChildren().length == 1)
-				|| parent.getLayout() instanceof TableColumnLayout) {
+				|| parent.getLayout() instanceof TableColumnLayout || parent.getLayout() instanceof DpiTableColumnLayout) {
 			// TableColumnLayout: use columnData instance for each column, apply to parent
-			final TableColumnLayout layout = getOrCreateTableColumnLayout(parent);
+			final AbstractColumnLayout layout = getOrCreateTableColumnLayout(parent);
 			for (int index = 0; index < expectedCols; index++) {
 				final Widget column = controlWrapper.getColumn(index);
 				layout.setColumnData(column, columnData[index]);
@@ -228,12 +230,14 @@ public final class ColumnUtils {
 	/*
 	 * Workaround for Bug 295404 - reusing existing TableColumnLayout
 	 */
-	private static TableColumnLayout getOrCreateTableColumnLayout(final Composite parent) {
-		TableColumnLayout result;
+	private static AbstractColumnLayout getOrCreateTableColumnLayout(final Composite parent) {
+		AbstractColumnLayout result;
 		if (parent.getLayout() instanceof TableColumnLayout) {
 			result = (TableColumnLayout) parent.getLayout();
+		} else if (parent.getLayout() instanceof DpiTableColumnLayout) {
+			result = (DpiTableColumnLayout) parent.getLayout();
 		} else {
-			result = new TableColumnLayout();
+			result = new DpiTableColumnLayout();
 		}
 		return result;
 	}
