@@ -90,8 +90,8 @@ public class SwitcherComposite extends Composite {
 	 */
 	public static int getSwitchterHeight() {
 
-		final int margin = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.SUB_APPLICATION_SWITCHER_HEIGHT);
-		return margin;
+		final int height = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.SUB_APPLICATION_SWITCHER_HEIGHT);
+		return height;
 
 	}
 
