@@ -370,6 +370,9 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 					+ getApplicationSizeMinimum().y);
 		}
 
+		width = SwtUtilities.convertXToDpi(width);
+		height = SwtUtilities.convertYToDpi(height);
+
 		configurer.setInitialSize(new Point(width, height));
 	}
 
@@ -429,7 +432,10 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 		final String iconName = controller.getNavigationNode().getIcon();
 		shell.setImage(ImageStore.getInstance().getImage(iconName));
-		shell.setMinimumSize(getApplicationSizeMinimum());
+
+		Point minimum = getApplicationSizeMinimum();
+		minimum = new Point(SwtUtilities.convertXToDpi(minimum.x), SwtUtilities.convertXToDpi(minimum.y));
+		shell.setMinimumSize(minimum);
 
 		// prepare shell for binding
 		addUIControl(shell, SHELL_RIDGET_PROPERTY);
