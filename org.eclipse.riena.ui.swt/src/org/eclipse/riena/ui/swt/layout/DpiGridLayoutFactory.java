@@ -20,6 +20,8 @@ import org.eclipse.swt.widgets.Composite;
 /**
  * DpiGridLayoutFactory is a copy of the final class {@linkplain GridLayoutFactory}.<br>
  * DpiGridLayout supports DPI dependent layout {@linkplain DpiGridLayout}.
+ * 
+ * @since 6.0
  */
 public class DpiGridLayoutFactory {
 

@@ -20,6 +20,8 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 /**
  * This class is a wrapper of the (final) class {@linkplain GridData}.<br>
  * The fields of {@code GridData} are copied. The pixel values are converted into DPI depending values.
+ * 
+ * @since 6.0
  */
 public final class DpiGridData {
 

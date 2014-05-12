@@ -29,6 +29,8 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 /**
  * AbstractDpiColumnLayout is a copy/extension of the class {@linkplain AbstractColumnLayout}.<br>
  * AbstractDpiColumnLayout supports DPI dependent values.
+ * 
+ * @since 6.0
  */
 public abstract class AbstractDpiColumnLayout extends AbstractColumnLayout {
 

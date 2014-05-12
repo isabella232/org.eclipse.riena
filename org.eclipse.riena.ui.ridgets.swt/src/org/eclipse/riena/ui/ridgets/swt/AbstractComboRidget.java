@@ -512,6 +512,9 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	 */
 	protected abstract void setItemsToControl(String[] arrItems);
 
+	/**
+	 * @since 6.0
+	 */
 	protected abstract void setItemsToControl(Object[] arrItems);
 
 	/**
@@ -691,6 +694,9 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		}
 	}
 
+	/**
+	 * @since 6.0
+	 */
 	protected List<Object> getItemsFromModel() {
 		final List<Object> items = new ArrayList<Object>();
 		for (final Object value : rowObservables) {
@@ -703,6 +709,9 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		return items;
 	}
 
+	/**
+	 * @since 6.0
+	 */
 	protected String[] getStringArray(final Object[] array) {
 		return Arrays.copyOf(array, array.length, String[].class);
 	}

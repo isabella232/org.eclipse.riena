@@ -112,6 +112,9 @@ public final class LnfManager {
 		LMI.getInstance().dispose();
 	}
 
+	/**
+	 * @since 6.0
+	 */
 	public static boolean isLnfCreated() {
 		return LMI.getInstance().isLnfCreated();
 	}

@@ -2305,6 +2305,9 @@ public abstract class CompletionCombo extends Composite {
 		return prefix;
 	}
 
+	/**
+	 * @since 6.0
+	 */
 	protected void clearImage() {
 		if (label != null) {
 			label.setImage(null);
@@ -2582,6 +2585,9 @@ public abstract class CompletionCombo extends Composite {
 		return result;
 	}
 
+	/**
+	 * @since 6.0
+	 */
 	protected void updateInputChars(final String string) {
 		for (int i = 0; i < string.length(); i++) {
 			final char ch = string.charAt(i);
