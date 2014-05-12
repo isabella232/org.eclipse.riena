@@ -315,6 +315,8 @@ public final class SwtUtilities {
 
 	/**
 	 * Scales the given value in X-direction.
+	 * <p>
+	 * Rounds to nearest int value.
 	 * 
 	 * @param x
 	 *            value to scale
@@ -327,6 +329,8 @@ public final class SwtUtilities {
 
 	/**
 	 * Scales the given value in Y-direction.
+	 * <p>
+	 * Rounds to nearest int value.
 	 * 
 	 * @param y
 	 *            value to scale
@@ -342,6 +346,38 @@ public final class SwtUtilities {
 			return -(int) (-px * factor + 0.5);
 		}
 		return (int) (px * factor + 0.5);
+	}
+
+	/**
+	 * Scales the given value in X-direction.
+	 * <p>
+	 * Truncates the decimal portion.
+	 * 
+	 * @param y
+	 *            value to scale
+	 * @return scaled value
+	 */
+	public static int convertXToDpiTruncate(final int x) {
+		final float factorX = getDpiFactors()[0];
+		return convertPixelToDpiTruncate(x, factorX);
+	}
+
+	/**
+	 * Scales the given value in Y-direction.
+	 * <p>
+	 * Truncates the decimal portion.
+	 * 
+	 * @param y
+	 *            value to scale
+	 * @return scaled value
+	 */
+	public static int convertYToDpiTruncate(final int y) {
+		final float factorY = getDpiFactors()[1];
+		return convertPixelToDpiTruncate(y, factorY);
+	}
+
+	private static int convertPixelToDpiTruncate(final int px, final float factor) {
+		return (int) (px * factor);
 	}
 
 	/**

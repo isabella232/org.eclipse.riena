@@ -166,6 +166,60 @@ public class SwtUtilitiesTest extends TestCase {
 
 	}
 
+	public void testConvertXToDpiTruncate() throws Exception {
+
+		final MyLnf lnf = new MyLnf();
+		LnfManager.setLnf(lnf);
+
+		// convert with LnF values
+		int x = SwtUtilities.convertXToDpiTruncate(2);
+		int expectedValue = 40;
+		assertEquals(expectedValue, x);
+
+		// convert with cached values
+		ReflectionUtils.setHidden(SwtUtilities.class, "cacheDpiFactors", new float[] { 1.2f, 1.3f }); //$NON-NLS-1$
+		x = SwtUtilities.convertXToDpiTruncate(2);
+		expectedValue = 2;
+		assertEquals(expectedValue, x);
+
+		// convert with cached values
+		ReflectionUtils.setHidden(SwtUtilities.class, "cacheDpiFactors", new float[] { 1.9f, 1.0f }); //$NON-NLS-1$
+		x = SwtUtilities.convertXToDpiTruncate(2);
+		expectedValue = 3;
+		assertEquals(expectedValue, x);
+
+	}
+
+	public void testConvertYToDpiTruncate() throws Exception {
+
+		final MyLnf lnf = new MyLnf();
+		LnfManager.setLnf(lnf);
+
+		// convert with LnF values
+		int y = SwtUtilities.convertYToDpiTruncate(2);
+		int expectedValue = 6;
+		assertEquals(expectedValue, y);
+
+		// convert with cached values
+		ReflectionUtils.setHidden(SwtUtilities.class, "cacheDpiFactors", new float[] { 1.2f, 2.4f }); //$NON-NLS-1$
+		y = SwtUtilities.convertYToDpiTruncate(2);
+		expectedValue = 4;
+		assertEquals(expectedValue, y);
+
+		// convert with cached values
+		ReflectionUtils.setHidden(SwtUtilities.class, "cacheDpiFactors", new float[] { 1.9f, 4.4f }); //$NON-NLS-1$
+		y = SwtUtilities.convertYToDpiTruncate(2);
+		expectedValue = 8;
+		assertEquals(expectedValue, y);
+
+		// convert with cached values
+		ReflectionUtils.setHidden(SwtUtilities.class, "cacheDpiFactors", new float[] { 1.9f, 4.8f }); //$NON-NLS-1$
+		y = SwtUtilities.convertYToDpiTruncate(2);
+		expectedValue = 9;
+		assertEquals(expectedValue, y);
+
+	}
+
 	private static class MyLnf extends RienaDefaultLnf {
 
 		@Override

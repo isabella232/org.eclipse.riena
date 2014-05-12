@@ -44,10 +44,10 @@ import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.nls.Messages;
 import org.eclipse.riena.ui.swt.uiprocess.ProcessState;
 import org.eclipse.riena.ui.swt.uiprocess.ProgressInfoDataObject;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
- * The {@link StatuslineUIProcess} shows info about all currently running
- * {@link UIProcess}´s in the {@link Statusline}
+ * The {@link StatuslineUIProcess} shows info about all currently running {@link UIProcess}´s in the {@link Statusline}
  */
 public class StatuslineUIProcess extends AbstractStatuslineComposite {
 	/**
@@ -203,17 +203,17 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 
 		FormData formData = new FormData();
 		formData.top = new FormAttachment(18, 0);
-		formData.width = 60;
-		formData.height = PORGRESS_BAR_HEIGHT;
+		formData.width = SwtUtilities.convertXToDpi(60);
+		formData.height = SwtUtilities.convertYToDpi(PORGRESS_BAR_HEIGHT);
 
 		progressBar = new ProgressBar(this, SWT.HORIZONTAL);
 		progressBar.setLayoutData(formData);
 		progressBar.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.STATUSLINE_BACKGROUND));
-		formData.left = new FormAttachment(statusLabel, 5);
+		formData.left = new FormAttachment(statusLabel, SwtUtilities.convertXToDpi(5));
 
 		// minimum value is always 0
 		progressBar.setMinimum(PROGRESS_MIN_VALUE);
-		//maximum is always 100
+		// maximum is always 100
 		progressBar.setMaximum(PROGRESS_MAX_VALUE);
 
 		progressBar.setSelection(0);
@@ -222,12 +222,12 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 		formData.top = new FormAttachment(18, 0);
 		// formData.height = 14;
 		formData.bottom = new FormAttachment(100, 0);
-		formData.width = 100;
+		formData.width = SwtUtilities.convertXToDpi(100);
 		statusLabel.setLayoutData(formData);
 
 		formData = new FormData();
 		formData.top = new FormAttachment(18, 0);
-		formData.left = new FormAttachment(progressBar, 5);
+		formData.left = new FormAttachment(progressBar, SwtUtilities.convertXToDpi(5));
 		formData.bottom = new FormAttachment(100, 0);
 		// formData.height = 14;
 		openLabel.setLayoutData(formData);
@@ -268,7 +268,7 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 	/**
 	 * the {@link ApplicationWindow} for the list of processes
 	 */
-	class PopupList extends ApplicationWindow {
+	private class PopupList extends ApplicationWindow {
 
 		public PopupList(final Shell parentShell) {
 			super(parentShell);
@@ -279,10 +279,10 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 			parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.STATUSLINE_UI_PROCESS_LIST_BACKGROUND));
 			popupContent = parent;
 			final FormLayout layout = new FormLayout();
-			layout.marginLeft = 5;
-			layout.marginRight = 5;
-			layout.marginTop = 5;
-			layout.marginBottom = 5;
+			layout.marginLeft = SwtUtilities.convertXToDpi(5);
+			layout.marginRight = SwtUtilities.convertXToDpi(5);
+			layout.marginTop = SwtUtilities.convertYToDpi(5);
+			layout.marginBottom = SwtUtilities.convertYToDpi(5);
 			parent.setLayout(layout);
 			return parent;
 		}
@@ -292,7 +292,9 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 			super.configureShell(shell);
 			final Rectangle rect = StatuslineUIProcess.this.getBounds();
 			final Point display = toDisplay(new Point(rect.x, rect.y));
-			shell.setBounds(rect.x, display.y + 100, 100, 400);
+			final int h = SwtUtilities.convertYToDpi(100);
+			final int w = SwtUtilities.convertXToDpi(400);
+			shell.setBounds(rect.x, display.y + h, h, w);
 		}
 
 		@Override
@@ -309,7 +311,7 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 
 	private void initLayout() {
 		final FormLayout layout = new FormLayout();
-		layout.marginRight = 5;
+		layout.marginRight = SwtUtilities.convertXToDpi(5);
 		setLayout(layout);
 	}
 
@@ -326,8 +328,7 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 	}
 
 	private boolean pidoComplete(final ProgressInfoDataObject pido) {
-		return (pido.getValue() >= 100 && !pido.getProcessState().equals(ProcessState.PENDING))
-				|| ProcessState.CANCELED.equals(pido.getProcessState())
+		return (pido.getValue() >= 100 && !pido.getProcessState().equals(ProcessState.PENDING)) || ProcessState.CANCELED.equals(pido.getProcessState())
 				|| ProcessState.FINISHED.equals(pido.getProcessState());
 	}
 
@@ -339,8 +340,7 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 	}
 
 	/**
-	 * updates the given {@link ProgressBar} with the value of the given
-	 * {@link ProgressInfoDataObject}
+	 * updates the given {@link ProgressBar} with the value of the given {@link ProgressInfoDataObject}
 	 * 
 	 * @param pido
 	 * @param progressBar
@@ -368,8 +368,7 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 	 * @param pidos
 	 *            the progress info data objects
 	 * @param forceListUpdate
-	 *            determines if a list update should be forced even when there
-	 *            is no new data
+	 *            determines if a list update should be forced even when there is no new data
 	 */
 	public void triggerListUpdate(final List<ProgressInfoDataObject> pidos, final boolean forceListUpdate) {
 		if (complete(pidos)) {
@@ -424,8 +423,9 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 		popup.getShell().pack();
 		final Point point = toDisplay(0, 0);
 		final Rectangle popupBounds = popup.getShell().getBounds();
-		popup.getShell().setBounds(point.x + getBounds().width - popupBounds.width, point.y - popupBounds.height - 4,
-				popupBounds.width, popupBounds.height);
+		final int x = point.x + getBounds().width - popupBounds.width;
+		final int y = point.y - popupBounds.height - 4;
+		popup.getShell().setBounds(x, y, popupBounds.width, popupBounds.height);
 	}
 
 	private void updateListProgressBars() {
@@ -445,9 +445,7 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 	}
 
 	/**
-	 * updates the given {@link Label} with the value of the given
-	 * {@link ProgressInfoDataObject}. An {@link ILabelFormatter}-strategy
-	 * formats the value.
+	 * updates the given {@link Label} with the value of the given {@link ProgressInfoDataObject}. An {@link ILabelFormatter}-strategy formats the value.
 	 * 
 	 * @param pido
 	 * @param label
@@ -492,8 +490,7 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 	}
 
 	/**
-	 * just a container for a {@link ProgressBar} and a {@link Label} for
-	 * caching
+	 * just a container for a {@link ProgressBar} and a {@link Label} for caching
 	 */
 	private final static class ControlHolder {
 		private ProgressBar progressBar;
@@ -531,21 +528,20 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 				label = holder.label;
 
 				//do layout stuff
-				final Integer progressBarWidth = 60;
+				final Integer progressBarWidth = SwtUtilities.convertXToDpi(60);
 				FormData formData = new FormData();
 				formData.top = lastControl != null ? new FormAttachment(lastControl, 2) : new FormAttachment(5, 0);
 				//				formData.bottom = new FormAttachment(100, 0);
-				formData.height = 14;
-				formData.width = LnfManager.getLnf().getIntegerSetting(
-						LnfKeyConstants.STATUSLINE_UI_PROCESS_LIST_WIDTH, 160)
-						- progressBarWidth;
+				formData.height = SwtUtilities.convertYToDpi(14);
+				final Integer lnfWidth = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.STATUSLINE_UI_PROCESS_LIST_WIDTH, 160);
+				formData.width = SwtUtilities.convertXToDpi(lnfWidth) - progressBarWidth;
 				label.setLayoutData(formData);
 
 				formData = new FormData();
-				formData.top = lastControl != null ? new FormAttachment(lastControl, 2) : new FormAttachment(5, 0);
-				formData.left = new FormAttachment(label, 3);
+				formData.top = lastControl != null ? new FormAttachment(lastControl, SwtUtilities.convertYToDpi(2)) : new FormAttachment(5, 0);
+				formData.left = new FormAttachment(label, SwtUtilities.convertXToDpi(3));
 				//				formData.bottom = new FormAttachment(100, 0);
-				formData.height = 14;
+				formData.height = SwtUtilities.convertYToDpi(14);
 				formData.width = progressBarWidth;
 				bar.setLayoutData(formData);
 
@@ -575,19 +571,18 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 		formData.top = new FormAttachment(5, 0);
 		formData.bottom = new FormAttachment(100, 0);
 		// formData.height = 14;
-		formData.width = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.STATUSLINE_UI_PROCESS_LIST_WIDTH, 160);
+		final Integer lnfWidth = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.STATUSLINE_UI_PROCESS_LIST_WIDTH, 160);
+		formData.width = SwtUtilities.convertXToDpi(lnfWidth);
 		if (noProcessActiveLabel == null || noProcessActiveLabel.isDisposed()) {
 			noProcessActiveLabel = new Label(popupContent, SWT.NONE);
-			noProcessActiveLabel.setBackground(LnfManager.getLnf().getColor(
-					LnfKeyConstants.STATUSLINE_UI_PROCESS_LIST_BACKGROUND));
+			noProcessActiveLabel.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.STATUSLINE_UI_PROCESS_LIST_BACKGROUND));
 			noProcessActiveLabel.setText(Messages.StatuslineUIProcess_noActiveProcess);
 			noProcessActiveLabel.setLayoutData(formData);
 		}
 	}
 
 	/**
-	 * Creates a basic {@link ControlHolder} with a {@link ProgressBar} and a
-	 * {@link Label}
+	 * Creates a basic {@link ControlHolder} with a {@link ProgressBar} and a {@link Label}
 	 * 
 	 * @param pido
 	 * @return the {@link ControlHolder}
@@ -605,12 +600,10 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 	}
 
 	/**
-	 * clears all {@link ControlHolder} related to
-	 * {@link ProgressInfoDataObject}-keys which are no more needed
+	 * clears all {@link ControlHolder} related to {@link ProgressInfoDataObject}-keys which are no more needed
 	 * 
 	 * @param activeKeys
-	 *            the {@link Set} of keys defining the amount of active
-	 *            {@link ProgressInfoDataObject} instances
+	 *            the {@link Set} of keys defining the amount of active {@link ProgressInfoDataObject} instances
 	 */
 	private void clearZombies(final Set<Integer> activeKeys) {
 

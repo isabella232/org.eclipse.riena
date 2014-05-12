@@ -413,7 +413,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 			final int padding = getShellPadding();
 			fd.right = new FormAttachment(100, -padding);
 		}
-		fd.bottom = new FormAttachment(100, SwtUtilities.convertYToDpi(-5));
+		fd.bottom = new FormAttachment(100, SwtUtilities.convertYToDpiTruncate(-5));
 		statusLine.setLayoutData(fd);
 		addUIControl(statusLine, "statusline"); //$NON-NLS-1$
 
