@@ -64,6 +64,7 @@ public interface ILnfCustomizer {
 	 * @param dpi
 	 *            dots per inch
 	 * @return x- and y-factor
+	 * @since 6.0
 	 */
 	float[] getDpiFactors(final Point dpi);
 
@@ -75,6 +76,7 @@ public interface ILnfCustomizer {
 	 * @return suffix
 	 * 
 	 * @see ILnfCustomizer#getDpiFactors(org.eclipse.swt.graphics.Point)
+	 * @since 6.0
 	 */
 	String getIconScaleSuffix(final Point dpi);
 

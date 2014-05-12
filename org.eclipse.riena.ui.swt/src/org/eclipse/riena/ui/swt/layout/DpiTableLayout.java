@@ -35,6 +35,8 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
  * DpiTableLayout supports DPI dependent values.
  * <p>
  * <b>!!! This class has not been tested so far !!!</b>
+ * 
+ * @since 6.0
  */
 public class DpiTableLayout extends TableLayout {
 
