@@ -131,16 +131,14 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 	private class ModuleCompartor implements Comparator<ModuleView> {
 
 		public int compare(final ModuleView o1, final ModuleView o2) {
-			return navigationNode.getIndexOfChild(o1.getNavigationNode()) < navigationNode.getIndexOfChild(o2
-					.getNavigationNode()) ? -1 : 1;
+			return navigationNode.getIndexOfChild(o1.getNavigationNode()) < navigationNode.getIndexOfChild(o2.getNavigationNode()) ? -1 : 1;
 		}
 
 	}
 
 	private EmbeddedBorderRenderer getLnfBorderRenderer() {
 
-		EmbeddedBorderRenderer renderer = (EmbeddedBorderRenderer) LnfManager.getLnf().getRenderer(
-				LnfKeyConstants.MODULE_GROUP_BORDER_RENDERER);
+		EmbeddedBorderRenderer renderer = (EmbeddedBorderRenderer) LnfManager.getLnf().getRenderer(LnfKeyConstants.MODULE_GROUP_BORDER_RENDERER);
 		if (renderer == null) {
 			renderer = new ModuleGroupBorderRenderer();
 		}
@@ -191,6 +189,7 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 	 */
 	public int getItemWidth() {
 		int width = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.NAVIGATION_WIDTH);
+		width = SwtUtilities.convertXToDpi(width);
 		width -= 2 * getLnfBorderRenderer().getBorderWidth();
 		return width;
 	}
@@ -205,8 +204,7 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 
 	/**
 	 * @param navigationNode
-	 *            is the {@link ModuleGroupNode} of the related
-	 *            {@link ModuleGroupView}
+	 *            is the {@link ModuleGroupNode} of the related {@link ModuleGroupView}
 	 */
 	public void setNavigationNode(final ModuleGroupNode navigationNode) {
 		this.navigationNode = navigationNode;

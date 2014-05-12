@@ -11,6 +11,7 @@
 package org.eclipse.riena.example.client.application;
 
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
  *
@@ -38,7 +39,7 @@ public class ExampleModuleGroupRenderer extends ModuleGroupRenderer {
 	 */
 	@Override
 	public int getItemWidth() {
-		return super.getItemWidth() + 25;
+		return super.getItemWidth() + SwtUtilities.convertXToDpi(25);
 	}
 
 }

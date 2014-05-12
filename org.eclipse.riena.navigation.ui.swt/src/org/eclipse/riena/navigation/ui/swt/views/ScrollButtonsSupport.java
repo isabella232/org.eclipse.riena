@@ -30,6 +30,7 @@ import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
  * This class provides scrolling logic for the navigation with scroll buttons.
@@ -51,8 +52,7 @@ public class ScrollButtonsSupport extends AbstractScrollingSupport {
 	 *            SWT style flags
 	 * @param navigationComponentProvider
 	 */
-	public ScrollButtonsSupport(final Composite parent,
-			final IModuleNavigationComponentProvider navigationComponentProvider) {
+	public ScrollButtonsSupport(final Composite parent, final IModuleNavigationComponentProvider navigationComponentProvider) {
 		super(navigationComponentProvider);
 		scrollControlComposite = new ScrollControlComposite(parent, SWT.NONE);
 		setBodyCompositeOffset(0);
@@ -68,8 +68,7 @@ public class ScrollButtonsSupport extends AbstractScrollingSupport {
 	}
 
 	/**
-	 * @return the scrolled composite which is placed relative to the navigation
-	 *         main composite
+	 * @return the scrolled composite which is placed relative to the navigation main composite
 	 */
 	public Composite getScrollComposite() {
 		return scrollControlComposite;
@@ -81,7 +80,8 @@ public class ScrollButtonsSupport extends AbstractScrollingSupport {
 	 * @return height of buttons
 	 */
 	public int getButtonHeight() {
-		return LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.NAVIGATION_SCROLL_BUTTON_HEIGHT, 15);
+		final Integer height = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.NAVIGATION_SCROLL_BUTTON_HEIGHT, 15);
+		return SwtUtilities.convertYToDpi(height);
 	}
 
 	/**
@@ -98,14 +98,12 @@ public class ScrollButtonsSupport extends AbstractScrollingSupport {
 	 */
 	@Override
 	protected void scrollDown(final int pixels) {
-		final int offset = Math.max(getNavigationComponentHeight() - getScrolledComponentHeight(),
-				scrolledCompositeOffset - pixels);
+		final int offset = Math.max(getNavigationComponentHeight() - getScrolledComponentHeight(), scrolledCompositeOffset - pixels);
 		setBodyCompositeOffset(offset);
 	}
 
 	/**
-	 * Triggers a single scroll-tick in the direction specified in the
-	 * parameter.
+	 * Triggers a single scroll-tick in the direction specified in the parameter.
 	 * 
 	 * @param direction
 	 *            the direction in which to scroll
@@ -164,8 +162,7 @@ public class ScrollButtonsSupport extends AbstractScrollingSupport {
 	private boolean scrollTo(final INavigationNode<?> activeNode) {
 		boolean result = false;
 		if (activeNode instanceof IModuleGroupNode) {
-			final ModuleGroupView view = navigationComponentProvider
-					.getModuleGroupViewForNode((IModuleGroupNode) activeNode);
+			final ModuleGroupView view = navigationComponentProvider.getModuleGroupViewForNode((IModuleGroupNode) activeNode);
 			result = scrollTo(view, view);
 		} else if (activeNode instanceof IModuleNode) {
 			result = scrollTo((IModuleNode) activeNode);
@@ -208,8 +205,7 @@ public class ScrollButtonsSupport extends AbstractScrollingSupport {
 	}
 
 	/**
-	 * this method moves the scrolled component upwards and downwards for
-	 * simulation of scrolling
+	 * this method moves the scrolled component upwards and downwards for simulation of scrolling
 	 * 
 	 * @param yScrolledOffset
 	 *            the new vertical offset of the scrolled composite
@@ -229,8 +225,7 @@ public class ScrollButtonsSupport extends AbstractScrollingSupport {
 	}
 
 	/**
-	 * this composite contains the "up"- and "down" buttons. Manual scrolling is
-	 * triggered here!
+	 * this composite contains the "up"- and "down" buttons. Manual scrolling is triggered here!
 	 */
 	private final class ScrollControlComposite extends Composite {
 
@@ -270,15 +265,15 @@ public class ScrollButtonsSupport extends AbstractScrollingSupport {
 
 		private void layoutDownButton() {
 			final FormData fd = new FormData();
-			fd.left = new FormAttachment(upButton, 1);
-			fd.right = new FormAttachment(100, -2);
+			fd.left = new FormAttachment(upButton, SwtUtilities.convertXToDpi(1));
+			fd.right = new FormAttachment(100, SwtUtilities.convertXToDpiTruncate(-2));
 			fd.height = getButtonHeight();
 			downButton.setLayoutData(fd);
 		}
 
 		private void layoutUpButton() {
 			final FormData fd = new FormData();
-			fd.left = new FormAttachment(0, 2);
+			fd.left = new FormAttachment(0, SwtUtilities.convertYToDpi(2));
 			fd.right = new FormAttachment(50, 0);
 			fd.height = getButtonHeight();
 			upButton.setLayoutData(fd);
@@ -306,8 +301,7 @@ public class ScrollButtonsSupport extends AbstractScrollingSupport {
 		//		}
 
 		/**
-		 * Responsible for effecting the manual vertical scrolling in the
-		 * navigation tree.
+		 * Responsible for effecting the manual vertical scrolling in the navigation tree.
 		 */
 		private final class ScrollDelegate implements MouseListener {
 
@@ -316,8 +310,7 @@ public class ScrollButtonsSupport extends AbstractScrollingSupport {
 			/** The runnable that is invoked to trigger the actual scrolling. */
 			private class ScrollRunnable implements Runnable {
 				/**
-				 * Maximum (and default) time interval between triggering
-				 * scroll-ticks, in milliseconds
+				 * Maximum (and default) time interval between triggering scroll-ticks, in milliseconds
 				 */
 				private static final int MAX_SCROLL_INTERVAL = 150;
 
@@ -325,9 +318,8 @@ public class ScrollButtonsSupport extends AbstractScrollingSupport {
 				private static final int MIN_SCROLL_INTERVAL = 30;
 
 				/**
-				 * By how much scrolling accelerates after each scroll-tick.
-				 * Should be greater than 1 for speed-up, exactly 1 for constant
-				 * speed, and less than 1 for slow-down.
+				 * By how much scrolling accelerates after each scroll-tick. Should be greater than 1 for speed-up, exactly 1 for constant speed, and less than
+				 * 1 for slow-down.
 				 */
 				public static final double SCROLL_INTERVAL_SPEEDUP = 1.05;
 
@@ -335,9 +327,7 @@ public class ScrollButtonsSupport extends AbstractScrollingSupport {
 				private volatile ScrollDirection scrollDirection;
 
 				/**
-				 * Current speed-adjusted scroll interval. Starts as {@value
-				 * MAX_SCROLL_INTERVAL}, never drops below {@value
-				 * MIN_SCROLL_INTERVAL}.
+				 * Current speed-adjusted scroll interval. Starts as {@value MAX_SCROLL_INTERVAL}, never drops below {@value MIN_SCROLL_INTERVAL}.
 				 */
 				private int currentScrollInterval;
 
