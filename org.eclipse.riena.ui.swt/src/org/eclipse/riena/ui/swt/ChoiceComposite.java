@@ -19,7 +19,6 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -27,6 +26,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 
 import org.eclipse.riena.internal.ui.swt.MultilineButton;
+import org.eclipse.riena.ui.swt.layout.DpiGridLayout;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
  * This composite presents a list of single or multiple choices. It is mapped to a {@link org.eclipse.riena.ui.ridgets.ISingleChoiceRidget} or
@@ -81,7 +82,7 @@ public class ChoiceComposite extends Composite implements SelectionListener {
 		this.orientation = SWT.VERTICAL;
 		isEditable = true;
 
-		final GridLayout layout = new GridLayout(1, false);
+		final DpiGridLayout layout = new DpiGridLayout(1, false);
 		layout.marginWidth = 0;
 		layout.marginHeight = 0;
 		layout.verticalSpacing = 0;
@@ -387,20 +388,20 @@ public class ChoiceComposite extends Composite implements SelectionListener {
 	private void applyLayout() {
 		if (orientation == SWT.VERTICAL) {
 			final FillLayout layout = new FillLayout(SWT.VERTICAL);
-			layout.marginHeight = marginHeight;
-			layout.marginWidth = marginWidth;
-			layout.spacing = vSpacing;
+			layout.marginHeight = SwtUtilities.convertYToDpiTruncate(marginHeight);
+			layout.marginWidth = SwtUtilities.convertXToDpiTruncate(marginWidth);
+			layout.spacing = SwtUtilities.convertYToDpiTruncate(vSpacing);
 			content.setLayout(layout);
 		} else {
 			final RowLayout layout = new RowLayout(SWT.HORIZONTAL);
 			layout.center = true;
-			layout.marginHeight = marginHeight;
-			layout.marginWidth = marginWidth;
+			layout.marginHeight = SwtUtilities.convertYToDpiTruncate(marginHeight);
+			layout.marginWidth = SwtUtilities.convertXToDpiTruncate(marginWidth);
 			layout.marginLeft = 0;
 			layout.marginRight = 0;
 			layout.marginTop = 0;
 			layout.marginBottom = 0;
-			layout.spacing = hSpacing;
+			layout.spacing = SwtUtilities.convertXToDpiTruncate(hSpacing);
 			layout.wrap = false;
 			content.setLayout(layout);
 		}

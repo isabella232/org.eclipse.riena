@@ -21,7 +21,9 @@ import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.riena.core.test.RienaTestCase;
 import org.eclipse.riena.core.test.collect.UITestCase;
+import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.ui.swt.ChoiceComposite;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
  * Tests for the class {@link ChoiceComposite}.
@@ -43,13 +45,14 @@ public class ChoiceCompositeTest extends RienaTestCase {
 		shell.setSize(130, 100);
 		shell.setLocation(0, 0);
 		shell.open();
+		ReflectionUtils.setHidden(SwtUtilities.class, "cacheDpiFactors", new float[] { 0.0f, 0.0f }); //$NON-NLS-1$
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
 		shell.dispose();
 		shell = null;
-
+		ReflectionUtils.setHidden(SwtUtilities.class, "cacheDpiFactors", new float[] { 0.0f, 0.0f }); //$NON-NLS-1$
 		super.tearDown();
 	}
 
@@ -61,8 +64,8 @@ public class ChoiceCompositeTest extends RienaTestCase {
 		cc.setWrapOptionsText(true);
 
 		// this must be a check box
-		assertFalse((cc.createChild("label").getStyle() & SWT.CHECK) == 0);
-		assertTrue((cc.createChild("label").getStyle() & SWT.RADIO) == 0);
+		assertFalse((cc.createChild("label").getStyle() & SWT.CHECK) == 0); //$NON-NLS-1$
+		assertTrue((cc.createChild("label").getStyle() & SWT.RADIO) == 0); //$NON-NLS-1$
 	}
 
 	public void testCreateChildWithTextWrapSingle() {
@@ -70,16 +73,16 @@ public class ChoiceCompositeTest extends RienaTestCase {
 		cc.setWrapOptionsText(true);
 
 		// this must be a radio button
-		assertTrue((cc.createChild("label").getStyle() & SWT.CHECK) == 0);
-		assertFalse((cc.createChild("label").getStyle() & SWT.RADIO) == 0);
+		assertTrue((cc.createChild("label").getStyle() & SWT.CHECK) == 0); //$NON-NLS-1$
+		assertFalse((cc.createChild("label").getStyle() & SWT.RADIO) == 0); //$NON-NLS-1$
 	}
 
 	public void testCenterButtonsInHorizontalLayout() throws Exception {
 		final ChoiceComposite cc = new ChoiceComposite(shell, SWT.NONE, false);
 		cc.setOrientation(SWT.HORIZONTAL);
 		cc.setWrapOptionsText(true);
-		final Button b1 = cc.createChild("multi\nline");
-		final Button b2 = cc.createChild("single-line");
+		final Button b1 = cc.createChild("multi\nline"); //$NON-NLS-1$
+		final Button b2 = cc.createChild("single-line"); //$NON-NLS-1$
 
 		cc.layout(true, true);
 
@@ -95,8 +98,8 @@ public class ChoiceCompositeTest extends RienaTestCase {
 		final ChoiceComposite cc = new ChoiceComposite(shell, SWT.NONE, false);
 		cc.setOrientation(SWT.HORIZONTAL);
 		cc.setWrapOptionsText(true);
-		final Button b1 = cc.createChild("multi\nline");
-		final Button b2 = cc.createChild("single-line");
+		final Button b1 = cc.createChild("multi\nline"); //$NON-NLS-1$
+		final Button b2 = cc.createChild("single-line"); //$NON-NLS-1$
 
 		cc.layout(true, true);
 
@@ -175,7 +178,7 @@ public class ChoiceCompositeTest extends RienaTestCase {
 	public void testSetEnabled() {
 		final ChoiceComposite control = new ChoiceComposite(shell, SWT.NONE, false);
 		//		final Button child1 = new Button(control, SWT.RADIO);
-		final Button child1 = control.createChild("one");
+		final Button child1 = control.createChild("one"); //$NON-NLS-1$
 
 		assertTrue(control.getEnabled());
 		assertTrue(child1.getEnabled());
@@ -196,11 +199,11 @@ public class ChoiceCompositeTest extends RienaTestCase {
 	 */
 	public void testSetEditable() {
 		final ChoiceComposite control = new ChoiceComposite(shell, SWT.NONE, true);
-		final Button child1 = control.createChild("one");
+		final Button child1 = control.createChild("one"); //$NON-NLS-1$
 		child1.setSelection(true);
-		final Button child2 = control.createChild("two");
+		final Button child2 = control.createChild("two"); //$NON-NLS-1$
 		child2.setSelection(true);
-		final Button child3 = control.createChild("three");
+		final Button child3 = control.createChild("three"); //$NON-NLS-1$
 		child3.setSelection(false);
 
 		assertTrue(control.isEnabled());
@@ -230,7 +233,7 @@ public class ChoiceCompositeTest extends RienaTestCase {
 	 */
 	public void testSetEditableFalseBlocksChangesFromUI() {
 		final ChoiceComposite control = new ChoiceComposite(shell, SWT.NONE, true);
-		final Button child1 = control.createChild("child1");
+		final Button child1 = control.createChild("child1"); //$NON-NLS-1$
 
 		child1.setSelection(true);
 		control.setEditable(false);
@@ -254,11 +257,11 @@ public class ChoiceCompositeTest extends RienaTestCase {
 	 */
 	public void testToggleEditableWhenDisabled() {
 		final ChoiceComposite control = new ChoiceComposite(shell, SWT.NONE, true);
-		final Button child1 = control.createChild("one");
+		final Button child1 = control.createChild("one"); //$NON-NLS-1$
 		child1.setSelection(true);
-		final Button child2 = control.createChild("two");
+		final Button child2 = control.createChild("two"); //$NON-NLS-1$
 		child2.setSelection(true);
-		final Button child3 = control.createChild("three");
+		final Button child3 = control.createChild("three"); //$NON-NLS-1$
 		child3.setSelection(false);
 
 		control.setEditable(false);
@@ -406,7 +409,7 @@ public class ChoiceCompositeTest extends RienaTestCase {
 	 */
 	public void testDisabledWidgetHasGrayBackground() {
 		final ChoiceComposite control = new ChoiceComposite(shell, SWT.NONE, false);
-		final Button child1 = control.createChild("child1");
+		final Button child1 = control.createChild("child1"); //$NON-NLS-1$
 
 		assertTrue(control.isEnabled());
 
@@ -430,7 +433,7 @@ public class ChoiceCompositeTest extends RienaTestCase {
 	 */
 	public void testSetBackgroundColorWhileDisabled() {
 		final ChoiceComposite control = new ChoiceComposite(shell, SWT.NONE, false);
-		final Button child1 = control.createChild("child1");
+		final Button child1 = control.createChild("child1"); //$NON-NLS-1$
 		final Display display = control.getDisplay();
 		final Color disabledBg = display.getSystemColor(SWT.COLOR_WIDGET_BACKGROUND);
 		final Color red = display.getSystemColor(SWT.COLOR_RED);
@@ -454,7 +457,7 @@ public class ChoiceCompositeTest extends RienaTestCase {
 	 */
 	public void testSetBackgroundColorWhileDisabledRespectingParentsBackground() {
 		final ChoiceComposite control = new ChoiceComposite(shell, SWT.NONE, false);
-		final Button child1 = control.createChild("child1");
+		final Button child1 = control.createChild("child1"); //$NON-NLS-1$
 		final Display display = control.getDisplay();
 		final Color red = display.getSystemColor(SWT.COLOR_RED);
 
@@ -477,4 +480,37 @@ public class ChoiceCompositeTest extends RienaTestCase {
 		assertEquals(red, child1.getBackground());
 		assertEquals(red, shell.getBackground());
 	}
+
+	/**
+	 * Tests the <i>private</i> method {@code applyLayout()}.
+	 * 
+	 * @throws Exception
+	 *             handled by JUnit
+	 */
+	public void testApplyLayout() throws Exception {
+
+		ReflectionUtils.setHidden(SwtUtilities.class, "cacheDpiFactors", new float[] { 2.0f, 3.0f }); //$NON-NLS-1$
+
+		final ChoiceComposite cc = new ChoiceComposite(shell, SWT.NONE, true);
+		cc.setOrientation(SWT.HORIZONTAL);
+		cc.setMargins(11, 12);
+		cc.setSpacing(14, 15);
+
+		ReflectionUtils.invokeHidden(cc, "applyLayout"); //$NON-NLS-1$
+		assertEquals(RowLayout.class, cc.getContentComposite().getLayout().getClass());
+		final RowLayout rowLayout = (RowLayout) cc.getContentComposite().getLayout();
+		assertEquals(24, rowLayout.marginWidth);
+		assertEquals(33, rowLayout.marginHeight);
+		assertEquals(28, rowLayout.spacing);
+
+		cc.setOrientation(SWT.VERTICAL);
+		ReflectionUtils.invokeHidden(cc, "applyLayout"); //$NON-NLS-1$
+		assertEquals(FillLayout.class, cc.getContentComposite().getLayout().getClass());
+		final FillLayout fillLayout = (FillLayout) cc.getContentComposite().getLayout();
+		assertEquals(24, fillLayout.marginWidth);
+		assertEquals(33, fillLayout.marginHeight);
+		assertEquals(45, fillLayout.spacing);
+
+	}
+
 }
