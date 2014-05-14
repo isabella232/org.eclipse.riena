@@ -341,6 +341,12 @@ public final class SwtUtilities {
 		return convertPixelToDpi(y, factorY);
 	}
 
+	public static Point convertPointToDpi(final Point pixelPoint) {
+		final int x = convertXToDpi(pixelPoint.x);
+		final int y = convertYToDpi(pixelPoint.y);
+		return new Point(x, y);
+	}
+
 	public static int convertPixelToDpi(final int pixel) {
 		final float factor = Math.min(getDpiFactors()[0], getDpiFactors()[1]);
 		return convertPixelToDpi(pixel, factor);
