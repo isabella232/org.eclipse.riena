@@ -33,6 +33,7 @@ public class InfoFlyoutRCPTest extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
+		ReflectionUtils.setHidden(SwtUtilities.class, "cacheDpiFactors", new float[] { 0.0f, 0.0f }); //$NON-NLS-1$
 		LnfManager.setLnf(new MyLnf());
 		shell = new Shell();
 		infoFLyout = new InfoFlyoutRCP(shell);
