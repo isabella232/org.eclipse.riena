@@ -16,10 +16,10 @@ import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.renderer.DialogBorderRenderer;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
- * Renderer of the border of the (undecorated (no OS-border, no OS-titlebar))
- * shell.
+ * Renderer of the border of the (undecorated (no OS-border, no OS-titlebar)) shell.
  */
 public class ShellBorderRenderer extends DialogBorderRenderer {
 
@@ -78,8 +78,9 @@ public class ShellBorderRenderer extends DialogBorderRenderer {
 		int width = getBorderWidth();
 
 		final RienaDefaultLnf lnf = LnfManager.getLnf();
-		final Integer padding = lnf.getIntegerSetting(LnfKeyConstants.TITLELESS_SHELL_PADDING);
+		Integer padding = lnf.getIntegerSetting(LnfKeyConstants.TITLELESS_SHELL_PADDING);
 		if (padding != null) {
+			padding = SwtUtilities.convertPixelToDpiTruncate(padding);
 			width += padding;
 		}
 

@@ -341,6 +341,11 @@ public final class SwtUtilities {
 		return convertPixelToDpi(y, factorY);
 	}
 
+	public static int convertPixelToDpi(final int pixel) {
+		final float factor = Math.min(getDpiFactors()[0], getDpiFactors()[1]);
+		return convertPixelToDpi(pixel, factor);
+	}
+
 	private static int convertPixelToDpi(final int px, final float factor) {
 		if (px < 0) {
 			return -(int) (-px * factor + 0.5);
@@ -374,6 +379,11 @@ public final class SwtUtilities {
 	public static int convertYToDpiTruncate(final int y) {
 		final float factorY = getDpiFactors()[1];
 		return convertPixelToDpiTruncate(y, factorY);
+	}
+
+	public static int convertPixelToDpiTruncate(final int pixel) {
+		final float factor = Math.min(getDpiFactors()[0], getDpiFactors()[1]);
+		return convertPixelToDpiTruncate(pixel, factor);
 	}
 
 	private static int convertPixelToDpiTruncate(final int px, final float factor) {

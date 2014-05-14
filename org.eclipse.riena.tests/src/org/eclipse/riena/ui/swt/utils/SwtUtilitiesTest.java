@@ -166,6 +166,78 @@ public class SwtUtilitiesTest extends TestCase {
 
 	}
 
+	/**
+	 * Tests the method {@code convertPixelToDpi(int)}.
+	 * 
+	 * @throws Exception
+	 *             handled by JUnit
+	 */
+	public void testConvertPixelToDpi() throws Exception {
+
+		final MyLnf lnf = new MyLnf();
+		LnfManager.setLnf(lnf);
+
+		// convert with LnF values
+		int y = SwtUtilities.convertPixelToDpi(2);
+		int expectedValue = 6;
+		assertEquals(expectedValue, y);
+
+		// convert with cached values
+		ReflectionUtils.setHidden(SwtUtilities.class, "cacheDpiFactors", new float[] { 1.2f, 6.4f }); //$NON-NLS-1$
+		y = SwtUtilities.convertPixelToDpi(2);
+		expectedValue = 2;
+		assertEquals(expectedValue, y);
+
+		// convert with cached values
+		ReflectionUtils.setHidden(SwtUtilities.class, "cacheDpiFactors", new float[] { 5.9f, 4.4f }); //$NON-NLS-1$
+		y = SwtUtilities.convertPixelToDpi(2);
+		expectedValue = 9;
+		assertEquals(expectedValue, y);
+
+		// convert with cached values
+		ReflectionUtils.setHidden(SwtUtilities.class, "cacheDpiFactors", new float[] { 1.9f, 4.8f }); //$NON-NLS-1$
+		y = SwtUtilities.convertPixelToDpi(2);
+		expectedValue = 4;
+		assertEquals(expectedValue, y);
+
+	}
+
+	/**
+	 * Tests the method {@code convertPixelToDpiTruncate(int)}.
+	 * 
+	 * @throws Exception
+	 *             handled by JUnit
+	 */
+	public void testConvertPixelToDpiTruncate() throws Exception {
+
+		final MyLnf lnf = new MyLnf();
+		LnfManager.setLnf(lnf);
+
+		// convert with LnF values
+		int y = SwtUtilities.convertPixelToDpi(2);
+		int expectedValue = 6;
+		assertEquals(expectedValue, y);
+
+		// convert with cached values
+		ReflectionUtils.setHidden(SwtUtilities.class, "cacheDpiFactors", new float[] { 1.2f, 6.4f }); //$NON-NLS-1$
+		y = SwtUtilities.convertPixelToDpiTruncate(2);
+		expectedValue = 2;
+		assertEquals(expectedValue, y);
+
+		// convert with cached values
+		ReflectionUtils.setHidden(SwtUtilities.class, "cacheDpiFactors", new float[] { 5.9f, 4.4f }); //$NON-NLS-1$
+		y = SwtUtilities.convertPixelToDpiTruncate(2);
+		expectedValue = 8;
+		assertEquals(expectedValue, y);
+
+		// convert with cached values
+		ReflectionUtils.setHidden(SwtUtilities.class, "cacheDpiFactors", new float[] { 1.9f, 4.8f }); //$NON-NLS-1$
+		y = SwtUtilities.convertPixelToDpiTruncate(2);
+		expectedValue = 3;
+		assertEquals(expectedValue, y);
+
+	}
+
 	public void testConvertXToDpiTruncate() throws Exception {
 
 		final MyLnf lnf = new MyLnf();

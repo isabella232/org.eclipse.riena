@@ -16,6 +16,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.riena.ui.swt.lnf.IgnoreLnFUpdater;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
  * Composite of the status line.
@@ -55,10 +56,10 @@ public abstract class AbstractStatuslineComposite extends Composite {
 
 		final RowLayout rowLayout = new RowLayout();
 		rowLayout.justify = false;
-		rowLayout.marginLeft = getLeftMargin();
-		rowLayout.marginTop = getTopMargin();
-		rowLayout.marginRight = getRightMargin();
-		rowLayout.marginBottom = getBottomMargin();
+		rowLayout.marginLeft = SwtUtilities.convertXToDpiTruncate(getLeftMargin());
+		rowLayout.marginTop = SwtUtilities.convertYToDpiTruncate(getTopMargin());
+		rowLayout.marginRight = SwtUtilities.convertXToDpiTruncate(getRightMargin());
+		rowLayout.marginBottom = SwtUtilities.convertYToDpiTruncate(getBottomMargin());
 		rowLayout.pack = true;
 		setLayout(rowLayout);
 

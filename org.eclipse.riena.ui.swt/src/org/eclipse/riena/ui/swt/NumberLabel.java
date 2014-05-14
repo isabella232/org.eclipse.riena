@@ -15,6 +15,8 @@ import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
+
 /**
  * This label displays a "number" in the status line.
  */
@@ -36,7 +38,7 @@ public class NumberLabel extends CLabel {
 	public Point computeSize(final int wHint, final int hHint, final boolean changed) {
 		final Point size = super.computeSize(wHint, hHint, changed);
 		if (getFixWidth() != SWT.NONE) {
-			size.x = getFixWidth();
+			size.x = SwtUtilities.convertXToDpi(getFixWidth());
 		}
 		return size;
 	}
