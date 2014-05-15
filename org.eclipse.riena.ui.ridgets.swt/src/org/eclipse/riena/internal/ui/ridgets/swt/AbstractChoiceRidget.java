@@ -127,7 +127,7 @@ public abstract class AbstractChoiceRidget extends AbstractSWTRidget {
 
 	@Override
 	public boolean hasFocus() {
-		if (SwtUtilities.isDisposed(getUIControl())) {
+		if (!SwtUtilities.isDisposed(getUIControl())) {
 			final Control control = getUIControl();
 
 			if (control.isFocusControl()) {
