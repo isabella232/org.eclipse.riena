@@ -349,11 +349,15 @@ public class TableRidget extends AbstractTableRidget {
 		if (isCheckBoxInFirstColumn(viewer)) {
 			((CheckboxTableViewer) viewer).setCheckStateProvider(new TableRidgetCheckStateProvider());
 		}
-		final IBaseLabelProvider labelProvider = viewer.getLabelProvider();
+		viewer.refresh();
+	}
+
+	@Override
+	protected void configureLableProvider(final IBaseLabelProvider labelProvider, final AbstractTableViewer viewer) {
+		super.configureLableProvider(labelProvider, viewer);
 		if (labelProvider instanceof TableRidgetLabelProvider) {
 			((TableRidgetLabelProvider) labelProvider).setCheckBoxInFirstColumn(isCheckBoxInFirstColumn(viewer));
 		}
-		viewer.refresh();
 	}
 
 	public boolean isCheckBoxInFirstColumn(final AbstractTableViewer viewer) {

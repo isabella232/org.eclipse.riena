@@ -451,7 +451,7 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 		final TableRidgetLabelProvider labelProvider = createLabelProvider(viewerCP);
 		viewer.setLabelProvider(labelProvider);
 		viewer.setContentProvider(viewerCP);
-		configureLableProvider(labelProvider);
+		configureLableProvider(labelProvider, viewer);
 		viewer.setInput(viewerObservables);
 		applyComparator(comparatorMap);
 		viewConfigured = true;
@@ -462,7 +462,7 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 		final boolean scrollBarVisibleBeforeRefresh = isVerticalScrollBarVisible(viewer.getControl());
 		final StructuredSelection currentSelection = new StructuredSelection(getSelection());
 		try {
-			configureLableProvider(viewer.getLabelProvider());
+			configureLableProvider(viewer.getLabelProvider(), viewer);
 			viewer.setInput(viewerObservables);
 		} finally {
 			viewer.setSelection(currentSelection);
@@ -471,7 +471,7 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 		}
 	}
 
-	private void configureLableProvider(final IBaseLabelProvider labelProvider) {
+	protected void configureLableProvider(final IBaseLabelProvider labelProvider, final AbstractTableViewer viewer) {
 		if (labelProvider instanceof TableRidgetLabelProvider) {
 			final TableRidgetLabelProvider tableLabelProvider = (TableRidgetLabelProvider) labelProvider;
 			final IColumnFormatter[] formatters = getColumnFormatters(tableLabelProvider.getColumnCount());
