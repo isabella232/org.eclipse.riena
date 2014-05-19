@@ -6,12 +6,14 @@
       provider-name="Eclipse.org">
 
    <description url="http://www.eclipse.org/riena">
-      This feature contains the corresponding components for Riena SDK that is intended to be added to target platforms at development time. It also requires Equinox SDK and RCP SDK to resolve all dependencies.
+      This feature contains the corresponding components for Riena
+SDK that is intended to be added to target platforms at development
+time. It also requires Equinox SDK and RCP SDK to resolve all
+dependencies.
    </description>
 
    <copyright url="http://www.compeople.de">
-      /*******************************************************************************
-* Copyright (c) 2007 - 2013 compeople AG and others.
+      Copyright (c) 2007 - 2014 compeople AG and others.
 * All rights reserved. This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License
 v1.0
@@ -20,7 +22,6 @@ v1.0
 *
 * Contributors:
 *    compeople AG - initial API and implementation
-*******************************************************************************/
    </copyright>
 
    <license url="%licenseURL">
