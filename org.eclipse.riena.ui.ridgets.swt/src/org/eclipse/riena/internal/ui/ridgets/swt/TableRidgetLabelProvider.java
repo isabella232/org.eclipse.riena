@@ -26,6 +26,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.Point;
@@ -56,6 +57,9 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 
 	private final static Logger LOGGER = Log4r.getLogger(TableRidgetLabelProvider.class);
 	private final static ITableFormatter DEFAULT_TABLE_FORMATTER = new TableFormatter();
+
+	private static Image checkedImage;
+	private static Image uncheckedImage;
 
 	private final int numColumns;
 	private IColumnFormatter[] formatters;
@@ -127,11 +131,47 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 				if ((columnIndex == 0) && isCheckBoxInFirstColumn()) {
 					return null;
 				}
-				final String key = ((Boolean) value).booleanValue() ? SharedImages.IMG_CHECKED : SharedImages.IMG_UNCHECKED;
-				result = Activator.getSharedImage(key);
+				result = getCheckBoxImage(((Boolean) value).booleanValue());
 			}
 		}
 		return result;
+	}
+
+	private Image getCheckBoxImage(final boolean checked) {
+
+		if (checked) {
+			if (checkedImage == null) {
+				checkedImage = getCheckBoxImage(SharedImages.IMG_CHECKED);
+			}
+			return checkedImage;
+		} else {
+			if (uncheckedImage == null) {
+				uncheckedImage = getCheckBoxImage(SharedImages.IMG_UNCHECKED);
+			}
+			return uncheckedImage;
+		}
+
+	}
+
+	private Image getCheckBoxImage(final String key) {
+		Image image = Activator.getSharedImage(key);
+		if ((SwtUtilities.getDpiFactors()[0] > 1.0 || SwtUtilities.getDpiFactors()[1] > 1.0) && (image != null)) {
+			final int width = SwtUtilities.convertXToDpi(image.getBounds().width);
+			final int height = SwtUtilities.convertYToDpi(image.getBounds().height);
+			image = resize(image, width, height);
+		}
+		return image;
+	}
+
+	private Image resize(final Image image, final int width, final int height) {
+		// TODO transparency (http://www.eclipse.org/articles/Article-SWT-images/graphics-resources.html#Transparency)
+		final Image scaled = new Image(Display.getDefault(), width, height);
+		final GC gc = new GC(scaled);
+		gc.setAntialias(SWT.ON);
+		gc.setInterpolation(SWT.HIGH);
+		gc.drawImage(image, 0, 0, image.getBounds().width, image.getBounds().height, 0, 0, width, height);
+		gc.dispose();
+		return scaled;
 	}
 
 	@Override
