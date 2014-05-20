@@ -128,7 +128,7 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 					return null;
 				}
 				final String key = ((Boolean) value).booleanValue() ? SharedImages.IMG_CHECKED : SharedImages.IMG_UNCHECKED;
-				result = Activator.getSharedImage(key, true);
+				result = Activator.getSharedImage(key);
 			}
 		}
 		return result;
