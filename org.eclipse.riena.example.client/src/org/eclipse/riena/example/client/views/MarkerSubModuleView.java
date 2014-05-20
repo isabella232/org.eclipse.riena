@@ -32,6 +32,7 @@ import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.swt.ChoiceComposite;
 import org.eclipse.riena.ui.swt.CompletionCombo;
 import org.eclipse.riena.ui.swt.DatePickerComposite;
+import org.eclipse.riena.ui.swt.layout.DpiGridLayout;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
@@ -45,7 +46,7 @@ public class MarkerSubModuleView extends SubModuleView {
 
 	@Override
 	protected void basicCreatePartControl(final Composite parent) {
-		parent.setLayout(new GridLayout(2, false));
+		parent.setLayout(new DpiGridLayout(2, false));
 
 		final Group group1 = createMarkerOptionsGroup(parent);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(group1);
@@ -82,7 +83,7 @@ public class MarkerSubModuleView extends SubModuleView {
 
 	protected Group createControlsGroup(final Composite parent) {
 		final Group group = UIControlsFactory.createGroup(parent, "UI-Controls:"); //$NON-NLS-1$
-		final int defaultVSpacing = new GridLayout().verticalSpacing;
+		final int defaultVSpacing = new DpiGridLayout().verticalSpacing;
 		GridLayoutFactory.swtDefaults().numColumns(2).equalWidth(false).margins(20, 20).spacing(10, defaultVSpacing).applyTo(group);
 
 		final GridDataFactory hFillFactory = GridDataFactory.fillDefaults().grab(true, false);

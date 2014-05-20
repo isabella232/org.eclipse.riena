@@ -30,6 +30,11 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 public class DpiGridLayout extends Layout {
 
 	/**
+	 * Key to retrieve a control's DpiGridData.
+	 */
+	private final static String DPI_GRID_DATA_PROPERTY = "dpi_grid_data_property"; //$NON-NLS-1$
+
+	/**
 	 * numColumns specifies the number of cell columns in the layout. If numColumns has a value less than 1, the layout will not set the size and position of
 	 * any controls.
 	 * 
@@ -147,11 +152,10 @@ public class DpiGridLayout extends Layout {
 	DpiGridData getData(final Control[][] grid, final int row, final int column, final int rowCount, final int columnCount, final boolean first) {
 		final Control control = grid[row][column];
 		if (control != null) {
-			if (control.getLayoutData() instanceof GridData) {
-				final GridData gridData = (GridData) control.getLayoutData();
-				control.setLayoutData(new DpiGridData(gridData));
+			final DpiGridData data = getDpiGridData(control);
+			if (data == null) {
+				return null;
 			}
-			final DpiGridData data = (DpiGridData) control.getLayoutData();
 			final int hSpan = Math.max(1, Math.min(data.horizontalSpan, columnCount));
 			final int vSpan = Math.max(1, data.verticalSpan);
 			final int i = first ? row + vSpan - 1 : row - vSpan + 1;
@@ -792,11 +796,24 @@ public class DpiGridLayout extends Layout {
 	}
 
 	private DpiGridData getDpiGridData(final Control control) {
+		GridData gridData = null;
 		if (control.getLayoutData() instanceof GridData) {
-			final GridData gridData = (GridData) control.getLayoutData();
-			control.setLayoutData(new DpiGridData(gridData));
+			gridData = (GridData) control.getLayoutData();
 		}
-		return (DpiGridData) control.getLayoutData();
+		DpiGridData dpiGridData = (DpiGridData) control.getData(DPI_GRID_DATA_PROPERTY);
+		if (dpiGridData == null) {
+			if (gridData == null) {
+				return null;
+			}
+			dpiGridData = new DpiGridData(gridData);
+			control.setData(DPI_GRID_DATA_PROPERTY, dpiGridData);
+			return dpiGridData;
+		}
+		if (!dpiGridData.originGridDataEquals(gridData)) {
+			dpiGridData = new DpiGridData(gridData);
+			control.setData(DPI_GRID_DATA_PROPERTY, dpiGridData);
+		}
+		return dpiGridData;
 	}
 
 	private String getName() {

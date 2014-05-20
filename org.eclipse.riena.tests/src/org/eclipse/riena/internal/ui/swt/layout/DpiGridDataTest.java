@@ -96,4 +96,77 @@ public class DpiGridDataTest extends TestCase {
 
 	}
 
+	/**
+	 * Tests the method {@code originGridDataEquals(GridData)}.
+	 * 
+	 * @throws Exception
+	 *             handled by JUnit
+	 */
+	public void testOriginGridDataEquals() throws Exception {
+
+		final GridData gridData = new GridData();
+		gridData.exclude = true;
+		gridData.widthHint = 12;
+		gridData.heightHint = 34;
+		gridData.minimumWidth = 56;
+		gridData.minimumHeight = 78;
+		gridData.horizontalIndent = 90;
+		gridData.verticalIndent = 123;
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.grabExcessVerticalSpace = false;
+		gridData.horizontalSpan = 4;
+		gridData.verticalSpan = 5;
+		gridData.horizontalAlignment = SWT.LEFT;
+		gridData.verticalAlignment = SWT.BOTTOM;
+
+		DpiGridData dpiGridData = new DpiGridData();
+		assertFalse(dpiGridData.originGridDataEquals(gridData));
+
+		dpiGridData = new DpiGridData(gridData);
+		assertTrue(dpiGridData.originGridDataEquals(gridData));
+
+		gridData.widthHint = 4711;
+		assertFalse(dpiGridData.originGridDataEquals(gridData));
+
+		gridData.widthHint = 12;
+		gridData.heightHint = 815;
+		assertFalse(dpiGridData.originGridDataEquals(gridData));
+
+		gridData.heightHint = 34;
+		gridData.minimumWidth = 1234;
+		assertFalse(dpiGridData.originGridDataEquals(gridData));
+
+		gridData.minimumWidth = 56;
+		gridData.minimumHeight = 2345;
+		assertFalse(dpiGridData.originGridDataEquals(gridData));
+
+		gridData.minimumHeight = 78;
+		gridData.horizontalIndent = 3456;
+		assertFalse(dpiGridData.originGridDataEquals(gridData));
+
+		gridData.horizontalIndent = 90;
+		gridData.verticalIndent = 5678;
+		assertFalse(dpiGridData.originGridDataEquals(gridData));
+
+		gridData.verticalIndent = 123;
+		gridData.horizontalSpan = 11;
+		assertFalse(dpiGridData.originGridDataEquals(gridData));
+
+		gridData.horizontalSpan = 4;
+		gridData.verticalSpan = 12;
+		assertFalse(dpiGridData.originGridDataEquals(gridData));
+
+		gridData.verticalSpan = 5;
+		gridData.horizontalAlignment = SWT.RIGHT;
+		assertFalse(dpiGridData.originGridDataEquals(gridData));
+
+		gridData.horizontalAlignment = SWT.LEFT;
+		gridData.verticalAlignment = SWT.TOP;
+		assertFalse(dpiGridData.originGridDataEquals(gridData));
+
+		gridData.verticalAlignment = SWT.BOTTOM;
+		assertTrue(dpiGridData.originGridDataEquals(gridData));
+
+	}
+
 }

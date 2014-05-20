@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.swt.layout;
 
+import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
@@ -24,6 +25,8 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
  * @since 6.0
  */
 public final class DpiGridData {
+
+	private final GridData originGridData;
 
 	public final boolean exclude;
 	public final int widthHint;
@@ -56,6 +59,11 @@ public final class DpiGridData {
 	 * @param gridData
 	 */
 	public DpiGridData(final GridData gridData) {
+		if (gridData != null) {
+			this.originGridData = GridDataFactory.copyData(gridData);
+		} else {
+			this.originGridData = null;
+		}
 		GridData tmpGridData = gridData;
 		if (tmpGridData == null) {
 			tmpGridData = new GridData();
@@ -231,6 +239,62 @@ public final class DpiGridData {
 		string = string.trim();
 		string += "}"; //$NON-NLS-1$
 		return string;
+	}
+
+	/**
+	 * Indicates whether the given GridData is "equal to" this origin GridData that was used to create this instance of DpiGridData.
+	 * 
+	 * @param gridData
+	 *            the reference GridData with which to compare.
+	 * @return {@code true} if the given GridData is equals to the origin; otherwise {@code false}.
+	 */
+	public boolean originGridDataEquals(final GridData gridData) {
+		if (originGridData == gridData) {
+			return true;
+		}
+		if (originGridData == null || gridData == null) {
+			return false;
+		}
+		if (originGridData.exclude != gridData.exclude) {
+			return false;
+		}
+		if (originGridData.grabExcessHorizontalSpace != gridData.grabExcessHorizontalSpace) {
+			return false;
+		}
+		if (originGridData.grabExcessVerticalSpace != gridData.grabExcessVerticalSpace) {
+			return false;
+		}
+		if (originGridData.heightHint != gridData.heightHint) {
+			return false;
+		}
+		if (originGridData.horizontalAlignment != gridData.horizontalAlignment) {
+			return false;
+		}
+		if (originGridData.horizontalIndent != gridData.horizontalIndent) {
+			return false;
+		}
+		if (originGridData.horizontalSpan != gridData.horizontalSpan) {
+			return false;
+		}
+		if (originGridData.minimumHeight != gridData.minimumHeight) {
+			return false;
+		}
+		if (originGridData.minimumWidth != gridData.minimumWidth) {
+			return false;
+		}
+		if (originGridData.verticalAlignment != gridData.verticalAlignment) {
+			return false;
+		}
+		if (originGridData.verticalIndent != gridData.verticalIndent) {
+			return false;
+		}
+		if (originGridData.verticalSpan != gridData.verticalSpan) {
+			return false;
+		}
+		if (originGridData.widthHint != gridData.widthHint) {
+			return false;
+		}
+		return true;
 	}
 
 }

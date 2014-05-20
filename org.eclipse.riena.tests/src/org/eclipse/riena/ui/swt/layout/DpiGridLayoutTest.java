@@ -86,16 +86,33 @@ public class DpiGridLayoutTest extends TestCase {
 		DpiGridData data = ReflectionUtils.invokeHidden(layout, "getDpiGridData", label); //$NON-NLS-1$
 		assertNull(data);
 
-		label.setLayoutData(new GridData(12, 34));
+		final GridData gridData = new GridData(12, 34);
+		label.setLayoutData(gridData);
 		data = ReflectionUtils.invokeHidden(layout, "getDpiGridData", label); //$NON-NLS-1$
 		assertNotNull(data);
 		assertEquals(24, data.widthHint);
 		assertEquals(102, data.heightHint);
+		assertSame(gridData, label.getLayoutData());
+		assertEquals(12, gridData.widthHint);
+		assertEquals(34, gridData.heightHint);
 
-		final DpiGridData dpiGridData = ReflectionUtils.newInstanceHidden(DpiGridData.class);
-		label.setLayoutData(dpiGridData);
+		gridData.widthHint = 10;
 		data = ReflectionUtils.invokeHidden(layout, "getDpiGridData", label); //$NON-NLS-1$
-		assertSame(dpiGridData, data);
+		assertNotNull(data);
+		assertEquals(20, data.widthHint);
+		assertEquals(102, data.heightHint);
+		assertSame(gridData, label.getLayoutData());
+		assertEquals(10, gridData.widthHint);
+		assertEquals(34, gridData.heightHint);
+
+		gridData.heightHint = 1;
+		data = ReflectionUtils.invokeHidden(layout, "getDpiGridData", label); //$NON-NLS-1$
+		assertNotNull(data);
+		assertEquals(20, data.widthHint);
+		assertEquals(3, data.heightHint);
+		assertSame(gridData, label.getLayoutData());
+		assertEquals(10, gridData.widthHint);
+		assertEquals(1, gridData.heightHint);
 
 	}
 
@@ -111,7 +128,8 @@ public class DpiGridLayoutTest extends TestCase {
 		final DpiGridLayout layout = new DpiGridLayout();
 
 		final Label label = new Label(shell, SWT.NONE);
-		label.setLayoutData(new GridData(12, 34));
+		final GridData gridData = new GridData(12, 34);
+		label.setLayoutData(gridData);
 
 		final Control[][] grid = new Control[1][1];
 		grid[0][0] = label;
@@ -121,6 +139,9 @@ public class DpiGridLayoutTest extends TestCase {
 		assertNotNull(data);
 		assertEquals(24, data.widthHint);
 		assertEquals(102, data.heightHint);
+		assertSame(gridData, label.getLayoutData());
+		assertEquals(12, gridData.widthHint);
+		assertEquals(34, gridData.heightHint);
 
 	}
 
