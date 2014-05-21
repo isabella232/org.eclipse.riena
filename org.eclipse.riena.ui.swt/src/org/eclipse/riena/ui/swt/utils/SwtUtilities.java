@@ -271,7 +271,11 @@ public final class SwtUtilities {
 			display = widget.getDisplay();
 		}
 		if (display == null) {
-			display = RcpUtilities.getDisplay();
+			try {
+				display = RcpUtilities.getDisplay();
+			} catch (final RuntimeException e) {
+				display = null;
+			}
 		}
 		if (display == null) {
 			display = Display.getCurrent();

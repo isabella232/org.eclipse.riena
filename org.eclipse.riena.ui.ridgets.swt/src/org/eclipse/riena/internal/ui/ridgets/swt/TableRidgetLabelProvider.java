@@ -153,7 +153,7 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 
 	private Image getCheckBoxImage(final String key) {
 		Image image = Activator.getSharedImage(key);
-		if (image != null) {
+		if ((image != null) && (SwtUtilities.getDpiFactors()[0] > 1.0 || SwtUtilities.getDpiFactors()[1] > 1.0)) {
 			int width = image.getBounds().width;
 			int height = image.getBounds().height;
 			width = SwtUtilities.convertXToDpi(width);

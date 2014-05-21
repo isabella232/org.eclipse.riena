@@ -17,7 +17,6 @@ import junit.framework.TestCase;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -30,6 +29,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.riena.core.test.collect.UITestCase;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.ui.common.IComplexComponent;
+import org.eclipse.riena.ui.swt.layout.DpiGridLayout;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
@@ -132,13 +132,13 @@ public class MasterDetailsCompositeTest extends TestCase {
 	public void testSetMargins() {
 		final MasterDetailsComposite widget = new MasterDetailsComposite(shell, SWT.NONE);
 
-		GridLayout layout = (GridLayout) widget.getLayout();
+		DpiGridLayout layout = (DpiGridLayout) widget.getLayout();
 
 		assertEquals(0, layout.marginHeight);
 		assertEquals(0, layout.marginWidth);
 
 		widget.setMargins(4, 5);
-		layout = (GridLayout) widget.getLayout();
+		layout = (DpiGridLayout) widget.getLayout();
 
 		assertEquals(4, layout.marginHeight);
 		assertEquals(5, layout.marginWidth);
