@@ -26,12 +26,10 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.internal.ui.swt.utils.RcpUtilities;
@@ -115,7 +113,7 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 			result = (Image) formatterImage;
 		} else if (formatterImage instanceof ImageData) {
 			final ImageData formatterImageData = (ImageData) formatterImage;
-			final Display display = getDisplay();
+			final Display display = RcpUtilities.getDisplay();
 			if (display != null) {
 				final Image oldImage = imageMap.get(element);
 				if (!SwtUtilities.isDisposed(oldImage)) {
@@ -155,24 +153,36 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 
 	private Image getCheckBoxImage(final String key) {
 		Image image = Activator.getSharedImage(key);
-		if ((SwtUtilities.getDpiFactors()[0] > 1.0 || SwtUtilities.getDpiFactors()[1] > 1.0) && (image != null)) {
-			final int width = SwtUtilities.convertXToDpi(image.getBounds().width);
-			final int height = SwtUtilities.convertYToDpi(image.getBounds().height);
+		if (image != null) {
+			int width = image.getBounds().width;
+			int height = image.getBounds().height;
+			width = SwtUtilities.convertXToDpi(width);
+			height = SwtUtilities.convertYToDpi(height);
 			image = resize(image, width, height);
 		}
 		return image;
 	}
 
 	private Image resize(final Image image, final int width, final int height) {
-		// TODO transparency (http://www.eclipse.org/articles/Article-SWT-images/graphics-resources.html#Transparency)
-		final Image scaled = new Image(Display.getDefault(), width, height);
-		final GC gc = new GC(scaled);
-		gc.setAntialias(SWT.ON);
-		gc.setInterpolation(SWT.HIGH);
-		gc.drawImage(image, 0, 0, image.getBounds().width, image.getBounds().height, 0, 0, width, height);
-		gc.dispose();
+		final ImageData scaledImageData = image.getImageData().scaledTo(width, height);
+		final Image scaled = new Image(RcpUtilities.getDisplay(), scaledImageData);
 		return scaled;
 	}
+
+	//	private Image resize(final Image image, final int width, final int height) {
+	//
+	//		// TODO transparency (http://www.eclipse.org/articles/Article-SWT-images/graphics-resources.html#Transparency)
+	//		final Image scaled = new Image(RcpUtilities.getDisplay(), width, height);
+	//		final GC gc = new GC(scaled);
+	//		gc.setAntialias(SWT.ON);
+	//		gc.setInterpolation(SWT.HIGH);
+	//		gc.drawImage(image, 0, 0, image.getBounds().width, image.getBounds().height, 0, 0, width, height);
+	//		gc.dispose();
+	//		image.dispose();
+	//
+	//		return scaled;
+	//
+	//	}
 
 	@Override
 	public void dispose() {
@@ -208,15 +218,6 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 		}
 		image.dispose();
 		imageMap.remove(element);
-	}
-
-	private Display getDisplay() {
-		final Shell shell = RcpUtilities.getWorkbenchShell();
-		if ((shell == null) || shell.isDisposed()) {
-			LOGGER.log(LogService.LOG_WARNING, "No shell of the application found!"); //$NON-NLS-1$
-			return null;
-		}
-		return shell.getDisplay();
 	}
 
 	@Override

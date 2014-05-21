@@ -19,8 +19,7 @@ import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 
 /**
- * Provides access to a set of shared images. The images can be accessed using
- * one of the predifined string constants.
+ * Provides access to a set of shared images. The images can be accessed using one of the predifined string constants.
  * <p>
  * Example:
  * 
@@ -61,8 +60,8 @@ public final class SharedImages {
 		doPut(reg, IMG_NODE_COLLAPSED, SharedImages.class, "node_collapsed.gif"); //$NON-NLS-1$
 		doPut(reg, IMG_NODE_EXPANDED, SharedImages.class, "node_expanded.gif"); //$NON-NLS-1$
 		doPut(reg, IMG_LEAF, SharedImages.class, "leaf.gif"); //$NON-NLS-1$
-		doPut(reg, IMG_CHECKED, SharedImages.class, "checkbox_checked.gif"); //$NON-NLS-1$
-		doPut(reg, IMG_UNCHECKED, SharedImages.class, "checkbox_unchecked.gif"); //$NON-NLS-1$
+		doPut(reg, IMG_CHECKED, SharedImages.class, "checkbox_checked.png"); //$NON-NLS-1$
+		doPut(reg, IMG_UNCHECKED, SharedImages.class, "checkbox_unchecked.png"); //$NON-NLS-1$
 		final Image lnfImage = getLnfImage(LnfKeyConstants.SUB_MODULE_TREE_ERROR_MARKER_ICON);
 		if (lnfImage != null) {
 			// create an independent copy so we can keep using it, even if  
