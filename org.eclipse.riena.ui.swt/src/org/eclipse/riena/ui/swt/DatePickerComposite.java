@@ -17,7 +17,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.jface.layout.GridDataFactory;
-import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.util.Util;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;
@@ -41,6 +40,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import org.eclipse.riena.ui.swt.facades.SWTFacade;
+import org.eclipse.riena.ui.swt.layout.DpiGridLayoutFactory;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
@@ -64,7 +64,7 @@ public class DatePickerComposite extends Composite {
 
 	public DatePickerComposite(final Composite parent, final int textStyles) {
 		super(parent, SWT.BORDER);
-		GridLayoutFactory.fillDefaults().numColumns(2).spacing(0, 0).applyTo(this);
+		DpiGridLayoutFactory.fillDefaults().numColumns(2).spacing(0, 0).applyTo(this);
 
 		textfield = new Text(this, checkStyle(textStyles));
 		setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
@@ -72,8 +72,7 @@ public class DatePickerComposite extends Composite {
 		new EventForwarder(textfield, this);
 
 		pickerButton = new Button(this, SWT.ARROW | SWT.DOWN);
-		GridDataFactory.fillDefaults().grab(false, false).align(SWT.RIGHT, SWT.FILL).hint(BUTTON_WIDTH, BUTTON_HEIGHT)
-				.applyTo(pickerButton);
+		GridDataFactory.fillDefaults().grab(false, false).align(SWT.RIGHT, SWT.FILL).hint(BUTTON_WIDTH, BUTTON_HEIGHT).applyTo(pickerButton);
 		pickerButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(final SelectionEvent e) {
@@ -133,8 +132,7 @@ public class DatePickerComposite extends Composite {
 	}
 
 	/**
-	 * Updates the enabled state of the picker button, based on the composite's
-	 * enabled state and the text fields editable state.
+	 * Updates the enabled state of the picker button, based on the composite's enabled state and the text fields editable state.
 	 * 
 	 * @since 3.0
 	 */
@@ -233,18 +231,15 @@ public class DatePickerComposite extends Composite {
 		private DatePickerComposite datePicker;
 
 		/**
-		 * On windows the Calendar widget has a header that has a zoomOut /
-		 * zoomIn ability. We need to keep count of the clicks needed until we
-		 * can close the widget (i.e. last zoom in level). See Bug 288354,
-		 * comment #4, point #3.
+		 * On windows the Calendar widget has a header that has a zoomOut / zoomIn ability. We need to keep count of the clicks needed until we can close the
+		 * widget (i.e. last zoom in level). See Bug 288354, comment #4, point #3.
 		 */
 		private int clicksToClose = 1;
 
 		/**
 		 * Create a new DatePicker instance.
 		 * <p>
-		 * You must invoke {@link #dispose()} to give up native resources held
-		 * by this class.
+		 * You must invoke {@link #dispose()} to give up native resources held by this class.
 		 * 
 		 * @param text
 		 *            a SWT text field that will received the picked date.
@@ -255,7 +250,7 @@ public class DatePickerComposite extends Composite {
 			this.datePicker = datePicker;
 			shell = new Shell(datePicker.getShell(), SWT.NO_TRIM | SWT.ON_TOP);
 			shell.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_BLACK));
-			GridLayoutFactory.fillDefaults().margins(1, 1).applyTo(shell);
+			DpiGridLayoutFactory.fillDefaults().margins(1, 1).applyTo(shell);
 
 			calendar = new DateTime(shell, SWT.CALENDAR | SWT.SHORT);
 			calendar.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, true));
@@ -392,24 +387,20 @@ public class DatePickerComposite extends Composite {
 	}
 
 	/**
-	 * Determines what will happen on a click, based on the current cursor
-	 * position within the widget (header / body / zoom out area).
+	 * Determines what will happen on a click, based on the current cursor position within the widget (header / body / zoom out area).
 	 */
 	private interface IZoneFinder extends MouseMoveListener {
 		/**
-		 * The cursor is in the body of the native picker. Clicking here selects
-		 * a date.
+		 * The cursor is in the body of the native picker. Clicking here selects a date.
 		 */
 		int BODY = 0;
 		/**
-		 * The cursor is in the header of the native picker. Clicking here does
-		 * not select a date.
+		 * The cursor is in the header of the native picker. Clicking here does not select a date.
 		 */
 		int HEADER = 1;
 		/**
-		 * The cursor is in the zoom out area of the native picker (vista /
-		 * win7). Clicking here zoom's out. Adds an extra click (zoom in) to the
-		 * number of click's required to close the picker (!).
+		 * The cursor is in the zoom out area of the native picker (vista / win7). Clicking here zoom's out. Adds an extra click (zoom in) to the number of
+		 * click's required to close the picker (!).
 		 */
 		int ZOOM_OUT = 2;
 
@@ -448,8 +439,7 @@ public class DatePickerComposite extends Composite {
 				if (e.y > headerHeight - bottomDeadZone || e.y < topDeadZone) {
 					zone = HEADER;
 				} else {
-					if ((e.x < headerLeft && e.y > buttonTop && e.y < buttonBottom)
-							|| (e.x > headerRight && e.y > buttonTop && e.y < buttonBottom)) {
+					if ((e.x < headerLeft && e.y > buttonTop && e.y < buttonBottom) || (e.x > headerRight && e.y > buttonTop && e.y < buttonBottom)) {
 						zone = HEADER;
 					} else {
 						zone = ZOOM_OUT;
@@ -529,10 +519,8 @@ public class DatePickerComposite extends Composite {
 	}
 
 	/**
-	 * Default implementation for a {@link IDateConverterStrategy} that will be
-	 * used, when no other implementation was supplied. This implementation
-	 * tries to parse the Date with a Regular Expression, but does only support
-	 * simple DateFormats like "dd.MM.yyyy" and "dd.MM.yyyy HH:mm"
+	 * Default implementation for a {@link IDateConverterStrategy} that will be used, when no other implementation was supplied. This implementation tries to
+	 * parse the Date with a Regular Expression, but does only support simple DateFormats like "dd.MM.yyyy" and "dd.MM.yyyy HH:mm"
 	 */
 	private static class RegexDateConverterStrategy implements IDateConverterStrategy {
 

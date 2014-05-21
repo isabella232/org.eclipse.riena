@@ -13,7 +13,6 @@ package org.eclipse.riena.navigation.ui.swt.splashHandlers;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
@@ -24,6 +23,7 @@ import org.eclipse.riena.core.wire.Wire;
 import org.eclipse.riena.internal.navigation.ui.swt.Activator;
 import org.eclipse.riena.navigation.ui.swt.login.ILoginSplashView;
 import org.eclipse.riena.navigation.ui.swt.login.ILoginSplashViewExtension;
+import org.eclipse.riena.ui.swt.layout.DpiGridLayout;
 
 /**
  * Riena base class for splash implementations.
@@ -47,9 +47,7 @@ public abstract class AbstractLoginSplashHandler extends AbstractSplashHandler {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.eclipse.ui.splash.AbstractSplashHandler#init(org.eclipse.swt.widgets
-	 * .Shell)
+	 * @see org.eclipse.ui.splash.AbstractSplashHandler#init(org.eclipse.swt.widgets .Shell)
 	 */
 	@Override
 	public void init(final Shell splash) {
@@ -81,8 +79,7 @@ public abstract class AbstractLoginSplashHandler extends AbstractSplashHandler {
 	}
 
 	/*
-	 * Keep the splash screen visible and prevent the RCP application from
-	 * loading until the close button is clicked.
+	 * Keep the splash screen visible and prevent the RCP application from loading until the close button is clicked.
 	 */
 	private void doEventLoop() {
 		final Shell splash = getSplash();
@@ -110,7 +107,7 @@ public abstract class AbstractLoginSplashHandler extends AbstractSplashHandler {
 
 	protected Composite createUILoginComposite() {
 		final Composite composite = new Composite(getSplash(), hasLoginCompositeBorder() ? SWT.BORDER : SWT.NONE);
-		final GridLayout layout = new GridLayout(1, false);
+		final DpiGridLayout layout = new DpiGridLayout(1, false);
 		composite.setLayout(layout);
 		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		// Force composite to inherit the parents (splash) background
@@ -129,7 +126,7 @@ public abstract class AbstractLoginSplashHandler extends AbstractSplashHandler {
 
 	protected void configureUISplash() {
 		// Configure layout
-		final GridLayout layout = new GridLayout(1, false);
+		final DpiGridLayout layout = new DpiGridLayout(1, false);
 		getSplash().setLayout(layout);
 		// Force splash to inherit the parents background
 		getSplash().setBackgroundMode(SWT.INHERIT_DEFAULT);

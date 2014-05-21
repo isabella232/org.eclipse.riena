@@ -11,13 +11,13 @@
 package org.eclipse.riena.ui.ridgets.swt.views;
 
 import org.eclipse.jface.layout.GridDataFactory;
-import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.riena.ui.ridgets.controller.AbstractWindowController;
+import org.eclipse.riena.ui.swt.layout.DpiGridLayoutFactory;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
@@ -44,7 +44,7 @@ public abstract class AbstractDialogViewWithButtonBar extends AbstractDialogView
 	@Override
 	protected void createOkCancelButtons(final Composite parent) {
 		final Composite buttonComposite = UIControlsFactory.createComposite(parent);
-		GridLayoutFactory.swtDefaults().numColumns(2).equalWidth(false).applyTo(buttonComposite);
+		DpiGridLayoutFactory.swtDefaults().numColumns(2).equalWidth(false).applyTo(buttonComposite);
 		GridDataFactory.fillDefaults().span(2, 1).grab(true, false).applyTo(buttonComposite);
 
 		fillButtonBar(buttonComposite);

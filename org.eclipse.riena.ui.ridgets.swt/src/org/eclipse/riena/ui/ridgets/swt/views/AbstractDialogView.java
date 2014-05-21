@@ -13,7 +13,6 @@ package org.eclipse.riena.ui.ridgets.swt.views;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.layout.GridDataFactory;
-import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
@@ -38,6 +37,7 @@ import org.eclipse.riena.ui.swt.IStatusLineContentFactory;
 import org.eclipse.riena.ui.swt.RienaWindowRenderer;
 import org.eclipse.riena.ui.swt.Statusline;
 import org.eclipse.riena.ui.swt.StatuslineSpacer;
+import org.eclipse.riena.ui.swt.layout.DpiGridLayoutFactory;
 import org.eclipse.riena.ui.swt.lnf.LnFUpdater;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -320,10 +320,10 @@ public abstract class AbstractDialogView extends Dialog {
 
 	private void createContentComposite(final Composite parent) {
 		final Composite mainContentComposite = UIControlsFactory.createComposite(parent, parent.getStyle());
-		GridLayoutFactory.fillDefaults().applyTo(mainContentComposite);
+		DpiGridLayoutFactory.fillDefaults().applyTo(mainContentComposite);
 		final Composite contentComposite = UIControlsFactory.createComposite(mainContentComposite, parent.getStyle());
 		GridDataFactory.fillDefaults().grab(true, true).align(SWT.FILL, SWT.FILL).applyTo(contentComposite);
-		GridLayoutFactory.fillDefaults().applyTo(contentComposite);
+		DpiGridLayoutFactory.fillDefaults().applyTo(contentComposite);
 		buildView(contentComposite);
 		addUIControl(getShell(), AbstractWindowController.RIDGET_ID_WINDOW);
 		final FormData resultFormData = new FormData();

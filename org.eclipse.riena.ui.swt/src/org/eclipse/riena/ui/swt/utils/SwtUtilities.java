@@ -27,6 +27,7 @@ import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.swt.widgets.Widget;
 
 import org.eclipse.riena.core.cache.LRUHashMap;
+import org.eclipse.riena.internal.ui.swt.utils.RcpUtilities;
 import org.eclipse.riena.ui.swt.facades.GCFacade;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 
@@ -268,6 +269,9 @@ public final class SwtUtilities {
 		Display display = null;
 		if (widget != null) {
 			display = widget.getDisplay();
+		}
+		if (display == null) {
+			display = RcpUtilities.getDisplay();
 		}
 		if (display == null) {
 			display = Display.getCurrent();

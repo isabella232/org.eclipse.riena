@@ -17,7 +17,6 @@ import java.util.List;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.layout.GridDataFactory;
-import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
@@ -27,7 +26,6 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -37,6 +35,8 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.riena.ui.common.IComplexComponent;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
 import org.eclipse.riena.ui.swt.facades.SWTFacade;
+import org.eclipse.riena.ui.swt.layout.DpiGridLayout;
+import org.eclipse.riena.ui.swt.layout.DpiGridLayoutFactory;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.nls.Messages;
@@ -95,7 +95,7 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 		super(parent, style);
 		checkOrientation(orientation);
 
-		setLayout(GridLayoutFactory.swtDefaults().margins(0, 0).spacing(0, 5).create());
+		setLayout(DpiGridLayoutFactory.swtDefaults().margins(0, 0).spacing(0, 5).create());
 		if (orientation == SWT.TOP) {
 			details = createComposite(getDetailsStyle());
 			createDetails(details);
@@ -204,7 +204,7 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	 * @since 2.0
 	 */
 	public Point getMargins() {
-		final GridLayout layout = (GridLayout) getLayout();
+		final DpiGridLayout layout = (DpiGridLayout) getLayout();
 		final Point result = new Point(layout.marginHeight, layout.marginWidth);
 		return result;
 	}
@@ -216,8 +216,8 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	 * @since 2.0
 	 */
 	public Point getSpacing() {
-		final GridLayout layout = (GridLayout) getLayout();
-		final GridLayout mLayout = (GridLayout) master.getLayout();
+		final DpiGridLayout layout = (DpiGridLayout) getLayout();
+		final DpiGridLayout mLayout = (DpiGridLayout) master.getLayout();
 		final Point result = new Point(mLayout.horizontalSpacing, layout.verticalSpacing);
 		return result;
 	}
@@ -275,7 +275,7 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	 * @since 2.0
 	 */
 	public void setMargins(final int marginHeight, final int marginWidth) {
-		final GridLayout layout = (GridLayout) getLayout();
+		final DpiGridLayout layout = (DpiGridLayout) getLayout();
 		layout.marginHeight = marginHeight;
 		layout.marginWidth = marginWidth;
 		layout(false);
@@ -291,9 +291,9 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	 * @since 2.0
 	 */
 	public void setSpacing(final int hSpacing, final int vSpacing) {
-		final GridLayout layout = (GridLayout) getLayout();
+		final DpiGridLayout layout = (DpiGridLayout) getLayout();
 		layout.verticalSpacing = vSpacing;
-		final GridLayout mLayout = (GridLayout) master.getLayout();
+		final DpiGridLayout mLayout = (DpiGridLayout) master.getLayout();
 		mLayout.horizontalSpacing = hSpacing;
 		layout(false);
 	}
@@ -482,7 +482,7 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	}
 
 	private void createMaster(final Composite parent) {
-		GridLayoutFactory.fillDefaults().numColumns(2).equalWidth(false).spacing(0, 0).applyTo(parent);
+		DpiGridLayoutFactory.fillDefaults().numColumns(2).equalWidth(false).spacing(0, 0).applyTo(parent);
 		final Composite compTable = createTableComposite(parent);
 		buttonComposite = createButtons(parent);
 		if (buttonComposite != null) {

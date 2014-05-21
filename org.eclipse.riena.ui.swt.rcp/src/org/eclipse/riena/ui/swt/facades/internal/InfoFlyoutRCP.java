@@ -19,7 +19,6 @@ import org.pushingpixels.trident.ease.Sine;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.layout.GridDataFactory;
-import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
@@ -35,6 +34,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.riena.ui.swt.InfoFlyout;
+import org.eclipse.riena.ui.swt.layout.DpiGridLayoutFactory;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.ImageStore;
@@ -143,7 +143,7 @@ public class InfoFlyoutRCP extends InfoFlyout {
 
 		shell = new Shell(parentShell, SWT.MODELESS | SWT.NO_TRIM);
 		shell.addPaintListener(new BorderPainter());
-		GridLayoutFactory.fillDefaults().numColumns(2).applyTo(shell);
+		DpiGridLayoutFactory.fillDefaults().numColumns(2).applyTo(shell);
 
 		shell.setBackground(bgColor);
 

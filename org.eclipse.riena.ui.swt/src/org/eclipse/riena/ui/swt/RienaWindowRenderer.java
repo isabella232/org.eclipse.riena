@@ -21,13 +21,13 @@ import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.ui.swt.Activator;
 import org.eclipse.riena.ui.swt.facades.SWTFacade;
+import org.eclipse.riena.ui.swt.layout.DpiGridLayout;
 import org.eclipse.riena.ui.swt.lnf.ILnfRenderer;
 import org.eclipse.riena.ui.swt.lnf.ILnfRendererExtension;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
@@ -138,8 +138,7 @@ public class RienaWindowRenderer {
 			titleBarHeight = getTitleBarHeight();
 
 			final SWTFacade swtFacade = SWTFacade.getDefault();
-			final DialogTitlePaintListener titlePaintListener = new DialogTitlePaintListener(isCloseable(),
-					isMaximizeable(), isMinimizeable());
+			final DialogTitlePaintListener titlePaintListener = new DialogTitlePaintListener(isCloseable(), isMaximizeable(), isMinimizeable());
 			swtFacade.addPaintListener(topComposite, titlePaintListener);
 
 			mouseListener = new DialogTitleBarMouseListener();
@@ -155,7 +154,7 @@ public class RienaWindowRenderer {
 		topComposite.setLayoutData(formData);
 
 		centerComposite = new Composite(contentsComposite, SWT.NONE);
-		final GridLayout layout = new GridLayout();
+		final DpiGridLayout layout = new DpiGridLayout();
 		layout.marginHeight = 0;
 		layout.marginWidth = 0;
 		layout.verticalSpacing = 0;
@@ -189,14 +188,12 @@ public class RienaWindowRenderer {
 	//////////////////
 
 	private int getBorderWidth() {
-		final DialogBorderRenderer borderRenderer = (DialogBorderRenderer) LnfManager.getLnf().getRenderer(
-				LnfKeyConstants.DIALOG_BORDER_RENDERER);
+		final DialogBorderRenderer borderRenderer = (DialogBorderRenderer) LnfManager.getLnf().getRenderer(LnfKeyConstants.DIALOG_BORDER_RENDERER);
 		return borderRenderer != null ? borderRenderer.getBorderWidth() : 0;
 	}
 
 	private int getTitleBarHeight() {
-		final DialogTitleBarRenderer titleBarRenderer = (DialogTitleBarRenderer) LnfManager.getLnf().getRenderer(
-				LnfKeyConstants.DIALOG_RENDERER);
+		final DialogTitleBarRenderer titleBarRenderer = (DialogTitleBarRenderer) LnfManager.getLnf().getRenderer(LnfKeyConstants.DIALOG_RENDERER);
 		return titleBarRenderer != null ? titleBarRenderer.getHeight() : 0;
 	}
 
@@ -239,8 +236,7 @@ public class RienaWindowRenderer {
 				final Control dialog = (Control) e.getSource();
 				final Rectangle dialogBounds = dialog.getBounds();
 				final Rectangle bounds = new Rectangle(0, 0, dialogBounds.width, dialogBounds.height);
-				final ILnfRenderer borderRenderer = LnfManager.getLnf().getRenderer(
-						LnfKeyConstants.DIALOG_BORDER_RENDERER);
+				final ILnfRenderer borderRenderer = LnfManager.getLnf().getRenderer(LnfKeyConstants.DIALOG_BORDER_RENDERER);
 				borderRenderer.setBounds(bounds);
 				borderRenderer.paint(e.gc, null);
 			}
@@ -287,8 +283,7 @@ public class RienaWindowRenderer {
 	}
 
 	private DialogTitleBarRenderer createDialogTitleBarRenderer() {
-		final DialogTitleBarRenderer renderer = (DialogTitleBarRenderer) LnfManager.getLnf().getRenderer(
-				LnfKeyConstants.DIALOG_RENDERER);
+		final DialogTitleBarRenderer renderer = (DialogTitleBarRenderer) LnfManager.getLnf().getRenderer(LnfKeyConstants.DIALOG_RENDERER);
 		return ReflectionUtils.newInstance(renderer.getClass());
 	}
 
