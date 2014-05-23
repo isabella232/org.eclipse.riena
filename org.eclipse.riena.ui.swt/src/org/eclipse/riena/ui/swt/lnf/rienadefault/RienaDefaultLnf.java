@@ -524,6 +524,7 @@ public class RienaDefaultLnf implements ILnfCustomizer {
 	 * </p>
 	 * 
 	 * @see org.eclipse.riena.ui.swt.lnf.ILnfCustomizer#getDpiFactors(org.eclipse.swt.graphics.Point)
+	 * @since 6.0
 	 */
 	public float[] getDpiFactors(final Point dpi) {
 		return new float[] { 0.0f, 0.0f };
@@ -533,6 +534,7 @@ public class RienaDefaultLnf implements ILnfCustomizer {
 	 * {@inheritDoc}
 	 * 
 	 * @see org.eclipse.riena.ui.swt.lnf.ILnfCustomizer#getIconScaleSuffix(float[])
+	 * @since 6.0
 	 */
 	public String getIconScaleSuffix(final Point dpi) {
 		return null;

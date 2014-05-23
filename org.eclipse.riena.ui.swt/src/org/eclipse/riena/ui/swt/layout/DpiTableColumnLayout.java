@@ -22,6 +22,8 @@ import org.eclipse.swt.widgets.Widget;
 /**
  * DpiTableColumnLayout is a (almost) copy of the class {@linkplain TableColumnLayout}.<br>
  * DpiTableColumnLayout supports DPI dependent values.
+ * 
+ * @since 6.0
  */
 public class DpiTableColumnLayout extends AbstractDpiColumnLayout {
 

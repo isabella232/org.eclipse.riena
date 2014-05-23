@@ -26,6 +26,8 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 /**
  * DpiGridLayout is a copy of the final class {@linkplain GridLayout}.<br>
  * DpiGridLayout supports DPI dependent values.
+ * 
+ * @since 6.0
  */
 public class DpiGridLayout extends Layout {
 
