@@ -22,7 +22,7 @@ import org.eclipse.riena.internal.ui.swt.facades.WorkbenchFacade;
 public class SwitchToWorkarea extends AbstractHandler {
 
 	public Object execute(final ExecutionEvent event) throws ExecutionException {
-		WorkbenchFacade.getInstance().switchToWorkarea();
+		WorkbenchFacade.getInstance().switchToWorkarea(event);
 		return null;
 	}
 }
