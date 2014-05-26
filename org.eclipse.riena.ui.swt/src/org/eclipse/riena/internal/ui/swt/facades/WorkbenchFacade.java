@@ -87,5 +87,7 @@ public abstract class WorkbenchFacade {
 
 	public abstract ISourceProvider[] getSourceProviders();
 
-	public abstract boolean switchToWorkarea(String viewId, ExecutionEvent event);
+	public abstract boolean switchToWorkarea(ExecutionEvent event);
+
+	public abstract boolean switchToNavigation(ExecutionEvent event);
 }
