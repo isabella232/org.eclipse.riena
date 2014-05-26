@@ -20,18 +20,15 @@ import org.eclipse.riena.ui.core.IDisposable;
 import org.eclipse.riena.ui.filter.IUIFilterable;
 
 /**
- * Summary of all abilities common to all model objects Each object is
- * presentation able. Each object can be a Parent of one another.
+ * Summary of all abilities common to all model objects Each object is presentation able. Each object can be a Parent of one another.
  * <p>
  * 
- * The children ability and parent ability is not included because it is
- * different for different model nodes
+ * The children ability and parent ability is not included because it is different for different model nodes
  * 
  * @param <C>
  *            the type of child nodes
  */
-public interface INavigationNode<C extends INavigationNode<?>> extends ITypecastingAdaptable, IMarkable, IUIFilterable,
-		IDisposable, INavigationHistory {
+public interface INavigationNode<C extends INavigationNode<?>> extends ITypecastingAdaptable, IMarkable, IUIFilterable, IDisposable, INavigationHistory {
 
 	String PROPERTY_LABEL = "label"; //$NON-NLS-1$
 	/**
@@ -52,38 +49,29 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	}
 
 	/**
-	 * Call this method to activate this node. The node forwards the activation
-	 * request to the navigation processor. The navigation processor checks
-	 * which nodes have to be deactivated before this node can be activated. The
-	 * navigation processor creates an INavigationContext and checks all nodes
-	 * with allowsDeactivate() and allowsActivate() dependent on the
-	 * INavigationContext. Following the NavigationProcessor deactivates and
-	 * activates the corresponding nodes using the activation context.
+	 * Call this method to activate this node. The node forwards the activation request to the navigation processor. The navigation processor checks which nodes
+	 * have to be deactivated before this node can be activated. The navigation processor creates an INavigationContext and checks all nodes with
+	 * allowsDeactivate() and allowsActivate() dependent on the INavigationContext. Following the NavigationProcessor deactivates and activates the
+	 * corresponding nodes using the activation context.
 	 */
 	void activate();
 
 	/**
-	 * Call this method to dispose this node. Depending on the type of the node
-	 * the dispose does different things. What the node does is implemented in
-	 * the navigation processor. The processor decides e.g. that if the first
-	 * module node in a group is disposed, than the group is closed. Before
-	 * closing the navigation processor deactivates all affected nodes. Than a
-	 * dispose change is fired, and at the end the node itself is removed from
-	 * the tree.
+	 * Call this method to dispose this node. Depending on the type of the node the dispose does different things. What the node does is implemented in the
+	 * navigation processor. The processor decides e.g. that if the first module node in a group is disposed, than the group is closed. Before closing the
+	 * navigation processor deactivates all affected nodes. Than a dispose change is fired, and at the end the node itself is removed from the tree.
 	 */
 	void dispose();
 
 	/**
-	 * Call this method to prepare this node. A prepared node is created but not
-	 * yet activated (or deactivated, or disposed).
+	 * Call this method to prepare this node. A prepared node is created but not yet activated (or deactivated, or disposed).
 	 * 
 	 * @since 2.0
 	 */
 	void prepare();
 
 	/**
-	 * Called by a NavigationProcessor to activate the node within an
-	 * INavigationContext.
+	 * Called by a NavigationProcessor to activate the node within an INavigationContext.
 	 * 
 	 * @param pContext
 	 *            the Context to activate within
@@ -91,8 +79,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	void activate(INavigationContext pContext);
 
 	/**
-	 * Called by a NavigationProcessor before activating the node within an
-	 * INavigationContext.
+	 * Called by a NavigationProcessor before activating the node within an INavigationContext.
 	 * 
 	 * @param pContext
 	 *            the Context to activate within
@@ -100,8 +87,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	void onBeforeActivate(INavigationContext pContext);
 
 	/**
-	 * Called by a NavigationProcessor after activating the node within an
-	 * INavigationContext.
+	 * Called by a NavigationProcessor after activating the node within an INavigationContext.
 	 * 
 	 * @param pContext
 	 *            the Context to activate within
@@ -109,8 +95,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	void onAfterActivate(INavigationContext pContext);
 
 	/**
-	 * Called by a NavigationProcessor to dispose the node within an
-	 * INavigationContext.
+	 * Called by a NavigationProcessor to dispose the node within an INavigationContext.
 	 * 
 	 * @param pContext
 	 *            the Context to activate within
@@ -118,8 +103,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	void dispose(INavigationContext pContext);
 
 	/**
-	 * Called by a NavigationProcessor before disposing the node within an
-	 * INavigationContext.
+	 * Called by a NavigationProcessor before disposing the node within an INavigationContext.
 	 * 
 	 * @param pContext
 	 *            the Context to activate within
@@ -127,8 +111,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	void onBeforeDispose(INavigationContext pContext);
 
 	/**
-	 * Called by a NavigationProcessor after disposing the node within an
-	 * INavigationContext.
+	 * Called by a NavigationProcessor after disposing the node within an INavigationContext.
 	 * 
 	 * @param pContext
 	 *            the Context to activate within
@@ -136,8 +119,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	void onAfterDispose(INavigationContext pContext);
 
 	/**
-	 * Called by a NavigationProcessor to deactivate the node within an
-	 * INavigationContext.
+	 * Called by a NavigationProcessor to deactivate the node within an INavigationContext.
 	 * 
 	 * @param pContext
 	 *            the Context to deactivate within
@@ -145,8 +127,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	void deactivate(INavigationContext pContext);
 
 	/**
-	 * Called by a NavigationProcessor before deactivating the node within an
-	 * INavigationContext.
+	 * Called by a NavigationProcessor before deactivating the node within an INavigationContext.
 	 * 
 	 * @param pContext
 	 *            the Context to activate within
@@ -154,8 +135,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	void onBeforeDeactivate(INavigationContext pContext);
 
 	/**
-	 * Called by a NavigationProcessor after deactivating the node within an
-	 * INavigationContext.
+	 * Called by a NavigationProcessor after deactivating the node within an INavigationContext.
 	 * 
 	 * @param pContext
 	 *            the Context to activate within
@@ -163,8 +143,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	void onAfterDeactivate(INavigationContext pContext);
 
 	/**
-	 * Called by a NavigationProcessor to prepare the node within an
-	 * INavigationContext.
+	 * Called by a NavigationProcessor to prepare the node within an INavigationContext.
 	 * 
 	 * @param pContext
 	 *            the Context to prepare within
@@ -173,30 +152,25 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	void prepare(INavigationContext pContext);
 
 	/**
-	 * Called by a NavigationProcessor to check if a node can be activated
-	 * within an INavigationContext.
+	 * Called by a NavigationProcessor to check if a node can be activated within an INavigationContext.
 	 * 
 	 * @param pContext
 	 *            the Context to check within
-	 * @return {@code true} if the node can be activated; otherwise
-	 *         {@code false}
+	 * @return {@code true} if the node can be activated; otherwise {@code false}
 	 */
 	boolean allowsActivate(INavigationContext pContext);
 
 	/**
-	 * Called by a NavigationProcessor to check if a node can be deactivated
-	 * within an INavigationContext.
+	 * Called by a NavigationProcessor to check if a node can be deactivated within an INavigationContext.
 	 * 
 	 * @param pContext
 	 *            the Context to check within
-	 * @return {@code true} if the node can be deactivated; otherwise
-	 *         {@code false}
+	 * @return {@code true} if the node can be deactivated; otherwise {@code false}
 	 */
 	boolean allowsDeactivate(INavigationContext pContext);
 
 	/**
-	 * Called by a NavigationProcessor to check if a node can be disposed within
-	 * an INavigationContext.
+	 * Called by a NavigationProcessor to check if a node can be disposed within an INavigationContext.
 	 * 
 	 * @param pContext
 	 *            the Context to check within
@@ -205,8 +179,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	boolean allowsDispose(INavigationContext pContext);
 
 	/**
-	 * Called from the navigation processor to remove a node during dispose
-	 * Removes the passed node from the list child nodes
+	 * Called from the navigation processor to remove a node during dispose Removes the passed node from the list child nodes
 	 * 
 	 * @param pChild
 	 *            the child node to remove
@@ -249,13 +222,11 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	C getChild(int pIndex);
 
 	/**
-	 * Searches for a node with the specified ID in the application model tree
-	 * tree from this node on downwards including this node.
+	 * Searches for a node with the specified ID in the application model tree tree from this node on downwards including this node.
 	 * 
 	 * @param nodeId
 	 *            ID of the requested node
-	 * @return A node with the specified ID that is either this node or a
-	 *         descendant of this node or null if no such node exists
+	 * @return A node with the specified ID that is either this node or a descendant of this node or null if no such node exists
 	 */
 	INavigationNode<?> findNode(NavigationNodeId nodeId);
 
@@ -264,8 +235,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * 
 	 * @param pChild
 	 *            the child to find
-	 * @return the index or -1 if the passed child is not a child of the node
-	 *         addressed
+	 * @return the index or -1 if the passed child is not a child of the node addressed
 	 */
 	int getIndexOfChild(INavigationNode<?> pChild);
 
@@ -360,8 +330,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	void addSimpleListener(ISimpleNavigationNodeListener pListener);
 
 	/**
-	 * Removes simple listener @see addSimpleListener that were previously
-	 * added.
+	 * Removes simple listener @see addSimpleListener that were previously added.
 	 * 
 	 * @param pListener
 	 *            the listener to remove
@@ -371,8 +340,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	/**
 	 * Returns true, if this navigation node should be presented expanded.
 	 * 
-	 * @return {@code true} if the node is expanded; {@code false} if the node
-	 *         is collapsed
+	 * @return {@code true} if the node is expanded; {@code false} if the node is collapsed
 	 */
 	boolean isExpanded();
 
@@ -380,8 +348,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * Sets the expanded state
 	 * 
 	 * @param pExpanded
-	 *            {@code true} if the node is expanded; {@code false} if the
-	 *            node is collapsed
+	 *            {@code true} if the node is expanded; {@code false} if the node is collapsed
 	 */
 	void setExpanded(boolean pExpanded);
 
@@ -427,8 +394,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	void removeContext(String key);
 
 	/**
-	 * Adds an action to the node. Actions can be associated with nodes to
-	 * automatically show and hide actions corresponding to the activated node
+	 * Adds an action to the node. Actions can be associated with nodes to automatically show and hide actions corresponding to the activated node
 	 * 
 	 * @param pAction
 	 *            the action to add
@@ -468,19 +434,16 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	/**
 	 * Returns whether the node is activated or not.
 	 * 
-	 * @return {@code true} if this node has the state ACTIVATED; otherwise
-	 *         {@code false}
+	 * @return {@code true} if this node has the state ACTIVATED; otherwise {@code false}
 	 */
 	boolean isActivated();
 
 	/**
 	 * Returns whether the node is prepared or not.
 	 * <p>
-	 * <i>Prepare means that the controller (among others) of the node is
-	 * already created but the node was not activated so far.</i>
+	 * <i>Prepare means that the controller (among others) of the node is already created but the node was not activated so far.</i>
 	 * 
-	 * @return {@code true} if this node has the state PREPARED; otherwise
-	 *         {@code false}
+	 * @return {@code true} if this node has the state PREPARED; otherwise {@code false}
 	 * @since 2.0
 	 */
 	boolean isPrepared();
@@ -488,29 +451,30 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	/**
 	 * Returns whether the node is deactivated or not.
 	 * 
-	 * @return {@code true} if this node has the state DEACTIVATED; otherwise
-	 *         {@code false}
+	 * @return {@code true} if this node has the state DEACTIVATED; otherwise {@code false}
 	 */
 	boolean isDeactivated();
 
 	/**
 	 * Returns whether the node is disposed or not.
 	 * 
-	 * @return {@code true} if this node has the state DISPOSED; otherwise
-	 *         {@code false}
+	 * @return {@code true} if this node has the state DISPOSED; otherwise {@code false}
 	 */
 	boolean isDisposed();
 
 	/**
 	 * Returns whether the node is created or not.
 	 * 
-	 * @return {@code true} if this node has the state CREATED; otherwise
-	 *         {@code false}
+	 * @return {@code true} if this node has the state CREATED; otherwise {@code false}
 	 */
 	boolean isCreated();
 
 	/**
 	 * Returns whether the node is selected or not.
+	 * <p>
+	 * A selected node can be activated and can be the current selected node in the navigation tree but is not necessary. Otherwise a activated node is always
+	 * selected. This flag is also used to re-activate a node that was activated.<br>
+	 * The parent of a selected node does not need to be selected. Otherwise all parents of an active node must be selected.
 	 * 
 	 * @return {@code true} if this node is selected; otherwise {@code false}
 	 */
@@ -518,6 +482,8 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 
 	/**
 	 * Sets whether the node is selected or not.
+	 * 
+	 * @see INavigationNode#isSelected()
 	 * 
 	 * @param selected
 	 *            {@code true} if this node is selected; otherwise {@code false}
@@ -534,8 +500,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	<N extends INavigationNode<?>> N getParentOfType(Class<N> clazz);
 
 	/**
-	 * Sets set blocked state of this NavigationNode. If true, the view which
-	 * presents the node is blocked for all user input.
+	 * Sets set blocked state of this NavigationNode. If true, the view which presents the node is blocked for all user input.
 	 * 
 	 * @param blocked
 	 *            true blocks user input
@@ -543,8 +508,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	void setBlocked(boolean blocked);
 
 	/**
-	 * Returns the blocked state of this NagigationNode. True means that user
-	 * input is blocked for the view which presents the node.
+	 * Returns the blocked state of this NagigationNode. True means that user input is blocked for the view which presents the node.
 	 * 
 	 * @return true if input is blocked, false otherwise
 	 */
@@ -569,8 +533,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * Enables or disables this node depending on the value of parameter
 	 * 
 	 * @param enabled
-	 *            if {@code true}, enables this node; otherwise, disables this
-	 *            node
+	 *            if {@code true}, enables this node; otherwise, disables this node
 	 */
 	void setEnabled(boolean enabled);
 
@@ -582,9 +545,8 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	boolean isEnabled();
 
 	/**
-	 * Returns the ID that identifies the node. The ID is used to find navigate
-	 * targets in the application model tree and to associated sub module nodes
-	 * with their views.
+	 * Returns the ID that identifies the node. The ID is used to find navigate targets in the application model tree and to associated sub module nodes with
+	 * their views.
 	 * 
 	 * @see #navigate(NavigationNodeId)
 	 * @return The ID that identifies the node in the application model tree.
@@ -600,26 +562,20 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	void setNodeId(NavigationNodeId nodeId);
 
 	/**
-	 * Creates the specified navigation node and adds it to the application
-	 * model if does not already exist.
+	 * Creates the specified navigation node and adds it to the application model if does not already exist.
 	 * 
 	 * @param targetId
-	 *            ID of the node to create. Also refers to an extension point
-	 *            describing the target node that is used to create it if it
-	 *            does not exist.
+	 *            ID of the node to create. Also refers to an extension point describing the target node that is used to create it if it does not exist.
 	 * @see INavigationAssembler
 	 */
 	void create(NavigationNodeId targetId);
 
 	/**
-	 * Creates the specified navigation node and adds it to the application
-	 * model if does not already exist. It also adds the NavigationArgument to
-	 * the context of the NavigationNode.
+	 * Creates the specified navigation node and adds it to the application model if does not already exist. It also adds the NavigationArgument to the context
+	 * of the NavigationNode.
 	 * 
 	 * @param targetId
-	 *            ID of the node to create. Also refers to an extension point
-	 *            describing the target node that is used to create it if it
-	 *            does not exist.
+	 *            ID of the node to create. Also refers to an extension point describing the target node that is used to create it if it does not exist.
 	 * @param argument
 	 *            The optional NavigationArgument
 	 * @see INavigationAssembler
@@ -628,14 +584,11 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	void create(NavigationNodeId targetId, NavigationArgument argument);
 
 	/**
-	 * Creates the specified navigation node on a worker-thread and adds it to
-	 * the application model if does not already exist. It also adds the
+	 * Creates the specified navigation node on a worker-thread and adds it to the application model if does not already exist. It also adds the
 	 * NavigationArgument to the context of the NavigationNode.
 	 * 
 	 * @param targetId
-	 *            ID of the node to create. Also refers to an extension point
-	 *            describing the target node that is used to create it if it
-	 *            does not exist.
+	 *            ID of the node to create. Also refers to an extension point describing the target node that is used to create it if it does not exist.
 	 * @param argument
 	 *            The optional NavigationArgument
 	 * @see INavigationAssembler
@@ -645,23 +598,19 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	void createAsync(NavigationNodeId targetId, NavigationArgument argument);
 
 	/**
-	 * Creates the specified navigation node on a worker-thread and adds it to
-	 * the application model if does not already exist. It also adds the
+	 * Creates the specified navigation node on a worker-thread and adds it to the application model if does not already exist. It also adds the
 	 * NavigationArgument to the context of the NavigationNode.
 	 * 
 	 * @param targetId
-	 *            ID of the node to create. Also refers to an extension point
-	 *            describing the target node that is used to create it if it
-	 *            does not exist.
+	 *            ID of the node to create. Also refers to an extension point describing the target node that is used to create it if it does not exist.
 	 * @see INavigationAssembler
 	 * @since 3.0
 	 */
 	void createAsync(final NavigationNodeId targetId);
 
 	/**
-	 * Moves this node to the node identified by the targetId. When moving a
-	 * node as child to another keep in mind that you have to honor the strict
-	 * type hierarchy of the nodes in the navigation model.
+	 * Moves this node to the node identified by the targetId. When moving a node as child to another keep in mind that you have to honor the strict type
+	 * hierarchy of the nodes in the navigation model.
 	 * 
 	 * @param targetId
 	 *            ID of the node where this node has to be added as child.
@@ -669,64 +618,49 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	void moveTo(NavigationNodeId targetId);
 
 	/**
-	 * Creates the specified navigation node (if it does not already exist) and
-	 * navigates to it.
+	 * Creates the specified navigation node (if it does not already exist) and navigates to it.
 	 * 
 	 * @param targetId
-	 *            ID of the node to navigate to. Also refers to an extension
-	 *            point describing the target node that is used to create it if
-	 *            it does not exist.
+	 *            ID of the node to navigate to. Also refers to an extension point describing the target node that is used to create it if it does not exist.
 	 * @see INavigationAssembler
 	 */
 	void navigate(NavigationNodeId targetId);
 
 	/**
-	 * Creates the specified navigation node (if it does not already exist) and
-	 * navigates to it.
+	 * Creates the specified navigation node (if it does not already exist) and navigates to it.
 	 * 
 	 * @see INavigationAssembler
 	 * @param targetId
-	 *            ID of the node to navigate to. Also refers to an extension
-	 *            point describing the target node that is used to create it if
-	 *            it does not exist.
+	 *            ID of the node to navigate to. Also refers to an extension point describing the target node that is used to create it if it does not exist.
 	 * @param argument
-	 *            Contains information passed on to the target node and/or used
-	 *            during its creation.
+	 *            Contains information passed on to the target node and/or used during its creation.
 	 */
 	void navigate(NavigationNodeId targetId, NavigationArgument argument);
 
 	/**
-	 * Undoes the last navigate to this node i.e. activates the last source node
-	 * of a navigate(..)-call that lead to the activation of this node.
+	 * Undoes the last navigate to this node i.e. activates the last source node of a navigate(..)-call that lead to the activation of this node.
 	 * 
 	 * @see #navigate(NavigationNodeId)
 	 */
 	void navigateBack();
 
 	/**
-	 * Jumps to the specified navigation node (Creates it if does not already
-	 * exist). The source node of the jump is saved to allow later
+	 * Jumps to the specified navigation node (Creates it if does not already exist). The source node of the jump is saved to allow later
 	 * {@link #jumpBack(NavigationNodeId, NavigationArgument)}
 	 * 
 	 * @param targetId
-	 *            ID of the node to jump to. Also refers to an extension point
-	 *            describing the target node that is used to create it if it
-	 *            does not exist.
+	 *            ID of the node to jump to. Also refers to an extension point describing the target node that is used to create it if it does not exist.
 	 */
 	void jump(NavigationNodeId targetId);
 
 	/**
-	 * Jumps to the specified navigation node (Creates it if does not already
-	 * exist). The source node of the jump is saved to allow later
+	 * Jumps to the specified navigation node (Creates it if does not already exist). The source node of the jump is saved to allow later
 	 * {@link #jumpBack(NavigationNodeId, NavigationArgument)}
 	 * 
 	 * @param targetId
-	 *            ID of the node to jump to. Also refers to an extension point
-	 *            describing the target node that is used to create it if it
-	 *            does not exist.
+	 *            ID of the node to jump to. Also refers to an extension point describing the target node that is used to create it if it does not exist.
 	 * @param argument
-	 *            Contains information passed on to the target node and/or used
-	 *            during its creation.
+	 *            Contains information passed on to the target node and/or used during its creation.
 	 */
 	void jump(NavigationNodeId targetId, NavigationArgument argument);
 
@@ -737,8 +671,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 
 	/**
 	 * 
-	 * @return True if this {@link INavigationNode} has been jumped to.
-	 *         Otherwise false.
+	 * @return True if this {@link INavigationNode} has been jumped to. Otherwise false.
 	 */
 	boolean isJumpTarget();
 
@@ -759,8 +692,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	void removeJumpTargetListener(IJumpTargetListener listener);
 
 	/**
-	 * Called by a NavigationProcessor to add the given marker to the node
-	 * within an INavigationContext.
+	 * Called by a NavigationProcessor to add the given marker to the node within an INavigationContext.
 	 * 
 	 * @param pContext
 	 */
@@ -784,8 +716,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * Sets the text of the tool tip.
 	 * 
 	 * @param text
-	 *            text of tool tip or {@code null} if no tool tip or the default
-	 *            tool tip text should be displayed
+	 *            text of tool tip or {@code null} if no tool tip or the default tool tip text should be displayed
 	 * 
 	 * @since 4.0
 	 */
@@ -794,8 +725,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	/**
 	 * Returns the text of the tool tip.
 	 * 
-	 * @return text of tool tip or {@code null} if no tool tip or the default
-	 *         tool tip text should be displayed
+	 * @return text of tool tip or {@code null} if no tool tip or the default tool tip text should be displayed
 	 * 
 	 * @since 4.0
 	 */
