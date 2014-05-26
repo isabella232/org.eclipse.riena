@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.swt.facades;
 
+import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -86,4 +87,5 @@ public abstract class WorkbenchFacade {
 
 	public abstract ISourceProvider[] getSourceProviders();
 
+	public abstract boolean switchToWorkarea(String viewId, ExecutionEvent event);
 }
