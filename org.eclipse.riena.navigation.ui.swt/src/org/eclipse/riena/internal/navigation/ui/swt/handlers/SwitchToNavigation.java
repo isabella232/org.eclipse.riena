@@ -13,13 +13,8 @@ package org.eclipse.riena.internal.navigation.ui.swt.handlers;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.ui.IViewPart;
-import org.eclipse.ui.IViewReference;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.handlers.HandlerUtil;
 
-import org.eclipse.riena.navigation.ui.swt.views.NavigationViewPart;
+import org.eclipse.riena.internal.ui.swt.facades.WorkbenchFacade;
 
 /**
  * Switch focus to the NavigationView.
@@ -27,21 +22,7 @@ import org.eclipse.riena.navigation.ui.swt.views.NavigationViewPart;
 public class SwitchToNavigation extends AbstractHandler {
 
 	public Object execute(final ExecutionEvent event) throws ExecutionException {
-		final IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindow(event);
-		final IWorkbenchPage page = window.getActivePage();
-		IViewPart navigationView = null;
-		if (page != null) {
-			final IViewReference[] viewRefs = page.getViewReferences();
-			for (final IViewReference ref : viewRefs) {
-				if (NavigationViewPart.ID.equals(ref.getId())) {
-					navigationView = ref.getView(false);
-					break;
-				}
-			}
-		}
-		if (navigationView != null) {
-			navigationView.setFocus();
-		}
+		WorkbenchFacade.getInstance().switchToNavigation(event);
 		return null;
 	}
 }

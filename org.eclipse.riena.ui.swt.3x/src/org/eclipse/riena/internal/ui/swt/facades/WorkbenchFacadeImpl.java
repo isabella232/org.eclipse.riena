@@ -27,6 +27,12 @@ import org.eclipse.ui.internal.WorkbenchPage;
 import org.eclipse.ui.services.ISourceProviderService;
 
 import org.eclipse.riena.core.Log4r;
+import org.eclipse.riena.navigation.ApplicationNodeManager;
+import org.eclipse.riena.navigation.IApplicationNode;
+import org.eclipse.riena.navigation.INavigationNode;
+import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewId;
+import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProvider;
+import org.eclipse.riena.navigation.ui.swt.views.NavigationViewPart;
 
 /**
  * Eclipse 3.x specific implementation.
@@ -116,10 +122,41 @@ public class WorkbenchFacadeImpl extends WorkbenchFacade {
 	/*
 	 * (non-Javadoc)
 	 * 
+	 * @see org.eclipse.riena.internal.ui.swt.facades.WorkbenchFacade#switchToNavigation(org.eclipse.core.commands.ExecutionEvent)
+	 */
+	@Override
+	public boolean switchToNavigation(final ExecutionEvent event) {
+		final IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindow(event);
+		final IWorkbenchPage page = window.getActivePage();
+		IViewPart navigationView = null;
+		if (page != null) {
+			final IViewReference[] viewRefs = page.getViewReferences();
+			for (final IViewReference ref : viewRefs) {
+				if (NavigationViewPart.ID.equals(ref.getId())) {
+					navigationView = ref.getView(false);
+					break;
+				}
+			}
+		}
+		if (navigationView != null) {
+			navigationView.setFocus();
+			return true;
+		}
+
+		return false;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.riena.internal.ui.swt.facades.WorkbenchFacade#switchToWorkarea(java.lang.String)
 	 */
 	@Override
-	public boolean switchToWorkarea(final String viewId, final ExecutionEvent event) {
+	public boolean switchToWorkarea(final ExecutionEvent event) {
+		final String viewId = getViewId(getActiveNode());
+		if (viewId == null) {
+			return false;
+		}
 		final IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindow(event);
 		final IWorkbenchPage page = window.getActivePage();
 		for (final IViewReference viewRef : page.getViewReferences()) {
@@ -133,6 +170,22 @@ public class WorkbenchFacadeImpl extends WorkbenchFacade {
 			}
 		}
 		return false;
+	}
+
+	private INavigationNode<?> getActiveNode() {
+		final IApplicationNode appNode = ApplicationNodeManager.getApplicationNode();
+		return appNode.getNavigationProcessor().getSelectedNode();
+	}
+
+	private String getViewId(final INavigationNode<?> node) {
+		String result = null;
+		if (node != null) {
+			final SwtViewId viewId = SwtViewProvider.getInstance().getSwtViewId(node);
+			if (viewId != null) {
+				result = viewId.getCompoundId();
+			}
+		}
+		return result;
 	}
 
 	private String getFullId(final IViewReference viewRef) {

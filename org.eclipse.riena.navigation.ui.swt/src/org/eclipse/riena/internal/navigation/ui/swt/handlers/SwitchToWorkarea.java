@@ -15,11 +15,6 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 
 import org.eclipse.riena.internal.ui.swt.facades.WorkbenchFacade;
-import org.eclipse.riena.navigation.ApplicationNodeManager;
-import org.eclipse.riena.navigation.IApplicationNode;
-import org.eclipse.riena.navigation.INavigationNode;
-import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewId;
-import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProvider;
 
 /**
  * Switch focus to the 'work area'.
@@ -27,30 +22,7 @@ import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProvider;
 public class SwitchToWorkarea extends AbstractHandler {
 
 	public Object execute(final ExecutionEvent event) throws ExecutionException {
-		final String viewId = getViewId(getActiveNode());
-		if (viewId != null) {
-			WorkbenchFacade.getInstance().switchToWorkarea(viewId, event);
-		}
+		WorkbenchFacade.getInstance().switchToWorkarea();
 		return null;
 	}
-
-	// helping methods
-	//////////////////
-
-	private INavigationNode<?> getActiveNode() {
-		final IApplicationNode appNode = ApplicationNodeManager.getApplicationNode();
-		return appNode.getNavigationProcessor().getSelectedNode();
-	}
-
-	private String getViewId(final INavigationNode<?> node) {
-		String result = null;
-		if (node != null) {
-			final SwtViewId viewId = SwtViewProvider.getInstance().getSwtViewId(node);
-			if (viewId != null) {
-				result = viewId.getCompoundId();
-			}
-		}
-		return result;
-	}
-
 }
