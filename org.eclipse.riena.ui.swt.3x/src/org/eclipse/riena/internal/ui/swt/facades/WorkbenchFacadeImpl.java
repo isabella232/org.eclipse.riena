@@ -14,6 +14,7 @@ import org.osgi.service.log.LogService;
 
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.ISourceProvider;
@@ -30,6 +31,7 @@ import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.navigation.ApplicationNodeManager;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.INavigationNode;
+import org.eclipse.riena.navigation.ui.swt.component.MenuCoolBarComposite;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewId;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProvider;
 import org.eclipse.riena.navigation.ui.swt.views.NavigationViewPart;
@@ -194,5 +196,23 @@ public class WorkbenchFacadeImpl extends WorkbenchFacade {
 			result = result + ":" + viewRef.getSecondaryId(); //$NON-NLS-1$
 		}
 		return result;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.internal.ui.swt.facades.WorkbenchFacade#switchToWindowMenu(org.eclipse.core.commands.ExecutionEvent)
+	 */
+	@Override
+	public boolean switchToWindowMenu(final ExecutionEvent event) {
+		final IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindow(event);
+		final Shell shell = window.getShell();
+		for (final Control child : shell.getChildren()) {
+			if (child instanceof MenuCoolBarComposite) {
+				child.setFocus();
+				return true;
+			}
+		}
+		return false;
 	}
 }
