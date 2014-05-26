@@ -90,4 +90,6 @@ public abstract class WorkbenchFacade {
 	public abstract boolean switchToWorkarea(ExecutionEvent event);
 
 	public abstract boolean switchToNavigation(ExecutionEvent event);
+
+	public abstract boolean switchToWindowMenu(ExecutionEvent event);
 }
