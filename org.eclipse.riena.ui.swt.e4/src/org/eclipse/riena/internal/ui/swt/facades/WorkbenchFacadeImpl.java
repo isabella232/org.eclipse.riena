@@ -13,11 +13,14 @@ package org.eclipse.riena.internal.ui.swt.facades;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.e4.core.contexts.EclipseContextFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.e4.ui.workbench.IWorkbench;
+import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -27,6 +30,12 @@ import org.eclipse.ui.IWorkbenchPage;
 
 import org.eclipse.riena.core.wire.InjectExtension;
 import org.eclipse.riena.core.wire.Wire;
+import org.eclipse.riena.e4.launcher.RienaE4MenuUtils;
+import org.eclipse.riena.navigation.ApplicationNodeManager;
+import org.eclipse.riena.navigation.IApplicationNode;
+import org.eclipse.riena.navigation.INavigationNode;
+import org.eclipse.riena.navigation.ui.swt.component.MenuCoolBarComposite;
+import org.eclipse.riena.navigation.ui.swt.views.NavigationViewPart;
 
 /**
  * Eclipse e4 specific implementation.
@@ -88,6 +97,72 @@ public class WorkbenchFacadeImpl extends WorkbenchFacade {
 	/*
 	 * (non-Javadoc)
 	 * 
+	 * @see org.eclipse.riena.internal.ui.swt.facades.WorkbenchFacade#switchToWorkarea(java.lang.String, org.eclipse.core.commands.ExecutionEvent)
+	 */
+	@Override
+	public boolean switchToWorkarea(final ExecutionEvent event) {
+		final IEclipseContext root = getWorkbenchContext();
+		if (root == null) {
+			return false;
+		}
+
+		final EModelService modelService = root.get(EModelService.class);
+		final IApplicationNode appNode = ApplicationNodeManager.getApplicationNode();
+		final INavigationNode<?> node = appNode.getNavigationProcessor().getSelectedNode();
+
+		final String partId = (String) node.getContext("E4PartId");
+		if (null == partId) {
+			return false;
+		}
+		final List<MPart> parts = modelService.findElements(root.get(MApplication.class), partId, MPart.class, null, EModelService.IN_ANY_PERSPECTIVE);
+		final MPart mPart = parts.get(0);
+
+		if (mPart == null) {
+			return false;
+		}
+
+		final Object widget = mPart.getWidget();
+		if (widget instanceof Control) {
+			((Control) widget).setFocus();
+			return true;
+		}
+
+		return false;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.internal.ui.swt.facades.WorkbenchFacade#switchToNavigation(org.eclipse.core.commands.ExecutionEvent)
+	 */
+	@Override
+	public boolean switchToNavigation(final ExecutionEvent event) {
+		final IEclipseContext root = getWorkbenchContext();
+		if (root == null) {
+			return false;
+		}
+
+		final EModelService modelService = root.get(EModelService.class);
+		final List<MPart> parts = modelService.findElements(root.get(MApplication.class), NavigationViewPart.ID, MPart.class, null,
+				EModelService.IN_ANY_PERSPECTIVE);
+		final MPart mPart = parts.get(0);
+
+		if (mPart == null) {
+			return false;
+		}
+
+		final Object widget = mPart.getWidget();
+		if (widget instanceof Control) {
+			((Control) widget).setFocus();
+			return true;
+		}
+
+		return false;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.riena.internal.ui.swt.facades.WorkbenchFacade#getActiveWindowShell()
 	 */
 	@Override
@@ -130,4 +205,24 @@ public class WorkbenchFacadeImpl extends WorkbenchFacade {
 		return providers.toArray(new ISourceProvider[providers.size()]);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.internal.ui.swt.facades.WorkbenchFacade#switchToWindowMenu(org.eclipse.core.commands.ExecutionEvent)
+	 */
+	@Override
+	public boolean switchToWindowMenu(final ExecutionEvent event) {
+		final IEclipseContext root = getWorkbenchContext();
+		if (root == null) {
+			return false;
+		}
+
+		final MenuCoolBarComposite menu = RienaE4MenuUtils.getMenuCoolBarComposite(root);
+		if (menu != null) {
+			menu.setFocus();
+			return true;
+		}
+
+		return false;
+	}
 }

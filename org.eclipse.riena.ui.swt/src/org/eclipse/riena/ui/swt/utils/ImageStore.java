@@ -252,6 +252,9 @@ public final class ImageStore {
 		return missingImage;
 	}
 
+	/**
+	 * @since 6.0
+	 */
 	public String addImageScaleSuffix(final String imageName, final ImageFileExtension fileExtension) {
 
 		if (LnfManager.isLnfCreated()) {

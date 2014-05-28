@@ -252,6 +252,7 @@ public final class SwtUtilities {
 	 * inch of the display.
 	 * 
 	 * @return the horizontal and vertical DPI
+	 * @since 6.0
 	 */
 	public static Point getDpi() {
 		return getDpi(null);
@@ -264,6 +265,7 @@ public final class SwtUtilities {
 	 *            if widget is not {@code null} return DPI of the display that's associated with the widget; otherwise return the DPI of the current or default
 	 *            display
 	 * @return the horizontal and vertical DPI
+	 * @since 6.0
 	 */
 	public static Point getDpi(final Widget widget) {
 		Display display = null;
@@ -293,6 +295,7 @@ public final class SwtUtilities {
 	 * DPI).
 	 * 
 	 * @return x-factor and y-factors
+	 * @since 6.0
 	 */
 	public static float[] getDpiFactors() {
 		return getDpiFactors(null);
@@ -303,6 +306,7 @@ public final class SwtUtilities {
 	 * DPI).
 	 * 
 	 * @return x-factor and y-factors
+	 * @since 6.0
 	 */
 	public static float[] getDpiFactors(final Widget widget) {
 		if ((cacheDpiFactors[0] <= 0.001f) || (cacheDpiFactors[1] <= 0.001f)) {
@@ -329,6 +333,7 @@ public final class SwtUtilities {
 	 * @param x
 	 *            value to scale
 	 * @return scaled value
+	 * @since 6.0
 	 */
 	public static int convertXToDpi(final int x) {
 		final float factorX = getDpiFactors()[0];
@@ -343,18 +348,25 @@ public final class SwtUtilities {
 	 * @param y
 	 *            value to scale
 	 * @return scaled value
+	 * @since 6.0
 	 */
 	public static int convertYToDpi(final int y) {
 		final float factorY = getDpiFactors()[1];
 		return convertPixelToDpi(y, factorY);
 	}
 
+	/**
+	 * @since 6.0
+	 */
 	public static Point convertPointToDpi(final Point pixelPoint) {
 		final int x = convertXToDpi(pixelPoint.x);
 		final int y = convertYToDpi(pixelPoint.y);
 		return new Point(x, y);
 	}
 
+	/**
+	 * @since 6.0
+	 */
 	public static int convertPixelToDpi(final int pixel) {
 		final float factor = Math.min(getDpiFactors()[0], getDpiFactors()[1]);
 		return convertPixelToDpi(pixel, factor);
@@ -375,6 +387,7 @@ public final class SwtUtilities {
 	 * @param y
 	 *            value to scale
 	 * @return scaled value
+	 * @since 6.0
 	 */
 	public static int convertXToDpiTruncate(final int x) {
 		final float factorX = getDpiFactors()[0];
@@ -389,12 +402,16 @@ public final class SwtUtilities {
 	 * @param y
 	 *            value to scale
 	 * @return scaled value
+	 * @since 6.0
 	 */
 	public static int convertYToDpiTruncate(final int y) {
 		final float factorY = getDpiFactors()[1];
 		return convertPixelToDpiTruncate(y, factorY);
 	}
 
+	/**
+	 * @since 6.0
+	 */
 	public static int convertPixelToDpiTruncate(final int pixel) {
 		final float factor = Math.min(getDpiFactors()[0], getDpiFactors()[1]);
 		return convertPixelToDpiTruncate(pixel, factor);
