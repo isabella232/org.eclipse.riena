@@ -41,7 +41,7 @@ public final class SwtUtilities {
 	private static final Map<GCChar, Integer> CHAR_WIDTH_CACHE = LRUHashMap.createLRUHashMap(1024);
 	private final static float DEFAULT_DPI_X = 96.0f;
 	private final static float DEFAULT_DPI_Y = 96.0f;
-	private static float cacheDpiFactors[] = new float[] { 0.0f, 0.0f };
+	private static float[] cacheDpiFactors = new float[] { 0.0f, 0.0f };
 
 	/**
 	 * This class contains only static methods. So it is not necessary to create an instance.
