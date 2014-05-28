@@ -17,7 +17,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
-import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
@@ -39,8 +38,7 @@ public class ScrollBarSupport extends AbstractScrollingSupport {
 	 *            the composite around the content that should be scrolled
 	 * @param navigationComponentProvider
 	 */
-	public ScrollBarSupport(final ScrolledComposite scrolledComposite,
-			final IModuleNavigationComponentProvider navigationComponentProvider) {
+	public ScrollBarSupport(final ScrolledComposite scrolledComposite, final IModuleNavigationComponentProvider navigationComponentProvider) {
 		super(navigationComponentProvider);
 		this.scrolledComposite = scrolledComposite;
 	}
@@ -61,12 +59,11 @@ public class ScrollBarSupport extends AbstractScrollingSupport {
 	 * @return active module
 	 */
 	private IModuleNode getActiveModule(final INavigationNode<?> activeNode) {
-		if (activeNode instanceof IModuleGroupNode) {
-			return null;
-		} else if (activeNode instanceof IModuleNode) {
+		if (activeNode instanceof IModuleNode) {
 			return (IModuleNode) activeNode;
 		} else if (activeNode instanceof ISubModuleNode) {
-			return (IModuleNode) activeNode.getParent();
+			final ISubModuleNode subModuleNode = (ISubModuleNode) activeNode;
+			return subModuleNode.getParentOfType(IModuleNode.class);
 		}
 		return null;
 	}
@@ -92,8 +89,7 @@ public class ScrollBarSupport extends AbstractScrollingSupport {
 	}
 
 	/**
-	 * Returns whether scrolling is necessary to make the given module (and
-	 * maybe the selected sub-module) visible.
+	 * Returns whether scrolling is necessary to make the given module (and maybe the selected sub-module) visible.
 	 * 
 	 * @param module
 	 *            node of the module
@@ -116,8 +112,7 @@ public class ScrollBarSupport extends AbstractScrollingSupport {
 	}
 
 	/**
-	 * Returns whether scrolling is necessary to make the given composites
-	 * visible.
+	 * Returns whether scrolling is necessary to make the given composites visible.
 	 * 
 	 * @param topComp
 	 *            top composite
@@ -134,8 +129,7 @@ public class ScrollBarSupport extends AbstractScrollingSupport {
 	}
 
 	/**
-	 * Returns whether scrolling is necessary to make the selected tree item
-	 * visible.
+	 * Returns whether scrolling is necessary to make the selected tree item visible.
 	 * 
 	 * @param tree
 	 *            tree
@@ -146,8 +140,7 @@ public class ScrollBarSupport extends AbstractScrollingSupport {
 	}
 
 	/**
-	 * Returns the amount of pixels which are necessary for scrolling so that
-	 * the given composites are visible.
+	 * Returns the amount of pixels which are necessary for scrolling so that the given composites are visible.
 	 * 
 	 * @param topComp
 	 *            top composite
@@ -162,8 +155,7 @@ public class ScrollBarSupport extends AbstractScrollingSupport {
 		}
 
 		final int clientHeight = scrolledComposite.getClientArea().height;
-		final int by = scrolledComposite.getDisplay().map(bottomComp, scrolledComposite, 0,
-				bottomComp.getBounds().height).y;
+		final int by = scrolledComposite.getDisplay().map(bottomComp, scrolledComposite, 0, bottomComp.getBounds().height).y;
 		if (by > clientHeight) {
 			return by - clientHeight;
 		}
@@ -172,8 +164,7 @@ public class ScrollBarSupport extends AbstractScrollingSupport {
 	}
 
 	/**
-	 * Returns the amount of pixels which are necessary for scrolling so that
-	 * the selected tree item is visible.
+	 * Returns the amount of pixels which are necessary for scrolling so that the selected tree item is visible.
 	 * 
 	 * @param tree
 	 *            tree
