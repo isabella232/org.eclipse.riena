@@ -13,10 +13,7 @@ package org.eclipse.riena.ui.swt;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.osgi.service.log.LogService;
-
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.equinox.log.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.ControlListener;
@@ -36,8 +33,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 
-import org.eclipse.riena.core.Log4r;
-import org.eclipse.riena.internal.ui.swt.Activator;
 import org.eclipse.riena.ui.swt.CompletionCombo.DropDownListener;
 import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
@@ -55,7 +50,6 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
  */
 public class BorderDrawer implements Listener {
 	public static final int DEFAULT_BORDER_WIDTH = 1;
-	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), BorderDrawer.class);
 
 	private final IDecorationActivationStrategy activationStrategy;
 	private final Control control;
@@ -304,7 +298,6 @@ public class BorderDrawer implements Listener {
 	 */
 	public void update(final boolean redraw) {
 		if (SwtUtilities.isDisposed(getControlToDecorate())) {
-			LOGGER.log(LogService.LOG_WARNING, "Control with border is disposed"); //$NON-NLS-1$
 			return;
 		}
 		final Shell shell = getControlToDecorate().getShell();
@@ -426,8 +419,6 @@ public class BorderDrawer implements Listener {
 		final Color previousForeground = gc.getForeground();
 		if (borderColor != null) {
 			gc.setForeground(borderColor);
-		} else {
-			LOGGER.log(LogService.LOG_WARNING, "BorderColor is null!"); //$NON-NLS-1$
 		}
 		for (int i = 0; i < borderWidth; i++) {
 			gc.drawRectangle(rect.x + i, rect.y + i, rect.width - 2 * i, rect.height - 2 * i);
