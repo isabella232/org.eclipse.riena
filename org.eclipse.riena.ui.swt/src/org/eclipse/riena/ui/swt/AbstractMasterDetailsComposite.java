@@ -17,6 +17,7 @@ import java.util.List;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
@@ -26,6 +27,7 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -95,7 +97,11 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 		super(parent, style);
 		checkOrientation(orientation);
 
-		setLayout(DpiGridLayoutFactory.swtDefaults().margins(0, 0).spacing(0, 5).create());
+		if (LnfManager.getLnf().useDpiGridLayout()) {
+			setLayout(DpiGridLayoutFactory.swtDefaults().margins(0, 0).spacing(0, 5).create());
+		} else {
+			setLayout(GridLayoutFactory.swtDefaults().margins(0, 0).spacing(0, 5).create());
+		}
 		if (orientation == SWT.TOP) {
 			details = createComposite(getDetailsStyle());
 			createDetails(details);
@@ -204,9 +210,15 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	 * @since 2.0
 	 */
 	public Point getMargins() {
-		final DpiGridLayout layout = (DpiGridLayout) getLayout();
-		final Point result = new Point(layout.marginHeight, layout.marginWidth);
-		return result;
+		if (getLayout() instanceof DpiGridLayout) {
+			final DpiGridLayout layout = (DpiGridLayout) getLayout();
+			final Point result = new Point(layout.marginHeight, layout.marginWidth);
+			return result;
+		} else {
+			final GridLayout layout = (GridLayout) getLayout();
+			final Point result = new Point(layout.marginHeight, layout.marginWidth);
+			return result;
+		}
 	}
 
 	/**
@@ -216,10 +228,17 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	 * @since 2.0
 	 */
 	public Point getSpacing() {
-		final DpiGridLayout layout = (DpiGridLayout) getLayout();
-		final DpiGridLayout mLayout = (DpiGridLayout) master.getLayout();
-		final Point result = new Point(mLayout.horizontalSpacing, layout.verticalSpacing);
-		return result;
+		if (getLayout() instanceof DpiGridLayout) {
+			final DpiGridLayout layout = (DpiGridLayout) getLayout();
+			final DpiGridLayout mLayout = (DpiGridLayout) master.getLayout();
+			final Point result = new Point(mLayout.horizontalSpacing, layout.verticalSpacing);
+			return result;
+		} else {
+			final GridLayout layout = (GridLayout) getLayout();
+			final GridLayout mLayout = (GridLayout) master.getLayout();
+			final Point result = new Point(mLayout.horizontalSpacing, layout.verticalSpacing);
+			return result;
+		}
 	}
 
 	/**
@@ -275,10 +294,17 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	 * @since 2.0
 	 */
 	public void setMargins(final int marginHeight, final int marginWidth) {
-		final DpiGridLayout layout = (DpiGridLayout) getLayout();
-		layout.marginHeight = marginHeight;
-		layout.marginWidth = marginWidth;
-		layout(false);
+		if (getLayout() instanceof DpiGridLayout) {
+			final DpiGridLayout layout = (DpiGridLayout) getLayout();
+			layout.marginHeight = marginHeight;
+			layout.marginWidth = marginWidth;
+			layout(false);
+		} else {
+			final GridLayout layout = (GridLayout) getLayout();
+			layout.marginHeight = marginHeight;
+			layout.marginWidth = marginWidth;
+			layout(false);
+		}
 	}
 
 	/**
@@ -291,11 +317,19 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	 * @since 2.0
 	 */
 	public void setSpacing(final int hSpacing, final int vSpacing) {
-		final DpiGridLayout layout = (DpiGridLayout) getLayout();
-		layout.verticalSpacing = vSpacing;
-		final DpiGridLayout mLayout = (DpiGridLayout) master.getLayout();
-		mLayout.horizontalSpacing = hSpacing;
-		layout(false);
+		if (getLayout() instanceof DpiGridLayout) {
+			final DpiGridLayout layout = (DpiGridLayout) getLayout();
+			layout.verticalSpacing = vSpacing;
+			final DpiGridLayout mLayout = (DpiGridLayout) master.getLayout();
+			mLayout.horizontalSpacing = hSpacing;
+			layout(false);
+		} else {
+			final GridLayout layout = (GridLayout) getLayout();
+			layout.verticalSpacing = vSpacing;
+			final GridLayout mLayout = (GridLayout) master.getLayout();
+			mLayout.horizontalSpacing = hSpacing;
+			layout(false);
+		}
 	}
 
 	/**
@@ -482,7 +516,11 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	}
 
 	private void createMaster(final Composite parent) {
-		DpiGridLayoutFactory.fillDefaults().numColumns(2).equalWidth(false).spacing(0, 0).applyTo(parent);
+		if (LnfManager.getLnf().useDpiGridLayout()) {
+			DpiGridLayoutFactory.fillDefaults().numColumns(2).equalWidth(false).spacing(0, 0).applyTo(parent);
+		} else {
+			GridLayoutFactory.fillDefaults().numColumns(2).equalWidth(false).spacing(0, 0).applyTo(parent);
+		}
 		final Composite compTable = createTableComposite(parent);
 		buttonComposite = createButtons(parent);
 		if (buttonComposite != null) {

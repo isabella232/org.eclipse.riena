@@ -11,6 +11,9 @@
 package org.eclipse.riena.ui.swt.lnf;
 
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.layout.GridLayout;
+
+import org.eclipse.riena.ui.swt.layout.DpiGridLayout;
 
 /**
  * The {@code ILnfCustomizer} allows to customize certain Look and Feels, i.e. {@code RienaDefaultLnf} or sub-classes of it.
@@ -79,5 +82,12 @@ public interface ILnfCustomizer {
 	 * @since 6.0
 	 */
 	String getIconScaleSuffix(final Point dpi);
+
+	/**
+	 * Returns whether Riena widgets use {@link DpiGridLayout} instead of {@link GridLayout}.
+	 * 
+	 * @return {@code true} use DpiGridLayout; otherwise use GridLayout
+	 */
+	boolean useDpiGridLayout();
 
 }
