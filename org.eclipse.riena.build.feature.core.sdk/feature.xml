@@ -354,6 +354,13 @@ v1.0
          unpack="false"/>
 
    <plugin
+         id="org.apache.commons.beanutils.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="org.eclipse.riena.ui.filter"
          download-size="0"
          install-size="0"
@@ -486,7 +493,20 @@ v1.0
          version="0.0.0"/>
 
    <plugin
+         id="org.junit.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
          id="org.easymock"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.easymock.source"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -556,6 +576,13 @@ v1.0
          unpack="false"/>
 
    <plugin
+         id="org.pushingpixels.trident.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="org.eclipse.riena.communication.client.ui"
          download-size="0"
          install-size="0"
@@ -605,7 +632,21 @@ v1.0
          unpack="false"/>
 
    <plugin
+         id="org.hamcrest.core.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="org.apache.commons.collections"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.commons.collections.source"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -634,20 +675,6 @@ v1.0
 
    <plugin
          id="org.eclipse.riena.navigation.ui.swt.rcp.source"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.apache.commons.beanutils.source"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.apache.commons.collections.source"
          download-size="0"
          install-size="0"
          version="0.0.0"
