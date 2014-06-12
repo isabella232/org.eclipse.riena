@@ -41,7 +41,8 @@ public final class SwtUtilities {
 	private static final Map<GCChar, Integer> CHAR_WIDTH_CACHE = LRUHashMap.createLRUHashMap(1024);
 	private final static float DEFAULT_DPI_X = 96.0f;
 	private final static float DEFAULT_DPI_Y = 96.0f;
-	private static float[] cacheDpiFactors = new float[] { 0.0f, 0.0f };
+	private static float[] cachedDpiFactors = new float[] { 0.0f, 0.0f };
+	private static Point cachedDpi = null;
 
 	/**
 	 * This class contains only static methods. So it is not necessary to create an instance.
@@ -268,25 +269,35 @@ public final class SwtUtilities {
 	 * @since 6.0
 	 */
 	public static Point getDpi(final Widget widget) {
-		Display display = null;
-		if (widget != null) {
-			display = widget.getDisplay();
-		}
-		if (display == null) {
-			try {
-				display = RcpUtilities.getDisplay();
-			} catch (final RuntimeException e) {
-				display = null;
+
+		if (cachedDpi == null) {
+			Display display = null;
+			if (widget != null) {
+				display = widget.getDisplay();
 			}
+			if (display == null) {
+				try {
+					display = RcpUtilities.getDisplay();
+				} catch (final RuntimeException e) {
+					display = null;
+				}
+			}
+			if (display == null) {
+				display = Display.getCurrent();
+			}
+			if (display == null) {
+				display = Display.getDefault();
+			}
+			Assert.isNotNull(display, "No display exits"); //$NON-NLS-1$
+			final Display d = display;
+			display.syncExec(new Runnable() {
+				public void run() {
+					cachedDpi = d.getDPI();
+				}
+			});
 		}
-		if (display == null) {
-			display = Display.getCurrent();
-		}
-		if (display == null) {
-			display = Display.getDefault();
-		}
-		Assert.isNotNull(display, "No display exits"); //$NON-NLS-1$
-		return display.getDPI();
+
+		return cachedDpi;
 
 	}
 
@@ -309,20 +320,20 @@ public final class SwtUtilities {
 	 * @since 6.0
 	 */
 	public static float[] getDpiFactors(final Widget widget) {
-		if ((cacheDpiFactors[0] <= 0.001f) || (cacheDpiFactors[1] <= 0.001f)) {
+		if ((cachedDpiFactors[0] <= 0.001f) || (cachedDpiFactors[1] <= 0.001f)) {
 			final Point dpi = getDpi(widget);
 			final float[] lnfDpiFactors = LnfManager.getLnf().getDpiFactors(dpi);
 			if (lnfDpiFactors.length == 2) {
-				cacheDpiFactors[0] = lnfDpiFactors[0];
-				cacheDpiFactors[1] = lnfDpiFactors[1];
+				cachedDpiFactors[0] = lnfDpiFactors[0];
+				cachedDpiFactors[1] = lnfDpiFactors[1];
 			}
 		}
-		if ((cacheDpiFactors[0] <= 0.001f) || (cacheDpiFactors[1] <= 0.001f)) {
+		if ((cachedDpiFactors[0] <= 0.001f) || (cachedDpiFactors[1] <= 0.001f)) {
 			final Point dpi = getDpi(widget);
-			cacheDpiFactors[0] = dpi.x / DEFAULT_DPI_X;
-			cacheDpiFactors[1] = dpi.y / DEFAULT_DPI_Y;
+			cachedDpiFactors[0] = dpi.x / DEFAULT_DPI_X;
+			cachedDpiFactors[1] = dpi.y / DEFAULT_DPI_Y;
 		}
-		return cacheDpiFactors;
+		return cachedDpiFactors;
 	}
 
 	/**
