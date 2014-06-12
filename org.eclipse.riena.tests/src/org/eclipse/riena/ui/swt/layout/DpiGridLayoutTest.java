@@ -37,14 +37,14 @@ public class DpiGridLayoutTest extends TestCase {
 		super.setUp();
 		shell = new Shell();
 		// clear cache 
-		ReflectionUtils.setHidden(SwtUtilities.class, "cacheDpiFactors", new float[] { 0.0f, 0.0f }); //$NON-NLS-1$
+		ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpiFactors", new float[] { 0.0f, 0.0f }); //$NON-NLS-1$
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
 		SwtUtilities.dispose(shell);
 		// clear cache 
-		ReflectionUtils.setHidden(SwtUtilities.class, "cacheDpiFactors", new float[] { 0.0f, 0.0f }); //$NON-NLS-1$
+		ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpiFactors", new float[] { 0.0f, 0.0f }); //$NON-NLS-1$
 		super.tearDown();
 	}
 
@@ -56,7 +56,7 @@ public class DpiGridLayoutTest extends TestCase {
 	 */
 	public void testGetMarginPoint() throws Exception {
 
-		ReflectionUtils.setHidden(SwtUtilities.class, "cacheDpiFactors", new float[] { 2.0f, 3.0f }); //$NON-NLS-1$
+		ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpiFactors", new float[] { 2.0f, 3.0f }); //$NON-NLS-1$
 		final DpiGridLayout layout = new DpiGridLayout();
 		layout.marginBottom = 2;
 		layout.marginHeight = 3;
@@ -79,7 +79,7 @@ public class DpiGridLayoutTest extends TestCase {
 	 */
 	public void testGetDpiGridData() throws Exception {
 
-		ReflectionUtils.setHidden(SwtUtilities.class, "cacheDpiFactors", new float[] { 2.0f, 3.0f }); //$NON-NLS-1$
+		ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpiFactors", new float[] { 2.0f, 3.0f }); //$NON-NLS-1$
 		final DpiGridLayout layout = new DpiGridLayout();
 
 		final Label label = new Label(shell, SWT.NONE);
@@ -124,7 +124,7 @@ public class DpiGridLayoutTest extends TestCase {
 	 */
 	public void testGetData() throws Exception {
 
-		ReflectionUtils.setHidden(SwtUtilities.class, "cacheDpiFactors", new float[] { 2.0f, 3.0f }); //$NON-NLS-1$
+		ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpiFactors", new float[] { 2.0f, 3.0f }); //$NON-NLS-1$
 		final DpiGridLayout layout = new DpiGridLayout();
 
 		final Label label = new Label(shell, SWT.NONE);

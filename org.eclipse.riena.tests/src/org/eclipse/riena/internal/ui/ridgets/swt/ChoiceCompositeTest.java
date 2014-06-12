@@ -45,14 +45,14 @@ public class ChoiceCompositeTest extends RienaTestCase {
 		shell.setSize(130, 100);
 		shell.setLocation(0, 0);
 		shell.open();
-		ReflectionUtils.setHidden(SwtUtilities.class, "cacheDpiFactors", new float[] { 0.0f, 0.0f }); //$NON-NLS-1$
+		ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpiFactors", new float[] { 0.0f, 0.0f }); //$NON-NLS-1$
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
 		shell.dispose();
 		shell = null;
-		ReflectionUtils.setHidden(SwtUtilities.class, "cacheDpiFactors", new float[] { 0.0f, 0.0f }); //$NON-NLS-1$
+		ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpiFactors", new float[] { 0.0f, 0.0f }); //$NON-NLS-1$
 		super.tearDown();
 	}
 
@@ -489,7 +489,7 @@ public class ChoiceCompositeTest extends RienaTestCase {
 	 */
 	public void testApplyLayout() throws Exception {
 
-		ReflectionUtils.setHidden(SwtUtilities.class, "cacheDpiFactors", new float[] { 2.0f, 3.0f }); //$NON-NLS-1$
+		ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpiFactors", new float[] { 2.0f, 3.0f }); //$NON-NLS-1$
 
 		final ChoiceComposite cc = new ChoiceComposite(shell, SWT.NONE, true);
 		cc.setOrientation(SWT.HORIZONTAL);

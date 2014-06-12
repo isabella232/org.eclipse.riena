@@ -29,13 +29,13 @@ public class DpiGridDataTest extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		// clear cache 
-		ReflectionUtils.setHidden(SwtUtilities.class, "cacheDpiFactors", new float[] { 0.0f, 0.0f }); //$NON-NLS-1$
+		ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpiFactors", new float[] { 0.0f, 0.0f }); //$NON-NLS-1$
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
 		// clear cache 
-		ReflectionUtils.setHidden(SwtUtilities.class, "cacheDpiFactors", new float[] { 0.0f, 0.0f }); //$NON-NLS-1$
+		ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpiFactors", new float[] { 0.0f, 0.0f }); //$NON-NLS-1$
 		super.tearDown();
 	}
 
@@ -47,7 +47,7 @@ public class DpiGridDataTest extends TestCase {
 	 */
 	public void testCreate() throws Exception {
 
-		ReflectionUtils.setHidden(SwtUtilities.class, "cacheDpiFactors", new float[] { 3.0f, 4.0f }); //$NON-NLS-1$
+		ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpiFactors", new float[] { 3.0f, 4.0f }); //$NON-NLS-1$
 
 		final GridData gridData = new GridData();
 		gridData.exclude = true;
