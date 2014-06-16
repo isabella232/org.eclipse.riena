@@ -894,6 +894,9 @@ public class ImageButton extends Composite {
 				return;
 			}
 			if (!ignoreWidget(e)) {
+				if (isPressed()) {
+					setPressed(false);
+				}
 				final boolean oldHover = isHover();
 				setHover(false);
 				if (oldHover != isHover()) {
