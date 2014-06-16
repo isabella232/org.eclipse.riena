@@ -35,8 +35,7 @@ import org.eclipse.riena.monitor.client.IStore;
 import org.eclipse.riena.monitor.common.Collectible;
 
 /**
- * The {@code Aggregator} aggregates all collectibles from the collectors. Each
- * collectible may trigger the transmission of the collectibles.
+ * The {@code Aggregator} aggregates all collectibles from the collectors. Each collectible may trigger the transmission of the collectibles.
  */
 public class Aggregator implements IAggregator {
 
@@ -106,7 +105,7 @@ public class Aggregator implements IAggregator {
 		started = false;
 	}
 
-	@InjectExtension(min = 0, max = 1)
+	@InjectExtension(order = 0, min = 0, max = 1)
 	public synchronized void update(final IClientInfoProviderExtension clientInfoProviderExtension) {
 		stopSender();
 		if (clientInfoProviderExtension == null) {
@@ -115,7 +114,7 @@ public class Aggregator implements IAggregator {
 		clientInfoProvider = clientInfoProviderExtension.createClientInfoProvider();
 	}
 
-	@InjectExtension
+	@InjectExtension(order = 0)
 	public synchronized void update(final ICollectorExtension[] collectorExtensions) {
 		stopCollectors();
 		nameCategories.clear();
@@ -144,7 +143,7 @@ public class Aggregator implements IAggregator {
 		}
 	}
 
-	@InjectExtension(min = 0, max = 1)
+	@InjectExtension(order = 1, min = 0, max = 1)
 	public void update(final ISenderExtension senderExtension) {
 		stopSender();
 		if (senderExtension == null) {
@@ -161,7 +160,7 @@ public class Aggregator implements IAggregator {
 		}
 	}
 
-	@InjectExtension(min = 0, max = 1)
+	@InjectExtension(order = 1, min = 0, max = 1)
 	public synchronized void update(final IStoreExtension storeExtension) {
 		stopStore();
 		if (storeExtension == null) {
