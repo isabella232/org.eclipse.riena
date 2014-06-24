@@ -276,17 +276,7 @@ public final class SwtUtilities {
 				display = widget.getDisplay();
 			}
 			if (display == null) {
-				try {
-					display = RcpUtilities.getDisplay();
-				} catch (final RuntimeException e) {
-					display = null;
-				}
-			}
-			if (display == null) {
-				display = Display.getCurrent();
-			}
-			if (display == null) {
-				display = Display.getDefault();
+				display = getDisplay();
 			}
 			Assert.isNotNull(display, "No display exits"); //$NON-NLS-1$
 			final Display d = display;
@@ -298,6 +288,33 @@ public final class SwtUtilities {
 		}
 
 		return cachedDpi;
+
+	}
+
+	/**
+	 * Returns the Display.
+	 * 
+	 * @return instance of Display or null if there is no display
+	 * @since 6.0
+	 */
+	public static Display getDisplay() {
+
+		Display display = null;
+		if (display == null) {
+			try {
+				display = RcpUtilities.getDisplay();
+			} catch (final RuntimeException e) {
+				display = null;
+			}
+		}
+		if (display == null) {
+			display = Display.getCurrent();
+		}
+		if (display == null) {
+			display = Display.getDefault();
+		}
+
+		return display;
 
 	}
 
