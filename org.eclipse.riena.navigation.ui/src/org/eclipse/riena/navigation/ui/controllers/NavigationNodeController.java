@@ -19,10 +19,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.core.runtime.Assert;
+import org.osgi.service.log.LogService;
 
+import org.eclipse.core.runtime.Assert;
+import org.eclipse.equinox.log.Logger;
+
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.RienaStatus;
 import org.eclipse.riena.core.marker.IMarker;
+import org.eclipse.riena.internal.navigation.ui.Activator;
 import org.eclipse.riena.navigation.INavigationContext;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationNodeController;
@@ -54,6 +59,9 @@ import org.eclipse.riena.ui.ridgets.marker.MarkerUtil;
  */
 public abstract class NavigationNodeController<N extends INavigationNode<?>> extends TypecastingObject implements INavigationNodeController, IController,
 		IContext {
+
+	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), NavigationNodeController.class);
+
 	/**
 	 * @since 5.0
 	 */
@@ -238,6 +246,16 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 
 		R ridget = getRidget(id);
 		if (ridget != null) {
+			if (!ridgetClazz.isInstance(ridget)) {
+				String logMessage = "getRidget(Class, String): Actual ridget (id: "; //$NON-NLS-1$
+				logMessage += id;
+				logMessage += ")"; //$NON-NLS-1$
+				logMessage += " is not of desired type: ridget is "; //$NON-NLS-1$
+				logMessage += ridget.getClass().getName();
+				logMessage += ", desired is "; //$NON-NLS-1$
+				logMessage += ridgetClazz.getName();
+				LOGGER.log(LogService.LOG_ERROR, logMessage);
+			}
 			return ridget;
 		}
 

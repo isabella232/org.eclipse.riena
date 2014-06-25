@@ -34,6 +34,7 @@ import org.eclipse.riena.internal.ui.ridgets.Activator;
  * Implementors may extend this class instead from starting from scratch.
  */
 public abstract class AbstractCompositeRidget extends AbstractRidget implements IComplexRidget {
+
 	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), AbstractCompositeRidget.class);
 
 	/**
@@ -131,8 +132,17 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 
 		if (ridget != null) {
 			if (!ridgetClazz.isInstance(ridget)) {
-				LOGGER.log(LogService.LOG_ERROR, "getRidget(Class, String): Actual ridget is not of desired type: ridget is " + ridget.getClass().getName() //$NON-NLS-1$
-						+ ", desired is " + ridgetClazz.getName()); //$NON-NLS-1$
+				String logMessage = "getRidget(Class, String): Actual ridget (id: "; //$NON-NLS-1$
+				logMessage += id;
+				logMessage += ")"; //$NON-NLS-1$
+				logMessage += " in this composite (id: "; //$NON-NLS-1$
+				logMessage += getID();
+				logMessage += ")"; //$NON-NLS-1$
+				logMessage += " is not of desired type: ridget is "; //$NON-NLS-1$
+				logMessage += ridget.getClass().getName();
+				logMessage += ", desired is "; //$NON-NLS-1$
+				logMessage += ridgetClazz.getName();
+				LOGGER.log(LogService.LOG_ERROR, logMessage);
 			}
 			return ridget;
 		}
