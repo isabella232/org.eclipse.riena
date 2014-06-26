@@ -57,7 +57,9 @@ public class InfoFlyoutRCP extends InfoFlyout {
 	private static final int ICON_LEFT_MARGIN = getLnfSettingAndConvertX(LnfKeyConstants.INFO_FLYOUT_LEFT_MARGIN);
 	private static final int TEXT_LEFT_MARGIN = getLnfSettingAndConvertX(LnfKeyConstants.INFO_FLYOUT_ICON_TEXT_GAP);
 	private static final int INFO_FLYOUT_RIGHT_MARGIN = getLnfSettingAndConvertX(LnfKeyConstants.INFO_FLYOUT_RIGHT_MARGIN);
-	private static final int RIGHT_LABEL_WIDTH = WIDTH - INFO_FLYOUT_RIGHT_MARGIN - TEXT_LEFT_MARGIN - ICON_LEFT_MARGIN - SwtUtilities.convertXToDpi(30);
+	// private static final int RIGHT_LABEL_WIDTH = WIDTH - INFO_FLYOUT_RIGHT_MARGIN - TEXT_LEFT_MARGIN - ICON_LEFT_MARGIN - SwtUtilities.convertXToDpi(30);
+	private static final int RIGHT_LABEL_WIDTH = getLnfSetting(LnfKeyConstants.INFO_FLYOUT_WIDTH) - getLnfSetting(LnfKeyConstants.INFO_FLYOUT_RIGHT_MARGIN)
+			- getLnfSetting(LnfKeyConstants.INFO_FLYOUT_LEFT_MARGIN) - getLnfSetting(LnfKeyConstants.INFO_FLYOUT_LEFT_MARGIN) - 30;
 
 	private String message;
 	private String icon;
@@ -125,13 +127,17 @@ public class InfoFlyoutRCP extends InfoFlyout {
 	// helping methods
 	//////////////////
 
+	private static int getLnfSetting(final String lnfKey) {
+		return LnfManager.getLnf().getIntegerSetting(lnfKey);
+	}
+
 	private static int getLnfSettingAndConvertX(final String lnfKey) {
-		final int setting = LnfManager.getLnf().getIntegerSetting(lnfKey);
+		final int setting = getLnfSetting(lnfKey);
 		return SwtUtilities.convertXToDpi(setting);
 	}
 
 	private static int getLnfSettingAndConvertY(final String lnfKey) {
-		final int setting = LnfManager.getLnf().getIntegerSetting(lnfKey);
+		final int setting = getLnfSetting(lnfKey);
 		return SwtUtilities.convertYToDpi(setting);
 	}
 
