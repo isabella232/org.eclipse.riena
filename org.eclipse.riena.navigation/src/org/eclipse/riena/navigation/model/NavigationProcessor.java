@@ -1243,19 +1243,19 @@ public class NavigationProcessor implements INavigationProcessor {
 			for (int j = i + 1; j < activeNodes.size(); j++) {
 				final INavigationNode<?> jNode = activeNodes.get(j);
 				if (iNode instanceof IApplicationNode && jNode instanceof IApplicationNode) {
-					LOGGER.log(LogService.LOG_ERROR, "Two active IApplicationNodes"); //$NON-NLS-1$
+					LOGGER.log(LogService.LOG_ERROR, "Two active IApplicationNodes: " + iNode.getNodeId() + ", " + jNode.getNodeId()); //$NON-NLS-1$ //$NON-NLS-2$
 					ok = false;
 				} else if (iNode instanceof ISubApplicationNode && jNode instanceof ISubApplicationNode) {
-					LOGGER.log(LogService.LOG_ERROR, "Two active ISubApplicationNodes"); //$NON-NLS-1$
+					LOGGER.log(LogService.LOG_ERROR, "Two active ISubApplicationNodes: " + iNode.getNodeId() + ", " + jNode.getNodeId()); //$NON-NLS-1$ //$NON-NLS-2$
 					ok = false;
 				} else if (iNode instanceof IModuleGroupNode && jNode instanceof IModuleGroupNode) {
-					LOGGER.log(LogService.LOG_ERROR, "Two active IModuleGroupNode"); //$NON-NLS-1$
+					LOGGER.log(LogService.LOG_ERROR, "Two active IModuleGroupNode: " + iNode.getNodeId() + ", " + jNode.getNodeId()); //$NON-NLS-1$ //$NON-NLS-2$
 					ok = false;
 				} else if (iNode instanceof IModuleNode && jNode instanceof IModuleNode) {
-					LOGGER.log(LogService.LOG_ERROR, "Two active IModuleNode"); //$NON-NLS-1$
+					LOGGER.log(LogService.LOG_ERROR, "Two active IModuleNode: " + iNode.getNodeId() + ", " + jNode.getNodeId()); //$NON-NLS-1$ //$NON-NLS-2$
 					ok = false;
 				} else if (iNode instanceof ISubModuleNode && jNode instanceof ISubModuleNode) {
-					LOGGER.log(LogService.LOG_ERROR, "Two active ISubModuleNodes"); //$NON-NLS-1$
+					LOGGER.log(LogService.LOG_ERROR, "Two active ISubModuleNodes: " + iNode.getNodeId() + ", " + jNode.getNodeId()); //$NON-NLS-1$ //$NON-NLS-2$
 					ok = false;
 				}
 			}
