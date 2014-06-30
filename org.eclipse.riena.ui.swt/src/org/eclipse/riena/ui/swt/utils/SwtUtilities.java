@@ -332,6 +332,8 @@ public final class SwtUtilities {
 	/**
 	 * Returns the scaling factors which can be used to scale pixel values the same amount as the current DPI differs from the standard DPI (on Windows: 96
 	 * DPI).
+	 * <p>
+	 * The Riena Look&Feel can manipulate the scaling factors.
 	 * 
 	 * @return x-factor and y-factors
 	 * @since 6.0
@@ -346,11 +348,37 @@ public final class SwtUtilities {
 			}
 		}
 		if ((cachedDpiFactors[0] <= 0.001f) || (cachedDpiFactors[1] <= 0.001f)) {
-			final Point dpi = getDpi(widget);
-			cachedDpiFactors[0] = dpi.x / DEFAULT_DPI_X;
-			cachedDpiFactors[1] = dpi.y / DEFAULT_DPI_Y;
+			final float[] factors = getCalculatedDpiFactors(widget);
+			cachedDpiFactors[0] = factors[0];
+			cachedDpiFactors[1] = factors[1];
 		}
 		return cachedDpiFactors;
+	}
+
+	/**
+	 * Returns the scaling factors which can be used to scale pixel values the same amount as the current DPI differs from the standard DPI (on Windows: 96
+	 * DPI).
+	 * 
+	 * @return x-factor and y-factors
+	 * @since 6.0
+	 */
+	public static float[] getCalculatedDpiFactors() {
+		return getCalculatedDpiFactors(null);
+	}
+
+	/**
+	 * Returns the scaling factors which can be used to scale pixel values the same amount as the current DPI differs from the standard DPI (on Windows: 96
+	 * DPI).
+	 * 
+	 * @return x-factor and y-factors
+	 * @since 6.0
+	 */
+	public static float[] getCalculatedDpiFactors(final Widget widget) {
+		final Point dpi = getDpi(widget);
+		final float[] factors = new float[2];
+		factors[0] = dpi.x / DEFAULT_DPI_X;
+		factors[1] = dpi.y / DEFAULT_DPI_Y;
+		return factors;
 	}
 
 	/**
