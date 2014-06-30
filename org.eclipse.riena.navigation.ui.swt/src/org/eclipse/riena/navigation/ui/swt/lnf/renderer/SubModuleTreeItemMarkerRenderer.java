@@ -41,6 +41,7 @@ public class SubModuleTreeItemMarkerRenderer extends AbstractLnfRenderer {
 	private static final MarkerComperator MARKER_COMPERATOR = new MarkerComperator();
 	private TreeItem item;
 	private FlasherSupportForRenderer flasherSupport;
+	private final static int IMAGE_MARGIN = 2;
 
 	/**
 	 * Creates a new instance of the renderer for the markers of sub-modules in a tree.
@@ -141,7 +142,8 @@ public class SubModuleTreeItemMarkerRenderer extends AbstractLnfRenderer {
 			itemMarkerBounds = new Rectangle(imageBounds.x, imageBounds.y, imageBounds.width, imageBounds.height);
 		}
 
-		int x = getBounds().x;
+		int x = SwtUtilities.convertXToDpi(IMAGE_MARGIN);
+		x += getBounds().x;
 		x += itemImageBounds.x;
 		int y = getBounds().y;
 		y += itemImageBounds.y;
