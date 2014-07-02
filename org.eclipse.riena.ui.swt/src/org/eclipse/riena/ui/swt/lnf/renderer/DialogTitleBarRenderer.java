@@ -29,17 +29,14 @@ public class DialogTitleBarRenderer extends AbstractTitleBarRenderer {
 	private final static int IMAGE_TITLE_GAP = 5;
 	private final static int BORDER_IMAGE_GAP = 5;
 
-	private final String[] btnImageKeys = new String[] { LnfKeyConstants.DIALOG_CLOSE_ICON,
-			LnfKeyConstants.DIALOG_MAX_ICON, LnfKeyConstants.DIALOG_MIN_ICON, LnfKeyConstants.DIALOG_RESTORE_ICON };
+	private final String[] btnImageKeys = new String[] { LnfKeyConstants.DIALOG_CLOSE_ICON, LnfKeyConstants.DIALOG_MAX_ICON, LnfKeyConstants.DIALOG_MIN_ICON,
+			LnfKeyConstants.DIALOG_RESTORE_ICON };
 	private final String[] btnHoverSelectedImageKeys = new String[] { LnfKeyConstants.DIALOG_CLOSE_HOVER_SELECTED_ICON,
-			LnfKeyConstants.DIALOG_MAX_HOVER_SELECTED_ICON, LnfKeyConstants.DIALOG_MIN_HOVER_SELECTED_ICON,
-			LnfKeyConstants.DIALOG_RESTORE_HOVER_SELECTED_ICON };
-	private final String[] btnHoverImageKeys = new String[] { LnfKeyConstants.DIALOG_CLOSE_HOVER_ICON,
-			LnfKeyConstants.DIALOG_MAX_HOVER_ICON, LnfKeyConstants.DIALOG_MIN_HOVER_ICON,
-			LnfKeyConstants.DIALOG_RESTORE_HOVER_ICON };
-	private final String[] btnInactiveImageKeys = new String[] { LnfKeyConstants.DIALOG_CLOSE_INACTIVE_ICON,
-			LnfKeyConstants.DIALOG_MAX_INACTIVE_ICON, LnfKeyConstants.DIALOG_MIN_INACTIVE_ICON,
-			LnfKeyConstants.DIALOG_RESTORE_INACTIVE_ICON };
+			LnfKeyConstants.DIALOG_MAX_HOVER_SELECTED_ICON, LnfKeyConstants.DIALOG_MIN_HOVER_SELECTED_ICON, LnfKeyConstants.DIALOG_RESTORE_HOVER_SELECTED_ICON };
+	private final String[] btnHoverImageKeys = new String[] { LnfKeyConstants.DIALOG_CLOSE_HOVER_ICON, LnfKeyConstants.DIALOG_MAX_HOVER_ICON,
+			LnfKeyConstants.DIALOG_MIN_HOVER_ICON, LnfKeyConstants.DIALOG_RESTORE_HOVER_ICON };
+	private final String[] btnInactiveImageKeys = new String[] { LnfKeyConstants.DIALOG_CLOSE_INACTIVE_ICON, LnfKeyConstants.DIALOG_MAX_INACTIVE_ICON,
+			LnfKeyConstants.DIALOG_MIN_INACTIVE_ICON, LnfKeyConstants.DIALOG_RESTORE_INACTIVE_ICON };
 
 	@Override
 	protected String[] getBtnHoverImageKeys() {
@@ -115,7 +112,9 @@ public class DialogTitleBarRenderer extends AbstractTitleBarRenderer {
 		int y = getHeight() / 2 - textHeight / 2;
 		y -= 2;
 
-		final int x = getImageBounds().x + getImageBounds().width + IMAGE_TITLE_GAP;
+		int x = IMAGE_TITLE_GAP;
+		x = SwtUtilities.convertXToDpi(x);
+		x = getImageBounds().x + getImageBounds().width + x;
 		int textWidth = SwtUtilities.calcTextWidth(gc, title);
 		if (textWidth + x > getBounds().width) {
 			textWidth = getBounds().width - x;
@@ -140,7 +139,8 @@ public class DialogTitleBarRenderer extends AbstractTitleBarRenderer {
 			return new Rectangle(0, 0, 0, 0);
 		}
 
-		final int x = BORDER_IMAGE_GAP;
+		int x = BORDER_IMAGE_GAP;
+		x = SwtUtilities.convertXToDpi(x);
 		final int imageWidth = image.getBounds().width;
 		final int imageHeight = image.getBounds().height;
 		final int y = getHeight() / 2 - imageHeight / 2;

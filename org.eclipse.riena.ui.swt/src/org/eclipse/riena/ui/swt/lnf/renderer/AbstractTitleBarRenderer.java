@@ -21,15 +21,14 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.ShellHelper;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
- * Renderer of the buttons (min.,max. and close), the title , the image and
- * background of title bar.
+ * Renderer of the buttons (min.,max. and close), the title , the image and background of title bar.
  */
 public abstract class AbstractTitleBarRenderer extends AbstractLnfRenderer {
 
 	private final static int DEFAULT_HEIGHT = 26;
-	protected final static int TOP_BUTTON_GAP = 2;
 	private final static int BUTTON_RIGHT_GAP = 2;
 	private final static int BUTTON_BUTTON_GAP = 2;
 	protected final static int BTN_COUNT = 3;
@@ -52,8 +51,7 @@ public abstract class AbstractTitleBarRenderer extends AbstractLnfRenderer {
 	private Shell shell;
 
 	/**
-	 * Creates a new instance of <code>AbstractTitleBarRenderer</code> and
-	 * initializes the bounds of the buttons, the text etc.
+	 * Creates a new instance of <code>AbstractTitleBarRenderer</code> and initializes the bounds of the buttons, the text etc.
 	 */
 	public AbstractTitleBarRenderer() {
 
@@ -90,8 +88,7 @@ public abstract class AbstractTitleBarRenderer extends AbstractLnfRenderer {
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer#paint(org.eclipse.swt.graphics.GC,
-	 *      java.lang.Object)
+	 * @see org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer#paint(org.eclipse.swt.graphics.GC, java.lang.Object)
 	 */
 	@Override
 	public void paint(final GC gc, final Object value) {
@@ -127,8 +124,7 @@ public abstract class AbstractTitleBarRenderer extends AbstractLnfRenderer {
 
 	/**
 	 * Paints the title.<br>
-	 * <i>To paint the title correct the bounds of the buttons and the image
-	 * must be set before.</i>
+	 * <i>To paint the title correct the bounds of the buttons and the image must be set before.</i>
 	 * 
 	 * @param gc
 	 *            graphics context
@@ -175,11 +171,12 @@ public abstract class AbstractTitleBarRenderer extends AbstractLnfRenderer {
 			}
 		}
 
-		int x = getBounds().x + getBounds().width - BUTTON_RIGHT_GAP;
+		int x = SwtUtilities.convertXToDpi(BUTTON_RIGHT_GAP);
+		x = getBounds().x + getBounds().width - x;
 		if (btnIndex > 0) {
 			x = btnBounds[btnIndex - 1].x;
 			if (btnBounds[btnIndex - 1].width > 0) {
-				x -= BUTTON_BUTTON_GAP;
+				x -= SwtUtilities.convertXToDpi(BUTTON_BUTTON_GAP);
 			}
 		}
 		int y = 0;
@@ -265,68 +262,58 @@ public abstract class AbstractTitleBarRenderer extends AbstractLnfRenderer {
 	}
 
 	/**
-	 * Returns <code>true</code> if the given point is inside the bounds of the
-	 * close button, and <code>false</code> otherwise.
+	 * Returns <code>true</code> if the given point is inside the bounds of the close button, and <code>false</code> otherwise.
 	 * 
 	 * @param pt
 	 *            the point to test
-	 * @return <code>true</code> if the close button bounds contains the point
-	 *         and <code>false</code> otherwise
+	 * @return <code>true</code> if the close button bounds contains the point and <code>false</code> otherwise
 	 */
 	public boolean isInsideCloseButton(final Point pt) {
 		return isInsideButton(pt, CLOSE_BTN_INDEX);
 	}
 
 	/**
-	 * Returns <code>true</code> if the given point is inside the bounds of the
-	 * minimize button, and <code>false</code> otherwise.
+	 * Returns <code>true</code> if the given point is inside the bounds of the minimize button, and <code>false</code> otherwise.
 	 * 
 	 * @param pt
 	 *            the point to test
-	 * @return <code>true</code> if the minimize button bounds contains the
-	 *         point and <code>false</code> otherwise
+	 * @return <code>true</code> if the minimize button bounds contains the point and <code>false</code> otherwise
 	 */
 	public boolean isInsideMinimizeButton(final Point pt) {
 		return isInsideButton(pt, MIN_BTN_INDEX);
 	}
 
 	/**
-	 * Returns <code>true</code> if the given point is inside the bounds of the
-	 * maximize/restore button, and <code>false</code> otherwise.
+	 * Returns <code>true</code> if the given point is inside the bounds of the maximize/restore button, and <code>false</code> otherwise.
 	 * 
 	 * @param pt
 	 *            the point to test
-	 * @return <code>true</code> if the maximize/restore button bounds contains
-	 *         the point and <code>false</code> otherwise
+	 * @return <code>true</code> if the maximize/restore button bounds contains the point and <code>false</code> otherwise
 	 */
 	public boolean isInsideMaximizeButton(final Point pt) {
 		return isInsideButton(pt, MAX_BTN_INDEX);
 	}
 
 	/**
-	 * Returns <code>true</code> if the given point is inside the bounds of the
-	 * button, and <code>false</code> otherwise.
+	 * Returns <code>true</code> if the given point is inside the bounds of the button, and <code>false</code> otherwise.
 	 * 
 	 * @param pt
 	 *            the point to test
 	 * @param btnIndex
 	 *            index of button
-	 * @return <code>true</code> if the button bounds contains the point and
-	 *         <code>false</code> otherwise
+	 * @return <code>true</code> if the button bounds contains the point and <code>false</code> otherwise
 	 */
 	private boolean isInsideButton(final Point pt, final int btnIndex) {
 		return btnBounds[btnIndex].contains(pt);
 	}
 
 	/**
-	 * Returns <code>true</code> if the given point is inside the bounds of the
-	 * move area, and <code>false</code> otherwise.<br>
+	 * Returns <code>true</code> if the given point is inside the bounds of the move area, and <code>false</code> otherwise.<br>
 	 * The move area is the area of the shell less the bounds of the buttons.
 	 * 
 	 * @param pt
 	 *            the point to test
-	 * @return <code>true</code> if the move area bounds contains the point and
-	 *         <code>false</code> otherwise
+	 * @return <code>true</code> if the move area bounds contains the point and <code>false</code> otherwise
 	 */
 	public boolean isInsideMoveArea(final Point pt) {
 		boolean result = false;
@@ -527,7 +514,7 @@ public abstract class AbstractTitleBarRenderer extends AbstractLnfRenderer {
 			height = getBounds().height;
 		}
 		if (height <= 0) {
-			height = DEFAULT_HEIGHT;
+			height = SwtUtilities.convertYToDpi(DEFAULT_HEIGHT);
 		}
 
 		return height;

@@ -14,11 +14,11 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.layout.LayoutConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.riena.ui.swt.facades.DialogConstantsFacade;
-import org.eclipse.riena.ui.swt.layout.DpiGridLayout;
 import org.eclipse.riena.ui.swt.lnf.LnFUpdater;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -196,7 +196,7 @@ public class RienaMessageDialog extends MessageDialog {
 	@Override
 	protected void createDialogAndButtonArea(final Composite parent) {
 		// create the contents area
-		DpiGridLayout gridLayout = new DpiGridLayout();
+		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 1;
 		gridLayout.horizontalSpacing = 0;
 		gridLayout.verticalSpacing = 0;
@@ -207,7 +207,7 @@ public class RienaMessageDialog extends MessageDialog {
 
 		// create the dialog area and button bar
 		final Composite centerComposite = dlgRenderer.getCenterComposite();
-		gridLayout = new DpiGridLayout();
+		gridLayout = new GridLayout();
 		gridLayout.numColumns = 2;
 		gridLayout.horizontalSpacing = LayoutConstants.getSpacing().x * 2;
 		gridLayout.verticalSpacing = LayoutConstants.getSpacing().y;

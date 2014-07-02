@@ -36,7 +36,6 @@ import org.eclipse.riena.ui.swt.lnf.renderer.AbstractTitleBarRenderer;
 import org.eclipse.riena.ui.swt.lnf.renderer.DialogBorderRenderer;
 import org.eclipse.riena.ui.swt.lnf.renderer.DialogTitleBarRenderer;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
-import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
  * Provides theming & styling for jface {@link Window}s.
@@ -137,7 +136,6 @@ public class RienaWindowRenderer {
 		topComposite = new Composite(contentsComposite, SWT.NONE);
 		if (isHideOsBorder() && paintTitlebar) {
 			titleBarHeight = getTitleBarHeight();
-			titleBarHeight = SwtUtilities.convertYToDpi(titleBarHeight);
 
 			final SWTFacade swtFacade = SWTFacade.getDefault();
 			final DialogTitlePaintListener titlePaintListener = new DialogTitlePaintListener(isCloseable(), isMaximizeable(), isMinimizeable());
