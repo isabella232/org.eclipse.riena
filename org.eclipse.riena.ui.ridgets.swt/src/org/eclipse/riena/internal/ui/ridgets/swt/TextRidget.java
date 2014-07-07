@@ -40,6 +40,7 @@ import org.eclipse.riena.ui.ridgets.swt.AbstractEditableRidget;
 import org.eclipse.riena.ui.ridgets.swt.MarkerSupport;
 import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
 import org.eclipse.riena.ui.swt.facades.SWTFacade;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
  * Ridget for an SWT <code>Text</code> widget.
@@ -359,9 +360,9 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	// helping methods
 	// ////////////////
 
-	private synchronized void forceTextToControl(final String newValue) {
+	synchronized void forceTextToControl(final String newValue) {
 		final Text control = getTextWidget();
-		if (control != null) {
+		if (!SwtUtilities.isDisposed(control)) {
 			final SWTFacade facade = SWTFacade.getDefault();
 			final Object[] vListeners = facade.removeListeners(control, SWT.Verify);
 			final Object[] mListeners = facade.removeListeners(control, SWT.Modify);

@@ -11,6 +11,7 @@
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Iterator;
 
 import org.eclipse.core.databinding.beans.BeansObservables;
@@ -27,6 +28,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Text;
 
+import org.eclipse.riena.beans.common.BooleanBean;
 import org.eclipse.riena.beans.common.DoubleBean;
 import org.eclipse.riena.beans.common.IntegerBean;
 import org.eclipse.riena.beans.common.StringBean;
@@ -438,10 +440,20 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 	}
 
 	public void testSetGrouping() {
+
 		final INumericTextRidget ridget = getRidget();
 		final IntegerBean model = new IntegerBean(1337);
 		ridget.bindToModel(model, IntegerBean.PROP_VALUE);
 		ridget.updateFromModel();
+
+		final BooleanBean changed = new BooleanBean(false);
+		model.addPropertyChangeListener(new PropertyChangeListener() {
+
+			@Override
+			public void propertyChange(final PropertyChangeEvent evt) {
+				changed.setValue(true);
+			}
+		});
 
 		assertTrue(ridget.isGrouping());
 		assertEquals(localize("1.337"), ridget.getText());
@@ -449,12 +461,19 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		ridget.setGrouping(false);
 
 		assertFalse(ridget.isGrouping());
-		assertEquals("1337", ridget.getText());
+		String uiText = ((Text) ridget.getUIControl()).getText();
+		assertEquals("1337", uiText);
+		assertEquals(localize("1.337"), ridget.getText());
+		assertFalse(changed.isValue());
 
 		ridget.setGrouping(true);
 
 		assertTrue(ridget.isGrouping());
+		uiText = ((Text) ridget.getUIControl()).getText();
+		assertEquals(localize("1.337"), uiText);
 		assertEquals(localize("1.337"), ridget.getText());
+		assertFalse(changed.isValue());
+
 	}
 
 	public void testUpdateFromControlUserInput() throws Exception {

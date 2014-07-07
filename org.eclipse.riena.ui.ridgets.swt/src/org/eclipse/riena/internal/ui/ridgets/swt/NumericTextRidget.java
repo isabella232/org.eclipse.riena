@@ -516,6 +516,10 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 
 	@Override
 	protected boolean isExternalValueChange(final String oldValue, final String newValue) {
+		return isValueChanged(oldValue, newValue);
+	}
+
+	private boolean isValueChanged(final String oldValue, final String newValue) {
 		if (oldValue.equals(newValue)) {
 			return false;
 		}
@@ -651,7 +655,12 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 	}
 
 	private void updateGrouping() {
-		setText(getText());
+		final String text = treatDecimalSeparator(group(ungroup(getText()), isGrouping, isDecimal()));
+		if (isValueChanged(text, getText())) {
+			setText(getText());
+		} else {
+			forceTextToControl(text);
+		}
 	}
 
 	private void updateMarkNegative() {
