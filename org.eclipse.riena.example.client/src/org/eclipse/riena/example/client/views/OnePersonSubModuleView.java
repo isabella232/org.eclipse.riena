@@ -14,7 +14,6 @@ import com.swtdesigner.SWTResourceManager;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -23,6 +22,7 @@ import org.eclipse.swt.widgets.Text;
 
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.swt.ChoiceComposite;
+import org.eclipse.riena.ui.swt.layout.DpiGridLayout;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
@@ -45,7 +45,7 @@ public class OnePersonSubModuleView extends SubModuleView {
 
 	@Override
 	protected void basicCreatePartControl(final Composite parent) {
-		final GridLayout gridLayout = new GridLayout();
+		final DpiGridLayout gridLayout = new DpiGridLayout();
 		gridLayout.numColumns = 7;
 		parent.setLayout(gridLayout);
 		parent.setBackgroundMode(SWT.INHERIT_FORCE);
@@ -169,6 +169,12 @@ public class OnePersonSubModuleView extends SubModuleView {
 		countryCombo.setData("binding_property", "country"); //$NON-NLS-1$ //$NON-NLS-2$
 		final GridData gdCountryCombo = new GridData(SWT.LEFT, SWT.CENTER, true, false);
 		countryCombo.setLayoutData(gdCountryCombo);
+
+		new Label(parent, SWT.NONE);
+		new Label(parent, SWT.NONE);
+		new Label(parent, SWT.NONE);
+		new Label(parent, SWT.NONE);
+		new Label(parent, SWT.NONE);
 
 		final Label postalCodeLabel = new Label(parent, SWT.NONE);
 		final GridData gdPostalCodeLabel = new GridData();
