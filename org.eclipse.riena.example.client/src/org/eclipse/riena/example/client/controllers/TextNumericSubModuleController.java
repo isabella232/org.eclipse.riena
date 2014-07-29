@@ -21,30 +21,31 @@ import org.eclipse.riena.beans.common.IntegerBean;
 import org.eclipse.riena.beans.common.TypedBean;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.core.marker.ValidationTime;
+import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IDecimalTextRidget;
 import org.eclipse.riena.ui.ridgets.INumericTextRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
+import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
 import org.eclipse.riena.ui.ridgets.validation.MaxNumberLength;
 import org.eclipse.riena.ui.ridgets.validation.MinLength;
 import org.eclipse.riena.ui.ridgets.validation.ValidRange;
 
 /**
- * Controller for the {@link INumericTextRidget} and {@link IDecimalTextRidget}
- * example.
+ * Controller for the {@link INumericTextRidget} and {@link IDecimalTextRidget} example.
  */
 public class TextNumericSubModuleController extends SubModuleController {
+
+	private final static String[] IDS = { "StringNum", "Integer", "Long", "BigInteger", "StringDec", "Double", "Float", "BigDecimal", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
+			"Range", "MaxEight", "MinThree" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 	/**
 	 * Binds and updates the ridgets.
 	 */
 	@Override
 	public void configureRidgets() {
-		final String[] ids = {
-				"StringNum", "Integer", "Long", "BigInteger", "StringDec", "Double", "Float", "BigDecimal", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
-				"Range", "MaxEight", "MinThree" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		final DataBindingContext dbc = new DataBindingContext();
-		for (final String id : ids) {
+		for (final String id : IDS) {
 			bind(dbc, id);
 		}
 
@@ -69,8 +70,7 @@ public class TextNumericSubModuleController extends SubModuleController {
 		bindToModel("BigDecimal", new TypedBean<BigDecimal>(BigDecimal.valueOf(12345789.1234))); //$NON-NLS-1$
 
 		final INumericTextRidget txtRange = getRidget(INumericTextRidget.class, "inRange"); //$NON-NLS-1$
-		txtRange.addValidationRule(new ValidRange(Integer.valueOf(100), Integer.valueOf(1000)),
-				ValidationTime.ON_UPDATE_TO_MODEL);
+		txtRange.addValidationRule(new ValidRange(Integer.valueOf(100), Integer.valueOf(1000)), ValidationTime.ON_UPDATE_TO_MODEL);
 		txtRange.bindToModel(new IntegerBean(1), "value"); //$NON-NLS-1$
 		txtRange.updateFromModel();
 
@@ -84,6 +84,26 @@ public class TextNumericSubModuleController extends SubModuleController {
 		txtMinThree.addValidationRule(new MinLength(4), ValidationTime.ON_UI_CONTROL_EDIT);
 		txtMinThree.bindToModel(new IntegerBean(1), "value"); //$NON-NLS-1$
 		txtMinThree.updateFromModel();
+
+		final IToggleButtonRidget groupingBtn = getRidget(IToggleButtonRidget.class, "groupingBtn");
+		groupingBtn.setSelected(txtMinThree.isGrouping());
+		groupingBtn.addListener(new IActionListener() {
+
+			public void callback() {
+				updateGrouping(groupingBtn.isSelected());
+			}
+
+		});
+
+	}
+
+	private void updateGrouping(final boolean selected) {
+
+		for (final String id : IDS) {
+			final INumericTextRidget inputRidget = getRidget(INumericTextRidget.class, "in" + id); //$NON-NLS-1$
+			inputRidget.setGrouping(selected);
+		}
+
 	}
 
 	// helping methods
@@ -98,9 +118,9 @@ public class TextNumericSubModuleController extends SubModuleController {
 		}
 		final ITextRidget outputRidget = getRidget(ITextRidget.class, "out" + id); //$NON-NLS-1$
 		outputRidget.setOutputOnly(true);
-		dbc.bindValue(BeansObservables.observeValue(inputRidget, ITextRidget.PROPERTY_TEXT), BeansObservables
-				.observeValue(outputRidget, ITextRidget.PROPERTY_TEXT), new UpdateValueStrategy(
-				UpdateValueStrategy.POLICY_UPDATE), new UpdateValueStrategy(UpdateValueStrategy.POLICY_NEVER));
+		dbc.bindValue(BeansObservables.observeValue(inputRidget, ITextRidget.PROPERTY_TEXT),
+				BeansObservables.observeValue(outputRidget, ITextRidget.PROPERTY_TEXT), new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE),
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_NEVER));
 	}
 
 	private void bindToModel(final String id, final TypedBean<?> value, final boolean signed) {
@@ -108,6 +128,7 @@ public class TextNumericSubModuleController extends SubModuleController {
 		inputRidget.setSigned(signed);
 		inputRidget.bindToModel(value, TypedBean.PROP_VALUE);
 		inputRidget.updateFromModel();
+		inputRidget.setGrouping(false);
 	}
 
 	private void bindToModel(final String id, final TypedBean<?> value) {

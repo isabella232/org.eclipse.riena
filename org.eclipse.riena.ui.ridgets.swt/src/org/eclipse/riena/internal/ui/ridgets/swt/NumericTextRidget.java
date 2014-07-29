@@ -467,6 +467,7 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 				newText = "0" + newText.substring(1); //$NON-NLS-1$
 			}
 		}
+		newText = treatDecimalSeparator(group(ungroup(newText), isGrouping, isDecimal()));
 		return newText;
 	}
 

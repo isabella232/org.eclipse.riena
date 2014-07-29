@@ -11,6 +11,7 @@
 package org.eclipse.riena.example.client.views;
 
 import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -21,6 +22,7 @@ import org.eclipse.riena.ui.ridgets.IDecimalTextRidget;
 import org.eclipse.riena.ui.ridgets.INumericTextRidget;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.separator.Separator;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
@@ -107,5 +109,11 @@ public class TextNumericSubModuleView extends SubModuleView {
 				gdf.applyTo(child);
 			}
 		}
+
+		final Separator separator = UIControlsFactory.createSeparator(parent, SWT.HORIZONTAL);
+		GridDataFactory.fillDefaults().span(3, 1).indent(SWT.DEFAULT, 10).applyTo(separator);
+
+		addUIControl(UIControlsFactory.createButtonCheck(parent, "Grouping", "groupingBtn")); //$NON-NLS-1$ //$NON-NLS-2$
+
 	}
 }

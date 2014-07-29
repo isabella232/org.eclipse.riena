@@ -83,7 +83,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 	///////////////
 
 	public void testCreatePatternEmpty() throws Exception {
-		final String input = "";
+		final String input = ""; //$NON-NLS-1$
 
 		// trying all configuration possibilities
 		final INumericTextRidget r = getRidget();
@@ -91,24 +91,24 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 
 		r.setMaxLength(INumericTextRidget.MAX_LENGTH_UNBOUNDED);
 		r.setSigned(true);
-		pattern = ReflectionUtils.invokeHidden(r, "createPattern", input);
+		pattern = ReflectionUtils.invokeHidden(r, "createPattern", input); //$NON-NLS-1$
 		assertTrue(input.matches(pattern));
 
 		r.setSigned(false);
-		pattern = ReflectionUtils.invokeHidden(r, "createPattern", input);
+		pattern = ReflectionUtils.invokeHidden(r, "createPattern", input); //$NON-NLS-1$
 		assertTrue(input.matches(pattern));
 
 		r.setMaxLength(3);
-		pattern = ReflectionUtils.invokeHidden(r, "createPattern", input);
+		pattern = ReflectionUtils.invokeHidden(r, "createPattern", input); //$NON-NLS-1$
 		assertTrue(input.matches(pattern));
 
 		r.setSigned(true);
-		pattern = ReflectionUtils.invokeHidden(r, "createPattern", input);
+		pattern = ReflectionUtils.invokeHidden(r, "createPattern", input); //$NON-NLS-1$
 		assertTrue(input.matches(pattern));
 	}
 
 	public void testCreatePattern() throws Exception {
-		final String input = "-123";
+		final String input = "-123"; //$NON-NLS-1$
 
 		// trying all configuration possibilities
 		final INumericTextRidget r = getRidget();
@@ -116,19 +116,19 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 
 		r.setMaxLength(INumericTextRidget.MAX_LENGTH_UNBOUNDED);
 		r.setSigned(true);
-		pattern = ReflectionUtils.invokeHidden(r, "createPattern", input);
+		pattern = ReflectionUtils.invokeHidden(r, "createPattern", input); //$NON-NLS-1$
 		assertTrue(input.matches(pattern));
 
 		r.setSigned(false);
-		pattern = ReflectionUtils.invokeHidden(r, "createPattern", input);
+		pattern = ReflectionUtils.invokeHidden(r, "createPattern", input); //$NON-NLS-1$
 		assertFalse(input.matches(pattern));
 
 		r.setMaxLength(3);
-		pattern = ReflectionUtils.invokeHidden(r, "createPattern", input);
+		pattern = ReflectionUtils.invokeHidden(r, "createPattern", input); //$NON-NLS-1$
 		assertFalse(input.matches(pattern));
 
 		r.setSigned(true);
-		pattern = ReflectionUtils.invokeHidden(r, "createPattern", input);
+		pattern = ReflectionUtils.invokeHidden(r, "createPattern", input); //$NON-NLS-1$
 		assertTrue(input.matches(pattern));
 	}
 
@@ -139,14 +139,14 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		String pattern;
 		String input;
 
-		input = "-123";
+		input = "-123"; //$NON-NLS-1$
 
-		pattern = ReflectionUtils.invokeHidden(r, "createPattern", input);
+		pattern = ReflectionUtils.invokeHidden(r, "createPattern", input); //$NON-NLS-1$
 		assertTrue(input.matches(pattern));
 
-		input = "1234";
+		input = "1234"; //$NON-NLS-1$
 
-		pattern = ReflectionUtils.invokeHidden(r, "createPattern", input);
+		pattern = ReflectionUtils.invokeHidden(r, "createPattern", input); //$NON-NLS-1$
 		assertFalse(input.matches(pattern));
 	}
 
@@ -159,7 +159,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 	@Override
 	public void testCreate() throws Exception {
 		assertFalse(getRidget().isDirectWriting());
-		assertEquals("0", getRidget().getText());
+		assertEquals("0", getRidget().getText()); //$NON-NLS-1$
 	}
 
 	@Override
@@ -167,38 +167,38 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		final INumericTextRidget ridget = getRidget();
 		ridget.setGrouping(true);
 
-		ridget.setText("");
+		ridget.setText(""); //$NON-NLS-1$
 
-		assertEquals("", ridget.getText());
+		assertEquals("", ridget.getText()); //$NON-NLS-1$
 
-		ridget.setText("-1234");
+		ridget.setText("-1234"); //$NON-NLS-1$
 
-		assertEquals(localize("-1.234"), ridget.getText());
+		assertEquals(localize("-1.234"), ridget.getText()); //$NON-NLS-1$
 
-		ridget.setText("1234");
+		ridget.setText("1234"); //$NON-NLS-1$
 
-		assertEquals(localize("1.234"), ridget.getText());
+		assertEquals(localize("1.234"), ridget.getText()); //$NON-NLS-1$
 
-		ridget.setText(localize("98.765"));
+		ridget.setText(localize("98.765")); //$NON-NLS-1$
 
-		assertEquals(localize("98.765"), ridget.getText());
+		assertEquals(localize("98.765"), ridget.getText()); //$NON-NLS-1$
 
 		try {
-			ridget.setText(localize("98.765,12"));
+			ridget.setText(localize("98.765,12")); //$NON-NLS-1$
 			fail();
 		} catch (final NumberFormatException nfe) {
 			ok();
 		}
 
 		try {
-			ridget.setText("abcd");
+			ridget.setText("abcd"); //$NON-NLS-1$
 			fail();
 		} catch (final NumberFormatException nfe) {
 			ok();
 		}
 
 		try {
-			ridget.setText("a,bcd");
+			ridget.setText("a,bcd"); //$NON-NLS-1$
 			fail();
 		} catch (final NumberFormatException nfe) {
 			ok();
@@ -206,49 +206,49 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 	}
 
 	public void testValueChanged() {
-		final String oldValue = "1.234,5600";
-		final String newValue = "1.234,56";
+		final String oldValue = "1.234,5600"; //$NON-NLS-1$
+		final String newValue = "1.234,56"; //$NON-NLS-1$
 		assertFalse(callExternalValueChanged(oldValue, newValue));
-		assertTrue(callExternalValueChanged(oldValue, newValue + "01"));
-		assertFalse(callExternalValueChanged(oldValue, "0" + newValue));
-		assertTrue(callExternalValueChanged(",", "0"));
-		assertTrue(callExternalValueChanged(",", "0,00000"));
+		assertTrue(callExternalValueChanged(oldValue, newValue + "01")); //$NON-NLS-1$
+		assertFalse(callExternalValueChanged(oldValue, "0" + newValue)); //$NON-NLS-1$
+		assertTrue(callExternalValueChanged(",", "0")); //$NON-NLS-1$ //$NON-NLS-2$
+		assertTrue(callExternalValueChanged(",", "0,00000")); //$NON-NLS-1$ //$NON-NLS-2$
 
 	}
 
 	private boolean callExternalValueChanged(final Object... values) {
-		return ReflectionUtils.invokeHidden(getRidget(), "isExternalValueChange", values);
+		return ReflectionUtils.invokeHidden(getRidget(), "isExternalValueChange", values); //$NON-NLS-1$
 	}
 
 	public void testSetTextNoGroup() throws Exception {
 		final INumericTextRidget ridget = getRidget();
 		ridget.setGrouping(false);
 
-		ridget.setText("");
+		ridget.setText(""); //$NON-NLS-1$
 
-		assertEquals("", ridget.getText());
+		assertEquals("", ridget.getText()); //$NON-NLS-1$
 
-		ridget.setText("-1234");
+		ridget.setText("-1234"); //$NON-NLS-1$
 
-		assertEquals("-1234", ridget.getText());
+		assertEquals("-1234", ridget.getText()); //$NON-NLS-1$
 
-		ridget.setText("1234");
+		ridget.setText("1234"); //$NON-NLS-1$
 
-		assertEquals("1234", ridget.getText());
+		assertEquals("1234", ridget.getText()); //$NON-NLS-1$
 
-		ridget.setText(localize("98.765"));
+		ridget.setText(localize("98.765")); //$NON-NLS-1$
 
-		assertEquals("98765", ridget.getText());
+		assertEquals("98765", ridget.getText()); //$NON-NLS-1$
 
 		try {
-			ridget.setText(localize("98.765,12"));
+			ridget.setText(localize("98.765,12")); //$NON-NLS-1$
 			fail();
 		} catch (final NumberFormatException nfe) {
 			ok();
 		}
 
 		try {
-			ridget.setText("abcd");
+			ridget.setText("abcd"); //$NON-NLS-1$
 			fail();
 		} catch (final NumberFormatException nfe) {
 			ok();
@@ -262,20 +262,20 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 	public void testSetTextNull() {
 		final ITextRidget ridget = getRidget();
 
-		ridget.setText("42");
+		ridget.setText("42"); //$NON-NLS-1$
 
-		assertEquals("42", ridget.getText());
+		assertEquals("42", ridget.getText()); //$NON-NLS-1$
 
 		ridget.setText(null);
 
-		assertEquals("", ridget.getText());
+		assertEquals("", ridget.getText()); //$NON-NLS-1$
 	}
 
 	@Override
 	public void testGetText() throws Exception {
 		final ITextRidget ridget = getRidget();
 
-		assertEquals("0", ridget.getText());
+		assertEquals("0", ridget.getText()); //$NON-NLS-1$
 	}
 
 	@Override
@@ -284,11 +284,11 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		final IntegerBean model = new IntegerBean(1337);
 		ridget.bindToModel(model, IntegerBean.PROP_VALUE);
 
-		assertEquals("0", ridget.getText());
+		assertEquals("0", ridget.getText()); //$NON-NLS-1$
 
 		ridget.updateFromModel();
 
-		assertEquals(localize("1.337"), ridget.getText());
+		assertEquals(localize("1.337"), ridget.getText()); //$NON-NLS-1$
 	}
 
 	@Override
@@ -300,7 +300,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		model.setValue(-7);
 		ridget.updateFromModel();
 
-		assertEquals(localize("-7"), ridget.getText());
+		assertEquals(localize("-7"), ridget.getText()); //$NON-NLS-1$
 	}
 
 	@Override
@@ -311,18 +311,18 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		final IObservableValue modelOV = BeansObservables.observeValue(model, IntegerBean.PROP_VALUE);
 		ridget.bindToModel(modelOV);
 
-		assertEquals("0", ridget.getText());
+		assertEquals("0", ridget.getText()); //$NON-NLS-1$
 
 		ridget.updateFromModel();
 
-		assertEquals(localize("4.711"), ridget.getText());
+		assertEquals(localize("4.711"), ridget.getText()); //$NON-NLS-1$
 	}
 
 	@Override
 	public void testFocusGainedDoesSelectOnSingleText() {
 		final Text control = getWidget();
 
-		assertEquals("0", control.getSelectionText());
+		assertEquals("0", control.getSelectionText()); //$NON-NLS-1$
 		control.setSelection(0, 0);
 
 		final Event e = new Event();
@@ -331,7 +331,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		e.widget.notifyListeners(e.type, e);
 
 		assertEquals(0, control.getStyle() & SWT.MULTI);
-		assertEquals("0", control.getSelectionText());
+		assertEquals("0", control.getSelectionText()); //$NON-NLS-1$
 	}
 
 	@Override
@@ -378,18 +378,18 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		focusIn(control);
 		control.setSelection(caretPos, caretPos);
 
-		assertEquals(localize("1.337"), control.getText());
+		assertEquals(localize("1.337"), control.getText()); //$NON-NLS-1$
 		assertEquals(caretPos, control.getCaretPosition());
 
-		UITestHelper.sendString(control.getDisplay(), "-");
+		UITestHelper.sendString(control.getDisplay(), "-"); //$NON-NLS-1$
 
-		assertEquals(localize("-1.337"), control.getText());
+		assertEquals(localize("-1.337"), control.getText()); //$NON-NLS-1$
 		assertEquals(caretPos + 1, control.getCaretPosition());
 
 		control.setSelection(1, 1);
-		UITestHelper.sendString(control.getDisplay(), "\b");
+		UITestHelper.sendString(control.getDisplay(), "\b"); //$NON-NLS-1$
 
-		assertEquals(localize("1.337"), control.getText());
+		assertEquals(localize("1.337"), control.getText()); //$NON-NLS-1$
 		assertEquals(0, control.getCaretPosition());
 	}
 
@@ -412,12 +412,12 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		focusIn(control);
 		control.setSelection(caretPos, caretPos);
 
-		assertEquals(localize("1.337"), control.getText());
+		assertEquals(localize("1.337"), control.getText()); //$NON-NLS-1$
 		assertEquals(caretPos, control.getCaretPosition());
 
-		UITestHelper.sendString(control.getDisplay(), "-");
+		UITestHelper.sendString(control.getDisplay(), "-"); //$NON-NLS-1$
 
-		assertEquals(localize("1.337"), control.getText());
+		assertEquals(localize("1.337"), control.getText()); //$NON-NLS-1$
 		assertEquals(caretPos, control.getCaretPosition());
 	}
 
@@ -426,17 +426,17 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 	 */
 	public void testSetSignedThrowsException() {
 		final INumericTextRidget ridget = getRidget();
-		ridget.setText("1234");
+		ridget.setText("1234"); //$NON-NLS-1$
 
 		ridget.setSigned(false);
 
 		try {
-			ridget.setText("-4711");
+			ridget.setText("-4711"); //$NON-NLS-1$
 			fail();
 		} catch (final RuntimeException exc) {
-			ok("expected");
+			ok("expected"); //$NON-NLS-1$
 		}
-		assertEquals(localize("1.234"), ridget.getText());
+		assertEquals(localize("1.234"), ridget.getText()); //$NON-NLS-1$
 	}
 
 	public void testSetGrouping() {
@@ -456,22 +456,22 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		});
 
 		assertTrue(ridget.isGrouping());
-		assertEquals(localize("1.337"), ridget.getText());
+		assertEquals(localize("1.337"), ridget.getText()); //$NON-NLS-1$
 
 		ridget.setGrouping(false);
 
 		assertFalse(ridget.isGrouping());
 		String uiText = ((Text) ridget.getUIControl()).getText();
-		assertEquals("1337", uiText);
-		assertEquals(localize("1.337"), ridget.getText());
+		assertEquals("1337", uiText); //$NON-NLS-1$
+		assertEquals(localize("1.337"), ridget.getText()); //$NON-NLS-1$
 		assertFalse(changed.isValue());
 
 		ridget.setGrouping(true);
 
 		assertTrue(ridget.isGrouping());
 		uiText = ((Text) ridget.getUIControl()).getText();
-		assertEquals(localize("1.337"), uiText);
-		assertEquals(localize("1.337"), ridget.getText());
+		assertEquals(localize("1.337"), uiText); //$NON-NLS-1$
+		assertEquals(localize("1.337"), ridget.getText()); //$NON-NLS-1$
 		assertFalse(changed.isValue());
 
 	}
@@ -485,38 +485,38 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 
 		assertFalse(ridget.isDirectWriting());
 
-		UITestHelper.sendString(display, "47");
+		UITestHelper.sendString(display, "47"); //$NON-NLS-1$
 
-		assertEquals("47", control.getText());
-		assertEquals("0", ridget.getText());
+		assertEquals("47", control.getText()); //$NON-NLS-1$
+		assertEquals("0", ridget.getText()); //$NON-NLS-1$
 		assertEquals(Integer.valueOf(0), bean.getValue());
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "0", "47"), new PropertyChangeEvent(ridget, "text", "0", "47"));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "0", "47"), new PropertyChangeEvent(ridget, "text", "0", "47")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
 
-		UITestHelper.sendString(display, "\r");
+		UITestHelper.sendString(display, "\r"); //$NON-NLS-1$
 		UITestHelper.readAndDispatch(control);
 
 		verifyPropertyChangeEvents();
-		assertEquals("47", control.getText());
-		assertEquals("47", ridget.getText());
+		assertEquals("47", control.getText()); //$NON-NLS-1$
+		assertEquals("47", ridget.getText()); //$NON-NLS-1$
 		assertEquals(Integer.valueOf(47), bean.getValue());
 
 		expectNoPropertyChangeEvent();
 
-		UITestHelper.sendString(display, "1");
+		UITestHelper.sendString(display, "1"); //$NON-NLS-1$
 
 		verifyPropertyChangeEvents();
-		assertEquals("471", control.getText());
-		assertEquals("47", ridget.getText());
+		assertEquals("471", control.getText()); //$NON-NLS-1$
+		assertEquals("47", ridget.getText()); //$NON-NLS-1$
 		assertEquals(Integer.valueOf(47), bean.getValue());
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "47", "471"), new PropertyChangeEvent(ridget, "text", "47", "471"));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "47", "471"), new PropertyChangeEvent(ridget, "text", "47", "471")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
 
-		UITestHelper.sendString(display, "\t");
+		UITestHelper.sendString(display, "\t"); //$NON-NLS-1$
 
 		verifyPropertyChangeEvents();
-		assertEquals("471", control.getText());
-		assertEquals("471", ridget.getText());
+		assertEquals("471", control.getText()); //$NON-NLS-1$
+		assertEquals("471", ridget.getText()); //$NON-NLS-1$
 		assertEquals(Integer.valueOf(471), bean.getValue());
 	}
 
@@ -530,8 +530,8 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		assertEquals(minus, getWidget().getText());
 		assertEquals(Integer.valueOf(0), bean.getValue());
 
-		UITestHelper.sendString(getWidget().getDisplay(), "5");
-		assertEquals(minus + "5", getWidget().getText());
+		UITestHelper.sendString(getWidget().getDisplay(), "5"); //$NON-NLS-1$
+		assertEquals(minus + "5", getWidget().getText()); //$NON-NLS-1$
 		assertEquals(Integer.valueOf(-5), bean.getValue());
 	}
 
@@ -549,8 +549,8 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		assertEquals(minus, getWidget().getText());
 		assertEquals(expectedAfterMinus, bean.getValue());
 
-		UITestHelper.sendString(getWidget().getDisplay(), "5");
-		assertEquals(minus + "5", getWidget().getText());
+		UITestHelper.sendString(getWidget().getDisplay(), "5"); //$NON-NLS-1$
+		assertEquals(minus + "5", getWidget().getText()); //$NON-NLS-1$
 		assertEquals(Integer.valueOf(-5), bean.getValue());
 	}
 
@@ -570,58 +570,58 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		ridget.setDirectWriting(true);
 
 		final Display display = control.getDisplay();
-		UITestHelper.sendString(display, "4");
+		UITestHelper.sendString(display, "4"); //$NON-NLS-1$
 
-		assertEquals("4", control.getText());
-		assertEquals("4", ridget.getText());
+		assertEquals("4", control.getText()); //$NON-NLS-1$
+		assertEquals("4", ridget.getText()); //$NON-NLS-1$
 		assertEquals(Integer.valueOf(4), bean.getValue());
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "4", "47"), new PropertyChangeEvent(ridget, "text", "4", "47"));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "4", "47"), new PropertyChangeEvent(ridget, "text", "4", "47")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
 
-		UITestHelper.sendString(display, "7");
+		UITestHelper.sendString(display, "7"); //$NON-NLS-1$
 
 		verifyPropertyChangeEvents();
-		assertEquals("47", control.getText());
-		assertEquals("47", ridget.getText());
+		assertEquals("47", control.getText()); //$NON-NLS-1$
+		assertEquals("47", ridget.getText()); //$NON-NLS-1$
 		assertEquals(Integer.valueOf(47), bean.getValue());
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "47", "471"), new PropertyChangeEvent(ridget, "text", "47", "471"));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "47", "471"), new PropertyChangeEvent(ridget, "text", "47", "471")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
 
-		UITestHelper.sendString(display, "1");
+		UITestHelper.sendString(display, "1"); //$NON-NLS-1$
 
 		verifyPropertyChangeEvents();
-		assertEquals("471", control.getText());
-		assertEquals("471", ridget.getText());
+		assertEquals("471", control.getText()); //$NON-NLS-1$
+		assertEquals("471", ridget.getText()); //$NON-NLS-1$
 		assertEquals(Integer.valueOf(471), bean.getValue());
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "471", localize("4.711")), new PropertyChangeEvent(ridget, "text", "471",
-				localize("4.711")));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "471", localize("4.711")), new PropertyChangeEvent(ridget, "text", "471", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+				localize("4.711"))); //$NON-NLS-1$
 
-		UITestHelper.sendString(display, "1");
+		UITestHelper.sendString(display, "1"); //$NON-NLS-1$
 
 		verifyPropertyChangeEvents();
-		assertEquals(localize("4.711"), control.getText());
-		assertEquals(localize("4.711"), ridget.getText());
+		assertEquals(localize("4.711"), control.getText()); //$NON-NLS-1$
+		assertEquals(localize("4.711"), ridget.getText()); //$NON-NLS-1$
 		assertEquals(Integer.valueOf(4711), bean.getValue());
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", localize("4.711"), "471"), new PropertyChangeEvent(ridget, "text",
-				localize("4.711"), "471"));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", localize("4.711"), "471"), new PropertyChangeEvent(ridget, "text", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+				localize("4.711"), "471")); //$NON-NLS-1$ //$NON-NLS-2$
 
 		UITestHelper.sendKeyAction(display, SWT.ARROW_LEFT);
-		UITestHelper.sendString(display, "\b");
+		UITestHelper.sendString(display, "\b"); //$NON-NLS-1$
 
 		verifyPropertyChangeEvents();
-		assertEquals("471", control.getText());
-		assertEquals("471", ridget.getText());
-		assertEquals(Integer.valueOf("471"), bean.getValue());
+		assertEquals("471", control.getText()); //$NON-NLS-1$
+		assertEquals("471", ridget.getText()); //$NON-NLS-1$
+		assertEquals(Integer.valueOf("471"), bean.getValue()); //$NON-NLS-1$
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "471", "47"), new PropertyChangeEvent(ridget, "text", "471", "47"));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "471", "47"), new PropertyChangeEvent(ridget, "text", "471", "47")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
 
 		UITestHelper.sendString(display, String.valueOf(SWT.DEL));
 
 		verifyPropertyChangeEvents();
-		assertEquals("47", control.getText());
-		assertEquals("47", ridget.getText());
+		assertEquals("47", control.getText()); //$NON-NLS-1$
+		assertEquals("47", ridget.getText()); //$NON-NLS-1$
 		assertEquals(Integer.valueOf(47), bean.getValue());
 
 		expectNoPropertyChangeEvent();
@@ -629,18 +629,18 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		bean.setValue(Integer.valueOf(4711));
 
 		verifyPropertyChangeEvents();
-		assertEquals("47", control.getText());
-		assertEquals("47", ridget.getText());
+		assertEquals("47", control.getText()); //$NON-NLS-1$
+		assertEquals("47", ridget.getText()); //$NON-NLS-1$
 		assertEquals(Integer.valueOf(4711), bean.getValue());
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "47", "4"), new PropertyChangeEvent(ridget, "text", "47", "4"));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "47", "4"), new PropertyChangeEvent(ridget, "text", "47", "4")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
 
-		UITestHelper.sendString(display, "\b");
+		UITestHelper.sendString(display, "\b"); //$NON-NLS-1$
 
 		verifyPropertyChangeEvents();
-		assertEquals("4", control.getText());
-		assertEquals("4", ridget.getText());
-		assertEquals(Integer.valueOf("4"), bean.getValue());
+		assertEquals("4", control.getText()); //$NON-NLS-1$
+		assertEquals("4", ridget.getText()); //$NON-NLS-1$
+		assertEquals(Integer.valueOf("4"), bean.getValue()); //$NON-NLS-1$
 	}
 
 	public void testUpdateFromRidgetOnRebind() throws Exception {
@@ -660,9 +660,9 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		ridget.setUIControl(null);
 
 		control.selectAll();
-		UITestHelper.sendString(control.getDisplay(), "99");
+		UITestHelper.sendString(control.getDisplay(), "99"); //$NON-NLS-1$
 
-		assertEquals("99", control.getText());
+		assertEquals("99", control.getText()); //$NON-NLS-1$
 		assertEquals(INTEGER_ONE.toString(), ridget.getText());
 		assertEquals(INTEGER_ONE, bean.getValue());
 
@@ -707,21 +707,21 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		assertEquals(INTEGER_ONE.toString(), ridget.getText());
 
 		control.selectAll();
-		UITestHelper.sendString(control.getDisplay(), "99\t");
+		UITestHelper.sendString(control.getDisplay(), "99\t"); //$NON-NLS-1$
 
 		assertFalse(ridget.getMarkersOfType(ErrorMarker.class).isEmpty());
-		assertEquals("99", ridget.getText());
+		assertEquals("99", ridget.getText()); //$NON-NLS-1$
 
 		focusIn(control);
 		UITestHelper.sendKeyAction(control.getDisplay(), SWT.END);
-		UITestHelper.sendString(control.getDisplay(), "9");
+		UITestHelper.sendString(control.getDisplay(), "9"); //$NON-NLS-1$
 
 		assertFalse(ridget.getMarkersOfType(ErrorMarker.class).isEmpty());
 
-		UITestHelper.sendString(control.getDisplay(), "\r");
+		UITestHelper.sendString(control.getDisplay(), "\r"); //$NON-NLS-1$
 
 		assertTrue(ridget.getMarkersOfType(ErrorMarker.class).isEmpty());
-		assertEquals("999", ridget.getText());
+		assertEquals("999", ridget.getText()); //$NON-NLS-1$
 	}
 
 	public void testCharactersAreBlockedInControl() throws Exception {
@@ -732,16 +732,16 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		ridget.bindToModel(bean, IntegerBean.PROP_VALUE);
 		ridget.setDirectWriting(true);
 
-		UITestHelper.sendString(control.getDisplay(), "12");
+		UITestHelper.sendString(control.getDisplay(), "12"); //$NON-NLS-1$
 
-		assertEquals("12", control.getText());
-		assertEquals("12", ridget.getText());
+		assertEquals("12", control.getText()); //$NON-NLS-1$
+		assertEquals("12", ridget.getText()); //$NON-NLS-1$
 		assertEquals(Integer.valueOf(12), bean.getValue());
 
-		UITestHelper.sendString(control.getDisplay(), "foo");
+		UITestHelper.sendString(control.getDisplay(), "foo"); //$NON-NLS-1$
 
-		assertEquals("12", control.getText());
-		assertEquals("12", ridget.getText());
+		assertEquals("12", control.getText()); //$NON-NLS-1$
+		assertEquals("12", ridget.getText()); //$NON-NLS-1$
 		assertEquals(Integer.valueOf(12), bean.getValue());
 	}
 
@@ -757,16 +757,16 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		ridget.updateFromModel();
 
 		assertTrue(ridget.isErrorMarked());
-		assertEquals(localize("123.456"), ridget.getText());
-		assertEquals(localize("123.456"), getWidget().getText());
+		assertEquals(localize("123.456"), ridget.getText()); //$NON-NLS-1$
+		assertEquals(localize("123.456"), getWidget().getText()); //$NON-NLS-1$
 		assertEquals(Integer.valueOf(123456), bean.getValue());
 
 		bean.setValue(Integer.valueOf(1234));
 		ridget.updateFromModel();
 
 		assertFalse(ridget.isErrorMarked());
-		assertEquals(localize("1.234"), ridget.getText());
-		assertEquals(localize("1.234"), getWidget().getText());
+		assertEquals(localize("1.234"), ridget.getText()); //$NON-NLS-1$
+		assertEquals(localize("1.234"), getWidget().getText()); //$NON-NLS-1$
 		assertEquals(Integer.valueOf(1234), bean.getValue());
 	}
 
@@ -783,16 +783,16 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		ridget.updateFromModel();
 
 		assertTrue(ridget.isErrorMarked());
-		assertEquals("123", ridget.getText());
-		assertEquals("123", getWidget().getText());
+		assertEquals("123", ridget.getText()); //$NON-NLS-1$
+		assertEquals("123", getWidget().getText()); //$NON-NLS-1$
 		assertEquals(Integer.valueOf(123), bean.getValue());
 
 		bean.setValue(Integer.valueOf(1234));
 		ridget.updateFromModel();
 
 		assertFalse(ridget.isErrorMarked());
-		assertEquals(localize("1.234"), ridget.getText());
-		assertEquals(localize("1.234"), getWidget().getText());
+		assertEquals(localize("1.234"), ridget.getText()); //$NON-NLS-1$
+		assertEquals(localize("1.234"), getWidget().getText()); //$NON-NLS-1$
 		assertEquals(Integer.valueOf(1234), bean.getValue());
 	}
 
@@ -807,28 +807,28 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		assertFalse(ridget.isErrorMarked());
 		assertFalse(ridget.isDirectWriting());
 
-		UITestHelper.sendString(control.getDisplay(), "98765\t");
+		UITestHelper.sendString(control.getDisplay(), "98765\t"); //$NON-NLS-1$
 
 		assertFalse(ridget.isErrorMarked());
-		assertEquals(localize("98.765"), ridget.getText());
+		assertEquals(localize("98.765"), ridget.getText()); //$NON-NLS-1$
 		assertEquals(Integer.valueOf(98765), bean.getValue());
 
 		focusIn(control);
 		control.selectAll();
 		// \t triggers update
-		UITestHelper.sendString(control.getDisplay(), "12\t");
+		UITestHelper.sendString(control.getDisplay(), "12\t"); //$NON-NLS-1$
 
 		assertTrue(ridget.isErrorMarked());
 		// MinLength is non-blocking, so we expected '12' in ridget
-		assertEquals("12", ridget.getText());
+		assertEquals("12", ridget.getText()); //$NON-NLS-1$
 		assertEquals(Integer.valueOf(98765), bean.getValue());
 
 		focusIn(control);
 		control.selectAll();
-		UITestHelper.sendString(control.getDisplay(), "43210\t");
+		UITestHelper.sendString(control.getDisplay(), "43210\t"); //$NON-NLS-1$
 
 		assertFalse(ridget.isErrorMarked());
-		assertEquals(localize("43.210"), ridget.getText());
+		assertEquals(localize("43.210"), ridget.getText()); //$NON-NLS-1$
 		assertEquals(Integer.valueOf(43210), bean.getValue());
 	}
 
@@ -843,27 +843,27 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		assertTrue(ridget.isErrorMarked());
 		assertFalse(ridget.isDirectWriting());
 
-		UITestHelper.sendString(control.getDisplay(), "98765\t");
+		UITestHelper.sendString(control.getDisplay(), "98765\t"); //$NON-NLS-1$
 
 		assertFalse(ridget.isErrorMarked());
-		assertEquals(localize("98.765"), ridget.getText());
+		assertEquals(localize("98.765"), ridget.getText()); //$NON-NLS-1$
 		assertEquals(Integer.valueOf(98765), bean.getValue());
 
 		focusIn(control);
 		control.selectAll();
 		// \t triggers update
-		UITestHelper.sendString(control.getDisplay(), "98\t");
+		UITestHelper.sendString(control.getDisplay(), "98\t"); //$NON-NLS-1$
 
 		assertTrue(ridget.isErrorMarked());
-		assertEquals("98", ridget.getText());
+		assertEquals("98", ridget.getText()); //$NON-NLS-1$
 		assertEquals(Integer.valueOf(98765), bean.getValue());
 
 		focusIn(control);
 		control.setSelection(2, 2);
-		UITestHelper.sendString(control.getDisplay(), "555\t");
+		UITestHelper.sendString(control.getDisplay(), "555\t"); //$NON-NLS-1$
 
 		assertFalse(ridget.isErrorMarked());
-		assertEquals(localize("98.555"), ridget.getText());
+		assertEquals(localize("98.555"), ridget.getText()); //$NON-NLS-1$
 		assertEquals(Integer.valueOf(98555), bean.getValue());
 	}
 
@@ -874,11 +874,11 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		ridget.addValidationRule(new EvenNumberOfCharacters(), ValidationTime.ON_UI_CONTROL_EDIT);
 		ridget.setDirectWriting(true);
 
-		ridget.addValidationMessage("ValidationErrorMessage");
+		ridget.addValidationMessage("ValidationErrorMessage"); //$NON-NLS-1$
 
 		assertEquals(0, ridget.getMarkers().size());
 
-		UITestHelper.sendString(control.getDisplay(), "1");
+		UITestHelper.sendString(control.getDisplay(), "1"); //$NON-NLS-1$
 
 		assertEquals(2, ridget.getMarkers().size());
 		final Iterator<? extends IMarker> iterator = ridget.getMarkers().iterator();
@@ -886,10 +886,10 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 			final IMarker next = iterator.next();
 			assertTrue(next instanceof IMessageMarker);
 			final IMessageMarker marker = (IMessageMarker) next;
-			assertTrue(marker.getMessage().equals("ValidationErrorMessage") || marker.getMessage().equals("Odd number of characters."));
+			assertTrue(marker.getMessage().equals("ValidationErrorMessage") || marker.getMessage().equals("Odd number of characters.")); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 
-		UITestHelper.sendString(control.getDisplay(), "2");
+		UITestHelper.sendString(control.getDisplay(), "2"); //$NON-NLS-1$
 
 		assertEquals(0, ridget.getMarkers().size());
 	}
@@ -902,18 +902,18 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		ridget.addValidationRule(new EvenNumberOfCharacters(), ValidationTime.ON_UPDATE_TO_MODEL);
 		ridget.setDirectWriting(true);
 
-		ridget.addValidationMessage("ValidationErrorMessage");
+		ridget.addValidationMessage("ValidationErrorMessage"); //$NON-NLS-1$
 
 		assertEquals(0, ridget.getMarkers().size());
 
 		// \r triggers update
-		UITestHelper.sendString(control.getDisplay(), "1\r");
+		UITestHelper.sendString(control.getDisplay(), "1\r"); //$NON-NLS-1$
 
 		assertEquals(2, ridget.getMarkers().size());
-		TestUtils.assertMessage(ridget, ValidationMessageMarker.class, "ValidationErrorMessage");
+		TestUtils.assertMessage(ridget, ValidationMessageMarker.class, "ValidationErrorMessage"); //$NON-NLS-1$
 
 		// \r triggers update
-		UITestHelper.sendString(control.getDisplay(), "2\r");
+		UITestHelper.sendString(control.getDisplay(), "2\r"); //$NON-NLS-1$
 
 		assertEquals(0, ridget.getMarkers().size());
 	}
@@ -988,10 +988,10 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 
 		focusIn(control);
 		control.selectAll();
-		UITestHelper.sendString(control.getDisplay(), "345\t");
-		assertEquals("345", control.getText());
+		UITestHelper.sendString(control.getDisplay(), "345\t"); //$NON-NLS-1$
+		assertEquals("345", control.getText()); //$NON-NLS-1$
 		// non-blocking rule, expect 'abc'
-		assertEquals("345", ridget.getText());
+		assertEquals("345", ridget.getText()); //$NON-NLS-1$
 		assertEquals(Integer.valueOf(12), bean.getValue());
 
 		assertTrue(ridget.isErrorMarked());
@@ -1000,8 +1000,8 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		ridget.revalidate();
 
 		assertFalse(ridget.isErrorMarked());
-		assertEquals("345", control.getText());
-		assertEquals("345", ridget.getText());
+		assertEquals("345", control.getText()); //$NON-NLS-1$
+		assertEquals("345", ridget.getText()); //$NON-NLS-1$
 		assertEquals(Integer.valueOf(345), bean.getValue());
 	}
 
@@ -1013,7 +1013,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		ridget.updateFromModel();
 
 		assertFalse(ridget.isErrorMarked());
-		assertEquals("12", ridget.getText());
+		assertEquals("12", ridget.getText()); //$NON-NLS-1$
 
 		final IValidator rule = new EvenNumberOfCharacters();
 		ridget.addValidationRule(rule, ValidationTime.ON_UI_CONTROL_EDIT);
@@ -1022,14 +1022,14 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 
 		assertTrue(ridget.isErrorMarked());
 		assertEquals(Integer.valueOf(321), bean.getValue());
-		assertEquals("321", ridget.getText());
+		assertEquals("321", ridget.getText()); //$NON-NLS-1$
 
 		ridget.removeValidationRule(rule);
 		ridget.updateFromModel();
 
 		assertFalse(ridget.isErrorMarked());
 		assertEquals(Integer.valueOf(321), bean.getValue());
-		assertEquals("321", ridget.getText());
+		assertEquals("321", ridget.getText()); //$NON-NLS-1$
 	}
 
 	public void testControlNotEditableWithOutputMarker() {
@@ -1051,29 +1051,29 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		final ITextRidget ridget = getRidget();
 		final Text control = getWidget();
 
-		assertEquals("0", control.getText());
-		assertEquals("0", ridget.getText());
+		assertEquals("0", control.getText()); //$NON-NLS-1$
+		assertEquals("0", ridget.getText()); //$NON-NLS-1$
 
 		ridget.setOutputOnly(true);
 		control.selectAll();
 		focusIn(control);
-		UITestHelper.sendString(control.getDisplay(), "123\t");
+		UITestHelper.sendString(control.getDisplay(), "123\t"); //$NON-NLS-1$
 
-		assertEquals("0", control.getText());
-		assertEquals("0", ridget.getText());
+		assertEquals("0", control.getText()); //$NON-NLS-1$
+		assertEquals("0", ridget.getText()); //$NON-NLS-1$
 
 		ridget.setOutputOnly(false);
 		control.selectAll();
 		focusIn(control);
-		UITestHelper.sendString(control.getDisplay(), "123\t");
+		UITestHelper.sendString(control.getDisplay(), "123\t"); //$NON-NLS-1$
 
-		assertEquals("123", control.getText());
-		assertEquals("123", ridget.getText());
+		assertEquals("123", control.getText()); //$NON-NLS-1$
+		assertEquals("123", ridget.getText()); //$NON-NLS-1$
 	}
 
 	public void testDisabledHasNoTextFromModel() {
 		if (!MarkerSupport.isHideDisabledRidgetContent()) {
-			System.out.println("Skipping TextRidgetTest2.testDisabledHasNoTextFromModel()");
+			System.out.println("Skipping TextRidgetTest2.testDisabledHasNoTextFromModel()"); //$NON-NLS-1$
 			return;
 		}
 
@@ -1090,14 +1090,14 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 
 		ridget.setEnabled(false);
 
-		assertEquals("", control.getText());
+		assertEquals("", control.getText()); //$NON-NLS-1$
 		assertEquals(INTEGER_TWO.toString(), ridget.getText());
 		assertEquals(INTEGER_TWO, bean.getValue());
 
 		bean.setValue(INTEGER_ONE);
 		ridget.updateFromModel();
 
-		assertEquals("", control.getText());
+		assertEquals("", control.getText()); //$NON-NLS-1$
 		assertEquals(INTEGER_ONE.toString(), ridget.getText());
 		assertEquals(INTEGER_ONE, bean.getValue());
 
@@ -1115,33 +1115,33 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		ridget.addValidationRule(new MaxNumberLength(5), ValidationTime.ON_UI_CONTROL_EDIT);
 
 		focusIn(control);
-		UITestHelper.sendString(control.getDisplay(), "1234");
+		UITestHelper.sendString(control.getDisplay(), "1234"); //$NON-NLS-1$
 
-		assertEquals(localize("1.234"), control.getText());
+		assertEquals(localize("1.234"), control.getText()); //$NON-NLS-1$
 
 		focusOut(control);
 
-		assertEquals(localize("1.234"), ridget.getText());
+		assertEquals(localize("1.234"), ridget.getText()); //$NON-NLS-1$
 
 		focusIn(control);
 		control.setSelection(control.getText().length()); // move cursor to end
-		UITestHelper.sendString(control.getDisplay(), "5");
+		UITestHelper.sendString(control.getDisplay(), "5"); //$NON-NLS-1$
 
-		assertEquals(localize("12.345"), control.getText());
+		assertEquals(localize("12.345"), control.getText()); //$NON-NLS-1$
 
 		focusOut(control);
 
-		assertEquals(localize("12.345"), control.getText());
+		assertEquals(localize("12.345"), control.getText()); //$NON-NLS-1$
 
 		focusIn(control);
 		control.setSelection(control.getText().length()); // move cursor to end
-		UITestHelper.sendString(control.getDisplay(), "6");
+		UITestHelper.sendString(control.getDisplay(), "6"); //$NON-NLS-1$
 
-		assertEquals(localize("12.345"), control.getText());
+		assertEquals(localize("12.345"), control.getText()); //$NON-NLS-1$
 
 		focusOut(control);
 
-		assertEquals(localize("12.345"), control.getText());
+		assertEquals(localize("12.345"), control.getText()); //$NON-NLS-1$
 	}
 
 	public void testSetMarkNegative() {
@@ -1162,23 +1162,23 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		final INumericTextRidget ridget = getRidget();
 		ridget.setMarkNegative(true);
 
-		ridget.setText("100");
+		ridget.setText("100"); //$NON-NLS-1$
 
 		assertEquals(0, ridget.getMarkersOfType(NegativeMarker.class).size());
 
-		ridget.setText("-100");
+		ridget.setText("-100"); //$NON-NLS-1$
 
 		assertEquals(1, ridget.getMarkersOfType(NegativeMarker.class).size());
 
-		ridget.setText("0");
+		ridget.setText("0"); //$NON-NLS-1$
 
 		assertEquals(0, ridget.getMarkersOfType(NegativeMarker.class).size());
 
-		ridget.setText("-0");
+		ridget.setText("-0"); //$NON-NLS-1$
 
 		assertEquals(0, ridget.getMarkersOfType(NegativeMarker.class).size());
 
-		ridget.setText("-1");
+		ridget.setText("-1"); //$NON-NLS-1$
 		ridget.setMarkNegative(false);
 
 		assertEquals(0, ridget.getMarkersOfType(NegativeMarker.class).size());
@@ -1199,33 +1199,33 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		// direct writing is false, so we update the model pressing '\r' 
 
 		control.setFocus();
-		UITestHelper.sendString(display, "123-\r");
+		UITestHelper.sendString(display, "123-\r"); //$NON-NLS-1$
 
 		assertEquals(1, ridget.getMarkersOfType(NegativeMarker.class).size());
 
 		control.setSelection(0, 0);
 		UITestHelper.sendKeyAction(display, UITestHelper.KC_DEL);
-		UITestHelper.sendString(display, "\r");
+		UITestHelper.sendString(display, "\r"); //$NON-NLS-1$
 
 		assertEquals(0, ridget.getMarkersOfType(NegativeMarker.class).size());
 
-		UITestHelper.sendString(display, "-\r");
+		UITestHelper.sendString(display, "-\r"); //$NON-NLS-1$
 
 		assertEquals(1, ridget.getMarkersOfType(NegativeMarker.class).size());
 	}
 
 	public void testRemoveLeadingCruft() {
-		assertEquals("-", NumericTextRidget.removeLeadingCruft("-"));
-		assertEquals("-", NumericTextRidget.removeLeadingCruft("-0"));
-		assertEquals("0", NumericTextRidget.removeLeadingCruft("0"));
-		assertEquals("-1", NumericTextRidget.removeLeadingCruft("-01"));
-		assertEquals("-10", NumericTextRidget.removeLeadingCruft("-010"));
-		assertEquals("-101", NumericTextRidget.removeLeadingCruft("-0101"));
-		assertEquals("-23", NumericTextRidget.removeLeadingCruft("-0023"));
-		assertEquals("1", NumericTextRidget.removeLeadingCruft("01"));
-		assertEquals("10", NumericTextRidget.removeLeadingCruft("010"));
-		assertEquals("101", NumericTextRidget.removeLeadingCruft("0101"));
-		assertEquals("23", NumericTextRidget.removeLeadingCruft("0023"));
+		assertEquals("-", NumericTextRidget.removeLeadingCruft("-")); //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals("-", NumericTextRidget.removeLeadingCruft("-0")); //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals("0", NumericTextRidget.removeLeadingCruft("0")); //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals("-1", NumericTextRidget.removeLeadingCruft("-01")); //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals("-10", NumericTextRidget.removeLeadingCruft("-010")); //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals("-101", NumericTextRidget.removeLeadingCruft("-0101")); //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals("-23", NumericTextRidget.removeLeadingCruft("-0023")); //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals("1", NumericTextRidget.removeLeadingCruft("01")); //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals("10", NumericTextRidget.removeLeadingCruft("010")); //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals("101", NumericTextRidget.removeLeadingCruft("0101")); //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals("23", NumericTextRidget.removeLeadingCruft("0023")); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public void testDelete() {
@@ -1233,15 +1233,15 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		ridget.setGrouping(true);
 		ridget.setSigned(true);
 
-		assertText("1^.234", UITestHelper.KC_DEL, "1^34");
-		assertText("^1.234", UITestHelper.KC_DEL, "^234");
-		assertText("12^.345", UITestHelper.KC_DEL, "1.2^45");
-		assertText("1.234^.567", UITestHelper.KC_DEL, "123.4^67");
-		assertText("1.234.5^67", UITestHelper.KC_DEL, "123.45^7");
+		assertText("1^.234", UITestHelper.KC_DEL, "1^34"); //$NON-NLS-1$ //$NON-NLS-2$
+		assertText("^1.234", UITestHelper.KC_DEL, "^234"); //$NON-NLS-1$ //$NON-NLS-2$
+		assertText("12^.345", UITestHelper.KC_DEL, "1.2^45"); //$NON-NLS-1$ //$NON-NLS-2$
+		assertText("1.234^.567", UITestHelper.KC_DEL, "123.4^67"); //$NON-NLS-1$ //$NON-NLS-2$
+		assertText("1.234.5^67", UITestHelper.KC_DEL, "123.45^7"); //$NON-NLS-1$ //$NON-NLS-2$
 
-		assertText("-1^.234", UITestHelper.KC_DEL, "-1^34");
-		assertText("-^1.234", UITestHelper.KC_DEL, "-^234");
-		assertText("-1.234.5^67", UITestHelper.KC_DEL, "-123.45^7");
+		assertText("-1^.234", UITestHelper.KC_DEL, "-1^34"); //$NON-NLS-1$ //$NON-NLS-2$
+		assertText("-^1.234", UITestHelper.KC_DEL, "-^234"); //$NON-NLS-1$ //$NON-NLS-2$
+		assertText("-1.234.5^67", UITestHelper.KC_DEL, "-123.45^7"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public void testBackspace() {
@@ -1249,22 +1249,22 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		ridget.setGrouping(true);
 		ridget.setSigned(true);
 
-		assertText("123.^456", "\b", "12^.456");
-		assertText("1.^456", "\b", "^456");
-		assertText("1.234.^567", "\b", "123^.567");
-		assertText("1.23^4", "\b", "12^4");
-		assertText("1.234.56^7", "\b", "123.45^7");
+		assertText("123.^456", "\b", "12^.456"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		assertText("1.^456", "\b", "^456"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		assertText("1.234.^567", "\b", "123^.567"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		assertText("1.23^4", "\b", "12^4"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		assertText("1.234.56^7", "\b", "123.45^7"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-		assertText("-1.23^4", "\b", "-12^4");
-		assertText("-1^.234", "\b", "-^234");
-		assertText("-1.234.56^7", "\b", "-123.45^7");
+		assertText("-1.23^4", "\b", "-12^4"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		assertText("-1^.234", "\b", "-^234"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		assertText("-1.234.56^7", "\b", "-123.45^7"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
 	public void testMandatoryMarker() {
 		final INumericTextRidget ridget = getRidget();
 		ridget.setMandatory(true);
 
-		ridget.setText("123");
+		ridget.setText("123"); //$NON-NLS-1$
 
 		TestUtils.assertMandatoryMarker(ridget, 1, true);
 
@@ -1326,11 +1326,11 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		ridget.bindToModel(bean, StringBean.PROP_VALUE);
 
 		control.setFocus();
-		UITestHelper.sendString(control.getDisplay(), localize("12345678-\r"));
+		UITestHelper.sendString(control.getDisplay(), localize("12345678-\r")); //$NON-NLS-1$
 
-		assertEquals(localize("-123.456"), control.getText());
-		assertEquals(localize("-123.456"), ridget.getText());
-		assertEquals(localize("-123.456"), bean.getValue());
+		assertEquals(localize("-123.456"), control.getText()); //$NON-NLS-1$
+		assertEquals(localize("-123.456"), ridget.getText()); //$NON-NLS-1$
+		assertEquals(localize("-123.456"), bean.getValue()); //$NON-NLS-1$
 
 		boolean exception = false;
 		try {
@@ -1356,15 +1356,15 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 
 		assertEquals(3, ridget.getMaxLength());
 
-		ridget.setText(localize("-123"));
+		ridget.setText(localize("-123")); //$NON-NLS-1$
 
 		try {
-			ridget.setText(localize("1234"));
+			ridget.setText(localize("1234")); //$NON-NLS-1$
 			fail();
 		} catch (final RuntimeException rex) {
 			// expected
-			assertEquals(localize("-123"), ridget.getText());
-			assertEquals(localize("-123"), control.getText());
+			assertEquals(localize("-123"), ridget.getText()); //$NON-NLS-1$
+			assertEquals(localize("-123"), control.getText()); //$NON-NLS-1$
 		}
 	}
 
@@ -1386,8 +1386,8 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 			fail();
 		} catch (final RuntimeException rex) {
 			// expected
-			assertEquals(localize("123"), ridget.getText());
-			assertEquals(localize("123"), control.getText());
+			assertEquals(localize("123"), ridget.getText()); //$NON-NLS-1$
+			assertEquals(localize("123"), control.getText()); //$NON-NLS-1$
 		}
 
 		value.setValue(-321d);
@@ -1398,8 +1398,8 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 			fail();
 		} catch (final RuntimeException rex) {
 			// expected
-			assertEquals(localize("-321"), ridget.getText());
-			assertEquals(localize("-321"), control.getText());
+			assertEquals(localize("-321"), ridget.getText()); //$NON-NLS-1$
+			assertEquals(localize("-321"), control.getText()); //$NON-NLS-1$
 		}
 	}
 
@@ -1429,33 +1429,33 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 
 		ridget.setText(null);
 
-		assertEquals("", ridget.getText());
-		assertEquals("", control.getText());
+		assertEquals("", ridget.getText()); //$NON-NLS-1$
+		assertEquals("", control.getText()); //$NON-NLS-1$
 
-		ridget.setText("");
+		ridget.setText(""); //$NON-NLS-1$
 
-		assertEquals("", ridget.getText());
-		assertEquals("", control.getText());
+		assertEquals("", ridget.getText()); //$NON-NLS-1$
+		assertEquals("", control.getText()); //$NON-NLS-1$
 
 		ridget.setConvertEmptyToZero(true); // value = "" => control = "0,00"
 
-		assertEquals("", ridget.getText());
-		assertEquals("0", control.getText());
+		assertEquals("", ridget.getText()); //$NON-NLS-1$
+		assertEquals("0", control.getText()); //$NON-NLS-1$
 
 		ridget.setText(null);
 
-		assertEquals("", ridget.getText());
-		assertEquals("0", control.getText());
+		assertEquals("", ridget.getText()); //$NON-NLS-1$
+		assertEquals("0", control.getText()); //$NON-NLS-1$
 
-		ridget.setText("");
+		ridget.setText(""); //$NON-NLS-1$
 
-		assertEquals("", ridget.getText());
-		assertEquals("0", control.getText());
+		assertEquals("", ridget.getText()); //$NON-NLS-1$
+		assertEquals("0", control.getText()); //$NON-NLS-1$
 
-		ridget.setText("0");
+		ridget.setText("0"); //$NON-NLS-1$
 
-		assertEquals("0", ridget.getText());
-		assertEquals("0", control.getText());
+		assertEquals("0", ridget.getText()); //$NON-NLS-1$
+		assertEquals("0", control.getText()); //$NON-NLS-1$
 	}
 
 	/**
@@ -1470,20 +1470,20 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		ridget.bindToModel(integerBean, IntegerBean.PROP_VALUE);
 		ridget.updateFromModel();
 
-		assertEquals("", ridget.getText());
-		assertEquals("0", control.getText());
+		assertEquals("", ridget.getText()); //$NON-NLS-1$
+		assertEquals("0", control.getText()); //$NON-NLS-1$
 
 		integerBean.setValue(Integer.valueOf(3141));
 		ridget.updateFromModel();
 
-		assertEquals(localize("3.141"), ridget.getText());
-		assertEquals(localize("3.141"), control.getText());
+		assertEquals(localize("3.141"), ridget.getText()); //$NON-NLS-1$
+		assertEquals(localize("3.141"), control.getText()); //$NON-NLS-1$
 
 		integerBean.setValue(Integer.valueOf(0));
 		ridget.updateFromModel();
 
-		assertEquals("0", ridget.getText());
-		assertEquals("0", control.getText());
+		assertEquals("0", ridget.getText()); //$NON-NLS-1$
+		assertEquals("0", control.getText()); //$NON-NLS-1$
 	}
 
 	/**
@@ -1498,26 +1498,26 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		ridget.bindToModel(stringBean, StringBean.PROP_VALUE);
 		ridget.updateFromModel();
 
-		assertEquals("", ridget.getText());
-		assertEquals("0", control.getText());
+		assertEquals("", ridget.getText()); //$NON-NLS-1$
+		assertEquals("0", control.getText()); //$NON-NLS-1$
 
-		stringBean.setValue(localize("3141"));
+		stringBean.setValue(localize("3141")); //$NON-NLS-1$
 		ridget.updateFromModel();
 
-		assertEquals(localize("3.141"), ridget.getText());
-		assertEquals(localize("3.141"), control.getText());
+		assertEquals(localize("3.141"), ridget.getText()); //$NON-NLS-1$
+		assertEquals(localize("3.141"), control.getText()); //$NON-NLS-1$
 
-		stringBean.setValue("");
+		stringBean.setValue(""); //$NON-NLS-1$
 		ridget.updateFromModel();
 
-		assertEquals("", ridget.getText());
-		assertEquals("0", control.getText());
+		assertEquals("", ridget.getText()); //$NON-NLS-1$
+		assertEquals("0", control.getText()); //$NON-NLS-1$
 
-		stringBean.setValue("0");
+		stringBean.setValue("0"); //$NON-NLS-1$
 		ridget.updateFromModel();
 
-		assertEquals("0", ridget.getText());
-		assertEquals("0", control.getText());
+		assertEquals("0", ridget.getText()); //$NON-NLS-1$
+		assertEquals("0", control.getText()); //$NON-NLS-1$
 	}
 
 	/**
@@ -1526,7 +1526,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 	public void testSetConvertEmptyToZeroWithMandatoryMarker() {
 		final INumericTextRidget ridget = getRidget();
 		ridget.setMandatory(true);
-		ridget.setText("");
+		ridget.setText(""); //$NON-NLS-1$
 
 		TestUtils.assertMandatoryMarker(ridget, 1, false);
 
@@ -1535,7 +1535,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 
 		TestUtils.assertMandatoryMarker(ridget, 1, false);
 
-		ridget.setText("1");
+		ridget.setText("1"); //$NON-NLS-1$
 
 		TestUtils.assertMandatoryMarker(ridget, 1, true);
 	}
@@ -1546,26 +1546,26 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 	public void testSetConvertEmptyToZeroDoesNotInterfereWithHiddenValue() {
 		final INumericTextRidget ridget = getRidget();
 		final Text control = getWidget();
-		ridget.setText("1");
+		ridget.setText("1"); //$NON-NLS-1$
 
-		assertEquals("1", control.getText());
+		assertEquals("1", control.getText()); //$NON-NLS-1$
 
 		ridget.setEnabled(false);
 
-		assertEquals("", control.getText());
+		assertEquals("", control.getText()); //$NON-NLS-1$
 
 		ridget.setConvertEmptyToZero(true);
 
-		assertEquals("", control.getText());
+		assertEquals("", control.getText()); //$NON-NLS-1$
 
 		ridget.setText(null);
 
-		assertEquals("", control.getText());
+		assertEquals("", control.getText()); //$NON-NLS-1$
 
 		ridget.setEnabled(true);
 
-		assertEquals("", ridget.getText());
-		assertEquals("0", control.getText());
+		assertEquals("", ridget.getText()); //$NON-NLS-1$
+		assertEquals("0", control.getText()); //$NON-NLS-1$
 	}
 
 	/**
@@ -1574,27 +1574,27 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 	public void testSetConvertEmptyToZeroWhenLosingFocus() {
 		final INumericTextRidget ridget = getRidget();
 		final Text control = getWidget();
-		ridget.setText(localize("3.141"));
+		ridget.setText(localize("3.141")); //$NON-NLS-1$
 		ridget.setConvertEmptyToZero(true);
 
-		assertEquals(localize("3.141"), ridget.getText());
-		assertEquals(localize("3.141"), control.getText());
+		assertEquals(localize("3.141"), ridget.getText()); //$NON-NLS-1$
+		assertEquals(localize("3.141"), control.getText()); //$NON-NLS-1$
 
 		control.selectAll();
 		control.setFocus();
-		UITestHelper.sendString(control.getDisplay(), "\b\t");
+		UITestHelper.sendString(control.getDisplay(), "\b\t"); //$NON-NLS-1$
 
-		assertEquals("0", ridget.getText());
-		assertEquals("0", control.getText());
+		assertEquals("0", ridget.getText()); //$NON-NLS-1$
+		assertEquals("0", control.getText()); //$NON-NLS-1$
 
 		ridget.setConvertEmptyToZero(false);
 
 		control.selectAll();
 		control.setFocus();
-		UITestHelper.sendString(control.getDisplay(), "\b\t");
+		UITestHelper.sendString(control.getDisplay(), "\b\t"); //$NON-NLS-1$
 
-		assertEquals("", ridget.getText());
-		assertEquals("", control.getText());
+		assertEquals("", ridget.getText()); //$NON-NLS-1$
+		assertEquals("", control.getText()); //$NON-NLS-1$
 	}
 
 	// helping methods
@@ -1615,7 +1615,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 
 	private void focusOut(final Text control) {
 		// clear focus
-		UITestHelper.sendString(control.getDisplay(), "\t");
+		UITestHelper.sendString(control.getDisplay(), "\t"); //$NON-NLS-1$
 		assertFalse(control.isFocusControl());
 	}
 
@@ -1637,9 +1637,9 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 				if (string.length() % 2 == 0) {
 					return ValidationRuleStatus.ok();
 				}
-				return ValidationRuleStatus.error(false, "Odd number of characters.");
+				return ValidationRuleStatus.error(false, "Odd number of characters."); //$NON-NLS-1$
 			}
-			throw new ValidationFailure(getClass().getName() + " can only validate objects of type " + String.class.getName());
+			throw new ValidationFailure(getClass().getName() + " can only validate objects of type " + String.class.getName()); //$NON-NLS-1$
 		}
 
 	}
