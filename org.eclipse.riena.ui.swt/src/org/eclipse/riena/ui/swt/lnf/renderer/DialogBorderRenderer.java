@@ -20,12 +20,11 @@ import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 
 /**
- * Renderer of the border of the (undecorated (no OS-border, no OS-titlebar))
- * dialog.
+ * Renderer of the border of the (undecorated (no OS-border, no OS-titlebar)) dialog.
  */
 public class DialogBorderRenderer extends AbstractLnfRenderer {
 
-	private final static int BORDER_WIDTH = 2;
+	private final static int BORDER_WIDTH = 2; // don't scale !
 
 	protected Boolean hideOsBorder() {
 		return LnfManager.getLnf().getBooleanSetting(LnfKeyConstants.DIALOG_HIDE_OS_BORDER);
@@ -68,8 +67,7 @@ public class DialogBorderRenderer extends AbstractLnfRenderer {
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer#paint(org.eclipse.swt.graphics.GC,
-	 *      java.lang.Object)
+	 * @see org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer#paint(org.eclipse.swt.graphics.GC, java.lang.Object)
 	 */
 	@Override
 	public void paint(final GC gc, final Object value) {

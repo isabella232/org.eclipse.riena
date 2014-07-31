@@ -71,8 +71,6 @@ import org.eclipse.riena.navigation.ui.swt.binding.InjectSwtViewBindingDelegate;
 import org.eclipse.riena.navigation.ui.swt.component.IEntriesProvider;
 import org.eclipse.riena.navigation.ui.swt.component.MenuCoolBarComposite;
 import org.eclipse.riena.navigation.ui.swt.component.TitleComposite;
-import org.eclipse.riena.navigation.ui.swt.lnf.renderer.EmbeddedBorderRenderer;
-import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellBorderRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellRenderer;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProvider;
@@ -535,8 +533,8 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		final Composite separator = UIControlsFactory.createSeparator(parent, SWT.HORIZONTAL);
 		FormData formData = new FormData();
 		formData.top = new FormAttachment(previous);
-		formData.left = new FormAttachment(0, SwtUtilities.convertYToDpi(2));
-		formData.right = new FormAttachment(100, SwtUtilities.convertXToDpi(-2));
+		formData.left = new FormAttachment(0, getBorderWidth());
+		formData.right = new FormAttachment(100, -getBorderWidth());
 		formData.height = SwtUtilities.convertYToDpi(2);
 		separator.setLayoutData(formData);
 		previous = separator;
@@ -558,27 +556,17 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		return result;
 	}
 
-	private static Font getToolbarFont() {
-		return LnfManager.getLnf().getFont(LnfKeyConstants.TOOLBAR_FONT);
+	private int getBorderWidth() {
+		int width = 2;
+		final ShellBorderRenderer shellBorderRenderer = (ShellBorderRenderer) LnfManager.getLnf().getRenderer(LnfKeyConstants.TITLELESS_SHELL_BORDER_RENDERER);
+		if (shellBorderRenderer != null) {
+			width = shellBorderRenderer.getBorderWidth(); // don't scale!
+		}
+		return width;
 	}
 
-	private int getCoolBarSeparatorPadding() {
-
-		ModuleGroupRenderer mgRenderer = (ModuleGroupRenderer) LnfManager.getLnf().getRenderer(LnfKeyConstants.MODULE_GROUP_RENDERER);
-		if (mgRenderer == null) {
-			mgRenderer = new ModuleGroupRenderer();
-		}
-		int padding = mgRenderer.getModuleGroupPadding();
-
-		EmbeddedBorderRenderer borderRenderer = (EmbeddedBorderRenderer) LnfManager.getLnf().getRenderer(LnfKeyConstants.SUB_MODULE_VIEW_BORDER_RENDERER);
-		if (borderRenderer == null) {
-			borderRenderer = new EmbeddedBorderRenderer();
-		}
-		padding += borderRenderer.getBorderWidth();
-
-		padding += getShellPadding();
-
-		return padding;
+	private static Font getToolbarFont() {
+		return LnfManager.getLnf().getFont(LnfKeyConstants.TOOLBAR_FONT);
 	}
 
 	/**
