@@ -66,8 +66,8 @@ public class LogoComposite extends Composite {
 		final int topInset = 0;
 		final int leftRightInset = 0;
 		logoData.top = new FormAttachment(0, topInset);
-		final int height = getSwitchterTopMargin() + getSwitchterHeight() - 1;
-		logoData.bottom = new FormAttachment(0, height + 2);
+		final int height = getSwitchterTopMargin() + getSwitchterHeight();
+		logoData.bottom = new FormAttachment(0, height);
 		final Image logoImage = getLogoImage();
 		if (logoImage == null) {
 			return;
@@ -140,8 +140,7 @@ public class LogoComposite extends Composite {
 	 * @return margin
 	 */
 	private int getSwitchterTopMargin() {
-		final int margin = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.SUB_APPLICATION_SWITCHER_TOP_MARGIN);
-		return margin;
+		return SwitcherComposite.getSwitchterTopMargin();
 	}
 
 	/**
@@ -150,8 +149,7 @@ public class LogoComposite extends Composite {
 	 * @return height
 	 */
 	private int getSwitchterHeight() {
-		final int margin = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.SUB_APPLICATION_SWITCHER_HEIGHT);
-		return margin;
+		return SwitcherComposite.getSwitchterHeight();
 	}
 
 	/**

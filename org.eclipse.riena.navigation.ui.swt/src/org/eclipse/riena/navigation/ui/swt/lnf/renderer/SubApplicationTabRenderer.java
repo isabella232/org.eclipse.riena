@@ -38,19 +38,19 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 
 	private Color defaultColor = null;
 
-	public final static int ACTIVE_Y_OFFSET = 2;
+	private final static int ACTIVE_Y_OFFSET = 2;
+	private final static int ACTIVE_BOTTOM_INSET = 6;
+	private final static int ACTIVE_LEFT_INSET = 3;
+	private final static int ACTIVE_RIGHT_INSET = 3;
 	private final static int BORDER_TOP_WIDTH = 3;
 	private final static int BORDER_BOTTOM_WIDTH = 1;
 	private final static int BORDER_LEFT_WIDTH = 2;
 	private final static int BORDER_RIGHT_WIDTH = 2;
-	private final static int TEXT_TOP_INSET = 3;
-	private final static int TEXT_BOTTOM_INSET = 4;
-	private final static int TEXT_LEFT_INSET = 6;
-	private final static int TEXT_RIGHT_INSET = 6;
-	private final static int ACTIVE_BOTTOM_INSET = 6;
-	private final static int ACTIVE_LEFT_INSET = 3;
-	private final static int ACTIVE_RIGHT_INSET = 3;
-	private final static int ICON_TEXT_GAP = 4;
+	private final static int TEXT_TOP_INSET = SwtUtilities.convertYToDpiTruncate(3);
+	private final static int TEXT_BOTTOM_INSET = SwtUtilities.convertYToDpiTruncate(4);
+	private final static int TEXT_LEFT_INSET = SwtUtilities.convertXToDpiTruncate(6);
+	private final static int TEXT_RIGHT_INSET = SwtUtilities.convertXToDpiTruncate(6);
+	private final static int ICON_TEXT_GAP = SwtUtilities.convertXToDpiTruncate(4);
 
 	private Color selStartColor;
 	private Color selEndColor;
@@ -62,8 +62,7 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 	private final FlasherSupportForRenderer flasherSupport;
 
 	/**
-	 * Create a new instance of the renderer of a tab of the sub-application
-	 * switcher.
+	 * Create a new instance of the renderer of a tab of the sub-application switcher.
 	 */
 	public SubApplicationTabRenderer() {
 		super();
@@ -71,8 +70,7 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer#paint(org.eclipse.swt.graphics.GC,
-	 *      java.lang.Object)
+	 * @see org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer#paint(org.eclipse.swt.graphics.GC, java.lang.Object)
 	 */
 	@Override
 	public void paint(final GC gc, final Object value) {
@@ -84,8 +82,7 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 		control = (Control) value;
 
 		if (getBounds().y - ACTIVE_Y_OFFSET < 0) {
-			final Rectangle bounds = new Rectangle(getBounds().x, ACTIVE_Y_OFFSET, getBounds().width,
-					getBounds().height);
+			final Rectangle bounds = new Rectangle(getBounds().x, ACTIVE_Y_OFFSET, getBounds().width, getBounds().height);
 			setBounds(bounds);
 		}
 
@@ -100,13 +97,10 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 		Color borderTopRightColor = lnf.getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_BORDER_TOP_RIGHT_COLOR);
 		Color borderBottomLeftColor = lnf.getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_BORDER_BOTTOM_LEFT_COLOR);
 		if (!isEnabled()) {
-			borderTopRightColor = lnf
-					.getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_DISABLED_BORDER_TOP_RIGHT_COLOR);
-			borderBottomLeftColor = lnf
-					.getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_DISABLED_BORDER_BOTTOM_LEFT_COLOR);
+			borderTopRightColor = lnf.getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_DISABLED_BORDER_TOP_RIGHT_COLOR);
+			borderBottomLeftColor = lnf.getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_DISABLED_BORDER_BOTTOM_LEFT_COLOR);
 		}
-		Color borderBottomLeftSecondaryColor = lnf
-				.getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_BORDER_BOTTOM_LEFT_SECONDARY_COLOR);
+		Color borderBottomLeftSecondaryColor = lnf.getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_BORDER_BOTTOM_LEFT_SECONDARY_COLOR);
 		// Border
 		// - left
 		gc.setForeground(borderBottomLeftColor);
@@ -167,7 +161,8 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 		gc.drawLine(x, y, x2, y2);
 		// -right
 		gc.setForeground(borderTopRightColor);
-		final int topBorder = BORDER_TOP_WIDTH - (isActive() ? 1 : 0);
+		// final int topBorder = BORDER_TOP_WIDTH - (isActive() ? 1 : 0);
+		final int topBorder = BORDER_TOP_WIDTH - 1;
 		x = getBounds().x + getWidth() + rightInset;
 		y = getBounds().y + topBorder;
 		x2 = x;
@@ -184,8 +179,7 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 		gc.drawLine(x, y, x2, y2);
 		// - bottom
 		if (isActive()) {
-			final Color backgroundEndColor = getColor(
-					LnfKeyConstants.SUB_APPLICATION_SWITCHER_ACTIVE_BACKGROUND_END_COLOR,
+			final Color backgroundEndColor = getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_ACTIVE_BACKGROUND_END_COLOR,
 					LnfKeyConstants.SUB_APPLICATION_SWITCHER_PASSIVE_BACKGROUND_END_COLOR, null,
 					LnfKeyConstants.SUB_APPLICATION_SWITCHER_PROCESS_FINISHED_BACKGROUND_END_COLOR);
 			gc.setForeground(backgroundEndColor);
@@ -215,8 +209,7 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 
 		// Text
 		final Color textColor = getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_ACTIVE_FOREGROUND,
-				LnfKeyConstants.SUB_APPLICATION_SWITCHER_PASSIVE_FOREGROUND,
-				LnfKeyConstants.SUB_APPLICATION_SWITCHER_DISABLED_FOREGROUND,
+				LnfKeyConstants.SUB_APPLICATION_SWITCHER_PASSIVE_FOREGROUND, LnfKeyConstants.SUB_APPLICATION_SWITCHER_DISABLED_FOREGROUND,
 				LnfKeyConstants.SUB_APPLICATION_SWITCHER_PASSIVE_FOREGROUND);
 		gc.setForeground(textColor);
 		y = getBounds().y + BORDER_TOP_WIDTH + getTextTopInset();
@@ -273,8 +266,7 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 		}
 
 		if (isProcessFinishedInBackground()) {
-			innerBorderColor = lnf
-					.getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_INNER_PROCESS_FINISHED_BORDER_COLOR);
+			innerBorderColor = lnf.getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_INNER_PROCESS_FINISHED_BORDER_COLOR);
 		}
 
 		return innerBorderColor;
@@ -289,8 +281,7 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 	 */
 	private void paintBackground(final GC gc) {
 
-		final Color backgroundStartColor = getColor(
-				LnfKeyConstants.SUB_APPLICATION_SWITCHER_ACTIVE_BACKGROUND_START_COLOR,
+		final Color backgroundStartColor = getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_ACTIVE_BACKGROUND_START_COLOR,
 				LnfKeyConstants.SUB_APPLICATION_SWITCHER_PASSIVE_BACKGROUND_START_COLOR, null,
 				LnfKeyConstants.SUB_APPLICATION_SWITCHER_PROCESS_FINISHED_BACKGROUND_START_COLOR);
 		gc.setForeground(backgroundStartColor);
@@ -324,22 +315,18 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 	}
 
 	/**
-	 * Returns whether a process finished in the background but the flashing
-	 * state is not active anymore.
+	 * Returns whether a process finished in the background but the flashing state is not active anymore.
 	 * 
-	 * @return true if a process has finished in the background but the tab is
-	 *         not flashing anymore, false otherwise
+	 * @return true if a process has finished in the background but the tab is not flashing anymore, false otherwise
 	 */
 	private boolean isProcessFinishedInBackground() {
 		return flasherSupport.isProcessMarkerVisible() && !flasherSupport.isFlashing();
 	}
 
 	/**
-	 * Returns whether the processFinishedMarker is visible AND the flashing
-	 * state is true.
+	 * Returns whether the processFinishedMarker is visible AND the flashing state is true.
 	 * 
-	 * @return true if the tab is flashing and the marker is visible as well,
-	 *         false otherwise
+	 * @return true if the tab is flashing and the marker is visible as well, false otherwise
 	 */
 	private boolean isProcessFinishedMarkerVisibleWhileFlashing() {
 		return (flasherSupport.isProcessMarkerVisible() && flasherSupport.isFlashing());
@@ -510,8 +497,7 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 	}
 
 	/**
-	 * This class updates (redraws) the tab, so that the marker are also updated
-	 * (redrawn).
+	 * This class updates (redraws) the tab, so that the marker are also updated (redrawn).
 	 */
 	private class MarkerUpdater implements Runnable {
 
@@ -526,8 +512,7 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 	}
 
 	/**
-	 * Returns according to the states of the title bar the color of one of the
-	 * given key.<br>
+	 * Returns according to the states of the title bar the color of one of the given key.<br>
 	 * If one key is not needed, the parameter can be {@code null}.
 	 * 
 	 * @param activeColorKey
@@ -536,8 +521,7 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 	 * @return color
 	 * @TODO same code in EmbeddedTitlebarRenderer
 	 */
-	private Color getColor(final String activeColorKey, final String passiveColorKey, final String disabeldColorKey,
-			final String processFinishedKey) {
+	private Color getColor(final String activeColorKey, final String passiveColorKey, final String disabeldColorKey, final String processFinishedKey) {
 
 		Color color = null;
 
@@ -574,8 +558,7 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 	 * @return key
 	 * @TODO same code in EmbeddedTitlebarRenderer Returns according to the
 	 */
-	private String getKey(final String activeKey, final String passiveKey, final String disabeldKey,
-			final String processFinishedKey) {
+	private String getKey(final String activeKey, final String passiveKey, final String disabeldKey, final String processFinishedKey) {
 
 		String key = null;
 		if (isEnabled()) {
@@ -611,7 +594,9 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 	 */
 	private int getSubApplicationSwitcherTabMinWidth() {
 		final RienaDefaultLnf lnf = LnfManager.getLnf();
-		return lnf.getIntegerSetting(LnfKeyConstants.SUB_APPLICATION_SWITCHER_TAB_MIN_WIDTH, 0);
+		int minWidth = lnf.getIntegerSetting(LnfKeyConstants.SUB_APPLICATION_SWITCHER_TAB_MIN_WIDTH, 0);
+		minWidth = SwtUtilities.convertXToDpi(minWidth);
+		return minWidth;
 	}
 
 }

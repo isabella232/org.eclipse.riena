@@ -26,8 +26,8 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
  */
 public class DialogTitleBarRenderer extends AbstractTitleBarRenderer {
 
-	private final static int IMAGE_TITLE_GAP = 5;
-	private final static int BORDER_IMAGE_GAP = 5;
+	private final static int IMAGE_TITLE_GAP = SwtUtilities.convertXToDpiTruncate(5);
+	private final static int BORDER_IMAGE_GAP = SwtUtilities.convertXToDpiTruncate(5);
 
 	private final String[] btnImageKeys = new String[] { LnfKeyConstants.DIALOG_CLOSE_ICON, LnfKeyConstants.DIALOG_MAX_ICON, LnfKeyConstants.DIALOG_MIN_ICON,
 			LnfKeyConstants.DIALOG_RESTORE_ICON };
@@ -113,7 +113,6 @@ public class DialogTitleBarRenderer extends AbstractTitleBarRenderer {
 		y -= 2;
 
 		int x = IMAGE_TITLE_GAP;
-		x = SwtUtilities.convertXToDpi(x);
 		x = getImageBounds().x + getImageBounds().width + x;
 		int textWidth = SwtUtilities.calcTextWidth(gc, title);
 		if (textWidth + x > getBounds().width) {
@@ -139,8 +138,7 @@ public class DialogTitleBarRenderer extends AbstractTitleBarRenderer {
 			return new Rectangle(0, 0, 0, 0);
 		}
 
-		int x = BORDER_IMAGE_GAP;
-		x = SwtUtilities.convertXToDpi(x);
+		final int x = BORDER_IMAGE_GAP;
 		final int imageWidth = image.getBounds().width;
 		final int imageHeight = image.getBounds().height;
 		final int y = getHeight() / 2 - imageHeight / 2;

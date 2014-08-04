@@ -14,7 +14,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
 
 import org.eclipse.riena.core.util.StringUtils;
@@ -31,7 +30,7 @@ public class ShellRenderer extends AbstractTitleBarRenderer {
 	/**
 	 * Margin between left shell border and title or title and button.
 	 */
-	private final static int TITLE_MARGIN = 5;
+	private final static int TITLE_MARGIN = SwtUtilities.convertXToDpiTruncate(5);
 
 	private final String[] btnImageKeys = new String[] { LnfKeyConstants.TITLELESS_SHELL_CLOSE_ICON, LnfKeyConstants.TITLELESS_SHELL_MAX_ICON,
 			LnfKeyConstants.TITLELESS_SHELL_MIN_ICON, LnfKeyConstants.TITLELESS_SHELL_RESTORE_ICON };
@@ -139,10 +138,6 @@ public class ShellRenderer extends AbstractTitleBarRenderer {
 		}
 		return hPos;
 
-	}
-
-	private Image getBackgroundImage() {
-		return LnfManager.getLnf().getImage(LnfKeyConstants.TITLELESS_SHELL_BACKGROUND_IMAGE);
 	}
 
 	@Override

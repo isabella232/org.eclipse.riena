@@ -29,8 +29,8 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 public abstract class AbstractTitleBarRenderer extends AbstractLnfRenderer {
 
 	private final static int DEFAULT_HEIGHT = 26;
-	private final static int BUTTON_RIGHT_GAP = 2;
-	private final static int BUTTON_BUTTON_GAP = 2;
+	private final static int BUTTON_RIGHT_GAP = SwtUtilities.convertXToDpiTruncate(2);
+	private final static int BUTTON_BUTTON_GAP = SwtUtilities.convertXToDpiTruncate(2);
 	protected final static int BTN_COUNT = 3;
 	protected final static int CLOSE_BTN_INDEX = 0;
 	protected final static int MAX_BTN_INDEX = 1;
@@ -168,6 +168,9 @@ public abstract class AbstractTitleBarRenderer extends AbstractLnfRenderer {
 				}
 			} else {
 				image = LnfManager.getLnf().getImage(getBtnInactiveImageKeys()[index]);
+			}
+			if (image == null) {
+				image = LnfManager.getLnf().getImage(getBtnImageKeys()[index]);
 			}
 		}
 

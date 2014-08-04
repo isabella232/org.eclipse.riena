@@ -21,24 +21,23 @@ import org.eclipse.riena.navigation.ui.swt.component.SubApplicationItem;
 import org.eclipse.riena.navigation.ui.swt.component.SubApplicationSwitcherWidget;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
  * Tool tip for sub-applications.
  */
 public class SubApplicationToolTip extends AbstractNavigationToolTip {
 
-	private static final int DEFAULT_TOOLTIP_SHIFT_X = 10;
-	private static final int DEFAULT_TOOLTIP_SHIFT_Y = 10;
+	private static final int DEFAULT_TOOLTIP_SHIFT_X = SwtUtilities.convertXToDpi(10);
+	private static final int DEFAULT_TOOLTIP_SHIFT_Y = SwtUtilities.convertYToDpi(10);
 
 	private final SubApplicationSwitcherWidget control;
 
 	/**
-	 * Creates new instance which add TooltipSupport to the switcher of
-	 * sub-applications. For every tab/item another tool tip can be displayed.
+	 * Creates new instance which add TooltipSupport to the switcher of sub-applications. For every tab/item another tool tip can be displayed.
 	 * 
 	 * @param parent
-	 *            the switcher for sub-applications on whose action the tool tip
-	 *            is shown
+	 *            the switcher for sub-applications on whose action the tool tip is shown
 	 */
 	public SubApplicationToolTip(final SubApplicationSwitcherWidget control) {
 		super(control);

@@ -23,6 +23,7 @@ import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellBorderRenderer;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.riena.ui.swt.utils.WidgetIdentificationSupport;
 
 /**
@@ -77,10 +78,9 @@ public class SwitcherComposite extends Composite {
 	 * @return margin
 	 */
 	public static int getSwitchterTopMargin() {
-
-		final int margin = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.SUB_APPLICATION_SWITCHER_TOP_MARGIN);
+		int margin = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.SUB_APPLICATION_SWITCHER_TOP_MARGIN);
+		margin = SwtUtilities.convertPixelToDpiTruncate(margin);
 		return margin;
-
 	}
 
 	/**
@@ -89,10 +89,9 @@ public class SwitcherComposite extends Composite {
 	 * @return height
 	 */
 	public static int getSwitchterHeight() {
-
-		final int height = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.SUB_APPLICATION_SWITCHER_HEIGHT);
+		int height = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.SUB_APPLICATION_SWITCHER_HEIGHT);
+		height = SwtUtilities.convertPixelToDpiTruncate(height);
 		return height;
-
 	}
 
 	/**

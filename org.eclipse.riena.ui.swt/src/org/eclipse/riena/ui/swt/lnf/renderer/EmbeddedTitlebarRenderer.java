@@ -36,9 +36,9 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
  */
 public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 
-	protected final static int TITLEBAR_LABEL_PADDING_LEFT = 5;
-	private final static int TITLEBAR_LABEL_PADDING = 4;
-	protected final static int TITLEBAR_ICON_TEXT_GAP = 4;
+	private final static int TITLEBAR_LABEL_PADDING_X = SwtUtilities.convertXToDpiTruncate(5);
+	private final static int TITLEBAR_LABEL_PADDING_TOP = SwtUtilities.convertYToDpiTruncate(4);
+	private final static int TITLEBAR_ICON_TEXT_GAP = SwtUtilities.convertXToDpiTruncate(4);
 
 	private Color defaultColor = null;
 	private Control control;
@@ -93,7 +93,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		gc.setFont(font);
 		final FontMetrics fontMetrics = gc.getFontMetrics();
 
-		final int h = fontMetrics.getHeight() + TITLEBAR_LABEL_PADDING * 2;
+		final int h = fontMetrics.getHeight() + TITLEBAR_LABEL_PADDING_TOP * 2;
 
 		return new Point(wHint, h);
 
@@ -111,8 +111,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 	}
 
 	/**
-	 * Draws the background in the specified region with the specified
-	 * {@link GC}.
+	 * Draws the background in the specified region with the specified {@link GC}.
 	 */
 	protected void drawBackground(final GC gc, final int x, final int y, final int w, final int h) {
 
@@ -144,8 +143,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 	 * @param value
 	 *            title text
 	 * 
-	 * @see org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer#paint(org.eclipse.swt.graphics.GC,
-	 *      java.lang.Object)
+	 * @see org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer#paint(org.eclipse.swt.graphics.GC, java.lang.Object)
 	 */
 	@Override
 	public void paint(final GC gc, final Object value) {
@@ -206,7 +204,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		}
 
 		// Icon
-		x = getBounds().x + TITLEBAR_LABEL_PADDING_LEFT;
+		x = getBounds().x + TITLEBAR_LABEL_PADDING_X;
 		if (getImage() != null) {
 			final Rectangle imageBounds = getImage().getBounds();
 			y = getBounds().y + (getHeight() - imageBounds.height) / 2;
@@ -218,8 +216,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		// Text
 		String text = getTitle();
 		if (!StringUtils.isEmpty(text)) {
-			final Color fgColor = getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_FOREGROUND,
-					LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_FOREGROUND,
+			final Color fgColor = getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_FOREGROUND, LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_FOREGROUND,
 					LnfKeyConstants.EMBEDDED_TITLEBAR_DISABLED_FOREGROUND);
 			gc.setForeground(fgColor);
 			final int y2 = (getHeight() - gc.getFontMetrics().getHeight()) / 2;
@@ -291,8 +288,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 	}
 
 	protected HoverBorderRenderer getHoverBorderRenderer() {
-		return (HoverBorderRenderer) LnfManager.getLnf().getRenderer(
-				LnfKeyConstants.SUB_MODULE_VIEW_HOVER_BORDER_RENDERER);
+		return (HoverBorderRenderer) LnfManager.getLnf().getRenderer(LnfKeyConstants.SUB_MODULE_VIEW_HOVER_BORDER_RENDERER);
 	}
 
 	/**
@@ -328,7 +324,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		if (bounds != null) {
 			closeBounds.width = closeImage.getBounds().width;
 			closeBounds.height = closeImage.getBounds().height;
-			closeBounds.x = bounds.x + getWidth() - closeBounds.width - TITLEBAR_LABEL_PADDING;
+			closeBounds.x = bounds.x + getWidth() - closeBounds.width - TITLEBAR_LABEL_PADDING_X;
 			closeBounds.y = bounds.y + (getHeight() - closeBounds.height) / 2;
 		}
 		return closeBounds;
@@ -336,13 +332,11 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 	}
 
 	/**
-	 * Returns <code>true</code> if the given point is inside the bounds of the
-	 * close button, and <code>false</code> otherwise.
+	 * Returns <code>true</code> if the given point is inside the bounds of the close button, and <code>false</code> otherwise.
 	 * 
 	 * @param pt
 	 *            the point to test
-	 * @return <code>true</code> if the button bounds contains the point and
-	 *         <code>false</code> otherwise
+	 * @return <code>true</code> if the button bounds contains the point and <code>false</code> otherwise
 	 */
 	public boolean isInsideCloseButton(final Point pt) {
 
@@ -352,8 +346,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 	}
 
 	/**
-	 * Returns the image of the close button according of the current button
-	 * state.
+	 * Returns the image of the close button according of the current button state.
 	 * 
 	 * @return button image
 	 */
@@ -419,12 +412,12 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		final Rectangle bounds = getBounds();
 
 		if (bounds != null) {
-			textBounds.x = bounds.x + TITLEBAR_LABEL_PADDING_LEFT;
+			textBounds.x = bounds.x + TITLEBAR_LABEL_PADDING_X;
 			if (getImage() != null) {
 				textBounds.x += getImage().getBounds().width + TITLEBAR_ICON_TEXT_GAP;
 			}
 
-			textBounds.width = getWidth() - (textBounds.x - bounds.x) - TITLEBAR_LABEL_PADDING;
+			textBounds.width = getWidth() - (textBounds.x - bounds.x) - TITLEBAR_LABEL_PADDING_TOP;
 
 			final Font font = getTitlebarFont();
 			gc.setFont(font);
@@ -465,8 +458,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 	}
 
 	/**
-	 * This class updates (redraws) the title bar, so that the marker are also
-	 * updated (redrawn).
+	 * This class updates (redraws) the title bar, so that the marker are also updated (redrawn).
 	 */
 	private class MarkerUpdater implements Runnable {
 
@@ -481,21 +473,18 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 	}
 
 	protected Color getBorderColor() {
-		return getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BORDER_COLOR,
-				LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BORDER_COLOR,
+		return getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BORDER_COLOR, LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BORDER_COLOR,
 				LnfKeyConstants.EMBEDDED_TITLEBAR_DISABLED_BORDER_COLOR);
 	}
 
 	/**
-	 * Returns according to the states of the title bar the color of one of the
-	 * given key.<br>
+	 * Returns according to the states of the title bar the color of one of the given key.<br>
 	 * If one key is not needed, the parameter can be {@code null}.
 	 * 
 	 * @param activeColorKey
 	 * @param passiveColorKey
 	 * @param disabeldColorKey
-	 * @return color TODO same code in SubApplicationTabRenderer Returns
-	 *         according to the
+	 * @return color TODO same code in SubApplicationTabRenderer Returns according to the
 	 */
 	protected Color getColor(final String activeColorKey, final String passiveColorKey, final String disabeldColorKey) {
 
