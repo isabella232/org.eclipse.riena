@@ -292,6 +292,32 @@ public final class SwtUtilities {
 	}
 
 	/**
+	 * Returns whether scaling is enabled or disabled
+	 * 
+	 * @return {@code true} scaling is enabled; otherwise {@code false}
+	 */
+	public static boolean isDpiScalingEnabled() {
+		return isDpiScalingEnabled(null);
+	}
+
+	/**
+	 * Returns whether scaling is enabled or disabled
+	 * 
+	 * @param widget
+	 *            if widget is not {@code null} the display that's associated with the widget is used; otherwise the current or default display
+	 * @return {@code true} scaling is enabled; otherwise scaling disabled
+	 */
+	public static boolean isDpiScalingEnabled(final Widget widget) {
+		final float[] dpiFactors = getDpiFactors(widget);
+		for (final float factor : dpiFactors) {
+			if (factor > 1.0) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * Returns the Display.
 	 * 
 	 * @return instance of Display or null if there is no display
@@ -334,6 +360,9 @@ public final class SwtUtilities {
 	 * DPI).
 	 * <p>
 	 * The Riena Look&Feel can manipulate the scaling factors.
+	 * 
+	 * @param widget
+	 *            if widget is not {@code null} the display that's associated with the widget is used; otherwise the current or default display
 	 * 
 	 * @return x-factor and y-factors
 	 * @since 6.0
