@@ -6,6 +6,8 @@ import junit.framework.TestCase;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.ui.menus.CommandContributionItem;
+import org.eclipse.ui.menus.CommandContributionItemParameter;
 
 import org.eclipse.riena.core.test.collect.UITestCase;
 import org.eclipse.riena.core.util.ReflectionUtils;
@@ -130,6 +132,60 @@ public class ImageReplacerTest extends TestCase {
 		assertNotNull(replacer);
 
 		assertSame(replacer, ImageReplacer.getInstance());
+	}
+
+	public void testReplaceImagesCommandContributionItemParameter() throws Exception {
+
+		final ImageReplacer replacer = ImageReplacer.getInstance();
+
+		final RienaDefaultLnf originalLnf = LnfManager.getLnf();
+		LnfManager.setLnf(new MyLnf());
+
+		CommandContributionItemParameter parameter = new CommandContributionItemParameter(null, "id", "cmdId", CommandContributionItem.STYLE_PUSH);
+
+		boolean replaced = ReflectionUtils.invokeHidden(replacer, "replaceImages", parameter); //$NON-NLS-1$
+		assertFalse(replaced);
+
+		final URL url = this.getClass().getResource("/icons/testimagea00.png"); //$NON-NLS-1$
+		final ImageDescriptor urlImageDescriptor = ImageDescriptor.createFromURL(url);
+		parameter.icon = urlImageDescriptor;
+
+		replaced = ReflectionUtils.invokeHidden(replacer, "replaceImages", parameter); //$NON-NLS-1$
+		assertTrue(replaced);
+		assertNotSame(urlImageDescriptor, parameter.icon);
+		assertEquals(16, parameter.icon.getImageData().width);
+		assertEquals(16, parameter.icon.getImageData().height);
+
+		final Point dpi = SwtUtilities.getDpi();
+		ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpi", new Point(144, 144)); //$NON-NLS-1$
+
+		parameter = new CommandContributionItemParameter(null, "id", "cmdId", CommandContributionItem.STYLE_PUSH);
+		parameter.icon = urlImageDescriptor;
+		replaced = ReflectionUtils.invokeHidden(replacer, "replaceImages", parameter); //$NON-NLS-1$
+		assertTrue(replaced);
+		assertNotSame(urlImageDescriptor, parameter.icon);
+		assertEquals(24, parameter.icon.getImageData().width);
+		assertEquals(24, parameter.icon.getImageData().height);
+
+		parameter = new CommandContributionItemParameter(null, "id", "cmdId", CommandContributionItem.STYLE_PUSH);
+		parameter.disabledIcon = urlImageDescriptor;
+		replaced = ReflectionUtils.invokeHidden(replacer, "replaceImages", parameter); //$NON-NLS-1$
+		assertTrue(replaced);
+		assertNotSame(urlImageDescriptor, parameter.disabledIcon);
+		assertEquals(24, parameter.disabledIcon.getImageData().width);
+		assertEquals(24, parameter.disabledIcon.getImageData().height);
+
+		parameter = new CommandContributionItemParameter(null, "id", "cmdId", CommandContributionItem.STYLE_PUSH);
+		parameter.hoverIcon = urlImageDescriptor;
+		replaced = ReflectionUtils.invokeHidden(replacer, "replaceImages", parameter); //$NON-NLS-1$
+		assertTrue(replaced);
+		assertNotSame(urlImageDescriptor, parameter.hoverIcon);
+		assertEquals(24, parameter.hoverIcon.getImageData().width);
+		assertEquals(24, parameter.hoverIcon.getImageData().height);
+
+		ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpi", dpi); //$NON-NLS-1$
+		LnfManager.setLnf(originalLnf);
+
 	}
 
 	private static class MyLnf extends RienaDefaultLnf {

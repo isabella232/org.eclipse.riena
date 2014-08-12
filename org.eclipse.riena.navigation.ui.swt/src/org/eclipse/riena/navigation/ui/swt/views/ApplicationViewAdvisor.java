@@ -504,7 +504,9 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 			public IContributionItem[] getTopLevelEntries() {
 				if (window instanceof WorkbenchWindow) {
 					final MenuManager menuManager = ((WorkbenchWindow) window).getMenuManager();
-					ImageReplacer.getInstance().replaceImagesOfManager(menuManager);
+					if (SwtUtilities.isDpiScalingEnabled()) {
+						ImageReplacer.getInstance().replaceImagesOfManager(menuManager);
+					}
 					return menuManager.getItems();
 				}
 				return new IContributionItem[0];
@@ -566,7 +568,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 */
 	private void replaceImagesOfCoolBar() {
 
-		if (SwtUtilities.isDpiScalingEnabled() || true) { // TODO: remove true
+		if (SwtUtilities.isDpiScalingEnabled()) {
 			final IWorkbenchWindow window = getWindowConfigurer().getWindow();
 			if (window instanceof ApplicationWindow) {
 				final IContributionManager coolBarManager = ((ApplicationWindow) window).getCoolBarManager();
