@@ -18,7 +18,9 @@ import org.osgi.service.log.LogService;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.jface.action.IContributionItem;
+import org.eclipse.jface.action.IContributionManager;
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Point;
@@ -502,6 +504,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 			public IContributionItem[] getTopLevelEntries() {
 				if (window instanceof WorkbenchWindow) {
 					final MenuManager menuManager = ((WorkbenchWindow) window).getMenuManager();
+					ImageReplacer.getInstance().replaceImagesOfManager(menuManager);
 					return menuManager.getItems();
 				}
 				return new IContributionItem[0];
@@ -548,12 +551,29 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		formData.right = new FormAttachment(100, -padding);
 		result.setLayoutData(formData);
 
+		replaceImagesOfCoolBar();
+
 		final Control control = getWindowConfigurer().createCoolBarControl(result);
 		if (control instanceof CoolBar) {
 			final CoolBar coolbar = (CoolBar) control;
 			CoolbarUtils.initCoolBar(coolbar, getToolbarFont());
 		}
 		return result;
+	}
+
+	/**
+	 * Replaces all not scaled images of the cool bar items, if necessary.
+	 */
+	private void replaceImagesOfCoolBar() {
+
+		if (SwtUtilities.isDpiScalingEnabled() || true) { // TODO: remove true
+			final IWorkbenchWindow window = getWindowConfigurer().getWindow();
+			if (window instanceof ApplicationWindow) {
+				final IContributionManager coolBarManager = ((ApplicationWindow) window).getCoolBarManager();
+				ImageReplacer.getInstance().replaceImagesOfManager(coolBarManager);
+			}
+		}
+
 	}
 
 	private int getBorderWidth() {
@@ -639,6 +659,10 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		return lnf.getIntegerSetting(LnfKeyConstants.TOOLBAR_TOP_MARGIN, DEFAULT_COOLBAR_TOP_MARGIN);
 	}
 
+	private IWorkbenchPage getActivePage() {
+		return PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+	}
+
 	// helping classes
 	//////////////////
 
@@ -667,10 +691,6 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 			} catch (final PartInitException e) {
 				throw new UIViewFailure(e.getMessage(), e);
 			}
-		}
-
-		private IWorkbenchPage getActivePage() {
-			return PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 		}
 
 		/**
@@ -713,8 +733,8 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 		private void showPerspective(final ISubApplicationNode source) {
 			try {
-				PlatformUI.getWorkbench().showPerspective(SwtViewProvider.getInstance().getSwtViewId(source).getId(),
-						PlatformUI.getWorkbench().getActiveWorkbenchWindow());
+				final IWorkbench workbench = PlatformUI.getWorkbench();
+				workbench.showPerspective(SwtViewProvider.getInstance().getSwtViewId(source).getId(), workbench.getActiveWorkbenchWindow());
 			} catch (final WorkbenchException e) {
 				throw new UIViewFailure(e.getMessage(), e);
 			}
@@ -727,7 +747,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 			final IWorkbench workbench = PlatformUI.getWorkbench();
 			final IPerspectiveRegistry registry = workbench.getPerspectiveRegistry();
 			final IPerspectiveDescriptor perspDesc = registry.findPerspectiveWithId(id);
-			workbench.getActiveWorkbenchWindow().getActivePage().closePerspective(perspDesc, false, false);
+			getActivePage().closePerspective(perspDesc, false, false);
 			viewProvider.unregisterSwtViewId(source);
 		}
 	}

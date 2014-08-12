@@ -18,30 +18,34 @@ public class IconSize {
 	/**
 	 * None special size.
 	 */
-	public static final IconSize NONE = new IconSize(""); //$NON-NLS-1$
+	public static final IconSize NONE = new IconSize("", 0, 0); //$NON-NLS-1$
 
 	/** Size a (16x16). */
-	public static final IconSize A16 = new IconSize("a"); //$NON-NLS-1$
+	public static final IconSize A16 = new IconSize("a", 16, 16); //$NON-NLS-1$
 
 	/** Size b (22x22). */
-	public static final IconSize B22 = new IconSize("b"); //$NON-NLS-1$
+	public static final IconSize B22 = new IconSize("b", 22, 22); //$NON-NLS-1$
 
 	/** Size c (32x32). */
-	public static final IconSize C32 = new IconSize("c"); //$NON-NLS-1$
+	public static final IconSize C32 = new IconSize("c", 32, 32); //$NON-NLS-1$
 
 	/** Size d (48x48). */
-	public static final IconSize D48 = new IconSize("d"); //$NON-NLS-1$
+	public static final IconSize D48 = new IconSize("d", 48, 48); //$NON-NLS-1$
 
 	/** Size e (64x64). */
-	public static final IconSize E64 = new IconSize("e"); //$NON-NLS-1$
+	public static final IconSize E64 = new IconSize("e", 64, 64); //$NON-NLS-1$
 
 	/** Size f (128x128). */
-	public static final IconSize F128 = new IconSize("f"); //$NON-NLS-1$
+	public static final IconSize F128 = new IconSize("f", 128, 128); //$NON-NLS-1$
 
 	private final String defaultMapping;
+	private final int width;
+	private final int height;
 
-	private IconSize(final String defaultMapping) {
+	private IconSize(final String defaultMapping, final int width, final int height) {
 		this.defaultMapping = defaultMapping;
+		this.width = width;
+		this.height = height;
 	}
 
 	/**
@@ -56,6 +60,14 @@ public class IconSize {
 	@Override
 	public String toString() {
 		return getDefaultMapping();
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public int getHeight() {
+		return height;
 	}
 
 }
