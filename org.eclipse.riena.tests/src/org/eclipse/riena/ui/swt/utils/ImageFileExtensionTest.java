@@ -2,9 +2,12 @@ package org.eclipse.riena.ui.swt.utils;
 
 import junit.framework.TestCase;
 
+import org.eclipse.riena.core.test.collect.NonUITestCase;
+
 /**
  * Tests of the class {@link ImageFileExtension}.
  */
+@NonUITestCase
 public class ImageFileExtensionTest extends TestCase {
 
 	/**
