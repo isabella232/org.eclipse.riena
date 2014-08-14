@@ -15,7 +15,17 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DirectColorModel;
 import java.awt.image.IndexColorModel;
 import java.awt.image.WritableRaster;
+import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
+
+//import com.kitfox.svg.SVGCache;
+//import com.kitfox.svg.SVGDiagram;
+//import com.kitfox.svg.SVGException;
+//import com.kitfox.svg.SVGRoot;
+//import com.kitfox.svg.animation.AnimationElement;
+import org.osgi.service.log.LogService;
 
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -36,12 +46,6 @@ import org.eclipse.riena.ui.core.resource.IconManagerProvider;
 import org.eclipse.riena.ui.core.resource.IconSize;
 import org.eclipse.riena.ui.core.resource.IconState;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
-//import com.kitfox.svg.SVGCache;
-//import com.kitfox.svg.SVGDiagram;
-//import com.kitfox.svg.SVGException;
-//import com.kitfox.svg.SVGRoot;
-//import com.kitfox.svg.animation.AnimationElement;
-import org.osgi.service.log.LogService;
 
 /**
  * The ImageStore returns the images for given names. The images are loaded form and cached. The ImageStore extends the images name, if a state (@see
@@ -132,6 +136,51 @@ public final class ImageStore {
 		//		}
 		//
 		//		return descriptor;
+
+	}
+
+	public URI getImageUri(final String imageName, final ImageFileExtension fileExtension) {
+
+		URI uri = null;
+
+		String fullName = getFullScaledName(imageName, fileExtension);
+		uri = getUri(fullName);
+		if (uri != null) {
+			return uri;
+		}
+
+		fullName = getFullName(imageName, fileExtension);
+		uri = getUri(fullName);
+		if (uri != null) {
+			return uri;
+		}
+
+		final String defaultIconName = getDefaultIconMangerImageName(imageName);
+		if (!StringUtils.equals(defaultIconName, imageName)) {
+			fullName = getFullName(defaultIconName, fileExtension);
+			uri = getUri(fullName);
+		}
+
+		return uri;
+
+	}
+
+	private boolean fileExists(final File file) {
+		return file.exists() && file.isFile();
+	}
+
+	private URI getUri(final String fullName) {
+
+		final URL imageUrl = getImageUrl(fullName);
+		if (imageUrl != null) {
+			try {
+				return imageUrl.toURI();
+			} catch (final URISyntaxException ex) {
+				LOGGER.log(LogService.LOG_DEBUG, "Can't create URI.", ex); //$NON-NLS-1$
+			}
+		}
+
+		return null;
 
 	}
 
@@ -454,12 +503,9 @@ public final class ImageStore {
 	 */
 	private ImageDescriptor getImageDescriptor(final String fullName) {
 
-		for (final IImagePathExtension iconPath : iconPaths) {
-			final String fullPath = iconPath.getPath() + '/' + fullName;
-			final URL url = iconPath.getContributingBundle().getEntry(fullPath);
-			if (url != null) {
-				return ImageDescriptor.createFromURL(url);
-			}
+		final URL url = getImageUrl(fullName);
+		if (url != null) {
+			return ImageDescriptor.createFromURL(url);
 		}
 
 		final StringBuilder sb = new StringBuilder();
@@ -474,6 +520,20 @@ public final class ImageStore {
 		}
 
 		LOGGER.log(LogService.LOG_DEBUG, sb.toString());
+		return null;
+
+	}
+
+	private URL getImageUrl(final String fullName) {
+
+		for (final IImagePathExtension iconPath : iconPaths) {
+			final String fullPath = iconPath.getPath() + '/' + fullName;
+			final URL url = iconPath.getContributingBundle().getEntry(fullPath);
+			if (url != null) {
+				return url;
+			}
+		}
+
 		return null;
 
 	}

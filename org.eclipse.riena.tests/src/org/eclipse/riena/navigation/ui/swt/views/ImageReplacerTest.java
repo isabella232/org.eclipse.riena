@@ -141,7 +141,7 @@ public class ImageReplacerTest extends TestCase {
 		final RienaDefaultLnf originalLnf = LnfManager.getLnf();
 		LnfManager.setLnf(new MyLnf());
 
-		CommandContributionItemParameter parameter = new CommandContributionItemParameter(null, "id", "cmdId", CommandContributionItem.STYLE_PUSH);
+		CommandContributionItemParameter parameter = new CommandContributionItemParameter(null, "id", "cmdId", CommandContributionItem.STYLE_PUSH); //$NON-NLS-1$ //$NON-NLS-2$
 
 		boolean replaced = ReflectionUtils.invokeHidden(replacer, "replaceImages", parameter); //$NON-NLS-1$
 		assertFalse(replaced);
@@ -159,7 +159,7 @@ public class ImageReplacerTest extends TestCase {
 		final Point dpi = SwtUtilities.getDpi();
 		ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpi", new Point(144, 144)); //$NON-NLS-1$
 
-		parameter = new CommandContributionItemParameter(null, "id", "cmdId", CommandContributionItem.STYLE_PUSH);
+		parameter = new CommandContributionItemParameter(null, "id", "cmdId", CommandContributionItem.STYLE_PUSH); //$NON-NLS-1$ //$NON-NLS-2$
 		parameter.icon = urlImageDescriptor;
 		replaced = ReflectionUtils.invokeHidden(replacer, "replaceImages", parameter); //$NON-NLS-1$
 		assertTrue(replaced);
@@ -167,7 +167,7 @@ public class ImageReplacerTest extends TestCase {
 		assertEquals(24, parameter.icon.getImageData().width);
 		assertEquals(24, parameter.icon.getImageData().height);
 
-		parameter = new CommandContributionItemParameter(null, "id", "cmdId", CommandContributionItem.STYLE_PUSH);
+		parameter = new CommandContributionItemParameter(null, "id", "cmdId", CommandContributionItem.STYLE_PUSH); //$NON-NLS-1$ //$NON-NLS-2$
 		parameter.disabledIcon = urlImageDescriptor;
 		replaced = ReflectionUtils.invokeHidden(replacer, "replaceImages", parameter); //$NON-NLS-1$
 		assertTrue(replaced);
@@ -175,7 +175,7 @@ public class ImageReplacerTest extends TestCase {
 		assertEquals(24, parameter.disabledIcon.getImageData().width);
 		assertEquals(24, parameter.disabledIcon.getImageData().height);
 
-		parameter = new CommandContributionItemParameter(null, "id", "cmdId", CommandContributionItem.STYLE_PUSH);
+		parameter = new CommandContributionItemParameter(null, "id", "cmdId", CommandContributionItem.STYLE_PUSH); //$NON-NLS-1$ //$NON-NLS-2$
 		parameter.hoverIcon = urlImageDescriptor;
 		replaced = ReflectionUtils.invokeHidden(replacer, "replaceImages", parameter); //$NON-NLS-1$
 		assertTrue(replaced);

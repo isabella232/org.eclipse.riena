@@ -11,6 +11,7 @@
 package org.eclipse.riena.navigation.ui.swt.views;
 
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 
 import org.osgi.service.log.LogService;
@@ -38,6 +39,8 @@ import org.eclipse.riena.ui.swt.utils.ImageStore;
 
 /**
  * Class to replace in {@link CommandContributionItem} not scaled images with scaled images.
+ * <p>
+ * <i>(This class does not support e4 implementations of {@link IContributionItem})</i>
  */
 public class ImageReplacer {
 
@@ -47,7 +50,7 @@ public class ImageReplacer {
 	private final Class<? extends ImageDescriptor> fileImageDescriptorClass;
 	private final Class<? extends ImageDescriptor> urlImageDescriptorClass;
 
-	private ImageReplacer() {
+	protected ImageReplacer() {
 
 		ImageDescriptor imageDescriptor = ImageDescriptor.createFromFile(this.getClass(), ""); //$NON-NLS-1$
 		fileImageDescriptorClass = imageDescriptor.getClass();
@@ -100,8 +103,8 @@ public class ImageReplacer {
 					replaceImagesOfManager(((IToolBarContributionItem) item).getToolBarManager());
 				} else if (item instanceof IMenuManager) {
 					replaceImagesOfManager((IMenuManager) item);
-				} else if (item instanceof CommandContributionItem) {
-					replaceImages(contributionManager, (CommandContributionItem) item);
+				} else {
+					replaceImages(contributionManager, item);
 				}
 			}
 		}
@@ -115,20 +118,26 @@ public class ImageReplacer {
 	 * @param item
 	 *            command item
 	 */
-	private void replaceImages(final IContributionManager contributionManager, final CommandContributionItem item) {
-		final CommandContributionItemParameter itemParamter = item.getData();
-		itemParamter.commandId = item.getCommand().getId();
-		// TODO comment
-		contributionManager.remove(item);
-		if (replaceImages(itemParamter)) {
-			contributionManager.add(new CommandContributionItem(itemParamter));
-		} else {
-			contributionManager.add(item);
+	protected void replaceImages(final IContributionManager contributionManager, final IContributionItem item) {
+
+		if (item instanceof CommandContributionItem) {
+
+			final CommandContributionItem commandItem = (CommandContributionItem) item;
+
+			final CommandContributionItemParameter itemParamter = commandItem.getData();
+			itemParamter.commandId = commandItem.getCommand().getId();
+			// TODO comment
+			contributionManager.remove(item);
+			if (replaceImages(itemParamter)) {
+				contributionManager.add(new CommandContributionItem(itemParamter));
+			} else {
+				contributionManager.add(item);
+			}
 		}
 	}
 
 	/**
-	 * Replace all not scaled images (default, disable, hover) of the given item parameter.
+	 * Replaces all not scaled images (default, disable, hover) of the given item parameter.
 	 * 
 	 * @param itemParamter
 	 * @return {@code true} at least one images was replaced; otherwise {@code false}
@@ -228,6 +237,17 @@ public class ImageReplacer {
 		}
 
 		return imageName;
+
+	}
+
+	public String getImageName(final URI imageUrl) {
+
+		if (imageUrl == null) {
+			return null;
+		}
+
+		final String fullName = imageUrl.getPath();
+		return getImageName(fullName);
 
 	}
 
