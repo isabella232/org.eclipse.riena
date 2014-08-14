@@ -146,6 +146,10 @@ public class RienaHessianDispatcherServlet extends GenericServlet {
 
 		final int code = inp.read();
 		if (code != 'c') {
+			if (code == -1) {
+				LOGGER.log(LogService.LOG_WARNING, "CLIENT connected but did NOT send data for URL '" + httpReq.getRequestURI() + "'"); //$NON-NLS-1$ //$NON-NLS-2$
+				return;
+			}
 			throw new IOException("expected 'c' in hessian input at " + code); //$NON-NLS-1$
 		}
 		final int major = inp.read();
