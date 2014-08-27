@@ -104,6 +104,7 @@ public abstract class CompletionCombo extends Composite {
 	 * The text control for this combo.
 	 */
 	private Text text;
+
 	/**
 	 * The list control for this combo. Can be a {@link List} or {@link Table}.
 	 */
@@ -492,6 +493,9 @@ public abstract class CompletionCombo extends Composite {
 	 */
 	protected abstract void setTopIndex(Control list, int index);
 
+	// TODO comment
+	protected abstract void updateExtendedText(final Control list, final int index);
+
 	/**
 	 * Returns the arrow-button control for this combo. This is the arrow-down button at the right side of the combo.
 	 * 
@@ -834,6 +838,7 @@ public abstract class CompletionCombo extends Composite {
 		if (0 <= index && index < getItemCount(list) && index == getSelectionIndex(list) && text.getText().equals(getItem(list, index))) {
 			clearImage();
 			text.setText(""); //$NON-NLS-1$
+			updateExtendedText(list, -1);
 			deselectAll(list);
 		}
 	}
@@ -856,6 +861,7 @@ public abstract class CompletionCombo extends Composite {
 		checkWidget();
 		clearImage();
 		text.setText(""); //$NON-NLS-1$
+		updateExtendedText(list, -1);
 		deselectAll(list);
 	}
 
@@ -1320,7 +1326,7 @@ public abstract class CompletionCombo extends Composite {
 		return super.isFocusControl();
 	}
 
-	void internalLayout(final boolean changed) {
+	protected void internalLayout(final boolean changed) {
 		if (isDropped()) {
 			dropDown(false);
 		}
@@ -1372,6 +1378,7 @@ public abstract class CompletionCombo extends Composite {
 			setImage(index);
 			try {
 				text.setText(getItem(list, index));
+				updateExtendedText(list, index);
 			} catch (final NullPointerException ex) {
 				// At this point the widget may have been disposed.
 				// If so, do not continue.
@@ -1443,6 +1450,7 @@ public abstract class CompletionCombo extends Composite {
 					return;
 				}
 				text.setText(""); //$NON-NLS-1$
+				updateExtendedText(list, -1);
 				deselectAll(list);
 				dropDown(false);
 				sendSelectionEvent();
@@ -1546,6 +1554,7 @@ public abstract class CompletionCombo extends Composite {
 		checkWidget();
 		clearImage();
 		text.setText(""); //$NON-NLS-1$
+		updateExtendedText(list, -1);
 		removeAll(list);
 	}
 
@@ -1660,6 +1669,7 @@ public abstract class CompletionCombo extends Composite {
 		if (index == -1) {
 			clearImage();
 			text.setText(""); //$NON-NLS-1$
+			updateExtendedText(list, -1);
 			deselectAll(list);
 			return;
 		}
@@ -1667,6 +1677,7 @@ public abstract class CompletionCombo extends Composite {
 			if (index != getSelectionIndex()) {
 				setImage(index);
 				text.setText(getItem(list, index));
+				updateExtendedText(list, index);
 				defaultTextSelection();
 				setSelection(list, index);
 			}
@@ -1864,6 +1875,7 @@ public abstract class CompletionCombo extends Composite {
 		if (!text.getEditable()) {
 			clearImage();
 			text.setText(""); //$NON-NLS-1$
+			updateExtendedText(list, -1);
 		}
 	}
 
@@ -1975,6 +1987,7 @@ public abstract class CompletionCombo extends Composite {
 		text.setText(string);
 		defaultTextSelection();
 		setSelection(list, index);
+		updateExtendedText(list, index);
 	}
 
 	/**
@@ -2427,11 +2440,13 @@ public abstract class CompletionCombo extends Composite {
 			text.setText(newText);
 			text.setSelection(newText.length());
 			setSelection(list, index);
+			updateExtendedText(list, index);
 			sendSelectionEvent();
 		} else if (index == -1 && isAllowMissmatch()) {
 			clearImage();
 			text.setText(newText);
 			text.setSelection(newText.length());
+			updateExtendedText(list, index); // TODO ???
 		}
 	}
 
@@ -2504,10 +2519,12 @@ public abstract class CompletionCombo extends Composite {
 				text.setSelection(newText.length());
 				setSelection(list, index);
 				sendSelectionEvent();
+				updateExtendedText(list, index);
 			} else if (index == -1 && isAllowMissmatch()) {
 				clearImage();
 				text.setText(newText);
 				text.setSelection(newText.length());
+				updateExtendedText(list, index); // TODO ???
 			}
 		}
 	}
@@ -2567,6 +2584,7 @@ public abstract class CompletionCombo extends Composite {
 			if (prefix.length() == 0) {
 				clearImage();
 				text.setText(""); //$NON-NLS-1$
+				updateExtendedText(list, -1);
 				if (getSelectionIndex() > -1) {
 					deselectAll(list);
 					sendSelectionEvent();
@@ -2617,6 +2635,7 @@ public abstract class CompletionCombo extends Composite {
 		text.setText(item);
 		text.setSelection(selectionStart, selectionEnd);
 		setSelection(list, index);
+		updateExtendedText(list, index);
 		sendSelectionEvent();
 	}
 
