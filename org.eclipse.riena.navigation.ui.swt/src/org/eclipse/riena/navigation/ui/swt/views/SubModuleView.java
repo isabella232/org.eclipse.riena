@@ -445,7 +445,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	 */
 	protected boolean shouldRestoreFocus() {
 		if (getController() != null && getController().getModuleController() instanceof SWTModuleController) {
-			return !((SWTModuleController) getController().getModuleController()).getTree().hasFocus();
+			return !((SWTModuleController) getController().getModuleController()).getTree().hasFocus() && getController().isActivated();
 		} else {
 			return true;
 		}
