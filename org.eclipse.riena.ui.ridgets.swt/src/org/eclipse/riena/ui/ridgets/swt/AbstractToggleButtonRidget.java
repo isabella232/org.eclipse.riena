@@ -54,6 +54,7 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 	private Binding controlBinding;
 	private String text;
 	private String iconID;
+	private IconSize iconSize;
 	private boolean selected;
 	private boolean textAlreadyInitialized;
 	private boolean useRidgetIcon;
@@ -96,9 +97,7 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 	}
 
 	public String getIcon() {
-		final IIconManager manager = IconManagerProvider.getInstance().getIconManager();
-		final String icon = manager.getName(this.iconID);
-		return icon;
+		return this.iconID;
 	}
 
 	public final String getText() {
@@ -135,6 +134,7 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 		final String oldIconID = this.iconID;
 		final IIconManager manager = IconManagerProvider.getInstance().getIconManager();
 		this.iconID = manager.getIconID(icon, size);
+		this.iconSize = size;
 		if (hasChanged(oldIconID, iconID) || !oldUseRidgetIcon) {
 			updateUIIcon();
 		}
@@ -295,8 +295,8 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 	private void updateUIIcon() {
 		if (getUIControl() != null) {
 			Image image = null;
-			if (iconID != null) {
-				image = getManagedImage(iconID);
+			if (getIcon() != null) {
+				image = getManagedImage(getIcon(), iconSize);
 			}
 			if ((image != null) || useRidgetIcon) {
 				setUIControlImage(image);

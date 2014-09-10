@@ -39,6 +39,7 @@ import org.eclipse.riena.ui.core.marker.ErrorMessageMarker;
 import org.eclipse.riena.ui.core.marker.HiddenMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.core.marker.OutputMarker;
+import org.eclipse.riena.ui.core.resource.IconSize;
 import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
 import org.eclipse.riena.ui.ridgets.AbstractRidget;
 import org.eclipse.riena.ui.ridgets.IActionListener;
@@ -503,12 +504,16 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 		}
 	}
 
-	protected Image getManagedImage(final String key) {
-		Image image = Activator.getSharedImage(key);
+	protected Image getManagedImage(final String key, final IconSize imageSize) {
+		Image image = Activator.getSharedImage(key, imageSize);
 		if (image == null) {
 			image = ImageStore.getInstance().getMissingImage();
 		}
 		return image;
+	}
+
+	protected Image getManagedImage(final String key) {
+		return getManagedImage(key, IconSize.NONE);
 	}
 
 	/**

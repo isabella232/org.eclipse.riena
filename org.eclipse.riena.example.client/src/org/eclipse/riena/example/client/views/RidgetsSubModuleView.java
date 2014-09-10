@@ -16,6 +16,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
+import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -24,8 +25,10 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
+import org.eclipse.riena.ui.swt.ImageButton;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
@@ -106,6 +109,12 @@ public class RidgetsSubModuleView extends SubModuleView {
 		UIControlsFactory.createImageButton(imageButtonGroup, SWT.NONE, "imageButton"); //$NON-NLS-1$
 		UIControlsFactory.createImageButton(imageButtonGroup, SWT.NONE, "arrowButton"); //$NON-NLS-1$
 		UIControlsFactory.createImageButton(imageButtonGroup, SWT.HOT, "arrowHotButton"); //$NON-NLS-1$
+		ImageButton imageBtn = UIControlsFactory.createImageButton(imageButtonGroup, SWT.NONE, "cloudSmallButton"); //$NON-NLS-1$
+		int size = SwtUtilities.convertPixelToDpi(20);
+		imageBtn.setLayoutData(new RowData(size, size));
+		imageBtn = UIControlsFactory.createImageButton(imageButtonGroup, SWT.NONE, "cloudBigButton"); //$NON-NLS-1$
+		size = SwtUtilities.convertPixelToDpi(36);
+		imageBtn.setLayoutData(new RowData(size, size));
 
 		return imageButtonGroup;
 	}

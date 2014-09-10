@@ -27,8 +27,8 @@ public class RidgetsSubModuleController extends SubModuleController {
 	//	private final static String ICON_RED = "ledred.png"; //$NON-NLS-1$
 	//	private final static String ICON_GREEN = "ledlightgreen.png"; //$NON-NLS-1$
 	private final static String ICON_SAMPLE = "0140"; //$NON-NLS-1$
+	private final static String ICON_YELLOW = "0141"; //$NON-NLS-1$
 	private final static String ICON_RED = "0142"; //$NON-NLS-1$
-	private final static String ICON_GREEN = "0141"; //$NON-NLS-1$
 
 	private final RidgetsModel model;
 
@@ -78,7 +78,7 @@ public class RidgetsSubModuleController extends SubModuleController {
 		buttonTwo.setText("Button 2"); //$NON-NLS-1$
 		buttonTwo.addListener(new IActionListener() {
 			public void callback() {
-				buttonTwo.setIcon(ICON_GREEN, IconSize.A16);
+				buttonTwo.setIcon(ICON_YELLOW, IconSize.A16);
 				System.out.println("Button clicked..."); //$NON-NLS-1$
 			}
 		});
@@ -100,6 +100,15 @@ public class RidgetsSubModuleController extends SubModuleController {
 		final IActionRidget arrowHotButton = getRidget(IImageButtonRidget.class, "arrowHotButton"); //$NON-NLS-1$
 		arrowHotButton.setIcon("arrowRight"); //$NON-NLS-1$
 		arrowHotButton.addListener(actionListener);
+
+		final IActionRidget cloudSmallButton = getRidget(IImageButtonRidget.class, "cloudSmallButton"); //$NON-NLS-1$
+		cloudSmallButton.setIcon("cloud", IconSize.A16); //$NON-NLS-1$
+		cloudSmallButton.addListener(actionListener);
+
+		final IActionRidget cloudBigButton = getRidget(IImageButtonRidget.class, "cloudBigButton"); //$NON-NLS-1$
+		cloudBigButton.setIcon("cloud", IconSize.C32); //$NON-NLS-1$
+		cloudBigButton.addListener(actionListener);
+
 	}
 
 	// helping classes

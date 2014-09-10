@@ -10,7 +10,8 @@ Require-Bundle: org.eclipse.riena.client,
  org.eclipse.riena.security.common,
  org.eclipse.equinox.security,
  org.eclipse.core.expressions,
- org.eclipse.riena.security.ui
+ org.eclipse.riena.security.ui,
+ org.eclipse.riena.beans.common
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: org.osgi.service.log;version="1.3.0"

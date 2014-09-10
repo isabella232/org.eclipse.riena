@@ -23,7 +23,6 @@ import org.eclipse.riena.ui.core.resource.IconSize;
 import org.eclipse.riena.ui.core.resource.IconState;
 import org.eclipse.riena.ui.ridgets.IImageButtonRidget;
 import org.eclipse.riena.ui.swt.ImageButton;
-import org.eclipse.riena.ui.swt.utils.ImageStore;
 
 /**
  * Ridget of an {@link ImageButton} widget.
@@ -146,15 +145,15 @@ public class ImageButtonRidget extends AbstractActionRidget implements IImageBut
 			if (iconName != null) {
 				final IconSize size = manager.getSize(iconId);
 				iconId = manager.getIconID(iconName, size, IconState.DISABLED);
-				control.setDisabledImage(ImageStore.getInstance().getImage(iconId));
+				control.setDisabledImage(Activator.getSharedImage(iconId, size));
 				iconId = manager.getIconID(iconName, size, IconState.HOVER);
-				control.setHoverImage(ImageStore.getInstance().getImage(iconId));
+				control.setHoverImage(Activator.getSharedImage(iconId, size));
 				iconId = manager.getIconID(iconName, size, IconState.PRESSED);
-				control.setPressedImage(ImageStore.getInstance().getImage(iconId));
+				control.setPressedImage(Activator.getSharedImage(iconId, size));
 				iconId = manager.getIconID(iconName, size, IconState.HAS_FOCUS);
-				control.setFocusedImage(ImageStore.getInstance().getImage(iconId));
+				control.setFocusedImage(Activator.getSharedImage(iconId, size));
 				iconId = manager.getIconID(iconName, size, IconState.HOVER_HAS_FOCUS);
-				control.setHoverFocusedImage(ImageStore.getInstance().getImage(iconId));
+				control.setHoverFocusedImage(Activator.getSharedImage(iconId, size));
 			} else {
 				control.setDisabledImage(null);
 				control.setHoverImage(null);

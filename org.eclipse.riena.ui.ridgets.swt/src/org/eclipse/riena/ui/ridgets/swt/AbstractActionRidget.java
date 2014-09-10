@@ -22,8 +22,7 @@ import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 
 /**
- * An abstract Ridget for buttons that does not depend on the class
- * org.eclipse.swt.widgets.Button. May be used for Ridgets for custom buttons.
+ * An abstract Ridget for buttons that does not depend on the class org.eclipse.swt.widgets.Button. May be used for Ridgets for custom buttons.
  */
 public abstract class AbstractActionRidget extends AbstractSWTRidget implements IActionRidget {
 
@@ -33,6 +32,7 @@ public abstract class AbstractActionRidget extends AbstractSWTRidget implements 
 
 	private String text;
 	private String iconID;
+	private IconSize iconSize;
 	private boolean textAlreadyInitialized;
 	private boolean useRidgetIcon;
 
@@ -48,8 +48,7 @@ public abstract class AbstractActionRidget extends AbstractSWTRidget implements 
 	}
 
 	/**
-	 * If the text of the ridget has no value, initialize it with the text of
-	 * the UI control.
+	 * If the text of the ridget has no value, initialize it with the text of the UI control.
 	 */
 	protected void initText() {
 		if (text == null && !textAlreadyInitialized) {
@@ -73,8 +72,7 @@ public abstract class AbstractActionRidget extends AbstractSWTRidget implements 
 	}
 
 	/**
-	 * Always returns true because mandatory markers do not make sense for this
-	 * ridget.
+	 * Always returns true because mandatory markers do not make sense for this ridget.
 	 */
 	@Override
 	public boolean isDisableMandatoryMarker() {
@@ -88,8 +86,7 @@ public abstract class AbstractActionRidget extends AbstractSWTRidget implements 
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * The <i>full</i> name of the icon is returned, also called icon ID. The
-	 * icon ID (can) contains the name, the size and the state.
+	 * The <i>full</i> name of the icon is returned, also called icon ID. The icon ID (can) contains the name, the size and the state.
 	 */
 	public String getIcon() {
 		return this.iconID;
@@ -109,8 +106,7 @@ public abstract class AbstractActionRidget extends AbstractSWTRidget implements 
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * The name and the size of the icon will be managed by an implementation of
-	 * {@code IIconManager}.
+	 * The name and the size of the icon will be managed by an implementation of {@code IIconManager}.
 	 * 
 	 * @since 2.0
 	 */
@@ -120,6 +116,7 @@ public abstract class AbstractActionRidget extends AbstractSWTRidget implements 
 		final String oldIcon = this.iconID;
 		final IIconManager manager = IconManagerProvider.getInstance().getIconManager();
 		this.iconID = manager.getIconID(icon, size);
+		this.iconSize = size;
 		if (hasChanged(oldIcon, icon) || !oldUseRidgetIcon) {
 			updateUIIcon();
 		}
@@ -155,7 +152,7 @@ public abstract class AbstractActionRidget extends AbstractSWTRidget implements 
 		if (getUIControl() != null) {
 			Image image = null;
 			if (getIcon() != null) {
-				image = getManagedImage(getIcon());
+				image = getManagedImage(getIcon(), iconSize);
 			}
 			if ((image != null) || useRidgetIcon) {
 				setUIControlImage(image);
@@ -169,8 +166,7 @@ public abstract class AbstractActionRidget extends AbstractSWTRidget implements 
 	protected abstract void setUIControlImage(Image image);
 
 	/**
-	 * Fires the same event that would be fired if the UIControl was klicked.
-	 * Does nothing if the Ridget is disabled or invisible. <br>
+	 * Fires the same event that would be fired if the UIControl was klicked. Does nothing if the Ridget is disabled or invisible. <br>
 	 * Should only be used in controller tests.
 	 * 
 	 * @since 2.0

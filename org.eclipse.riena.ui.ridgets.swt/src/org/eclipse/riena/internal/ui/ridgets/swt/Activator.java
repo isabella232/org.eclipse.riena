@@ -18,6 +18,7 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 
+import org.eclipse.riena.ui.core.resource.IconSize;
 import org.eclipse.riena.ui.ridgets.ClassRidgetMapper;
 import org.eclipse.riena.ui.swt.AbstractRienaUIPlugin;
 import org.eclipse.riena.ui.swt.utils.ImageStore;
@@ -75,7 +76,11 @@ public class Activator extends AbstractRienaUIPlugin {
 	 *            a non-null String; see {@link SharedImages} for valid keys
 	 * @return a non-null Image instance
 	 */
-	public static synchronized Image getSharedImage(final String imageKey) {
+	public static Image getSharedImage(final String imageKey) {
+		return getSharedImage(imageKey, IconSize.NONE);
+	}
+
+	public static synchronized Image getSharedImage(final String imageKey, final IconSize imageSize) {
 		if (imageKey == null) {
 			return null;
 		}
@@ -85,7 +90,7 @@ public class Activator extends AbstractRienaUIPlugin {
 		}
 		Image image = sharedImages.get(imageKey);
 		if (image == null) {
-			image = ImageStore.getInstance().getImage(imageKey);
+			image = ImageStore.getInstance().getImage(imageKey, imageSize);
 			if (image != null) {
 				sharedImages.put(imageKey, image);
 			}

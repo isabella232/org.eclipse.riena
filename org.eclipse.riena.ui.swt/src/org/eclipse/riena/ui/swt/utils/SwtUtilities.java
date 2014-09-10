@@ -10,12 +10,24 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.utils;
 
+import java.awt.image.BufferedImage;
+import java.awt.image.ComponentColorModel;
+import java.awt.image.DataBufferByte;
+import java.awt.image.DirectColorModel;
+import java.awt.image.IndexColorModel;
+import java.awt.image.WritableRaster;
+import java.text.MessageFormat;
 import java.util.Map;
 
+import org.osgi.service.log.LogService;
+
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.equinox.log.Logger;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.graphics.PaletteData;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.graphics.Resource;
@@ -26,7 +38,9 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.swt.widgets.Widget;
 
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.cache.LRUHashMap;
+import org.eclipse.riena.internal.ui.swt.Activator;
 import org.eclipse.riena.internal.ui.swt.utils.RcpUtilities;
 import org.eclipse.riena.ui.swt.facades.GCFacade;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -36,11 +50,13 @@ import org.eclipse.riena.ui.swt.lnf.LnfManager;
  */
 public final class SwtUtilities {
 
+	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), SwtUtilities.class);
 	private static final String THREE_DOTS = "..."; //$NON-NLS-1$
 	private static final Map<GCString, Integer> TEXT_WIDTH_CACHE = LRUHashMap.createLRUHashMap(2048);
 	private static final Map<GCChar, Integer> CHAR_WIDTH_CACHE = LRUHashMap.createLRUHashMap(1024);
 	private final static float DEFAULT_DPI_X = 96.0f;
 	private final static float DEFAULT_DPI_Y = 96.0f;
+	private final static Point DEFAULT_DPI = new Point(Math.round(DEFAULT_DPI_X), Math.round(DEFAULT_DPI_Y));
 	private static float[] cachedDpiFactors = new float[] { 0.0f, 0.0f };
 	private static Point cachedDpi = null;
 
@@ -257,6 +273,10 @@ public final class SwtUtilities {
 	 */
 	public static Point getDpi() {
 		return getDpi(null);
+	}
+
+	public static Point getDefaultDpi() {
+		return DEFAULT_DPI;
 	}
 
 	/**
@@ -533,6 +553,123 @@ public final class SwtUtilities {
 		final RGB rgb = new RGB(h, s, b);
 
 		return new Color(color.getDevice(), rgb);
+	}
+
+	/**
+	 * Converts the given AWT image to a SWT imgae ({@code ImageData}).
+	 * <p>
+	 * <i>Copy of org.eclipse.swt.snippets/src/org/eclipse/swt/snippets/Snippet156.java</i>
+	 * 
+	 * @param bufferedImage
+	 *            AWT image
+	 * @return SWT image or {@code null} if conversion isn't possible
+	 */
+	public static ImageData convertAwtImageToImageData(final BufferedImage bufferedImage) {
+
+		if (bufferedImage.getColorModel() instanceof DirectColorModel) {
+
+			final DirectColorModel colorModel = (DirectColorModel) bufferedImage.getColorModel();
+			final PaletteData palette = convertColorModelToPalette(colorModel);
+			final ImageData data = new ImageData(bufferedImage.getWidth(), bufferedImage.getHeight(), colorModel.getPixelSize(), palette);
+			for (int y = 0; y < data.height; y++) {
+				for (int x = 0; x < data.width; x++) {
+					final int rgb = bufferedImage.getRGB(x, y);
+					final int pixel = palette.getPixel(new RGB((rgb >> 16) & 0xFF, (rgb >> 8) & 0xFF, rgb & 0xFF));
+					data.setPixel(x, y, pixel);
+					if (colorModel.hasAlpha()) {
+						data.setAlpha(x, y, (rgb >> 24) & 0xFF);
+					}
+				}
+			}
+			return data;
+
+		} else if (bufferedImage.getColorModel() instanceof IndexColorModel) {
+
+			final IndexColorModel colorModel = (IndexColorModel) bufferedImage.getColorModel();
+			final PaletteData palette = convertColorModelToPalette(colorModel);
+			final ImageData data = new ImageData(bufferedImage.getWidth(), bufferedImage.getHeight(), colorModel.getPixelSize(), palette);
+			data.transparentPixel = colorModel.getTransparentPixel();
+			final WritableRaster raster = bufferedImage.getRaster();
+			final int[] pixelArray = new int[1];
+			for (int y = 0; y < data.height; y++) {
+				for (int x = 0; x < data.width; x++) {
+					raster.getPixel(x, y, pixelArray);
+					data.setPixel(x, y, pixelArray[0]);
+				}
+			}
+			return data;
+
+		} else if (bufferedImage.getColorModel() instanceof ComponentColorModel && bufferedImage.getType() == BufferedImage.TYPE_3BYTE_BGR) {
+
+			final ComponentColorModel colorModel = (ComponentColorModel) bufferedImage.getColorModel();
+			final PaletteData palette = convertColorModelToPalette(colorModel);
+			final WritableRaster raster = bufferedImage.getRaster();
+			final int scanlinePad = colorModel.getColorSpace().getNumComponents();
+			final byte[] pixels = ((DataBufferByte) raster.getDataBuffer()).getData();
+			final ImageData data = new ImageData(bufferedImage.getWidth(), bufferedImage.getHeight(), colorModel.getPixelSize(), palette, scanlinePad, pixels);
+			return data;
+
+		} else {
+
+			if (bufferedImage.getColorModel() != null) {
+				final String colorModelName = bufferedImage.getColorModel().getClass().getSimpleName();
+				final String msg = MessageFormat.format("The color model {0} is not supported!", colorModelName); //$NON-NLS-1$
+				LOGGER.log(LogService.LOG_ERROR, msg);
+			} else {
+				LOGGER.log(LogService.LOG_ERROR, "No color model!"); //$NON-NLS-1$
+			}
+
+		}
+
+		return null;
+	}
+
+	/**
+	 * Converts the given color model of AWT to a SWT palette.
+	 * 
+	 * @param colorModel
+	 *            AWT color model
+	 * @return SWT palette
+	 */
+	private static PaletteData convertColorModelToPalette(final DirectColorModel colorModel) {
+		return new PaletteData(colorModel.getRedMask(), colorModel.getGreenMask(), colorModel.getBlueMask());
+	}
+
+	/**
+	 * Converts the given color model of AWT to a SWT palette.
+	 * 
+	 * @param colorModel
+	 *            AWT color model
+	 * @return SWT palette
+	 */
+	private static PaletteData convertColorModelToPalette(final ComponentColorModel colorModel) {
+		return new PaletteData(0x0000FF, 0x00FF00, 0xFF0000);
+	}
+
+	/**
+	 * Converts the given color model of AWT to a SWT palette.
+	 * 
+	 * @param colorModel
+	 *            AWT color model
+	 * @return SWT palette
+	 */
+	private static PaletteData convertColorModelToPalette(final IndexColorModel colorModel) {
+
+		final int size = colorModel.getMapSize();
+		final byte[] reds = new byte[size];
+		final byte[] greens = new byte[size];
+		final byte[] blues = new byte[size];
+		colorModel.getReds(reds);
+		colorModel.getGreens(greens);
+		colorModel.getBlues(blues);
+		final RGB[] rgbs = new RGB[size];
+		for (int i = 0; i < rgbs.length; i++) {
+			rgbs[i] = new RGB(reds[i] & 0xFF, greens[i] & 0xFF, blues[i] & 0xFF);
+		}
+
+		final PaletteData palette = new PaletteData(rgbs);
+		return palette;
+
 	}
 
 	private final static class GCChar {

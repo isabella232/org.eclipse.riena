@@ -10,11 +10,21 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.utils;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.net.URI;
+import java.net.URL;
+
+import javax.imageio.ImageIO;
+
 import junit.framework.TestCase;
 
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
@@ -289,6 +299,44 @@ public class SwtUtilitiesTest extends TestCase {
 		y = SwtUtilities.convertYToDpiTruncate(2);
 		expectedValue = 9;
 		assertEquals(expectedValue, y);
+
+	}
+
+	/**
+	 * Tests the method {@code convertAwtImageToImageData}.
+	 * 
+	 * @throws Exception
+	 *             handled by JUnit
+	 */
+	public void testConvertAwtImageToImageData() throws Exception {
+
+		// IndexColorModel
+		URI imageUri = ImageStore.getInstance().getImageUri("eclipse", ImageFileExtension.GIF); //$NON-NLS-1$
+		URL imageUrl = FileLocator.toFileURL(imageUri.toURL());
+		File img = new File(imageUrl.getPath());
+		BufferedImage bi = ImageIO.read(img);
+
+		ImageData imageData = SwtUtilities.convertAwtImageToImageData(bi);
+		assertNotNull(imageData);
+		assertEquals(16, imageData.width);
+		assertEquals(16, imageData.height);
+		int pixelValue = imageData.getPixel(5, 5);
+		RGB rgb = imageData.palette.getRGB(pixelValue);
+		assertEquals(new RGB(113, 117, 169), rgb);
+
+		// ComponentColorModel
+		imageUri = ImageStore.getInstance().getImageUri("spirit", ImageFileExtension.PNG); //$NON-NLS-1$
+		imageUrl = FileLocator.toFileURL(imageUri.toURL());
+		img = new File(imageUrl.getPath());
+		bi = ImageIO.read(img);
+
+		imageData = SwtUtilities.convertAwtImageToImageData(bi);
+		assertNotNull(imageData);
+		assertEquals(16, imageData.width);
+		assertEquals(16, imageData.height);
+		pixelValue = imageData.getPixel(1, 1);
+		rgb = imageData.palette.getRGB(pixelValue);
+		assertEquals(new RGB(20, 100, 150), rgb);
 
 	}
 
