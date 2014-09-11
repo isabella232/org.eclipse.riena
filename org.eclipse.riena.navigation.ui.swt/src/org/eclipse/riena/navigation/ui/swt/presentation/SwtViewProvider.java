@@ -24,6 +24,7 @@ import org.eclipse.riena.core.singleton.SessionSingletonProvider;
 import org.eclipse.riena.core.singleton.SingletonProvider;
 import org.eclipse.riena.navigation.ApplicationModelFailure;
 import org.eclipse.riena.navigation.IModuleGroupNode;
+import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationNodeId;
@@ -137,13 +138,24 @@ public class SwtViewProvider {
 			if (viewCounter.get(viewId) == 0) {
 				String secondary = SubModuleView.SHARED_ID;
 
-				// if the shared view should be a Group Shared View, then a secondary
-				// id must be set to the parent IModuleGroupNode,
+				// if the shared view should be a Group/Module Shared View, then a secondary
+				// id must be set to the parent IModuleGroupNode/IModuleNode,
 				// otherwise the secondary id remains "shared" and the view is globally shared
-				final IModuleGroupNode group = submodule.getParentOfType(IModuleGroupNode.class);
-				if (group != null && group.getContext(ISubModuleNode.SHARED_VIEWS_CONTEXT_KEY) instanceof String) {
+				boolean found = false;
+				// first try the module parent
+				final IModuleNode module = submodule.getParentOfType(IModuleNode.class);
+				if (module != null && module.getContext(ISubModuleNode.SHARED_VIEWS_CONTEXT_KEY) instanceof String) {
 					secondary = secondary + "."; //$NON-NLS-1$
-					secondary = secondary + (String) group.getContext(ISubModuleNode.SHARED_VIEWS_CONTEXT_KEY);
+					secondary = secondary + (String) module.getContext(ISubModuleNode.SHARED_VIEWS_CONTEXT_KEY);
+					found = true;
+				}
+				if (!found) {
+					// try the group parent
+					final IModuleGroupNode group = submodule.getParentOfType(IModuleGroupNode.class);
+					if (group != null && group.getContext(ISubModuleNode.SHARED_VIEWS_CONTEXT_KEY) instanceof String) {
+						secondary = secondary + "."; //$NON-NLS-1$
+						secondary = secondary + (String) group.getContext(ISubModuleNode.SHARED_VIEWS_CONTEXT_KEY);
+					}
 				}
 
 				// first node with this view
