@@ -108,6 +108,7 @@ public class ImageStoreTest extends RienaTestCase {
 			image = store.getImage("testimagea", IconSize.A16); //$NON-NLS-1$
 			assertEquals(16, image.getBounds().width);
 
+			ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpiFactors", new float[] { 0.0f, 0.0f }); //$NON-NLS-1$
 			final Point defaultDpi = SwtUtilities.getDefaultDpi();
 			ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpi", defaultDpi); //$NON-NLS-1$
 
@@ -392,6 +393,7 @@ public class ImageStoreTest extends RienaTestCase {
 
 		final ImageStore store = ImageStore.getInstance();
 
+		ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpiFactors", new float[] { 0.0f, 0.0f }); //$NON-NLS-1$
 		final Point defaultDpi = SwtUtilities.getDefaultDpi();
 		ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpi", defaultDpi); //$NON-NLS-1$
 
