@@ -504,6 +504,9 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 		}
 	}
 
+	/**
+	 * @since 6.0
+	 */
 	protected Image getManagedImage(final String key, final IconSize imageSize) {
 		Image image = Activator.getSharedImage(key, imageSize);
 		if (image == null) {

@@ -41,6 +41,8 @@ import org.eclipse.riena.ui.swt.utils.ImageStore;
  * Class to replace in {@link CommandContributionItem} not scaled images with scaled images.
  * <p>
  * <i>(This class does not support e4 implementations of {@link IContributionItem})</i>
+ * 
+ * @since 6.0
  */
 public class ImageReplacer {
 

@@ -493,7 +493,11 @@ public abstract class CompletionCombo extends Composite {
 	 */
 	protected abstract void setTopIndex(Control list, int index);
 
-	// TODO comment
+	/**
+	 * TODO comment
+	 * 
+	 * @since 6.0
+	 */
 	protected abstract void updateExtendedText(final Control list, final int index);
 
 	/**
@@ -1326,6 +1330,9 @@ public abstract class CompletionCombo extends Composite {
 		return super.isFocusControl();
 	}
 
+	/**
+	 * @since 6.0
+	 */
 	protected void internalLayout(final boolean changed) {
 		if (isDropped()) {
 			dropDown(false);
