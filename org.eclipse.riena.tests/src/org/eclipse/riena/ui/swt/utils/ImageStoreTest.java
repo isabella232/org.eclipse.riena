@@ -108,7 +108,8 @@ public class ImageStoreTest extends RienaTestCase {
 			image = store.getImage("testimagea", IconSize.A16); //$NON-NLS-1$
 			assertEquals(16, image.getBounds().width);
 
-			ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpi", new Point(96, 96)); //$NON-NLS-1$
+			final Point defaultDpi = SwtUtilities.getDefaultDpi();
+			ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpi", defaultDpi); //$NON-NLS-1$
 
 			// find SVG
 			image = store.getImage("cloud_p_", IconSize.A16); //$NON-NLS-1$
@@ -390,6 +391,9 @@ public class ImageStoreTest extends RienaTestCase {
 	public void testGetImageBounds() throws Exception {
 
 		final ImageStore store = ImageStore.getInstance();
+
+		final Point defaultDpi = SwtUtilities.getDefaultDpi();
+		ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpi", defaultDpi); //$NON-NLS-1$
 
 		SVGDiagram svgDiagram = null;
 		IconSize size = null;
