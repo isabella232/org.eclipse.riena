@@ -48,6 +48,8 @@ import org.eclipse.riena.ui.swt.lnf.LnfManager;
 /**
  * The ImageStore returns the images for given names. The images are loaded form and cached. The ImageStore extends the images name, if a state (@see
  * {@link ImageState}) like pressed of hover is given. If the image name has no file extension, the extension ".png" will be added.
+ * 
+ * @since 6.0
  */
 public final class ImageStore {
 
@@ -81,6 +83,7 @@ public final class ImageStore {
 	 * @param imageSize
 	 *            Image size is necessary for SVG files.
 	 * @return image or {@code null} if no image exists for the given name.
+	 * @since 6.0
 	 */
 	public Image getImage(final String imageName, final ImageFileExtension fileExtension, final IconSize imageSize) {
 
@@ -128,6 +131,7 @@ public final class ImageStore {
 	 * @param fileExtension
 	 *            extension of the image file (@see ImageFileExtension)
 	 * @return ImageDescriptor of the image or {@code null} if no image exists for the given name.
+	 * @since 6.0
 	 */
 	public ImageDescriptor getImageDescriptor(final String imageName, final ImageFileExtension fileExtension) {
 
@@ -148,6 +152,7 @@ public final class ImageStore {
 	 * @param fileExtension
 	 *            extension of the image file (@see ImageFileExtension)
 	 * @return URI of the image or {@code null} if no image exists for the given name.
+	 * @since 6.0
 	 */
 	public URI getImageUri(final String imageName, final ImageFileExtension fileExtension) {
 
@@ -240,11 +245,20 @@ public final class ImageStore {
 	 * @param imageName
 	 *            name (ID) of the image
 	 * @return image or {@code null} if no image exists for the given name.
+	 * @since 6.0
 	 */
 	public Image getImage(final String imageName) {
 		return getImage(imageName, ImageFileExtension.PNG, IconSize.NONE);
 	}
 
+	/**
+	 * Returns the image for the given image name and given size.
+	 * 
+	 * @param imageName
+	 *            name (ID) of the image
+	 * @return image or {@code null} if no image exists for the given name.
+	 * @since 6.0
+	 */
 	public Image getImage(final String imageName, final IconSize imageSize) {
 		return getImage(imageName, ImageFileExtension.PNG, imageSize);
 	}

@@ -22,6 +22,9 @@ public enum ImageFileExtension {
 	PNG("png"), //$NON-NLS-1$
 	GIF("gif"), //$NON-NLS-1$
 	JPG("jpg"), //$NON-NLS-1$
+	/**
+	 * @since 6.0
+	 */
 	SVG("svg"); //$NON-NLS-1$
 
 	private String fileNameExtension;
@@ -45,6 +48,7 @@ public enum ImageFileExtension {
 	 * @param fileNameExtension
 	 *            extension of the file name
 	 * @return {@code ImageFileExtension} or {@code null} if no matching exists
+	 * @since 6.0
 	 */
 	public static ImageFileExtension getImageFileExtension(final String fileNameExtension) {
 

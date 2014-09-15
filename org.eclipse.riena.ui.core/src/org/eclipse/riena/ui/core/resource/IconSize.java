@@ -62,10 +62,20 @@ public class IconSize {
 		return getDefaultMapping();
 	}
 
+	/**
+	 * Returns the width of this icon size.
+	 * 
+	 * @since 6.0
+	 */
 	public int getWidth() {
 		return width;
 	}
 
+	/**
+	 * Returns the height of this icon size.
+	 * 
+	 * @since 6.0
+	 */
 	public int getHeight() {
 		return height;
 	}
