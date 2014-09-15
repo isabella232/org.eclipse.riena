@@ -397,15 +397,21 @@ public class ImageStoreTest extends RienaTestCase {
 		final Point defaultDpi = SwtUtilities.getDefaultDpi();
 		ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpi", defaultDpi); //$NON-NLS-1$
 
+		assertEquals(1.0f, SwtUtilities.getDpiFactors()[0]);
+		assertEquals(1.0f, SwtUtilities.getDpiFactors()[1]);
 		SVGDiagram svgDiagram = null;
 		IconSize size = null;
 		Rectangle bounds = ReflectionUtils.invokeHidden(store, "getImageBounds", svgDiagram, size); //$NON-NLS-1$
 		assertEquals(new Rectangle(0, 0, 0, 0), bounds);
 
+		assertEquals(1.0f, SwtUtilities.getDpiFactors()[0]);
+		assertEquals(1.0f, SwtUtilities.getDpiFactors()[1]);
 		size = IconSize.NONE;
 		bounds = ReflectionUtils.invokeHidden(store, "getImageBounds", svgDiagram, size); //$NON-NLS-1$
 		assertEquals(new Rectangle(0, 0, 0, 0), bounds);
 
+		assertEquals(1.0f, SwtUtilities.getDpiFactors()[0]);
+		assertEquals(1.0f, SwtUtilities.getDpiFactors()[1]);
 		size = IconSize.A16;
 		bounds = ReflectionUtils.invokeHidden(store, "getImageBounds", svgDiagram, size); //$NON-NLS-1$
 		int wh = SwtUtilities.convertPixelToDpi(16);
