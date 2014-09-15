@@ -36,6 +36,12 @@ import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 @UITestCase
 public class ImageStoreTest extends RienaTestCase {
 
+	@Override
+	protected void setUp() throws Exception {
+		super.setUp();
+		LnfManager.setLnf(new RienaDefaultLnf());
+	}
+
 	/**
 	 * Tests the <i>private</i> method {@code getFullName}.
 	 */
@@ -393,9 +399,9 @@ public class ImageStoreTest extends RienaTestCase {
 
 		final ImageStore store = ImageStore.getInstance();
 
-		ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpiFactors", new float[] { 0.0f, 0.0f }); //$NON-NLS-1$
 		final Point defaultDpi = SwtUtilities.getDefaultDpi();
 		ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpi", defaultDpi); //$NON-NLS-1$
+		ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpiFactors", new float[] { 0.0f, 0.0f }); //$NON-NLS-1$
 
 		assertEquals(1.0f, SwtUtilities.getDpiFactors()[0]);
 		assertEquals(1.0f, SwtUtilities.getDpiFactors()[1]);
