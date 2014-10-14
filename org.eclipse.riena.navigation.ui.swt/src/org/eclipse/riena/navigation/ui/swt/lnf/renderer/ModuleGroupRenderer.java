@@ -99,7 +99,7 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 			}
 
 			h = getModuleGroupPadding();
-			Collections.sort(modules, new ModuleCompartor());
+			Collections.sort(modules, new ModuleComparator());
 			for (final ModuleView moduleView : modules) {
 				if (moduleView.getNavigationNode() == null || moduleView.getNavigationNode().isDisposed()) {
 					break;
@@ -109,7 +109,7 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 
 			parent.layout();
 
-			Collections.sort(modules, new ModuleCompartor());
+			Collections.sort(modules, new ModuleComparator());
 			for (final Iterator<ModuleView> iterator = modules.iterator(); iterator.hasNext();) {
 				final ModuleView moduleView = iterator.next();
 				if (moduleView.getNavigationNode() == null || moduleView.getNavigationNode().isDisposed()) {
@@ -128,7 +128,7 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 
 	}
 
-	private class ModuleCompartor implements Comparator<ModuleView> {
+	private class ModuleComparator implements Comparator<ModuleView> {
 
 		public int compare(final ModuleView o1, final ModuleView o2) {
 			return navigationNode.getIndexOfChild(o1.getNavigationNode()) < navigationNode.getIndexOfChild(o2.getNavigationNode()) ? -1 : 1;
