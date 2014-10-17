@@ -49,6 +49,14 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
  * @since 4.0
  */
 public class BorderDrawer implements Listener {
+	/**
+	 * Set a data field with this key to <code>true</code> for widgets, for which the 'legacy' border decoration should be used. The legacy border decoration
+	 * decorates always the entire widget bounds, while the current implementation considers widget areas that are eventually not visible (widget is partially
+	 * hidden).
+	 * 
+	 * @since 6.0
+	 */
+	public static final String LEGACY_BORDER_DECORATION = "BorderDrawer.LEGACY_BORDER_DECORATION"; //$NON-NLS-1$
 	public static final int DEFAULT_BORDER_WIDTH = 1;
 
 	private final IDecorationActivationStrategy activationStrategy;
@@ -254,7 +262,9 @@ public class BorderDrawer implements Listener {
 	public void paintControl(final Event event) {
 		if (computeBorderArea) {
 			Rectangle visibleControlArea;
-			if (!useVisibleControlArea || getControlToDecorate() instanceof CCombo || isMasterDetails || getControlToDecorate() instanceof ChoiceComposite) {
+			final Object useLegacyBorderDecoration = getControlToDecorate().getData(LEGACY_BORDER_DECORATION);
+			if (!useVisibleControlArea || getControlToDecorate() instanceof CCombo || isMasterDetails || getControlToDecorate() instanceof ChoiceComposite
+					|| (useLegacyBorderDecoration instanceof Boolean && (Boolean) useLegacyBorderDecoration)) {
 				if (getControlToDecorate() instanceof Composite) {
 					visibleControlArea = ((Composite) getControlToDecorate()).getClientArea();
 				} else {
