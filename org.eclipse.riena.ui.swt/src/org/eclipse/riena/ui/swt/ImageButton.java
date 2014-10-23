@@ -290,13 +290,7 @@ public class ImageButton extends Composite {
 	public void setEnabled(final boolean enabled) {
 		super.setEnabled(enabled);
 		setPressed(false);
-		if (enabled) {
-			Point mousePoint = getDisplay().getCursorLocation();
-			mousePoint = toControl(mousePoint);
-			setHover(isOverButton(mousePoint));
-		} else {
-			setHover(false);
-		}
+		setHover(false);
 		setFocused(false);
 
 	}
@@ -568,17 +562,6 @@ public class ImageButton extends Composite {
 	}
 
 	/**
-	 * Returns whether the given point is inside or outside the bounds of the button.
-	 * 
-	 * @param point
-	 *            position of the mouse pointer
-	 * @return {@code true} if point is inside the button; otherwise {@code false}
-	 */
-	private boolean isOverButton(final Point point) {
-		return (point.x <= getBounds().width && point.x >= 0) && (point.y <= getBounds().height && point.y >= 0);
-	}
-
-	/**
 	 * Returns whether the mouse pointer is or isn't over the button.
 	 * 
 	 * @return {@code true} if the mouse point is over the button; otherwise {@code false}
@@ -617,9 +600,6 @@ public class ImageButton extends Composite {
 	 *            e an event containing information about the paint
 	 */
 	private void onPaint(final PaintEvent event) {
-
-		updateHoverState();
-
 		if (!SwtUtilities.isDisposed(hoverButton) && hoverButton.isVisible()) {
 			return;
 		}
@@ -748,25 +728,6 @@ public class ImageButton extends Composite {
 				hoverButton.setImage(getImageToDraw());
 			}
 		}
-	}
-
-	/**
-	 * Updates the hover state (flag/property {@code hover}).
-	 * <p>
-	 * The update is necessary if the button (or a parent of the button) was disabled. After the button was disabled a mouse exit will be fired and so the hover
-	 * state will be false. After the button was enabled no mouse event will be fired and so the hover state won't be true. Because of this problem at other
-	 * situations this method must be called to update the hover state.
-	 */
-	private void updateHoverState() {
-
-		if (isEnabled()) {
-			Point mousePoint = getDisplay().getCursorLocation();
-			mousePoint = toControl(mousePoint);
-			setHover(isOverButton(mousePoint));
-		} else {
-			setHover(false);
-		}
-
 	}
 
 	// helping classes
@@ -984,6 +945,16 @@ public class ImageButton extends Composite {
 				}
 			}
 			return false;
+		}
+
+		/**
+		 * Returns whether the given point is inside or outside the bounds of the button.
+		 * 
+		 * @param point position of the mouse pointer
+		 * @return {@code true} if point is inside the button; otherwise {@code false}
+		 */
+		private boolean isOverButton(final Point point) {
+			return (point.x <= getBounds().width && point.x >= 0) && (point.y <= getBounds().height && point.y >= 0);
 		}
 
 	}
