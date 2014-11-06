@@ -325,7 +325,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 				 * reused the Riena way. We just hide it if Riena has no more references. For a list of references we use the SwtViewProvider#getViewUsers API.
 				 * We cannot set parts invisible as this collides with the marker concept.
 				 */
-				if (/* Allways hide "unshared" views */!SubModuleView.SHARED_ID.equals(id.getSecondary())
+				if (/* Allways hide "unshared" views */id.getSecondary() == null || !id.getSecondary().startsWith(SubModuleView.SHARED_ID)
 						|| /* no more instances needed of the given shared view */getViewUserCount(id) < 1) {
 					hideView(id);
 				}

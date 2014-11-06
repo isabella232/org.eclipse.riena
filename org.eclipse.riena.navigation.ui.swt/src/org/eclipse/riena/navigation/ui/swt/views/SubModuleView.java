@@ -748,7 +748,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 			/*
 			 * First check if typeId fits. Then check if source is the current node.
 			 */
-			return getSecondaryId().equals(SHARED_ID) && currentController != null && source.equals(currentController.getNavigationNode());
+			return getSecondaryId().startsWith(SHARED_ID) && currentController != null && source.equals(currentController.getNavigationNode());
 		}
 
 		@Override
