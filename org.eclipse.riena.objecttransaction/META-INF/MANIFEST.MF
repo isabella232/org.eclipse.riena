@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Riena Objecttransaction Plug-in
 Bundle-SymbolicName: org.eclipse.riena.objecttransaction
-Bundle-Version: 6.0.0.qualifier
+Bundle-Version: 6.1.0.qualifier
 Bundle-Activator: org.eclipse.riena.internal.objecttransaction.Activator
 Require-Bundle: org.eclipse.riena.core
 Bundle-ActivationPolicy: lazy

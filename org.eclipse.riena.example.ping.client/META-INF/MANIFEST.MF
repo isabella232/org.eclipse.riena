@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Riena Ping Client Plug-in
 Bundle-SymbolicName: org.eclipse.riena.example.ping.client;singleton:=true
-Bundle-Version: 6.0.0.qualifier
+Bundle-Version: 6.1.0.qualifier
 Bundle-Activator: org.eclipse.riena.internal.example.ping.client.Activator
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.riena.client;bundle-version="2.1.0"

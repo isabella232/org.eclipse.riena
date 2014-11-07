@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Riena Communication Publisher Hessian Plug-in
 Bundle-SymbolicName: org.eclipse.riena.communication.publisher.hessian;singleton:=true
-Bundle-Version: 6.0.0.qualifier
+Bundle-Version: 6.1.0.qualifier
 Bundle-Activator: org.eclipse.riena.internal.communication.publisher.hessian.Activator
 Require-Bundle: org.eclipse.riena.core,
  org.eclipse.riena.communication.core,

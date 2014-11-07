@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Riena Communication Core Plug-in
 Bundle-SymbolicName: org.eclipse.riena.communication.core;singleton:=true
-Bundle-Version: 6.0.0.qualifier
+Bundle-Version: 6.1.0.qualifier
 Bundle-Activator: org.eclipse.riena.internal.communication.core.Activator
 Import-Package: javax.servlet.http;version="2.4.0",
  org.osgi.framework;version="1.4.0",

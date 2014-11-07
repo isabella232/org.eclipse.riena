@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Riena Client Communication Plug-in
 Bundle-SymbolicName: org.eclipse.riena.client.communication
-Bundle-Version: 6.0.0.qualifier
+Bundle-Version: 6.1.0.qualifier
 Require-Bundle: org.eclipse.riena.communication.console;visibility:=reexport,
  org.eclipse.riena.communication.core;visibility:=reexport,
  org.eclipse.riena.communication.factory.hessian;visibility:=reexport,
