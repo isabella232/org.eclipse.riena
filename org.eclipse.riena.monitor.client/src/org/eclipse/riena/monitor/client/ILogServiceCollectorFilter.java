@@ -13,8 +13,7 @@ package org.eclipse.riena.monitor.client;
 import org.eclipse.equinox.log.ExtendedLogEntry;
 
 /**
- * Instances of this interface can decide whether a {@codelogEntry} should be
- * collected or not.
+ * Instances of this interface can decide whether a {@code logEntry} should be collected or not.
  * 
  * @since 3.0
  */
