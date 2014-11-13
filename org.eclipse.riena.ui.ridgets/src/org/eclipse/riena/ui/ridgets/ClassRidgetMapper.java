@@ -11,6 +11,7 @@
 package org.eclipse.riena.ui.ridgets;
 
 import java.lang.reflect.Modifier;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,7 +34,8 @@ public final class ClassRidgetMapper {
 	private static final SingletonProvider<ClassRidgetMapper> CRM = new SingletonProvider<ClassRidgetMapper>(
 			ClassRidgetMapper.class);
 
-	private final Map<Class<? extends IRidget>, Class<? extends IRidget>> mappings = new HashMap<Class<? extends IRidget>, Class<? extends IRidget>>();
+	private final Map<Class<? extends IRidget>, Class<? extends IRidget>> mappings = Collections
+			.synchronizedMap(new HashMap<Class<? extends IRidget>, Class<? extends IRidget>>());
 
 	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), ClassRidgetMapper.class);
 

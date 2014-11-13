@@ -11,8 +11,6 @@
 package org.eclipse.riena.ui.ridgets.swt.uibinding;
 
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.eclipse.core.databinding.BindingException;
 import org.eclipse.core.runtime.Assert;
@@ -39,6 +37,7 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.Widget;
 
 import org.eclipse.riena.core.singleton.SingletonProvider;
+import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.internal.ui.ridgets.swt.ActionRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.BrowserRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.CComboRidget;
@@ -107,7 +106,7 @@ public final class SwtControlRidgetMapper implements IControlRidgetMapper<Object
 
 	private static final int IGNORE_SWT_STYLE = -99;
 
-	private final List<Mapping> mappings = new ArrayList<Mapping>();
+	private final ListenerList<Mapping> mappings = new ListenerList<Mapping>(Mapping.class);
 
 	/**
 	 * Answer the singleton <code>SwtControlRidgetMapper</code>
