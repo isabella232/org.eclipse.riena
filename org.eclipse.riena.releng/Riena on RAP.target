@@ -1,13 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde version="3.8"?>
 
-<target name="Riena on RAP" sequenceNumber="23">
+<target name="Riena on RAP" sequenceNumber="24">
 <locations>
-<location path="${project_loc:org.eclipse.riena.build3}/prebuild/plugins" type="Directory"/>
+<location path="${project_loc:org.eclipse.riena.build3}/prebuild" type="Directory"/>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.rap.equinox.target.feature.feature.group" version="2.3.1.20140916-0712"/>
 <unit id="org.eclipse.rap.feature.feature.group" version="2.3.1.20140909-1638"/>
 <repository location="http://download.eclipse.org/releases/luna"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
+<unit id="org.apache.log4j.source" version="1.2.15.v201012070815"/>
+<unit id="org.apache.log4j" version="1.2.15.v201012070815"/>
+<unit id="org.apache.oro.source" version="2.0.8.v201005080400"/>
+<unit id="org.apache.commons.logging" version="1.1.1.v201101211721"/>
+<unit id="org.apache.commons.collections.source" version="3.2.0.v2013030210310"/>
+<unit id="org.apache.commons.beanutils.source" version="1.8.0.v201205091237"/>
+<unit id="org.apache.commons.collections" version="3.2.0.v2013030210310"/>
+<unit id="org.apache.commons.logging.source" version="1.1.1.v201101211721"/>
+<unit id="org.apache.oro" version="2.0.8.v201005080400"/>
+<unit id="org.apache.commons.beanutils" version="1.8.0.v201205091237"/>
+<repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20140525021250/repository/"/>
 </location>
 </locations>
 </target>

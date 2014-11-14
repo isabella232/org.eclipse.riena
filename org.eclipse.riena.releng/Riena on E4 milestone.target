@@ -1,15 +1,35 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde version="3.8"?>
 
-<target name="Riena on E4 milestone" sequenceNumber="28">
+<target name="Riena on E4 milestone" sequenceNumber="32">
 <locations>
-<location path="${project_loc:org.eclipse.riena.build3}/prebuild/plugins" type="Directory"/>
+<location path="${project_loc:org.eclipse.riena.build3}/prebuild" type="Directory"/>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.rcp.sdk.id" version="4.5.0.I20140918-0330"/>
 <unit id="org.eclipse.equinox.sdk.feature.group" version="3.10.0.v20140918-0709"/>
 <unit id="org.eclipse.rcp.id" version="4.5.0.I20140918-0330"/>
 <unit id="org.eclipse.rcp.source.feature.group" version="4.5.0.v20140918-0330"/>
 <repository location="http://download.eclipse.org/eclipse/updates/4.5milestones/"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.junit" version="4.11.0.v201303080030"/>
+<unit id="org.easymock.source" version="2.4.0.v20090202-0900"/>
+<unit id="org.apache.log4j.source" version="1.2.15.v201012070815"/>
+<unit id="org.apache.log4j" version="1.2.15.v201012070815"/>
+<unit id="org.pushingpixels.trident" version="1.2.0.v201305152020"/>
+<unit id="org.apache.oro.source" version="2.0.8.v201005080400"/>
+<unit id="org.junit.source" version="4.11.0.v201303080030"/>
+<unit id="org.pushingpixels.trident.source" version="1.2.0.v201305152020"/>
+<unit id="org.apache.commons.beanutils.source" version="1.8.0.v201205091237"/>
+<unit id="org.apache.oro" version="2.0.8.v201005080400"/>
+<unit id="org.apache.commons.beanutils" version="1.8.0.v201205091237"/>
+<unit id="org.easymock" version="2.4.0.v20090202-0900"/>
+<repository location="http://download.eclipse.org/tools/orbit/downloads/drops/S20141023165154/repository/"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.nebula.widgets.compositetable.feature.feature.group" version="1.0.0.201411131833"/>
+<unit id="org.eclipse.nebula.widgets.grid.feature.feature.group" version="1.0.0.201411131833"/>
+<repository location="http://download.eclipse.org/technology/nebula/snapshot"/>
 </location>
 </locations>
 </target>
