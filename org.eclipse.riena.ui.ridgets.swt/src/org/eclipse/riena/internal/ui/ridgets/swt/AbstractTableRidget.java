@@ -405,6 +405,7 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 	protected void unbindUIControl() {
 		super.unbindUIControl();
 		getFilterHolder().deactivate(viewer);
+		disposeMultipleSelectionBinding();
 		if (dbc != null) {
 			dbc.dispose();
 			dbc = null;
@@ -740,9 +741,11 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 	}
 
 	private void disposeMultipleSelectionBinding() {
-		if (viewerMSB != null) { // implies dbc != null
+		if (viewerMSB != null) {
 			viewerMSB.dispose();
-			dbc.removeBinding(viewerMSB);
+			if (dbc != null) {
+				dbc.removeBinding(viewerMSB);
+			}
 			viewerMSB = null;
 		}
 	}
