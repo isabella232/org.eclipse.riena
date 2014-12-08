@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde version="3.8"?>
 
-<target name="Riena on RAP" sequenceNumber="24">
+<target name="Riena on RAP" sequenceNumber="25">
 <locations>
 <location path="${project_loc:org.eclipse.riena.build3}/prebuild" type="Directory"/>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
@@ -22,5 +22,6 @@
 <unit id="org.apache.commons.beanutils" version="1.8.0.v201205091237"/>
 <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20140525021250/repository/"/>
 </location>
+<location path="${project_loc:org.eclipse.riena.build3}/prebuild/rap" type="Directory"/>
 </locations>
 </target>
