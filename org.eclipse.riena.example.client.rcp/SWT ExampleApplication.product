@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?pde version="3.5"?>
+
+<product name="Riena Example" uid="org.eclipse.riena.example.client.product" id="org.eclipse.riena.example.client.example_product" application="org.eclipse.riena.example.client.exampleapp" version="4.0.0" useFeatures="false" includeLaunchers="true">
+
+   <configIni use="default">
+   </configIni>
+
+   <launcherArgs>
+      <vmArgs>-clean
+-vmargs
+-startup
+plugins/org.eclipse.equinox.launcher_1.2.0.v20110502.jar
+--launcher.library
+plugins/org.eclipse.equinox.launcher.win32.win32.x86_1.1.100.v20110502
+-clean
+-vmargs
+-Declipse.registry.nulltoken=true
+-Driena.defaultlogging=true
+-Driena.application.height=800
+-Driena.lnf.update.view=true</vmArgs>
+      <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
+   </launcherArgs>
+
+   <windowImages/>
+
+   <splash
+      handlerType="interactive" />
+   <launcher name="exampleclient">
+      <solaris/>
+      <win useIco="false">
+         <bmp/>
+      </win>
+   </launcher>
+
+   <vm>
+   </vm>
+
+   <plugins>
+      <plugin id="com.caucho.hessian"/>
+      <plugin id="com.ibm.icu"/>
+      <plugin id="javax.servlet"/>
+      <plugin id="org.apache.commons.beanutils"/>
+      <plugin id="org.apache.commons.logging"/>
+      <plugin id="org.apache.oro"/>
+      <plugin id="org.eclipse.core.commands"/>
+      <plugin id="org.eclipse.core.contenttype"/>
+      <plugin id="org.eclipse.core.databinding"/>
+      <plugin id="org.eclipse.core.databinding.beans"/>
+      <plugin id="org.eclipse.core.databinding.observable"/>
+      <plugin id="org.eclipse.core.databinding.property"/>
+      <plugin id="org.eclipse.core.expressions"/>
+      <plugin id="org.eclipse.core.jobs"/>
+      <plugin id="org.eclipse.core.runtime"/>
+      <plugin id="org.eclipse.core.runtime.compatibility.registry" fragment=""/>
+      <plugin id="org.eclipse.core.variables"/>
+      <plugin id="org.eclipse.equinox.app"/>
+      <plugin id="org.eclipse.equinox.common"/>
+      <plugin id="org.eclipse.equinox.launcher"/>
+      <plugin id="org.eclipse.equinox.launcher.win32.win32.x86" fragment="true"/>
+      <plugin id="org.eclipse.equinox.log"/>
+      <plugin id="org.eclipse.equinox.preferences"/>
+      <plugin id="org.eclipse.equinox.registry"/>
+      <plugin id="org.eclipse.equinox.security"/>
+      <plugin id="org.eclipse.equinox.security.macosx" fragment="true"/>
+      <plugin id="org.eclipse.equinox.security.win32.x86" fragment="true"/>
+      <plugin id="org.eclipse.equinox.servletbridge.extensionbundle" fragment="true"/>
+      <plugin id="org.eclipse.equinox.transforms.hook" fragment="true"/>
+      <plugin id="org.eclipse.help"/>
+      <plugin id="org.eclipse.jface"/>
+      <plugin id="org.eclipse.jface.databinding"/>
+      <plugin id="org.eclipse.nebula.widgets.compositetable"/>
+      <plugin id="org.eclipse.osgi"/>
+      <plugin id="org.eclipse.osgi.services"/>
+      <plugin id="org.eclipse.riena.beans.common"/>
+      <plugin id="org.eclipse.riena.client"/>
+      <plugin id="org.eclipse.riena.client.ridgets"/>
+      <plugin id="org.eclipse.riena.communication.console"/>
+      <plugin id="org.eclipse.riena.communication.core"/>
+      <plugin id="org.eclipse.riena.communication.factory.hessian"/>
+      <plugin id="org.eclipse.riena.core"/>
+      <plugin id="org.eclipse.riena.example.client"/>
+      <plugin id="org.eclipse.riena.monitor.client"/>
+      <plugin id="org.eclipse.riena.monitor.common"/>
+      <plugin id="org.eclipse.riena.navigation"/>
+      <plugin id="org.eclipse.riena.navigation.ui"/>
+      <plugin id="org.eclipse.riena.navigation.ui.swt"/>
+      <plugin id="org.eclipse.riena.security.common"/>
+      <plugin id="org.eclipse.riena.security.ui"/>
+      <plugin id="org.eclipse.riena.ui.common"/>
+      <plugin id="org.eclipse.riena.ui.core"/>
+      <plugin id="org.eclipse.riena.ui.filter"/>
+      <plugin id="org.eclipse.riena.ui.ridgets"/>
+      <plugin id="org.eclipse.riena.ui.ridgets.swt"/>
+      <plugin id="org.eclipse.riena.ui.ridgets.swt.optional"/>
+      <plugin id="org.eclipse.riena.ui.swt"/>
+      <plugin id="org.eclipse.riena.ui.swt.rcp"/>
+      <plugin id="org.eclipse.riena.ui.workarea"/>
+      <plugin id="org.eclipse.swt"/>
+      <plugin id="org.eclipse.swt.win32.win32.x86" fragment="true"/>
+      <plugin id="org.eclipse.ui"/>
+      <plugin id="org.eclipse.ui.workbench"/>
+      <plugin id="org.pushingpixels.trident"/>
+   </plugins>
+
+
+</product>
