@@ -154,7 +154,7 @@ public class InfoFlyoutRCP extends InfoFlyout {
 		shell.setBackground(bgColor);
 
 		leftLabel = UIControlsFactory.createLabel(shell, ""); //$NON-NLS-1$
-		leftLabel.setImage(ImageStore.getInstance().getImage("arrowright")); //$NON-NLS-1$
+		leftLabel.setImage(ImageStore.getInstance().getImage("arrowRight")); //$NON-NLS-1$
 		leftLabel.setBackground(bgColor);
 
 		rightLabel = UIControlsFactory.createLabel(shell, message, SWT.WRAP);
