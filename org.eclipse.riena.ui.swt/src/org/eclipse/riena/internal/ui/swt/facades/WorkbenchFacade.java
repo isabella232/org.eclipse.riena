@@ -11,12 +11,13 @@
 package org.eclipse.riena.internal.ui.swt.facades;
 
 import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.ISourceProvider;
 import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbenchPage;
+
+import org.eclipse.riena.ui.swt.facades.FacadeFactory;
 
 /**
  * Returns an Eclipse 3.x or E4 specific instance of a given type.
@@ -38,18 +39,7 @@ public abstract class WorkbenchFacade {
 	 *             if no matching instance could be found
 	 */
 	public static WorkbenchFacade getInstance() {
-		final String suffix = "Impl"; //$NON-NLS-1$
-		final Class<WorkbenchFacade> type = WorkbenchFacade.class;
-		final String name = type.getName() + suffix;
-		try {
-			return type.cast(type.getClassLoader().loadClass(name).newInstance());
-		} catch (final ClassCastException e) {
-			final String msg = NLS.bind("Could not create an instance of {0} because it is not a {1}", name, type.getName()); //$NON-NLS-1$
-			throw new RuntimeException(msg, e);
-		} catch (final Throwable throwable) {
-			final String msg = NLS.bind("Could not load {0}", name); //$NON-NLS-1$
-			throw new RuntimeException(msg, throwable);
-		}
+		return FacadeFactory.newImpl(WorkbenchFacade.class);
 	}
 
 	/**

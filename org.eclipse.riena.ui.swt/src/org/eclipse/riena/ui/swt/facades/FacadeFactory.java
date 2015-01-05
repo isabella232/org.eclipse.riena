@@ -41,6 +41,27 @@ public final class FacadeFactory {
 	 */
 	public static <T> T newFacade(final Class<T> type) {
 		final String suffix = "rap".equals(SWT.getPlatform()) ? "RAP" : "RCP"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		return instantiateClass(type, suffix);
+	}
+
+	/**
+	 * Returns an instance of the given type.
+	 * <p>
+	 * The code will append "Impl" to the given type, try to load the resulting class and invoke the 0-argument constructor. If successful it will return an
+	 * instance that implements the argument {@code type}.
+	 * 
+	 * @param type
+	 *            the desired type; never null
+	 * @return an instance of type; never null
+	 * @throws RuntimeException
+	 *             if no matching instance could be found
+	 * @since 6.1
+	 */
+	public static <T> T newImpl(final Class<T> type) {
+		return instantiateClass(type, "Impl"); //$NON-NLS-1$
+	}
+
+	private static <T> T instantiateClass(final Class<T> type, final String suffix) {
 		final String name = type.getName() + suffix;
 		try {
 			return type.cast(type.getClassLoader().loadClass(name).newInstance());

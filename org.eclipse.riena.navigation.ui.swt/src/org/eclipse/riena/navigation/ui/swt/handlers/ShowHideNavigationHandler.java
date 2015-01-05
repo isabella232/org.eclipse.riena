@@ -14,7 +14,8 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 
-import org.eclipse.riena.navigation.ui.swt.ApplicationUtility;
+import org.eclipse.riena.navigation.ui.swt.IApplicationUtility;
+import org.eclipse.riena.navigation.ui.swt.facades.NavigationFacade;
 
 /**
  * Show or hide the Navigation if the navigation fast view feature is enabled.
@@ -24,9 +25,10 @@ import org.eclipse.riena.navigation.ui.swt.ApplicationUtility;
 public class ShowHideNavigationHandler extends AbstractHandler {
 
 	public Object execute(final ExecutionEvent event) throws ExecutionException {
-		if (ApplicationUtility.isNavigationFastViewEnabled()) {
-			final boolean visible = ApplicationUtility.isNavigationVisible();
-			ApplicationUtility.setNavigationVisible(!visible);
+		final IApplicationUtility applicationUtility = NavigationFacade.getDefault().getApplicationUtility();
+		if (applicationUtility.isNavigationFastViewEnabled()) {
+			final boolean visible = applicationUtility.isNavigationVisible();
+			applicationUtility.setNavigationVisible(!visible);
 		}
 		return null;
 	}

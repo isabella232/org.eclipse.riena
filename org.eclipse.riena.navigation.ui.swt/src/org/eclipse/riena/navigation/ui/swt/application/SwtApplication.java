@@ -24,6 +24,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
+import org.eclipse.ui.application.WorkbenchAdvisor;
 import org.eclipse.ui.internal.Workbench;
 
 import org.eclipse.riena.core.Log4r;
@@ -40,9 +41,9 @@ import org.eclipse.riena.navigation.ui.application.AbstractApplication;
 import org.eclipse.riena.navigation.ui.controllers.ApplicationController;
 import org.eclipse.riena.navigation.ui.login.ILoginDialogView;
 import org.eclipse.riena.navigation.ui.swt.application.LoginNonActivityTimer.ILoginExecutor;
+import org.eclipse.riena.navigation.ui.swt.facades.NavigationFacade;
 import org.eclipse.riena.navigation.ui.swt.login.ILoginSplashViewExtension;
 import org.eclipse.riena.navigation.ui.swt.splashHandlers.AbstractLoginSplashHandler;
-import org.eclipse.riena.navigation.ui.swt.views.ApplicationAdvisor;
 import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.utils.ImageStore;
 
@@ -64,7 +65,8 @@ public class SwtApplication extends AbstractApplication {
 	public Object createView(final IApplicationContext context, final IApplicationNode pNode) {
 		final Display display = Display.getCurrent();
 		try {
-			final ApplicationAdvisor advisor = new ApplicationAdvisor(createApplicationController(pNode), new AdvisorHelper());
+			final WorkbenchAdvisor advisor = NavigationFacade.getDefault().createWorkbenchAdvisor(createApplicationController(pNode), new AdvisorHelper());
+			//			final ApplicationAdvisor advisor = new ApplicationAdvisor(createApplicationController(pNode), new AdvisorHelper());
 			initializeLoginNonActivityTimer(display, pNode, context);
 			final int returnCode = PlatformUI.createAndRunWorkbench(display, advisor);
 			if (returnCode == PlatformUI.RETURN_RESTART) {

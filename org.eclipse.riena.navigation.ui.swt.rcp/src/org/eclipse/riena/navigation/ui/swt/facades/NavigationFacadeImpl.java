@@ -17,42 +17,34 @@ import org.eclipse.riena.internal.navigation.ui.swt.IAdvisorHelper;
 import org.eclipse.riena.navigation.ui.controllers.ApplicationController;
 import org.eclipse.riena.navigation.ui.swt.IApplicationUtility;
 import org.eclipse.riena.navigation.ui.swt.views.ModuleNavigationListener;
-import org.eclipse.riena.ui.swt.facades.FacadeFactory;
 
-/**
- * 
- * @since 5.0
- */
-public abstract class NavigationFacade {
+public class NavigationFacadeImpl extends NavigationFacade {
 
-	private static final NavigationFacade INSTANCE = FacadeFactory.newImpl(NavigationFacade.class);
-
-	/**
-	 * The applicable implementation of this class.
-	 */
-	public static final NavigationFacade getDefault() {
-		return INSTANCE;
+	@Override
+	public void attachModuleNavigationListener(final Tree tree) {
+		new ModuleNavigationListener(tree);
 	}
 
-	/**
-	 * Attaches a platform specific {@link ModuleNavigationListener} instance to the given tree
+	/*
+	 * (non-Javadoc)
 	 * 
-	 * @param tree
-	 *            a {@link Tree} instance; never null
-	 * @since 5.0
+	 * @see
+	 * org.eclipse.riena.navigation.ui.swt.facades.NavigationFacade#createWorkbenchAdvisor(org.eclipse.riena.navigation.ui.controllers.ApplicationController,
+	 * org.eclipse.riena.internal.navigation.ui.swt.IAdvisorHelper)
 	 */
-	public abstract void attachModuleNavigationListener(Tree tree);
+	@Override
+	public WorkbenchAdvisor createWorkbenchAdvisor(final ApplicationController applicationController, final IAdvisorHelper advisorHelper) {
+		throw new UnsupportedOperationException("This code should not be executed in Eclipse 4.x"); //$NON-NLS-1$
+	}
 
-	/**
-	 * @param applicationController
-	 * @param advisorHelper
-	 * @return
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.navigation.ui.swt.facades.NavigationFacade#getApplicationUtility()
 	 */
-	public abstract WorkbenchAdvisor createWorkbenchAdvisor(ApplicationController applicationController, IAdvisorHelper advisorHelper);
-
-	/**
-	 * @return an appropriate implementation of {@link IApplicationUtility}
-	 */
-	public abstract IApplicationUtility getApplicationUtility();
+	@Override
+	public IApplicationUtility getApplicationUtility() {
+		return new ApplicationUtilityE4();
+	}
 
 }

@@ -18,7 +18,7 @@ import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 
-import org.eclipse.riena.navigation.ui.swt.ApplicationUtility;
+import org.eclipse.riena.navigation.ui.swt.facades.NavigationFacade;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.WidgetIdentificationSupport;
@@ -54,7 +54,7 @@ public abstract class AbstractNavigationCompositeDeligation implements INavigati
 	}
 
 	private FormData getLayoutData() {
-		final boolean fastView = ApplicationUtility.isNavigationFastViewEnabled();
+		final boolean fastView = NavigationFacade.getDefault().getApplicationUtility().isNavigationFastViewEnabled();
 		final FormData formData = new FormData();
 		formData.top = new FormAttachment(getParent(), 0);
 		formData.left = new FormAttachment(0, fastView ? BORDER_MARGIN : 0);
