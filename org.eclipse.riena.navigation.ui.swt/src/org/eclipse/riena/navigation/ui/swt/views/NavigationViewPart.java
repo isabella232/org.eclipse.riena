@@ -48,7 +48,8 @@ import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.ModuleController;
-import org.eclipse.riena.navigation.ui.swt.ApplicationUtility;
+import org.eclipse.riena.navigation.ui.swt.IApplicationUtility;
+import org.eclipse.riena.navigation.ui.swt.facades.NavigationFacade;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.EmbeddedBorderRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.SubModuleViewRenderer;
@@ -122,7 +123,7 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 		navigationMainComposite.setLayout(new FormLayout());
 		navigationMainComposite.setBackground(NAVIGATION_BACKGROUND);
 		navigationCompositeDelegation = createNavigationCompositeDelegation(navigationMainComposite);
-		final boolean fastView = ApplicationUtility.isNavigationFastViewEnabled();
+		final boolean fastView = NavigationFacade.getDefault().getApplicationUtility().isNavigationFastViewEnabled();
 		final FormData formData = new FormData();
 		formData.top = new FormAttachment(0, fastView ? AbstractNavigationCompositeDeligation.BORDER_MARGIN : 0);
 		formData.left = new FormAttachment(0, fastView ? AbstractNavigationCompositeDeligation.BORDER_MARGIN : 0);

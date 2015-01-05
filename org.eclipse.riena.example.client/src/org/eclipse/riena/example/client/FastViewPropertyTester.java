@@ -12,7 +12,7 @@ package org.eclipse.riena.example.client;
 
 import org.eclipse.core.expressions.PropertyTester;
 
-import org.eclipse.riena.navigation.ui.swt.ApplicationUtility;
+import org.eclipse.riena.navigation.ui.swt.facades.NavigationFacade;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 
 /**
@@ -21,7 +21,7 @@ import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 public class FastViewPropertyTester extends PropertyTester {
 
 	public boolean test(final Object receiver, final String property, final Object[] args, final Object expectedValue) {
-		return ApplicationUtility.isNavigationFastViewEnabled();
+		return NavigationFacade.getDefault().getApplicationUtility().isNavigationFastViewEnabled();
 	}
 
 }
