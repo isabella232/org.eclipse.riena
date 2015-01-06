@@ -630,6 +630,23 @@ public class NavigationProcessor implements INavigationProcessor {
 		});
 	}
 
+	/**
+	 * @since 6.1
+	 */
+	public INavigationNode<?> getTentativeJumpBackTarget(final INavigationNode<?> node) {
+		final INavigationNode<?> lastJumpedNode = getLastJump(node);
+		// the sourceStack holds all sources (nodes) to the target
+		final Stack<JumpContext> sourceStack = jumpTargets.get(lastJumpedNode);
+		if (sourceStack == null) {
+			return null;
+		}
+		if (!sourceStack.isEmpty()) {
+			return sourceStack.peek().getSource();
+		}
+
+		return null;
+	}
+
 	private void jumpBackInternal(final INavigationNode<?> node) {
 		final INavigationNode<?> lastJumpedNode = getLastJump(node);
 		// the sourceStack holds all sources (nodes) to the target

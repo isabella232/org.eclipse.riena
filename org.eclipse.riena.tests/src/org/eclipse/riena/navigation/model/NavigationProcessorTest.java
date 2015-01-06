@@ -1102,6 +1102,7 @@ public class NavigationProcessorTest extends RienaTestCase {
 			}
 		});
 
+		assertSame(m1s2, m2s1.getNavigationProcessor().getTentativeJumpBackTarget(m2s1));
 		m2s1.jumpBack();
 		EasyMock.verify(listenerMock);
 		EasyMock.reset(listenerMock);
@@ -1112,6 +1113,7 @@ public class NavigationProcessorTest extends RienaTestCase {
 
 		m1s1.jump(new NavigationNodeId("m2s1")); //$NON-NLS-1$
 		assertTrue(m2s1.isActivated());
+		assertSame(m1s1, m2s1.getNavigationProcessor().getTentativeJumpBackTarget(m2s1));
 		m2s1.jumpBack();
 		assertTrue(m1s1.isJumpTarget());
 		assertTrue(m1.isJumpTarget());
@@ -1119,6 +1121,7 @@ public class NavigationProcessorTest extends RienaTestCase {
 		assertTrue(m2s1.isJumpTarget());
 		assertFalse(subApp.isJumpTarget());
 		assertTrue(m1s1.isActivated());
+		assertSame(m1s2, m1.getNavigationProcessor().getTentativeJumpBackTarget(m1));
 		m1.jumpBack();
 		assertTrue(m1s2.isActivated());
 		m1.jumpBack();

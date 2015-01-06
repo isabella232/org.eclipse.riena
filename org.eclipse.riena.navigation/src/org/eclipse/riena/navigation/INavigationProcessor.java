@@ -13,6 +13,7 @@ package org.eclipse.riena.navigation;
 import java.util.List;
 
 import org.eclipse.riena.core.marker.IMarker;
+import org.eclipse.riena.navigation.model.NavigationNode;
 
 /**
  * Manages the Navigation. Is called by a navigation node to navigate to it the
@@ -20,6 +21,8 @@ import org.eclipse.riena.core.marker.IMarker;
  * processor? The navigation processor decides how many nodes in his scope can
  * be active at the same time -> the default navigation processor allows only
  * one node of each type.
+ * 
+ * @noimplement This interface is not intended to be implemented by clients.
  */
 public interface INavigationProcessor extends INavigationHistory, INavigationHistoryListenerable {
 
@@ -162,9 +165,22 @@ public interface INavigationProcessor extends INavigationHistory, INavigationHis
 	 * 
 	 * @param sourceNode
 	 *            The source node.
+	 * @see #getTentativeJumpBackTarget(INavigationNode)
 	 * @since 2.0
 	 */
 	void jumpBack(INavigationNode<?> sourceNode);
+
+	/**
+	 * Retrieve the {@link NavigationNode} which is the source node of the last jump to this node, <b>without jumping back</b>. This method may return
+	 * <code>null</code>.
+	 * 
+	 * @param sourceNode
+	 *            The source node.
+	 * @return The node, which would be the jump target if the method {@link #jumpBack(INavigationNode)} was called, or <code>null</code>.
+	 * @see #jumpBack(INavigationNode)
+	 * @since 6.1
+	 */
+	INavigationNode<?> getTentativeJumpBackTarget(INavigationNode<?> sourceNode);
 
 	/**
 	 * 
