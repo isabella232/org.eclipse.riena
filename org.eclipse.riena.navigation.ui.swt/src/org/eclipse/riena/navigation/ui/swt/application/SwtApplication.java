@@ -66,7 +66,6 @@ public class SwtApplication extends AbstractApplication {
 		final Display display = Display.getCurrent();
 		try {
 			final WorkbenchAdvisor advisor = NavigationFacade.getDefault().createWorkbenchAdvisor(createApplicationController(pNode), new AdvisorHelper());
-			//			final ApplicationAdvisor advisor = new ApplicationAdvisor(createApplicationController(pNode), new AdvisorHelper());
 			initializeLoginNonActivityTimer(display, pNode, context);
 			final int returnCode = PlatformUI.createAndRunWorkbench(display, advisor);
 			if (returnCode == PlatformUI.RETURN_RESTART) {

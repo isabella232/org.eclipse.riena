@@ -20,6 +20,7 @@ import org.eclipse.riena.navigation.ui.swt.views.ModuleNavigationListener;
 import org.eclipse.riena.ui.swt.facades.FacadeFactory;
 
 /**
+ * Subclasses implement platform specific behavior for Eclipse 3.x, 4.x, and RAP.
  * 
  * @since 5.0
  */
@@ -44,9 +45,7 @@ public abstract class NavigationFacade {
 	public abstract void attachModuleNavigationListener(Tree tree);
 
 	/**
-	 * @param applicationController
-	 * @param advisorHelper
-	 * @return
+	 * This method is only relevant for Riena on Eclipse 3.8 and RAP and should not be called with Riena on E4.
 	 */
 	public abstract WorkbenchAdvisor createWorkbenchAdvisor(ApplicationController applicationController, IAdvisorHelper advisorHelper);
 
