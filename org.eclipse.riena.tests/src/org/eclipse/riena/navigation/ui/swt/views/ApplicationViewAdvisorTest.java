@@ -44,7 +44,7 @@ import org.eclipse.riena.ui.workarea.WorkareaManager;
 @UITestCase
 public class ApplicationViewAdvisorTest extends RienaTestCase {
 
-	private ApplicationViewAdvisor advisor;
+	private ApplicationViewAdvisor3xRAP advisor;
 	private IWorkbenchWindowConfigurer winConfig;
 	private ApplicationNode applicationNode;
 	private ApplicationController controller;
@@ -55,7 +55,7 @@ public class ApplicationViewAdvisorTest extends RienaTestCase {
 		applicationNode = new ApplicationNode();
 		controller = new ApplicationController(applicationNode);
 		final IAdvisorHelper factory = EasyMock.createMock(IAdvisorHelper.class);
-		advisor = new ApplicationViewAdvisor(winConfig, controller, factory);
+		advisor = new ApplicationViewAdvisor3xRAP(winConfig, controller, factory);
 		Wire.instance(advisor).andStart(getContext());
 	}
 
@@ -116,7 +116,7 @@ public class ApplicationViewAdvisorTest extends RienaTestCase {
 		EasyMock.expect(factory.createActionBarAdvisor(actionConfig)).andReturn(actionAdvisor);
 		EasyMock.replay(factory);
 
-		advisor = new ApplicationViewAdvisor(winConfig, controller, factory);
+		advisor = new ApplicationViewAdvisor3xRAP(winConfig, controller, factory);
 		advisor.createActionBarAdvisor(actionConfig);
 
 		EasyMock.verify(factory);
