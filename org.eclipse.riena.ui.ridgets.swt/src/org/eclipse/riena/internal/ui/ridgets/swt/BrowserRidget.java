@@ -24,12 +24,15 @@ import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.browser.BrowserFunction;
 import org.eclipse.swt.browser.LocationEvent;
 import org.eclipse.swt.browser.LocationListener;
+import org.eclipse.swt.browser.ProgressEvent;
+import org.eclipse.swt.browser.ProgressListener;
 
 import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
 import org.eclipse.riena.ui.ridgets.IBrowserRidget;
 import org.eclipse.riena.ui.ridgets.listener.ILocationListener;
+import org.eclipse.riena.ui.ridgets.listener.IProgressListener;
 import org.eclipse.riena.ui.ridgets.swt.AbstractValueRidget;
 import org.eclipse.riena.ui.ridgets.swt.BasicMarkerSupport;
 import org.eclipse.riena.ui.swt.facades.BrowserFacade;
@@ -53,6 +56,7 @@ public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget
 	private static final String PROPERTY_URL_INTERNAL = "urlInternal"; //$NON-NLS-1$
 
 	private final InternalLocationListener internalLocationListener;
+	private final InternalProgressListener internalProgressListener;
 	private final Map<String, IBrowserRidgetFunction> scriptFunctionMappings;
 
 	private String url;
@@ -62,6 +66,7 @@ public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget
 
 	public BrowserRidget() {
 		internalLocationListener = new InternalLocationListener();
+		internalProgressListener = new InternalProgressListener();
 		scriptFunctionMappings = Collections.synchronizedMap(new HashMap<String, IBrowserRidgetFunction>());
 		browserFunctions = new HashMap<String, BrowserFunction>();
 	}
@@ -77,6 +82,7 @@ public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget
 		if (control != null) {
 			updateUIControl();
 			control.addLocationListener(internalLocationListener);
+			control.addProgressListener(internalProgressListener);
 
 			for (final Entry<String, IBrowserRidgetFunction> mapping : scriptFunctionMappings.entrySet()) {
 				final BrowserFunction swtBrowerFunction = addSWTBrowerFunction(mapping.getKey(), mapping.getValue());
@@ -90,6 +96,7 @@ public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget
 		final Browser control = getUIControl();
 		if (control != null) {
 			control.removeLocationListener(internalLocationListener);
+			control.removeProgressListener(internalProgressListener);
 		}
 		disposeBrowserFunctions();
 		super.unbindUIControl();
@@ -114,6 +121,10 @@ public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget
 
 	public void addLocationListener(final ILocationListener listener) {
 		internalLocationListener.addLocationListener(listener);
+	}
+
+	public void addProgressListener(final IProgressListener listener) {
+		internalProgressListener.addProgressListener(listener);
 	}
 
 	@Override
@@ -148,6 +159,10 @@ public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget
 
 	public void removeLocationListener(final ILocationListener listener) {
 		internalLocationListener.removeLocationListener(listener);
+	}
+
+	public void removeProgressListener(final IProgressListener listener) {
+		internalProgressListener.removeProgressListener(listener);
 	}
 
 	public void setText(final String text) {
@@ -291,6 +306,49 @@ public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget
 		private boolean isNullOrAboutBlank(final String url) {
 			return url == null || "about:blank".equals(url); //$NON-NLS-1$
 		}
+	}
+
+	/**
+	 * Listens to progress changes in the Browser widget.
+	 */
+	private final class InternalProgressListener implements ProgressListener {
+
+		private ListenerList<IProgressListener> listeners;
+
+		public void addProgressListener(final IProgressListener listener) {
+			Assert.isNotNull(listener);
+			if (listeners == null) {
+				listeners = new ListenerList<IProgressListener>(IProgressListener.class);
+			}
+			listeners.add(listener);
+		}
+
+		public void removeProgressListener(final IProgressListener listener) {
+			if (listeners != null) {
+				listeners.remove(listener);
+			}
+		}
+
+		public void changed(final ProgressEvent event) {
+			if (listeners != null) {
+				for (final IProgressListener listener : listeners) {
+					final org.eclipse.riena.ui.ridgets.listener.ProgressEvent progressEvent = new org.eclipse.riena.ui.ridgets.listener.ProgressEvent(
+							event.current, event.total);
+					listener.progressChanged(progressEvent);
+				}
+			}
+		}
+
+		public void completed(final ProgressEvent event) {
+			if (listeners != null) {
+				for (final IProgressListener listener : listeners) {
+					final org.eclipse.riena.ui.ridgets.listener.ProgressEvent progressEvent = new org.eclipse.riena.ui.ridgets.listener.ProgressEvent(
+							event.current, event.total);
+					listener.progressCompleted(progressEvent);
+				}
+			}
+		}
+
 	}
 
 	/*

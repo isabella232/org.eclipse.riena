@@ -17,6 +17,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.browser.BrowserFunction;
 import org.eclipse.swt.browser.LocationListener;
+import org.eclipse.swt.browser.ProgressListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
@@ -27,7 +28,9 @@ import org.eclipse.riena.internal.ui.swt.test.UITestHelper;
 import org.eclipse.riena.ui.ridgets.IBrowserRidget;
 import org.eclipse.riena.ui.ridgets.IBrowserRidget.IBrowserRidgetFunction;
 import org.eclipse.riena.ui.ridgets.listener.ILocationListener;
+import org.eclipse.riena.ui.ridgets.listener.IProgressListener;
 import org.eclipse.riena.ui.ridgets.listener.LocationEvent;
+import org.eclipse.riena.ui.ridgets.listener.ProgressEvent;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 
 /**
@@ -429,6 +432,52 @@ public class BrowserRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(1, listener.getCount());
 	}
 
+	public void testAddProgressListener() {
+		final IBrowserRidget ridget = getRidget();
+		final Browser control = getWidget();
+		final ProgressListener intProLi = ReflectionUtils.getHidden(ridget, "internalProgressListener");
+		intProLi.changed(createProgressEvent(control, 0, 100));
+		intProLi.completed(createProgressEvent(control, 100, 100));
+
+		final FTProgressChangeListener changingListener = new FTProgressChangeListener();
+		ridget.addProgressListener(changingListener);
+		ridget.addProgressListener(changingListener);
+		intProLi.changed(createProgressEvent(control, 0, 100));
+		intProLi.completed(createProgressEvent(control, 100, 100));
+
+		assertEquals(1, changingListener.getCountChanged());
+		assertEquals(1, changingListener.getCountCompleted());
+
+		final FTProgressChangeListener changedListener = new FTProgressChangeListener();
+		ridget.addProgressListener(changedListener);
+		ridget.addProgressListener(changedListener);
+		intProLi.changed(createProgressEvent(control, 0, 100));
+
+		assertEquals(2, changingListener.getCountChanged());
+		assertEquals(1, changingListener.getCountCompleted());
+		assertEquals(1, changedListener.getCountChanged());
+		assertEquals(0, changedListener.getCountCompleted());
+
+		intProLi.completed(createProgressEvent(control, 100, 100));
+
+		assertEquals(2, changingListener.getCountChanged());
+		assertEquals(2, changingListener.getCountCompleted());
+		assertEquals(1, changedListener.getCountChanged());
+		assertEquals(1, changedListener.getCountCompleted());
+
+		ridget.removeProgressListener(changingListener);
+		intProLi.changed(createProgressEvent(control, 0, 100));
+
+		assertEquals(2, changingListener.getCountChanged());
+		assertEquals(2, changedListener.getCountChanged());
+
+		ridget.removeProgressListener(changedListener);
+		intProLi.changed(createProgressEvent(control, 0, 100));
+
+		assertEquals(2, changingListener.getCountChanged());
+		assertEquals(2, changedListener.getCountChanged());
+	}
+
 	// helping methods
 	//////////////////
 
@@ -437,6 +486,13 @@ public class BrowserRidgetTest extends AbstractSWTRidgetTest {
 		event.location = location;
 		event.top = true;
 		event.doit = true;
+		return event;
+	}
+
+	private org.eclipse.swt.browser.ProgressEvent createProgressEvent(final Browser control, final int current, final int total) {
+		final org.eclipse.swt.browser.ProgressEvent event = new org.eclipse.swt.browser.ProgressEvent(control);
+		event.current = current;
+		event.total = total;
 		return event;
 	}
 
@@ -521,6 +577,31 @@ public class BrowserRidgetTest extends AbstractSWTRidgetTest {
 			countChanged++;
 			this.event = event;
 		}
+	}
+
+	private static class FTProgressChangeListener implements IProgressListener {
+
+		private int countChanged = 0;
+		private int countCompleted = 0;
+
+		public int getCountChanged() {
+			return countChanged;
+		}
+
+		public int getCountCompleted() {
+			return countCompleted;
+		}
+
+		@Override
+		public void progressChanged(final ProgressEvent event) {
+			countChanged++;
+		}
+
+		@Override
+		public void progressCompleted(final ProgressEvent event) {
+			countCompleted++;
+		}
+
 	}
 
 }

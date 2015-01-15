@@ -13,6 +13,7 @@
 package org.eclipse.riena.ui.ridgets;
 
 import org.eclipse.riena.ui.ridgets.listener.ILocationListener;
+import org.eclipse.riena.ui.ridgets.listener.IProgressListener;
 
 /**
  * The browser ridget displays a html page fetched from a given URL.
@@ -76,6 +77,17 @@ public interface IBrowserRidget extends IValueRidget {
 	void addLocationListener(ILocationListener listener);
 
 	/**
+	 * Add a {@link IProgressListener} that is notified when a loading step of this ridget is finished.
+	 * <p>
+	 * Adding the same listener instance several times has no effect.
+	 * 
+	 * @param listener
+	 *            a non-null {@link IProgressListener}
+	 * @since 6.1
+	 */
+	void addProgressListener(IProgressListener listener);
+
+	/**
 	 * Return the text last set into the ridget or null.
 	 * <p>
 	 * The default value is null.
@@ -113,6 +125,15 @@ public interface IBrowserRidget extends IValueRidget {
 	 * @since 3.0
 	 */
 	void removeLocationListener(ILocationListener listener);
+
+	/**
+	 * Remove a {@link IProgressListener} from this ridget.
+	 * 
+	 * @param listener
+	 *            a non-null {@link IProgressListener}
+	 * @since 6.1
+	 */
+	void removeProgressListener(IProgressListener listener);
 
 	/**
 	 * Adds and removes the default OutputMarker.
