@@ -98,6 +98,15 @@ public interface IComboRidget extends IMarkableRidget, ISelectionObservable {
 	void bindToModel(SelectableListHolder<?> listHolder, String renderMethodName);
 
 	/**
+	 * Returns the object which will be selected if the value of the model 
+	 * is <code>null</code>.
+	 * 
+	 * @return the default object or null.
+	 * @since 6.1
+	 */
+	Object getDefaultSelection();
+
+	/**
 	 * Returns the option that represents 'no selection'.
 	 * <p>
 	 * When this option is selected the ridget behaves just as if nothing was
@@ -153,6 +162,17 @@ public interface IComboRidget extends IMarkableRidget, ISelectionObservable {
 	 * @since 2.0
 	 */
 	boolean isMarkSelectionMismatch();
+
+	/**
+	 * Set the object which will be selected if the models property value is <code>null</code>. <p> If the models property value is null, the value of the
+	 * default selection will also set in the model. This happens while calling {@link #bindToModel(Object, String, Class, String, Object, String)} or {@link #setDefaultSelection(Object)} after binding
+	 * the model.
+	 * 
+	 * @param defaultSelection
+	 *        The object which will be the default.
+	 * @since 6.1
+	 */
+	void setDefaultSelection(Object defaultSelection);
 
 	/**
 	 * Sets the option that represents 'no selection'.

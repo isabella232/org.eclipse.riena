@@ -1515,6 +1515,114 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 		}
 	}
 
+	@SuppressWarnings("nls")
+	public void testSetDefaultSelectionBeforeBind() {
+		final AbstractComboRidget ridget = getRidget();
+		StringManager sManager = new StringManager("A", "B", "C");
+
+		ridget.setDefaultSelection("B");
+		assertEquals("B", ridget.getDefaultSelection());
+		assertNull(sManager.getSelectedItem());
+		assertNull(ridget.getSelection());
+		ridget.bindToModel(sManager, "items", String.class, null, sManager, "selectedItem");
+		assertEquals("B", sManager.getSelectedItem());
+		assertEquals("B", ridget.getSelection());
+		ridget.setDefaultSelection("C");
+		assertEquals("B", sManager.getSelectedItem());
+		assertEquals("B", ridget.getSelection());
+
+		ridget.setDefaultSelection(null);
+		sManager = new StringManager("A", "B", "C");
+		assertNull(sManager.getSelectedItem());
+		assertEquals("B", ridget.getSelection());
+		ridget.bindToModel(sManager, "items", String.class, null, sManager, "selectedItem");
+		assertNull(sManager.getSelectedItem());
+		assertEquals("B", ridget.getSelection());
+		ridget.updateFromModel();
+		assertNull(sManager.getSelectedItem());
+		assertNull(ridget.getSelection());
+		assertNull(ridget.getDefaultSelection());
+
+		ridget.setDefaultSelection("A");
+		sManager = new StringManager("A", "B", "C");
+		sManager.setSelectedItem("C");
+		ridget.bindToModel(sManager, "items", String.class, null, sManager, "selectedItem");
+		assertEquals("C", sManager.getSelectedItem());
+		assertEquals("A", ridget.getSelection());
+		ridget.updateFromModel();
+		assertEquals("C", sManager.getSelectedItem());
+		assertEquals("C", ridget.getSelection());
+		assertEquals("A", ridget.getDefaultSelection());
+
+	}
+
+	@SuppressWarnings("nls")
+	public void testSetDefaultSelectionAfterBind() {
+		final AbstractComboRidget ridget = getRidget();
+		StringManager sManager = new StringManager("A", "B", "C");
+
+		ridget.bindToModel(sManager, "items", String.class, null, sManager, "selectedItem");
+		ridget.updateFromModel();
+		assertNull(sManager.getSelectedItem());
+		assertNull(ridget.getSelection());
+		ridget.setDefaultSelection("C");
+		assertEquals("C", ridget.getDefaultSelection());
+		assertEquals("C", sManager.getSelectedItem());
+		assertEquals("C", ridget.getSelection());
+		ridget.setDefaultSelection("A");
+		assertEquals("C", sManager.getSelectedItem());
+		assertEquals("C", ridget.getSelection());
+		assertEquals("A", ridget.getDefaultSelection());
+
+		sManager = new StringManager("A", "B", "C");
+		sManager.setSelectedItem("A");
+		ridget.setDefaultSelection(null);
+		ridget.bindToModel(sManager, "items", String.class, null, sManager, "selectedItem");
+		assertEquals("A", sManager.getSelectedItem());
+		assertEquals("C", ridget.getSelection());
+		ridget.updateFromModel();
+		assertEquals("A", sManager.getSelectedItem());
+		assertEquals("A", ridget.getSelection());
+
+		ridget.setDefaultSelection(null);
+		sManager = new StringManager("A", "B", "C");
+		ridget.bindToModel(sManager, "items", String.class, null, sManager, "selectedItem");
+		assertNull(sManager.getSelectedItem());
+		assertEquals("A", ridget.getSelection());
+		ridget.updateFromModel();
+		assertNull(sManager.getSelectedItem());
+		assertNull(ridget.getSelection());
+
+		final StringManager sManager2 = new StringManager("A", "B", "C");
+		ridget.bindToModel(sManager2, "items", String.class, null, sManager2, "selectedItem");
+		assertNull(sManager.getSelectedItem());
+		assertNull(sManager2.getSelectedItem());
+		assertNull(ridget.getSelection());
+		ridget.setDefaultSelection("C");
+		assertNull(sManager.getSelectedItem());
+		assertEquals("C", sManager2.getSelectedItem());
+		assertEquals("C", ridget.getSelection());
+
+	}
+
+	@SuppressWarnings("nls")
+	public void testSetDefaultSelectionWithoutUIControl() {
+		final AbstractComboRidget ridget = getRidget();
+		ridget.setUIControl(null);
+		final StringManager sManager = new StringManager("A", "B", "C");
+
+		ridget.setDefaultSelection("A");
+		assertEquals("A", ridget.getDefaultSelection());
+		assertNull(sManager.getSelectedItem());
+		assertNull(ridget.getSelection());
+		ridget.bindToModel(sManager, "items", String.class, null, sManager, "selectedItem");
+		assertEquals("A", sManager.getSelectedItem());
+		assertNull(ridget.getSelection());
+		ridget.updateFromModel();
+		assertEquals("A", sManager.getSelectedItem());
+		assertEquals("A", ridget.getSelection());
+	}
+
 	// helping methods
 	// ////////////////
 

@@ -89,6 +89,9 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	/** If this item is selected, treat it as if nothing is selected */
 	private Object emptySelection;
 
+	/** The value which will be set if the model value is null. */
+	private Object defaultSelection;
+
 	/** List of available options (model). */
 	private IObservableList optionValues;
 	/** Class of the optional values. */
@@ -261,6 +264,9 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		this.selectionValue = selectionValue;
 
 		bindUIControl();
+		if (defaultSelection != null) {
+			setDefaultSelection(defaultSelection);
+		}
 	}
 
 	/**
@@ -290,6 +296,13 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 			selectionObservableValue = PojoObservables.observeValue(selectionHolder, selectionPropertyName);
 		}
 		bindToModel(listObservableValue, rowClass, renderingMethod, selectionObservableValue);
+	}
+
+	/**
+	 * @since 6.1
+	 */
+	public Object getDefaultSelection() {
+		return defaultSelection;
 	}
 
 	public Object getEmptySelectionItem() {
@@ -333,6 +346,20 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	 */
 	public void setColumnFormatter(final IColumnFormatter formatter) {
 		this.formatter = formatter;
+	}
+
+	/**
+	 * @since 6.1
+	 */
+	public void setDefaultSelection(final Object defaultSelection) {
+		this.defaultSelection = defaultSelection;
+		if (optionValues != null && selectionValue != null && selectionValue.getValue() == null) {
+			if (SwtUtilities.isDisposed(getUIControl())) {
+				selectionValue.setValue(defaultSelection);
+			} else {
+				setSelection(defaultSelection);
+			}
+		}
 	}
 
 	public void setEmptySelectionItem(final Object emptySelection) {
