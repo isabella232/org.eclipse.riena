@@ -311,6 +311,10 @@ public class TableRidget extends AbstractTableRidget {
 	 */
 	@Override
 	protected final void updateToolTipSupport() {
+		if (getUIControl() == null) {
+			return;
+		}
+
 		final SWTFacade facade = SWTFacade.getDefault();
 		if (isNativeToolTip() || !TableRidgetToolTipSupportFacade.getDefault().isSupported()) {
 			TableRidgetToolTipSupportFacade.getDefault().disable();
