@@ -17,7 +17,7 @@ import org.eclipse.core.runtime.Assert;
 /**
  * Collection of File/filename utilities.
  * 
- * @since 6.0
+ * @since 6.1
  */
 public final class FileUtils {
 
