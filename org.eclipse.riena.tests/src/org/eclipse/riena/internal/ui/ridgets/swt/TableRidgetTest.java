@@ -49,6 +49,7 @@ import org.eclipse.riena.ui.ridgets.listener.ClickEvent;
 import org.eclipse.riena.ui.ridgets.listener.SelectionEvent;
 import org.eclipse.riena.ui.ridgets.swt.ColumnFormatter;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
+import org.eclipse.riena.ui.swt.facades.internal.ITableRidgetToolTipSupport;
 
 /**
  * Tests of the class {@link TableRidget}.
@@ -1219,6 +1220,47 @@ public class TableRidgetTest extends AbstractTableListRidgetTest {
 		person1.setHasCat(true);
 		ret = ReflectionUtils.invokeHidden(provider, "isChecked", person1); //$NON-NLS-1$
 		assertTrue(ret);
+
+	}
+
+	public void testTableRidgetToolTipSupport() {
+		final Table control = getWidget();
+
+		assertEquals(manager.getPersons().size(), control.getItemCount());
+		assertEquals(person1.getFirstname(), control.getItem(0).getText(0));
+		assertEquals(person2.getFirstname(), control.getItem(1).getText(0));
+		assertEquals(person3.getFirstname(), control.getItem(2).getText(0));
+
+		assertEquals(person1.getLastname(), control.getItem(0).getText(1));
+		assertEquals(person2.getLastname(), control.getItem(1).getText(1));
+		assertEquals(person3.getLastname(), control.getItem(2).getText(1));
+
+		bindRidgetToModel();
+		final TableViewer viewer = ReflectionUtils.invokeHidden(getRidget(), "getTableViewer"); //$NON-NLS-1$
+		ITableRidgetToolTipSupport toolTipSupport = ReflectionUtils.getHidden(getRidget(), "tooltipSupport");
+		assertNull(toolTipSupport);
+
+		getRidget().setNativeToolTip(false);
+		toolTipSupport = ReflectionUtils.getHidden(getRidget(), "tooltipSupport");
+		assertNotNull(toolTipSupport);
+
+		TableViewer ttsViewer = ReflectionUtils.getHidden(toolTipSupport, "viewer"); //$NON-NLS-1$
+		assertEquals(ttsViewer, viewer);
+
+		getRidget().setNativeToolTip(true);
+		getRidget().setNativeToolTip(false);
+		ITableRidgetToolTipSupport newToolTipSupport = ReflectionUtils.getHidden(getRidget(), "tooltipSupport");
+		assertEquals(newToolTipSupport, toolTipSupport);
+
+		final Table table = new Table(control.getParent(), SWT.MULTI);
+		getRidget().setUIControl(table);
+		bindRidgetToModel();
+		newToolTipSupport = ReflectionUtils.getHidden(getRidget(), "tooltipSupport");
+		final TableViewer newViewer = ReflectionUtils.invokeHidden(getRidget(), "getTableViewer"); //$NON-NLS-1$
+		ttsViewer = ReflectionUtils.getHidden(toolTipSupport, "viewer"); //$NON-NLS-1$
+		assertEquals(newToolTipSupport, toolTipSupport);
+		assertNotSame(viewer, newViewer);
+		assertEquals(newViewer, ttsViewer);
 
 	}
 

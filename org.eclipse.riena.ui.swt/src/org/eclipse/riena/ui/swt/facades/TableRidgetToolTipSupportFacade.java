@@ -12,6 +12,8 @@ package org.eclipse.riena.ui.swt.facades;
 
 import org.eclipse.jface.viewers.ColumnViewer;
 
+import org.eclipse.riena.ui.swt.facades.internal.ITableRidgetToolTipSupport;
+
 /**
  * @since 4.0
  */
@@ -36,8 +38,13 @@ public abstract class TableRidgetToolTipSupportFacade {
 	 */
 	public abstract boolean isSupported();
 
-	public abstract void disable();
-
-	public abstract void enableFor(ColumnViewer viewer);
+	/**
+	 * Create the support of JFace tooltips for a given Table. Use the resulting {@link ITableRidgetToolTipSupport} to disable the JFace tool tips.
+	 * 
+	 * @param viewer
+	 *            The viewer component of the table
+	 * @return The instance of the tooltip support.
+	 */
+	public abstract ITableRidgetToolTipSupport enableFor(ColumnViewer viewer);
 
 }

@@ -62,6 +62,7 @@ import org.eclipse.riena.ui.ridgets.swt.MarkerSupport;
 import org.eclipse.riena.ui.ridgets.swt.SortableComparator;
 import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.facades.TableRidgetToolTipSupportFacade;
+import org.eclipse.riena.ui.swt.facades.internal.ITableRidgetToolTipSupport;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
@@ -74,6 +75,7 @@ public class TableRidget extends AbstractTableRidget {
 	private final static Logger LOGGER = Log4r.getLogger(TableRidget.class);
 
 	private TableTooltipManager tooltipManager;
+	private ITableRidgetToolTipSupport tooltipSupport;
 	private ControlListener columnResizeListener;
 	private final Listener itemEraser;
 
@@ -151,6 +153,9 @@ public class TableRidget extends AbstractTableRidget {
 			if (tooltipManager != null) {
 				facade.removeMouseTrackListener(control, tooltipManager);
 				facade.removeMouseMoveListener(control, tooltipManager);
+			}
+			if (tooltipSupport != null) {
+				tooltipSupport.disableSupport();
 			}
 		}
 	}
@@ -317,7 +322,9 @@ public class TableRidget extends AbstractTableRidget {
 
 		final SWTFacade facade = SWTFacade.getDefault();
 		if (isNativeToolTip() || !TableRidgetToolTipSupportFacade.getDefault().isSupported()) {
-			TableRidgetToolTipSupportFacade.getDefault().disable();
+			if (tooltipSupport != null) {
+				tooltipSupport.disableSupport();
+			}
 			if (tooltipManager == null) {
 				tooltipManager = new TableTooltipManager();
 				tooltipManager.init(getUIControl());
@@ -330,7 +337,11 @@ public class TableRidget extends AbstractTableRidget {
 				facade.removeMouseMoveListener(getUIControl(), tooltipManager);
 			}
 			if (getTableViewer() instanceof TableRidgetTableViewer) {
-				TableRidgetToolTipSupportFacade.getDefault().enableFor(getTableViewer());
+				if (tooltipSupport == null) {
+					tooltipSupport = TableRidgetToolTipSupportFacade.getDefault().enableFor(getTableViewer());
+				} else {
+					tooltipSupport.enableSupport(getTableViewer());
+				}
 			}
 		}
 	}

@@ -8,26 +8,27 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.swt.facades;
+package org.eclipse.riena.ui.swt.facades.internal;
 
 import org.eclipse.jface.viewers.ColumnViewer;
 
-import org.eclipse.riena.ui.swt.facades.internal.ITableRidgetToolTipSupport;
-import org.eclipse.riena.ui.swt.facades.internal.TableRidgetToolTipSupport;
-
 /**
- * Implements {@link TableRidgetToolTipSupportFacade} for RCP.
+ * Interface for jface tooltips on a TableRidget.
+ * 
+ * @since 6.1
  */
-public class TableRidgetToolTipSupportFacadeRCP extends TableRidgetToolTipSupportFacade {
+public interface ITableRidgetToolTipSupport {
 
-	@Override
-	public ITableRidgetToolTipSupport enableFor(final ColumnViewer viewer) {
-		return TableRidgetToolTipSupport.enableSupportFor(viewer);
-	}
+	/**
+	 * Disable the JFace tooltips on the TableRidget.
+	 */
+	void disableSupport();
 
-	@Override
-	public boolean isSupported() {
-		return true;
-	}
-
+	/**
+	 * Enable the JFace tooltip support for the ColumnViewer.
+	 * 
+	 * @param viewer
+	 *            the new ColumnViewer
+	 */
+	void enableSupport(ColumnViewer viewer);
 }

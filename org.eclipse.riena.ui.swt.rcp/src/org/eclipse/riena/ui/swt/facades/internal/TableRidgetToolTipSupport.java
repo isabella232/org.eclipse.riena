@@ -39,15 +39,14 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
  * <p>
  * <i>(Note: The TableRidget must use <code>TableRidgetTableViewer</code>)</i>
  */
-public class TableRidgetToolTipSupport extends ColumnViewerToolTipSupport {
+public class TableRidgetToolTipSupport extends ColumnViewerToolTipSupport implements ITableRidgetToolTipSupport {
 
 	private static final String VIEWER_CELL_KEY = Policy.JFACE + "_VIEWER_CELL_KEY"; //$NON-NLS-1$
 
 	private static final int DEFAULT_SHIFT_X = 10;
 	private static final int DEFAULT_SHIFT_Y = 0;
 
-	private static TableRidgetToolTipSupport support;
-	private final TableRidgetTableViewer viewer;
+	private TableRidgetTableViewer viewer;
 	private String defaultToolTip;
 
 	/**
@@ -71,73 +70,28 @@ public class TableRidgetToolTipSupport extends ColumnViewerToolTipSupport {
 	}
 
 	/**
-	 * Enable ToolTip support for the viewer by creating an instance from this
-	 * class. To get all necessary informations this support class consults the
-	 * {@link TableRidgetLabelProvider}.
+	 * Create the support of JFace tooltips for a given Table.
 	 * 
 	 * @param viewer
-	 *            the viewer the support is attached to
+	 *            The viewer component of the table
+	 * @return The instance of the tooltip support.
 	 */
-	public static void enableFor(final ColumnViewer viewer) {
-		enableFor(viewer, ToolTip.NO_RECREATE);
-	}
-
-	/**
-	 * Enable ToolTip support for the viewer by creating an instance from this
-	 * class. To get all necessary informations this support class consults the
-	 * {@link TableRidgetLabelProvider}.
-	 * 
-	 * @param viewer
-	 *            the viewer the support is attached to
-	 * @param style
-	 *            style passed to control tool tip behavior
-	 * 
-	 * @see ToolTip#RECREATE
-	 * @see ToolTip#NO_RECREATE
-	 */
-	public static void enableFor(final ColumnViewer viewer, final int style) {
-		disable();
-		if (support != null) {
-			if (support.getViewer() == viewer) {
-				support.activate();
-				return;
-			} else {
-				support = null;
-			}
-		}
-		if (support == null) {
-			support = new TableRidgetToolTipSupport(viewer, style);
-			support.init();
-		}
+	public static ITableRidgetToolTipSupport enableSupportFor(final ColumnViewer viewer) {
+		final TableRidgetToolTipSupport support = new TableRidgetToolTipSupport(viewer, ToolTip.NO_RECREATE);
+		support.init();
+		return support;
 	}
 
 	TableRidgetTableViewer getViewer() {
 		return viewer;
 	}
 
-	/**
-	 * Disables (stops) showing tool tips.
-	 */
-	public static void disable() {
-		if (support != null) {
-			support.deactivate();
-		}
-	}
-
 	private void init() {
 		final Control table = viewer.getTable();
 		if (table != null) {
 			final String tableToolTip = table.getToolTipText();
-			defaultToolTip = tableToolTip;
-			table.setToolTipText(null);
-		}
-	}
-
-	@Override
-	public void deactivate() {
-		super.deactivate();
-		if (viewer != null) {
-			resetToolTip(viewer.getTable());
+			defaultToolTip = tableToolTip != null ? tableToolTip : ""; //$NON-NLS-1$
+			table.setToolTipText(defaultToolTip);
 		}
 	}
 
@@ -187,12 +141,12 @@ public class TableRidgetToolTipSupport extends ColumnViewerToolTipSupport {
 			}
 
 			Image img = null;
-			if (column != -1) {
+			if ((labelProvider != null) && (column != -1)) {
 				img = labelProvider.getToolTipImage(element, column);
 			}
 
 			if (text == null && img == null) {
-				table.setToolTipText(text);
+				table.setToolTipText(defaultToolTip);
 				rv = false;
 			} else {
 				Point shift = null;
@@ -219,8 +173,6 @@ public class TableRidgetToolTipSupport extends ColumnViewerToolTipSupport {
 					setFont(labelProvider.getToolTipFont(element, column));
 				}
 
-				// Check if at least one of the values is set
-				rv = getText(event) != null || getImage(event) != null;
 				rv = true;
 			}
 		}
@@ -247,6 +199,24 @@ public class TableRidgetToolTipSupport extends ColumnViewerToolTipSupport {
 		}
 		if (table.getToolTipText() == null || !table.getToolTipText().equals(defaultToolTip)) {
 			table.setToolTipText(defaultToolTip);
+		}
+	}
+
+	public void disableSupport() {
+		deactivate();
+		if (viewer != null) {
+			resetToolTip(viewer.getTable());
+		}
+	}
+
+	public void enableSupport(final ColumnViewer viewer) {
+		if (viewer instanceof TableRidgetTableViewer) {
+			if (this.viewer != viewer) {
+				disableSupport();
+				this.viewer = (TableRidgetTableViewer) viewer;
+				init();
+			}
+			activate();
 		}
 	}
 

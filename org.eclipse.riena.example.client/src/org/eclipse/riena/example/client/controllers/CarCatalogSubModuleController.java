@@ -18,7 +18,9 @@ import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.riena.beans.common.TypedComparator;
 import org.eclipse.riena.internal.example.client.beans.Car;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
+import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
+import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
 import org.eclipse.riena.ui.ridgets.listener.ISelectionListener;
 import org.eclipse.riena.ui.ridgets.listener.SelectionEvent;
 import org.eclipse.riena.ui.ridgets.swt.NumberColumnFormatter;
@@ -34,11 +36,11 @@ public class CarCatalogSubModuleController extends SubModuleController {
 
 		super.configureRidgets();
 
+		final IToggleButtonRidget nativeToolTip = getRidget("nativeCheck"); //$NON-NLS-1$
 		final ITableRidget table = getRidget(ITableRidget.class, "table"); //$NON-NLS-1$
 		final String[] columnPropertyNames = { "make", "model", "power", "capacity", "speedup", "milage" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
 		final String[] columnHeaders = { "Make", "Model", "Power (KW)", "Capacity", "Speedup", "Milage" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
 		final List<Car> input = createInput();
-		table.setNativeToolTip(false);
 		table.bindToModel(new WritableList(input, Car.class), Car.class, columnPropertyNames, columnHeaders);
 		table.updateFromModel();
 		table.setComparator(0, new TypedComparator<String>());
@@ -95,6 +97,12 @@ public class CarCatalogSubModuleController extends SubModuleController {
 			}
 		});
 
+		nativeToolTip.setSelected(true);
+		nativeToolTip.addListener(new IActionListener() {
+			public void callback() {
+				table.setNativeToolTip(nativeToolTip.isSelected());
+			}
+		});
 	}
 
 	private List<Car> createInput() {

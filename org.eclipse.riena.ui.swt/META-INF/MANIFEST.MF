@@ -23,6 +23,7 @@ Export-Package: org.eclipse.riena.internal.ui.swt;x-friends:="org.eclipse.riena.
  org.eclipse.riena.internal.ui.swt.utils;x-friends:="org.eclipse.riena.ui.ridgets.swt,org.eclipse.riena.navigation.ui.swt",
  org.eclipse.riena.ui.swt,
  org.eclipse.riena.ui.swt.facades,
+ org.eclipse.riena.ui.swt.facades.internal,
  org.eclipse.riena.ui.swt.layout,
  org.eclipse.riena.ui.swt.lnf,
  org.eclipse.riena.ui.swt.lnf.renderer,

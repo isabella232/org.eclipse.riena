@@ -27,8 +27,7 @@ import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
- * View of a sub-module to demonstrate how cells of a table can be edited with
- * data-binding support and Ridgets.
+ * View of a sub-module to demonstrate how cells of a table can be edited with data-binding support and Ridgets.
  */
 public class CarCatalogSubModuleView extends SubModuleView {
 
@@ -38,7 +37,10 @@ public class CarCatalogSubModuleView extends SubModuleView {
 	protected void basicCreatePartControl(final Composite parent) {
 		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 		parent.setLayout(new GridLayout(1, false));
-
+		final Group group = UIControlsFactory.createGroup(parent, "&Tooltip:"); //$NON-NLS-1$
+		GridLayoutFactory.fillDefaults().margins(20, 20).numColumns(2).applyTo(group);
+		UIControlsFactory.createButtonCheck(group, "Use native OS tooltips", "nativeCheck"); //$NON-NLS-1$ //$NON-NLS-2$
+		UIControlsFactory.createLabel(group, "You can choose between native \nor JFace tooltips."); //$NON-NLS-1$
 		final Group group1 = createTableGroup(parent);
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(group1);
 	}
