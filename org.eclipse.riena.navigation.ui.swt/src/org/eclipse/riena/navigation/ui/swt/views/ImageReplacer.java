@@ -106,7 +106,7 @@ public class ImageReplacer {
 				} else if (item instanceof IMenuManager) {
 					replaceImagesOfManager((IMenuManager) item);
 				} else {
-					replaceImages(contributionManager, item);
+					replaceImages(item);
 				}
 			}
 		}
@@ -120,60 +120,38 @@ public class ImageReplacer {
 	 * @param item
 	 *            command item
 	 */
-	protected void replaceImages(final IContributionManager contributionManager, final IContributionItem item) {
+	protected void replaceImages(final IContributionItem item) {
 
 		if (item instanceof CommandContributionItem) {
 
 			final CommandContributionItem commandItem = (CommandContributionItem) item;
 
 			final CommandContributionItemParameter itemParamter = commandItem.getData();
-			itemParamter.commandId = commandItem.getCommand().getId();
-			// TODO comment
-			contributionManager.remove(item);
-			if (replaceImages(itemParamter)) {
-				contributionManager.add(new CommandContributionItem(itemParamter));
-			} else {
-				contributionManager.add(item);
+
+			if (itemParamter.icon != null) {
+				final ImageDescriptor scaledImage = getScaledImage(itemParamter.icon);
+				if (scaledImage != null && !itemParamter.icon.equals(scaledImage)) {
+					ReflectionUtils.setHidden(item, "contributedIcon", scaledImage); //$NON-NLS-1$
+					ReflectionUtils.setHidden(item, "icon", scaledImage); //$NON-NLS-1$
+				}
+			}
+
+			if (itemParamter.disabledIcon != null) {
+				final ImageDescriptor scaledImage = getScaledImage(itemParamter.disabledIcon);
+				if (scaledImage != null && !itemParamter.disabledIcon.equals(scaledImage)) {
+					ReflectionUtils.setHidden(item, "contributedDisabledIcon", scaledImage); //$NON-NLS-1$
+					ReflectionUtils.setHidden(item, "disabledIcon", scaledImage); //$NON-NLS-1$
+				}
+			}
+
+			if (itemParamter.hoverIcon != null) {
+				final ImageDescriptor scaledImage = getScaledImage(itemParamter.hoverIcon);
+				if (scaledImage != null && !itemParamter.hoverIcon.equals(scaledImage)) {
+					ReflectionUtils.setHidden(item, "contributedHoverIcon", scaledImage); //$NON-NLS-1$
+					ReflectionUtils.setHidden(item, "hoverIcon", scaledImage); //$NON-NLS-1$
+				}
 			}
 		}
-	}
-
-	/**
-	 * Replaces all not scaled images (default, disable, hover) of the given item parameter.
-	 * 
-	 * @param itemParamter
-	 * @return {@code true} at least one images was replaced; otherwise {@code false}
-	 */
-	private boolean replaceImages(final CommandContributionItemParameter itemParamter) {
-
-		boolean replaced = false;
-
-		if (itemParamter.icon != null) {
-			final ImageDescriptor scaledImage = getScaledImage(itemParamter.icon);
-			if (scaledImage != null && !itemParamter.icon.equals(scaledImage)) {
-				replaced = true;
-				itemParamter.icon = scaledImage;
-			}
-		}
-
-		if (itemParamter.disabledIcon != null) {
-			final ImageDescriptor scaledImage = getScaledImage(itemParamter.disabledIcon);
-			if (scaledImage != null && !itemParamter.disabledIcon.equals(scaledImage)) {
-				replaced = true;
-				itemParamter.disabledIcon = scaledImage;
-			}
-		}
-
-		if (itemParamter.hoverIcon != null) {
-			final ImageDescriptor scaledImage = getScaledImage(itemParamter.hoverIcon);
-			if (scaledImage != null && !itemParamter.hoverIcon.equals(scaledImage)) {
-				replaced = true;
-				itemParamter.hoverIcon = scaledImage;
-			}
-		}
-
-		return replaced;
-
 	}
 
 	/**
