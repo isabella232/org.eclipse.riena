@@ -34,6 +34,8 @@ import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.IStatuslineRidget;
 import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
+import org.eclipse.riena.ui.ridgets.controller.IController;
+import org.eclipse.riena.ui.ridgets.swt.AbstractRidgetController;
 import org.eclipse.riena.ui.ridgets.swt.MarkerSupport;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 import org.eclipse.riena.ui.swt.utils.ImageStore;
@@ -824,6 +826,87 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 		check2.setEnabled(false);
 
 		assertFalse(ridget.isDisableMandatoryMarker());
+	}
+
+	public void testMandatoryMarkerWithTwoRidgetsOnBindingOnSharedView() {
+		final IToggleButtonRidget ridget1 = getRidget();
+		final Button check2 = new Button(getShell(), SWT.CHECK);
+		final IToggleButtonRidget ridget2 = new ToggleButtonRidget();
+		ridget2.setUIControl(check2);
+		final IController controller1 = new AbstractRidgetController() {
+
+			@Override
+			public void configureRidgets() {
+
+			}
+		};
+		final IController controller2 = new AbstractRidgetController() {
+
+			@Override
+			public void configureRidgets() {
+
+			}
+		};
+
+		ridget1.setController(controller1);
+		ridget1.setSelected(false);
+		ridget1.setEnabled(true);
+		ridget1.setMandatory(true);
+
+		ridget2.setController(controller2);
+		ridget2.setSelected(false);
+		ridget2.setEnabled(true);
+		ridget2.setMandatory(true);
+
+		assertFalse(ridget1.getMarkersOfType(MandatoryMarker.class).iterator().next().isDisabled());
+		assertFalse(ridget2.getMarkersOfType(MandatoryMarker.class).iterator().next().isDisabled());
+
+		ridget1.setSelected(true);
+		ridget1.updateMarkers();
+
+		assertTrue(ridget1.getMarkersOfType(MandatoryMarker.class).iterator().next().isDisabled());
+		assertFalse(ridget2.getMarkersOfType(MandatoryMarker.class).iterator().next().isDisabled());
+
+		ridget1.setSelected(false);
+		ridget1.updateMarkers();
+
+		assertFalse(ridget1.getMarkersOfType(MandatoryMarker.class).iterator().next().isDisabled());
+		assertFalse(ridget2.getMarkersOfType(MandatoryMarker.class).iterator().next().isDisabled());
+
+		ridget2.setSelected(true);
+		ridget2.updateMarkers();
+
+		assertFalse(ridget1.getMarkersOfType(MandatoryMarker.class).iterator().next().isDisabled());
+		assertTrue(ridget2.getMarkersOfType(MandatoryMarker.class).iterator().next().isDisabled());
+
+		ridget2.setSelected(false);
+		ridget2.updateMarkers();
+
+		assertFalse(ridget1.getMarkersOfType(MandatoryMarker.class).iterator().next().isDisabled());
+		assertFalse(ridget2.getMarkersOfType(MandatoryMarker.class).iterator().next().isDisabled());
+
+		ridget1.setSelected(true);
+		ridget2.setSelected(true);
+		ridget1.updateMarkers();
+		ridget2.updateMarkers();
+
+		assertTrue(ridget1.getMarkersOfType(MandatoryMarker.class).iterator().next().isDisabled());
+		assertTrue(ridget2.getMarkersOfType(MandatoryMarker.class).iterator().next().isDisabled());
+
+		ridget1.setController(controller2);
+
+		ridget1.setSelected(true);
+		ridget2.setSelected(false);
+		ridget1.updateMarkers();
+
+		assertTrue(ridget1.getMarkersOfType(MandatoryMarker.class).iterator().next().isDisabled());
+		assertTrue(ridget2.getMarkersOfType(MandatoryMarker.class).iterator().next().isDisabled());
+
+		ridget1.setSelected(false);
+		ridget1.updateMarkers();
+
+		assertFalse(ridget1.getMarkersOfType(MandatoryMarker.class).iterator().next().isDisabled());
+		assertFalse(ridget2.getMarkersOfType(MandatoryMarker.class).iterator().next().isDisabled());
 	}
 
 	/**

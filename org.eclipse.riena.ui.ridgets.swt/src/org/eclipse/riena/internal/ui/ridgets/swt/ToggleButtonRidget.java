@@ -177,7 +177,7 @@ public class ToggleButtonRidget extends AbstractToggleButtonRidget {
 			final Button[] siblings = getSiblings(control);
 			for (final Button sibling : siblings) {
 				final Object ridget = sibling.getData(TOGGLE_BUTTON_RIDGET);
-				if (ridget instanceof ToggleButtonRidget) {
+				if (ridget instanceof ToggleButtonRidget && ((ToggleButtonRidget) ridget).getController() == this.getController()) {
 					((ToggleButtonRidget) ridget).disableMandatoryMarkers(disableMarker);
 				}
 			}
