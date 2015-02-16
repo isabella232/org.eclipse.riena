@@ -1420,28 +1420,28 @@ public class NavigationProcessor implements INavigationProcessor {
 		final IModuleNode moduleNode = pNode.getTypecastedAdapter(IModuleNode.class);
 		if (moduleNode != null) {
 			ISubModuleNode nextChild = getSelectedChild(moduleNode);
-			if (nextChild != null && nextChild.isSelectable()) {
-				while (true) {
-					final ISubModuleNode nextTmp = getSelectedChild(nextChild);
-					if (nextTmp != null) {
-						nextChild = nextTmp;
-					} else {
-						return nextChild;
-					}
-				}
-			} else {
-				if (moduleNode.getChildren().size() > 0) {
-					// find the first selectable node in the list of childs
-					ISubModuleNode subModule = null;
-					final Iterator<ISubModuleNode> subIter = moduleNode.getChildren().iterator();
-					while (subModule == null && subIter.hasNext()) {
-						subModule = findSelectableChildNode(subIter.next());
-					}
+			ISubModuleNode selectedChild = null;
 
-					return subModule;
-				} else {
-					return null;
+			while (nextChild != null) {
+				selectedChild = nextChild.isSelectable() ? nextChild : selectedChild;
+				nextChild = getSelectedChild(nextChild);
+			}
+			//Return the last Module node which is active and can be selected
+			if (selectedChild != null) {
+					return selectedChild;
+			}
+
+			if (moduleNode.getChildren().size() > 0) {
+				// find the first selectable node in the list of childs
+				ISubModuleNode subModule = null;
+				final Iterator<ISubModuleNode> subIter = moduleNode.getChildren().iterator();
+				while (subModule == null && subIter.hasNext()) {
+					subModule = findSelectableChildNode(subIter.next());
 				}
+
+				return subModule;
+			} else {
+				return null;
 			}
 		}
 		// for all others is it the direct selected child
