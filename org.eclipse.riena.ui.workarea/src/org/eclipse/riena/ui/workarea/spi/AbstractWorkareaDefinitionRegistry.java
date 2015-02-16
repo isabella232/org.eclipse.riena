@@ -44,15 +44,6 @@ public abstract class AbstractWorkareaDefinitionRegistry implements IWorkareaDef
 
 		final IWorkareaDefinition existingDefinition = getDefinition(id);
 		if (existingDefinition != null) {
-			if ((existingDefinition.getControllerClass() == null && definition.getControllerClass() != null)
-					|| (existingDefinition.getControllerClass() != null && !existingDefinition.getControllerClass()
-							.equals(definition.getControllerClass()))) {
-				throw new ApplicationModelFailure(
-						"Inconsistent workarea definition: a definition for submodules with typeId=\"" + id //$NON-NLS-1$
-								+ "\" already exists and it has a different controller (class " //$NON-NLS-1$
-								+ existingDefinition.getControllerClass() + " instead of " //$NON-NLS-1$
-								+ definition.getControllerClass() + ")."); //$NON-NLS-1$
-			}
 			if ((existingDefinition.getViewId() == null && definition.getViewId() != null)
 					|| (existingDefinition.getViewId() != null && !existingDefinition.getViewId().equals(
 							definition.getViewId()))) {

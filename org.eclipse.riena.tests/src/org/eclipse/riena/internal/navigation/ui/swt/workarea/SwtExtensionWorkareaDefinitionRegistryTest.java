@@ -88,9 +88,9 @@ public class SwtExtensionWorkareaDefinitionRegistryTest extends RienaTestCase {
 		try {
 			otherWorkareaDefinition = new WorkareaDefinition(OtherTestSubModuleController.class, TEST_VIEW_ID);
 			workareaDefinitionRegistry.register(TEST_TYPE_ID, otherWorkareaDefinition);
-			fail("ApplicationModelFailure expected");
+			ok("No ApplicationModelFailure expected");
 		} catch (final ApplicationModelFailure expected) {
-			ok("ApplicationModelFailure expected");
+			fail("No ApplicationModelFailure expected");
 		}
 
 		try {

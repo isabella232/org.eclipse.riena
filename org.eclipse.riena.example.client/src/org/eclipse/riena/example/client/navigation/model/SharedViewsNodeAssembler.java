@@ -16,6 +16,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.eclipse.riena.example.client.application.ExampleIcons;
+import org.eclipse.riena.example.client.controllers.SharedViewDemoSecondSubModuleController;
 import org.eclipse.riena.example.client.controllers.SharedViewDemoSubModuleController;
 import org.eclipse.riena.example.client.views.SharedViewDemoSubModuleView;
 import org.eclipse.riena.navigation.AbstractNavigationAssembler;
@@ -66,6 +67,12 @@ public class SharedViewsNodeAssembler extends AbstractNavigationAssembler {
 		WorkareaManager.getInstance().registerDefinition(sharedViewSm3, SharedViewDemoSubModuleController.class,
 				SharedViewDemoSubModuleView.ID, true);
 		sharedViewModule.addChild(sharedViewSm3);
+		
+		final ISubModuleNode sharedViewSm4 = new SubModuleNode(
+				new NavigationNodeId(TYPE_ID_SHARED_VIEW, "4"), "Node 4 (shared with other controller)"); //$NON-NLS-1$ //$NON-NLS-2$ 
+		WorkareaManager.getInstance().registerDefinition(sharedViewSm4, SharedViewDemoSecondSubModuleController.class,
+				SharedViewDemoSubModuleView.ID, true);
+		sharedViewModule.addChild(sharedViewSm4);
 
 		return new IModuleGroupNode[] { moduleGroup };
 	}
