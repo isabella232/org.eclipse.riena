@@ -17,6 +17,7 @@ import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.core.marker.UIProcessFinishedMarker;
 import org.eclipse.riena.ui.swt.InfoFlyout;
 import org.eclipse.riena.ui.swt.StatusMeter;
+import org.eclipse.riena.ui.swt.separator.SeparatorLineRenderer;
 
 /**
  * Keys of the look and feel of riena.
@@ -1126,6 +1127,69 @@ public final class LnfKeyConstants {
 	 * @since 3.0
 	 */
 	public static final String STATUS_METER_TRANSPARENT_COLOR = "StatusMeter.transperentColor"; //$NON-NLS-1$
+
+	/**
+	 * The renderer used for the separator, the default is {@link SeparatorLineRenderer}.
+	 * 
+	 * @since 6.1
+	 */
+	public static final String SEPARATOR_LINE_RENDERER = "Separator.line.renderer"; //$NON-NLS-1$
+
+	/**
+	 * The first color of the separator.
+	 * 
+	 * @since 6.1
+	 */
+	public static final String SEPARATOR_FIRST_LINE_FOREGROUND = "Separator.first.line.foreground"; //$NON-NLS-1$
+
+	/**
+	 * The second color of the separator.
+	 * 
+	 * @since 6.1
+	 */
+	public static final String SEPARATOR_SECOND_LINE_FOREGROUND = "Separator.second.line.foreground"; //$NON-NLS-1$
+
+	/**
+	 * The first color of the separator for input masks.
+	 * 
+	 * @since 6.1
+	 */
+	public static final String SEPARATOR_MASK_FIRST_LINE_FOREGROUND = "Separator.mask.first.line.foreground"; //$NON-NLS-1$
+
+	/**
+	 * The second color of the separator for input masks.
+	 * 
+	 * @since 6.1
+	 */
+	public static final String SEPARATOR_MASK_SECOND_LINE_FOREGROUND = "Separator.mask.second.line.foreground"; //$NON-NLS-1$
+
+	/**
+	 * The first color of the separator for work areas.
+	 * 
+	 * @since 6.1
+	 */
+	public static final String SEPARATOR_WORKAREA_FIRST_LINE_FOREGROUND = "Separator.workarea.first.line.foreground"; //$NON-NLS-1$
+
+	/**
+	 * The second color of the separator for work areas.
+	 * 
+	 * @since 6.1
+	 */
+	public static final String SEPARATOR_WORKAREA_SECOND_LINE_FOREGROUND = "Separator.workarea.second.line.foreground"; //$NON-NLS-1$
+
+	/**
+	 * The color of the separator for data areas.
+	 * 
+	 * @since 6.1
+	 */
+	public static final String SEPARATOR_DATA_LINE_FOREGROUND = "Separator.data.first.line.foreground"; //$NON-NLS-1$
+
+	/**
+	 * The color of the separator for dialogs.
+	 * 
+	 * @since 6.1
+	 */
+	public static final String SEPARATOR_DIALOG_LINE_FOREGROUND = "Separator.dialog.first.line.foreground"; //$NON-NLS-1$
 
 	private LnfKeyConstants() {
 		super();

@@ -60,9 +60,9 @@ public class Separator extends Canvas {
 
 	public Separator(final Composite parent, final int style) {
 		this(parent, style, Beans.isDesignTime() ? Display.getDefault().getSystemColor(SWT.COLOR_BLACK) : LnfManager
-				.getLnf().getColor(LnfKeyConstants.TITLEBAR_SEPARATOR_FIRST_LINE_FOREGROUND),
+				.getLnf().getColor(LnfKeyConstants.SEPARATOR_FIRST_LINE_FOREGROUND),
 				Beans.isDesignTime() ? Display.getDefault().getSystemColor(SWT.COLOR_BLACK) : LnfManager.getLnf()
-						.getColor(LnfKeyConstants.TITLEBAR_SEPARATOR_SECOND_LINE_FOREGROUND));
+						.getColor(LnfKeyConstants.SEPARATOR_SECOND_LINE_FOREGROUND));
 	}
 
 	private class Painter implements PaintListener {
@@ -76,7 +76,9 @@ public class Separator extends Canvas {
 		}
 
 		private SeparatorLineRenderer getSeparatorLineRenderer() {
-			return new SeparatorLineRenderer();
+			final SeparatorLineRenderer renderer = (SeparatorLineRenderer) LnfManager.getLnf().getRenderer(
+					LnfKeyConstants.SEPARATOR_LINE_RENDERER);
+			return renderer == null ? new SeparatorLineRenderer() : renderer;
 		}
 
 	}

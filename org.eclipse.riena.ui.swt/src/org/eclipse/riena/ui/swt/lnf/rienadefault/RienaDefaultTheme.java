@@ -178,8 +178,17 @@ public class RienaDefaultTheme implements ILnfTheme {
 
 		lnf.putLnfResource(LnfKeyConstants.INFO_FLYOUT_BORDER_COLOR, new ColorLnfResource(150, 165, 170));
 
+		//Separator
 		lnf.putLnfResource(LnfKeyConstants.TITLEBAR_SEPARATOR_FIRST_LINE_FOREGROUND, new ColorLnfResource(212, 208, 200));
 		lnf.putLnfResource(LnfKeyConstants.TITLEBAR_SEPARATOR_SECOND_LINE_FOREGROUND, new ColorLnfResource(245, 245, 245));
+		lnf.putLnfResource(LnfKeyConstants.SEPARATOR_FIRST_LINE_FOREGROUND, new ColorLnfResource(212, 208, 200));
+		lnf.putLnfResource(LnfKeyConstants.SEPARATOR_SECOND_LINE_FOREGROUND, new ColorLnfResource(245, 245, 245));
+		lnf.putLnfResource(LnfKeyConstants.SEPARATOR_MASK_FIRST_LINE_FOREGROUND, new ColorLnfResource(212, 208, 200));
+		lnf.putLnfResource(LnfKeyConstants.SEPARATOR_MASK_SECOND_LINE_FOREGROUND, new ColorLnfResource(245, 245, 245));
+		lnf.putLnfResource(LnfKeyConstants.SEPARATOR_WORKAREA_FIRST_LINE_FOREGROUND, new ColorLnfResource(212, 208, 200));
+		lnf.putLnfResource(LnfKeyConstants.SEPARATOR_WORKAREA_SECOND_LINE_FOREGROUND, new ColorLnfResource(245, 245, 245));
+		lnf.putLnfResource(LnfKeyConstants.SEPARATOR_DATA_LINE_FOREGROUND, new ColorLnfResource(212, 208, 200));
+		lnf.putLnfResource(LnfKeyConstants.SEPARATOR_DIALOG_LINE_FOREGROUND, new ColorLnfResource(212, 208, 200));
 
 		// StatusMeter
 		lnf.putLnfResource(LnfKeyConstants.STATUS_METER_BORDER_COLOR, new ColorLnfResource(128, 128, 128));

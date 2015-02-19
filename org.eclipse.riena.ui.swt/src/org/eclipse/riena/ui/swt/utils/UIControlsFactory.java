@@ -1632,6 +1632,68 @@ public class UIControlsFactory {
 				LnfKeyConstants.TITLEBAR_SEPARATOR_SECOND_LINE_FOREGROUND);
 	}
 
+	/**
+	 * Create a {@link Separator} control with the colors for data areas.
+	 * 
+	 * @param parent
+	 *            the parent composite; never null
+	 * @param style
+	 *            the style bits
+	 * 
+	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.HORIZONTAL
+	 * @since 6.1
+	 */
+	public static Separator createSeparatorData(final Composite parent, final int style) {
+		return createSeparatorSingleLine(parent, SWT.HORIZONTAL, LnfKeyConstants.SEPARATOR_DATA_LINE_FOREGROUND);
+	}
+
+	/**
+	 * Create a {@link Separator} control with the colors for dialogs.
+	 * 
+	 * @param parent
+	 *            the parent composite; never null
+	 * @param style
+	 *            the style bits
+	 * 
+	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.HORIZONTAL
+	 * @since 6.1
+	 */
+	public static Separator createSeparatorDialog(final Composite parent, final int style) {
+		return createSeparatorSingleLine(parent, SWT.HORIZONTAL, LnfKeyConstants.SEPARATOR_DIALOG_LINE_FOREGROUND);
+	}
+
+	/**
+	 * Create a {@link Separator} control with the colors for input masks.
+	 * 
+	 * @param parent
+	 *            the parent composite; never null
+	 * @param style
+	 *            the style bits
+	 * 
+	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.HORIZONTAL
+	 * @since 6.1
+	 */
+	public static Separator createSeparatorMask(final Composite parent, final int style) {
+		return createSeparatorTwoLine(parent, SWT.HORIZONTAL, LnfKeyConstants.SEPARATOR_MASK_FIRST_LINE_FOREGROUND,
+				LnfKeyConstants.SEPARATOR_MASK_SECOND_LINE_FOREGROUND);
+	}
+
+	/**
+	 * Create a {@link Separator} control with the colors for work areas.
+	 * 
+	 * @param parent
+	 *            the parent composite; never null
+	 * @param style
+	 *            the style bits
+	 * 
+	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.HORIZONTAL
+	 * @since 6.1
+	 */
+	public static Separator createSeparatorWorkarea(final Composite parent, final int style) {
+		return createSeparatorTwoLine(parent, SWT.HORIZONTAL, LnfKeyConstants.SEPARATOR_WORKAREA_FIRST_LINE_FOREGROUND,
+				LnfKeyConstants.SEPARATOR_WORKAREA_SECOND_LINE_FOREGROUND);
+	}
+
 	private static Separator createSeparatorTwoLine(final Composite parent, final int style,
 			final String firstLineColor, final String secondLineColor) {
 
@@ -1644,6 +1706,17 @@ public class UIControlsFactory {
 		}
 		final Separator result = new Separator(parent, style, LnfManager.getLnf().getColor(firstLineColor), LnfManager
 				.getLnf().getColor(secondLineColor));
+		return registerConstruction(result);
+	}
+
+	private static Separator createSeparatorSingleLine(final Composite parent, final int style, final String firstLineColor) {
+		if (Beans.isDesignTime()) {
+			// design time fallback
+			final Display display = parent.getDisplay();
+			final Separator result = new Separator(parent, style, display.getSystemColor(SWT.COLOR_BLACK));
+			return registerConstruction(result);
+		}
+		final Separator result = new Separator(parent, style, LnfManager.getLnf().getColor(firstLineColor));
 		return registerConstruction(result);
 	}
 
