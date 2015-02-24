@@ -27,7 +27,20 @@ import java.util.Set;
  */
 public class AnnotatedOverriddenMethodsGuard {
 
-	private final Set<ShallowAnnotatedMethod> annotatedMethods = new HashSet<ShallowAnnotatedMethod>();
+	/**
+	 * @since 6.1
+	 */
+	protected Set<ShallowAnnotatedMethod> annotatedMethods = new HashSet<ShallowAnnotatedMethod>();
+
+	/**
+	 * Return the methods which were already processed by the guard.
+	 * 
+	 * @return the annotatedMethods
+	 * @since 6.1
+	 */
+	public Set<ShallowAnnotatedMethod> getAnnotatedMethods() {
+		return annotatedMethods;
+	}
 
 	/**
 	 * Tries to add the specified combination of annotation and method to this

@@ -82,7 +82,7 @@ public abstract class AbstractSubModuleControllerTest<C extends IController> ext
 		controller.configureRidgets();
 		controller.afterBind();
 
-		RidgetContainerAnnotationProcessor.getInstance().processAnnotations(controller);
+		RidgetContainerAnnotationProcessor.processAnnotations(controller);
 	}
 
 	@Override

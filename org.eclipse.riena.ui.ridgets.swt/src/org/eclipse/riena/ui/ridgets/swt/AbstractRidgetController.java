@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.riena.core.annotationprocessor.DisposerList;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IStatuslineRidget;
 import org.eclipse.riena.ui.ridgets.RidgetToStatuslineSubscriber;
@@ -62,6 +63,7 @@ public abstract class AbstractRidgetController implements IController {
 	private boolean isBlocked;
 	private boolean configured = false;
 	private final RidgetToStatuslineSubscriber ridgetToStatuslineSubscriber = new RidgetToStatuslineSubscriber();
+	private DisposerList annotationDisposerList;
 
 	public AbstractRidgetController() {
 		map = new HashMap<String, IRidget>();
@@ -89,6 +91,29 @@ public abstract class AbstractRidgetController implements IController {
 
 	public final void afterBind() {
 		// does nothing and is not called automatically
+	}
+
+	/**
+	 * Call this function to dispose the Objects, which were created with annotations.
+	 * 
+	 * @since 6.1
+	 */
+	@SuppressWarnings("unused")
+	private void disposeAnnotations() {
+		if (annotationDisposerList != null) {
+			annotationDisposerList.dispose();
+		}
+	}
+
+	/**
+	 * @since 6.1
+	 */
+	public void addAnnotationDisposerList(final DisposerList list) {
+		if (annotationDisposerList == null) {
+			annotationDisposerList = list;
+		} else {
+			annotationDisposerList.addAll(list);
+		}
 	}
 
 	public final <R extends IRidget> R getRidget(final String id) {

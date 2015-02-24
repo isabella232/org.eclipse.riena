@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.controller;
 
+import org.eclipse.riena.core.annotationprocessor.DisposerList;
+import org.eclipse.riena.core.annotationprocessor.IDisposer;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 
 /**
@@ -18,6 +20,15 @@ import org.eclipse.riena.ui.ridgets.IRidgetContainer;
  * UI-control.
  */
 public interface IController extends IRidgetContainer {
+
+	/**
+	 * Add {@link IDisposer}s, which will be called if the controller is going to be disposed.
+	 * 
+	 * @param list
+	 *            A list with new {@link IDisposer} elements.
+	 * @since 6.1
+	 */
+	void addAnnotationDisposerList(DisposerList list);
 
 	/**
 	 * Invoked after the controller was bound to a view.
@@ -42,4 +53,5 @@ public interface IController extends IRidgetContainer {
 	 *         {@code false}
 	 */
 	boolean isBlocked();
+
 }

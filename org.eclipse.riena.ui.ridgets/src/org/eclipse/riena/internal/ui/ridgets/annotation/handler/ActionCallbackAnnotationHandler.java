@@ -29,6 +29,7 @@ import org.eclipse.riena.ui.ridgets.annotation.processor.AnnotatedOverriddenMeth
  */
 public class ActionCallbackAnnotationHandler extends AbstractRidgetContainerAnnotationHandler {
 
+	@Override
 	public void handleAnnotation(final Annotation annotation, final IRidgetContainer ridgetContainer,
 			final Object target, final Method targetMethod, final AnnotatedOverriddenMethodsGuard guard) {
 

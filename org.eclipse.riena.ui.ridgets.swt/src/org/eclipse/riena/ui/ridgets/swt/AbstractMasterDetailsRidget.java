@@ -332,7 +332,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		Assert.isLegal(delegate != null, "delegate cannot be null"); //$NON-NLS-1$
 		this.delegate = delegate;
 		delegate.configureRidgets(getDetailRidgetContainer());
-		RidgetContainerAnnotationProcessor.getInstance().processAnnotations(getDetailRidgetContainer(), delegate);
+		RidgetContainerAnnotationProcessor.processAnnotations(getDetailRidgetContainer(), delegate);
 	}
 
 	public void setDirectWriting(final boolean directWriting) {

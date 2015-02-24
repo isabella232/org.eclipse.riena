@@ -15,16 +15,35 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.Map;
 
+import org.eclipse.riena.core.annotationprocessor.AnnotatedOverriddenMethodsGuard;
+import org.eclipse.riena.core.annotationprocessor.DisposerList;
+import org.eclipse.riena.core.annotationprocessor.IAnnotatedMethodHandler;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
+import org.eclipse.riena.ui.ridgets.annotation.processor.RidgetContainerAnnotationProcessor;
 
 /**
  * "Helper" for concrete annotation handlers.
  * 
  * @since 3.0
  */
-public abstract class AbstractRidgetContainerAnnotationHandler implements IRidgetContainerAnnotationHandler {
+public abstract class AbstractRidgetContainerAnnotationHandler implements IAnnotatedMethodHandler {
+
+	/**
+	 * ThreadLocal disposer list
+	 * 
+	 * @since 6.1
+	 */
+	protected ThreadLocal<DisposerList> disposers = new ThreadLocal<DisposerList>();
+
+	/**
+	 * ThreadLocal optional arguments list
+	 * 
+	 * @since 6.1
+	 */
+	protected ThreadLocal<Map<?, ?>> optionalArgs = new ThreadLocal<Map<?, ?>>();
 
 	protected IRidget getRidget(final Annotation annotation, final Method method,
 			final IRidgetContainer ridgetContainer, final String ridgetId) {
@@ -34,6 +53,28 @@ public abstract class AbstractRidgetContainerAnnotationHandler implements IRidge
 		}
 		throw new IllegalStateException(annotation + " defined unknown ridget id on method '" + method + "'."); //$NON-NLS-1$ //$NON-NLS-2$
 	}
+	
+	/**
+	 * @since 6.1
+	 */
+	public void handleAnnotation(final Annotation annotation, final Object object, final Method method, final Map<?, ?> optionalArgs,
+			final AnnotatedOverriddenMethodsGuard guard, final DisposerList disposers) {
+		if (!optionalArgs.containsKey(RidgetContainerAnnotationProcessor.RIDGET_CONTAINER_KEY)) {
+			throw new IllegalArgumentException("Argument '" + RidgetContainerAnnotationProcessor.RIDGET_CONTAINER_KEY + "' must be set."); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		final IRidgetContainer ridgetContainer = (IRidgetContainer) optionalArgs.get(RidgetContainerAnnotationProcessor.RIDGET_CONTAINER_KEY);
+		this.disposers.set(disposers);
+		this.optionalArgs.set(optionalArgs);
+		handleAnnotation(annotation, ridgetContainer, object, method, new org.eclipse.riena.ui.ridgets.annotation.processor.AnnotatedOverriddenMethodsGuard(
+				guard));
+		this.disposers.remove();
+	}
+
+	/**
+	 * @since 6.1
+	 */
+	public abstract void handleAnnotation(final Annotation annotation, final IRidgetContainer ridgetContainer, final Object target, final Method targetMethod,
+			final org.eclipse.riena.ui.ridgets.annotation.processor.AnnotatedOverriddenMethodsGuard guard);
 
 	protected void errorUnsupportedRidgetType(final Annotation annotation, final IRidget ridget) {
 		throw new IllegalStateException(annotation + " defined for incompatible ridget type '" //$NON-NLS-1$
@@ -91,5 +132,25 @@ public abstract class AbstractRidgetContainerAnnotationHandler implements IRidge
 
 			return null;
 		}
+	}
+
+	/**
+	 * Getter for the disposer list.
+	 * 
+	 * @return the disposers
+	 * @since 6.1
+	 */
+	public DisposerList getDisposers() {
+		return disposers.get();
+	}
+
+	/**
+	 * Getter for the optional arguments.
+	 * 
+	 * @return the optionalArgs
+	 * @since 6.1
+	 */
+	public Map<?, ?> getOptionalArgs() {
+		return optionalArgs.get();
 	}
 }

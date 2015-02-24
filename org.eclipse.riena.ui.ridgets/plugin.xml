@@ -3,67 +3,66 @@
 <plugin>
    <extension-point id="correspondingLabel" name="Corresponding Label Configuration" schema="schema/correspondingLabel.exsd"/>
    <extension-point id="labelFinderStrategy" name="Corresponding Label Strategy" schema="schema/labelFinderStrategy.exsd"/>
-   <extension-point id="annotationHandler" name="Annotation Handler for Ridget Containers" schema="schema/annotationHandler.exsd"/>
    <extension-point id="bindingSupportProvider" name="BindingSupportProvider" schema="schema/bindingSupportProvider.exsd"/>
 
     <extension
-         point="org.eclipse.riena.ui.ridgets.annotationHandler">
-      <annotationHandler
+         point="org.eclipse.riena.core.annotatedMethodHandlers">
+      <annotatedMethodHandler
             annotation="org.eclipse.riena.ui.ridgets.annotation.OnActionCallback"
-            handler="org.eclipse.riena.internal.ui.ridgets.annotation.handler.ActionCallbackAnnotationHandler">
-      </annotationHandler>
-      <annotationHandler
+            class="org.eclipse.riena.internal.ui.ridgets.annotation.handler.ActionCallbackAnnotationHandler">
+      </annotatedMethodHandler>
+      <annotatedMethodHandler
             annotation="org.eclipse.riena.ui.ridgets.annotation.OnClick"
-            handler="org.eclipse.riena.internal.ui.ridgets.annotation.handler.ClickAnnotationHandler">
-      </annotationHandler>
-      <annotationHandler
+            class="org.eclipse.riena.internal.ui.ridgets.annotation.handler.ClickAnnotationHandler">
+      </annotatedMethodHandler>
+      <annotatedMethodHandler
             annotation="org.eclipse.riena.ui.ridgets.annotation.OnSelectionChange"
-            handler="org.eclipse.riena.internal.ui.ridgets.annotation.handler.SelectionChangedAnnotationHandler">
-      </annotationHandler>
-      <annotationHandler
+            class="org.eclipse.riena.internal.ui.ridgets.annotation.handler.SelectionChangedAnnotationHandler">
+      </annotatedMethodHandler>
+      <annotatedMethodHandler
             annotation="org.eclipse.riena.ui.ridgets.annotation.OnFocusGained"
-            handler="org.eclipse.riena.internal.ui.ridgets.annotation.handler.FocusGainedAnnotationHandler">
-      </annotationHandler>
-      <annotationHandler
+            class="org.eclipse.riena.internal.ui.ridgets.annotation.handler.FocusGainedAnnotationHandler">
+      </annotatedMethodHandler>
+      <annotatedMethodHandler
             annotation="org.eclipse.riena.ui.ridgets.annotation.OnFocusLost"
-            handler="org.eclipse.riena.internal.ui.ridgets.annotation.handler.FocusLostAnnotationHandler">
-      </annotationHandler>
-      <annotationHandler
+            class="org.eclipse.riena.internal.ui.ridgets.annotation.handler.FocusLostAnnotationHandler">
+      </annotatedMethodHandler>
+      <annotatedMethodHandler
             annotation="org.eclipse.riena.ui.ridgets.annotation.OnPropertyChange"
-            handler="org.eclipse.riena.internal.ui.ridgets.annotation.handler.PropertyChangeAnnotationHandler">
-      </annotationHandler>
-      <annotationHandler
+            class="org.eclipse.riena.internal.ui.ridgets.annotation.handler.PropertyChangeAnnotationHandler">
+      </annotatedMethodHandler>
+      <annotatedMethodHandler
             annotation="org.eclipse.riena.ui.ridgets.annotation.OnDoubleClick"
-            handler="org.eclipse.riena.internal.ui.ridgets.annotation.handler.DoubleClickAnnotationHandler">
-      </annotationHandler>
-      <annotationHandler
+            class="org.eclipse.riena.internal.ui.ridgets.annotation.handler.DoubleClickAnnotationHandler">
+      </annotatedMethodHandler>
+      <annotatedMethodHandler
             annotation="org.eclipse.riena.ui.ridgets.annotation.OnActionCallbacks"
-            handler="org.eclipse.riena.internal.ui.ridgets.annotation.handler.ActionCallbacksAnnotationHandler">
-      </annotationHandler>
-      <annotationHandler
+            class="org.eclipse.riena.internal.ui.ridgets.annotation.handler.ActionCallbacksAnnotationHandler">
+      </annotatedMethodHandler>
+      <annotatedMethodHandler
             annotation="org.eclipse.riena.ui.ridgets.annotation.OnClicks"
-            handler="org.eclipse.riena.internal.ui.ridgets.annotation.handler.ClicksAnnotationHandler">
-      </annotationHandler>
-      <annotationHandler
+            class="org.eclipse.riena.internal.ui.ridgets.annotation.handler.ClicksAnnotationHandler">
+      </annotatedMethodHandler>
+      <annotatedMethodHandler
             annotation="org.eclipse.riena.ui.ridgets.annotation.OnDoubleClicks"
-            handler="org.eclipse.riena.internal.ui.ridgets.annotation.handler.DoubleClicksAnnotationHandler">
-      </annotationHandler>
-      <annotationHandler
+            class="org.eclipse.riena.internal.ui.ridgets.annotation.handler.DoubleClicksAnnotationHandler">
+      </annotatedMethodHandler>
+      <annotatedMethodHandler
             annotation="org.eclipse.riena.ui.ridgets.annotation.OnFocusGaineds"
-            handler="org.eclipse.riena.internal.ui.ridgets.annotation.handler.FocusGainedsAnnotationHandler">
-      </annotationHandler>
-      <annotationHandler
+            class="org.eclipse.riena.internal.ui.ridgets.annotation.handler.FocusGainedsAnnotationHandler">
+      </annotatedMethodHandler>
+      <annotatedMethodHandler
             annotation="org.eclipse.riena.ui.ridgets.annotation.OnFocusLosts"
-            handler="org.eclipse.riena.internal.ui.ridgets.annotation.handler.FocusLostsAnnotationHandler">
-      </annotationHandler>
-      <annotationHandler
+            class="org.eclipse.riena.internal.ui.ridgets.annotation.handler.FocusLostsAnnotationHandler">
+      </annotatedMethodHandler>
+      <annotatedMethodHandler
             annotation="org.eclipse.riena.ui.ridgets.annotation.OnPropertyChanges"
-            handler="org.eclipse.riena.internal.ui.ridgets.annotation.handler.PropertyChangesAnnotationHandler">
-      </annotationHandler>
-      <annotationHandler
+            class="org.eclipse.riena.internal.ui.ridgets.annotation.handler.PropertyChangesAnnotationHandler">
+      </annotatedMethodHandler>
+      <annotatedMethodHandler
             annotation="org.eclipse.riena.ui.ridgets.annotation.OnSelectionChanges"
-            handler="org.eclipse.riena.internal.ui.ridgets.annotation.handler.SeletionChangedsAnnotationHandler">
-      </annotationHandler>
+            class="org.eclipse.riena.internal.ui.ridgets.annotation.handler.SeletionChangedsAnnotationHandler">
+      </annotatedMethodHandler>
 
    </extension>
     <extension

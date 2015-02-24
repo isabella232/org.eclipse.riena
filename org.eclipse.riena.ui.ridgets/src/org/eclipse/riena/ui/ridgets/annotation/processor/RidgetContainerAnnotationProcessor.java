@@ -10,47 +10,30 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.annotation.processor;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.riena.core.singleton.SingletonProvider;
-import org.eclipse.riena.core.wire.InjectExtension;
+import org.eclipse.riena.core.annotationprocessor.AnnotationProcessor;
+import org.eclipse.riena.core.annotationprocessor.IDisposer;
+import org.eclipse.riena.core.util.Nop;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
-import org.eclipse.riena.ui.ridgets.annotation.handler.IRidgetContainerAnnotationHandler;
 
 /**
  * Annotation processor for {@code IRidgetContainer} annotations.
  * 
  * @since 3.0
+ * @deprecated Use the {@link AnnotationProcessor}.
  */
+@Deprecated
 public final class RidgetContainerAnnotationProcessor {
 
-	private final Map<Class<? extends Annotation>, IRidgetContainerAnnotationHandler> handlerMap = new HashMap<Class<? extends Annotation>, IRidgetContainerAnnotationHandler>();
-
-	private static final SingletonProvider<RidgetContainerAnnotationProcessor> RCAP = new SingletonProvider<RidgetContainerAnnotationProcessor>(
-			RidgetContainerAnnotationProcessor.class);
-
 	/**
-	 * Answer the singleton <code>RidgetContainerAnnotationProcessor</code>
-	 * 
-	 * @return the RidgetContainerAnnotationProcessor singleton
+	 * @since 6.1
 	 */
-	public static RidgetContainerAnnotationProcessor getInstance() {
-		return RCAP.getInstance();
-	}
+	public final static String RIDGET_CONTAINER_KEY = "ridgetContainer"; //$NON-NLS-1$
 
 	private RidgetContainerAnnotationProcessor() {
-		// singleton
-	}
-
-	@InjectExtension()
-	public void update(final IRidgetContainerAnnotationExtension[] extensions) {
-		handlerMap.clear();
-		for (final IRidgetContainerAnnotationExtension extension : extensions) {
-			handlerMap.put(extension.getAnnotation(), extension.createHandler());
-		}
+		Nop.reason("utility"); //$NON-NLS-1$
 	}
 
 	/**
@@ -58,7 +41,7 @@ public final class RidgetContainerAnnotationProcessor {
 	 * 
 	 * @param ridgetContainer
 	 */
-	public void processAnnotations(final IRidgetContainer ridgetContainer) {
+	public static void processAnnotations(final IRidgetContainer ridgetContainer) {
 		processAnnotations(ridgetContainer, ridgetContainer);
 	}
 
@@ -70,40 +53,24 @@ public final class RidgetContainerAnnotationProcessor {
 	 * @param target
 	 *            the object whose annotation method should be handled
 	 */
-	public void processAnnotations(final IRidgetContainer ridgetContainer, final Object target) {
-		processAnnotations(ridgetContainer, target, target.getClass(), new AnnotatedOverriddenMethodsGuard());
-	}
-
-	private void processAnnotations(final IRidgetContainer ridgetContainer, final Object target,
-			final Class<?> targetClass, final AnnotatedOverriddenMethodsGuard guard) {
-		if (targetClass == Object.class) {
-			return;
-		}
-		processAnnotations(ridgetContainer, target, targetClass.getSuperclass(), guard);
-
-		for (final Method targetMethod : targetClass.getDeclaredMethods()) {
-			for (final Annotation annotation : targetMethod.getAnnotations()) {
-				handle(annotation, ridgetContainer, target, targetMethod, guard);
-			}
-		}
+	public static void processAnnotations(final IRidgetContainer ridgetContainer, final Object target) {
+		final Map<String, Object> args = new HashMap<String, Object>(2);
+		args.put(RIDGET_CONTAINER_KEY, ridgetContainer);
+		AnnotationProcessor.getInstance().processMethods(target, args);
 	}
 
 	/**
-	 * Execute the handler for the given annotation,..
+	 * Process the annotations and return the IDisposer.
 	 * 
-	 * @param annotation
-	 * @param ridgetContainer
-	 * @param target
-	 * @param targetMethod
-	 * 
-	 * @since 4.0
+	 * @param controller
+	 *            the ridget container whose ridgets fire the events
+	 * @return The {@link IDisposer} list
+	 * @since 6.1
 	 */
-	public void handle(final Annotation annotation, final IRidgetContainer ridgetContainer, final Object target,
-			final Method targetMethod, final AnnotatedOverriddenMethodsGuard guard) {
-		final IRidgetContainerAnnotationHandler handler = handlerMap.get(annotation.annotationType());
-		if (handler != null && guard.add(annotation, targetMethod)) {
-			handler.handleAnnotation(annotation, ridgetContainer, target, targetMethod, guard);
-		}
+	public static IDisposer processMethods(final IRidgetContainer ridgetContainer) {
+		final Map<String, Object> args = new HashMap<String, Object>(2);
+		args.put(RIDGET_CONTAINER_KEY, ridgetContainer);
+		return AnnotationProcessor.getInstance().processMethods(ridgetContainer, args);
 	}
 
 }
