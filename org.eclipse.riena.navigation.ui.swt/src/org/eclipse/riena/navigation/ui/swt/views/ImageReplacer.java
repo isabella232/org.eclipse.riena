@@ -119,6 +119,7 @@ public class ImageReplacer {
 	 * @param contributionManager
 	 * @param item
 	 *            command item
+	 * @since 6.1
 	 */
 	protected void replaceImages(final IContributionItem item) {
 

@@ -44,6 +44,7 @@ public abstract class TableRidgetToolTipSupportFacade {
 	 * @param viewer
 	 *            The viewer component of the table
 	 * @return The instance of the tooltip support.
+	 * @since 6.1
 	 */
 	public abstract ITableRidgetToolTipSupport enableFor(ColumnViewer viewer);
 

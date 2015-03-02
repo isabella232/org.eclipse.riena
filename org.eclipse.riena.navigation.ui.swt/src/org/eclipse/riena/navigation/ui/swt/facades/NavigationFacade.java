@@ -46,11 +46,13 @@ public abstract class NavigationFacade {
 
 	/**
 	 * This method is only relevant for Riena on Eclipse 3.8 and RAP and should not be called with Riena on E4.
+	 * @since 6.1
 	 */
 	public abstract WorkbenchAdvisor createWorkbenchAdvisor(ApplicationController applicationController, IAdvisorHelper advisorHelper);
 
 	/**
 	 * @return an appropriate implementation of {@link IApplicationUtility}
+	 * @since 6.1
 	 */
 	public abstract IApplicationUtility getApplicationUtility();
 
