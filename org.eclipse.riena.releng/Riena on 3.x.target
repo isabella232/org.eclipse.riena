@@ -3,6 +3,7 @@
 
 <target name="Riena on 3.x" sequenceNumber="25">
 <locations>
+<location path="${project_loc:org.eclipse.riena.build3}/prebuild/3x" type="Directory"/>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.rcp.id" version="3.8.2.M20130131-0800"/>
 <unit id="org.eclipse.rcp.source.feature.group" version="3.8.2.v20130118-180157-96BuGOZFxwOAeG8Ofmqicz0tPK"/>
