@@ -18,6 +18,7 @@ import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.riena.core.RienaStatus;
+import org.eclipse.riena.core.annotationprocessor.AnnotationProcessor;
 import org.eclipse.riena.core.test.RienaTestCase;
 import org.eclipse.riena.core.test.collect.NonUITestCase;
 import org.eclipse.riena.core.util.ReflectionUtils;
@@ -33,7 +34,6 @@ import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.model.SubApplicationNode;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.ApplicationController;
-import org.eclipse.riena.ui.ridgets.annotation.processor.RidgetContainerAnnotationProcessor;
 import org.eclipse.riena.ui.ridgets.controller.IController;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 
@@ -82,7 +82,7 @@ public abstract class AbstractSubModuleControllerTest<C extends IController> ext
 		controller.configureRidgets();
 		controller.afterBind();
 
-		RidgetContainerAnnotationProcessor.processAnnotations(controller);
+		AnnotationProcessor.getInstance().processMethods(controller, controller);
 	}
 
 	@Override

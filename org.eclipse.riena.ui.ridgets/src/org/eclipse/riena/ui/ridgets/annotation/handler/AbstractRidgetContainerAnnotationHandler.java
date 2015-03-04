@@ -18,11 +18,11 @@ import java.lang.reflect.Proxy;
 import java.util.Map;
 
 import org.eclipse.riena.core.annotationprocessor.AnnotatedOverriddenMethodsGuard;
+import org.eclipse.riena.core.annotationprocessor.AnnotationProcessor;
 import org.eclipse.riena.core.annotationprocessor.DisposerList;
 import org.eclipse.riena.core.annotationprocessor.IAnnotatedMethodHandler;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
-import org.eclipse.riena.ui.ridgets.annotation.processor.RidgetContainerAnnotationProcessor;
 
 /**
  * "Helper" for concrete annotation handlers.
@@ -59,22 +59,23 @@ public abstract class AbstractRidgetContainerAnnotationHandler implements IAnnot
 	 */
 	public void handleAnnotation(final Annotation annotation, final Object object, final Method method, final Map<?, ?> optionalArgs,
 			final AnnotatedOverriddenMethodsGuard guard, final DisposerList disposers) {
-		if (!optionalArgs.containsKey(RidgetContainerAnnotationProcessor.RIDGET_CONTAINER_KEY)) {
-			throw new IllegalArgumentException("Argument '" + RidgetContainerAnnotationProcessor.RIDGET_CONTAINER_KEY + "' must be set."); //$NON-NLS-1$ //$NON-NLS-2$
+		if (!optionalArgs.containsKey(AnnotationProcessor.PROCESS_TARGET)
+				|| !(optionalArgs.get(AnnotationProcessor.PROCESS_TARGET) instanceof IRidgetContainer)) {
+			throw new IllegalArgumentException("Argument '" + AnnotationProcessor.PROCESS_TARGET + "' must be set."); //$NON-NLS-1$ //$NON-NLS-2$
 		}
-		final IRidgetContainer ridgetContainer = (IRidgetContainer) optionalArgs.get(RidgetContainerAnnotationProcessor.RIDGET_CONTAINER_KEY);
+		final IRidgetContainer ridgetContainer = (IRidgetContainer) optionalArgs.get(AnnotationProcessor.PROCESS_TARGET);
 		this.disposers.set(disposers);
 		this.optionalArgs.set(optionalArgs);
-		handleAnnotation(annotation, ridgetContainer, object, method, new org.eclipse.riena.ui.ridgets.annotation.processor.AnnotatedOverriddenMethodsGuard(
-				guard));
+		handleAnnotation(annotation, ridgetContainer, object, method, guard);
 		this.disposers.remove();
+		this.optionalArgs.remove();
 	}
 
 	/**
 	 * @since 6.1
 	 */
 	public abstract void handleAnnotation(final Annotation annotation, final IRidgetContainer ridgetContainer, final Object target, final Method targetMethod,
-			final org.eclipse.riena.ui.ridgets.annotation.processor.AnnotatedOverriddenMethodsGuard guard);
+			final AnnotatedOverriddenMethodsGuard guard);
 
 	protected void errorUnsupportedRidgetType(final Annotation annotation, final IRidget ridget) {
 		throw new IllegalStateException(annotation + " defined for incompatible ridget type '" //$NON-NLS-1$

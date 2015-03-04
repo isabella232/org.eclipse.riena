@@ -12,9 +12,9 @@ package org.eclipse.riena.ui.ridgets.swt.uibinding;
 
 import org.eclipse.swt.widgets.Widget;
 
+import org.eclipse.riena.core.annotationprocessor.AnnotationProcessor;
 import org.eclipse.riena.core.annotationprocessor.DisposerList;
 import org.eclipse.riena.core.annotationprocessor.IDisposer;
-import org.eclipse.riena.ui.ridgets.annotation.processor.RidgetContainerAnnotationProcessor;
 import org.eclipse.riena.ui.ridgets.controller.IController;
 import org.eclipse.riena.ui.ridgets.swt.AbstractRidgetController;
 import org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper;
@@ -58,7 +58,7 @@ public class DefaultSwtBindingDelegate extends AbstractViewBindingDelegate {
 	@Override
 	public void injectRidgets(final IController controller) {
 		super.injectRidgets(controller);
-		final IDisposer disposer = RidgetContainerAnnotationProcessor.processMethods(controller);
+		final IDisposer disposer = AnnotationProcessor.getInstance().processMethods(controller);
 		if (disposer instanceof DisposerList && ((DisposerList) disposer).size() > 0) {
 			controller.addAnnotationDisposerList((DisposerList) disposer);
 		}

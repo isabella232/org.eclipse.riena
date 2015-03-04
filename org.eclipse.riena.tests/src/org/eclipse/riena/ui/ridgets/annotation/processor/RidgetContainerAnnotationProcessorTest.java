@@ -22,6 +22,7 @@ import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.swt.widgets.Display;
 
+import org.eclipse.riena.core.annotationprocessor.AnnotatedOverriddenMethodsGuard;
 import org.eclipse.riena.core.annotationprocessor.AnnotationProcessor;
 import org.eclipse.riena.core.annotationprocessor.IAnnotatedMethodHandler;
 import org.eclipse.riena.core.test.RienaTestCase;
@@ -76,7 +77,7 @@ public class RidgetContainerAnnotationProcessorTest extends RienaTestCase {
 		container.addRidget("RidgetA2", ridget2); //$NON-NLS-1$
 		container.addRidget("RidgetB1", ridget3); //$NON-NLS-1$
 
-		RidgetContainerAnnotationProcessor.processAnnotations(container);
+		AnnotationProcessor.getInstance().processMethods(container);
 
 		assertEquals(2, onClick.getHandled().size());
 
@@ -112,7 +113,7 @@ public class RidgetContainerAnnotationProcessorTest extends RienaTestCase {
 		container.addRidget("RidgetA1", ridget1); //$NON-NLS-1$
 		container.addRidget("RidgetA2", ridget2); //$NON-NLS-1$
 
-		RidgetContainerAnnotationProcessor.processAnnotations(container, new C());
+		AnnotationProcessor.getInstance().processMethods(container, new C());
 
 		assertEquals(1, onClick.getHandled().size());
 

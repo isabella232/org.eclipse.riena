@@ -61,7 +61,6 @@ import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.annotation.OnClick;
-import org.eclipse.riena.ui.ridgets.annotation.processor.RidgetContainerAnnotationProcessor;
 import org.eclipse.riena.ui.ridgets.listener.IFocusListener;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
@@ -388,7 +387,7 @@ public class NavigationNodeControllerTest extends RienaTestCase {
 		assertEquals(2, listener.count);
 	}
 
-	@SuppressWarnings({ "deprecation", "restriction" })
+	@SuppressWarnings({ "restriction" })
 	public void testDisposeListenerDisposeAnnotations() {
 		final MyAnnotationNavigationNodeController myController = new MyAnnotationNavigationNodeController(node);
 		final TextRidget ridget = new TextRidget();
@@ -399,7 +398,7 @@ public class NavigationNodeControllerTest extends RienaTestCase {
 
 		AnnotationProcessor.getInstance().update(new IAnnotatedMethodHandlerExtension[] { create(OnClick.class, onClick) });
 
-		final IDisposer list = RidgetContainerAnnotationProcessor.processMethods(myController);
+		final IDisposer list = AnnotationProcessor.getInstance().processMethods(myController);
 		myController.addAnnotationDisposerList((DisposerList) list);
 
 		assertEquals(1, Handler.counter);
@@ -409,7 +408,7 @@ public class NavigationNodeControllerTest extends RienaTestCase {
 		assertEquals(0, Handler.counter);
 	}
 
-	@SuppressWarnings({ "deprecation", "restriction" })
+	@SuppressWarnings({ "restriction" })
 	public void testDisposeListenerDisposeAnnotationsWithChangingController() {
 		final MyAnnotationNavigationNodeController myController = new MyAnnotationNavigationNodeController(node);
 		final MyAnnotationNavigationNodeController myController2 = new MyAnnotationNavigationNodeController(node);
@@ -423,11 +422,11 @@ public class NavigationNodeControllerTest extends RienaTestCase {
 
 		AnnotationProcessor.getInstance().update(new IAnnotatedMethodHandlerExtension[] { create(OnClick.class, onClick) });
 
-		IDisposer list = RidgetContainerAnnotationProcessor.processMethods(myController);
+		IDisposer list = AnnotationProcessor.getInstance().processMethods(myController);
 		myController.addAnnotationDisposerList((DisposerList) list);
 		assertEquals(1, Handler.counter);
 
-		list = RidgetContainerAnnotationProcessor.processMethods(myController2);
+		list = AnnotationProcessor.getInstance().processMethods(myController2);
 		myController2.addAnnotationDisposerList((DisposerList) list);
 
 		assertEquals(2, Handler.counter);
@@ -438,7 +437,7 @@ public class NavigationNodeControllerTest extends RienaTestCase {
 		assertEquals(1, Handler.counter);
 	}
 
-	@SuppressWarnings({ "deprecation", "restriction" })
+	@SuppressWarnings({ "restriction" })
 	public void testDisposeListenerDisposeAnnotationsWithMoreController() {
 		final MyAnnotationNavigationNodeController myController = new MyAnnotationNavigationNodeController(node);
 		final MyAnnotationNavigationNodeController myController2 = new MyAnnotationNavigationNodeController(node2);
@@ -450,11 +449,11 @@ public class NavigationNodeControllerTest extends RienaTestCase {
 
 		AnnotationProcessor.getInstance().update(new IAnnotatedMethodHandlerExtension[] { create(OnClick.class, onClick) });
 
-		IDisposer list = RidgetContainerAnnotationProcessor.processMethods(myController);
+		IDisposer list = AnnotationProcessor.getInstance().processMethods(myController);
 		myController.addAnnotationDisposerList((DisposerList) list);
 		assertEquals(1, Handler.counter);
 
-		list = RidgetContainerAnnotationProcessor.processMethods(myController2);
+		list = AnnotationProcessor.getInstance().processMethods(myController2);
 		myController2.addAnnotationDisposerList((DisposerList) list);
 
 		assertEquals(2, Handler.counter);

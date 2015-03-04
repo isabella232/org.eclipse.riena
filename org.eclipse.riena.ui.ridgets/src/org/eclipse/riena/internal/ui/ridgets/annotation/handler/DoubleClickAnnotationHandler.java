@@ -13,13 +13,13 @@ package org.eclipse.riena.internal.ui.ridgets.annotation.handler;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
+import org.eclipse.riena.core.annotationprocessor.AnnotatedOverriddenMethodsGuard;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IClickableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.annotation.OnDoubleClick;
 import org.eclipse.riena.ui.ridgets.annotation.handler.AbstractRidgetContainerAnnotationHandler;
-import org.eclipse.riena.ui.ridgets.annotation.processor.AnnotatedOverriddenMethodsGuard;
 
 /**
  * Annotation handler for {@code @OnDoubleClick}
