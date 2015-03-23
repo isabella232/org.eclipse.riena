@@ -9,8 +9,8 @@ Require-Bundle: org.eclipse.riena.core,
  org.eclipse.riena.communication.factory.hessian
 Import-Package: com.caucho.hessian.io,
  com.caucho.hessian.server,
- javax.servlet;version="[2.4.0,4.0.0)",
- javax.servlet.http;version="[2.4.0,4.0.0)",
+ javax.servlet,
+ javax.servlet.http,
  org.osgi.framework;version="1.4.0",
  org.osgi.service.log;version="1.3.0"
 Eclipse-BuddyPolicy: registered
