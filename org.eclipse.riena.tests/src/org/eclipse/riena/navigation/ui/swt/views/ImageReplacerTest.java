@@ -502,6 +502,11 @@ public class ImageReplacerTest extends TestCase {
 							@Override
 							public void addWindowListener(final IWindowListener listener) {
 							}
+
+							public boolean restart(final boolean useCurrentWorkspace) {
+								// TODO Auto-generated method stub
+								return false;
+							}
 						};
 					}
 

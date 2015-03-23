@@ -1,14 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="Riena on E4 milestone" sequenceNumber="41">
+<?pde version="3.8"?>
+
+<target name="Riena on E4 milestone" sequenceNumber="42">
 <locations>
-<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.platform.source.feature.group" version="4.5.0.v20141210-2000"/>
-<unit id="org.eclipse.ecf.core.feature.feature.group" version="1.1.0.v20141202-1832"/>
-<unit id="org.eclipse.emf.ecore.feature.group" version="2.11.0.v20141209-0341"/>
-<unit id="org.eclipse.ecf.filetransfer.feature.feature.group" version="3.9.1.v20141202-1832"/>
-<unit id="org.eclipse.emf.common.feature.group" version="2.11.0.v20141209-0341"/>
-<repository location="http://download.eclipse.org/eclipse/updates/4.5milestones/"/>
-</location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="org.junit" version="4.11.0.v201303080030"/>
 <unit id="org.easymock.source" version="2.4.0.v20090202-0900"/>
@@ -36,6 +30,14 @@
 <unit id="org.eclipse.nebula.widgets.grid.feature.feature.group" version="1.0.0.201409040043"/>
 <unit id="org.eclipse.nebula.widgets.compositetable.feature.feature.group" version="1.0.0.201409040043"/>
 <repository location="http://download.eclipse.org/technology/nebula/archives/Q32014/release"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.ecf.core.feature.feature.group" version="1.1.0.v20150306-2024"/>
+<unit id="org.eclipse.emf.common.feature.group" version="2.11.0.v20150318-0449"/>
+<unit id="org.eclipse.emf.ecore.feature.group" version="2.11.0.v20150318-0449"/>
+<unit id="org.eclipse.platform.source.feature.group" version="4.5.0.v20150320-0800"/>
+<unit id="org.eclipse.ecf.filetransfer.feature.feature.group" version="3.9.3.v20150306-2024"/>
+<repository location="http://download.eclipse.org/eclipse/updates/4.5milestones/"/>
 </location>
 </locations>
 </target>
