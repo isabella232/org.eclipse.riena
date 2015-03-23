@@ -42,7 +42,7 @@ import org.eclipse.riena.ui.swt.utils.ImageStore;
  * <p>
  * <i>(This class does not support e4 implementations of {@link IContributionItem})</i>
  * 
- * @since 6.0
+ * @since 6.1
  */
 public class ImageReplacer {
 

@@ -87,7 +87,7 @@ public interface ILnfCustomizer {
 	 * Returns whether Riena widgets use {@link DpiGridLayout} instead of {@link GridLayout}.
 	 * 
 	 * @return {@code true} use DpiGridLayout; otherwise use GridLayout
-	 * @since 6.0
+	 * @since 6.1
 	 */
 	boolean useDpiGridLayout();
 

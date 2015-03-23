@@ -54,7 +54,7 @@ public class BorderDrawer implements Listener {
 	 * decorates always the entire widget bounds, while the current implementation considers widget areas that are eventually not visible (widget is partially
 	 * hidden).
 	 * 
-	 * @since 6.0
+	 * @since 6.1
 	 */
 	public static final String LEGACY_BORDER_DECORATION = "BorderDrawer.LEGACY_BORDER_DECORATION"; //$NON-NLS-1$
 	public static final int DEFAULT_BORDER_WIDTH = 1;

@@ -496,7 +496,7 @@ public abstract class CompletionCombo extends Composite {
 	/**
 	 * TODO comment
 	 * 
-	 * @since 6.0
+	 * @since 6.1
 	 */
 	protected abstract void updateExtendedText(final Control list, final int index);
 
@@ -1331,7 +1331,7 @@ public abstract class CompletionCombo extends Composite {
 	}
 
 	/**
-	 * @since 6.0
+	 * @since 6.1
 	 */
 	protected void internalLayout(final boolean changed) {
 		if (isDropped()) {

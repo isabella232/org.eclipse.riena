@@ -276,7 +276,7 @@ public final class SwtUtilities {
 	}
 
 	/**
-	 * @since 6.0
+	 * @since 6.1
 	 */
 	public static Point getDefaultDpi() {
 		return DEFAULT_DPI;
@@ -318,7 +318,7 @@ public final class SwtUtilities {
 	 * Returns whether scaling is enabled or disabled
 	 * 
 	 * @return {@code true} scaling is enabled; otherwise {@code false}
-	 * @since 6.0
+	 * @since 6.1
 	 */
 	public static boolean isDpiScalingEnabled() {
 		return isDpiScalingEnabled(null);
@@ -330,7 +330,7 @@ public final class SwtUtilities {
 	 * @param widget
 	 *            if widget is not {@code null} the display that's associated with the widget is used; otherwise the current or default display
 	 * @return {@code true} scaling is enabled; otherwise scaling disabled
-	 * @since 6.0
+	 * @since 6.1
 	 */
 	public static boolean isDpiScalingEnabled(final Widget widget) {
 		final float[] dpiFactors = getDpiFactors(widget);
@@ -346,7 +346,7 @@ public final class SwtUtilities {
 	 * Returns the Display.
 	 * 
 	 * @return instance of Display or null if there is no display
-	 * @since 6.0
+	 * @since 6.1
 	 */
 	public static Display getDisplay() {
 
@@ -414,7 +414,7 @@ public final class SwtUtilities {
 	 * DPI).
 	 * 
 	 * @return x-factor and y-factors
-	 * @since 6.0
+	 * @since 6.1
 	 */
 	public static float[] getCalculatedDpiFactors() {
 		return getCalculatedDpiFactors(null);
@@ -425,7 +425,7 @@ public final class SwtUtilities {
 	 * DPI).
 	 * 
 	 * @return x-factor and y-factors
-	 * @since 6.0
+	 * @since 6.1
 	 */
 	public static float[] getCalculatedDpiFactors(final Widget widget) {
 		final Point dpi = getDpi(widget);
@@ -568,7 +568,7 @@ public final class SwtUtilities {
 	 * @param bufferedImage
 	 *            AWT image
 	 * @return SWT image or {@code null} if conversion isn't possible
-	 * @since 6.0
+	 * @since 6.1
 	 */
 	public static ImageData convertAwtImageToImageData(final BufferedImage bufferedImage) {
 

@@ -65,7 +65,7 @@ public class IconSize {
 	/**
 	 * Returns the width of this icon size.
 	 * 
-	 * @since 6.0
+	 * @since 6.1
 	 */
 	public int getWidth() {
 		return width;
@@ -74,7 +74,7 @@ public class IconSize {
 	/**
 	 * Returns the height of this icon size.
 	 * 
-	 * @since 6.0
+	 * @since 6.1
 	 */
 	public int getHeight() {
 		return height;
