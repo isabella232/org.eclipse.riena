@@ -8,8 +8,8 @@ Require-Bundle: org.eclipse.riena.monitor.common,
  org.eclipse.riena.sample.app.common,
  org.eclipse.riena.security.common,
  org.eclipse.riena.server
-Import-Package: javax.servlet;version="2.4.0",
- javax.servlet.http;version="2.4.0",
+Import-Package: javax.servlet;version="[2.4.0,4.0.0)",
+ javax.servlet.http;version="[2.4.0,4.0.0)",
  org.osgi.service.log;version="1.3.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
