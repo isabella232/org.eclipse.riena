@@ -83,7 +83,7 @@ public final class ImageStore {
 	 * @param imageSize
 	 *            Image size is necessary for SVG files.
 	 * @return image or {@code null} if no image exists for the given name.
-	 * @since 6.0
+	 * @since 6.1
 	 */
 	public Image getImage(final String imageName, final ImageFileExtension fileExtension, final IconSize imageSize) {
 
@@ -131,7 +131,7 @@ public final class ImageStore {
 	 * @param fileExtension
 	 *            extension of the image file (@see ImageFileExtension)
 	 * @return ImageDescriptor of the image or {@code null} if no image exists for the given name.
-	 * @since 6.0
+	 * @since 6.1
 	 */
 	public ImageDescriptor getImageDescriptor(final String imageName, final ImageFileExtension fileExtension) {
 
@@ -152,7 +152,7 @@ public final class ImageStore {
 	 * @param fileExtension
 	 *            extension of the image file (@see ImageFileExtension)
 	 * @return URI of the image or {@code null} if no image exists for the given name.
-	 * @since 6.0
+	 * @since 6.1
 	 */
 	public URI getImageUri(final String imageName, final ImageFileExtension fileExtension) {
 
@@ -257,7 +257,7 @@ public final class ImageStore {
 	 * @param imageName
 	 *            name (ID) of the image
 	 * @return image or {@code null} if no image exists for the given name.
-	 * @since 6.0
+	 * @since 6.1
 	 */
 	public Image getImage(final String imageName, final IconSize imageSize) {
 		return getImage(imageName, ImageFileExtension.PNG, imageSize);
@@ -586,7 +586,7 @@ public final class ImageStore {
 	 * 
 	 * @return image name with suffix of scaling or image name without suffix if no matching image file exists
 	 * 
-	 * @since 6.0
+	 * @since 6.1
 	 */
 	public String addImageScaleSuffix(final String imageName, final ImageFileExtension fileExtension, final Point dpi) {
 

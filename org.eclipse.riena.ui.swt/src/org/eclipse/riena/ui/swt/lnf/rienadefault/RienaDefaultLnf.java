@@ -545,7 +545,7 @@ public class RienaDefaultLnf implements ILnfCustomizer {
 	 * 
 	 * @see org.eclipse.riena.ui.swt.lnf.ILnfCustomizer#useDpiGridLayout()
 	 * 
-	 * @since 6.0
+	 * @since 6.1
 	 */
 	public boolean useDpiGridLayout() {
 		return true;
