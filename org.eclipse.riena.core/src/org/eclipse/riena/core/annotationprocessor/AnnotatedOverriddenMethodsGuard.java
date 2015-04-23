@@ -27,27 +27,11 @@ import java.util.Set;
  */
 public class AnnotatedOverriddenMethodsGuard {
 
-	/**
-	 * @since 6.1
-	 */
-	protected Set<ShallowAnnotatedMethod> annotatedMethods = new HashSet<ShallowAnnotatedMethod>();
+	private final Set<ShallowAnnotatedMethod> annotatedMethods = new HashSet<ShallowAnnotatedMethod>();
 
 	/**
-	 * Return the methods which were already processed by the guard.
-	 * 
-	 * @return the annotatedMethods
-	 * @since 6.1
-	 */
-	public Set<ShallowAnnotatedMethod> getAnnotatedMethods() {
-		return annotatedMethods;
-	}
-
-	/**
-	 * Tries to add the specified combination of annotation and method to this
-	 * guard. If the combination is not already present it will be added and
-	 * {@code true} will be returned. If this guard already contains the
-	 * specified combination, the call leaves this guard unchanged and returns
-	 * <tt>false</tt>.
+	 * Tries to add the specified combination of annotation and method to this guard. If the combination is not already present it will be added and
+	 * {@code true} will be returned. If this guard already contains the specified combination, the call leaves this guard unchanged and returns <tt>false</tt>.
 	 * 
 	 * @param annotation
 	 *            the annotation relevant to the given {@code method} parameter

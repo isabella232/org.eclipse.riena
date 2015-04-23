@@ -19,6 +19,7 @@ import org.eclipse.core.runtime.Assert;
 
 import org.eclipse.riena.core.RienaStatus;
 import org.eclipse.riena.core.annotationprocessor.DisposerList;
+import org.eclipse.riena.core.annotationprocessor.IDisposer;
 import org.eclipse.riena.core.util.RienaConfiguration;
 import org.eclipse.riena.ui.core.context.IContext;
 import org.eclipse.riena.ui.ridgets.ClassRidgetMapper;
@@ -399,12 +400,11 @@ public abstract class AbstractWindowController implements IController, IContext 
 	/**
 	 * @since 6.1
 	 */
-	public void addAnnotationDisposerList(final DisposerList list) {
+	public void addAnnotationDisposer(final IDisposer disposer) {
 		if (annotationDisposerList == null) {
-			annotationDisposerList = list;
-		} else {
-			annotationDisposerList.addAll(list);
+			annotationDisposerList = new DisposerList();
 		}
+		annotationDisposerList.add(disposer);
 	}
 
 }

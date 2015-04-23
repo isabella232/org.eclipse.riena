@@ -398,8 +398,8 @@ public class NavigationNodeControllerTest extends RienaTestCase {
 
 		AnnotationProcessor.getInstance().update(new IAnnotatedMethodHandlerExtension[] { create(OnClick.class, onClick) });
 
-		final IDisposer list = AnnotationProcessor.getInstance().processMethods(myController);
-		myController.addAnnotationDisposerList((DisposerList) list);
+		final IDisposer disposer = AnnotationProcessor.getInstance().processMethods(myController);
+		myController.addAnnotationDisposer(disposer);
 
 		assertEquals(1, Handler.counter);
 
@@ -422,12 +422,12 @@ public class NavigationNodeControllerTest extends RienaTestCase {
 
 		AnnotationProcessor.getInstance().update(new IAnnotatedMethodHandlerExtension[] { create(OnClick.class, onClick) });
 
-		IDisposer list = AnnotationProcessor.getInstance().processMethods(myController);
-		myController.addAnnotationDisposerList((DisposerList) list);
+		IDisposer disposer = AnnotationProcessor.getInstance().processMethods(myController);
+		myController.addAnnotationDisposer(disposer);
 		assertEquals(1, Handler.counter);
 
-		list = AnnotationProcessor.getInstance().processMethods(myController2);
-		myController2.addAnnotationDisposerList((DisposerList) list);
+		disposer = AnnotationProcessor.getInstance().processMethods(myController2);
+		myController2.addAnnotationDisposer(disposer);
 
 		assertEquals(2, Handler.counter);
 
@@ -449,12 +449,12 @@ public class NavigationNodeControllerTest extends RienaTestCase {
 
 		AnnotationProcessor.getInstance().update(new IAnnotatedMethodHandlerExtension[] { create(OnClick.class, onClick) });
 
-		IDisposer list = AnnotationProcessor.getInstance().processMethods(myController);
-		myController.addAnnotationDisposerList((DisposerList) list);
+		IDisposer disposer = AnnotationProcessor.getInstance().processMethods(myController);
+		myController.addAnnotationDisposer(disposer);
 		assertEquals(1, Handler.counter);
 
-		list = AnnotationProcessor.getInstance().processMethods(myController2);
-		myController2.addAnnotationDisposerList((DisposerList) list);
+		disposer = AnnotationProcessor.getInstance().processMethods(myController2);
+		myController2.addAnnotationDisposer(disposer);
 
 		assertEquals(2, Handler.counter);
 

@@ -459,12 +459,11 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	/**
 	 * @since 6.1
 	 */
-	public void addAnnotationDisposerList(final DisposerList list) {
+	public void addAnnotationDisposer(final IDisposer disposer) {
 		if (annotationDisposerList == null) {
-			annotationDisposerList = list;
-		} else {
-			annotationDisposerList.addAll(list);
+			annotationDisposerList = new DisposerList();
 		}
+		annotationDisposerList.add(disposer);
 	}
 
 	/**

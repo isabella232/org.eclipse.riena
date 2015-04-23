@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.riena.core.annotationprocessor.DisposerList;
+import org.eclipse.riena.core.annotationprocessor.IDisposer;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IStatuslineRidget;
 import org.eclipse.riena.ui.ridgets.RidgetToStatuslineSubscriber;
@@ -108,12 +109,11 @@ public abstract class AbstractRidgetController implements IController {
 	/**
 	 * @since 6.1
 	 */
-	public void addAnnotationDisposerList(final DisposerList list) {
+	public void addAnnotationDisposer(final IDisposer disposer) {
 		if (annotationDisposerList == null) {
-			annotationDisposerList = list;
-		} else {
-			annotationDisposerList.addAll(list);
+			annotationDisposerList = new DisposerList();
 		}
+		annotationDisposerList.add(disposer);
 	}
 
 	public final <R extends IRidget> R getRidget(final String id) {
