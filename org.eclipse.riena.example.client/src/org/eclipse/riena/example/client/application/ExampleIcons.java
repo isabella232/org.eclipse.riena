@@ -16,7 +16,7 @@ public final class ExampleIcons {
 		// Constants class
 	}
 
-	public static final String ICON_FILE = "file.gif"; //$NON-NLS-1$
+	public static final String ICON_FILE = "File.gif"; //$NON-NLS-1$
 
 	public static final String ICON_APPLICATION = "0457_a_a00.png"; //$NON-NLS-1$
 
