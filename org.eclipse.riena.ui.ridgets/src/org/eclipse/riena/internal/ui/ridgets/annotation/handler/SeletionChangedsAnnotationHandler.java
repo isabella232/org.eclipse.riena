@@ -13,12 +13,12 @@ package org.eclipse.riena.internal.ui.ridgets.annotation.handler;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
+import org.eclipse.riena.core.annotationprocessor.AnnotatedOverriddenMethodsGuard;
+import org.eclipse.riena.core.annotationprocessor.AnnotationProcessor;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.annotation.OnSelectionChange;
 import org.eclipse.riena.ui.ridgets.annotation.OnSelectionChanges;
 import org.eclipse.riena.ui.ridgets.annotation.handler.AbstractRidgetContainerAnnotationHandler;
-import org.eclipse.riena.ui.ridgets.annotation.processor.AnnotatedOverriddenMethodsGuard;
-import org.eclipse.riena.ui.ridgets.annotation.processor.RidgetContainerAnnotationProcessor;
 
 /**
  * Annotation handler for {@code OnSelectionChanges}
@@ -27,13 +27,13 @@ import org.eclipse.riena.ui.ridgets.annotation.processor.RidgetContainerAnnotati
  */
 public class SeletionChangedsAnnotationHandler extends AbstractRidgetContainerAnnotationHandler {
 
+	@Override
 	public void handleAnnotation(final Annotation annotation, final IRidgetContainer ridgetContainer,
 			final Object target, final Method targetMethod, final AnnotatedOverriddenMethodsGuard guard) {
 
 		if (annotation instanceof OnSelectionChanges) {
 			for (final OnSelectionChange nestedAnnotation : ((OnSelectionChanges) annotation).value()) {
-				RidgetContainerAnnotationProcessor.getInstance().handle(nestedAnnotation, ridgetContainer, target,
-						targetMethod, guard);
+				AnnotationProcessor.getInstance().handle(nestedAnnotation, target, targetMethod, getOptionalArgs(), guard, getDisposers());
 			}
 		}
 	}

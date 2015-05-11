@@ -29,6 +29,7 @@ import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.widgets.Control;
 
+import org.eclipse.riena.core.annotationprocessor.AnnotationProcessor;
 import org.eclipse.riena.core.marker.IMarkable;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
@@ -44,7 +45,6 @@ import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.IStatuslineRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
-import org.eclipse.riena.ui.ridgets.annotation.processor.RidgetContainerAnnotationProcessor;
 import org.eclipse.riena.ui.swt.AbstractMasterDetailsComposite;
 
 /**
@@ -332,7 +332,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		Assert.isLegal(delegate != null, "delegate cannot be null"); //$NON-NLS-1$
 		this.delegate = delegate;
 		delegate.configureRidgets(getDetailRidgetContainer());
-		RidgetContainerAnnotationProcessor.getInstance().processAnnotations(getDetailRidgetContainer(), delegate);
+		AnnotationProcessor.getInstance().processMethods(getDetailRidgetContainer(), delegate);
 	}
 
 	public void setDirectWriting(final boolean directWriting) {

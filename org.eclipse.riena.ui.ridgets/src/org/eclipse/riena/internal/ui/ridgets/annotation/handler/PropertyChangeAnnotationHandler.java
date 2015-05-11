@@ -14,11 +14,11 @@ import java.beans.PropertyChangeListener;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
+import org.eclipse.riena.core.annotationprocessor.AnnotatedOverriddenMethodsGuard;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.annotation.OnPropertyChange;
 import org.eclipse.riena.ui.ridgets.annotation.handler.AbstractRidgetContainerAnnotationHandler;
-import org.eclipse.riena.ui.ridgets.annotation.processor.AnnotatedOverriddenMethodsGuard;
 
 /**
  * Annotation handler for {@code @OnPropertyChange}
@@ -27,6 +27,7 @@ import org.eclipse.riena.ui.ridgets.annotation.processor.AnnotatedOverriddenMeth
  */
 public class PropertyChangeAnnotationHandler extends AbstractRidgetContainerAnnotationHandler {
 
+	@Override
 	public void handleAnnotation(final Annotation annotation, final IRidgetContainer ridgetContainer,
 			final Object target, final Method targetMethod, final AnnotatedOverriddenMethodsGuard guard) {
 

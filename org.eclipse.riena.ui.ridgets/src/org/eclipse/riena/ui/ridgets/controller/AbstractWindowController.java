@@ -18,6 +18,8 @@ import java.util.Map;
 import org.eclipse.core.runtime.Assert;
 
 import org.eclipse.riena.core.RienaStatus;
+import org.eclipse.riena.core.annotationprocessor.DisposerList;
+import org.eclipse.riena.core.annotationprocessor.IDisposer;
 import org.eclipse.riena.core.util.RienaConfiguration;
 import org.eclipse.riena.ui.core.context.IContext;
 import org.eclipse.riena.ui.ridgets.ClassRidgetMapper;
@@ -95,6 +97,7 @@ public abstract class AbstractWindowController implements IController, IContext 
 
 	private IDefaultActionManager actionManager;
 	private final RidgetToStatuslineSubscriber ridgetToStatusLineSubscriber = new RidgetToStatuslineSubscriber();
+	private DisposerList annotationDisposerList;
 
 	public AbstractWindowController() {
 		super();
@@ -362,6 +365,7 @@ public abstract class AbstractWindowController implements IController, IContext 
 	 * @since 3.0
 	 */
 	public void close(final int returnCode) {
+		disposeAnnotations();
 		setReturnCode(returnCode);
 		getWindowRidget().dispose();
 	}
@@ -382,6 +386,25 @@ public abstract class AbstractWindowController implements IController, IContext 
 	 */
 	public boolean isConfigured() {
 		return configured;
+	}
+
+	/**
+	 * @since 6.1
+	 */
+	public void disposeAnnotations() {
+		if (annotationDisposerList != null) {
+			annotationDisposerList.dispose();
+		}
+	}
+
+	/**
+	 * @since 6.1
+	 */
+	public void addAnnotationDisposer(final IDisposer disposer) {
+		if (annotationDisposerList == null) {
+			annotationDisposerList = new DisposerList();
+		}
+		annotationDisposerList.add(disposer);
 	}
 
 }

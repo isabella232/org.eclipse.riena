@@ -13,11 +13,11 @@ package org.eclipse.riena.internal.ui.ridgets.annotation.handler;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
+import org.eclipse.riena.core.annotationprocessor.AnnotatedOverriddenMethodsGuard;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.annotation.OnFocusLost;
 import org.eclipse.riena.ui.ridgets.annotation.handler.AbstractRidgetContainerAnnotationHandler;
-import org.eclipse.riena.ui.ridgets.annotation.processor.AnnotatedOverriddenMethodsGuard;
 import org.eclipse.riena.ui.ridgets.listener.IFocusListener;
 
 /**
@@ -27,6 +27,7 @@ import org.eclipse.riena.ui.ridgets.listener.IFocusListener;
  */
 public class FocusLostAnnotationHandler extends AbstractRidgetContainerAnnotationHandler {
 
+	@Override
 	public void handleAnnotation(final Annotation annotation, final IRidgetContainer ridgetContainer,
 			final Object target, final Method targetMethod, final AnnotatedOverriddenMethodsGuard guard) {
 

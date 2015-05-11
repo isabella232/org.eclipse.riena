@@ -13,6 +13,8 @@ package org.eclipse.riena.navigation.ui.controllers;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Map;
 
@@ -25,10 +27,17 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import org.eclipse.riena.core.RienaStatus;
+import org.eclipse.riena.core.annotationprocessor.AnnotatedOverriddenMethodsGuard;
+import org.eclipse.riena.core.annotationprocessor.AnnotationProcessor;
+import org.eclipse.riena.core.annotationprocessor.DisposerList;
+import org.eclipse.riena.core.annotationprocessor.IAnnotatedMethodHandler;
+import org.eclipse.riena.core.annotationprocessor.IDisposer;
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.core.test.RienaTestCase;
 import org.eclipse.riena.core.test.collect.UITestCase;
+import org.eclipse.riena.core.util.Nop;
 import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.internal.core.annotationprocessor.IAnnotatedMethodHandlerExtension;
 import org.eclipse.riena.internal.ui.ridgets.swt.LabelRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.TextRidget;
 import org.eclipse.riena.navigation.INavigationNodeController;
@@ -44,13 +53,14 @@ import org.eclipse.riena.ui.core.marker.HiddenMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.core.marker.OutputMarker;
 import org.eclipse.riena.ui.ridgets.AbstractCompositeRidget;
+import org.eclipse.riena.ui.ridgets.ComplexRidgetResolver;
 import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;
 import org.eclipse.riena.ui.ridgets.ICompositeRidget;
 import org.eclipse.riena.ui.ridgets.IMenuItemRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
-import org.eclipse.riena.ui.ridgets.ComplexRidgetResolver;
+import org.eclipse.riena.ui.ridgets.annotation.OnClick;
 import org.eclipse.riena.ui.ridgets.listener.IFocusListener;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
@@ -62,9 +72,11 @@ public class NavigationNodeControllerTest extends RienaTestCase {
 
 	private MyNavigationNodeController controller;
 	private SubModuleNode node;
+	private SubModuleNode node2;
 	private Shell shell;
 	private NavigationProcessor navigationProcessor;
 	private final static String SUBMODULE1_TYPE_ID = "subModule1TypeId"; //$NON-NLS-1$
+	private final static String SUBMODULE2_TYPE_ID = "subModule2TypeId"; //$NON-NLS-1$
 
 	@Override
 	protected void setUp() throws Exception {
@@ -79,8 +91,10 @@ public class NavigationNodeControllerTest extends RienaTestCase {
 		ReflectionUtils.invokeHidden(realm, "setDefault", realm); //$NON-NLS-1$
 
 		node = new SubModuleNode(new NavigationNodeId(SUBMODULE1_TYPE_ID));
+		node2 = new SubModuleNode(new NavigationNodeId(SUBMODULE2_TYPE_ID));
 		navigationProcessor = new NavigationProcessor();
 		node.setNavigationProcessor(navigationProcessor);
+		node2.setNavigationProcessor(navigationProcessor);
 		controller = new MyNavigationNodeController(node);
 	}
 
@@ -88,6 +102,8 @@ public class NavigationNodeControllerTest extends RienaTestCase {
 	protected void tearDown() throws Exception {
 		controller = null;
 		node = null;
+		node2 = null;
+		Handler.counter = 0;
 		SwtUtilities.dispose(shell);
 	}
 
@@ -239,7 +255,7 @@ public class NavigationNodeControllerTest extends RienaTestCase {
 	 *             handled by JUnit
 	 */
 	public void testGetChildId() throws Exception {
-		final ComplexRidgetResolver ridgetResolver = ReflectionUtils.getHidden(controller, "ridgetResolver");
+		final ComplexRidgetResolver ridgetResolver = ReflectionUtils.getHidden(controller, "ridgetResolver"); //$NON-NLS-1$
 
 		String childId = ReflectionUtils.invokeHidden(ridgetResolver, "getChildId", "aa.bbb.cccc"); //$NON-NLS-1$ //$NON-NLS-2$
 		assertEquals("cccc", childId); //$NON-NLS-1$
@@ -371,6 +387,82 @@ public class NavigationNodeControllerTest extends RienaTestCase {
 		assertEquals(2, listener.count);
 	}
 
+	@SuppressWarnings({ "restriction" })
+	public void testDisposeListenerDisposeAnnotations() {
+		final MyAnnotationNavigationNodeController myController = new MyAnnotationNavigationNodeController(node);
+		final TextRidget ridget = new TextRidget();
+		myController.addRidget("4711", ridget); //$NON-NLS-1$
+		final TextRidget ridget2 = new TextRidget();
+		myController.addRidget("0815", ridget2); //$NON-NLS-1$
+		final Handler onClick = new Handler();
+
+		AnnotationProcessor.getInstance().update(new IAnnotatedMethodHandlerExtension[] { create(OnClick.class, onClick) });
+
+		final IDisposer disposer = AnnotationProcessor.getInstance().processMethods(myController);
+		myController.addAnnotationDisposer(disposer);
+
+		assertEquals(1, Handler.counter);
+
+		node.dispose();
+
+		assertEquals(0, Handler.counter);
+	}
+
+	@SuppressWarnings({ "restriction" })
+	public void testDisposeListenerDisposeAnnotationsWithChangingController() {
+		final MyAnnotationNavigationNodeController myController = new MyAnnotationNavigationNodeController(node);
+		final MyAnnotationNavigationNodeController myController2 = new MyAnnotationNavigationNodeController(node);
+		final TextRidget ridget = new TextRidget();
+		myController.addRidget("4711", ridget); //$NON-NLS-1$
+		final TextRidget ridget2 = new TextRidget();
+		myController.addRidget("0815", ridget2); //$NON-NLS-1$
+		final TextRidget ridget3 = new TextRidget();
+		myController2.addRidget("0815", ridget3); //$NON-NLS-1$
+		final Handler onClick = new Handler();
+
+		AnnotationProcessor.getInstance().update(new IAnnotatedMethodHandlerExtension[] { create(OnClick.class, onClick) });
+
+		IDisposer disposer = AnnotationProcessor.getInstance().processMethods(myController);
+		myController.addAnnotationDisposer(disposer);
+		assertEquals(1, Handler.counter);
+
+		disposer = AnnotationProcessor.getInstance().processMethods(myController2);
+		myController2.addAnnotationDisposer(disposer);
+
+		assertEquals(2, Handler.counter);
+
+		myController.setNavigationNode(node2);
+		node.dispose();
+
+		assertEquals(1, Handler.counter);
+	}
+
+	@SuppressWarnings({ "restriction" })
+	public void testDisposeListenerDisposeAnnotationsWithMoreController() {
+		final MyAnnotationNavigationNodeController myController = new MyAnnotationNavigationNodeController(node);
+		final MyAnnotationNavigationNodeController myController2 = new MyAnnotationNavigationNodeController(node2);
+		final TextRidget ridget = new TextRidget();
+		myController.addRidget("0815", ridget); //$NON-NLS-1$
+		final TextRidget ridget2 = new TextRidget();
+		myController2.addRidget("0815", ridget2); //$NON-NLS-1$
+		final Handler onClick = new Handler();
+
+		AnnotationProcessor.getInstance().update(new IAnnotatedMethodHandlerExtension[] { create(OnClick.class, onClick) });
+
+		IDisposer disposer = AnnotationProcessor.getInstance().processMethods(myController);
+		myController.addAnnotationDisposer(disposer);
+		assertEquals(1, Handler.counter);
+
+		disposer = AnnotationProcessor.getInstance().processMethods(myController2);
+		myController2.addAnnotationDisposer(disposer);
+
+		assertEquals(2, Handler.counter);
+
+		node2.dispose();
+
+		assertEquals(1, Handler.counter);
+	}
+
 	// helping classes
 	//////////////////
 
@@ -390,7 +482,6 @@ public class NavigationNodeControllerTest extends RienaTestCase {
 		public void navigationArgumentChanged(final NavigationArgument argument) {
 			lastArgument = argument;
 		}
-
 	}
 
 	private static class CompositeRidget extends AbstractCompositeRidget {
@@ -528,4 +619,45 @@ public class NavigationNodeControllerTest extends RienaTestCase {
 		}
 	}
 
+	private IAnnotatedMethodHandlerExtension create(final Class<? extends Annotation> annotationClass, final IAnnotatedMethodHandler handler) {
+		return new IAnnotatedMethodHandlerExtension() {
+			public Class<? extends Annotation> getAnnotation() {
+				return annotationClass;
+			}
+
+			public IAnnotatedMethodHandler createHandler() {
+				return handler;
+			}
+		};
+	}
+
+	private static class Handler implements IAnnotatedMethodHandler {
+
+		public static int counter = 0;
+
+		@Override
+		public void handleAnnotation(final Annotation annotation, final Object object, final Method method, final Map<?, ?> optionalArgs,
+				final AnnotatedOverriddenMethodsGuard guard, final DisposerList disposers) {
+
+			counter++;
+
+			disposers.add(new IDisposer() {
+				@Override
+				public void dispose() {
+					counter--;
+				}
+			});
+		}
+	}
+
+	private static class MyAnnotationNavigationNodeController extends MyNavigationNodeController {
+		public MyAnnotationNavigationNodeController(final ISubModuleNode navigationNode) {
+			super(navigationNode);
+		}
+
+		@OnClick(ridgetId = "0815")
+		private void doNothing() {
+			Nop.reason("Empty"); //$NON-NLS-1$
+		}
+	}
 }

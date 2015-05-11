@@ -13,6 +13,7 @@ package org.eclipse.riena.ui.ridgets.annotation.processor;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
+import org.eclipse.riena.core.annotationprocessor.AnnotatedOverriddenMethodsGuard;
 import org.eclipse.riena.core.test.RienaTestCase;
 import org.eclipse.riena.core.test.collect.NonUITestCase;
 

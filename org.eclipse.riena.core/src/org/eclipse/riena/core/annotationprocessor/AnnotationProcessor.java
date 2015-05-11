@@ -12,7 +12,6 @@ package org.eclipse.riena.core.annotationprocessor;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -34,6 +33,11 @@ import org.eclipse.riena.internal.core.annotationprocessor.IAnnotatedMethodHandl
  */
 public final class AnnotationProcessor {
 
+	/**
+	 * Fixed key for the target of the annotations.
+	 * @since 6.1
+	 */
+	public static final String PROCESS_TARGET = "process.target"; //$NON-NLS-1$
 	private IAnnotatedMethodHandlerExtension[] extensions;
 	private Map<Class<? extends Annotation>, IAnnotatedMethodHandler> handlerMap;
 	private final Map<Object, ?> alreadyProcessed = new WeakHashMap<Object, Object>();
@@ -66,6 +70,22 @@ public final class AnnotationProcessor {
 	}
 
 	/**
+	 * Process the annotations on methods for the given {@link Object} <code>process</code> and set the {@link Object} <code>target</code> as argument.
+	 * 
+	 * @param target
+	 *            the {@link Object} which is passed as optional argument with the key {@link AnnotationProcessor#PROCESS_TARGET}
+	 * @param process
+	 *            the {@link Object} to process
+	 * @return a {@code IDisposer} that allows to dispose everything the annotation handlers have <i>allocated</i>.
+	 * @since 6.1
+	 */
+	public IDisposer processMethods(final Object target, final Object process) {
+		final Map<String, Object> args = new HashMap<String, Object>(2);
+		args.put(PROCESS_TARGET, target);
+		return processMethods(process, args);
+	}
+
+	/**
 	 * Process the annotations on methods for the given {@link Object}.
 	 * 
 	 * @param object
@@ -74,7 +94,7 @@ public final class AnnotationProcessor {
 	 *         annotation handlers have <i>allocated</i>.
 	 */
 	public IDisposer processMethods(final Object object) {
-		return processMethods(object, Collections.emptyMap());
+		return processMethods(object, object);
 	}
 
 	/**
