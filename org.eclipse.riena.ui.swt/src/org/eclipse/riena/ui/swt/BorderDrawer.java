@@ -146,7 +146,7 @@ public class BorderDrawer implements Listener {
 	 */
 	public void register() {
 		if (control instanceof DatePickerComposite || control instanceof CompletionCombo) {
-			specialWidgetWidthAdjustment = 16;
+			specialWidgetWidthAdjustment = control.getDisplay().getDPI().x / 6 + 1;
 			final Control[] children = ((Composite) control).getChildren();
 			for (final Control child : children) {
 				if (child instanceof Text) {
@@ -478,7 +478,8 @@ public class BorderDrawer implements Listener {
 			}
 			//			System.out.println(visibleControlArea);
 		} else if (getControlToDecorate() instanceof DatePickerComposite
-				&& visibleControlArea.width + specialWidgetWidthAdjustment + 2 * getControlToDecorate().getBorderWidth() == getControlToDecorate().getBounds().width) {
+				&& visibleControlArea.width + specialWidgetWidthAdjustment + 2 * getControlToDecorate().getBorderWidth() - 1 == getControlToDecorate()
+						.getBounds().width) {
 			visibleControlArea.width += specialWidgetWidthAdjustment;
 		} else if (getControlToDecorate() instanceof CompletionCombo) {
 			final Control[] children = ((Composite) getControlToDecorate()).getChildren();
@@ -491,7 +492,7 @@ public class BorderDrawer implements Listener {
 				visibleControlArea.width += children[0].getBounds().width + spacer - 1;
 			}
 			if (visibleControlArea.width + specialWidgetWidthAdjustment + 2 * getControlToDecorate().getBorderWidth() + 1 >= getControlToDecorate().getBounds().width) {
-				visibleControlArea.width += specialWidgetWidthAdjustment + 1;
+				visibleControlArea.width += specialWidgetWidthAdjustment;
 			}
 		}
 		return visibleControlArea;
