@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde version="3.8"?>
 
-<target name="Riena on E4 milestone" sequenceNumber="42">
+<target name="Riena on E4 milestone" sequenceNumber="44">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="org.junit" version="4.11.0.v201303080030"/>
@@ -32,11 +32,11 @@
 <repository location="http://download.eclipse.org/technology/nebula/archives/Q32014/release"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.ecf.core.feature.feature.group" version="1.1.0.v20150306-2024"/>
-<unit id="org.eclipse.emf.common.feature.group" version="2.11.0.v20150318-0449"/>
-<unit id="org.eclipse.emf.ecore.feature.group" version="2.11.0.v20150318-0449"/>
-<unit id="org.eclipse.platform.source.feature.group" version="4.5.0.v20150320-0800"/>
-<unit id="org.eclipse.ecf.filetransfer.feature.feature.group" version="3.9.3.v20150306-2024"/>
+<unit id="org.eclipse.platform.source.feature.group" version="4.5.0.v20150514-1000"/>
+<unit id="org.eclipse.ecf.filetransfer.feature.feature.group" version="3.10.0.v20150512-1727"/>
+<unit id="org.eclipse.emf.common.feature.group" version="2.11.0.v20150512-0501"/>
+<unit id="org.eclipse.ecf.core.feature.feature.group" version="1.1.0.v20150512-1727"/>
+<unit id="org.eclipse.emf.ecore.feature.group" version="2.11.0.v20150512-0501"/>
 <repository location="http://download.eclipse.org/eclipse/updates/4.5milestones/"/>
 </location>
 </locations>

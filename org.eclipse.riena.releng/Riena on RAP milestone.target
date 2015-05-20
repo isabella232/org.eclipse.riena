@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde version="3.8"?>
 
-<target name="Riena on RAP milestone" sequenceNumber="30">
+<target name="Riena on RAP milestone" sequenceNumber="31">
 <locations>
 <location path="${project_loc:org.eclipse.riena.build3}/prebuild" type="Directory"/>
-<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.rap.feature.feature.group" version="3.0.0.20141110-1349"/>
-<unit id="org.eclipse.rap.equinox.target.feature.feature.group" version="3.0.0.20141105-1434"/>
-<repository location="http://download.eclipse.org/rt/rap/3.0"/>
-</location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="org.apache.log4j.source" version="1.2.15.v201012070815"/>
 <unit id="org.apache.log4j" version="1.2.15.v201012070815"/>
@@ -21,6 +16,11 @@
 <unit id="org.apache.oro" version="2.0.8.v201005080400"/>
 <unit id="org.apache.commons.beanutils" version="1.8.0.v201205091237"/>
 <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/S20141023165154/repository/"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.rap.feature.feature.group" version="3.0.0.20150505-1714"/>
+<unit id="org.eclipse.rap.equinox.target.feature.feature.group" version="3.0.0.20150505-1037"/>
+<repository location="http://download.eclipse.org/rt/rap/3.0"/>
 </location>
 </locations>
 </target>
