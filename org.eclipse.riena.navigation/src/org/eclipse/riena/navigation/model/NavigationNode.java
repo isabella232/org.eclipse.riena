@@ -75,7 +75,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	private boolean expanded;
 	private INavigationNodeController navigationNodeController;
 	private INavigationProcessor navigationProcessor;
-	private final List<C> children;
+	private LinkedList<C> children;
 	private boolean selected;
 	private final List<L> listeners;
 	private final List<ISimpleNavigationNodeListener> simpleListeners;
@@ -312,7 +312,9 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	public void addChild(final int index, final C child) {
 		checkChild(child);
 		final List<C> oldList = new ArrayList<C>(children);
-		children.add(index, child);
+		final LinkedList<C> newList = new LinkedList<C>(children);
+		newList.add(index, child);
+		children = newList;
 		fireChildAdded(child, oldList);
 		// Adds the parent to the child after all listeners are notified that the child was added to the parent!
 		addChildParent(child);
@@ -400,7 +402,9 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		}
 
 		final List<C> oldList = new ArrayList<C>(children);
-		children.remove(child);
+		final LinkedList<C> newList = new LinkedList<C>(children);
+		newList.remove(child);
+		children = newList;
 		child.setParent(null);
 
 		propertyChangeSupport.firePropertyChange(INavigationNodeListenerable.PROPERTY_CHILDREN, oldList, children);
