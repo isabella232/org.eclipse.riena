@@ -703,7 +703,7 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 		for (final Control child : control.getChildrenButtons()) {
 			final Button button = (Button) child;
 			if (button == btnFirst) {
-				assertTrue(btnFirst.isEnabled());
+				assertFalse(btnFirst.isEnabled());
 				assertTrue(btnFirst.getSelection());
 			} else {
 				assertFalse(button.isEnabled());
@@ -732,7 +732,7 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 		for (final Control child : control.getChildrenButtons()) {
 			final Button button = (Button) child;
 			if (button == btnSecond) {
-				assertTrue(btnSecond.isEnabled());
+				assertFalse(btnSecond.isEnabled());
 				assertTrue(btnSecond.getSelection());
 			} else {
 				assertFalse(button.isEnabled());

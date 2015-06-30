@@ -620,7 +620,7 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 		setEnabledOutputSelected(ridget, true, true, true);
 
 		assertEquals(true, ridget.isEnabled());
-		assertEquals(true, control.isEnabled());
+		assertEquals(false, control.isEnabled());
 
 		setEnabledOutputSelected(ridget, true, false, false);
 
