@@ -33,6 +33,7 @@ import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
  *
@@ -71,9 +72,10 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 				propertyEnabledChanged(evt);
 			}
 		});
-		addPropertyChangeListener(IMarkableRidget.PROPERTY_OUTPUT_ONLY, new PropertyChangeListener() {
+		addPropertyChangeListener(IMarkableRidget.PROPERTY_MARKER, new PropertyChangeListener() {
 			public void propertyChange(final PropertyChangeEvent evt) {
 				updateEnabledMarker();
+				updateEnabled();
 			}
 		});
 		addPropertyChangeListener(IToggleButtonRidget.PROPERTY_SELECTED, new PropertyChangeListener() {
@@ -106,6 +108,13 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 
 	public boolean isSelected() {
 		return selected;
+	}
+
+	@Override
+	protected void updateEnabled() {
+		if (!SwtUtilities.isDisposed(getUIControl())) {
+			getUIControl().setEnabled(isEnabled() && !isOutputOnly());
+		}
 	}
 
 	/**

@@ -146,6 +146,12 @@ public abstract class AbstractChoiceRidget extends AbstractSWTRidget {
 		return false;
 	}
 
+	public void updateEditable(final ChoiceComposite control, final boolean isEditable) {
+		if (control != null && !control.isDisposed()) {
+			control.updateReadOnly(!isEnabled() || !isEditable);
+		}
+	}
+
 	/**
 	 * Iterates over the child controls of a given composite and checks if one them has the focus.
 	 */

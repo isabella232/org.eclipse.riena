@@ -328,12 +328,6 @@ public class MultipleChoiceRidget extends AbstractChoiceRidget implements IMulti
 		return selectionObservable != null && selectionObservable.size() > 0;
 	}
 
-	private void updateEditable(final ChoiceComposite control, final boolean isEditable) {
-		if (control != null && !control.isDisposed()) {
-			control.setEditable(isEditable);
-		}
-	}
-
 	/**
 	 * Iterates over the composite's children, disabling all buttons, except the one that has value as it's data element. If the ridget is not enabled, it may
 	 * deselect all buttons, as mandated by {@link MarkerSupport#isHideDisabledRidgetContent()}.

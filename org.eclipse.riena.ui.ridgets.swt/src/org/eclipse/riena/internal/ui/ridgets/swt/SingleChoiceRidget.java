@@ -381,12 +381,6 @@ public class SingleChoiceRidget extends AbstractChoiceRidget implements ISingleC
 		return hasInput() && (emptySelectionItem == null || !emptySelectionItem.equals(getSelection()));
 	}
 
-	private void updateEditable(final ChoiceComposite control, final boolean isEditable) {
-		if (control != null && !control.isDisposed()) {
-			control.setEditable(isEditable);
-		}
-	}
-
 	/**
 	 * Iterates over the composite's children, disabling all buttons, except the one that has value as it's data element. If the ridget is not enabled, it may
 	 * deselect all buttons, as mandated by {@link MarkerSupport#isHideDisabledRidgetContent()}.

@@ -436,4 +436,17 @@ public class ChoiceComposite extends Composite implements SelectionListener {
 			child.setEnabled(isEnabled);
 		}
 	}
+
+	/**
+	 * Updates the children buttons read only state.
+	 * @param readonly
+	 * @since 6.1
+	 */
+	public void updateReadOnly(final boolean readonly) {
+
+		final Control[] childrenButtons = getChildrenButtons();
+		for (final Control control : childrenButtons) {
+			control.setEnabled(!readonly);
+		}
+	}
 }

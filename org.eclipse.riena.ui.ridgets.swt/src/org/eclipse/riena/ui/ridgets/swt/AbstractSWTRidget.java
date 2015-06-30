@@ -212,7 +212,7 @@ public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget {
 	}
 
 	@Override
-	protected final void updateEnabled() {
+	protected void updateEnabled() {
 		if (!SwtUtilities.isDisposed(getUIControl())) {
 			getUIControl().setEnabled(isEnabled());
 		}
