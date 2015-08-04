@@ -95,6 +95,8 @@ public class BorderDrawer implements Listener {
 	private boolean layouting;
 	private Rectangle boundsToDecorate;
 	private final boolean useVisibleControlArea;
+	private Listener borderRenderingEnforcer;
+	private Event lastPaintEvent;
 
 	/**
 	 * @param control
@@ -145,6 +147,8 @@ public class BorderDrawer implements Listener {
 	 * Registers the {@link PaintListener} to the control and {@link ControlListener} to all parents from the hierarchy (including the {@link Shell}).
 	 */
 	public void register() {
+		enforcePostParentBorderRendering();
+
 		if (control instanceof DatePickerComposite || control instanceof CompletionCombo) {
 			specialWidgetWidthAdjustment = control.getDisplay().getDPI().x / 6 + 1;
 			final Control[] children = ((Composite) control).getChildren();
@@ -186,6 +190,22 @@ public class BorderDrawer implements Listener {
 				dispose();
 			}
 		}, SWT.Dispose);
+	}
+
+	/**
+	 * Enforces the rendering of the marker border after parent paint events as these can over paint the marker border.
+	 */
+	private void enforcePostParentBorderRendering() {
+		borderRenderingEnforcer = new Listener() {
+
+			public void handleEvent(final Event event) {
+				if (lastPaintEvent != null) {
+					// reuse last paint event on this control
+					paintControl(lastPaintEvent);
+				}
+			}
+		};
+		control.getParent().addListener(SWT.Paint, borderRenderingEnforcer);
 	}
 
 	/**
@@ -299,6 +319,7 @@ public class BorderDrawer implements Listener {
 		getControlToDecorate().getDisplay().asyncExec(new Runnable() {
 			public void run() {
 				update(redraw);
+
 			}
 		});
 	}
@@ -477,9 +498,8 @@ public class BorderDrawer implements Listener {
 				visibleControlArea.height += t.getHeaderHeight();
 			}
 			//			System.out.println(visibleControlArea);
-		} else if (getControlToDecorate() instanceof DatePickerComposite
-				&& visibleControlArea.width + specialWidgetWidthAdjustment + 2 * getControlToDecorate().getBorderWidth() - 1 == getControlToDecorate()
-						.getBounds().width) {
+		} else if (getControlToDecorate() instanceof DatePickerComposite && visibleControlArea.width + specialWidgetWidthAdjustment
+				+ 2 * getControlToDecorate().getBorderWidth() - 1 == getControlToDecorate().getBounds().width) {
 			visibleControlArea.width += specialWidgetWidthAdjustment;
 		} else if (getControlToDecorate() instanceof CompletionCombo) {
 			final Control[] children = ((Composite) getControlToDecorate()).getChildren();
@@ -491,7 +511,8 @@ public class BorderDrawer implements Listener {
 				gc.dispose();
 				visibleControlArea.width += children[0].getBounds().width + spacer - 1;
 			}
-			if (visibleControlArea.width + specialWidgetWidthAdjustment + 2 * getControlToDecorate().getBorderWidth() + 1 >= getControlToDecorate().getBounds().width) {
+			if (visibleControlArea.width + specialWidgetWidthAdjustment + 2 * getControlToDecorate().getBorderWidth()
+					+ 1 >= getControlToDecorate().getBounds().width) {
 				visibleControlArea.width += specialWidgetWidthAdjustment;
 			}
 		}
@@ -558,6 +579,9 @@ public class BorderDrawer implements Listener {
 			update(true);
 			break;
 		case SWTFacade.Paint:
+			//cache the paint event
+			lastPaintEvent = event;
+
 			final Rectangle onDisplay = getControlToDecorate().getDisplay().map(getControlToDecorate(), null, getControlToDecorate().getBounds());
 			if (boundsToDecorate == null) {
 				boundsToDecorate = onDisplay;
