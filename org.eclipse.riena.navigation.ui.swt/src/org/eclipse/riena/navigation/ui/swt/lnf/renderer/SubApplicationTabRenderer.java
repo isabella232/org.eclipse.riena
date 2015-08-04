@@ -505,7 +505,7 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 		 * @see java.lang.Runnable#run()
 		 */
 		public void run() {
-			if (control != null) {
+			if (!SwtUtilities.isDisposed(control)) {
 				control.redraw();
 			}
 		}
