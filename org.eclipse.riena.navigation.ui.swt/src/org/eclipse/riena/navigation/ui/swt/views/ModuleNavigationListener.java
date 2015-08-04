@@ -35,6 +35,7 @@ import org.eclipse.riena.navigation.model.NavigationProcessor;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
  * Navigation for the 'submodule' tree used in {@link ModuleView}. This includes both mouse navigation (selection) and keyboard navigation (key down / up).
@@ -316,7 +317,7 @@ public class ModuleNavigationListener extends SelectionAdapter implements KeyLis
 		node.activate();
 		if (!node.isActivated()) {
 			final INavigationNode<?> selectedNode = node.getNavigationProcessor().getSelectedNode();
-			if (selectedNode != null) {
+			if (selectedNode != null && !SwtUtilities.isDisposed(tree)) {
 				final TreeItem item = findItem(tree.getItems(), selectedNode);
 				if (item != null) {
 					tree.setSelection(item);
