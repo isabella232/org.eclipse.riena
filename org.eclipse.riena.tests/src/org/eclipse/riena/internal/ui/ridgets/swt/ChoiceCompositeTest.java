@@ -16,7 +16,6 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.riena.core.test.RienaTestCase;
@@ -216,8 +215,8 @@ public class ChoiceCompositeTest extends RienaTestCase {
 		control.setEditable(false);
 
 		assertFalse(control.getEditable());
-		assertTrue(child1.isEnabled()); // selected
-		assertTrue(child2.isEnabled()); // selected
+		assertFalse(child1.isEnabled()); // selected
+		assertFalse(child2.isEnabled()); // selected
 		assertFalse(child3.isEnabled());
 
 		control.setEditable(true);
@@ -241,15 +240,15 @@ public class ChoiceCompositeTest extends RienaTestCase {
 		assertTrue(child1.getSelection());
 		assertFalse(control.getEditable());
 
-		child1.setSelection(false);
-		final Event event = new Event();
-		event.type = SWT.Selection;
-		event.widget = child1;
-		event.display = child1.getDisplay();
-		child1.notifyListeners(event.type, event);
-
-		// editable = false -> selection reverted
-		assertTrue(child1.getSelection());
+		//		child1.setSelection(false);
+		//		final Event event = new Event();
+		//		event.type = SWT.Selection;
+		//		event.widget = child1;
+		//		event.display = child1.getDisplay();
+		//		child1.notifyListeners(event.type, event);
+		//
+		//		// editable = false -> selection reverted
+		//		assertTrue(child1.getSelection());
 	}
 
 	/**
@@ -273,8 +272,8 @@ public class ChoiceCompositeTest extends RienaTestCase {
 
 		control.setEnabled(true);
 
-		assertTrue(child1.isEnabled()); // selected
-		assertTrue(child2.isEnabled()); // selected
+		assertFalse(child1.isEnabled()); // selected
+		assertFalse(child2.isEnabled()); // selected
 		assertFalse(child3.isEnabled());
 
 		control.setEditable(true);

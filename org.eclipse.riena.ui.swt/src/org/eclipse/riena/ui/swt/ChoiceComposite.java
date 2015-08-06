@@ -216,8 +216,8 @@ public class ChoiceComposite extends Composite implements SelectionListener {
 	 * 
 	 * @exception SWTException
 	 *                <ul>
-	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li> <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that
-	 *                created the receiver</li>
+	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
+	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
 	 *                </ul>
 	 * 
 	 * @since 3.0
@@ -429,21 +429,21 @@ public class ChoiceComposite extends Composite implements SelectionListener {
 	}
 
 	private void updateEnabled(final Control child, final boolean isEnabled) {
-		if (!isEditable && isEnabled) {
-			final Button button = (Button) child;
-			child.setEnabled(button.getSelection());
-		} else { // isEditable && (isEnabled == true || isEnabled == false)
-			child.setEnabled(isEnabled);
+		if (!isEditable) {
+			child.setEnabled(false);
+			return;
 		}
+		child.setEnabled(isEnabled);
 	}
 
 	/**
 	 * Updates the children buttons read only state.
+	 * 
 	 * @param readonly
 	 * @since 6.1
 	 */
 	public void updateReadOnly(final boolean readonly) {
-
+		this.isEditable = !readonly;
 		final Control[] childrenButtons = getChildrenButtons();
 		for (final Control control : childrenButtons) {
 			control.setEnabled(!readonly);
