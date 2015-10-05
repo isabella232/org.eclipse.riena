@@ -92,6 +92,8 @@ public class TitlelessStackPresentation3xRAP extends StackPresentation {
 	private SubModuleViewRenderer renderer;
 	private boolean hasListener;
 
+	private Rectangle lastMasterBounds;
+
 	public TitlelessStackPresentation3xRAP(final Composite parent, final IStackPresentationSite stackSite) {
 		super(stackSite);
 		this.parent = new Composite(parent, SWT.DOUBLE_BUFFERED);
@@ -267,19 +269,22 @@ public class TitlelessStackPresentation3xRAP extends StackPresentation {
 	 */
 	@Override
 	public void setBounds(final Rectangle bounds) {
+		this.lastMasterBounds = bounds;
 		parent.setBounds(bounds);
 		if (navigation != null) {
 			final Rectangle navi = calcNavigationBounds(parent);
 			navigation.setBounds(navi);
 		}
+		final Rectangle innerBounds = calcSubModuleInnerBounds();
+		
 		if (current != null) {
-			final Rectangle innerBounds = calcSubModuleInnerBounds();
-			for (final IPresentablePart part : knownParts) {
-				if (part != current && !isNavigation(part)) {
-					part.setBounds(new Rectangle(0, 0, 0, 0));
-				}
-			}
 			current.setBounds(innerBounds);
+		}
+		
+		for (final IPresentablePart part : knownParts) {
+			if (part != current && !isNavigation(part)) {
+				part.setBounds(new Rectangle(0, 0, 0, 0));
+			}
 		}
 		parent.setVisible(true);
 	}
@@ -488,6 +493,9 @@ public class TitlelessStackPresentation3xRAP extends StackPresentation {
 			navigationTreeObserver.addListener(new SubModuleNodeListener() {
 				@Override
 				public void activated(final ISubModuleNode source) {
+					if(lastMasterBounds != null){
+						setBounds(lastMasterBounds);
+					}
 					redrawSubModuleTitle();
 				}
 			});
