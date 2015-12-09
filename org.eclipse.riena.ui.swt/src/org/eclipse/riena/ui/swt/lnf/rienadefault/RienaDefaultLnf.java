@@ -119,7 +119,7 @@ public class RienaDefaultLnf implements ILnfCustomizer {
 	 */
 	private void readSystemProperties() {
 
-		final Properties sysProps = System.getProperties();
+		final Properties sysProps = (Properties) System.getProperties().clone();
 		final Set<Object> sysPropKeys = sysProps.keySet();
 		for (final Object propKey : sysPropKeys) {
 			final String propKeyName = propKey.toString();
