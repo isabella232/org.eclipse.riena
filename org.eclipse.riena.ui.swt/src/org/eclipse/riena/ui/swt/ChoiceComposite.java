@@ -440,7 +440,7 @@ public class ChoiceComposite extends Composite implements SelectionListener {
 	 * Updates the children buttons read only state.
 	 * 
 	 * @param readonly
-	 * @since 6.1
+	 * @since 6.2
 	 */
 	public void updateReadOnly(final boolean readonly) {
 		this.isEditable = !readonly;

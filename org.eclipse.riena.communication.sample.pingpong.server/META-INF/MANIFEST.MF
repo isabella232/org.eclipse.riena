@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Riena Communication Sample Ping Pong Server Plug-in
 Bundle-SymbolicName: org.eclipse.riena.communication.sample.pingpong.server
-Bundle-Version: 6.1.0.qualifier
+Bundle-Version: 6.2.0.qualifier
 Require-Bundle: org.eclipse.riena.communication.sample.pingpong.common,
  org.eclipse.riena.server
 Bundle-Activator: org.eclipse.riena.internal.communication.sample.pingpong.server.Activator
