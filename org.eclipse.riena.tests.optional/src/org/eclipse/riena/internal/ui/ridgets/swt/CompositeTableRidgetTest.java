@@ -18,13 +18,13 @@ import java.util.List;
 
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.list.IObservableList;
-import org.eclipse.nebula.widgets.compositetable.AbstractNativeHeader;
-import org.eclipse.nebula.widgets.compositetable.CompositeTable;
-import org.eclipse.nebula.widgets.compositetable.ResizableGridRowLayout;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
+import org.eclipse.swt.nebula.widgets.compositetable.AbstractNativeHeader;
+import org.eclipse.swt.nebula.widgets.compositetable.CompositeTable;
+import org.eclipse.swt.nebula.widgets.compositetable.ResizableGridRowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
