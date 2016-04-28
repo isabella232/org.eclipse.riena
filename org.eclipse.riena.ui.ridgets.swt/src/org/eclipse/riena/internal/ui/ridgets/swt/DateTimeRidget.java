@@ -39,9 +39,8 @@ import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeRidget {
 
 	/**
-	 * This property is used by the databinding to sync ridget and model. It is
-	 * always fired before its sibling {@link IDateTimeRidget#PROPERTY_DATE} to
-	 * ensure that the model is updated before any listeners try accessing it.
+	 * This property is used by the databinding to sync ridget and model. It is always fired before its sibling {@link IDateTimeRidget#PROPERTY_DATE} to ensure
+	 * that the model is updated before any listeners try accessing it.
 	 * <p>
 	 * This property is not API. Do not use in client code.
 	 */
@@ -75,9 +74,8 @@ public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeR
 				dateObservable.setValue(nonNullDate);
 				timeObservable = new WritableValue(dateObservable.getRealm(), nonNullDate, Date.class);
 			}
-			controlBinding = dbc.bindValue(new DateAndTimeObservableWithNullConversion(dateObservable, timeObservable),
-					getRidgetObservable(), new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE)
-							.setAfterGetValidator(new EditRulesValidator()), new UpdateValueStrategy(
+			controlBinding = dbc.bindValue(new DateAndTimeObservableWithNullConversion(dateObservable, timeObservable), getRidgetObservable(),
+					new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE).setAfterGetValidator(new EditRulesValidator()), new UpdateValueStrategy(
 							UpdateValueStrategy.POLICY_ON_REQUEST));
 		}
 	}
@@ -164,20 +162,14 @@ public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeR
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * Implementation note: since the underlying DateTime widget cannot be
-	 * empty, a {@code null} date value will cause the widget to show the
-	 * 'empty' date, but getDate() will correctly return null.
+	 * Implementation note: since the underlying DateTime widget cannot be empty, a {@code null} date value will cause the widget to show the 'empty' date, but
+	 * getDate() will correctly return null.
 	 * <p>
-	 * Invoking this method will copy the given date into the ridget and the
-	 * widget regardless of the validation outcome. If the date does not pass
-	 * validation the error marker will be set and the date will <b>not</b> be
-	 * copied into the model. If validation passes the date will be copied into
-	 * the model as well.
+	 * Invoking this method will copy the given date into the ridget and the widget regardless of the validation outcome. If the date does not pass validation
+	 * the error marker will be set and the date will <b>not</b> be copied into the model. If validation passes the date will be copied into the model as well.
 	 * <p>
-	 * Because of limitations of the underlying SWT {@link DateTime} widget, the
-	 * timestamp will be formatted according to the date/time format of the
-	 * operating system. See <a href="http://bugs.eclipse.org/248075">Bug
-	 * #248075</a>.
+	 * Because of limitations of the underlying SWT {@link DateTime} widget, the timestamp will be formatted according to the date/time format of the operating
+	 * system. See <a href="http://bugs.eclipse.org/248075">Bug #248075</a>.
 	 */
 	public void setDate(final Date date) {
 		if (isChanged(this.date, date)) {
@@ -260,14 +252,13 @@ public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeR
 	 * DateAndTimeObservable that handles doSetValue(null) gracefully.
 	 */
 	private final class DateAndTimeObservableWithNullConversion extends DateAndTimeObservableValue {
-		public DateAndTimeObservableWithNullConversion(final IObservableValue dateObservable,
-				final IObservableValue timeObservable) {
+		public DateAndTimeObservableWithNullConversion(final IObservableValue dateObservable, final IObservableValue timeObservable) {
 			super(dateObservable, timeObservable);
 		}
 
 		@Override
-		protected void doSetValue(final Object value) {
-			super.doSetValue(getNonNullDate((Date) value));
+		protected void doSetValue(final Date value) {
+			super.doSetValue(getNonNullDate(value));
 		}
 	}
 
