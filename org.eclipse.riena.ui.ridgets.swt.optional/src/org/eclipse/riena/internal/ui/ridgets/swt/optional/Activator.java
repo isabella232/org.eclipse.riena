@@ -12,8 +12,8 @@ package org.eclipse.riena.internal.ui.ridgets.swt.optional;
 
 import org.osgi.framework.BundleContext;
 
+import org.eclipse.nebula.widgets.compositetable.CompositeTable;
 import org.eclipse.nebula.widgets.grid.Grid;
-import org.eclipse.swt.nebula.widgets.compositetable.CompositeTable;
 
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 import org.eclipse.riena.ui.swt.AbstractRienaUIPlugin;
