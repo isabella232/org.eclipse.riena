@@ -75,8 +75,8 @@ public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeR
 				timeObservable = new WritableValue(dateObservable.getRealm(), nonNullDate, Date.class);
 			}
 			controlBinding = dbc.bindValue(new DateAndTimeObservableWithNullConversion(dateObservable, timeObservable), getRidgetObservable(),
-					new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE).setAfterGetValidator(new EditRulesValidator()), new UpdateValueStrategy(
-							UpdateValueStrategy.POLICY_ON_REQUEST));
+					new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE).setAfterGetValidator(new EditRulesValidator()),
+					new UpdateValueStrategy(UpdateValueStrategy.POLICY_ON_REQUEST));
 		}
 	}
 
@@ -257,8 +257,8 @@ public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeR
 		}
 
 		@Override
-		protected void doSetValue(final Object value) {
-			super.doSetValue(getNonNullDate((Date) value));
+		protected void doSetValue(final Date value) {
+			super.doSetValue(getNonNullDate(value));
 		}
 	}
 
