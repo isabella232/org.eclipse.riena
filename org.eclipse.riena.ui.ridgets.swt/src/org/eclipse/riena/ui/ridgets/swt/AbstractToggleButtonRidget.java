@@ -111,6 +111,11 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 	}
 
 	@Override
+	public boolean handlesDisabledMarker() {
+		return true;
+	}
+
+	@Override
 	protected void updateEnabled() {
 		if (!SwtUtilities.isDisposed(getUIControl())) {
 			getUIControl().setEnabled(isEnabled() && !isOutputOnly());
@@ -183,9 +188,9 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 	protected void bindUIControl() {
 		final DataBindingContext context = getValueBindingSupport().getContext();
 		if (getUIControl() != null) {
-			controlBinding = context.bindValue(getUIControlSelectionObservable(), getRidgetObservable(), new UpdateValueStrategy(
-					UpdateValueStrategy.POLICY_UPDATE), new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE)
-					.setBeforeSetValidator(new CancelControlUpdateWhenDisabled()));
+			controlBinding = context.bindValue(getUIControlSelectionObservable(), getRidgetObservable(),
+					new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE),
+					new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE).setBeforeSetValidator(new CancelControlUpdateWhenDisabled()));
 			initText();
 			updateUIText();
 			updateSelection(isEnabled());

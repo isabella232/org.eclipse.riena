@@ -648,18 +648,22 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 			// fire a showing event for Ridgets with markers whose visibility
 			// changes because of a parent widget so that markers can be
 			// updated (bug 261980)
-			final Widget control = getUIControl();
-			if (markerSupport != null && !getMarkers().isEmpty() && !SwtUtilities.isDisposed(control)) {
-				control.getDisplay().asyncExec(new Runnable() {
-					public void run() {
-						if (!SwtUtilities.isDisposed(control)) {
-							markerSupport.fireShowingPropertyChangeEvent();
-						}
-					}
-				});
-			}
+			fireShowingPropertyChange();
 		}
 
+	}
+
+	private void fireShowingPropertyChange() {
+		final Widget control = getUIControl();
+		if (markerSupport != null && !getMarkers().isEmpty() && !SwtUtilities.isDisposed(control)) {
+			control.getDisplay().asyncExec(new Runnable() {
+				public void run() {
+					if (!SwtUtilities.isDisposed(control)) {
+						markerSupport.fireShowingPropertyChangeEvent();
+					}
+				}
+			});
+		}
 	}
 
 	/**
@@ -742,5 +746,12 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 			}
 		}
 
+	}
+
+	/**
+	 * @since 6.2
+	 */
+	public boolean handlesDisabledMarker() {
+		return false;
 	}
 }

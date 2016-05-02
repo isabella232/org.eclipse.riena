@@ -28,9 +28,8 @@ import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
- * Helper class for Ridgets to delegate their marker issues to that just handles
- * the basic markers for uneditable Ridgets: the HiddenMarker to toggle
- * visibility and the DisabledMarker that toggles the enabled state.
+ * Helper class for Ridgets to delegate their marker issues to that just handles the basic markers for uneditable Ridgets: the HiddenMarker to toggle visibility
+ * and the DisabledMarker that toggles the enabled state.
  * 
  * @since 3.0
  */
@@ -170,7 +169,11 @@ public class BasicMarkerSupport extends AbstractMarkerSupport {
 
 	protected void updateUIControl(final Control control) {
 		updateVisible(control);
-		updateDisabled(control);
+		// ask the ridget if it controls the disabled marker state
+		if (getRidget() == null || !getRidget().handlesDisabledMarker()) {
+			// the ridget does not control disabled state. Handle it here!
+			updateDisabled(control);
+		}
 	}
 
 	protected void updateVisible(final Control control) {

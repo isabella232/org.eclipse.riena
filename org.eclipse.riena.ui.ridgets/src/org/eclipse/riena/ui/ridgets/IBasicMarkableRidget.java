@@ -77,4 +77,11 @@ public interface IBasicMarkableRidget extends IRidget, IMarkable, IClickableRidg
 	 */
 	boolean decorateVisibleControlArea();
 
+	/**
+	 * Controls whether this ridget controls the disabled state itself. If not controlled by this ridget, the disabled state is handled by the marker support.
+	 * 
+	 * @since 6.2
+	 */
+	boolean handlesDisabledMarker();
+
 }
