@@ -257,8 +257,8 @@ public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeR
 		}
 
 		@Override
-		protected void doSetValue(final Date value) {
-			super.doSetValue(getNonNullDate(value));
+		protected void doSetValue(final Object value) {
+			super.doSetValue(getNonNullDate((Date) value));
 		}
 	}
 
