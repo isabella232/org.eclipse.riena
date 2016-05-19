@@ -48,9 +48,13 @@ import org.eclipse.riena.core.wire.Wire;
 import org.eclipse.riena.internal.ui.ridgets.swt.StructuredViewerFilterHolder;
 import org.eclipse.riena.ui.common.IComplexComponent;
 import org.eclipse.riena.ui.common.ISortableByColumn;
+import org.eclipse.riena.ui.ridgets.IExtendedRidgetProperties;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRowRidget;
+import org.eclipse.riena.ui.ridgets.ISelectableRidget;
+import org.eclipse.riena.ui.ridgets.ITextRidget;
+import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
 import org.eclipse.riena.ui.ridgets.listener.IClickListener;
 import org.eclipse.riena.ui.ridgets.listener.ISelectionListener;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTWidgetRidget;
@@ -624,6 +628,7 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 					ridget.setUIControl(control);
 					ridget.setController(rowRidget);
 					rowRidget.addRidget(bindingProperty, ridget);
+					new RowChangeNotifier().install(ridget);
 				} else {
 					final String message = String.format("widget without binding property: %s : %s", rowControl.getClass(), //$NON-NLS-1$
 							control);
@@ -653,6 +658,24 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 			final Class<? extends IRidget> ridgetClass = mapper.getRidgetClass(control);
 			return ReflectionUtils.newInstance(ridgetClass);
 		}
+	}
+
+	/**
+	 * Observes the ridgets of the table´s rows
+	 */
+	private class RowChangeNotifier implements PropertyChangeListener {
+
+		public void install(final IRidget ridget) {
+			ridget.addPropertyChangeListener(ITextRidget.PROPERTY_TEXT, this);
+			ridget.addPropertyChangeListener(ISelectableRidget.PROPERTY_SELECTION, this);
+			ridget.addPropertyChangeListener(IToggleButtonRidget.PROPERTY_SELECTED, this);
+		}
+
+		public void propertyChange(final PropertyChangeEvent evt) {
+			// delegation
+			propertyChangeSupport.firePropertyChange(IExtendedRidgetProperties.PROPERTY_ROW_VALUE, evt.getOldValue(), evt.getNewValue());
+		}
+
 	}
 
 	/**
