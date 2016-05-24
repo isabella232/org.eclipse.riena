@@ -38,7 +38,8 @@ public class AbstractMarkerTest extends RienaTestCase {
 		assertEquals("DummyMarker[attributes={unique=true}]", marker.toString()); //$NON-NLS-1$
 
 		marker.setAttribute("att", "val"); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals("DummyMarker[att=val, attributes={unique=true}]", marker.toString()); //$NON-NLS-1$
+		assertTrue(marker.toString().equals("DummyMarker[attributes={att=val, unique=true}]") //$NON-NLS-1$
+				|| marker.toString().equals("DummyMarker[attributes={unique=true, att=val}]")); //$NON-NLS-1$
 
 		marker = new DummyMarker(false);
 		assertEquals("DummyMarker[attributes={}]", marker.toString()); //$NON-NLS-1$
