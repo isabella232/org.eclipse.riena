@@ -17,6 +17,10 @@ import java.awt.image.BufferedImage;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import com.kitfox.svg.SVGCache;
 import com.kitfox.svg.SVGDiagram;
@@ -88,7 +92,7 @@ public final class ImageStore {
 	public Image getImage(final String imageName, final ImageFileExtension fileExtension, final IconSize imageSize) {
 
 		Point dpi = SwtUtilities.getDpi();
-		String fullName = getFullScaledName(imageName, fileExtension, dpi);
+		String fullName = getFullScaledName(imageName, fileExtension, dpi, imageSize);
 		Image image = loadImage(fullName);
 		if (image != null) {
 			return image;
@@ -297,6 +301,10 @@ public final class ImageStore {
 	}
 
 	private String getFullScaledName(final String imageName, final ImageFileExtension fileExtension, final Point dpi) {
+		return getFullScaledName(imageName, fileExtension, dpi, null);
+	}
+
+	private String getFullScaledName(final String imageName, final ImageFileExtension fileExtension, final Point dpi, final IconSize imageSize) {
 
 		if (StringUtils.isEmpty(imageName)) {
 			return null;
@@ -308,7 +316,7 @@ public final class ImageStore {
 			return null;
 		}
 
-		String fullName = addImageScaleSuffix(imageName, fileExtension, dpi);
+		String fullName = addImageScaleSuffix(imageName, fileExtension, dpi, imageSize);
 		if (fullName != null) {
 			return fullName += "." + fileExtension.getFileNameExtension(); //$NON-NLS-1$
 		}
@@ -583,29 +591,52 @@ public final class ImageStore {
 	 *            name (ID) of the image
 	 * @param fileExtension
 	 *            extension of the image file
+	 * @param dpi
+	 *            this display dpi
 	 * 
-	 * @return image name with suffix of scaling or image name without suffix if no matching image file exists
+	 * @return image name with suffix of scaling and icon size identifier or image name without suffix if no matching image file exists
 	 * 
 	 * @since 6.1
 	 */
 	public String addImageScaleSuffix(final String imageName, final ImageFileExtension fileExtension, final Point dpi) {
+		return addImageScaleSuffix(imageName, fileExtension, dpi, null);
+	}
+
+	/**
+	 * Adds the suffix of scaling to the given name of the image.
+	 * 
+	 * @param imageName
+	 *            name (ID) of the image
+	 * @param fileExtension
+	 *            extension of the image file
+	 * @param dpi
+	 *            this display dpi
+	 * @param imageSize
+	 *            the requested image size
+	 * 
+	 * 
+	 * @return image name with suffix of scaling and icon size identifier or image name without suffix if no matching image file exists
+	 * 
+	 * @since 6.2
+	 */
+	public String addImageScaleSuffix(final String imageName, final ImageFileExtension fileExtension, final Point dpi, final IconSize imageSize) {
 
 		if (LnfManager.isLnfCreated()) {
 			final String suffix = LnfManager.getLnf().getIconScaleSuffix(dpi);
 			if (!StringUtils.isEmpty(suffix)) {
-				final String scaledName = imageName + suffix;
-				if (imageExists(scaledName, fileExtension)) {
-					return scaledName;
+				final List<String> candidates = new ArrayList<String>((Arrays.asList(imageName + suffix)));
+				if (imageSize != null) {
+					// honor icon size
+					candidates.add(imageName + imageSize.getDefaultMapping() + suffix);
+				}
+				// concrete names first
+				Collections.reverse(candidates);
+				for (final String candidate : candidates) {
+					if (imageExists(candidate, fileExtension)) {
+						return candidate;
+					}
 				}
 			}
-
-			//			suffix = LnfManager.getLnf().getIconScaleSuffix(new Point(0, 0));
-			//			if (!StringUtils.isEmpty(suffix)) {
-			//				final String scaledName = imageName + suffix;
-			//				if (imageExists(scaledName, fileExtension)) {
-			//					return scaledName;
-			//				}
-			//			}
 		}
 
 		return imageName;

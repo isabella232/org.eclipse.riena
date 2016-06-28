@@ -80,7 +80,6 @@ public class ImageStoreTest extends RienaTestCase {
 		store.update(new IImagePathExtension[] { extension });
 		image = store.getImage("spirit"); //$NON-NLS-1$
 		assertNotNull(image);
-
 	}
 
 	/**
@@ -99,6 +98,9 @@ public class ImageStoreTest extends RienaTestCase {
 			// find png
 			Image image = store.getImage("cloud.png", IconSize.A16); //$NON-NLS-1$
 			assertEquals(32, image.getBounds().width);
+
+			image = store.getImage("0140", IconSize.A16); //$NON-NLS-1$
+			assertNotNull(image);
 
 			image = store.getImage("cloud", IconSize.A16); //$NON-NLS-1$
 			assertEquals(32, image.getBounds().width);
