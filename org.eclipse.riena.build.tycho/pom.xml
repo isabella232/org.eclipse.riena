@@ -15,7 +15,7 @@
 
 	<groupId>org.eclipse.riena</groupId>
 	<artifactId>org.eclipse.riena.build.tycho</artifactId>
-	<version>4.0.0-SNAPSHOT</version>
+	<version>6.2.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>Eclipse Riena </name>
@@ -52,11 +52,12 @@
 
 
 	<properties>
-		<orbit-target>http://download.eclipse.org/tools/orbit/downloads/drops/R20110523182458/repository</orbit-target>
+		<orbit-target>http://download.eclipse.org/tools/orbit/downloads/drops/R20140525021250/repository/</orbit-target>
 		<indigo-site>http://download.eclipse.org/releases/indigo/</indigo-site>
 		<prebuild-site>file:/${basedir}/../org.eclipse.riena.build3/prebuild</prebuild-site>
+		<nebula-site> http://download.eclipse.org/nebula/releases/1.0.0</nebula-site>
 		<project-build-sourceEncoding>UTF-8</project-build-sourceEncoding>
-		<tycho-version>0.12.0</tycho-version>
+		<tycho-version>0.25.0</tycho-version>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<junit-version>3.8.2</junit-version>
 	</properties>
@@ -115,6 +116,9 @@
 				<module>../org.eclipse.riena.navigation</module>
 				<module>../org.eclipse.riena.navigation.ui</module>
 				<module>../org.eclipse.riena.navigation.ui.swt</module>
+				<module>../org.eclipse.riena.navigation.ui.swt.3x</module>
+				<module>../org.eclipse.riena.navigation.ui.swt.rcp</module>
+				<module>../org.eclipse.riena.navigation.ui.swt.presentation</module>
 				<module>../org.eclipse.riena.objecttransaction</module>
 				<module>../org.eclipse.riena.security.client.startup</module>
 				<module>../org.eclipse.riena.security.common</module>
@@ -129,6 +133,7 @@
 				<module>../org.eclipse.riena.ui.ridgets.swt.optional</module>
 				<module>../org.eclipse.riena.ui.swt</module>
 				<module>../org.eclipse.riena.ui.swt.rcp</module>
+				<module>../org.eclipse.riena.ui.swt.3x</module>
 				<module>../org.eclipse.riena.ui.workarea</module>
 				<module>../org.eclipse.riena.security.server</module>
 				<module>../org.eclipse.riena.security.ui</module>
@@ -156,6 +161,7 @@
 				<module>../org.eclipse.riena.demo.client</module>
 				<module>../org.eclipse.riena.demo.common</module>
 				<module>../org.eclipse.riena.demo.server</module>
+				<module>../com.kitfox.svg</module>
 			</modules>
 
 		</profile>
@@ -164,18 +170,6 @@
 
 
 	<repositories>
-		<!-- uncomment to build against local targets instead of indigo updatesite -->
-		<!-- <repository>
-			<id>rcp-target</id>
-			<layout>p2</layout>
-			<url>file:////C:/build/targets/eclipse-3.7RC4/rcp</url>
-		</repository>
-
-		<repository>
-			<id>equinox-target</id>
-			<layout>p2</layout>
-			<url>file:////C:/build/targets/eclipse-3.7RC4/equinox</url>
-		</repository> -->
 
 		<repository>
 			<id>orbit</id>
@@ -190,10 +184,16 @@
 		</repository>
 		
 		<repository>
+			<id>nebula</id>
+			<layout>p2</layout>
+			<url>${nebula-site}</url>
+		</repository>
+		
+		<!--repository>
 			<id>prebuild-site</id>
 			<layout>p2</layout>
 			<url>${prebuild-site}</url>
-		</repository>
+		</repository-->
 		
 		
 	</repositories>
