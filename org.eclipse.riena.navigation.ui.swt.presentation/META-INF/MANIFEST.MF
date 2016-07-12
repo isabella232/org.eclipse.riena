@@ -16,3 +16,4 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.eclipse.riena.navigation.ui.swt,
  org.eclipse.riena.navigation.ui.swt.presentation.stack.common,
  org.eclipse.riena.navigation.ui.swt.views
+Bundle-Vendor: Eclipse.org - Riena
