@@ -236,6 +236,13 @@ public final class LnfKeyConstants {
 	public static final String SUB_APPLICATION_SWITCHER_INNER_PROCESS_FINISHED_BORDER_COLOR = "SubApplicationSwitcher.innerProcessFinishedBorderColor"; //$NON-NLS-1$
 
 	/**
+	 * Constants controls (if true) whether all subapplication tabs should have the same height
+	 * 
+	 * @since 6.2
+	 */
+	public static final String SUB_APPLICATION_SWITCHER_ALL_TABS_WITH_SAME_HEIGHT = "SubApplicationSwitcher.allTabsWithSameHeight";
+
+	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
 	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Embedded_Title_Bar"> Riena Wiki</a>

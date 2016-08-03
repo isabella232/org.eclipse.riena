@@ -36,30 +36,113 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
  */
 public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 
-	private Color defaultColor = null;
+	/**
+	 * @since 6.2
+	 */
+	protected Color defaultColor = null;
 
-	private final static int ACTIVE_Y_OFFSET = 2;
-	private final static int ACTIVE_BOTTOM_INSET = 6;
-	private final static int ACTIVE_LEFT_INSET = 3;
-	private final static int ACTIVE_RIGHT_INSET = 3;
-	private final static int BORDER_TOP_WIDTH = 3;
-	private final static int BORDER_BOTTOM_WIDTH = 1;
-	private final static int BORDER_LEFT_WIDTH = 2;
-	private final static int BORDER_RIGHT_WIDTH = 2;
-	private final static int TEXT_TOP_INSET = SwtUtilities.convertYToDpiTruncate(3);
-	private final static int TEXT_BOTTOM_INSET = SwtUtilities.convertYToDpiTruncate(4);
-	private final static int TEXT_LEFT_INSET = SwtUtilities.convertXToDpiTruncate(6);
-	private final static int TEXT_RIGHT_INSET = SwtUtilities.convertXToDpiTruncate(6);
-	private final static int ICON_TEXT_GAP = SwtUtilities.convertXToDpiTruncate(4);
+	/**
+	 * @since 6.2
+	 */
+	protected static int ACTIVE_Y_OFFSET = SwtUtilities.convertYToDpiTruncate(2);
+	/**
+	 * @since 6.2
+	 */
+	protected static int ACTIVE_BOTTOM_INSET = SwtUtilities.convertYToDpiTruncate(6);
+	/**
+	 * @since 6.2
+	 */
+	protected static int ACTIVE_LEFT_INSET = SwtUtilities.convertXToDpiTruncate(3);
+	/**
+	 * @since 6.2
+	 */
+	protected static int ACTIVE_RIGHT_INSET = SwtUtilities.convertXToDpiTruncate(3);
+	/**
+	 * @since 6.2
+	 */
+	protected static int BORDER_TOP_WIDTH = SwtUtilities.convertYToDpiTruncate(3);
+	/**
+	 * @since 6.2
+	 */
+	protected static int BORDER_BOTTOM_WIDTH = SwtUtilities.convertYToDpiTruncate(1);
+	/**
+	 * @since 6.2
+	 */
+	protected static int BORDER_LEFT_WIDTH = SwtUtilities.convertXToDpiTruncate(2);
+	/**
+	 * @since 6.2
+	 */
+	protected static int BORDER_RIGHT_WIDTH = SwtUtilities.convertXToDpiTruncate(2);
 
-	private Color selStartColor;
-	private Color selEndColor;
-	private Image image;
-	private String icon;
-	private String label;
-	private boolean active;
-	private Control control;
-	private final FlasherSupportForRenderer flasherSupport;
+	// if !tabsWithEqualHeader then TEXT_TOP_INSET is always the same
+	/**
+	 * @since 6.2
+	 */
+	protected final static int TEXT_TOP_INSET = SwtUtilities.convertYToDpiTruncate(3);
+	// if tabsWithEqualHeader then TEXT_TOP_INSET varies depending whether the tab is active or passive aka TEXT_TOP_INSET_ACTIV or TEXT_TOP_INSET_PASSIV
+	/**
+	 * @since 6.2
+	 */
+	protected final static int TEXT_TOP_INSET_ACTIV = SwtUtilities.convertYToDpiTruncate(3);
+	/**
+	 * @since 6.2
+	 */
+	protected static int TEXT_TOP_INSET_PASSIV = SwtUtilities.convertYToDpiTruncate(5);
+	/**
+	 * @since 6.2
+	 */
+	protected static int TEXT_BOTTOM_INSET = SwtUtilities.convertYToDpiTruncate(4);
+	/**
+	 * @since 6.2
+	 */
+	protected static int TEXT_LEFT_INSET = SwtUtilities.convertXToDpiTruncate(6);
+	/**
+	 * @since 6.2
+	 */
+	protected static int TEXT_RIGHT_INSET = SwtUtilities.convertXToDpiTruncate(6);
+	/**
+	 * @since 6.2
+	 */
+	protected static int ICON_TEXT_GAP = SwtUtilities.convertXToDpiTruncate(4);
+
+	/**
+	 * @since 6.2
+	 */
+	protected Color selStartColor;
+	/**
+	 * @since 6.2
+	 */
+	protected Color selEndColor;
+	/**
+	 * @since 6.2
+	 */
+	protected Image image;
+	/**
+	 * @since 6.2
+	 */
+	protected String icon;
+	/**
+	 * @since 6.2
+	 */
+	protected String label;
+	/**
+	 * @since 6.2
+	 */
+	protected boolean active;
+	/**
+	 * @since 6.2
+	 */
+	protected Control control;
+	/**
+	 * @since 6.2
+	 */
+	protected final FlasherSupportForRenderer flasherSupport;
+
+	/**
+	 * @since 6.2
+	 */
+	protected boolean tabsWithEqualHeight = false;
+	private boolean initialized = false;
 
 	/**
 	 * Create a new instance of the renderer of a tab of the sub-application switcher.
@@ -67,6 +150,18 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 	public SubApplicationTabRenderer() {
 		super();
 		flasherSupport = new FlasherSupportForRenderer(this, new MarkerUpdater());
+	}
+
+	/**
+	 * @since 6.2
+	 */
+	protected void checkInit() {
+		if (initialized) {
+			return;
+		}
+
+		tabsWithEqualHeight = LnfManager.getLnf().getBooleanSetting(LnfKeyConstants.SUB_APPLICATION_SWITCHER_ALL_TABS_WITH_SAME_HEIGHT, tabsWithEqualHeight);
+		initialized = true;
 	}
 
 	/**
@@ -161,8 +256,8 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 		gc.drawLine(x, y, x2, y2);
 		// -right
 		gc.setForeground(borderTopRightColor);
-		// final int topBorder = BORDER_TOP_WIDTH - (isActive() ? 1 : 0);
-		final int topBorder = BORDER_TOP_WIDTH - 1;
+		final int topBorder = BORDER_TOP_WIDTH - (isActive() ? 1 : 0);
+		//		final int topBorder = BORDER_TOP_WIDTH - 1;
 		x = getBounds().x + getWidth() + rightInset;
 		y = getBounds().y + topBorder;
 		x2 = x;
@@ -229,7 +324,10 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 		GCFacade.getDefault().setAntialias(gc, SWT.DEFAULT);
 	}
 
-	private void paintSelection(final GC gc) {
+	/**
+	 * @since 6.2
+	 */
+	protected void paintSelection(final GC gc) {
 
 		final RienaDefaultLnf lnf = LnfManager.getLnf();
 		final Color selColor = lnf.getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_TOP_SELECTION_COLOR);
@@ -257,7 +355,10 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 		gc.fillGradientRectangle(x, y, w, h, true);
 	}
 
-	private Color getInnerBorderColor(final RienaDefaultLnf lnf) {
+	/**
+	 * @since 6.2
+	 */
+	protected Color getInnerBorderColor(final RienaDefaultLnf lnf) {
 
 		Color innerBorderColor = lnf.getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_INNER_BORDER_COLOR);
 
@@ -278,8 +379,9 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 	 * 
 	 * @param gc
 	 *            Graphic Context
+	 * @since 6.2
 	 */
-	private void paintBackground(final GC gc) {
+	protected void paintBackground(final GC gc) {
 
 		final Color backgroundStartColor = getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_ACTIVE_BACKGROUND_START_COLOR,
 				LnfKeyConstants.SUB_APPLICATION_SWITCHER_PASSIVE_BACKGROUND_START_COLOR, null,
@@ -298,7 +400,10 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 
 	}
 
-	private int getLeftInset() {
+	/**
+	 * @since 6.2
+	 */
+	protected int getLeftInset() {
 		if (isActive()) {
 			return ACTIVE_LEFT_INSET;
 		} else {
@@ -306,7 +411,10 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 		}
 	}
 
-	private int getRightInset() {
+	/**
+	 * @since 6.2
+	 */
+	protected int getRightInset() {
 		if (isActive()) {
 			return ACTIVE_RIGHT_INSET;
 		} else {
@@ -318,8 +426,9 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 	 * Returns whether a process finished in the background but the flashing state is not active anymore.
 	 * 
 	 * @return true if a process has finished in the background but the tab is not flashing anymore, false otherwise
+	 * @since 6.2
 	 */
-	private boolean isProcessFinishedInBackground() {
+	protected boolean isProcessFinishedInBackground() {
 		return flasherSupport.isProcessMarkerVisible() && !flasherSupport.isFlashing();
 	}
 
@@ -327,20 +436,38 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 	 * Returns whether the processFinishedMarker is visible AND the flashing state is true.
 	 * 
 	 * @return true if the tab is flashing and the marker is visible as well, false otherwise
+	 * @since 6.2
 	 */
-	private boolean isProcessFinishedMarkerVisibleWhileFlashing() {
+	protected boolean isProcessFinishedMarkerVisibleWhileFlashing() {
 		return (flasherSupport.isProcessMarkerVisible() && flasherSupport.isFlashing());
 	}
 
-	int getTextTopInset() {
-		return getHorizontalInset(TEXT_TOP_INSET);
+	/**
+	 * @since 6.2
+	 */
+	protected int getTextTopInset() {
+		if (tabsWithEqualHeight) {
+			if (isActive()) {
+				return getHorizontalInset(TEXT_TOP_INSET_ACTIV);
+			} else {
+				return getHorizontalInset(TEXT_TOP_INSET_PASSIV);
+			}
+		} else {
+			return getHorizontalInset(TEXT_TOP_INSET);
+		}
 	}
 
-	int getTextBottomInset() {
+	/**
+	 * @since 6.2
+	 */
+	protected int getTextBottomInset() {
 		return getHorizontalInset(TEXT_BOTTOM_INSET);
 	}
 
-	int getHorizontalInset(final int defaultValue) {
+	/**
+	 * @since 6.2
+	 */
+	protected int getHorizontalInset(final int defaultValue) {
 		if (control != null && control.getBounds() != null) {
 			double yDelta = control.getBounds().height - (getBounds().y + getBounds().height);
 			if (yDelta < 0) {
@@ -351,7 +478,10 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 		return defaultValue;
 	}
 
-	private Color getSelectionStartColor() {
+	/**
+	 * @since 6.2
+	 */
+	protected Color getSelectionStartColor() {
 		final RienaDefaultLnf lnf = LnfManager.getLnf();
 		if ((selStartColor == null) || selStartColor.isDisposed()) {
 			final Color selColor = lnf.getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_TOP_SELECTION_COLOR);
@@ -361,7 +491,10 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 
 	}
 
-	private Color getSelectionEndColor() {
+	/**
+	 * @since 6.2
+	 */
+	protected Color getSelectionEndColor() {
 		final RienaDefaultLnf lnf = LnfManager.getLnf();
 		if ((selEndColor == null) || selStartColor.isDisposed()) {
 			final Color selColor = lnf.getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_TOP_SELECTION_COLOR);
@@ -387,6 +520,7 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 	 * @return size of tab
 	 */
 	public Point computeSize(final GC gc, final Object value) {
+		checkInit();
 
 		final Font font = getTabFont();
 		gc.setFont(font);
@@ -399,8 +533,16 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 
 		int height = fontMetrics.getHeight();
 		height = height + BORDER_TOP_WIDTH + BORDER_BOTTOM_WIDTH + getTextTopInset() + getTextBottomInset();
-		if (isActive()) {
+
+		if (isActive() && !tabsWithEqualHeight) {
 			height += ACTIVE_BOTTOM_INSET;
+		}
+
+		if (isProcessFinishedMarkerVisibleWhileFlashing() || isProcessFinishedInBackground()) {
+			height = height - SwtUtilities.convertYToDpiTruncate(2);
+			TEXT_TOP_INSET_PASSIV = 3;
+		} else {
+			TEXT_TOP_INSET_PASSIV = 5;
 		}
 
 		return new Point(width, height);
@@ -412,14 +554,15 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 	 * 
 	 * @param gc
 	 * @return width
+	 * @since 6.2
 	 */
-	private int getImageTextWidth(final GC gc) {
+	protected int getImageTextWidth(final GC gc) {
 
 		final Font font = getTabFont();
 		gc.setFont(font);
 
 		String tabLabel = getLabel();
-		tabLabel = tabLabel.replaceFirst("&", ""); //$NON-NLS-1$ //$NON-NLS-2$
+		tabLabel = tabLabel.replaceFirst("&", ""); //$NON-NLS-1$ 
 		int width = SwtUtilities.calcTextWidth(gc, tabLabel);
 		// Icon
 		if (getImage() != null) {
@@ -434,18 +577,25 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 	 * Returns the font of the tab.
 	 * 
 	 * @return font
+	 * @since 6.2
 	 */
-	private Font getTabFont() {
+	protected Font getTabFont() {
 		final RienaDefaultLnf lnf = LnfManager.getLnf();
 		final Font font = lnf.getFont(LnfKeyConstants.SUB_APPLICATION_SWITCHER_FONT);
 		return font;
 	}
 
-	private int getHeight() {
+	/**
+	 * @since 6.2
+	 */
+	protected int getHeight() {
 		return getBounds().height - 1;
 	}
 
-	private int getWidth() {
+	/**
+	 * @since 6.2
+	 */
+	protected int getWidth() {
 		return getBounds().width - 1;
 	}
 
@@ -458,7 +608,10 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 		setImage(ImageStore.getInstance().getImage(icon));
 	}
 
-	private Image getImage() {
+	/**
+	 * @since 6.2
+	 */
+	protected Image getImage() {
 		final RienaDefaultLnf lnf = LnfManager.getLnf();
 		if (lnf.getBooleanSetting(LnfKeyConstants.SUB_APPLICATION_SWITCHER_TAB_SHOW_ICON)) {
 			return image;
@@ -467,7 +620,10 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 		}
 	}
 
-	private void setImage(final Image image) {
+	/**
+	 * @since 6.2
+	 */
+	protected void setImage(final Image image) {
 		this.image = image;
 	}
 
@@ -498,8 +654,10 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 
 	/**
 	 * This class updates (redraws) the tab, so that the marker are also updated (redrawn).
+	 * 
+	 * @since 6.2
 	 */
-	private class MarkerUpdater implements Runnable {
+	protected class MarkerUpdater implements Runnable {
 
 		/**
 		 * @see java.lang.Runnable#run()
@@ -520,8 +678,9 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 	 * @param disabeldColorKey
 	 * @return color
 	 * @TODO same code in EmbeddedTitlebarRenderer
+	 * @since 6.2
 	 */
-	private Color getColor(final String activeColorKey, final String passiveColorKey, final String disabeldColorKey, final String processFinishedKey) {
+	protected Color getColor(final String activeColorKey, final String passiveColorKey, final String disabeldColorKey, final String processFinishedKey) {
 
 		Color color = null;
 
@@ -540,7 +699,10 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 
 	}
 
-	private Color getDefaultColor() {
+	/**
+	 * @since 6.2
+	 */
+	protected Color getDefaultColor() {
 		// this was added so that the class loading no longer accesses the UIThread
 		if (defaultColor == null) {
 			defaultColor = new Color(null, 0, 0, 0); // black
@@ -557,8 +719,9 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 	 * @param disabeldKey
 	 * @return key
 	 * @TODO same code in EmbeddedTitlebarRenderer Returns according to the
+	 * @since 6.2
 	 */
-	private String getKey(final String activeKey, final String passiveKey, final String disabeldKey, final String processFinishedKey) {
+	protected String getKey(final String activeKey, final String passiveKey, final String disabeldKey, final String processFinishedKey) {
 
 		String key = null;
 		if (isEnabled()) {
@@ -591,8 +754,9 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 	 * Returns the minimum width of a tab.
 	 * 
 	 * @return minimum width or 0, if no minimum width is set
+	 * @since 6.2
 	 */
-	private int getSubApplicationSwitcherTabMinWidth() {
+	protected int getSubApplicationSwitcherTabMinWidth() {
 		final RienaDefaultLnf lnf = LnfManager.getLnf();
 		int minWidth = lnf.getIntegerSetting(LnfKeyConstants.SUB_APPLICATION_SWITCHER_TAB_MIN_WIDTH, 0);
 		minWidth = SwtUtilities.convertXToDpi(minWidth);
