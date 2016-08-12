@@ -32,6 +32,8 @@ public class ToolItemProperties extends AbstractItemProperties {
 	private List<String> prevSiblingIds;
 	private final Image hotImage;
 	private final Image disabledImage;
+	private int separatorWidth = -1;
+	private final ToolItemScalingHelper menuHelper;
 
 	/**
 	 * @param item
@@ -45,6 +47,12 @@ public class ToolItemProperties extends AbstractItemProperties {
 		hotImage = item.getHotImage();
 		disabledImage = item.getDisabledImage();
 		storePreviousSiblings(item);
+
+		final ToolItem sep = (ToolItem) item.getData("Separator");
+		if (sep != null) {
+			separatorWidth = sep.getWidth();
+		}
+		menuHelper = new ToolItemScalingHelper();
 
 	}
 
@@ -64,8 +72,7 @@ public class ToolItemProperties extends AbstractItemProperties {
 	}
 
 	/**
-	 * Returns the index of this tool item to insert it at the correct position
-	 * in the tool bar.
+	 * Returns the index of this tool item to insert it at the correct position in the tool bar.
 	 * 
 	 * @return index
 	 */
@@ -78,6 +85,8 @@ public class ToolItemProperties extends AbstractItemProperties {
 			final String id = SWTBindingPropertyLocator.getInstance().locateBindingProperty(sibling);
 			if (prevSiblingIds.contains(id)) {
 				index++;
+			} else {
+				break;
 			}
 		}
 
@@ -109,6 +118,9 @@ public class ToolItemProperties extends AbstractItemProperties {
 				toolItem.setData(menuManager);
 				final MenuManagerHelper helper = new MenuManagerHelper();
 				helper.addListeners(toolItem, menuManager.getMenu());
+			}
+			if (separatorWidth > 0) {
+				menuHelper.createSeparatorForScaling(parent, toolItem, getIndex() + 1, separatorWidth);
 			}
 		}
 		getRidget().setUIControl(toolItem);

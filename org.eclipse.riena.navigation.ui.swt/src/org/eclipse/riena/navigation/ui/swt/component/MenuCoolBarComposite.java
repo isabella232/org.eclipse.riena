@@ -31,6 +31,7 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.internal.WorkbenchWindow;
 
 import org.eclipse.riena.internal.navigation.ui.swt.CoolbarUtils;
+import org.eclipse.riena.internal.ui.ridgets.swt.ToolItemScalingHelper;
 import org.eclipse.riena.ui.ridgets.swt.MenuManagerHelper;
 import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
@@ -48,6 +49,7 @@ public class MenuCoolBarComposite extends Composite {
 	private ToolBar menuToolBar;
 	private CoolBar menuCoolBar;
 	private final IEntriesProvider provider;
+	private final ToolItemScalingHelper menuScalingHelper;
 
 	// private final Map<MenuManager, MenuManagerState> menuManagerOldState;
 
@@ -94,6 +96,7 @@ public class MenuCoolBarComposite extends Composite {
 		super(parent, style);
 		this.provider = provider;
 		setLayout(new FillLayout());
+		menuScalingHelper = new ToolItemScalingHelper();
 		create();
 	}
 
@@ -159,6 +162,7 @@ public class MenuCoolBarComposite extends Composite {
 		menuCoolBar = new CoolBar(this, SWT.FLAT);
 		menuCoolItem = CoolbarUtils.initCoolBar(menuCoolBar, getMenuBarFont());
 		menuToolBar = (ToolBar) menuCoolItem.getControl();
+
 		final ToolBarMenuListener listener = new ToolBarMenuListener();
 		menuToolBar.addMouseListener(listener);
 		SWTFacade.getDefault().addMouseTrackListener(menuToolBar, listener);
@@ -170,10 +174,24 @@ public class MenuCoolBarComposite extends Composite {
 		if (provider == null) {
 			return;
 		}
-		for (final IContributionItem contribItem : provider.getTopLevelEntries()) {
-			if (contribItem instanceof MenuManager) {
-				createAndAddMenu((MenuManager) contribItem, listener);
+
+		final IContributionItem[] listOfItems = provider.getTopLevelEntries();
+		final java.util.Iterator<IContributionItem> contributionIterator = Arrays.asList(listOfItems).iterator();
+
+		final int separatorSpacing = menuScalingHelper.calculateScalingBasedSpacing();
+		ToolBar toolBar;
+
+		while (contributionIterator.hasNext()) {
+			final IContributionItem contributionItem = contributionIterator.next();
+			if (contributionItem instanceof MenuManager) {
+				createAndAddMenu((MenuManager) contributionItem, listener);
+				if (contributionIterator.hasNext()) {
+					toolBar = ((ToolBar) this.menuCoolItem.getControl());
+					final ToolItem toolItem = toolBar.getItem(toolBar.getItemCount() - 1);
+					menuScalingHelper.createSeparatorForScaling(toolBar, toolItem, toolBar.getItemCount(), separatorSpacing);
+				}
 			}
+
 		}
 	}
 

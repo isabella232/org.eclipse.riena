@@ -71,7 +71,7 @@ public abstract class AbstractItemRidget extends AbstractSWTWidgetRidget impleme
 	}
 
 	@Override
-	public final void setUIControl(final Object uiControl) {
+	public void setUIControl(final Object uiControl) {
 		super.setUIControl(uiControl);
 	}
 

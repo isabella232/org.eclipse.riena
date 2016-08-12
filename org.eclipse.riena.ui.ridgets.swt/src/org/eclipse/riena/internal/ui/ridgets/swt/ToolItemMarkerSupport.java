@@ -22,6 +22,7 @@ import org.eclipse.riena.ui.ridgets.swt.MenuManagerHelper;
  * Helper class for SWT Tool Item Ridgets to delegate their marker issues to.
  */
 public class ToolItemMarkerSupport extends AbstractMarkerSupport {
+	private final ToolItemScalingHelper menuHelper;
 
 	/**
 	 * Creates a new instance of {@code ToolItemMarkerSupport}.
@@ -32,6 +33,7 @@ public class ToolItemMarkerSupport extends AbstractMarkerSupport {
 	 */
 	public ToolItemMarkerSupport(final ToolItemRidget ridget, final PropertyChangeSupport propertyChangeSupport) {
 		super(ridget, propertyChangeSupport);
+		menuHelper = new ToolItemScalingHelper();
 	}
 
 	@Override
@@ -75,6 +77,7 @@ public class ToolItemMarkerSupport extends AbstractMarkerSupport {
 		if (!hasHiddenMarkers()) {
 			getRidget().createItem();
 		} else {
+			menuHelper.disposeSeparatorForMenuItem(item);
 			final MenuManager menuManager = getMenuManager(item);
 			if (menuManager != null) {
 				final MenuManagerHelper helper = new MenuManagerHelper();
@@ -91,8 +94,7 @@ public class ToolItemMarkerSupport extends AbstractMarkerSupport {
 	 * 
 	 * @param item
 	 *            tool item
-	 * @return the menu manager or <{@code null} if the item has no menu
-	 *         manager.
+	 * @return the menu manager or <{@code null} if the item has no menu manager.
 	 */
 	private MenuManager getMenuManager(final ToolItem item) {
 

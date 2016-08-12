@@ -418,6 +418,10 @@ public final class LnfKeyConstants {
 	 */
 	public static final String MENUBAR_FONT = "Menubar.font"; //$NON-NLS-1$
 	/**
+	 * @since 6.2
+	 */
+	public static final String MENUBAR_SPACING = "Menubar.spacing";
+	/**
 	 * @since 2.0
 	 */
 	public static final String TOOLBAR_FONT = "Toolbar.font"; //$NON-NLS-1$

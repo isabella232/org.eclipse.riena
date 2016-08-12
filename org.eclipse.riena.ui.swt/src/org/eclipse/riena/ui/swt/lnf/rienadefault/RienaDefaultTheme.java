@@ -445,6 +445,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 		lnf.putLnfSetting(LnfKeyConstants.NAVIGATION_SUB_MODULE_GAP, 5);
 		lnf.putLnfSetting(LnfKeyConstants.MENUBAR_TOP_MARGIN, 0);
 		lnf.putLnfSetting(LnfKeyConstants.TOOLBAR_TOP_MARGIN, 0);
+		lnf.putLnfSetting(LnfKeyConstants.MENUBAR_SPACING, 4);
 
 		lnf.putLnfSetting(LnfKeyConstants.ERROR_MARKER_HORIZONTAL_POSITION, SWT.LEFT);
 		lnf.putLnfSetting(LnfKeyConstants.ERROR_MARKER_VERTICAL_POSITION, SWT.TOP);
