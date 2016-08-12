@@ -178,7 +178,6 @@ public class MenuCoolBarComposite extends Composite {
 		final IContributionItem[] listOfItems = provider.getTopLevelEntries();
 		final java.util.Iterator<IContributionItem> contributionIterator = Arrays.asList(listOfItems).iterator();
 
-		final int separatorSpacing = menuScalingHelper.calculateScalingBasedSpacing();
 		ToolBar toolBar;
 
 		while (contributionIterator.hasNext()) {
@@ -188,7 +187,7 @@ public class MenuCoolBarComposite extends Composite {
 				if (contributionIterator.hasNext()) {
 					toolBar = ((ToolBar) this.menuCoolItem.getControl());
 					final ToolItem toolItem = toolBar.getItem(toolBar.getItemCount() - 1);
-					menuScalingHelper.createSeparatorForScaling(toolBar, toolItem, toolBar.getItemCount(), separatorSpacing);
+					menuScalingHelper.createSeparatorForScaling(toolBar, toolItem, toolBar.getItemCount(), -1);
 				}
 			}
 

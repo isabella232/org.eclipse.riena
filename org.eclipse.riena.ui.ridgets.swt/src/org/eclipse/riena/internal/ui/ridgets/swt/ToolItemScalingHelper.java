@@ -58,8 +58,12 @@ public class ToolItemScalingHelper {
 	 *            width if fixed, -1 to calculate use scaling
 	 * @return a separator if scaling is needed. Returns null if scaling is not needed.
 	 */
-	public ToolItem createSeparatorForScaling(final ToolBar toolbar, final ToolItem toolItem, final int index, final int width) {
+	public ToolItem createSeparatorForScaling(final ToolBar toolbar, final ToolItem toolItem, final int index, int width) {
 		if (needScaleBasedSpacing()) {
+
+			if (width == -1) {
+				width = calculateScalingBasedSpacing();
+			}
 			final ToolItem separator = new ToolItem(toolbar, SWT.SEPARATOR, index);
 
 			separator.setWidth(width);
