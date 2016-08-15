@@ -256,8 +256,12 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 		gc.drawLine(x, y, x2, y2);
 		// -right
 		gc.setForeground(borderTopRightColor);
-		final int topBorder = BORDER_TOP_WIDTH - (isActive() ? 1 : 0);
-		//		final int topBorder = BORDER_TOP_WIDTH - 1;
+		int topBorder;
+		if (tabsWithEqualHeight) {
+			topBorder = BORDER_TOP_WIDTH - (isActive() ? 2 : 1);
+		} else {
+			topBorder = BORDER_TOP_WIDTH - 1;
+		}
 		x = getBounds().x + getWidth() + rightInset;
 		y = getBounds().y + topBorder;
 		x2 = x;
