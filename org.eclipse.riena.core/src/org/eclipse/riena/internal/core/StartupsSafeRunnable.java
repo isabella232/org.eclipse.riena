@@ -95,15 +95,15 @@ public class StartupsSafeRunnable implements ISafeRunnable {
 		final Bundle bundle = startup.getContributingBundle();
 		if (bundle.getState() == Bundle.RESOLVED) {
 			start(bundle);
-		} else if (bundle.getState() == Bundle.STARTING
-				&& Constants.ACTIVATION_LAZY.equals(bundle.getHeaders().get(Constants.BUNDLE_ACTIVATIONPOLICY))) {
+		} else if (bundle.getState() == Bundle.STARTING && Constants.ACTIVATION_LAZY.equals(bundle.getHeaders().get(Constants.BUNDLE_ACTIVATIONPOLICY))) {
 			try {
 				bundle.start();
 				LOGGER.log(LogService.LOG_INFO, "Startup <<lazy>>: '" + bundle.getSymbolicName() + "' succesful."); //$NON-NLS-1$ //$NON-NLS-2$
 			} catch (final BundleException be) {
-				LOGGER.log(LogService.LOG_WARNING, "Startup <<lazy>>: '" + bundle.getSymbolicName() //$NON-NLS-1$
-						+ "' failed but may succeed (bundle state is in transition):\n\t\t" + be.getMessage() //$NON-NLS-1$
-						+ (be.getCause() != null ? " cause: " + be.getCause() : "")); //$NON-NLS-1$ //$NON-NLS-2$
+				LOGGER.log(LogService.LOG_WARNING,
+						"Startup <<lazy>>: '" + bundle.getSymbolicName() //$NON-NLS-1$
+								+ "' failed but may succeed (bundle state is in transition):\n\t\t" + be.getMessage() //$NON-NLS-1$
+								+ (be.getCause() != null ? " cause: " + be.getCause() : "")); //$NON-NLS-1$ //$NON-NLS-2$
 			} catch (final RuntimeException rte) {
 				LOGGER.log(LogService.LOG_ERROR, "Startup <<lazy>>:: '" + bundle.getSymbolicName() //$NON-NLS-1$
 						+ "' failed with exception.", rte); //$NON-NLS-1$
@@ -161,6 +161,9 @@ public class StartupsSafeRunnable implements ISafeRunnable {
 		try {
 			bundle.start();
 			LOGGER.log(LogService.LOG_INFO, "Startup: '" + bundle.getSymbolicName() + "' succesful."); //$NON-NLS-1$ //$NON-NLS-2$
+		} catch (final BundleException be) {
+			LOGGER.log(LogService.LOG_ERROR, "Startup: '" + bundle.getSymbolicName() //$NON-NLS-1$
+					+ "' failed with bundleexception.", be); //$NON-NLS-1$
 		} catch (final RuntimeException rte) {
 			LOGGER.log(LogService.LOG_ERROR, "Startup: '" + bundle.getSymbolicName() //$NON-NLS-1$
 					+ "' failed with exception.", rte); //$NON-NLS-1$
