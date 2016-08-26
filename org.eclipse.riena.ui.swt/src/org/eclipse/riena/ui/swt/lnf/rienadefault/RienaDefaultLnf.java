@@ -33,6 +33,7 @@ import org.eclipse.swt.graphics.Resource;
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.core.wire.InjectExtension;
+import org.eclipse.riena.ui.core.resource.IconSize;
 import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.swt.lnf.ColorLnfResource;
@@ -57,6 +58,7 @@ public class RienaDefaultLnf implements ILnfCustomizer {
 	private final Set<String> resourcePrefixes = new HashSet<String>();
 	private final Map<String, Object> settingTable = new ConcurrentHashMap<String, Object>();
 	private final Map<String, ILnfRenderer> rendererTable = new HashMap<String, ILnfRenderer>();
+	private final Map<IconSize, String> iconSizeGroupIdentifier = new HashMap<IconSize, String>();
 	private ILnfMarkerSupportExtension[] markerSupportList = new ILnfMarkerSupportExtension[0];
 	private ILnfTheme theme;
 	private boolean initialized;
@@ -100,6 +102,29 @@ public class RienaDefaultLnf implements ILnfCustomizer {
 
 	public Object putLnfSetting(final String key, final Object setting) {
 		return settingTable.put(key, setting);
+	}
+
+	/**
+	 * Returns the String value of the iconsize group identifier for the given Iconsize.
+	 * 
+	 * @param iconSize
+	 *            the desired iconSize
+	 * @return the Group identifier of the mapped iconsize, returns the given iconsize.defaultMapping if no group identifier exists.
+	 * @since 6.2
+	 */
+	public String getIconSizeGroupIdentifier(final IconSize iconSize) {
+		final String value = iconSizeGroupIdentifier.get(iconSize);
+		if (value != null) {
+			return value;
+		}
+		return iconSize.getDefaultMapping();
+	}
+
+	/**
+	 * @since 6.2
+	 */
+	public String putIconSizeGroupIdentifier(final IconSize iconSize, final String group) {
+		return iconSizeGroupIdentifier.put(iconSize, group);
 	}
 
 	/**

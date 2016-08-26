@@ -29,6 +29,7 @@ import com.kitfox.svg.SVGRoot;
 
 import org.osgi.service.log.LogService;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
@@ -98,10 +99,18 @@ public final class ImageStore {
 			return image;
 		}
 
-		fullName = getFullSvgName(imageName, imageSize);
-		image = loadSvgImage(fullName, imageSize);
-		if (image != null) {
-			return image;
+		fullName = getFullSvgName(imageName);
+		if (fullName != null) {
+			final String fullNameWithGroupIdentifier = addIconGroupIdentifier(fullName, imageSize);
+			image = loadSvgImage(fullNameWithGroupIdentifier, imageSize);
+			if (image != null) {
+				return image;
+			} else {
+				image = loadSvgImage(fullName, imageSize);
+				if (image != null) {
+					return image;
+				}
+			}
 		}
 
 		dpi = SwtUtilities.getDefaultDpi();
@@ -332,7 +341,7 @@ public final class ImageStore {
 	 * @param imageSize
 	 * @return the name of the SVG file or {@code null} if this isn't a SVG file (e.g. imageName has other file extension)
 	 */
-	private String getFullSvgName(final String imageName, final IconSize imageSize) {
+	private String getFullSvgName(final String imageName) {
 
 		if (StringUtils.isEmpty(imageName)) {
 			return null;
@@ -344,15 +353,7 @@ public final class ImageStore {
 		if (imageName.indexOf('.') >= 0) {
 			return null;
 		}
-		String fullName = imageName;
-		if ((imageSize != null) && (imageSize != IconSize.NONE)) {
-			if (fullName.endsWith(imageSize.getDefaultMapping())) {
-				final int endIndex = fullName.length() - imageSize.getDefaultMapping().length();
-				fullName = fullName.substring(0, endIndex);
-			}
-		}
-		return fullName += svgExtension;
-
+		return imageName + svgExtension;
 	}
 
 	/**
@@ -469,6 +470,39 @@ public final class ImageStore {
 
 		return new Image(display, imageData);
 
+	}
+
+	/**
+	 * Adds the mapped IconSizeGroupIdentifier to the image name.
+	 * 
+	 * 
+	 * @param fullName
+	 *            The name of the image with file extension. Precondition: fullName must have the fileextension .svg
+	 * @param imageSize
+	 *            The size of the Image.
+	 * @return The name of the image with the mapped IconSizeGroupIdentifier. Returns null if fullName or imageSize is null.
+	 * @since 6.2
+	 */
+	public String addIconGroupIdentifier(String fullName, final IconSize imageSize) {
+		Assert.isNotNull(fullName);
+		Assert.isNotNull(imageSize);
+		Assert.isTrue(fullName.endsWith(".svg"), "imagename must end with '.svg'"); //$NON-NLS-1$ //$NON-NLS-2$
+
+		final String fileExtension = fullName.substring(fullName.length() - ".svg".length()); //$NON-NLS-1$
+		final String fileName = fullName.substring(0, fullName.length() - ".svg".length()); //$NON-NLS-1$
+
+		return fullName = fileName + getIconSizeGroupIdentifier(imageSize) + fileExtension;
+	}
+
+	/**
+	 * Returns the String value of the iconsize group for the given IconSize.
+	 * 
+	 * @param imageSize
+	 *            the desired iconSize
+	 * @return the Group suffix of the mapped iconsize, returns the given iconsize if the map contains no mapping for this value.
+	 */
+	private String getIconSizeGroupIdentifier(final IconSize iconSize) {
+		return LnfManager.getLnf().getIconSizeGroupIdentifier(iconSize);
 	}
 
 	/**

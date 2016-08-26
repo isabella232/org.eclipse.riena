@@ -133,12 +133,6 @@ public class ImageStoreTest extends RienaTestCase {
 			image = store.getImage("cloud_d_", IconSize.B22); //$NON-NLS-1$
 			assertNull(image);
 
-			image = store.getImage("cloud_p_a", IconSize.A16); //$NON-NLS-1$
-			assertEquals(16, image.getBounds().width);
-
-			image = store.getImage("cloud_p_b", IconSize.B22); //$NON-NLS-1$
-			assertEquals(22, image.getBounds().width);
-
 			image = store.getImage("cloud_p_c", IconSize.B22); //$NON-NLS-1$
 			assertNull(image);
 
@@ -292,54 +286,108 @@ public class ImageStoreTest extends RienaTestCase {
 
 		String name = null;
 		IconSize size = null;
-		String fullName = ReflectionUtils.invokeHidden(store, "getFullSvgName", name, size); //$NON-NLS-1$
+		String fullName = ReflectionUtils.invokeHidden(store, "getFullSvgName", name); //$NON-NLS-1$
 		assertNull(fullName);
 
 		name = ""; //$NON-NLS-1$
-		fullName = ReflectionUtils.invokeHidden(store, "getFullSvgName", name, size); //$NON-NLS-1$
+		fullName = ReflectionUtils.invokeHidden(store, "getFullSvgName", name); //$NON-NLS-1$
 		assertNull(fullName);
 
 		name = "hello.png"; //$NON-NLS-1$
-		fullName = ReflectionUtils.invokeHidden(store, "getFullSvgName", name, size); //$NON-NLS-1$
+		fullName = ReflectionUtils.invokeHidden(store, "getFullSvgName", name); //$NON-NLS-1$
 		assertNull(fullName);
 
 		name = "hello.svg"; //$NON-NLS-1$
-		fullName = ReflectionUtils.invokeHidden(store, "getFullSvgName", name, size); //$NON-NLS-1$
+		fullName = ReflectionUtils.invokeHidden(store, "getFullSvgName", name); //$NON-NLS-1$
 		assertEquals(name, fullName);
 
 		name = "hello"; //$NON-NLS-1$
-		fullName = ReflectionUtils.invokeHidden(store, "getFullSvgName", name, size); //$NON-NLS-1$
+		fullName = ReflectionUtils.invokeHidden(store, "getFullSvgName", name); //$NON-NLS-1$
 		assertEquals("hello.svg", fullName); //$NON-NLS-1$
 
 		name = "hello"; //$NON-NLS-1$
 		size = IconSize.NONE;
-		fullName = ReflectionUtils.invokeHidden(store, "getFullSvgName", name, size); //$NON-NLS-1$
+		fullName = ReflectionUtils.invokeHidden(store, "getFullSvgName", name); //$NON-NLS-1$
 		assertEquals("hello.svg", fullName); //$NON-NLS-1$
 
 		name = "hello"; //$NON-NLS-1$
 		size = IconSize.A16;
-		fullName = ReflectionUtils.invokeHidden(store, "getFullSvgName", name, size); //$NON-NLS-1$
+		fullName = ReflectionUtils.invokeHidden(store, "getFullSvgName", name); //$NON-NLS-1$
 		assertEquals("hello.svg", fullName); //$NON-NLS-1$
 
 		name = "icona"; //$NON-NLS-1$
-		fullName = ReflectionUtils.invokeHidden(store, "getFullSvgName", name, size); //$NON-NLS-1$
+		size = IconSize.B22;
+		fullName = ReflectionUtils.invokeHidden(store, "getFullSvgName", name); //$NON-NLS-1$
+		assertEquals("icona.svg", fullName); //$NON-NLS-1$
+	}
+
+	/**
+	 * Tests the <i>private</i> method {@code testAddIconGroupIdentifier}.
+	 * 
+	 * @throws Exception
+	 *             handled by JUnit
+	 */
+	public void testAddIconGroupIdentifier() throws Exception {
+		final ImageStore store = ImageStore.getInstance();
+
+		IconSize size = IconSize.NONE;
+		String name = "icon.svg"; //$NON-NLS-1$
+		String fullName = store.addIconGroupIdentifier(name, size);
 		assertEquals("icon.svg", fullName); //$NON-NLS-1$
 
-		name = "icona"; //$NON-NLS-1$
-		size = IconSize.B22;
-		fullName = ReflectionUtils.invokeHidden(store, "getFullSvgName", name, size); //$NON-NLS-1$
-		assertEquals("icona.svg", fullName); //$NON-NLS-1$
-
-		name = "iconaa"; //$NON-NLS-1$
 		size = IconSize.A16;
-		fullName = ReflectionUtils.invokeHidden(store, "getFullSvgName", name, size); //$NON-NLS-1$
+		name = "icon.svg"; //$NON-NLS-1$
+		fullName = store.addIconGroupIdentifier(name, size);
 		assertEquals("icona.svg", fullName); //$NON-NLS-1$
 
-		name = "imageb"; //$NON-NLS-1$
-		size = IconSize.B22;
-		fullName = ReflectionUtils.invokeHidden(store, "getFullSvgName", name, size); //$NON-NLS-1$
-		assertEquals("image.svg", fullName); //$NON-NLS-1$
+		LnfManager.getLnf().putIconSizeGroupIdentifier(IconSize.A16, "X"); //$NON-NLS-1$
+		size = IconSize.A16;
+		name = "icon.svg"; //$NON-NLS-1$
+		fullName = store.addIconGroupIdentifier(name, size);
+		assertEquals("iconX.svg", fullName); //$NON-NLS-1$
 
+	}
+
+	public void testAddIconGroupIdentifierDontAcceptsNullValues() {
+		final ImageStore store = ImageStore.getInstance();
+		Boolean exceptionThrown = false;
+
+		IconSize size = null;
+		String name = "icon.svg"; //$NON-NLS-1$
+		try {
+			final String fullName = store.addIconGroupIdentifier(name, size);
+		} catch (final Exception e) {
+			exceptionThrown = true;
+		}
+		assertTrue(exceptionThrown);
+
+		exceptionThrown = false;
+
+		size = IconSize.A16;
+		name = null;
+		try {
+			final String fullName = store.addIconGroupIdentifier(name, size);
+		} catch (final Exception e) {
+			exceptionThrown = true;
+		}
+		assertTrue(exceptionThrown);
+
+		exceptionThrown = false;
+
+	}
+
+	public void testAddIconGroupIdentifierAcceptsOnlyFileNamesWithSvgExtension() {
+		final ImageStore store = ImageStore.getInstance();
+
+		final IconSize size = IconSize.NONE;
+		final String name = "icon"; //$NON-NLS-1$
+		boolean exceptionThrown = false;
+		try {
+			final String fullName = store.addIconGroupIdentifier(name, size);
+		} catch (final Exception e) {
+			exceptionThrown = true;
+		}
+		assertTrue(exceptionThrown);
 	}
 
 	/**
@@ -364,7 +412,7 @@ public class ImageStoreTest extends RienaTestCase {
 
 		name = "cloud"; //$NON-NLS-1$
 		size = IconSize.A16;
-		name = ReflectionUtils.invokeHidden(store, "getFullSvgName", name, size); //$NON-NLS-1$
+		name = ReflectionUtils.invokeHidden(store, "getFullSvgName", name); //$NON-NLS-1$
 		image = ReflectionUtils.invokeHidden(store, "createSvgImage", name, size); //$NON-NLS-1$
 		assertNotNull(image);
 		int w = SwtUtilities.convertXToDpi(size.getWidth());
@@ -379,7 +427,7 @@ public class ImageStoreTest extends RienaTestCase {
 
 		name = "cloud"; //$NON-NLS-1$
 		size = IconSize.C32;
-		name = ReflectionUtils.invokeHidden(store, "getFullSvgName", name, size); //$NON-NLS-1$
+		name = ReflectionUtils.invokeHidden(store, "getFullSvgName", name); //$NON-NLS-1$
 		image = ReflectionUtils.invokeHidden(store, "createSvgImage", name, size); //$NON-NLS-1$
 		assertNotNull(image);
 		w = SwtUtilities.convertXToDpi(size.getWidth());

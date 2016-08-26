@@ -19,6 +19,7 @@ import org.eclipse.swt.graphics.FontData;
 import org.eclipse.riena.core.test.RienaTestCase;
 import org.eclipse.riena.core.test.collect.NonUITestCase;
 import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.ui.core.resource.IconSize;
 import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
 import org.eclipse.riena.ui.ridgets.swt.BorderMarkerSupport;
 import org.eclipse.riena.ui.ridgets.swt.MarkerSupport;
@@ -35,8 +36,8 @@ public class RienaDefaultLnfTest extends RienaTestCase {
 
 	private static final boolean BOOLEAN_VALUE = true;
 	private static final Integer INTEGER_VALUE = 4;
-	private static final String BOOLEAN_KEY = "boolean";
-	private static final String INTEGER_KEY = "integer";
+	private static final String BOOLEAN_KEY = "boolean"; //$NON-NLS-1$
+	private static final String INTEGER_KEY = "integer"; //$NON-NLS-1$
 
 	private RienaDefaultLnf lnf;
 
@@ -116,7 +117,7 @@ public class RienaDefaultLnfTest extends RienaTestCase {
 		lnf.initialize();
 		assertNotNull(lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_FOREGROUND));
 		assertNull(lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_FONT));
-		assertNull(lnf.getColor("dummy"));
+		assertNull(lnf.getColor("dummy")); //$NON-NLS-1$
 
 	}
 
@@ -131,7 +132,7 @@ public class RienaDefaultLnfTest extends RienaTestCase {
 		lnf.initialize();
 		assertNull(lnf.getFont(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_FOREGROUND));
 		assertNotNull(lnf.getFont(LnfKeyConstants.EMBEDDED_TITLEBAR_FONT));
-		assertNull(lnf.getFont("dummy"));
+		assertNull(lnf.getFont("dummy")); //$NON-NLS-1$
 
 	}
 
@@ -239,7 +240,7 @@ public class RienaDefaultLnfTest extends RienaTestCase {
 
 		lnf.update(new ILnfMarkerSupportExtension[] { new ILnfMarkerSupportExtension() {
 			public String getId() {
-				return "defaultMarkerSupport";
+				return "defaultMarkerSupport"; //$NON-NLS-1$
 			}
 
 			public AbstractMarkerSupport createMarkerSupport() {
@@ -247,7 +248,7 @@ public class RienaDefaultLnfTest extends RienaTestCase {
 			}
 		}, new ILnfMarkerSupportExtension() {
 			public String getId() {
-				return "borderMarkerSupport";
+				return "borderMarkerSupport"; //$NON-NLS-1$
 			}
 
 			public AbstractMarkerSupport createMarkerSupport() {
@@ -281,10 +282,31 @@ public class RienaDefaultLnfTest extends RienaTestCase {
 		lnf.initialize();
 		assertEquals(INTEGER_VALUE, lnf.getIntegerSetting(INTEGER_KEY));
 
-		System.setProperty("riena.lnf.setting." + INTEGER_KEY, "4711");
-		ReflectionUtils.invokeHidden(lnf, "readSystemProperties");
+		System.setProperty("riena.lnf.setting." + INTEGER_KEY, "4711"); //$NON-NLS-1$ //$NON-NLS-2$
+		ReflectionUtils.invokeHidden(lnf, "readSystemProperties"); //$NON-NLS-1$
 		assertEquals(Integer.valueOf(4711), lnf.getIntegerSetting(INTEGER_KEY));
 
+	}
+
+	/**
+	 * Tests if the method returns the correct group suffixes when the icons size was mapped to a specific group in the Lnf.
+	 */
+	public void testIconSizeGroupIdentifierReturnsCorrectValuesForMappedIconSizes() {
+		lnf.putIconSizeGroupIdentifier(IconSize.A16, "X"); //$NON-NLS-1$
+		lnf.putIconSizeGroupIdentifier(IconSize.E64, "Z"); //$NON-NLS-1$
+		lnf.putIconSizeGroupIdentifier(IconSize.F128, "Z"); //$NON-NLS-1$
+
+		assertEquals("X", lnf.getIconSizeGroupIdentifier(IconSize.A16)); //$NON-NLS-1$
+		assertEquals("Z", lnf.getIconSizeGroupIdentifier(IconSize.F128)); //$NON-NLS-1$
+		assertEquals("Z", lnf.getIconSizeGroupIdentifier(IconSize.E64)); //$NON-NLS-1$
+	}
+
+	/**
+	 * Tests if the method returns the IconSize defaultmapping if the IconSize was not mapped to a group in the Lnf.
+	 */
+	public void testIconSizeGroupIdentifierReturnsCorrectValuesForUnmappedIconSizes() {
+
+		assertEquals("b", lnf.getIconSizeGroupIdentifier(IconSize.B22)); //$NON-NLS-1$
 	}
 
 	/**
@@ -295,7 +317,8 @@ public class RienaDefaultLnfTest extends RienaTestCase {
 		public void customizeLnf(final ILnfCustomizer customizer) {
 			customizer.putLnfSetting(INTEGER_KEY, INTEGER_VALUE);
 			customizer.putLnfSetting(BOOLEAN_KEY, BOOLEAN_VALUE);
-			customizer.putLnfSetting(LnfKeyConstants.MARKER_SUPPORT_ID, "0815");
+			customizer.putLnfSetting(LnfKeyConstants.MARKER_SUPPORT_ID, "0815"); //$NON-NLS-1$
+			
 		}
 
 	}
@@ -309,7 +332,7 @@ public class RienaDefaultLnfTest extends RienaTestCase {
 		@Override
 		public void customizeLnf(final ILnfCustomizer customizer) {
 			super.customizeLnf(customizer);
-			customizer.putLnfSetting(LnfKeyConstants.MARKER_SUPPORT_ID, "borderMarkerSupport");
+			customizer.putLnfSetting(LnfKeyConstants.MARKER_SUPPORT_ID, "borderMarkerSupport"); //$NON-NLS-1$
 		}
 
 	}

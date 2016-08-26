@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.application;
 
+import org.eclipse.riena.ui.core.resource.IconSize;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 
 /**
@@ -28,6 +29,15 @@ public class ExampleLnf extends RienaDefaultLnf {
 	 */
 	public ExampleLnf() {
 		super(new ExampleTheme());
+		initalizeLookAndFeel();
+	}
+
+	/**
+	 * 
+	 */
+	private void initalizeLookAndFeel() {
+		putIconSizeGroupIdentifier(IconSize.B22, "X"); //$NON-NLS-1$
+		putIconSizeGroupIdentifier(IconSize.E64, "Y"); //$NON-NLS-1$
 	}
 
 	/**

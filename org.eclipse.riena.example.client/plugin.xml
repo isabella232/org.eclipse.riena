@@ -467,6 +467,13 @@
             name="Shared Browser"
             restorable="true">
       </view>
+      <view
+            allowMultiple="true"
+            class="org.eclipse.riena.example.client.views.SvgSubModuleView"
+            id="org.eclipse.riena.example.client.views.SvgSubModuleView"
+            name="org.eclipse.riena.example.client.views.SvgSubModuleView"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.commands">

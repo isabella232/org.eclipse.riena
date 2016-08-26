@@ -47,6 +47,7 @@ import org.eclipse.riena.example.client.controllers.MessageBoxSubModuleControlle
 import org.eclipse.riena.example.client.controllers.MessageMarkerSubModuleController;
 import org.eclipse.riena.example.client.controllers.RidgetsSubModuleController;
 import org.eclipse.riena.example.client.controllers.StatuslineSubModuleController;
+import org.eclipse.riena.example.client.controllers.SvgSubModuleController;
 import org.eclipse.riena.example.client.controllers.SystemPropertiesSubModuleController;
 import org.eclipse.riena.example.client.controllers.TableSubModuleController;
 import org.eclipse.riena.example.client.controllers.TextDateSubModuleController;
@@ -91,6 +92,7 @@ import org.eclipse.riena.example.client.views.MessageMarkerSubModuleView;
 import org.eclipse.riena.example.client.views.NoControllerSubModuleView;
 import org.eclipse.riena.example.client.views.RidgetsSubModuleView;
 import org.eclipse.riena.example.client.views.StatuslineSubModuleView;
+import org.eclipse.riena.example.client.views.SvgSubModuleView;
 import org.eclipse.riena.example.client.views.SystemPropertiesSubModuleView;
 import org.eclipse.riena.example.client.views.TableSubModuleView;
 import org.eclipse.riena.example.client.views.TextDateSubModuleView;
@@ -146,7 +148,8 @@ public class PlaygroundNodeAssembler extends AbstractNavigationAssembler {
 					"org.eclipse.riena.example.blocking", //$NON-NLS-1$
 					"org.eclipse.riena.example.noController", //$NON-NLS-1$
 					"org.eclipse.riena.example.dialog", //$NON-NLS-1$
-					"org.eclipse.riena.example.messageBox" //$NON-NLS-1$
+					"org.eclipse.riena.example.messageBox", //$NON-NLS-1$
+					"org.eclipse.riena.example.svgGround" //$NON-NLS-1$
 			));
 			knownTargetIds = Collections.unmodifiableSet(knownTargetIds);
 		}
@@ -272,8 +275,12 @@ public class PlaygroundNodeAssembler extends AbstractNavigationAssembler {
 		workarea.registerDefinition(validationSubModule, ValidationSubModuleController.class, ValidationSubModuleView.ID, false);
 		playgroundModule.addChild(validationSubModule);
 
-		final ISubModuleNode noControllerSubModule = new SubModuleNode(
-				new NavigationNodeId("org.eclipse.riena.example.noController"), "View without Controller"); //$NON-NLS-1$ //$NON-NLS-2$
+		final ISubModuleNode svgSubModule = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.example.svgGround"), "SVG Icons"); //$NON-NLS-1$ //$NON-NLS-2$
+		workarea.registerDefinition(svgSubModule, SvgSubModuleController.class, SvgSubModuleView.ID, false);
+		playgroundModule.addChild(svgSubModule);
+
+		final ISubModuleNode noControllerSubModule = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.example.noController"), //$NON-NLS-1$
+				"View without Controller"); //$NON-NLS-1$
 		workarea.registerDefinition(noControllerSubModule, NoControllerSubModuleView.ID);
 		playgroundModule.addChild(noControllerSubModule);
 
