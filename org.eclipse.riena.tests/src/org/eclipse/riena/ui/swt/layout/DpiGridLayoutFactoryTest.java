@@ -14,11 +14,14 @@ import org.junit.Test;
 
 import org.eclipse.swt.widgets.Shell;
 
+import org.eclipse.riena.core.test.collect.UITestCase;
+
 import junit.framework.TestCase;
 
 /**
  *
  */
+@UITestCase
 public class DpiGridLayoutFactoryTest extends TestCase {
 
 	private Shell shell;
