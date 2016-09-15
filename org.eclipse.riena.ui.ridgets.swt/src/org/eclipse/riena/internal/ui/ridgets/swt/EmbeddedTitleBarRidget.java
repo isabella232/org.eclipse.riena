@@ -15,6 +15,7 @@ import org.eclipse.swt.graphics.Image;
 
 import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.core.util.StringUtils;
+import org.eclipse.riena.ui.core.resource.IconSize;
 import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IDefaultActionManager;
@@ -26,6 +27,8 @@ import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.ui.ridgets.swt.BasicMarkerSupport;
 import org.eclipse.riena.ui.swt.EmbeddedTitleBar;
 import org.eclipse.riena.ui.swt.IEmbeddedTitleBarListener;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
 
 /**
  * Ridget for {@link EmbeddedTitleBar}.
@@ -218,7 +221,7 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IEmbedd
 		if (control != null) {
 			Image image = null;
 			if (icon != null) {
-				image = getManagedImage(icon);
+				image = getManagedImage(icon, ((IconSize) LnfManager.getLnf().getSetting(LnfKeyConstants.EMBEDDED_TITLEBAR_ICON_SIZE)));
 			}
 			// if (image == getMissingImage()) {
 			// image = null;

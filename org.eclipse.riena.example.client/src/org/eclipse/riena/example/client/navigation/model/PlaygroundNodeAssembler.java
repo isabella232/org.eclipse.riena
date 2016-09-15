@@ -47,6 +47,7 @@ import org.eclipse.riena.example.client.controllers.MessageBoxSubModuleControlle
 import org.eclipse.riena.example.client.controllers.MessageMarkerSubModuleController;
 import org.eclipse.riena.example.client.controllers.RidgetsSubModuleController;
 import org.eclipse.riena.example.client.controllers.StatuslineSubModuleController;
+import org.eclipse.riena.example.client.controllers.SvgExtendedSubModuleController;
 import org.eclipse.riena.example.client.controllers.SvgSubModuleController;
 import org.eclipse.riena.example.client.controllers.SystemPropertiesSubModuleController;
 import org.eclipse.riena.example.client.controllers.TableSubModuleController;
@@ -92,6 +93,7 @@ import org.eclipse.riena.example.client.views.MessageMarkerSubModuleView;
 import org.eclipse.riena.example.client.views.NoControllerSubModuleView;
 import org.eclipse.riena.example.client.views.RidgetsSubModuleView;
 import org.eclipse.riena.example.client.views.StatuslineSubModuleView;
+import org.eclipse.riena.example.client.views.SvgExtendedSubModuleView;
 import org.eclipse.riena.example.client.views.SvgSubModuleView;
 import org.eclipse.riena.example.client.views.SystemPropertiesSubModuleView;
 import org.eclipse.riena.example.client.views.TableSubModuleView;
@@ -164,6 +166,10 @@ public class PlaygroundNodeAssembler extends AbstractNavigationAssembler {
 
 		final IModuleNode playgroundModule = new ModuleNode(new NavigationNodeId("playgroundModule"), "Playground"); //$NON-NLS-1$ //$NON-NLS-2$
 		moduleGroup.addChild(playgroundModule);
+
+		final IModuleNode svgPlaygroundModule = new ModuleNode(new NavigationNodeId("svgPlaygroundModule"), "SVG-Playground"); //$NON-NLS-1$ //$NON-NLS-2$
+		svgPlaygroundModule.setIcon("cloud");
+		moduleGroup.addChild(svgPlaygroundModule);
 
 		final ISubModuleNode blockingSubModule = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.example.blocking"), "Blocking"); //$NON-NLS-1$ //$NON-NLS-2$
 		workarea.registerDefinition(blockingSubModule, BlockingSubModuleController.class, BlockingSubModuleView.ID, false);
@@ -275,9 +281,16 @@ public class PlaygroundNodeAssembler extends AbstractNavigationAssembler {
 		workarea.registerDefinition(validationSubModule, ValidationSubModuleController.class, ValidationSubModuleView.ID, false);
 		playgroundModule.addChild(validationSubModule);
 
-		final ISubModuleNode svgSubModule = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.example.svgGround"), "SVG Icons"); //$NON-NLS-1$ //$NON-NLS-2$
+		final ISubModuleNode svgExtendedSubModule = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.example.extendedSvgGround"), //$NON-NLS-1$
+				"Extended SVG Example"); //$NON-NLS-1$
+		svgExtendedSubModule.setIcon("cloud");
+		workarea.registerDefinition(svgExtendedSubModule, SvgExtendedSubModuleController.class, SvgExtendedSubModuleView.ID, false);
+		svgPlaygroundModule.addChild(svgExtendedSubModule);
+
+		final ISubModuleNode svgSubModule = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.example.svgGround"), "SVG Icon Grouping"); //$NON-NLS-1$ //$NON-NLS-2$
+		svgSubModule.setIcon("cloud");
 		workarea.registerDefinition(svgSubModule, SvgSubModuleController.class, SvgSubModuleView.ID, false);
-		playgroundModule.addChild(svgSubModule);
+		svgPlaygroundModule.addChild(svgSubModule);
 
 		final ISubModuleNode noControllerSubModule = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.example.noController"), //$NON-NLS-1$
 				"View without Controller"); //$NON-NLS-1$

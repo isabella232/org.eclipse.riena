@@ -158,6 +158,26 @@ public final class ImageStore {
 	}
 
 	/**
+	 * Returns the ImageDescriptor of the image for the given image name and size
+	 * 
+	 * @param imageName
+	 *            name (ID) of the image
+	 * @param imageSize
+	 *            the IconSize of the image
+	 * @return ImageDescriptor of the image or {@code null} if no image exists for the given name.
+	 * @since 6.2
+	 */
+	public ImageDescriptor getImageDescriptor(final String imageName, final IconSize imageSize) {
+
+		final Image image = getImage(imageName, imageSize);
+		if (image == null) {
+			return null;
+		}
+
+		return ImageDescriptor.createFromImage(image);
+	}
+
+	/**
 	 * Returns the URI of the image for the given image name
 	 * 
 	 * @param imageName

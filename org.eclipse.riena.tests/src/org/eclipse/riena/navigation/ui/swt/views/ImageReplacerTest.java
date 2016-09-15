@@ -4,8 +4,6 @@ import java.net.URL;
 import java.util.Collection;
 import java.util.Map;
 
-import junit.framework.TestCase;
-
 import org.eclipse.core.commands.Category;
 import org.eclipse.core.commands.Command;
 import org.eclipse.core.commands.IExecutionListener;
@@ -61,9 +59,13 @@ import org.eclipse.ui.wizards.IWizardRegistry;
 
 import org.eclipse.riena.core.test.collect.UITestCase;
 import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.ui.core.resource.IconSize;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
+
+import junit.framework.TestCase;
 
 /**
  * Tests of the class {@link ImageReplacer}.
@@ -123,7 +125,7 @@ public class ImageReplacerTest extends TestCase {
 		final ImageReplacer replacer = ImageReplacer.getInstance();
 
 		ImageDescriptor fileImageDescriptor = ImageDescriptor.createFromFile(null, "/icons/testimagea00.png"); //$NON-NLS-1$
-		ImageDescriptor imageDescriptor = ReflectionUtils.invokeHidden(replacer, "getScaledImage", fileImageDescriptor); //$NON-NLS-1$ 
+		ImageDescriptor imageDescriptor = ReflectionUtils.invokeHidden(replacer, "getScaledImage", new Object[] { fileImageDescriptor, IconSize.NONE }); //$NON-NLS-1$ 
 		assertNotNull(imageDescriptor);
 		assertEquals(16, imageDescriptor.getImageData().width);
 		assertEquals(16, imageDescriptor.getImageData().height);
@@ -132,14 +134,14 @@ public class ImageReplacerTest extends TestCase {
 		ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpi", new Point(144, 144)); //$NON-NLS-1$
 
 		fileImageDescriptor = ImageDescriptor.createFromFile(null, "/icons/testimagea00.png"); //$NON-NLS-1$
-		imageDescriptor = ReflectionUtils.invokeHidden(replacer, "getScaledImage", fileImageDescriptor); //$NON-NLS-1$ 
+		imageDescriptor = ReflectionUtils.invokeHidden(replacer, "getScaledImage", new Object[] { fileImageDescriptor, IconSize.NONE }); //$NON-NLS-1$ 
 		assertNotNull(imageDescriptor);
 		assertEquals(24, imageDescriptor.getImageData().width);
 		assertEquals(24, imageDescriptor.getImageData().height);
 
 		final URL url = this.getClass().getResource("/icons/testimagea00.png"); //$NON-NLS-1$
 		final ImageDescriptor urlimageDescriptor = ImageDescriptor.createFromURL(url);
-		imageDescriptor = ReflectionUtils.invokeHidden(replacer, "getScaledImage", urlimageDescriptor); //$NON-NLS-1$ 
+		imageDescriptor = ReflectionUtils.invokeHidden(replacer, "getScaledImage", new Object[] { fileImageDescriptor, IconSize.NONE }); //$NON-NLS-1$ 
 		assertNotNull(imageDescriptor);
 		assertEquals(24, imageDescriptor.getImageData().width);
 		assertEquals(24, imageDescriptor.getImageData().height);
@@ -644,4 +646,35 @@ public class ImageReplacerTest extends TestCase {
 			return false;
 		}
 	}
+
+	public void testReplacePngWithSvgWhileScalingEnabled() {
+		final ImageReplacer replacer = ImageReplacer.getInstance();
+
+		LnfManager.setLnf(new MyLnf());
+
+		final Point dpi = SwtUtilities.getDpi();
+		ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpi", new Point(120, 120)); //$NON-NLS-1$
+		ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpiFactors", new float[] { 1.25f, 1.25f }); //$NON-NLS-1$
+
+		final CommandContributionItem item = new CommandContributionItem(new CommandContributionItemParameter(new MyServiceLocator(), "id", "cmdId", //$NON-NLS-1$ //$NON-NLS-2$
+				CommandContributionItem.STYLE_PUSH));
+
+		final URL url = this.getClass().getResource("/icons/0088a00.png"); //$NON-NLS-1$
+		final ImageDescriptor urlImageDescriptor = ImageDescriptor.createFromURL(url);
+
+		ReflectionUtils.setHidden(item, "contributedIcon", urlImageDescriptor); //$NON-NLS-1$
+		ReflectionUtils.setHidden(item, "icon", urlImageDescriptor); //$NON-NLS-1$
+		ReflectionUtils.invokeHidden(replacer, "replaceImages", new Object[] { item, LnfManager.getLnf().getSetting(LnfKeyConstants.MENUBAR_ICON_SIZE) }); //$NON-NLS-1$
+		final ImageDescriptor iconDescriptor = ReflectionUtils.getHidden(item, "icon"); //$NON-NLS-1$
+		assertNotNull(iconDescriptor);
+		assertNotNull(urlImageDescriptor);
+		assertNotSame(urlImageDescriptor, iconDescriptor);
+		assertEquals(20, iconDescriptor.getImageData().width);
+		assertEquals(20, iconDescriptor.getImageData().height);
+
+		ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpi", dpi); //$NON-NLS-1$
+		ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpiFactors", new float[] { 1.0f, 1.0f }); //$NON-NLS-1$
+		LnfManager.dispose();
+	}
+
 }

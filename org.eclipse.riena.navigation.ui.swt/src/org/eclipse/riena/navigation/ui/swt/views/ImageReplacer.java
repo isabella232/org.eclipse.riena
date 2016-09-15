@@ -33,6 +33,7 @@ import org.eclipse.riena.core.util.ReflectionFailure;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.internal.navigation.ui.swt.Activator;
+import org.eclipse.riena.ui.core.resource.IconSize;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.ImageFileExtension;
 import org.eclipse.riena.ui.swt.utils.ImageStore;
@@ -42,7 +43,7 @@ import org.eclipse.riena.ui.swt.utils.ImageStore;
  * <p>
  * <i>(This class does not support e4 implementations of {@link IContributionItem})</i>
  * 
- * @since 6.1
+ * @since 6.2
  */
 public class ImageReplacer {
 
@@ -95,18 +96,31 @@ public class ImageReplacer {
 
 	/**
 	 * Replaces all not scaled images of the given contribution manager.
+	 * 
+	 * @param iconSize
+	 * @since 6.1
 	 */
 	public void replaceImagesOfManager(final IContributionManager contributionManager) {
+		replaceImagesOfManager(contributionManager, IconSize.NONE);
+	}
+
+	/**
+	 * Replaces all not scaled images of the given contribution manager.
+	 * 
+	 * @param iconSize
+	 * @since 6.2
+	 */
+	public void replaceImagesOfManager(final IContributionManager contributionManager, final IconSize iconSize) {
 
 		if (contributionManager != null) {
 			final IContributionItem[] items = contributionManager.getItems();
 			for (final IContributionItem item : items) {
 				if (item instanceof IToolBarContributionItem) {
-					replaceImagesOfManager(((IToolBarContributionItem) item).getToolBarManager());
+					replaceImagesOfManager(((IToolBarContributionItem) item).getToolBarManager(), iconSize);
 				} else if (item instanceof IMenuManager) {
-					replaceImagesOfManager((IMenuManager) item);
+					replaceImagesOfManager((IMenuManager) item, iconSize);
 				} else {
-					replaceImages(item);
+					replaceImages(item, iconSize);
 				}
 			}
 		}
@@ -122,6 +136,18 @@ public class ImageReplacer {
 	 * @since 6.1
 	 */
 	protected void replaceImages(final IContributionItem item) {
+		replaceImages(item, IconSize.NONE);
+	}
+
+	/**
+	 * Replace all not scaled images (default, disable, hover) of the given item.
+	 * 
+	 * @param contributionManager
+	 * @param item
+	 *            command item
+	 * @since 6.2
+	 */
+	protected void replaceImages(final IContributionItem item, final IconSize iconSize) {
 
 		if (item instanceof CommandContributionItem) {
 
@@ -130,7 +156,7 @@ public class ImageReplacer {
 			final CommandContributionItemParameter itemParamter = commandItem.getData();
 
 			if (itemParamter.icon != null) {
-				final ImageDescriptor scaledImage = getScaledImage(itemParamter.icon);
+				final ImageDescriptor scaledImage = getScaledImage(itemParamter.icon, iconSize);
 				if (scaledImage != null && !itemParamter.icon.equals(scaledImage)) {
 					ReflectionUtils.setHidden(item, "contributedIcon", scaledImage); //$NON-NLS-1$
 					ReflectionUtils.setHidden(item, "icon", scaledImage); //$NON-NLS-1$
@@ -138,7 +164,7 @@ public class ImageReplacer {
 			}
 
 			if (itemParamter.disabledIcon != null) {
-				final ImageDescriptor scaledImage = getScaledImage(itemParamter.disabledIcon);
+				final ImageDescriptor scaledImage = getScaledImage(itemParamter.disabledIcon, iconSize);
 				if (scaledImage != null && !itemParamter.disabledIcon.equals(scaledImage)) {
 					ReflectionUtils.setHidden(item, "contributedDisabledIcon", scaledImage); //$NON-NLS-1$
 					ReflectionUtils.setHidden(item, "disabledIcon", scaledImage); //$NON-NLS-1$
@@ -146,7 +172,7 @@ public class ImageReplacer {
 			}
 
 			if (itemParamter.hoverIcon != null) {
-				final ImageDescriptor scaledImage = getScaledImage(itemParamter.hoverIcon);
+				final ImageDescriptor scaledImage = getScaledImage(itemParamter.hoverIcon, iconSize);
 				if (scaledImage != null && !itemParamter.hoverIcon.equals(scaledImage)) {
 					ReflectionUtils.setHidden(item, "contributedHoverIcon", scaledImage); //$NON-NLS-1$
 					ReflectionUtils.setHidden(item, "hoverIcon", scaledImage); //$NON-NLS-1$
@@ -162,7 +188,7 @@ public class ImageReplacer {
 	 *            not scaled image
 	 * @return scaled image or {@code null} if no scaled image exists.
 	 */
-	private ImageDescriptor getScaledImage(final ImageDescriptor image) {
+	private ImageDescriptor getScaledImage(final ImageDescriptor image, final IconSize iconSize) {
 
 		if (image == null) {
 			return null;
@@ -181,7 +207,7 @@ public class ImageReplacer {
 				if (imageFileExtension == null) {
 					imageFileExtension = ImageFileExtension.PNG;
 				}
-				return ImageStore.getInstance().getImageDescriptor(imageName, imageFileExtension);
+				return ImageStore.getInstance().getImageDescriptor(imageName, iconSize);
 			} catch (final ReflectionFailure failure) {
 				return null;
 			}

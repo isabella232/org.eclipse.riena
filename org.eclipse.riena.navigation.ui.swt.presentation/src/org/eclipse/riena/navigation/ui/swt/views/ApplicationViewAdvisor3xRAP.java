@@ -77,6 +77,7 @@ import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProvider;
 import org.eclipse.riena.navigation.ui.swt.presentation.stack.TitlelessStackPresentation;
 import org.eclipse.riena.navigation.ui.swt.presentation.stack.common.TitlelessStackPresentation3xRAP;
 import org.eclipse.riena.navigation.ui.swt.statusline.IStatuslineContentFactoryExtension;
+import org.eclipse.riena.ui.core.resource.IconSize;
 import org.eclipse.riena.ui.filter.IUIFilter;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.AbstractViewBindingDelegate;
 import org.eclipse.riena.ui.swt.DefaultStatuslineContentFactory;
@@ -502,9 +503,7 @@ public class ApplicationViewAdvisor3xRAP extends WorkbenchWindowAdvisor {
 			public IContributionItem[] getTopLevelEntries() {
 				if (window instanceof WorkbenchWindow) {
 					final MenuManager menuManager = ((WorkbenchWindow) window).getMenuManager();
-					if (SwtUtilities.isDpiScalingEnabled()) {
-						ImageReplacer.getInstance().replaceImagesOfManager(menuManager);
-					}
+						ImageReplacer.getInstance().replaceImagesOfManager(menuManager,((IconSize)LnfManager.getLnf().getSetting(LnfKeyConstants.MENUBAR_ICON_SIZE)));
 					return menuManager.getItems();
 				}
 				return new IContributionItem[0];
@@ -566,13 +565,11 @@ public class ApplicationViewAdvisor3xRAP extends WorkbenchWindowAdvisor {
 	 */
 	private void replaceImagesOfCoolBar() {
 
-		if (SwtUtilities.isDpiScalingEnabled()) {
 			final IWorkbenchWindow window = getWindowConfigurer().getWindow();
 			if (window instanceof ApplicationWindow) {
 				final IContributionManager coolBarManager = ((ApplicationWindow) window).getCoolBarManager();
-				ImageReplacer.getInstance().replaceImagesOfManager(coolBarManager);
+				ImageReplacer.getInstance().replaceImagesOfManager(coolBarManager,((IconSize)LnfManager.getLnf().getSetting(LnfKeyConstants.TOOLBAR_ICON_SIZE)));
 			}
-		}
 
 	}
 

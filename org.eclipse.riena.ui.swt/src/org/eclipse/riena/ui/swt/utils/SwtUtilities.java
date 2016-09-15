@@ -561,7 +561,7 @@ public final class SwtUtilities {
 	}
 
 	/**
-	 * Converts the given AWT image to a SWT imgae ({@code ImageData}).
+	 * Converts the given AWT image to a SWT image ({@code ImageData}).
 	 * <p>
 	 * <i>Copy of org.eclipse.swt.snippets/src/org/eclipse/swt/snippets/Snippet156.java</i>
 	 * 

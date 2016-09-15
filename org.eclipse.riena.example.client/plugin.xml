@@ -474,6 +474,13 @@
             name="org.eclipse.riena.example.client.views.SvgSubModuleView"
             restorable="true">
       </view>
+      <view
+            allowMultiple="true"
+            class="org.eclipse.riena.example.client.views.SvgExtendedSubModuleView"
+            id="org.eclipse.riena.example.client.views.SvgExtendedSubModuleView"
+            name="org.eclipse.riena.example.client.views.SvgExtendedSubModuleView"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -527,6 +534,10 @@
       <command
             id="org.eclipse.riena.example.client.navigateToMarkers"
             name="Navigate To Markers">
+      </command>
+      <command
+            id="org.eclipse.riena.example.client.svgmenuExample"
+            name="Svg Example">
       </command>
     </extension>
    <extension
@@ -650,6 +661,13 @@
                      definitionId="org.eclipse.riena.example.client.playgroundSubAppVisible">
                </reference>
             </visibleWhen>
+            <command
+                  commandId="org.eclipse.riena.example.client.toggleNavigationVisibility"
+                  icon="icons/cloud.svg"
+                  id="org.eclipse.riena.example.client.svgmenuExample"
+                  label="SVG Example"
+                  style="push">
+            </command>
          </menu>
          <menu
                id="playgroundNavigation"
@@ -730,6 +748,20 @@
 		               </test>
 		            </with>
                </visibleWhen>
+            </command>
+            <command
+                  commandId="org.eclipse.riena.example.client.navigateToMarkers"
+                  icon="icons/cloud.svg"
+                  label="Svg Example"
+                  style="push"
+                  tooltip="Here we use an SVG icon">
+            </command>
+            <command
+                  commandId="org.eclipse.riena.example.client.navigateToMarkers"
+                  icon="icons/0088a00.png"
+                  label="Svg Example 2"
+                  style="push"
+                  tooltip="Here we replace an PNG icon with an SVG icon if windows scaling is active">
             </command>
          </toolbar>
       </menuContribution>
@@ -1216,6 +1248,9 @@
                </subModule>
             </module>
          </moduleGroup>
+      </assembly2>
+      <assembly2
+            id="org.eclipse.riena.example.client.assembly21">
       </assembly2>
    </extension>
    <extension

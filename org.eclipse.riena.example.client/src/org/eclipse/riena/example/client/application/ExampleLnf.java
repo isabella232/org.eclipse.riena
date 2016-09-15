@@ -32,9 +32,6 @@ public class ExampleLnf extends RienaDefaultLnf {
 		initalizeLookAndFeel();
 	}
 
-	/**
-	 * 
-	 */
 	private void initalizeLookAndFeel() {
 		putIconSizeGroupIdentifier(IconSize.B22, "X"); //$NON-NLS-1$
 		putIconSizeGroupIdentifier(IconSize.E64, "Y"); //$NON-NLS-1$

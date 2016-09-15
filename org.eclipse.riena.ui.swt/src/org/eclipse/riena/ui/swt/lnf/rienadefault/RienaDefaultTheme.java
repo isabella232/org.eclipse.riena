@@ -16,6 +16,7 @@ import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Display;
 
+import org.eclipse.riena.ui.core.resource.IconSize;
 import org.eclipse.riena.ui.swt.lnf.ColorLnfResource;
 import org.eclipse.riena.ui.swt.lnf.FontLnfResource;
 import org.eclipse.riena.ui.swt.lnf.ILnfCustomizer;
@@ -446,6 +447,9 @@ public class RienaDefaultTheme implements ILnfTheme {
 		lnf.putLnfSetting(LnfKeyConstants.MENUBAR_TOP_MARGIN, 0);
 		lnf.putLnfSetting(LnfKeyConstants.TOOLBAR_TOP_MARGIN, 0);
 		lnf.putLnfSetting(LnfKeyConstants.MENUBAR_SPACING, 4);
+		lnf.putLnfSetting(LnfKeyConstants.MENUBAR_ICON_SIZE, IconSize.A16);
+		lnf.putLnfSetting(LnfKeyConstants.TOOLBAR_ICON_SIZE, IconSize.B22);
+		lnf.putLnfSetting(LnfKeyConstants.EMBEDDED_TITLEBAR_ICON_SIZE, IconSize.A16);
 
 		lnf.putLnfSetting(LnfKeyConstants.ERROR_MARKER_HORIZONTAL_POSITION, SWT.LEFT);
 		lnf.putLnfSetting(LnfKeyConstants.ERROR_MARKER_VERTICAL_POSITION, SWT.TOP);

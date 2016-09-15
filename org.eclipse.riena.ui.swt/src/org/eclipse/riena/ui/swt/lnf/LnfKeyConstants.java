@@ -420,10 +420,23 @@ public final class LnfKeyConstants {
 	/**
 	 * @since 6.2
 	 */
-	public static final String MENUBAR_SPACING = "Menubar.spacing";
+	public static final String MENUBAR_SPACING = "Menubar.spacing"; //$NON-NLS-1$
+
 	/**
-	 * @since 2.0
+	 * @since 6.2
 	 */
+	public static final String MENUBAR_ICON_SIZE = "Menubar.iconsize"; //$NON-NLS-1$
+
+	/**
+	 * @since 6.2
+	 */
+	public static final String TOOLBAR_ICON_SIZE = "Toolbar.iconsize"; //$NON-NLS-1$
+
+	/**
+	 * @since 6.2
+	 */
+	public static final String EMBEDDED_TITLEBAR_ICON_SIZE = "EembeddedTitlebar.iconsize"; //$NON-NLS-1$
+
 	public static final String TOOLBAR_FONT = "Toolbar.font"; //$NON-NLS-1$
 
 	public static final String SUB_APPLICATION_SWITCHER_FONT = "SubApplicationSwitcher.font"; //$NON-NLS-1$
