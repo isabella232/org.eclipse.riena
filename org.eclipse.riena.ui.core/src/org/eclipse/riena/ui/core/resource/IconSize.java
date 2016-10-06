@@ -47,12 +47,19 @@ public class IconSize {
 	private final int width;
 	private final int height;
 
-	private static boolean mapInitalized = false;
+	private static boolean isInitalized = false;
 
 	private IconSize(final String defaultMapping, final int width, final int height) {
 		this.defaultMapping = defaultMapping;
 		this.width = width;
 		this.height = height;
+	}
+
+	/**
+	 * @since 6.2
+	 */
+	public boolean isSizeNone() {
+		return equals(IconSize.NONE);
 	}
 
 	/**
@@ -93,8 +100,8 @@ public class IconSize {
 	 * @since 6.2
 	 */
 	public static IconSize getIconSizeFromDefaultMapping(final String defaultMapping) {
-		if (!mapInitalized) {
-			initalizeMap();
+		if (!isInitalized) {
+			initalize();
 		}
 		return iconSizes.get(defaultMapping);
 	}
@@ -102,7 +109,7 @@ public class IconSize {
 	/**
 	 * 
 	 */
-	private static void initalizeMap() {
+	private static void initalize() {
 		iconSizes.put(IconSize.A16.getDefaultMapping(), IconSize.A16);
 		iconSizes.put(IconSize.B22.getDefaultMapping(), IconSize.B22);
 		iconSizes.put(IconSize.C32.getDefaultMapping(), IconSize.C32);
@@ -110,7 +117,7 @@ public class IconSize {
 		iconSizes.put(IconSize.E64.getDefaultMapping(), IconSize.E64);
 		iconSizes.put(IconSize.F128.getDefaultMapping(), IconSize.F128);
 
-		mapInitalized = true;
+		isInitalized = true;
 	}
 
 }

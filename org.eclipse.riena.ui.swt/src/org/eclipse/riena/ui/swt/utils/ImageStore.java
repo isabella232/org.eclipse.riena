@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.utils;
 
-import static org.junit.Assert.*;
-
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
@@ -88,36 +86,36 @@ public final class ImageStore {
 	 *            name (ID) of the image
 	 * @param fileExtension
 	 *            extension of the image file (@see ImageFileExtension)
-	 * @param imageSize
+	 * @param imageSizeRequested
 	 *            Image size is necessary for SVG files.
 	 * @return image or {@code null} if no image exists for the given name.
 	 * @since 6.1
 	 */
-	public Image getImage(final String imageName, final ImageFileExtension fileExtension, final IconSize imageSize) {
+	public Image getImage(final String imageName, final ImageFileExtension fileExtension, final IconSize imageSizeRequested) {
 
 		Point dpi = SwtUtilities.getDpi();
-		String fullName = getFullScaledName(imageName, fileExtension, dpi, imageSize);
-		Image image = loadImage(fullName);
+		String fullFileName = getFullScaledName(imageName, fileExtension, dpi, imageSizeRequested);
+		Image image = loadImage(fullFileName);
 		if (image != null) {
 			return image;
 		}
 
-		fullName = getFullSvgName(imageName);
+		fullFileName = getFullSvgName(imageName);
 
-		if (fullName != null) {
-			if (isIconSizeNone(imageSize)) {
-				final IconSize iconSize = getIconSize(fullName, imageSize);
-				final String fullNameWithGroupIdentifier = addIconGroupIdentifier(fullName, iconSize, imageSize);
-				image = loadSvgImage(fullNameWithGroupIdentifier, iconSize);
+		if (fullFileName != null) {
+			if (imageSizeRequested.isSizeNone()) {
+				final IconSize imageSizeComputed = computeIconSize(fullFileName, imageSizeRequested);
+				final String fullNameWithGroupIdentifier = addIconGroupIdentifier(fullFileName, imageSizeComputed, imageSizeRequested);
+				image = loadSvgImage(fullNameWithGroupIdentifier, imageSizeComputed);
 			} else {
-				final String fullNameWithGroupIdentifier = addIconGroupIdentifier(fullName, IconSize.NONE, imageSize);
-				image = loadSvgImage(fullNameWithGroupIdentifier, imageSize);
+				final String fullNameWithGroupIdentifier = addIconGroupIdentifier(fullFileName, IconSize.NONE, imageSizeRequested);
+				image = loadSvgImage(fullNameWithGroupIdentifier, imageSizeRequested);
 			}
 
 			if (image != null) {
 				return image;
 			} else {
-				image = loadSvgImage(fullName, imageSize);
+				image = loadSvgImage(fullFileName, imageSizeRequested);
 				if (image != null) {
 					return image;
 				}
@@ -125,22 +123,22 @@ public final class ImageStore {
 		}
 
 		dpi = SwtUtilities.getDefaultDpi();
-		fullName = getFullScaledName(imageName, fileExtension, dpi);
-		image = loadImage(fullName);
+		fullFileName = getFullScaledName(imageName, fileExtension, dpi);
+		image = loadImage(fullFileName);
 		if (image != null) {
 			return image;
 		}
 
-		fullName = getFullName(imageName, fileExtension);
-		image = loadImage(fullName);
+		fullFileName = getFullName(imageName, fileExtension);
+		image = loadImage(fullFileName);
 		if (image != null) {
 			return image;
 		}
 
 		final String defaultIconName = getDefaultIconMangerImageName(imageName);
 		if (!StringUtils.equals(defaultIconName, imageName)) {
-			fullName = getFullName(defaultIconName, fileExtension);
-			image = loadImage(fullName);
+			fullFileName = getFullName(defaultIconName, fileExtension);
+			image = loadImage(fullFileName);
 		}
 
 		return image;
@@ -148,17 +146,7 @@ public final class ImageStore {
 	}
 
 	/**
-	 * Checks if the given IconSize is equals IconSize.NONE.
-	 * 
-	 * @param imageSize
-	 * @return true if given IconSize is IconSize.NONE, else false.
-	 */
-	private boolean isIconSizeNone(final IconSize imageSize) {
-		return imageSize.equals(IconSize.NONE);
-	}
-
-	/**
-	 * Removes the defaultmapping of the given filename.
+	 * Removes the defaultmapping from the given filename.
 	 * 
 	 * @param filename
 	 * @return the fileName without defaultmapping. Otherwise the filename.
@@ -173,22 +161,6 @@ public final class ImageStore {
 	}
 
 	/**
-	 * Tries to identify the iconSize of the given image.
-	 * 
-	 * @param fullName
-	 *            the fullName of the image.
-	 * @param imageSize
-	 *            the imageSize
-	 * @return the iconSize of the Image.
-	 * @since 6.2
-	 */
-	public IconSize identifyIconSize(final String fullName, final IconSize imageSize) {
-		assertNotNull("imageSize must not be null", imageSize); //$NON-NLS-1$
-		assertTrue("fullname must not be empty", (fullName.length() > 0)); //$NON-NLS-1$
-		return getIconSize(fullName, imageSize);
-	}
-
-	/**
 	 * Tries to find the right IconSize for the given Image. If the given ImageSize is different from the found IconSize this method will return the given
 	 * imageSize. If the imageSize is NONE it will return the found iconSize.
 	 * 
@@ -200,21 +172,15 @@ public final class ImageStore {
 	 * 
 	 * @returns The corresponding IconSize, or IconSize.NONE if no IconSize could be found.
 	 */
-	private IconSize getIconSize(final String fullName, final IconSize imageSize) {
-		IconSize iconSize = null;
-		final String name = FileUtils.getNameWithoutExtension(fullName);
-		iconSize = getIconSizeFromName(name);
-
-		if (imageSize != null) {
-			if (isIconSizeNone(imageSize)) {
-				return iconSize;
-			} else {
-				if (!imageSize.equals(iconSize)) {
-					return imageSize;
-				}
-			}
+	protected IconSize computeIconSize(final String fullName, final IconSize imageSize) {
+		if (imageSize != null && !imageSize.isSizeNone()) {
+			return imageSize;
 		}
-		return iconSize;
+
+		final String name = FileUtils.getNameWithoutExtension(fullName);
+		final IconSize imageSizeFromFileName = getIconSizeFromName(name);
+
+		return imageSizeFromFileName;
 	}
 
 	/**
@@ -599,38 +565,38 @@ public final class ImageStore {
 	 * 
 	 * @param fullName
 	 *            The name of the image with file extension. Precondition: fullName must have the fileextension .svg
-	 * @param imageSize
-	 *            The size of the Image.
 	 * @param iconSize
 	 *            The predicted IconSize.
+	 * @param imageSizeRequested
+	 *            The size of the Image.
 	 * @return The name of the image with the mapped IconSizeGroupIdentifier.
 	 * @since 6.2
 	 */
-	public String addIconGroupIdentifier(String fullName, final IconSize iconSize, IconSize imageSize) {
+	protected String addIconGroupIdentifier(String fullName, final IconSize iconSize, IconSize imageSizeRequested) {
 		Assert.isNotNull(fullName);
-		Assert.isNotNull(imageSize);
+		Assert.isNotNull(imageSizeRequested);
 		Assert.isTrue(fullName.endsWith(".svg"), "imagename must end with '.svg'"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		final String fileExtension = fullName.substring(fullName.length() - ".svg".length()); //$NON-NLS-1$
 		String fileName = fullName.substring(0, fullName.length() - ".svg".length()); //$NON-NLS-1$
 
-		if (isIconSizeNone(imageSize) && isIconSizeNone(iconSize)) {
-			return fullName = fileName + getIconSizeGroupIdentifier(imageSize) + fileExtension;
+		if (imageSizeRequested.isSizeNone() && iconSize.isSizeNone()) {
+			return fullName = fileName + getIconSizeGroupIdentifier(imageSizeRequested) + fileExtension;
 		}
 
-		if (isIconSizeNone(imageSize)) {
+		if (imageSizeRequested.isSizeNone()) {
 			fileName = removeDefaultmapping(fileName);
-			imageSize = iconSize;
-			return fullName = fileName + getIconSizeGroupIdentifier(imageSize) + fileExtension;
+			imageSizeRequested = iconSize;
+			return fullName = fileName + getIconSizeGroupIdentifier(imageSizeRequested) + fileExtension;
 		}
 
 		final String defaultMapping = fileName.substring(fileName.length() - 1);
-		if (defaultMapping.equals(imageSize.getDefaultMapping())) {
+		if (defaultMapping.equals(imageSizeRequested.getDefaultMapping())) {
 			fileName = removeDefaultmapping(fileName);
-			return fullName = fileName + getIconSizeGroupIdentifier(imageSize) + fileExtension;
+			return fullName = fileName + getIconSizeGroupIdentifier(imageSizeRequested) + fileExtension;
 		}
 
-		return fullName = fileName + getIconSizeGroupIdentifier(imageSize) + fileExtension;
+		return fullName = fileName + getIconSizeGroupIdentifier(imageSizeRequested) + fileExtension;
 	}
 
 	/**

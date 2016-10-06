@@ -348,17 +348,17 @@ public class ImageStoreTest extends RienaTestCase {
 	public void testIdentifyiconSize() {
 		final ImageStore store = ImageStore.getInstance();
 
-		assertEquals(IconSize.A16, store.identifyIconSize("test", IconSize.A16)); //$NON-NLS-1$
+		assertEquals(IconSize.A16, store.computeIconSize("test", IconSize.A16)); //$NON-NLS-1$
 
-		assertEquals(IconSize.A16, store.identifyIconSize("testa", IconSize.NONE)); //$NON-NLS-1$
+		assertEquals(IconSize.A16, store.computeIconSize("testa", IconSize.NONE)); //$NON-NLS-1$
 
-		assertEquals(IconSize.A16, store.identifyIconSize("testa", IconSize.A16)); //$NON-NLS-1$
+		assertEquals(IconSize.A16, store.computeIconSize("testa", IconSize.A16)); //$NON-NLS-1$
 
-		assertEquals(IconSize.B22, store.identifyIconSize("testb", IconSize.B22)); //$NON-NLS-1$
+		assertEquals(IconSize.B22, store.computeIconSize("testb", IconSize.B22)); //$NON-NLS-1$
 
-		assertEquals(IconSize.B22, store.identifyIconSize("testb", IconSize.NONE)); //$NON-NLS-1$
+		assertEquals(IconSize.B22, store.computeIconSize("testb", IconSize.NONE)); //$NON-NLS-1$
 
-		assertEquals(IconSize.B22, store.identifyIconSize("testb", IconSize.B22)); //$NON-NLS-1$
+		assertEquals(IconSize.B22, store.computeIconSize("testb", IconSize.B22)); //$NON-NLS-1$
 	}
 
 	public void testAddIconGroupIdentifierDoesntAcceptsNullValues() {
