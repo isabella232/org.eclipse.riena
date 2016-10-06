@@ -21,6 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.osgi.service.log.LogService;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.swt.graphics.Color;
@@ -113,6 +114,7 @@ public class RienaDefaultLnf implements ILnfCustomizer {
 	 * @since 6.2
 	 */
 	public String getIconSizeGroupIdentifier(final IconSize iconSize) {
+		Assert.isNotNull(iconSize, "iconSize must not be null"); //$NON-NLS-1$
 		final String value = iconSizeGroupIdentifier.get(iconSize);
 		if (value != null) {
 			return value;

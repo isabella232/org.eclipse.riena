@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.core.resource;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Constants for icon sizes.
  */
@@ -38,9 +41,13 @@ public class IconSize {
 	/** Size f (128x128). */
 	public static final IconSize F128 = new IconSize("f", 128, 128); //$NON-NLS-1$
 
+	private final static Map<String, IconSize> iconSizes = new HashMap<String, IconSize>();
+
 	private final String defaultMapping;
 	private final int width;
 	private final int height;
+
+	private static boolean mapInitalized = false;
 
 	private IconSize(final String defaultMapping, final int width, final int height) {
 		this.defaultMapping = defaultMapping;
@@ -78,6 +85,32 @@ public class IconSize {
 	 */
 	public int getHeight() {
 		return height;
+	}
+
+	/**
+	 * @param defaultMapping
+	 * @return the corresponding IconSize, else null.
+	 * @since 6.2
+	 */
+	public static IconSize getIconSizeFromDefaultMapping(final String defaultMapping) {
+		if (!mapInitalized) {
+			initalizeMap();
+		}
+		return iconSizes.get(defaultMapping);
+	}
+
+	/**
+	 * 
+	 */
+	private static void initalizeMap() {
+		iconSizes.put(IconSize.A16.getDefaultMapping(), IconSize.A16);
+		iconSizes.put(IconSize.B22.getDefaultMapping(), IconSize.B22);
+		iconSizes.put(IconSize.C32.getDefaultMapping(), IconSize.C32);
+		iconSizes.put(IconSize.D48.getDefaultMapping(), IconSize.D48);
+		iconSizes.put(IconSize.E64.getDefaultMapping(), IconSize.E64);
+		iconSizes.put(IconSize.F128.getDefaultMapping(), IconSize.F128);
+
+		mapInitalized = true;
 	}
 
 }

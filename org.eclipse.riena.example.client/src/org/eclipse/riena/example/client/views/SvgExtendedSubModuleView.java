@@ -11,10 +11,8 @@
 package org.eclipse.riena.example.client.views;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
@@ -25,7 +23,6 @@ import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.core.resource.IconSize;
 import org.eclipse.riena.ui.swt.CompletionCombo;
 import org.eclipse.riena.ui.swt.CompletionCombo.AutoCompletionMode;
-import org.eclipse.riena.ui.swt.ImageButton;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.ImageStore;
@@ -47,9 +44,9 @@ public class SvgExtendedSubModuleView extends SubModuleView {
 		parent.setLayout(verticalRowLayout);
 
 		createComboBoxComposite(parent);
-		createButtonComposite(parent);
 		createLabelComposite(parent);
 		createPopUpMenuComposite(parent);
+		createInfoFlyOutComposite(parent);
 	}
 
 	/**
@@ -138,58 +135,6 @@ public class SvgExtendedSubModuleView extends SubModuleView {
 
 	}
 
-	/**
-	 * @param parent
-	 */
-	private void createButtonComposite(final Composite parent) {
-		final Composite buttonComposite = new Composite(parent, SWT.NONE);
-
-		final GridLayout layout = new GridLayout();
-		layout.numColumns = 2;
-
-		final GridData data = new GridData();
-		data.horizontalAlignment = SWT.BEGINNING;
-
-		buttonComposite.setLayout(layout);
-
-		final Label lbl = new Label(buttonComposite, SWT.NONE);
-		lbl.setText("Buttons with Images:"); //$NON-NLS-1$
-		UIControlsFactory.createLabel(buttonComposite, ""); //$NON-NLS-1$
-
-		UIControlsFactory.createButton(buttonComposite, "", "btnBigImage"); //$NON-NLS-1$ //$NON-NLS-2$
-		final Label lbl3 = new Label(buttonComposite, SWT.NONE);
-		lbl3.setText("Controlled by Ridget IconSize D48"); //$NON-NLS-1$
-
-		UIControlsFactory.createButton(buttonComposite, "", "btnMediumImage"); //$NON-NLS-1$ //$NON-NLS-2$
-		final Label lbl2 = new Label(buttonComposite, SWT.NONE);
-		lbl2.setText("Controlled by Ridget IconSize C32"); //$NON-NLS-1$
-
-		final Button btn1 = new Button(buttonComposite, SWT.PUSH);
-		btn1.setImage(ImageStore.getInstance().getImage("cloud", IconSize.B22)); //$NON-NLS-1$
-		final Label lbl1 = new Label(buttonComposite, SWT.NONE);
-		lbl1.setText("Image directly set on the Widget IconSize B22"); //$NON-NLS-1$
-
-		UIControlsFactory.createButton(buttonComposite, "", "btnNoIconSize");
-		final Label lblButtonNOIS = new Label(buttonComposite, SWT.NONE);
-		lblButtonNOIS.setText("controlled by ridget with  IconSize NONE"); //$NON-NLS-1$
-
-		UIControlsFactory.createLabel(buttonComposite, "ImageButtons: ", SWT.NONE); //$NON-NLS-1$
-		UIControlsFactory.createLabel(buttonComposite, "", SWT.NONE); //$NON-NLS-1$
-
-		UIControlsFactory.createImageButton(buttonComposite, SWT.NONE, "imageButton"); //$NON-NLS-1$
-		final Label lblImageButtonR = new Label(buttonComposite, SWT.NONE);
-		lblImageButtonR.setText("controlled by ridget with IconSize A16"); //$NON-NLS-1$
-
-		final ImageButton imageButton = new ImageButton(buttonComposite, SWT.NONE);
-		imageButton.setImage(ImageStore.getInstance().getImage("cloud", IconSize.B22)); //$NON-NLS-1$
-		imageButton.setHoverImage(ImageStore.getInstance().getImage("cloud", IconSize.A16)); //$NON-NLS-1$
-		final Label lblImageButton = new Label(buttonComposite, SWT.NONE);
-		lblImageButton.setText("ImageButton with IconSize B22 and A16 as HoverImage"); //$NON-NLS-1$
-
-		UIControlsFactory.createImageButton(buttonComposite, SWT.NONE, "imageButtonNoIconSize");
-		UIControlsFactory.createLabel(buttonComposite, "controlled by ridgetd with no IconSize");
-	}
-
 	private Composite createComboBoxComposite(final Composite parent) {
 		final Composite comboComposite = new Composite(parent, SWT.NONE);
 		final RowLayout layout = new RowLayout();
@@ -202,6 +147,17 @@ public class SvgExtendedSubModuleView extends SubModuleView {
 
 		return comboComposite;
 
+	}
+
+	private Composite createInfoFlyOutComposite(final Composite parent) {
+		final Composite flyOutComposite = new Composite(parent, SWT.NONE);
+		final RowLayout layout = new RowLayout();
+		layout.type = SWT.VERTICAL;
+		flyOutComposite.setLayout(layout);
+
+		UIControlsFactory.createButton(flyOutComposite, "push for flyout", "flyOutButton"); //$NON-NLS-1$ //$NON-NLS-2$
+
+		return flyOutComposite;
 	}
 
 }

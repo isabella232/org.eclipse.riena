@@ -309,6 +309,20 @@ public class RienaDefaultLnfTest extends RienaTestCase {
 		assertEquals("b", lnf.getIconSizeGroupIdentifier(IconSize.B22)); //$NON-NLS-1$
 	}
 
+	/***
+	 * Tests if an Exception is thrown when the parameter for this function is null.
+	 */
+	public void testIconSizeGroupIdentifierWithNull() {
+		Boolean exceptionThrown = false;
+
+		try {
+			lnf.getIconSizeGroupIdentifier(null);
+		} catch (final Exception e) {
+			exceptionThrown = true;
+		}
+		assertTrue(exceptionThrown);
+	}
+
 	/**
 	 * A simple look and feel theme with a couple of custom settings.
 	 */
@@ -318,14 +332,13 @@ public class RienaDefaultLnfTest extends RienaTestCase {
 			customizer.putLnfSetting(INTEGER_KEY, INTEGER_VALUE);
 			customizer.putLnfSetting(BOOLEAN_KEY, BOOLEAN_VALUE);
 			customizer.putLnfSetting(LnfKeyConstants.MARKER_SUPPORT_ID, "0815"); //$NON-NLS-1$
-			
+
 		}
 
 	}
 
 	/**
-	 * A simple look and feel theme thats overwrites settings of the
-	 * {@code DummyTheme}.
+	 * A simple look and feel theme thats overwrites settings of the {@code DummyTheme}.
 	 */
 	private static class DummyTheme2 extends DummyTheme {
 

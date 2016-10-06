@@ -20,10 +20,12 @@ import org.eclipse.swt.graphics.Image;
 
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.core.resource.IconSize;
+import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IComboRidget;
 import org.eclipse.riena.ui.ridgets.ICompletionComboRidget;
-import org.eclipse.riena.ui.ridgets.IImageButtonRidget;
+import org.eclipse.riena.ui.ridgets.IInfoFlyoutRidget;
+import org.eclipse.riena.ui.ridgets.IInfoFlyoutRidget.InfoFlyoutData;
 import org.eclipse.riena.ui.ridgets.ILabelRidget;
 import org.eclipse.riena.ui.ridgets.IMenuItemRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
@@ -45,26 +47,9 @@ public class SvgExtendedSubModuleController extends SubModuleController {
 		combo1.setColumnFormatter(new ImageColumFormatter());
 		combo1.setSelection(0);
 
-		//Button
-		final IActionRidget btnBigImage = getRidget(IActionRidget.class, "btnBigImage"); //$NON-NLS-1$
-		btnBigImage.setIcon("cloud", IconSize.D48); //$NON-NLS-1$
-
-		final IActionRidget btnMediumImage = getRidget(IActionRidget.class, "btnMediumImage"); //$NON-NLS-1$
-		btnMediumImage.setIcon("cloud", IconSize.C32); //$NON-NLS-1$
-
-		final IActionRidget buttonRidgetNIS = getRidget(IActionRidget.class, "btnNoIconSize"); //$NON-NLS-1$
-		buttonRidgetNIS.setIcon("cloud", IconSize.NONE); //$NON-NLS-1$
-
-		//ImageButton
-		final IImageButtonRidget imageButtonRidget = getRidget(IImageButtonRidget.class, "imageButton"); //$NON-NLS-1$
-		imageButtonRidget.setIcon("cloud", IconSize.A16); //$NON-NLS-1$
-
-		final IImageButtonRidget imageButtonRidgetNoIconSize = getRidget(IImageButtonRidget.class, "imageButtonNoIconSize");
-		imageButtonRidgetNoIconSize.setIcon("test");
-
 		//Label
 		final ILabelRidget labelRidget = getRidget(ILabelRidget.class, "lblSmallImage"); //$NON-NLS-1$
-		labelRidget.setIcon("cloud", IconSize.C32); //$NON-NLS-1$
+		labelRidget.setIcon("cloudc"); //$NON-NLS-1$
 
 		final ILabelRidget labelRidgetMediumImage = getRidget(ILabelRidget.class, "lblMediumImage"); //$NON-NLS-1$
 		labelRidgetMediumImage.setIcon("cloud", IconSize.D48); //$NON-NLS-1$
@@ -76,6 +61,18 @@ public class SvgExtendedSubModuleController extends SubModuleController {
 		final IMenuItemRidget itemSmall = getRidget(IMenuItemRidget.class, "itemFoo"); //$NON-NLS-1$
 		itemSmall.setIcon("cloud", IconSize.A16); //$NON-NLS-1$
 
+		//InfoFlyOut
+		final IActionRidget flyoutbutton = getRidget(IActionRidget.class, "flyOutButton"); //$NON-NLS-1$
+		flyoutbutton.addListener(new IActionListener() {
+
+			public void callback() {
+				final IInfoFlyoutRidget flyout = getInfoFlyout();
+				final InfoFlyoutData info = new InfoFlyoutData("cloudc", //$NON-NLS-1$
+						"Works with Svg's too"); //$NON-NLS-1$
+				flyout.addInfo(info);
+			}
+		});
+
 	}
 
 	private SelectableListHolder<String> createInput() {
@@ -85,8 +82,8 @@ public class SvgExtendedSubModuleController extends SubModuleController {
 		values.add("big"); //$NON-NLS-1$
 
 		Collections.sort(values, new Comparator<String>() {
-			public int compare(final String o1, final String o2) {
-				return o1.compareTo(o2);
+			public int compare(final String entry1, final String entry2) {
+				return entry1.compareTo(entry2);
 			}
 		});
 		return new SelectableListHolder<String>(values);

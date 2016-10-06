@@ -481,6 +481,13 @@
             name="org.eclipse.riena.example.client.views.SvgExtendedSubModuleView"
             restorable="true">
       </view>
+      <view
+            allowMultiple="true"
+            class="org.eclipse.riena.example.client.views.SvgButtonExampleView"
+            id="org.eclipse.riena.example.client.views.SvgButtonExampleView"
+            name="org.eclipse.riena.example.client.views.SvgButtonExampleView"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -759,7 +766,6 @@
             <command
                   commandId="org.eclipse.riena.example.client.navigateToMarkers"
                   icon="icons/0088a00.png"
-                  label="Svg Example 2"
                   style="push"
                   tooltip="Here we replace an PNG icon with an SVG icon if windows scaling is active">
             </command>
