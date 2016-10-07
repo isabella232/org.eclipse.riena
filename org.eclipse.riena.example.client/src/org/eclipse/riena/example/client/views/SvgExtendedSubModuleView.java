@@ -142,7 +142,7 @@ public class SvgExtendedSubModuleView extends SubModuleView {
 		comboComposite.setLayout(layout);
 
 		UIControlsFactory.createLabel(comboComposite, "ComboBox with SVG Image:"); //$NON-NLS-1$
-		final CompletionCombo combo = UIControlsFactory.createCompletionCombo(comboComposite, "combo"); //$NON-NLS-1$
+		final CompletionCombo combo = UIControlsFactory.createCompletionComboWithImage(comboComposite, "combo"); //$NON-NLS-1$
 		combo.setAutoCompletionMode(AutoCompletionMode.ALLOW_MISSMATCH);
 
 		return comboComposite;

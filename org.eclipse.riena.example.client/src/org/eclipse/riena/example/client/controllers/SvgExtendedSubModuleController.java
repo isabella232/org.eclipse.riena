@@ -16,7 +16,6 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.eclipse.core.databinding.observable.value.WritableValue;
-import org.eclipse.swt.graphics.Image;
 
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.core.resource.IconSize;
@@ -43,9 +42,8 @@ public class SvgExtendedSubModuleController extends SubModuleController {
 		//ComboBox
 		final SelectableListHolder<String> input = createInput();
 		final IComboRidget combo1 = configureCombo(input, "combo", "selection1", "text1"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		combo1.setMarkSelectionMismatch(true);
 		combo1.setColumnFormatter(new ImageColumFormatter());
-		combo1.setSelection(0);
+		combo1.setSelection(-1);
 
 		//Label
 		final ILabelRidget labelRidget = getRidget(ILabelRidget.class, "lblSmallImage"); //$NON-NLS-1$
@@ -77,9 +75,10 @@ public class SvgExtendedSubModuleController extends SubModuleController {
 
 	private SelectableListHolder<String> createInput() {
 		final List<String> values = new ArrayList<String>();
-		values.add("little"); //$NON-NLS-1$
-		values.add("medium"); //$NON-NLS-1$
-		values.add("big"); //$NON-NLS-1$
+		values.add("Combo "); //$NON-NLS-1$
+		values.add("supports"); //$NON-NLS-1$
+		values.add("svg's"); //$NON-NLS-1$
+		values.add("too"); //$NON-NLS-1$
 
 		Collections.sort(values, new Comparator<String>() {
 			public int compare(final String entry1, final String entry2) {
@@ -118,18 +117,7 @@ public class SvgExtendedSubModuleController extends SubModuleController {
 
 		@Override
 		public Object getImage(final Object element) {
-			final String key = (String) element;
-			Image result = null;
-			if (key == "little") { //$NON-NLS-1$
-				result = ImageStore.getInstance().getImage("cloud", IconSize.A16); //$NON-NLS-1$
-			}
-			if (key == "medium") { //$NON-NLS-1$
-				result = ImageStore.getInstance().getImage("cloud", IconSize.B22); //$NON-NLS-1$
-			}
-			if (key == "big") { //$NON-NLS-1$
-				result = ImageStore.getInstance().getImage("cloud", IconSize.C32); //$NON-NLS-1$
-			}
-			return result;
+			return ImageStore.getInstance().getImage("cloud", IconSize.A16);
 		}
 	}
 
