@@ -318,77 +318,6 @@ public class ImageStoreTest extends RienaTestCase {
 		assertEquals("icona.svg", fullName); //$NON-NLS-1$
 	}
 
-	/**
-	 * Tests the <i>private</i> method {@code testAddIconGroupIdentifier}.
-	 * 
-	 * @throws Exception
-	 *             handled by JUnit
-	 */
-	public void testAddIconGroupIdentifier() throws Exception {
-		final ImageStore store = ImageStore.getInstance();
-
-		IconSize size = IconSize.NONE;
-		String name = "icon.svg"; //$NON-NLS-1$
-		String fullName = store.addIconGroupIdentifier(name, size, size);
-		assertEquals("icon.svg", fullName); //$NON-NLS-1$
-
-		size = IconSize.A16;
-		name = "icon.svg"; //$NON-NLS-1$
-		fullName = store.addIconGroupIdentifier(name, size, size);
-		assertEquals("icona.svg", fullName); //$NON-NLS-1$
-
-		LnfManager.getLnf().putIconSizeGroupIdentifier(IconSize.A16, "X"); //$NON-NLS-1$
-		size = IconSize.A16;
-		name = "icon.svg"; //$NON-NLS-1$
-		fullName = store.addIconGroupIdentifier(name, size, size);
-		assertEquals("iconX.svg", fullName); //$NON-NLS-1$
-
-	}
-
-	public void testIdentifyiconSize() {
-		final ImageStore store = ImageStore.getInstance();
-
-		assertEquals(IconSize.A16, store.computeIconSize("test", IconSize.A16)); //$NON-NLS-1$
-
-		assertEquals(IconSize.A16, store.computeIconSize("testa", IconSize.NONE)); //$NON-NLS-1$
-
-		assertEquals(IconSize.A16, store.computeIconSize("testa", IconSize.A16)); //$NON-NLS-1$
-
-		assertEquals(IconSize.B22, store.computeIconSize("testb", IconSize.B22)); //$NON-NLS-1$
-
-		assertEquals(IconSize.B22, store.computeIconSize("testb", IconSize.NONE)); //$NON-NLS-1$
-
-		assertEquals(IconSize.B22, store.computeIconSize("testb", IconSize.B22)); //$NON-NLS-1$
-	}
-
-	public void testAddIconGroupIdentifierDoesntAcceptsNullValues() {
-		final ImageStore store = ImageStore.getInstance();
-		Boolean exceptionThrown = false;
-
-		IconSize size = null;
-		String name = "icon.svg"; //$NON-NLS-1$
-		try {
-			store.addIconGroupIdentifier(name, size, size);
-		} catch (final Exception e) {
-			exceptionThrown = true;
-		}
-		assertTrue(exceptionThrown);
-
-		exceptionThrown = false;
-
-		size = IconSize.A16;
-		name = null;
-		try {
-			store.addIconGroupIdentifier(name, size, size);
-		} catch (final Exception e) {
-			exceptionThrown = true;
-		}
-		assertTrue(exceptionThrown);
-
-		exceptionThrown = false;
-
-	}
-
 	public void testGetImageDescriptor() {
 		final ImageStore store = ImageStore.getInstance();
 
@@ -403,20 +332,6 @@ public class ImageStoreTest extends RienaTestCase {
 
 		final ImageDescriptor image = store.getImageDescriptor("noImage", IconSize.A16);
 		assertEquals(null, image);
-	}
-
-	public void testAddIconGroupIdentifierAcceptsOnlyFileNamesWithSvgExtension() {
-		final ImageStore store = ImageStore.getInstance();
-
-		final IconSize size = IconSize.NONE;
-		final String name = "icon"; //$NON-NLS-1$
-		boolean exceptionThrown = false;
-		try {
-			store.addIconGroupIdentifier(name, size, size);
-		} catch (final Exception e) {
-			exceptionThrown = true;
-		}
-		assertTrue(exceptionThrown);
 	}
 
 	/**

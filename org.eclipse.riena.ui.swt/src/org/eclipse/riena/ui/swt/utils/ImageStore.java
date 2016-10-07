@@ -161,18 +161,20 @@ public final class ImageStore {
 	}
 
 	/**
-	 * Tries to find the right IconSize for the given Image. If the given ImageSize is different from the found IconSize this method will return the given
-	 * imageSize. If the imageSize is NONE it will return the found iconSize.
+	 * 
+	 * Tries to find the right imageSize for the given Image. If the given ImageSize is different from the found imageSize this method will return the given
+	 * imageSize. If the imageSize is NONE it will return the found imageSize.
 	 * 
 	 * @param fullName
-	 *            The name of the image, were the method tries to find the attached iconSize.
+	 *            The name of the image, were the method tries to find the attached imageSize.
 	 *
 	 * @param imageSize
-	 *            The given imageSize which will be primarily used over the found IconSize.
+	 *            The given imageSize which will be primarily used over the found imageSize.
 	 * 
 	 * @returns The corresponding IconSize, or IconSize.NONE if no IconSize could be found.
+	 * 
 	 */
-	protected IconSize computeIconSize(final String fullName, final IconSize imageSize) {
+	private IconSize computeIconSize(final String fullName, final IconSize imageSize) {
 		if (imageSize != null && !imageSize.isSizeNone()) {
 			return imageSize;
 		}
@@ -560,19 +562,17 @@ public final class ImageStore {
 	}
 
 	/**
-	 * Adds the mapped IconSizeGroupIdentifier to the image name.
-	 * 
 	 * 
 	 * @param fullName
 	 *            The name of the image with file extension. Precondition: fullName must have the fileextension .svg
-	 * @param iconSize
-	 *            The predicted IconSize.
+	 * @param imageSizecomputed
+	 *            The computed imageSize.
 	 * @param imageSizeRequested
 	 *            The size of the Image.
 	 * @return The name of the image with the mapped IconSizeGroupIdentifier.
 	 * @since 6.2
 	 */
-	protected String addIconGroupIdentifier(String fullName, final IconSize iconSize, IconSize imageSizeRequested) {
+	private String addIconGroupIdentifier(String fullName, final IconSize imageSizecomputed, IconSize imageSizeRequested) {
 		Assert.isNotNull(fullName);
 		Assert.isNotNull(imageSizeRequested);
 		Assert.isTrue(fullName.endsWith(".svg"), "imagename must end with '.svg'"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -580,13 +580,13 @@ public final class ImageStore {
 		final String fileExtension = fullName.substring(fullName.length() - ".svg".length()); //$NON-NLS-1$
 		String fileName = fullName.substring(0, fullName.length() - ".svg".length()); //$NON-NLS-1$
 
-		if (imageSizeRequested.isSizeNone() && iconSize.isSizeNone()) {
+		if (imageSizeRequested.isSizeNone() && imageSizecomputed.isSizeNone()) {
 			return fullName = fileName + getIconSizeGroupIdentifier(imageSizeRequested) + fileExtension;
 		}
 
 		if (imageSizeRequested.isSizeNone()) {
 			fileName = removeDefaultmapping(fileName);
-			imageSizeRequested = iconSize;
+			imageSizeRequested = imageSizecomputed;
 			return fullName = fileName + getIconSizeGroupIdentifier(imageSizeRequested) + fileExtension;
 		}
 
