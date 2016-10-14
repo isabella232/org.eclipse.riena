@@ -13,10 +13,15 @@ package org.eclipse.riena.navigation.ui.swt.views;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.jface.action.IContributionItem;
+import org.eclipse.jface.action.ICoolBarManager;
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.internal.provisional.action.IToolBarManager2;
+import org.eclipse.jface.internal.provisional.action.ToolBarContributionItem2;
+import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -28,9 +33,16 @@ import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.ui.ISourceProvider;
 import org.eclipse.ui.ISourceProviderListener;
+import org.eclipse.ui.PlatformUI;
 
 import org.eclipse.riena.core.util.StringUtils;
+import org.eclipse.riena.core.wire.InjectExtension;
+import org.eclipse.riena.core.wire.Wire;
 import org.eclipse.riena.internal.ui.ridgets.swt.AbstractItemRidget;
+import org.eclipse.riena.internal.ui.ridgets.swt.IContributionExtension;
+import org.eclipse.riena.internal.ui.ridgets.swt.IContributionExtension.ICommandExtension;
+import org.eclipse.riena.internal.ui.ridgets.swt.RienaToolItem;
+import org.eclipse.riena.internal.ui.ridgets.swt.ToolItemScalingHelper;
 import org.eclipse.riena.internal.ui.swt.facades.WorkbenchFacade;
 import org.eclipse.riena.navigation.ui.swt.component.MenuCoolBarComposite;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
@@ -63,6 +75,7 @@ public class RienaMenuHelper {
 		if (menuItemBindingManager == null) {
 			menuItemBindingManager = createMenuItemBindingManager(SWTBindingPropertyLocator.getInstance(), SwtControlRidgetMapper.getInstance());
 		}
+		Wire.instance(this).andStart();
 	}
 
 	private IBindingManager createMenuItemBindingManager(final IBindingPropertyLocator propertyStrategy, final IControlRidgetMapper<Object> mapper) {
@@ -90,6 +103,43 @@ public class RienaMenuHelper {
 		menuItemBindingManager.unbind(controller, getUIControls());
 	}
 
+	private final List<ICommandExtension> items = new ArrayList<ICommandExtension>();
+
+	/**
+	 * @since 6.2
+	 */
+	@InjectExtension
+	public void updateContributions(final IContributionExtension[] coolItems) {
+		final ICoolBarManager coolBarManager2 = ((ApplicationWindow) PlatformUI.getWorkbench().getActiveWorkbenchWindow()).getCoolBarManager2();
+		final IToolBarManager2 toolbarManager2 = (IToolBarManager2) ((ToolBarContributionItem2) coolBarManager2.getItems()[0]).getToolBarManager();
+
+		if (coolBarManager2.getItems().length == 0) {
+			return;
+		}
+
+		if (items.size() > 0) {
+			//remove separators
+			for (final ICommandExtension item : items) {
+				toolbarManager2.remove(item.getId());
+			}
+			items.clear();
+		}
+
+		for (final IContributionExtension item : coolItems) {
+			if (item.getLocationURI().startsWith("toolbar:")) {
+				if (item.getToolBar() != null) {
+					items.addAll(Arrays.asList(item.getToolBar().getCommands()));
+				}
+			}
+		}
+
+		//	add our new separators
+		//		for (final ICommandExtension item : items) {
+		//			toolbarManager2.add(new ToolbarItemContribution(item));
+		//		}
+
+	}
+
 	/**
 	 * Creates for every menu item and tool item a ridget and adds
 	 * 
@@ -110,6 +160,27 @@ public class RienaMenuHelper {
 		final List<MenuCoolBarComposite> menuCoolBarComposites = getMenuCoolBarComposites(menuParent);
 		for (final MenuCoolBarComposite menuBarComp : menuCoolBarComposites) {
 			createRidgetsForItems(menuBarComp.getTopLevelItems(), controller);
+		}
+
+		// create Separator for Toolbar
+		final List<ToolItem> originalList = getAllToolItems(toolbarParent);
+		final Iterator<ToolItem> iterator = originalList.iterator();
+		final ToolItemScalingHelper menuScalingHelper = new ToolItemScalingHelper();
+		final List<CoolBar> coolBars = getCoolBars(toolbarParent);
+		int counter = 0;
+		for (final CoolBar coolBar : coolBars) {
+			final List<ToolBar> toolBars = getToolBars(coolBar);
+			for (final ToolBar toolBar : toolBars) {
+				while (iterator.hasNext()) {
+					final ToolItem originalItem = iterator.next();
+					counter++;
+					if (originalItem != null && !menuScalingHelper.itemHasSeparator(originalItem) && !(originalItem instanceof RienaToolItem)
+							&& iterator.hasNext()) {
+						menuScalingHelper.createSeparatorForScalingForToolbar(toolBar, originalItem, counter, -1);
+						counter++;
+					}
+				}
+			}
 		}
 
 		// items of cool bar
@@ -170,7 +241,7 @@ public class RienaMenuHelper {
 			return;
 		}
 
-		if (isSeparator(item)) {
+		if (isSeparator(item) || item instanceof RienaToolItem) {
 			// no ridget for separator
 			// and
 			// no ridget for tool items with control 

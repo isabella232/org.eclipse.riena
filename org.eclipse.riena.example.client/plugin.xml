@@ -1325,7 +1325,7 @@
          </ruleMarkerMenuItem>
          <ruleMarkerMenuItem
                itemId="org.eclipse.riena.example.client.exitToolBarItem"
-               marker="disabled">
+               marker="hidden">
          </ruleMarkerMenuItem>
          <ruleMarkerMenuItem
                itemId="navigationMenu"

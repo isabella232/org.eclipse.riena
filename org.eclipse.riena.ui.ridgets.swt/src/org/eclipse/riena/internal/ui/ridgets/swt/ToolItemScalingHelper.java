@@ -10,10 +10,19 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import org.eclipse.jface.action.ContributionManager;
+import org.eclipse.jface.action.ICoolBarManager;
+import org.eclipse.jface.internal.provisional.action.ToolBarContributionItem2;
+import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.menus.CommandContributionItem;
 
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -58,16 +67,62 @@ public class ToolItemScalingHelper {
 	 *            width if fixed, -1 to calculate use scaling
 	 * @return a separator if scaling is needed. Returns null if scaling is not needed.
 	 */
-	public ToolItem createSeparatorForScaling(final ToolBar toolbar, final ToolItem toolItem, final int index, int width) {
+
+	public ToolItem createSeparatorForScaling(final ToolBar toolbar, final ToolItem toolItem, final int index, int width,
+			final ToolbarItemContribution contribution) {
 		if (needScaleBasedSpacing()) {
 
 			if (width == -1) {
 				width = calculateScalingBasedSpacing();
 			}
-			final ToolItem separator = new ToolItem(toolbar, SWT.SEPARATOR, index);
+
+			final RienaToolItem separator = new RienaToolItem(toolbar, SWT.SEPARATOR, index);
 
 			separator.setWidth(width);
 			final Composite composite = new Composite(toolbar, SWT.NONE);
+			composite.setBackground(new Color(SwtUtilities.getDisplay(), 255, 0, 0));
+			composite.setData("Separator", "Separator Composite");
+			separator.setControl(composite);
+			separator.setEnabled(false);
+			if (contribution != null) {
+				separator.setData(contribution);
+			}
+			toolItem.setData("Separator", separator);
+			return toolItem;
+		}
+		return null;
+	}
+
+	public ToolItem createSeparatorForScalingForToolbar(final ToolBar toolbar, final ToolItem toolItem, final int index, final int width) {
+		final ICoolBarManager coolBarManager2 = ((ApplicationWindow) PlatformUI.getWorkbench().getActiveWorkbenchWindow()).getCoolBarManager2();
+		final ContributionManager toolbarManager2 = (ContributionManager) ((ToolBarContributionItem2) coolBarManager2.getItems()[0]).getToolBarManager();
+		final ToolbarItemContribution contribution = new ToolbarItemContribution();
+
+		toolItem.addListener(SWT.Dispose, new Listener() {
+			public void handleEvent(final Event event) {
+				System.err.println("EVENT: " + event + " " + toolItem.getData() + " " + ((CommandContributionItem) toolItem.getData()).isVisible());
+				contribution.setVisible(((CommandContributionItem) toolItem.getData()).isVisible());
+			}
+		});
+
+		toolbarManager2.insert(index, contribution);
+
+		toolItem.setData("toolContrib", contribution);
+
+		return createSeparatorForScaling(toolbar, toolItem, index, width, contribution);
+	}
+
+	public ToolItem createSeparatorForScalingOnPosition(final ToolBar toolbar, final ToolItem toolItem, int width) {
+		if (needScaleBasedSpacing()) {
+
+			if (width == -1) {
+				width = calculateScalingBasedSpacing();
+			}
+
+			final RienaToolItem separator = new RienaToolItem(toolbar, SWT.SEPARATOR);
+			final Composite composite = new Composite(toolbar, SWT.NONE);
+			composite.setBackground(new Color(SwtUtilities.getDisplay(), 255, 0, 0));
+			composite.setData("Separator", "Separator Composite");
 			separator.setControl(composite);
 			separator.setEnabled(false);
 			toolItem.setData("Separator", separator);
@@ -83,11 +138,22 @@ public class ToolItemScalingHelper {
 	 * @since 6.2
 	 */
 	public void disposeSeparatorForMenuItem(final ToolItem item) {
-		final ToolItem sep = (ToolItem) item.getData("Separator");
+		final RienaToolItem sep = (RienaToolItem) item.getData("Separator");
 		if (sep != null) {
 			sep.getControl().dispose();
-			sep.dispose();
+			sep.disposeToolItem();
 		}
+	}
+
+	/**
+	 * @param originalItem
+	 * @return
+	 */
+	public boolean itemHasSeparator(final ToolItem originalItem) {
+		if (originalItem.getData("Separator") != null) {
+			return true;
+		}
+		return false;
 	}
 
 }

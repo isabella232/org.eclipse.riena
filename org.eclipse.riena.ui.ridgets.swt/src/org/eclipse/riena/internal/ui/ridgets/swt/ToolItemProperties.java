@@ -120,7 +120,7 @@ public class ToolItemProperties extends AbstractItemProperties {
 				helper.addListeners(toolItem, menuManager.getMenu());
 			}
 			if (separatorWidth > 0) {
-				menuHelper.createSeparatorForScaling(parent, toolItem, getIndex() + 1, separatorWidth);
+				menuHelper.createSeparatorForScaling(parent, toolItem, getIndex() + 1, separatorWidth, null);
 			}
 		}
 		getRidget().setUIControl(toolItem);

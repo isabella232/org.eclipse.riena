@@ -188,7 +188,7 @@ public class MenuCoolBarComposite extends Composite {
 					toolBar = ((ToolBar) this.menuCoolItem.getControl());
 					if (toolBar.getItemCount() >= 1) {
 						final ToolItem toolItem = toolBar.getItem(toolBar.getItemCount() - 1);
-						menuScalingHelper.createSeparatorForScaling(toolBar, toolItem, toolBar.getItemCount(), -1);
+						menuScalingHelper.createSeparatorForScaling(toolBar, toolItem, toolBar.getItemCount(), -1, null);
 					}
 				}
 			}

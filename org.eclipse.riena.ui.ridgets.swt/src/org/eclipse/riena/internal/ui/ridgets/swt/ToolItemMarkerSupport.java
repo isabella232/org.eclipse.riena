@@ -82,6 +82,13 @@ public class ToolItemMarkerSupport extends AbstractMarkerSupport {
 			if (menuManager != null) {
 				final MenuManagerHelper helper = new MenuManagerHelper();
 				helper.removeListeners(item, menuManager.getMenu());
+			} else {
+				final Object object = item.getData("toolContrib");
+				if (object instanceof ToolbarItemContribution) {
+					((ToolbarItemContribution) object).setVisible(false);
+				}
+				final RienaToolItem separator = (RienaToolItem) item.getData("Separator");
+				separator.disposeToolItem(); // ??????
 			}
 			item.dispose();
 		}
