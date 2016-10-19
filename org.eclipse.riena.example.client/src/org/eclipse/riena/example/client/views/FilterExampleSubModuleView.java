@@ -50,8 +50,8 @@ public class FilterExampleSubModuleView extends SubModuleView {
 
 		final Label hideTheLabel = new Label(navigationGroup, SWT.NONE);
 		hideTheLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-		hideTheLabel
-				.setText("* Hide the first two module groups (\"Shared View Demo\" and \"UIProcess\" )\n* Disable the two sub-modules \"Ridget\" and \"Navigation\"\n* Hide the two sub-modules \"Menu Item\" and \"External Definition\"\n* Disable the module \"Log Collector\"\n* Inside the module \"Playground\" disable the two sub-modules \"Tree\" and \"Tree Table\""); //$NON-NLS-1$
+		hideTheLabel.setText(
+				"* Hide the first two module groups (\"Shared View Demo\" and \"UIProcess\" )\n* Disable the two sub-modules \"Ridget\" and \"Navigation\"\n* Hide the two sub-modules \"Menu Item\" and \"External Definition\"\n* Disable the module \"Log Collector\"\n* Inside the module \"Playground\" disable the two sub-modules \"Tree\" and \"Tree Table\""); //$NON-NLS-1$
 
 		final Button navigationButton = new Button(navigationGroup, SWT.TOGGLE);
 		final GridData gdNavigationButton = new GridData(SWT.RIGHT, SWT.BOTTOM, false, false);
@@ -70,8 +70,8 @@ public class FilterExampleSubModuleView extends SubModuleView {
 
 		final Label disableAllLabel = new Label(menuToolGroup, SWT.WRAP);
 		disableAllLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-		disableAllLabel
-				.setText("* Disable all menu items of the menu \"File\"\n* Disable the tool item \"Exit\"\n* Hide th menu \"Navigation menu\""); //$NON-NLS-1$
+		disableAllLabel.setText(
+				"* Disable all menu items of the menu \"File\"\n* Disable the tool item \"Exit\"\n* Hide the tool item \"Sub Application\"\n* Hide th menu \"Navigation menu\""); //$NON-NLS-1$
 
 		final Button menuToolButton = new Button(menuToolGroup, SWT.TOGGLE);
 		final GridData gdMenuToolButton = new GridData(SWT.RIGHT, SWT.BOTTOM, false, false);
@@ -90,8 +90,8 @@ public class FilterExampleSubModuleView extends SubModuleView {
 
 		final Label inTheLabel = new Label(ridgetsGroup, SWT.NONE);
 		inTheLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-		inTheLabel
-				.setText("* In the sub-module \"Text\" hide every text field, that displays a model value\n* In the sub-module \"Text\" set for every ridget the maximum length \"12\""); //$NON-NLS-1$
+		inTheLabel.setText(
+				"* In the sub-module \"Text\" hide every text field, that displays a model value\n* In the sub-module \"Text\" set for every ridget the maximum length \"12\""); //$NON-NLS-1$
 
 		final Button ridgetButton = new Button(ridgetsGroup, SWT.TOGGLE);
 		final GridData gdActivateButton1 = new GridData(SWT.RIGHT, SWT.BOTTOM, false, false);

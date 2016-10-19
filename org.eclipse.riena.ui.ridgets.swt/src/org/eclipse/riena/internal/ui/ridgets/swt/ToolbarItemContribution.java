@@ -56,14 +56,8 @@ public class ToolbarItemContribution implements IContributionItem {
 	@Override
 	public void fill(final ToolBar parent, final int index) {
 		final ToolItem item = parent.getItem(index - 1);
-		if (item instanceof RienaToolItem) {
-			return;
-		}
 		final ToolItemScalingHelper sh = new ToolItemScalingHelper();
-		System.out.println("***** FILL toolbar " + index + " " + parent.getItemCount() + " " + item + " " + item.getData("Separator"));
-		sh.createSeparatorForScalingOnPosition(parent, item, 10, index);
-		System.out.println("separator created");
-
+		sh.createSeparatorForScalingOnPosition(parent, item, -1, index);
 	}
 
 	@Override

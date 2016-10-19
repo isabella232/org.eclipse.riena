@@ -107,10 +107,13 @@ public class ToolItemProperties extends AbstractItemProperties {
 		ToolItem toolItem;
 		if ((contributionItem != null) && (menuManager == null)) {
 			contributionItem.fill(parent, getIndex());
-			toolItem = parent.getItem(getIndex());
+			toolItem = parent.getItem(getIndex() - 1);
 			toolItem.setEnabled(true);
 			setAllProperties(toolItem, false);
 			contributionItem.update();
+			if (separatorWidth > 0) {
+				menuHelper.createSeparatorForScaling(parent, toolItem, getIndex() + 1, separatorWidth, null);
+			}
 		} else {
 			toolItem = new ToolItem(parent, getStyle(), getIndex());
 			setAllProperties(toolItem, true);

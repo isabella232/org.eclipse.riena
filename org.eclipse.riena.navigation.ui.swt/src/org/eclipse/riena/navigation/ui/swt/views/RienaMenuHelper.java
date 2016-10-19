@@ -41,7 +41,6 @@ import org.eclipse.riena.core.wire.Wire;
 import org.eclipse.riena.internal.ui.ridgets.swt.AbstractItemRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.IContributionExtension;
 import org.eclipse.riena.internal.ui.ridgets.swt.IContributionExtension.ICommandExtension;
-import org.eclipse.riena.internal.ui.ridgets.swt.RienaToolItem;
 import org.eclipse.riena.internal.ui.ridgets.swt.ToolItemScalingHelper;
 import org.eclipse.riena.internal.ui.swt.facades.WorkbenchFacade;
 import org.eclipse.riena.navigation.ui.swt.component.MenuCoolBarComposite;
@@ -132,12 +131,6 @@ public class RienaMenuHelper {
 				}
 			}
 		}
-
-		//	add our new separators
-		//		for (final ICommandExtension item : items) {
-		//			toolbarManager2.add(new ToolbarItemContribution(item));
-		//		}
-
 	}
 
 	/**
@@ -174,8 +167,7 @@ public class RienaMenuHelper {
 				while (iterator.hasNext()) {
 					final ToolItem originalItem = iterator.next();
 					counter++;
-					if (originalItem != null && !menuScalingHelper.itemHasSeparator(originalItem) && !(originalItem instanceof RienaToolItem)
-					/* && iterator.hasNext() */) {
+					if (originalItem != null && !menuScalingHelper.itemHasSeparator(originalItem)) {
 						menuScalingHelper.createContributionForToolBarSeparators(toolBar, originalItem, counter, -1);
 						counter++;
 					}
@@ -241,7 +233,7 @@ public class RienaMenuHelper {
 			return;
 		}
 
-		if (isSeparator(item) || item instanceof RienaToolItem) {
+		if (isSeparator(item)/* || item instanceof RienaToolItem */) {
 			// no ridget for separator
 			// and
 			// no ridget for tool items with control 

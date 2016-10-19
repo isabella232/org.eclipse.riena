@@ -721,6 +721,7 @@
             <command
                   commandId="org.eclipse.riena.example.client.activeSubApplicationCommand"
                   icon="icons/ledlightgreen.png"
+                  id="org.eclipse.riena.example.client.activeSubApplicationToolBarItem"
                   label="Sub-Application"
                   mnemonic="A"
                   style="push">
@@ -1325,10 +1326,14 @@
          </ruleMarkerMenuItem>
          <ruleMarkerMenuItem
                itemId="org.eclipse.riena.example.client.exitToolBarItem"
-               marker="hidden">
+               marker="disabled">
          </ruleMarkerMenuItem>
          <ruleMarkerMenuItem
                itemId="navigationMenu"
+               marker="hidden">
+         </ruleMarkerMenuItem>
+         <ruleMarkerMenuItem
+               itemId="org.eclipse.riena.example.client.activeSubApplicationToolBarItem"
                marker="hidden">
          </ruleMarkerMenuItem>
       </filter>
