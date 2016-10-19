@@ -49,7 +49,7 @@ public class ToolItemProperties extends AbstractItemProperties {
 		storePreviousSiblings(item);
 
 		final ToolItem sep = (ToolItem) item.getData("Separator");
-		if (sep != null) {
+		if (sep != null && !sep.isDisposed()) {
 			separatorWidth = sep.getWidth();
 		}
 		menuHelper = new ToolItemScalingHelper();

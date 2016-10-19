@@ -16,6 +16,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.CoolBar;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.ToolBar;
+import org.eclipse.swt.widgets.ToolItem;
 
 import org.eclipse.riena.internal.ui.ridgets.swt.IContributionExtension.ICommandExtension;
 
@@ -42,25 +43,32 @@ public class ToolbarItemContribution implements IContributionItem {
 
 	@Override
 	public void fill(final Composite parent) {
-		// TODO Auto-generated method stub
+		System.out.println("***** FILL");
 
 	}
 
 	@Override
 	public void fill(final Menu parent, final int index) {
-		// TODO Auto-generated method stub
+		System.out.println("***** FILL");
 
 	}
 
 	@Override
 	public void fill(final ToolBar parent, final int index) {
-		// TODO Auto-generated method stub
+		final ToolItem item = parent.getItem(index - 1);
+		if (item instanceof RienaToolItem) {
+			return;
+		}
+		final ToolItemScalingHelper sh = new ToolItemScalingHelper();
+		System.out.println("***** FILL toolbar " + index + " " + parent.getItemCount() + " " + item + " " + item.getData("Separator"));
+		sh.createSeparatorForScalingOnPosition(parent, item, 10, index);
+		System.out.println("separator created");
 
 	}
 
 	@Override
 	public void fill(final CoolBar parent, final int index) {
-		// TODO Auto-generated method stub
+		System.out.println("***** FILL coolbar " + index + command);
 
 	}
 
@@ -99,7 +107,7 @@ public class ToolbarItemContribution implements IContributionItem {
 	@Override
 	public boolean isSeparator() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override

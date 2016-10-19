@@ -37,8 +37,8 @@ public class RienaToolItem extends ToolItem {
 
 	@Override
 	public void dispose() {
-		System.out.println("someone tried to dispose a rienatoolitem " + ((ToolbarItemContribution) getData()).isVisible());
-		//		super.dispose();
+		System.out.println("someone is disposing a rienatoolitem ");
+		super.dispose();
 	}
 
 	public void disposeToolItem() {

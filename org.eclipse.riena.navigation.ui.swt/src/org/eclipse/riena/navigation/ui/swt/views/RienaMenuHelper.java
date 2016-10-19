@@ -175,8 +175,8 @@ public class RienaMenuHelper {
 					final ToolItem originalItem = iterator.next();
 					counter++;
 					if (originalItem != null && !menuScalingHelper.itemHasSeparator(originalItem) && !(originalItem instanceof RienaToolItem)
-							&& iterator.hasNext()) {
-						menuScalingHelper.createSeparatorForScalingForToolbar(toolBar, originalItem, counter, -1);
+					/* && iterator.hasNext() */) {
+						menuScalingHelper.createContributionForToolBarSeparators(toolBar, originalItem, counter, -1);
 						counter++;
 					}
 				}

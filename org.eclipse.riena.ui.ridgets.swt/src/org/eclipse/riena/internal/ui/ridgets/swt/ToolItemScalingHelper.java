@@ -17,12 +17,9 @@ import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.menus.CommandContributionItem;
 
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -98,30 +95,53 @@ public class ToolItemScalingHelper {
 		final ContributionManager toolbarManager2 = (ContributionManager) ((ToolBarContributionItem2) coolBarManager2.getItems()[0]).getToolBarManager();
 		final ToolbarItemContribution contribution = new ToolbarItemContribution();
 
-		toolItem.addListener(SWT.Dispose, new Listener() {
-			public void handleEvent(final Event event) {
-				System.err.println("EVENT: " + event + " " + toolItem.getData() + " " + ((CommandContributionItem) toolItem.getData()).isVisible());
-				contribution.setVisible(((CommandContributionItem) toolItem.getData()).isVisible());
-			}
-		});
+		//		toolItem.addListener(SWT.Dispose, new Listener() {
+		//			public void handleEvent(final Event event) {
+		//				System.err.println("EVENT: " + event + " " + toolItem.getData() + " " + ((CommandContributionItem) toolItem.getData()).isVisible());
+		//				contribution.setVisible(((CommandContributionItem) toolItem.getData()).isVisible());
+		//			}
+		//		});
 
 		toolbarManager2.insert(index, contribution);
 
+		System.out.println("create separator contribution for " + toolItem + " on index " + index + " " + toolItem.getData("toolContrib"));
+
 		toolItem.setData("toolContrib", contribution);
 
-		return createSeparatorForScaling(toolbar, toolItem, index, width, contribution);
+		//return createSeparatorForScaling(toolbar, toolItem, index, width, contribution);
+		return null;
 	}
 
-	public ToolItem createSeparatorForScalingOnPosition(final ToolBar toolbar, final ToolItem toolItem, int width) {
+	public void createContributionForToolBarSeparators(final ToolBar toolbar, final ToolItem toolItem, final int index, final int width) {
+		final ICoolBarManager coolBarManager2 = ((ApplicationWindow) PlatformUI.getWorkbench().getActiveWorkbenchWindow()).getCoolBarManager2();
+		final ContributionManager toolbarManager2 = (ContributionManager) ((ToolBarContributionItem2) coolBarManager2.getItems()[0]).getToolBarManager();
+		final ToolbarItemContribution contribution = new ToolbarItemContribution();
+
+		toolbarManager2.insert(index, contribution);
+
+		System.out.println("create separator contribution for " + toolItem + " on index " + index + " " + toolItem.getData("toolContrib"));
+
+		toolItem.setData("toolContrib", contribution);
+	}
+
+	private static int count = 10;
+
+	public ToolItem createSeparatorForScalingOnPosition(final ToolBar toolbar, final ToolItem toolItem, int width, final int index) {
 		if (needScaleBasedSpacing()) {
 
 			if (width == -1) {
 				width = calculateScalingBasedSpacing();
 			}
 
-			final RienaToolItem separator = new RienaToolItem(toolbar, SWT.SEPARATOR);
+			if (count > 240) {
+				count = 0;
+			}
+
+			//			final RienaToolItem separator = new RienaToolItem(toolbar, SWT.SEPARATOR);
+			final RienaToolItem separator = new RienaToolItem(toolbar, SWT.SEPARATOR, index);
 			final Composite composite = new Composite(toolbar, SWT.NONE);
-			composite.setBackground(new Color(SwtUtilities.getDisplay(), 255, 0, 0));
+			System.out.println("new sep " + count);
+			composite.setBackground(new Color(SwtUtilities.getDisplay(), count += 15, count, 120));
 			composite.setData("Separator", "Separator Composite");
 			separator.setControl(composite);
 			separator.setEnabled(false);
