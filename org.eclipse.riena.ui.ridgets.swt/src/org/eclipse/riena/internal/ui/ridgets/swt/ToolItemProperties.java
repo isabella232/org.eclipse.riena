@@ -104,10 +104,11 @@ public class ToolItemProperties extends AbstractItemProperties {
 
 		final IContributionItem contributionItem = getContributionItem();
 		final MenuManager menuManager = getMenuManager();
+		final int scalingActiveModifier = decideModifier(menuHelper.needScaleBasedSpacing());
 		ToolItem toolItem;
 		if ((contributionItem != null) && (menuManager == null)) {
 			contributionItem.fill(parent, getIndex());
-			toolItem = parent.getItem(getIndex() - 1);
+			toolItem = parent.getItem(getIndex() - scalingActiveModifier);
 			toolItem.setEnabled(true);
 			setAllProperties(toolItem, false);
 			contributionItem.update();
@@ -129,6 +130,17 @@ public class ToolItemProperties extends AbstractItemProperties {
 		getRidget().setUIControl(toolItem);
 		return toolItem;
 
+	}
+
+	/**
+	 * @param needScaleBasedSpacing
+	 * @return
+	 */
+	private int decideModifier(final Boolean needScaleBasedSpacing) {
+		if (needScaleBasedSpacing) {
+			return -1;
+		}
+		return 0;
 	}
 
 	@Override

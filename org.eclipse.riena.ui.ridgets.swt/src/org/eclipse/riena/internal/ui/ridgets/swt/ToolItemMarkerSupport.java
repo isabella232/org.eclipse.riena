@@ -88,7 +88,9 @@ public class ToolItemMarkerSupport extends AbstractMarkerSupport {
 					((ToolbarItemContribution) object).setVisible(false);
 				}
 				final ToolItem separator = (ToolItem) item.getData("Separator");
-				separator.dispose();
+				if (separator != null) {
+					separator.dispose();
+				}
 			}
 			item.dispose();
 		}
