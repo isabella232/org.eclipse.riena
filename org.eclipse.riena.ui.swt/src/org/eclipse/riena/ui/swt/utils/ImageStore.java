@@ -93,7 +93,7 @@ public final class ImageStore {
 	 * @since 6.1
 	 */
 	public Image getImage(final String imageName, final ImageFileExtension fileExtension, final IconSize imageSizeRequested) {
-		laufzeitMessung.start();
+		//				laufzeitMessung.start();
 
 		Image image = null;
 
@@ -111,11 +111,11 @@ public final class ImageStore {
 			context.setStrategy(strategy);
 			image = context.executeStrategy(imageName, fileExtension, imageSizeRequested);
 			if (image != null) {
-				laufzeitMessung.end();
+				//						laufzeitMessung.end();
 				return image;
 			}
 		}
-		laufzeitMessung.end();
+		//		laufzeitMessung.end();
 		return null;
 
 	}
@@ -830,7 +830,7 @@ public final class ImageStore {
 
 		private class PngOperationWithoutImageSize implements FindImage {
 			public Image find(final String imageName, final ImageFileExtension fileExtension, final IconSize imageSizeRequested) {
-				final Point dpi = SwtUtilities.getDpi();
+				final Point dpi = SwtUtilities.getDefaultDpi();
 				final String fullFileName = getFullScaledName(imageName, fileExtension, dpi);
 				final Image image = loadImage(fullFileName);
 				if (image != null) {
