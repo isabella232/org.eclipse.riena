@@ -108,7 +108,7 @@ public class ToolItemProperties extends AbstractItemProperties {
 		ToolItem toolItem;
 		if ((contributionItem != null) && (menuManager == null)) {
 			contributionItem.fill(parent, getIndex());
-			toolItem = parent.getItem(getIndex() - scalingActiveModifier);
+			toolItem = parent.getItem(getIndex() + scalingActiveModifier);
 			toolItem.setEnabled(true);
 			setAllProperties(toolItem, false);
 			contributionItem.update();
