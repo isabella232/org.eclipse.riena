@@ -16,20 +16,10 @@ import org.eclipse.riena.ui.core.resource.IconSize;
 
 /**
  * @since 6.2
+ *
  */
-public class ImageStoreContext {
-	private FindImage imageStrategy;
+public interface IImageFind {
 
-	public ImageStoreContext(final FindImage findImageStrategy) {
-		this.imageStrategy = findImageStrategy;
-	}
+	public Image find(final String imageName, final ImageFileExtension fileExtension, final IconSize imageSizeRequested);
 
-	public void setStrategy(final FindImage findImageStrategy) {
-		this.imageStrategy = findImageStrategy;
-	}
-
-	public Image executeStrategy(final String imageName, final ImageFileExtension fileExtension, final IconSize imageSizeRequested) {
-		return imageStrategy.find(imageName, fileExtension, imageSizeRequested);
-
-	}
 }
