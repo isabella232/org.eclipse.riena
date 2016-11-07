@@ -134,7 +134,8 @@ public class ToolItemProperties extends AbstractItemProperties {
 
 	/**
 	 * @param needScaleBasedSpacing
-	 * @return
+	 *            if scaling is needed or not.
+	 * @returns an indexmodifier, depending on if scaling is needed or not.
 	 */
 	private int decideModifier(final Boolean needScaleBasedSpacing) {
 		if (needScaleBasedSpacing) {

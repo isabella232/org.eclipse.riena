@@ -168,7 +168,7 @@ public class RienaMenuHelper {
 					final ToolItem originalItem = iterator.next();
 					counter++;
 					if (originalItem != null && !menuScalingHelper.itemHasSeparator(originalItem)) {
-						menuScalingHelper.createContributionForToolBarSeparators(toolBar, originalItem, counter, -1);
+						menuScalingHelper.createContributionForToolBarSeparators(originalItem, counter);
 						counter++;
 					}
 				}

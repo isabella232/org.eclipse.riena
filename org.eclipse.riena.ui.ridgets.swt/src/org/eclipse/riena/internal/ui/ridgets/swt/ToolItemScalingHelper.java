@@ -15,7 +15,6 @@ import org.eclipse.jface.action.ICoolBarManager;
 import org.eclipse.jface.internal.provisional.action.ToolBarContributionItem2;
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
@@ -64,7 +63,6 @@ public class ToolItemScalingHelper {
 	 *            width if fixed, -1 to calculate use scaling
 	 * @return a separator if scaling is needed. Returns null if scaling is not needed.
 	 */
-
 	public ToolItem createSeparatorForScaling(final ToolBar toolbar, final ToolItem toolItem, final int index, int width,
 			final ToolbarItemContribution contribution) {
 		if (needScaleBasedSpacing()) {
@@ -77,28 +75,48 @@ public class ToolItemScalingHelper {
 
 			separator.setWidth(width);
 			final Composite composite = new Composite(toolbar, SWT.NONE);
-			composite.setBackground(new Color(SwtUtilities.getDisplay(), 255, 0, 0));
-			composite.setData("Separator", "Separator Composite");
+			composite.setData("Separator", "Separator Composite"); //$NON-NLS-1$ //$NON-NLS-2$
 			separator.setControl(composite);
 			separator.setEnabled(false);
 			if (contribution != null) {
 				separator.setData(contribution);
 			}
-			toolItem.setData("Separator", separator);
+			toolItem.setData("Separator", separator); //$NON-NLS-1$
 			return toolItem;
 		}
 		return null;
 	}
 
-	public void createContributionForToolBarSeparators(final ToolBar toolbar, final ToolItem toolItem, final int index, final int width) {
+	/**
+	 * Create a new Contribution to the toolbarManager.
+	 * 
+	 * @param toolItem
+	 *            the toolItem which to attach the contribution
+	 * @param index
+	 *            the index where to add the contribution in the toolarManager
+	 */
+	public void createContributionForToolBarSeparators(final ToolItem toolItem, final int index) {
 		final ICoolBarManager coolBarManager2 = ((ApplicationWindow) PlatformUI.getWorkbench().getActiveWorkbenchWindow()).getCoolBarManager2();
 		final ContributionManager toolbarManager2 = (ContributionManager) ((ToolBarContributionItem2) coolBarManager2.getItems()[0]).getToolBarManager();
 		final ToolbarItemContribution contribution = new ToolbarItemContribution();
 
 		toolbarManager2.insert(index, contribution);
-		toolItem.setData("toolItemSeparatorContribution", contribution);
+		toolItem.setData("toolItemSeparatorContribution", contribution); //$NON-NLS-1$
 	}
 
+	/**
+	 * creates a new Separator on the given position.
+	 * 
+	 * @param toolbar
+	 *            the toolbar where we add the newly created Separator
+	 * @param toolItem
+	 *            the toolitem where want to attach the separator
+	 * @param width
+	 *            the width of the separator. If width == -1 the width of the separator will be automatically calculated.
+	 * @param index
+	 *            the index where the separator is placed within the toolbar.
+	 * @return
+	 */
 	public ToolItem createSeparatorForScalingOnPosition(final ToolBar toolbar, final ToolItem toolItem, int width, final int index) {
 		if (needScaleBasedSpacing()) {
 
@@ -109,11 +127,10 @@ public class ToolItemScalingHelper {
 			final ToolItem separator = new ToolItem(toolbar, SWT.SEPARATOR, index);
 			separator.setWidth(width);
 			final Composite composite = new Composite(toolbar, SWT.NONE);
-			composite.setBackground(new Color(SwtUtilities.getDisplay(), 255, 0, 0));
-			composite.setData("Separator", "Separator Composite");
+			composite.setData("Separator", "Separator Composite"); //$NON-NLS-1$ //$NON-NLS-2$
 			separator.setControl(composite);
 			separator.setEnabled(false);
-			toolItem.setData("Separator", separator);
+			toolItem.setData("Separator", separator); //$NON-NLS-1$
 			return toolItem;
 		}
 		return null;
@@ -126,7 +143,7 @@ public class ToolItemScalingHelper {
 	 * @since 6.2
 	 */
 	public void disposeSeparatorForMenuItem(final ToolItem item) {
-		final ToolItem sep = (ToolItem) item.getData("Separator");
+		final ToolItem sep = (ToolItem) item.getData("Separator"); //$NON-NLS-1$
 		if (sep != null) {
 			sep.getControl().dispose();
 			sep.dispose();
@@ -138,7 +155,7 @@ public class ToolItemScalingHelper {
 	 * @return
 	 */
 	public boolean itemHasSeparator(final ToolItem originalItem) {
-		if (originalItem.getData("Separator") != null) {
+		if (originalItem.getData("Separator") != null) { //$NON-NLS-1$
 			return true;
 		}
 		return false;

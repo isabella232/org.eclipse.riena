@@ -21,6 +21,8 @@ import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.riena.internal.ui.ridgets.swt.IContributionExtension.ICommandExtension;
 
 /**
+ * This class is our own implementation of the IContributions to support creation of Separators for the toolbar.
+ * 
  * @since 6.2
  */
 public class ToolbarItemContribution implements IContributionItem {
@@ -38,69 +40,60 @@ public class ToolbarItemContribution implements IContributionItem {
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
 	}
 
 	@Override
 	public void fill(final Composite parent) {
-		System.out.println("***** FILL");
 
 	}
 
 	@Override
 	public void fill(final Menu parent, final int index) {
-		System.out.println("***** FILL");
 
 	}
 
 	@Override
 	public void fill(final ToolBar parent, final int index) {
 		final ToolItem item = parent.getItem(index - 1);
-		final ToolItemScalingHelper sh = new ToolItemScalingHelper();
-		sh.createSeparatorForScalingOnPosition(parent, item, -1, index);
+		final ToolItemScalingHelper scalingHelper = new ToolItemScalingHelper();
+		scalingHelper.createSeparatorForScalingOnPosition(parent, item, -1, index);
 	}
 
 	@Override
 	public void fill(final CoolBar parent, final int index) {
-		System.out.println("***** FILL coolbar " + index + command);
 
 	}
 
 	@Override
 	public String getId() {
 		if (command == null) {
-			return "xx";
+			return "xx"; //$NON-NLS-1$
 		}
 		return command.getId();
 	}
 
 	@Override
 	public boolean isEnabled() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean isDirty() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean isDynamic() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean isGroupMarker() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean isSeparator() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
@@ -111,13 +104,11 @@ public class ToolbarItemContribution implements IContributionItem {
 
 	@Override
 	public void saveWidgetState() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void setParent(final IContributionManager parent) {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -129,13 +120,11 @@ public class ToolbarItemContribution implements IContributionItem {
 
 	@Override
 	public void update() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void update(final String id) {
-		// TODO Auto-generated method stub
 
 	}
 
