@@ -64,10 +64,18 @@ public final class ImageStore {
 
 	private final static SingletonProvider<ImageStore> IS = new SingletonProvider<ImageStore>(ImageStore.class);
 
+	private final ArrayList<IImageFind> listOfStrategys = new ArrayList<IImageFind>();
+
 	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), ImageStore.class);
 
 	private ImageStore() {
 		// utility class
+		final ImageOperations availableOperations = new ImageOperations();
+		listOfStrategys.add(availableOperations.getPngOperation());
+		listOfStrategys.add(availableOperations.getSvgOperation());
+		listOfStrategys.add(availableOperations.getPngOperationWithoutImageSize());
+		listOfStrategys.add(availableOperations.getPngOperationSecondlastAttempt());
+		listOfStrategys.add(availableOperations.getPngDefaultImageOperation());
 	}
 
 	/**
@@ -92,17 +100,7 @@ public final class ImageStore {
 	 * @since 6.1
 	 */
 	public Image getImage(final String imageName, final ImageFileExtension fileExtension, final IconSize imageSizeRequested) {
-
 		Image image = null;
-
-		final ImageOperations availableOperations = new ImageOperations();
-		final ArrayList<IImageFind> listOfStrategys = new ArrayList<IImageFind>();
-
-		listOfStrategys.add(availableOperations.getPngOperation());
-		listOfStrategys.add(availableOperations.getSvgOperation());
-		listOfStrategys.add(availableOperations.getPngOperationWithoutImageSize());
-		listOfStrategys.add(availableOperations.getPngOperationSecondlastAttempt());
-		listOfStrategys.add(availableOperations.getPngDefaultImageOperation());
 		final ImageStoreStrategyContextHolder context = new ImageStoreStrategyContextHolder(null);
 
 		for (final IImageFind strategy : listOfStrategys) {
