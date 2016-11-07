@@ -64,10 +64,18 @@ public final class ImageStore {
 
 	private final static SingletonProvider<ImageStore> IS = new SingletonProvider<ImageStore>(ImageStore.class);
 
+	private final ArrayList<IImageFind> listOfStrategys = new ArrayList<IImageFind>();
+
 	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), ImageStore.class);
 
 	private ImageStore() {
 		// utility class
+		final ImageOperations availableOperations = new ImageOperations();
+		listOfStrategys.add(availableOperations.getPngOperation());
+		listOfStrategys.add(availableOperations.getSvgOperation());
+		listOfStrategys.add(availableOperations.getPngOperationWithoutImageSize());
+		listOfStrategys.add(availableOperations.getPngOperationSecondlastAttempt());
+		listOfStrategys.add(availableOperations.getPngDefaultImageOperation());
 	}
 
 	/**
@@ -92,56 +100,17 @@ public final class ImageStore {
 	 * @since 6.1
 	 */
 	public Image getImage(final String imageName, final ImageFileExtension fileExtension, final IconSize imageSizeRequested) {
+		Image image = null;
+		final ImageStoreStrategyContextHolder context = new ImageStoreStrategyContextHolder(null);
 
-		Point dpi = SwtUtilities.getDpi();
-		String fullFileName = getFullScaledName(imageName, fileExtension, dpi, imageSizeRequested);
-		Image image = loadImage(fullFileName);
-		if (image != null) {
-			return image;
-		}
-
-		fullFileName = getFullSvgName(imageName);
-
-		if (fullFileName != null) {
-			if (imageSizeRequested.isSizeNone()) {
-				final IconSize imageSizeComputed = computeIconSize(fullFileName, imageSizeRequested);
-				final String fullNameWithGroupIdentifier = addIconGroupIdentifier(fullFileName, imageSizeComputed, imageSizeRequested);
-				image = loadSvgImage(fullNameWithGroupIdentifier, imageSizeComputed);
-			} else {
-				final String fullNameWithGroupIdentifier = addIconGroupIdentifier(fullFileName, IconSize.NONE, imageSizeRequested);
-				image = loadSvgImage(fullNameWithGroupIdentifier, imageSizeRequested);
-			}
-
+		for (final IImageFind strategy : listOfStrategys) {
+			context.applayStrategy(strategy);
+			image = context.executeStrategy(imageName, fileExtension, imageSizeRequested);
 			if (image != null) {
 				return image;
-			} else {
-				image = loadSvgImage(fullFileName, imageSizeRequested);
-				if (image != null) {
-					return image;
-				}
 			}
 		}
-
-		dpi = SwtUtilities.getDefaultDpi();
-		fullFileName = getFullScaledName(imageName, fileExtension, dpi);
-		image = loadImage(fullFileName);
-		if (image != null) {
-			return image;
-		}
-
-		fullFileName = getFullName(imageName, fileExtension);
-		image = loadImage(fullFileName);
-		if (image != null) {
-			return image;
-		}
-
-		final String defaultIconName = getDefaultIconMangerImageName(imageName);
-		if (!StringUtils.equals(defaultIconName, imageName)) {
-			fullFileName = getFullName(defaultIconName, fileExtension);
-			image = loadImage(fullFileName);
-		}
-
-		return image;
+		return null;
 
 	}
 
@@ -791,6 +760,105 @@ public final class ImageStore {
 	@InjectExtension
 	public void update(final IImagePathExtension[] iconPaths) {
 		this.iconPaths = iconPaths;
+	}
+
+	private class ImageOperations {
+
+		public PngDefaultOpertion getPngOperation() {
+			return new PngDefaultOpertion();
+		}
+
+		public SvgDefaultOperation getSvgOperation() {
+			return new SvgDefaultOperation();
+		}
+
+		public PngOperationNoImageSize getPngOperationWithoutImageSize() {
+			return new PngOperationNoImageSize();
+		}
+
+		public PngOperationNoImageSizeAndDpi getPngOperationSecondlastAttempt() {
+			return new PngOperationNoImageSizeAndDpi();
+		}
+
+		public PngDefaultImageOperation getPngDefaultImageOperation() {
+			return new PngDefaultImageOperation();
+		}
+
+		private class PngDefaultOpertion implements IImageFind {
+			public Image find(final String imageName, final ImageFileExtension fileExtension, final IconSize imageSizeRequested) {
+				final Point dpi = SwtUtilities.getDpi();
+				final String fullFileName = getFullScaledName(imageName, fileExtension, dpi, imageSizeRequested);
+				final Image image = loadImage(fullFileName);
+				if (image != null) {
+					return image;
+				}
+				return null;
+			}
+		}
+
+		private class SvgDefaultOperation implements IImageFind {
+			public Image find(final String imageName, final ImageFileExtension fileExtension, final IconSize imageSizeRequested) {
+				final String fullFileName = getFullSvgName(imageName);
+				Image image = null;
+				if (fullFileName != null) {
+					if (imageSizeRequested.isSizeNone()) {
+						final IconSize imageSizeComputed = computeIconSize(fullFileName, imageSizeRequested);
+						final String fullNameWithGroupIdentifier = addIconGroupIdentifier(fullFileName, imageSizeComputed, imageSizeRequested);
+						image = loadSvgImage(fullNameWithGroupIdentifier, imageSizeComputed);
+					} else {
+						final String fullNameWithGroupIdentifier = addIconGroupIdentifier(fullFileName, IconSize.NONE, imageSizeRequested);
+						image = loadSvgImage(fullNameWithGroupIdentifier, imageSizeRequested);
+					}
+					if (image != null) {
+						return image;
+					} else {
+						image = loadSvgImage(fullFileName, imageSizeRequested);
+						if (image != null) {
+							return image;
+						}
+					}
+				}
+				return null;
+			}
+		}
+
+		private class PngOperationNoImageSize implements IImageFind {
+			public Image find(final String imageName, final ImageFileExtension fileExtension, final IconSize imageSizeRequested) {
+				final Point dpi = SwtUtilities.getDefaultDpi();
+				final String fullFileName = getFullScaledName(imageName, fileExtension, dpi);
+				final Image image = loadImage(fullFileName);
+				if (image != null) {
+					return image;
+				}
+				return null;
+			}
+		}
+
+		private class PngOperationNoImageSizeAndDpi implements IImageFind {
+			public Image find(final String imageName, final ImageFileExtension fileExtension, final IconSize imageSizeRequested) {
+				final String fullFileName = getFullName(imageName, fileExtension);
+				final Image image = loadImage(fullFileName);
+				if (image != null) {
+					return image;
+				}
+				return null;
+			}
+
+		}
+
+		private class PngDefaultImageOperation implements IImageFind {
+
+			public Image find(final String imageName, final ImageFileExtension fileExtension, final IconSize imageSizeRequested) {
+				final String defaultIconName = getDefaultIconMangerImageName(imageName);
+				if (!StringUtils.equals(defaultIconName, imageName)) {
+					final String fullFileName = getFullName(defaultIconName, fileExtension);
+					final Image image = loadImage(fullFileName);
+				}
+				return null;
+			}
+
+		}
+
 	}
 
 }
