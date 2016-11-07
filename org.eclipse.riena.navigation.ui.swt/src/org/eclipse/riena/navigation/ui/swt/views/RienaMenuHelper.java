@@ -17,11 +17,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.jface.action.IContributionItem;
-import org.eclipse.jface.action.ICoolBarManager;
 import org.eclipse.jface.action.MenuManager;
-import org.eclipse.jface.internal.provisional.action.IToolBarManager2;
-import org.eclipse.jface.internal.provisional.action.ToolBarContributionItem2;
-import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -33,13 +29,10 @@ import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.ui.ISourceProvider;
 import org.eclipse.ui.ISourceProviderListener;
-import org.eclipse.ui.PlatformUI;
 
 import org.eclipse.riena.core.util.StringUtils;
-import org.eclipse.riena.core.wire.InjectExtension;
 import org.eclipse.riena.core.wire.Wire;
 import org.eclipse.riena.internal.ui.ridgets.swt.AbstractItemRidget;
-import org.eclipse.riena.internal.ui.ridgets.swt.IContributionExtension;
 import org.eclipse.riena.internal.ui.ridgets.swt.IContributionExtension.ICommandExtension;
 import org.eclipse.riena.internal.ui.ridgets.swt.ToolItemScalingHelper;
 import org.eclipse.riena.internal.ui.swt.facades.WorkbenchFacade;
@@ -103,35 +96,6 @@ public class RienaMenuHelper {
 	}
 
 	private final List<ICommandExtension> items = new ArrayList<ICommandExtension>();
-
-	/**
-	 * @since 6.2
-	 */
-	@InjectExtension
-	public void updateContributions(final IContributionExtension[] coolItems) {
-		final ICoolBarManager coolBarManager2 = ((ApplicationWindow) PlatformUI.getWorkbench().getActiveWorkbenchWindow()).getCoolBarManager2();
-		final IToolBarManager2 toolbarManager2 = (IToolBarManager2) ((ToolBarContributionItem2) coolBarManager2.getItems()[0]).getToolBarManager();
-
-		if (coolBarManager2.getItems().length == 0) {
-			return;
-		}
-
-		if (items.size() > 0) {
-			//remove separators
-			for (final ICommandExtension item : items) {
-				toolbarManager2.remove(item.getId());
-			}
-			items.clear();
-		}
-
-		for (final IContributionExtension item : coolItems) {
-			if (item.getLocationURI().startsWith("toolbar:")) {
-				if (item.getToolBar() != null) {
-					items.addAll(Arrays.asList(item.getToolBar().getCommands()));
-				}
-			}
-		}
-	}
 
 	/**
 	 * Creates for every menu item and tool item a ridget and adds
