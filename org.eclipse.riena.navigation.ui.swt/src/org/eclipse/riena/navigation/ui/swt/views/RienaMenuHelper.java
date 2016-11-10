@@ -16,8 +16,12 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.jface.action.ContributionManager;
 import org.eclipse.jface.action.IContributionItem;
+import org.eclipse.jface.action.ICoolBarManager;
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.internal.provisional.action.ToolBarContributionItem2;
+import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -29,6 +33,7 @@ import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.ui.ISourceProvider;
 import org.eclipse.ui.ISourceProviderListener;
+import org.eclipse.ui.PlatformUI;
 
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.core.wire.Wire;
@@ -119,6 +124,11 @@ public class RienaMenuHelper {
 			createRidgetsForItems(menuBarComp.getTopLevelItems(), controller);
 		}
 
+		//update toolbar
+		final ICoolBarManager coolBarManager2 = ((ApplicationWindow) PlatformUI.getWorkbench().getActiveWorkbenchWindow()).getCoolBarManager2();
+		final ContributionManager toolbarManager2 = (ContributionManager) ((ToolBarContributionItem2) coolBarManager2.getItems()[0]).getToolBarManager();
+		toolbarManager2.update(true);
+
 		// create Separator for Toolbar
 		final List<ToolItem> originalList = getAllToolItems(toolbarParent);
 		final Iterator<ToolItem> iterator = originalList.iterator();
@@ -197,7 +207,7 @@ public class RienaMenuHelper {
 			return;
 		}
 
-		if (isSeparator(item)/* || item instanceof RienaToolItem */) {
+		if (isSeparator(item)) {
 			// no ridget for separator
 			// and
 			// no ridget for tool items with control 
