@@ -16,11 +16,14 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import org.osgi.service.log.LogService;
+
+import org.eclipse.equinox.log.Logger;
 import org.eclipse.jface.action.ContributionManager;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.ICoolBarManager;
 import org.eclipse.jface.action.MenuManager;
-import org.eclipse.jface.internal.provisional.action.ToolBarContributionItem2;
+import org.eclipse.jface.internal.provisional.action.IToolBarContributionItem;
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -35,8 +38,11 @@ import org.eclipse.ui.ISourceProvider;
 import org.eclipse.ui.ISourceProviderListener;
 import org.eclipse.ui.PlatformUI;
 
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.core.wire.Wire;
+import org.eclipse.riena.internal.core.Activator;
+import org.eclipse.riena.internal.core.StartupsSafeRunnable;
 import org.eclipse.riena.internal.ui.ridgets.swt.AbstractItemRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.IContributionExtension.ICommandExtension;
 import org.eclipse.riena.internal.ui.ridgets.swt.ToolItemScalingHelper;
@@ -61,7 +67,7 @@ public class RienaMenuHelper {
 
 	private static IBindingManager menuItemBindingManager;
 	private static int itemId = 0;
-
+	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), StartupsSafeRunnable.class);
 	private final List<Object> uiControls;
 
 	/**
@@ -125,9 +131,20 @@ public class RienaMenuHelper {
 		}
 
 		//update toolbar
-		final ICoolBarManager coolBarManager2 = ((ApplicationWindow) PlatformUI.getWorkbench().getActiveWorkbenchWindow()).getCoolBarManager2();
-		final ContributionManager toolbarManager2 = (ContributionManager) ((ToolBarContributionItem2) coolBarManager2.getItems()[0]).getToolBarManager();
-		toolbarManager2.update(true);
+		if (PlatformUI.isWorkbenchRunning()) {
+			try {
+				final ICoolBarManager coolBarManager2 = ((ApplicationWindow) PlatformUI.getWorkbench().getActiveWorkbenchWindow()).getCoolBarManager2();
+				final ContributionManager toolbarManager2 = (ContributionManager) ((IToolBarContributionItem) coolBarManager2.getItems()[0])
+						.getToolBarManager();
+				toolbarManager2.update(true);
+			} catch (final Exception e) {
+				LOGGER.log(LogService.LOG_WARNING, "the toolbar could not be updated:" + e.getLocalizedMessage() + "\n"); //$NON-NLS-1$
+				for (final StackTraceElement element : e.getStackTrace()) {
+					LOGGER.log(LogService.LOG_WARNING, element.toString());
+				}
+			}
+
+		}
 
 		// create Separator for Toolbar
 		final List<ToolItem> originalList = getAllToolItems(toolbarParent);
