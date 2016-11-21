@@ -32,10 +32,10 @@ public class RienaDefaultTheme implements ILnfTheme {
 	private static final String IMAGE_FOLDER = "node_expanded.gif"; //$NON-NLS-1$
 	private static final String IMAGE_FOLDER_CLOSED = "node_collapsed.gif"; //$NON-NLS-1$
 	private static final String IMAGE_EMPTY_DOCUMENT = "leaf.gif"; //$NON-NLS-1$
-	private static final String IMAGE_CLOSE_MODULE = "closeModule"; //$NON-NLS-1$
-	private static final String IMAGE_CLOSE_MODULE_HOVER = "closeModule_hover"; //$NON-NLS-1$
-	private static final String IMAGE_CLOSE_MODULE_HOVER_SELECTED = "closeModule_hover_selected"; //$NON-NLS-1$
-	private static final String IMAGE_CLOSE_MODULE_INACTIVE = "closeModule_inactive"; //$NON-NLS-1$
+	private static final String IMAGE_CLOSE_MODULE = "313"; //$NON-NLS-1$
+	private static final String IMAGE_CLOSE_MODULE_HOVER = "314"; //$NON-NLS-1$
+	private static final String IMAGE_CLOSE_MODULE_HOVER_SELECTED = "315"; //$NON-NLS-1$
+	private static final String IMAGE_CLOSE_MODULE_INACTIVE = "316"; //$NON-NLS-1$
 	private static final String IMAGE_BACKGROUND = "background"; //$NON-NLS-1$
 	private static final String IMAGE_LOGO = "RIENA_Logo_RGB"; //$NON-NLS-1$
 	private static final String IMAGE_CLOSE = "mb_close.gif"; //$NON-NLS-1$
@@ -54,11 +54,11 @@ public class RienaDefaultTheme implements ILnfTheme {
 	private static final String IMAGE_RESTORE_HOVER = "mb_restore_hover.gif"; //$NON-NLS-1$
 	private static final String IMAGE_RESTORE_HOVER_SELECTED = "mb_restore_hover_selected.gif"; //$NON-NLS-1$
 	private static final String IMAGE_RESTORE_INACTIVE_ICON = "mb_restore_inactive.gif"; //$NON-NLS-1$
-	private static final String IMAGE_HAND = "hand.gif"; //$NON-NLS-1$
-	private static final String IMAGE_GRAB = "grab.gif"; //$NON-NLS-1$
-	private static final String IMAGE_GRAB_CORNER = "grabCorner"; //$NON-NLS-1$
-	private static final String DIALOG_IMAGE_GRAB_CORNER = "dialogGrabCorner"; //$NON-NLS-1$
-	private static final String IMAGE_SPACER = "spacer"; //$NON-NLS-1$
+	private static final String IMAGE_HAND = "8"; //$NON-NLS-1$
+	private static final String IMAGE_GRAB = "7"; //$NON-NLS-1$
+	private static final String IMAGE_GRAB_CORNER = "73"; //$NON-NLS-1$
+	private static final String DIALOG_IMAGE_GRAB_CORNER = "473"; //$NON-NLS-1$
+	private static final String IMAGE_SPACER = "19"; //$NON-NLS-1$
 	private static final String IMAGE_ERROR = "statusline_error.gif"; //$NON-NLS-1$
 	private static final String IMAGE_WARNING = "statusline_warning.gif"; //$NON-NLS-1$
 	private static final String IMAGE_INFO = "statusline_info.gif"; //$NON-NLS-1$
@@ -69,7 +69,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 	private static final String IMAGE_SCROLL_UP = "arrowUp.gif"; //$NON-NLS-1$
 	private static final String IMAGE_SCROLL_DOWN = "arrowDown.gif"; //$NON-NLS-1$
 	private static final String IMAGE_DEFAULT_NODE_ICON = "defaultNode.png"; //$NON-NLS-1$
-	private static final String IMAGE_STATUSLINE_UI_PROCESS_ICON = "uiProcess.png"; //$NON-NLS-1$
+	private static final String IMAGE_STATUSLINE_UI_PROCESS_ICON = "2111"; //$NON-NLS-1$
 	private FontLnfResource primaryFont;
 	private ColorLnfResource primaryBackground;
 	private ColorLnfResource primaryForeground;

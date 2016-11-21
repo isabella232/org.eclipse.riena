@@ -1,0 +1,13 @@
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 15 15">
+  <g fill="#8AA6CC">
+    <rect width="0.5" height="1" x="10" y="9" opacity="0.3"/>
+    <polygon points="12,5 5,5 5,5.5 10.5,5.5 10.5,6 11,6 11,9 10.5,9 10.5,10 12,10"/>
+  </g>
+  <polygon fill="#656565" points="12,5 5,5 5,5.5 10.5,5.5 10.5,6 12,6" opacity="0.5"/>
+  <rect width="5.5" height="0.5" x="5" y="5.5" fill="#738499" opacity="0.3"/>
+  <rect width="7" height="1" x="5" y="4" fill="#656565"/>
+  <path fill="#8AA6CC" d="M3,7v5h7V7H3z M9,11H4V8h5V11z"/>
+  <rect width="7" height="1" x="3" y="7" fill="#656565" opacity="0.5"/>
+  <rect width="7" height="1" x="3" y="6" fill="#656565"/>
+</svg>
