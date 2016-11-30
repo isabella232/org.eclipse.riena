@@ -690,6 +690,9 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 		private boolean isSelecting = false;
 
 		public void arrive(final CompositeTable sender, final int currentObjectOffset, final Control newRow) {
+			if (getRowObservables() == null) {
+				return;
+			}
 			if (isSelecting) {
 				return;
 			}
