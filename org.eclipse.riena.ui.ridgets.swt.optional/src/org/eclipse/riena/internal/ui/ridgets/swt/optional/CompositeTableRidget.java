@@ -619,6 +619,9 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 		@Override
 		public void rowConstructed(final Control newRow) {
 			final IComplexComponent rowControl = (IComplexComponent) newRow;
+			if (rowRidgetClass == null) {
+				return;
+			}
 			final IRowRidget rowRidget = (IRowRidget) ReflectionUtils.newInstance(rowRidgetClass, (Object[]) null);
 			final IBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
 			for (final Object control : rowControl.getUIControls()) {
