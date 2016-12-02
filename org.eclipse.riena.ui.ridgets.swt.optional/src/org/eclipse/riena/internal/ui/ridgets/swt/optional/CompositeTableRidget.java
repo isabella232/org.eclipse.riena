@@ -37,6 +37,7 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.TableColumn;
@@ -65,6 +66,7 @@ import org.eclipse.riena.ui.ridgets.swt.optional.ICompositeTableRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 import org.eclipse.riena.ui.ridgets.uibinding.IBindingPropertyLocator;
 import org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper;
+import org.eclipse.riena.ui.swt.lnf.LnFUpdater;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 
 /**
@@ -99,6 +101,8 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 
 	private boolean isSortedAscending;
 	private int sortedColumn;
+
+	private final LnFUpdater lnfUpdater = LnFUpdater.getInstance();
 
 	public CompositeTableRidget() {
 		Assert.isLegal(!SelectionType.MULTI.equals(getSelectionType()));
@@ -619,6 +623,9 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 		@Override
 		public void rowConstructed(final Control newRow) {
 			final IComplexComponent rowControl = (IComplexComponent) newRow;
+			if (rowRidgetClass == null) {
+				return;
+			}
 			final IRowRidget rowRidget = (IRowRidget) ReflectionUtils.newInstance(rowRidgetClass, (Object[]) null);
 			final IBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
 			for (final Object control : rowControl.getUIControls()) {
@@ -650,6 +657,9 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 				rowRidget.configureRidgets();
 				rowRidget.setConfigured(true);
 				refreshRowStyle(row, isEnabled(), isOutputOnly(), table.getBackground());
+				if (row instanceof Composite) {
+					lnfUpdater.updateUIControls((Composite) row, false);
+				}
 			}
 		}
 
@@ -687,6 +697,9 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 		private boolean isSelecting = false;
 
 		public void arrive(final CompositeTable sender, final int currentObjectOffset, final Control newRow) {
+			if (getRowObservables() == null) {
+				return;
+			}
 			if (isSelecting) {
 				return;
 			}
