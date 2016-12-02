@@ -37,6 +37,7 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.TableColumn;
@@ -65,6 +66,7 @@ import org.eclipse.riena.ui.ridgets.swt.optional.ICompositeTableRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 import org.eclipse.riena.ui.ridgets.uibinding.IBindingPropertyLocator;
 import org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper;
+import org.eclipse.riena.ui.swt.lnf.LnFUpdater;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 
 /**
@@ -99,6 +101,8 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 
 	private boolean isSortedAscending;
 	private int sortedColumn;
+
+	private final LnFUpdater lnfUpdater = LnFUpdater.getInstance();
 
 	public CompositeTableRidget() {
 		Assert.isLegal(!SelectionType.MULTI.equals(getSelectionType()));
@@ -650,6 +654,9 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 				rowRidget.configureRidgets();
 				rowRidget.setConfigured(true);
 				refreshRowStyle(row, isEnabled(), isOutputOnly(), table.getBackground());
+				if (row instanceof Composite) {
+					lnfUpdater.updateUIControls((Composite) row, false);
+				}
 			}
 		}
 
