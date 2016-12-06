@@ -15,6 +15,7 @@ import org.eclipse.jface.action.ICoolBarManager;
 import org.eclipse.jface.internal.provisional.action.ToolBarContributionItem2;
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
@@ -100,7 +101,12 @@ public class ToolItemScalingHelper {
 		final ContributionManager toolbarManager2 = (ContributionManager) ((ToolBarContributionItem2) coolBarManager2.getItems()[0]).getToolBarManager();
 		final ToolbarItemContribution contribution = new ToolbarItemContribution();
 
-		toolbarManager2.insert(index, contribution);
+		if (toolbarManager2.isEmpty()) {
+			toolbarManager2.insert(0, contribution);
+		} else {
+			toolbarManager2.insert(index, contribution);
+		}
+
 		toolItem.setData("toolItemSeparatorContribution", contribution); //$NON-NLS-1$
 	}
 
@@ -127,6 +133,7 @@ public class ToolItemScalingHelper {
 			final ToolItem separator = new ToolItem(toolbar, SWT.SEPARATOR, index);
 			separator.setWidth(width);
 			final Composite composite = new Composite(toolbar, SWT.NONE);
+			composite.setBackground(new Color(SwtUtilities.getDisplay(), 255, 0, 0));
 			composite.setData("Separator", "Separator Composite"); //$NON-NLS-1$ //$NON-NLS-2$
 			separator.setControl(composite);
 			separator.setEnabled(false);
@@ -156,6 +163,17 @@ public class ToolItemScalingHelper {
 	 */
 	public boolean itemHasSeparator(final ToolItem originalItem) {
 		if (originalItem.getData("Separator") != null) { //$NON-NLS-1$
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * @param originalItem
+	 * @return
+	 */
+	public boolean toolbaritemHasSeparator(final ToolItem originalItem) {
+		if (originalItem.getData("toolItemSeparatorContribution") != null) { //$NON-NLS-1$
 			return true;
 		}
 		return false;
