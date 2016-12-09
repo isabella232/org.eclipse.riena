@@ -10,16 +10,18 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import org.eclipse.jface.action.ContributionManager;
-import org.eclipse.jface.action.ICoolBarManager;
 import org.eclipse.jface.internal.provisional.action.ToolBarContributionItem2;
-import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.CoolBar;
+import org.eclipse.swt.widgets.CoolItem;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
-import org.eclipse.ui.PlatformUI;
 
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -96,15 +98,22 @@ public class ToolItemScalingHelper {
 	 * @param index
 	 *            the index where to add the contribution in the toolarManager
 	 */
-	public void createContributionForToolBarSeparators(final ToolItem toolItem, final int index) {
-		final ICoolBarManager coolBarManager2 = ((ApplicationWindow) PlatformUI.getWorkbench().getActiveWorkbenchWindow()).getCoolBarManager2();
-		final ContributionManager toolbarManager2 = (ContributionManager) ((ToolBarContributionItem2) coolBarManager2.getItems()[0]).getToolBarManager();
+	public void createContributionForToolBarSeparators(final ToolBar toolbar, final ToolItem toolItem, final int index) {
+		//		final ToolBar tb = toolbar;
+		//		final ICoolBarManager coolBarManager2 = ((ApplicationWindow) PlatformUI.getWorkbench().getActiveWorkbenchWindow()).getCoolBarManager2();
+		//		final ContributionManager toolbarManager2 = (ContributionManager) ((ToolBarContributionItem2) coolBarManager2.getItems()[0]).getToolBarManager();
 		final ToolbarItemContribution contribution = new ToolbarItemContribution();
 
-		if (toolbarManager2.isEmpty()) {
-			toolbarManager2.insert(0, contribution);
+		final CoolBar manager = ((CoolBar) toolbar.getParent());
+		final ArrayList<CoolItem> items = new ArrayList<CoolItem>();
+		items.addAll(Arrays.asList(manager.getItems()));
+		final ToolBarContributionItem2 contribItem = (ToolBarContributionItem2) items.get(0).getData();
+		final ContributionManager tbManager = (ContributionManager) contribItem.getToolBarManager();
+
+		if (tbManager.isEmpty()) {
+			tbManager.insert(0, contribution);
 		} else {
-			toolbarManager2.insert(index, contribution);
+			tbManager.insert(index, contribution);
 		}
 
 		toolItem.setData("toolItemSeparatorContribution", contribution); //$NON-NLS-1$
