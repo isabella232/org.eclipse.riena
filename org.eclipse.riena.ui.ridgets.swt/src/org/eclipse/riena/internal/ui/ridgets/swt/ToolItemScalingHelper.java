@@ -12,8 +12,10 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 
 import org.eclipse.jface.action.ContributionManager;
+import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.internal.provisional.action.ToolBarContributionItem2;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
@@ -98,10 +100,8 @@ public class ToolItemScalingHelper {
 	 * @param index
 	 *            the index where to add the contribution in the toolarManager
 	 */
-	public void createContributionForToolBarSeparators(final ToolBar toolbar, final ToolItem toolItem, final int index) {
-		//		final ToolBar tb = toolbar;
-		//		final ICoolBarManager coolBarManager2 = ((ApplicationWindow) PlatformUI.getWorkbench().getActiveWorkbenchWindow()).getCoolBarManager2();
-		//		final ContributionManager toolbarManager2 = (ContributionManager) ((ToolBarContributionItem2) coolBarManager2.getItems()[0]).getToolBarManager();
+	public void createContributionForToolBarSeparators(final ToolBar toolbar) {
+
 		final ToolbarItemContribution contribution = new ToolbarItemContribution();
 
 		final CoolBar manager = ((CoolBar) toolbar.getParent());
@@ -110,13 +110,21 @@ public class ToolItemScalingHelper {
 		final ToolBarContributionItem2 contribItem = (ToolBarContributionItem2) items.get(0).getData();
 		final ContributionManager tbManager = (ContributionManager) contribItem.getToolBarManager();
 
-		if (tbManager.isEmpty()) {
-			tbManager.insert(0, contribution);
-		} else {
-			tbManager.insert(index, contribution);
+		final Iterator<IContributionItem> iterator = Arrays.asList(tbManager.getItems()).iterator();
+		int counter = 0;
+		while (iterator.hasNext()) {
+			//			iterator.next();
+			counter++;
+			if (!(iterator.next() instanceof ToolbarItemContribution)) {
+				tbManager.insert(counter, new ToolbarItemContribution());
+				counter++;
+			}
 		}
 
-		toolItem.setData("toolItemSeparatorContribution", contribution); //$NON-NLS-1$
+		for (int i = 0; i < toolbar.getItems().length; i++) {
+			toolbar.getItem(i).setData("toolItemSeparatorContribution", contribution);
+		}
+
 	}
 
 	/**
