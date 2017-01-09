@@ -13,7 +13,6 @@ package org.eclipse.riena.navigation.ui.swt.views;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import org.osgi.service.log.LogService;
@@ -149,10 +148,7 @@ public class RienaMenuHelper {
 		// create Separator for Toolbar
 		final ToolItemScalingHelper menuScalingHelper = new ToolItemScalingHelper();
 		if (menuScalingHelper.needScaleBasedSpacing()) {
-			final List<ToolItem> originalList = getAllToolItems(toolbarParent);
-			final Iterator<ToolItem> iterator = originalList.iterator();
 			final List<CoolBar> coolBars = getCoolBars(toolbarParent);
-			final int counter = 0;
 			for (final CoolBar coolBar : coolBars) {
 				final List<ToolBar> toolBars = getToolBars(coolBar);
 				for (final ToolBar toolBar : toolBars) {

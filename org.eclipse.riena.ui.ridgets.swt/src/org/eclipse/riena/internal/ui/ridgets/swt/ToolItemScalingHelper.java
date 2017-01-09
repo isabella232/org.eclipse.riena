@@ -42,7 +42,7 @@ public class ToolItemScalingHelper {
 	public Boolean needScaleBasedSpacing() {
 		final float[] dpi = SwtUtilities.getDpiFactors();
 		final boolean needSpacing = (dpi[0] > 1.0) ? true : false;
-		return needSpacing;
+		return true;
 	}
 
 	/**
@@ -80,6 +80,7 @@ public class ToolItemScalingHelper {
 
 			separator.setWidth(width);
 			final Composite composite = new Composite(toolbar, SWT.NONE);
+			composite.setBackground(new Color(SwtUtilities.getDisplay(), 255, 0, 0));
 			composite.setData("Separator", "Separator Composite"); //$NON-NLS-1$ //$NON-NLS-2$
 			separator.setControl(composite);
 			separator.setEnabled(false);
@@ -113,10 +114,9 @@ public class ToolItemScalingHelper {
 		final Iterator<IContributionItem> iterator = Arrays.asList(tbManager.getItems()).iterator();
 		int counter = 0;
 		while (iterator.hasNext()) {
-			//			iterator.next();
 			counter++;
 			if (!(iterator.next() instanceof ToolbarItemContribution)) {
-				tbManager.insert(counter, new ToolbarItemContribution());
+				tbManager.insert(counter, contribution);
 				counter++;
 			}
 		}
