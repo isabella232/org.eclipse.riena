@@ -42,7 +42,7 @@ public class ToolItemScalingHelper {
 	public Boolean needScaleBasedSpacing() {
 		final float[] dpi = SwtUtilities.getDpiFactors();
 		final boolean needSpacing = (dpi[0] > 1.0) ? true : false;
-		return true;
+		return needSpacing;
 	}
 
 	/**
