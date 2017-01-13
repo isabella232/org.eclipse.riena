@@ -27,46 +27,30 @@ import org.apache.batik.transcoder.image.ImageTranscoder;
 import org.eclipse.swt.graphics.Rectangle;
 
 class SvgRasterizer {
-	/**
-	 * The transcoder input.
-	 */
-	protected TranscoderInput input;
 
-	/**
-	 * The transcoder hints.
-	 */
-	protected TranscodingHints hints = new TranscodingHints();
-
-	/**
-	 * The image that represents the SVG document.
-	 */
+	protected TranscoderInput inputUrl;
+	protected TranscodingHints transcodingHints = new TranscodingHints();
 	protected BufferedImage outputImg;
 
-	/**
-	 * Constructs a new SVGRasterizer.
-	 *
-	 * @param url
-	 *            the URL of the document to rasterize
-	 */
 	public SvgRasterizer() {
 	}
 
 	public void setUrl(final URL url) {
-		this.input = new TranscoderInput(url.toString());
+		this.inputUrl = new TranscoderInput(url.toString());
 	}
 
 	/**
-	 * Returns the image that represents the SVG document.
+	 * Creates and returns the image that represents the SVG Image.
 	 */
 	public BufferedImage createBufferedImage(final Rectangle imageBounds) throws TranscoderException {
 
 		final Rasterizer r = new Rasterizer();
-		hints.put(ImageTranscoder.KEY_WIDTH, new Float(imageBounds.width));
-		hints.put(ImageTranscoder.KEY_HEIGHT, new Float(imageBounds.height));
-		hints.put(ImageTranscoder.KEY_FORCE_TRANSPARENT_WHITE, false);
+		transcodingHints.put(ImageTranscoder.KEY_WIDTH, new Float(imageBounds.width));
+		transcodingHints.put(ImageTranscoder.KEY_HEIGHT, new Float(imageBounds.height));
+		transcodingHints.put(ImageTranscoder.KEY_FORCE_TRANSPARENT_WHITE, false);
 
-		r.setTranscodingHints((Map) hints);
-		r.transcode(input, null);
+		r.setTranscodingHints((Map) transcodingHints);
+		r.transcode(inputUrl, null);
 		return outputImg;
 	}
 
@@ -100,7 +84,7 @@ class SvgRasterizer {
 		}
 
 		@Override
-		public void writeImage(final BufferedImage img, final TranscoderOutput output) throws TranscoderException {
+		public void writeImage(final BufferedImage img, final TranscoderOutput output) {
 			SvgRasterizer.this.outputImg = img;
 		}
 	}
