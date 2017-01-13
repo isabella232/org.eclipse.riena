@@ -44,7 +44,7 @@ class SvgRasterizer {
 	 */
 	public BufferedImage createBufferedImage(final Rectangle imageBounds) throws TranscoderException {
 
-		final Rasterizer r = new Rasterizer();
+		final ImageRasterizer r = new ImageRasterizer();
 		transcodingHints.put(ImageTranscoder.KEY_WIDTH, new Float(imageBounds.width));
 		transcodingHints.put(ImageTranscoder.KEY_HEIGHT, new Float(imageBounds.height));
 		transcodingHints.put(ImageTranscoder.KEY_FORCE_TRANSPARENT_WHITE, false);
@@ -56,16 +56,13 @@ class SvgRasterizer {
 
 	/**
 	 * An image transcoder that stores the resulting image.
-	 * 
-	 * @param <RenderingHints>
 	 */
-	private class Rasterizer extends ImageTranscoder {
+	private class ImageRasterizer extends ImageTranscoder {
 
 		private final RenderingHints renderingHints = new RenderingHints(null);
 
 		@Override
 		protected ImageRenderer createRenderer() {
-
 			renderingHints.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 			renderingHints.put(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
 			renderingHints.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
