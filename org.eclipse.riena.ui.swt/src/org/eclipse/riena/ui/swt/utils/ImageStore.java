@@ -10,10 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.utils;
 
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -22,10 +20,13 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import com.kitfox.svg.SVGCache;
+import org.apache.batik.anim.dom.SAXSVGDocumentFactory;
+import org.apache.batik.transcoder.TranscoderException;
+import org.apache.batik.util.XMLResourceDescriptor;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 import com.kitfox.svg.SVGDiagram;
-import com.kitfox.svg.SVGException;
-import com.kitfox.svg.SVGRoot;
 
 import org.osgi.service.log.LogService;
 
@@ -68,6 +69,8 @@ public final class ImageStore {
 
 	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), ImageStore.class);
 
+	private final SvgRasterizer rasterize;
+
 	private ImageStore() {
 		// utility class
 		final ImageOperations availableOperations = new ImageOperations();
@@ -76,6 +79,8 @@ public final class ImageStore {
 		listOfStrategys.add(availableOperations.getPngOperationWithoutImageSize());
 		listOfStrategys.add(availableOperations.getPngOperationSecondlastAttempt());
 		listOfStrategys.add(availableOperations.getPngDefaultImageOperation());
+
+		rasterize = new SvgRasterizer();
 	}
 
 	/**
@@ -492,33 +497,31 @@ public final class ImageStore {
 			return null;
 		}
 
-		final URI svgUri = SVGCache.getSVGUniverse().loadSVG(url);
-		final SVGDiagram diagram = SVGCache.getSVGUniverse().getDiagram(svgUri);
-		if (diagram == null) {
-			return null;
+		final SAXSVGDocumentFactory factory = new SAXSVGDocumentFactory(XMLResourceDescriptor.getXMLParserClassName());
+
+		Document document = null;
+		try {
+			document = factory.createDocument(url.toString());
+		} catch (final IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
 
-		final Rectangle bounds = getImageBounds(diagram, imageSize);
-		final BufferedImage bi = new BufferedImage(bounds.width, bounds.height, BufferedImage.TYPE_INT_ARGB);
-		final Graphics2D ig2 = bi.createGraphics();
-		final AffineTransform at = new AffineTransform();
-		at.setToScale(bounds.width / diagram.getWidth(), bounds.height / diagram.getHeight());
-		ig2.transform(at);
-		ig2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-		ig2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
-		ig2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		//		final URI svgUri = SVGCache.getSVGUniverse().loadSVG(url);
+		//		final SVGDiagram diagram = SVGCache.getSVGUniverse().getDiagram(svgUri);
+		//		if (diagram == null) {
+		//			return null;
+		//		}
+
+		//		final Rectangle bounds = getImageBounds(diagram, imageSize);
+		final Rectangle bounds = getImageBounds2(url, imageSize);
+		BufferedImage bi = null;
+		rasterize.setUrl(url);
 		try {
-			final SVGRoot root = diagram.getRoot();
-			//root.setAttribute("width", AnimationElement.AT_XML, Integer.toString(bounds.width)); //$NON-NLS-1$
-			//root.setAttribute("height", AnimationElement.AT_XML, Integer.toString(bounds.height)); //$NON-NLS-1$
-			root.build();
-			diagram.setIgnoringClipHeuristic(true);
-			root.render(ig2);
-		} catch (final SVGException e) {
+			bi = rasterize.createBufferedImage(bounds);
+		} catch (final TranscoderException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return null;
-		} finally {
-			SVGCache.getSVGUniverse().clear();
 		}
 
 		final ImageData imageData = SwtUtilities.convertAwtImageToImageData(bi);
@@ -529,6 +532,112 @@ public final class ImageStore {
 		return new Image(display, imageData);
 
 	}
+
+	/**
+	 * @param url
+	 * @return
+	 */
+	private Rectangle getImageBounds2(final URL url, final IconSize imageSize) {
+		int x = 0;
+		int y = 0;
+		int width = 0;
+		int height = 0;
+
+		final String parser = XMLResourceDescriptor.getXMLParserClassName();
+		final SAXSVGDocumentFactory f = new SAXSVGDocumentFactory(parser);
+		Element svgElement = null;
+		Document doc = null;
+
+		try {
+			doc = f.createDocument(url.toString());
+		} catch (final IOException e1) {
+			e1.printStackTrace();
+		}
+
+		if ((imageSize == null) || (imageSize == IconSize.NONE)) {
+			if (doc != null) {
+				svgElement = doc.getDocumentElement();
+				final String viewBox = svgElement.getAttribute("viewBox");
+				final String widthAsString = svgElement.getAttribute("width");
+				final String heightAsString = svgElement.getAttribute("height");
+				if (viewBox.equals("")) {
+					height = Math.round(Float.parseFloat(heightAsString));
+					width = Math.round(Float.parseFloat(widthAsString));
+				} else {
+					final String[] splited = viewBox.split("\\s+");
+					height = Math.round(Float.parseFloat(splited[3]));
+					width = Math.round(Float.parseFloat(splited[2]));
+				}
+			}
+		} else {
+			width = imageSize.getWidth();
+			height = imageSize.getHeight();
+		}
+		x = SwtUtilities.convertXToDpi(x);
+		y = SwtUtilities.convertYToDpi(y);
+		width = SwtUtilities.convertXToDpi(width);
+		height = SwtUtilities.convertYToDpi(height);
+		return new Rectangle(x, y, width, height);
+	}
+
+	//	/**
+	//	 * Loads the given SVG file and creates a SWT image with the given size.
+	//	 * 
+	//	 * @param fullName
+	//	 *            file name of the SVG
+	//	 * @param imageSize
+	//	 *            expected size of the SWT image (if {@code null} the size of the SVG is used)
+	//	 * @return SWT image or {@code null} if creation failed
+	//	 */
+	//	private Image createSvgImage(final String fullName, final IconSize imageSize) {
+	//
+	//		final Display display = SwtUtilities.getDisplay();
+	//		if (display == null) {
+	//			return null;
+	//		}
+	//
+	//		final URL url = getImageUrl(fullName);
+	//		if (url == null) {
+	//			return null;
+	//		}
+	//
+	//		final URI svgUri = SVGCache.getSVGUniverse().loadSVG(url);
+	//		final SVGDiagram diagram = SVGCache.getSVGUniverse().getDiagram(svgUri);
+	//		if (diagram == null) {
+	//			return null;
+	//		}
+	//
+	//		final Rectangle bounds = getImageBounds(diagram, imageSize);
+	//		final BufferedImage bi = new BufferedImage(bounds.width, bounds.height, BufferedImage.TYPE_INT_ARGB);
+	//		final Graphics2D ig2 = bi.createGraphics();
+	//		final AffineTransform at = new AffineTransform();
+	//		at.setToScale(bounds.width / diagram.getWidth(), bounds.height / diagram.getHeight());
+	//		ig2.transform(at);
+	//		ig2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+	//		ig2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+	//		ig2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+	//		try {
+	//			final SVGRoot root = diagram.getRoot();
+	//			//root.setAttribute("width", AnimationElement.AT_XML, Integer.toString(bounds.width)); //$NON-NLS-1$
+	//			//root.setAttribute("height", AnimationElement.AT_XML, Integer.toString(bounds.height)); //$NON-NLS-1$
+	//			root.build();
+	//			diagram.setIgnoringClipHeuristic(true);
+	//			root.render(ig2);
+	//		} catch (final SVGException e) {
+	//			e.printStackTrace();
+	//			return null;
+	//		} finally {
+	//			SVGCache.getSVGUniverse().clear();
+	//		}
+	//
+	//		final ImageData imageData = SwtUtilities.convertAwtImageToImageData(bi);
+	//		if (imageData == null) {
+	//			return null;
+	//		}
+	//
+	//		return new Image(display, imageData);
+	//
+	//	}
 
 	/**
 	 * 
