@@ -493,24 +493,15 @@ public final class ImageStore {
 			return null;
 		}
 
-		final SAXSVGDocumentFactory factory = new SAXSVGDocumentFactory(XMLResourceDescriptor.getXMLParserClassName());
-
-		Document document = null;
-		try {
-			document = factory.createDocument(url.toString());
-		} catch (final IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
 		final Rectangle bounds = getImageBounds(url.toString(), imageSize);
+
 		BufferedImage bi = null;
+
 		rasterize.setUrl(url);
 		try {
 			bi = rasterize.createBufferedImage(bounds);
-		} catch (final TranscoderException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (final TranscoderException e1) {
+			e1.printStackTrace();
 		}
 
 		final ImageData imageData = SwtUtilities.convertAwtImageToImageData(bi);
@@ -525,8 +516,8 @@ public final class ImageStore {
 	/**
 	 * Returns the expected (scalded) size/bounds of the image
 	 * 
-	 * @param svgDiagram
-	 *            diagram of the SVG
+	 * @param url
+	 *            the url for the given SVG-Image as String
 	 * @param imageSize
 	 *            expected size of the SWT image (if {@code null} the size of the SVG is used)
 	 * @return bounds of the image
@@ -540,12 +531,12 @@ public final class ImageStore {
 		final String parser = XMLResourceDescriptor.getXMLParserClassName();
 		final SAXSVGDocumentFactory f = new SAXSVGDocumentFactory(parser);
 		Element svgElement = null;
-		Document doc = null;
+		Document document = null;
 
 		if (url != null) {
-			if (!(url.equals(""))) {
+			if (!(url.equals(""))) { //$NON-NLS-1$
 				try {
-					doc = f.createDocument(url);
+					document = f.createDocument(url);
 				} catch (final IOException e) {
 					e.printStackTrace();
 				}
@@ -554,8 +545,8 @@ public final class ImageStore {
 		}
 
 		if ((imageSize == null) || (imageSize == IconSize.NONE)) {
-			if (doc != null) {
-				svgElement = doc.getDocumentElement();
+			if (document != null) {
+				svgElement = document.getDocumentElement();
 				final String viewBox = svgElement.getAttribute("viewBox"); //$NON-NLS-1$
 				final String widthAsString = svgElement.getAttribute("width"); //$NON-NLS-1$
 				final String heightAsString = svgElement.getAttribute("height"); //$NON-NLS-1$
@@ -563,9 +554,9 @@ public final class ImageStore {
 					height = Math.round(Float.parseFloat(heightAsString));
 					width = Math.round(Float.parseFloat(widthAsString));
 				} else {
-					final String[] splited = viewBox.split("\\s+"); //$NON-NLS-1$
-					height = Math.round(Float.parseFloat(splited[3]));
-					width = Math.round(Float.parseFloat(splited[2]));
+					final String[] viewBoxValues = viewBox.split("\\s+"); //$NON-NLS-1$
+					width = Math.round(Float.parseFloat(viewBoxValues[2]));
+					height = Math.round(Float.parseFloat(viewBoxValues[3]));
 				}
 			}
 		} else {
