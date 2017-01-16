@@ -146,13 +146,13 @@ public class RienaMenuHelper {
 		}
 
 		// create Separator for Toolbar
-		final ToolItemScalingHelper menuScalingHelper = new ToolItemScalingHelper();
-		if (menuScalingHelper.needScaleBasedSpacing()) {
+		final ToolItemScalingHelper toolBarScalingHelper = new ToolItemScalingHelper();
+		if (toolBarScalingHelper.needScaleBasedSpacing()) {
 			final List<CoolBar> coolBars = getCoolBars(toolbarParent);
 			for (final CoolBar coolBar : coolBars) {
 				final List<ToolBar> toolBars = getToolBars(coolBar);
 				for (final ToolBar toolBar : toolBars) {
-					menuScalingHelper.createContributionForToolBarSeparators(toolBar);
+					toolBarScalingHelper.createSeparatorContributionsForToolBars(toolBars);
 				}
 			}
 		}

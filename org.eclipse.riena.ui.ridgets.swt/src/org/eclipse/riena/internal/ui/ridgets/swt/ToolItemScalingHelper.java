@@ -13,6 +13,7 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 
 import org.eclipse.jface.action.ContributionManager;
 import org.eclipse.jface.action.IContributionItem;
@@ -68,6 +69,7 @@ public class ToolItemScalingHelper {
 	 *            width if fixed, -1 to calculate use scaling
 	 * @return a separator if scaling is needed. Returns null if scaling is not needed.
 	 */
+	@Deprecated
 	public ToolItem createSeparatorForScaling(final ToolBar toolbar, final ToolItem toolItem, final int index, int width,
 			final ToolbarItemContribution contribution) {
 		if (needScaleBasedSpacing()) {
@@ -93,6 +95,14 @@ public class ToolItemScalingHelper {
 		return null;
 	}
 
+	public void createSeparatorContributionsForToolBars(final List<ToolBar> toolBars) {
+		int coolItemIndex = 0;
+		for (final ToolBar toolBar : toolBars) {
+			createContributionForToolBarSeparators(toolBar, coolItemIndex);
+			coolItemIndex++;
+		}
+	}
+
 	/**
 	 * Create a new Contribution to the toolbarManager.
 	 * 
@@ -101,16 +111,17 @@ public class ToolItemScalingHelper {
 	 * @param index
 	 *            the index where to add the contribution in the toolarManager
 	 */
-	public void createContributionForToolBarSeparators(final ToolBar toolbar) {
+	private void createContributionForToolBarSeparators(final ToolBar toolbar, final int coolItemIndex) {
 
 		final ToolbarItemContribution contribution = new ToolbarItemContribution();
 
 		final CoolBar manager = ((CoolBar) toolbar.getParent());
 		final ArrayList<CoolItem> items = new ArrayList<CoolItem>();
 		items.addAll(Arrays.asList(manager.getItems()));
-		final ToolBarContributionItem2 contribItem = (ToolBarContributionItem2) items.get(0).getData();
+		final ToolBarContributionItem2 contribItem = (ToolBarContributionItem2) items.get(coolItemIndex).getData();
 		final ContributionManager tbManager = (ContributionManager) contribItem.getToolBarManager();
 
+		//Insert Contribution for TBManager to avoid being kickedoff the whitelist
 		final Iterator<IContributionItem> iterator = Arrays.asList(tbManager.getItems()).iterator();
 		int counter = 0;
 		while (iterator.hasNext()) {
@@ -121,6 +132,7 @@ public class ToolItemScalingHelper {
 			}
 		}
 
+		//Add the contribution to the toolbarItem to avoid being kickedoff the whitelist 
 		for (int i = 0; i < toolbar.getItems().length; i++) {
 			toolbar.getItem(i).setData("toolItemSeparatorContribution", contribution);
 		}
