@@ -69,7 +69,6 @@ public class ToolItemScalingHelper {
 	 *            width if fixed, -1 to calculate use scaling
 	 * @return a separator if scaling is needed. Returns null if scaling is not needed.
 	 */
-	@Deprecated
 	public ToolItem createSeparatorForScaling(final ToolBar toolbar, final ToolItem toolItem, final int index, int width,
 			final ToolbarItemContribution contribution) {
 		if (needScaleBasedSpacing()) {
