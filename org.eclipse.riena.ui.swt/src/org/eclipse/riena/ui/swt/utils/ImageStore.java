@@ -10,10 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.utils;
 
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -22,10 +20,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import com.kitfox.svg.SVGCache;
-import com.kitfox.svg.SVGDiagram;
-import com.kitfox.svg.SVGException;
-import com.kitfox.svg.SVGRoot;
+import org.apache.batik.anim.dom.SAXSVGDocumentFactory;
+import org.apache.batik.transcoder.TranscoderException;
+import org.apache.batik.util.XMLResourceDescriptor;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import org.osgi.service.log.LogService;
 
@@ -68,6 +67,8 @@ public final class ImageStore {
 
 	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), ImageStore.class);
 
+	private final SvgRasterizer rasterize;
+
 	private ImageStore() {
 		// utility class
 		final ImageOperations availableOperations = new ImageOperations();
@@ -76,6 +77,8 @@ public final class ImageStore {
 		listOfStrategys.add(availableOperations.getPngOperationWithoutImageSize());
 		listOfStrategys.add(availableOperations.getPngOperationSecondlastAttempt());
 		listOfStrategys.add(availableOperations.getPngDefaultImageOperation());
+
+		rasterize = new SvgRasterizer();
 	}
 
 	/**
@@ -447,8 +450,6 @@ public final class ImageStore {
 
 	private synchronized Image loadSvgImage(final String fullName, final IconSize imageSize) {
 
-		// https://svgsalamander.java.net/docs/use.html
-
 		if (StringUtils.isEmpty(fullName)) {
 			return null;
 		}
@@ -492,33 +493,15 @@ public final class ImageStore {
 			return null;
 		}
 
-		final URI svgUri = SVGCache.getSVGUniverse().loadSVG(url);
-		final SVGDiagram diagram = SVGCache.getSVGUniverse().getDiagram(svgUri);
-		if (diagram == null) {
-			return null;
-		}
+		final Rectangle bounds = getImageBounds(url.toString(), imageSize);
 
-		final Rectangle bounds = getImageBounds(diagram, imageSize);
-		final BufferedImage bi = new BufferedImage(bounds.width, bounds.height, BufferedImage.TYPE_INT_ARGB);
-		final Graphics2D ig2 = bi.createGraphics();
-		final AffineTransform at = new AffineTransform();
-		at.setToScale(bounds.width / diagram.getWidth(), bounds.height / diagram.getHeight());
-		ig2.transform(at);
-		ig2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-		ig2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
-		ig2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		BufferedImage bi = null;
+
+		rasterize.setUrl(url);
 		try {
-			final SVGRoot root = diagram.getRoot();
-			//root.setAttribute("width", AnimationElement.AT_XML, Integer.toString(bounds.width)); //$NON-NLS-1$
-			//root.setAttribute("height", AnimationElement.AT_XML, Integer.toString(bounds.height)); //$NON-NLS-1$
-			root.build();
-			diagram.setIgnoringClipHeuristic(true);
-			root.render(ig2);
-		} catch (final SVGException e) {
-			e.printStackTrace();
-			return null;
-		} finally {
-			SVGCache.getSVGUniverse().clear();
+			bi = rasterize.createBufferedImage(bounds);
+		} catch (final TranscoderException e1) {
+			e1.printStackTrace();
 		}
 
 		final ImageData imageData = SwtUtilities.convertAwtImageToImageData(bi);
@@ -528,6 +511,63 @@ public final class ImageStore {
 
 		return new Image(display, imageData);
 
+	}
+
+	/**
+	 * Returns the expected (scalded) size/bounds of the image
+	 * 
+	 * @param url
+	 *            the url for the given SVG-Image as String
+	 * @param imageSize
+	 *            expected size of the SWT image (if {@code null} the size of the SVG is used)
+	 * @return bounds of the image
+	 */
+	private Rectangle getImageBounds(final String url, final IconSize imageSize) {
+		int x = 0;
+		int y = 0;
+		int width = 0;
+		int height = 0;
+
+		final String parser = XMLResourceDescriptor.getXMLParserClassName();
+		final SAXSVGDocumentFactory f = new SAXSVGDocumentFactory(parser);
+		Element svgElement = null;
+		Document document = null;
+
+		if (url != null) {
+			if (!(url.equals(""))) { //$NON-NLS-1$
+				try {
+					document = f.createDocument(url);
+				} catch (final IOException e) {
+					e.printStackTrace();
+				}
+			}
+
+		}
+
+		if ((imageSize == null) || (imageSize == IconSize.NONE)) {
+			if (document != null) {
+				svgElement = document.getDocumentElement();
+				final String viewBox = svgElement.getAttribute("viewBox"); //$NON-NLS-1$
+				final String widthAsString = svgElement.getAttribute("width"); //$NON-NLS-1$
+				final String heightAsString = svgElement.getAttribute("height"); //$NON-NLS-1$
+				if (viewBox.equals("")) { //$NON-NLS-1$
+					height = Math.round(Float.parseFloat(heightAsString));
+					width = Math.round(Float.parseFloat(widthAsString));
+				} else {
+					final String[] viewBoxValues = viewBox.split("\\s+"); //$NON-NLS-1$
+					width = Math.round(Float.parseFloat(viewBoxValues[2]));
+					height = Math.round(Float.parseFloat(viewBoxValues[3]));
+				}
+			}
+		} else {
+			width = imageSize.getWidth();
+			height = imageSize.getHeight();
+		}
+		x = SwtUtilities.convertXToDpi(x);
+		y = SwtUtilities.convertYToDpi(y);
+		width = SwtUtilities.convertXToDpi(width);
+		height = SwtUtilities.convertYToDpi(height);
+		return new Rectangle(x, y, width, height);
 	}
 
 	/**
@@ -577,36 +617,6 @@ public final class ImageStore {
 	 */
 	private String getIconSizeGroupIdentifier(final IconSize iconSize) {
 		return LnfManager.getLnf().getIconSizeGroupIdentifier(iconSize);
-	}
-
-	/**
-	 * Returns the expected (scalded) size/bounds of the image
-	 * 
-	 * @param svgDiagram
-	 *            diagram of the SVG
-	 * @param imageSize
-	 *            expected size of the SWT image (if {@code null} the size of the SVG is used)
-	 * @return bounds of the image
-	 */
-	private Rectangle getImageBounds(final SVGDiagram svgDiagram, final IconSize imageSize) {
-		int x = 0;
-		int y = 0;
-		int width = 0;
-		int height = 0;
-		if ((imageSize == null) || (imageSize == IconSize.NONE)) {
-			if (svgDiagram != null) {
-				width = Math.round(svgDiagram.getWidth());
-				height = Math.round(svgDiagram.getHeight());
-			}
-		} else {
-			width = imageSize.getWidth();
-			height = imageSize.getHeight();
-		}
-		x = SwtUtilities.convertXToDpi(x);
-		y = SwtUtilities.convertYToDpi(y);
-		width = SwtUtilities.convertXToDpi(width);
-		height = SwtUtilities.convertYToDpi(height);
-		return new Rectangle(x, y, width, height);
 	}
 
 	/**

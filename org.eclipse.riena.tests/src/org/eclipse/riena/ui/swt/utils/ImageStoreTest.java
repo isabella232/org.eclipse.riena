@@ -11,9 +11,7 @@
 package org.eclipse.riena.ui.swt.utils;
 
 import java.net.URI;
-
-import com.kitfox.svg.SVGCache;
-import com.kitfox.svg.SVGDiagram;
+import java.net.URL;
 
 import org.osgi.framework.Bundle;
 
@@ -366,7 +364,7 @@ public class ImageStoreTest extends RienaTestCase {
 		if (!SwtUtilities.isDpiScalingEnabled()) {
 			final int pixelValue = image.getImageData().getPixel(0, 6);
 			final RGB rgb = image.getImageData().palette.getRGB(pixelValue);
-			assertEquals(new RGB(30, 30, 27), rgb);
+			assertEquals(new RGB(73, 83, 85), rgb);
 		}
 
 		name = "cloud"; //$NON-NLS-1$
@@ -381,7 +379,7 @@ public class ImageStoreTest extends RienaTestCase {
 		if (!SwtUtilities.isDpiScalingEnabled()) {
 			final int pixelValue = image.getImageData().getPixel(0, 15);
 			final RGB rgb = image.getImageData().palette.getRGB(pixelValue);
-			assertEquals(new RGB(29, 29, 26), rgb);
+			assertEquals(new RGB(33, 34, 32), rgb);
 		}
 
 	}
@@ -396,38 +394,39 @@ public class ImageStoreTest extends RienaTestCase {
 
 		final ImageStore store = ImageStore.getInstance();
 
-		SVGDiagram svgDiagram = null;
 		IconSize size = null;
-		Rectangle bounds = ReflectionUtils.invokeHidden(store, "getImageBounds", svgDiagram, size); //$NON-NLS-1$
+		String urlString = "";
+		Rectangle bounds = ReflectionUtils.invokeHidden(store, "getImageBounds", urlString, size); //$NON-NLS-1$
+		assertEquals(new Rectangle(0, 0, 0, 0), bounds);
+
+		urlString = null;
+		bounds = ReflectionUtils.invokeHidden(store, "getImageBounds", urlString, size); //$NON-NLS-1$
 		assertEquals(new Rectangle(0, 0, 0, 0), bounds);
 
 		size = IconSize.NONE;
-		bounds = ReflectionUtils.invokeHidden(store, "getImageBounds", svgDiagram, size); //$NON-NLS-1$
+		bounds = ReflectionUtils.invokeHidden(store, "getImageBounds", urlString, size); //$NON-NLS-1$
 		assertEquals(new Rectangle(0, 0, 0, 0), bounds);
 
 		size = IconSize.A16;
-		bounds = ReflectionUtils.invokeHidden(store, "getImageBounds", svgDiagram, size); //$NON-NLS-1$
+		bounds = ReflectionUtils.invokeHidden(store, "getImageBounds", urlString, size); //$NON-NLS-1$
 		int wh = SwtUtilities.convertPixelToDpi(16);
 		assertEquals(new Rectangle(0, 0, wh, wh), bounds);
 
 		size = IconSize.F128;
-		bounds = ReflectionUtils.invokeHidden(store, "getImageBounds", svgDiagram, size); //$NON-NLS-1$
+		bounds = ReflectionUtils.invokeHidden(store, "getImageBounds", urlString, size); //$NON-NLS-1$
 		wh = SwtUtilities.convertPixelToDpi(128);
 		assertEquals(new Rectangle(0, 0, wh, wh), bounds);
 
-		final URI imageUri = store.getImageUri("cloud", ImageFileExtension.SVG); //$NON-NLS-1$
-		svgDiagram = SVGCache.getSVGUniverse().getDiagram(imageUri);
+		final URL url = ReflectionUtils.invokeHidden(store, "getImageUrl", "cloud.svg"); //$NON-NLS-1$
 		size = IconSize.NONE;
-		bounds = ReflectionUtils.invokeHidden(store, "getImageBounds", svgDiagram, size); //$NON-NLS-1$
+		bounds = ReflectionUtils.invokeHidden(store, "getImageBounds", url.toString(), size); //$NON-NLS-1$
 		wh = SwtUtilities.convertPixelToDpi(512);
 		assertEquals(new Rectangle(0, 0, wh, wh), bounds);
 
 		size = IconSize.D48;
-		bounds = ReflectionUtils.invokeHidden(store, "getImageBounds", svgDiagram, size); //$NON-NLS-1$
+		bounds = ReflectionUtils.invokeHidden(store, "getImageBounds", url.toString(), size); //$NON-NLS-1$
 		wh = SwtUtilities.convertPixelToDpi(48);
 		assertEquals(new Rectangle(0, 0, wh, wh), bounds);
-
-		SVGCache.getSVGUniverse().clear();
 
 	}
 
