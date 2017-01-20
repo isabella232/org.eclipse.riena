@@ -115,25 +115,25 @@ public class ToolItemScalingHelper {
 		final ToolbarItemContribution contribution = new ToolbarItemContribution();
 
 		final CoolBar manager = ((CoolBar) toolbar.getParent());
-		final ArrayList<CoolItem> items = new ArrayList<CoolItem>();
-		items.addAll(Arrays.asList(manager.getItems()));
-		final ToolBarContributionItem2 contribItem = (ToolBarContributionItem2) items.get(coolItemIndex).getData();
-		final ContributionManager tbManager = (ContributionManager) contribItem.getToolBarManager();
+		final ArrayList<CoolItem> coolItems = new ArrayList<CoolItem>();
+		coolItems.addAll(Arrays.asList(manager.getItems()));
+		final ToolBarContributionItem2 contributionItem = (ToolBarContributionItem2) coolItems.get(coolItemIndex).getData();
+		final ContributionManager toolbarManager = (ContributionManager) contributionItem.getToolBarManager();
 
-		//Insert Contribution for TBManager to avoid being kickedoff the whitelist
-		final Iterator<IContributionItem> iterator = Arrays.asList(tbManager.getItems()).iterator();
-		int counter = 0;
+		//Insert Contribution for TBManager to avoid being kicked off the whitelist
+		final Iterator<IContributionItem> iterator = Arrays.asList(toolbarManager.getItems()).iterator();
+		int indexCounter = 0;
 		while (iterator.hasNext()) {
-			counter++;
+			indexCounter++;
 			if (!(iterator.next() instanceof ToolbarItemContribution)) {
-				tbManager.insert(counter, contribution);
-				counter++;
+				toolbarManager.insert(indexCounter, contribution);
+				indexCounter++;
 			}
 		}
 
-		//Add the contribution to the toolbarItem to avoid being kickedoff the whitelist 
+		//Add the contribution to the toolbarItem to avoid being kicked off the whitelist 
 		for (int i = 0; i < toolbar.getItems().length; i++) {
-			toolbar.getItem(i).setData("toolItemSeparatorContribution", contribution);
+			toolbar.getItem(i).setData("toolItemSeparatorContribution", contribution); //$NON-NLS-1$
 		}
 
 	}

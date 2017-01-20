@@ -145,7 +145,7 @@ public class RienaMenuHelper {
 
 		}
 
-		// create Separator for Toolbar
+		// create Separator for Toolbaritems
 		final ToolItemScalingHelper toolBarScalingHelper = new ToolItemScalingHelper();
 		if (toolBarScalingHelper.needScaleBasedSpacing()) {
 			final List<CoolBar> coolBars = getCoolBars(toolbarParent);
