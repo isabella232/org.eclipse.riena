@@ -13,7 +13,6 @@ package org.eclipse.riena.navigation.ui.swt.views;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import org.osgi.service.log.LogService;
@@ -146,22 +145,14 @@ public class RienaMenuHelper {
 
 		}
 
-		// create Separator for Toolbar
-		final List<ToolItem> originalList = getAllToolItems(toolbarParent);
-		final Iterator<ToolItem> iterator = originalList.iterator();
-		final ToolItemScalingHelper menuScalingHelper = new ToolItemScalingHelper();
-		final List<CoolBar> coolBars = getCoolBars(toolbarParent);
-		int counter = 0;
-		for (final CoolBar coolBar : coolBars) {
-			final List<ToolBar> toolBars = getToolBars(coolBar);
-			for (final ToolBar toolBar : toolBars) {
-				while (iterator.hasNext()) {
-					final ToolItem originalItem = iterator.next();
-					counter++;
-					if (originalItem != null && !menuScalingHelper.itemHasSeparator(originalItem)) {
-						menuScalingHelper.createContributionForToolBarSeparators(originalItem, counter);
-						counter++;
-					}
+		// create Separator for Toolbaritems
+		final ToolItemScalingHelper toolBarScalingHelper = new ToolItemScalingHelper();
+		if (toolBarScalingHelper.needScaleBasedSpacing()) {
+			final List<CoolBar> coolBars = getCoolBars(toolbarParent);
+			for (final CoolBar coolBar : coolBars) {
+				final List<ToolBar> toolBars = getToolBars(coolBar);
+				for (final ToolBar toolBar : toolBars) {
+					toolBarScalingHelper.createSeparatorContributionsForToolBars(toolBars);
 				}
 			}
 		}
