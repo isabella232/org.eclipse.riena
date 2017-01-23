@@ -20,7 +20,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.batik.anim.dom.SAXSVGDocumentFactory;
+import org.apache.batik.dom.svg.SAXSVGDocumentFactory;
 import org.apache.batik.transcoder.TranscoderException;
 import org.apache.batik.util.XMLResourceDescriptor;
 import org.w3c.dom.Document;
