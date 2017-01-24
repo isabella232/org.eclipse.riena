@@ -36,23 +36,54 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 public class ToolItemScalingHelper {
 
 	/**
-	 * Checks if windows scaling is greater than 100%. If scaling is greather than 100% scaling is needed.
+	 * Creates SeparatorContributions for every toolbar in the given list.
 	 * 
-	 * @return true if spacing is needed. Otherwise false.
+	 * @param toolBars
 	 */
-	public Boolean needScaleBasedSpacing() {
-		final float[] dpi = SwtUtilities.getDpiFactors();
-		final boolean needSpacing = (dpi[0] > 1.0) ? true : false;
-		return needSpacing;
+	public void createSeparatorContributionsForToolBars(final List<ToolBar> toolBars) {
+		int coolItemIndex = 0;
+		boolean needFirstSeparator = false;
+		for (final ToolBar toolBar : toolBars) {
+			if (coolItemIndex > 0) {
+				needFirstSeparator = true;
+			}
+			createContributionForToolBarSeparators(toolBar, coolItemIndex, needFirstSeparator);
+			coolItemIndex++;
+		}
 	}
 
 	/**
-	 * Calculates the needed spacing between two menu items depending on the windows scaling
+	 * Create a new Contribution and adds it to the toolbarManager.
+	 * 
+	 * @param toolItem
+	 *            the toolItem which to attach the contribution
+	 * @param index
+	 *            the index where to add the contribution in the toolarManager
 	 */
-	public int calculateScalingBasedSpacing() {
-		final float[] dpiFactors = SwtUtilities.getDpiFactors();
-		final int separatorSpacing = (int) (dpiFactors[0] * LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.MENUBAR_SPACING, 4));
-		return separatorSpacing;
+	private void createContributionForToolBarSeparators(final ToolBar toolbar, final int coolItemIndex, final boolean firstSeparator) {
+		final ContributionManager toolbarManager = getContributionManagerFromToolBar(toolbar, coolItemIndex);
+		final ToolbarItemContribution FirstSeparatorContribution = new ToolbarItemContribution();
+		FirstSeparatorContribution.setIsSeparator(false);
+
+		int indexCounter = 0;
+		if (firstSeparator && !(toolbarManager.getItems()[0] instanceof ToolbarItemContribution)) {
+			toolbarManager.insert(indexCounter, FirstSeparatorContribution);
+		}
+
+		//Insert Contribution for TBManager to avoid being kicked off the cleanlist
+		final Iterator<IContributionItem> iterator = Arrays.asList(toolbarManager.getItems()).iterator();
+		while (iterator.hasNext()) {
+			indexCounter++;
+			if (!(iterator.next() instanceof ToolbarItemContribution)) {
+				toolbarManager.insert(indexCounter, new ToolbarItemContribution());
+				indexCounter++;
+			}
+		}
+
+		//Add the contribution to the toolbarItem to avoid being kicked off the cleanlist 
+		for (int i = 0; i < toolbar.getItems().length; i++) {
+			toolbar.getItem(i).setData("toolItemSeparatorContribution", new ToolbarItemContribution()); //$NON-NLS-1$
+		}
 	}
 
 	/**
@@ -94,50 +125,6 @@ public class ToolItemScalingHelper {
 		return null;
 	}
 
-	public void createSeparatorContributionsForToolBars(final List<ToolBar> toolBars) {
-		int coolItemIndex = 0;
-		for (final ToolBar toolBar : toolBars) {
-			createContributionForToolBarSeparators(toolBar, coolItemIndex);
-			coolItemIndex++;
-		}
-	}
-
-	/**
-	 * Create a new Contribution to the toolbarManager.
-	 * 
-	 * @param toolItem
-	 *            the toolItem which to attach the contribution
-	 * @param index
-	 *            the index where to add the contribution in the toolarManager
-	 */
-	private void createContributionForToolBarSeparators(final ToolBar toolbar, final int coolItemIndex) {
-
-		final ToolbarItemContribution contribution = new ToolbarItemContribution();
-
-		final CoolBar manager = ((CoolBar) toolbar.getParent());
-		final ArrayList<CoolItem> coolItems = new ArrayList<CoolItem>();
-		coolItems.addAll(Arrays.asList(manager.getItems()));
-		final ToolBarContributionItem2 contributionItem = (ToolBarContributionItem2) coolItems.get(coolItemIndex).getData();
-		final ContributionManager toolbarManager = (ContributionManager) contributionItem.getToolBarManager();
-
-		//Insert Contribution for TBManager to avoid being kicked off the whitelist
-		final Iterator<IContributionItem> iterator = Arrays.asList(toolbarManager.getItems()).iterator();
-		int indexCounter = 0;
-		while (iterator.hasNext()) {
-			indexCounter++;
-			if (!(iterator.next() instanceof ToolbarItemContribution)) {
-				toolbarManager.insert(indexCounter, contribution);
-				indexCounter++;
-			}
-		}
-
-		//Add the contribution to the toolbarItem to avoid being kicked off the whitelist 
-		for (int i = 0; i < toolbar.getItems().length; i++) {
-			toolbar.getItem(i).setData("toolItemSeparatorContribution", contribution); //$NON-NLS-1$
-		}
-
-	}
-
 	/**
 	 * creates a new Separator on the given position.
 	 * 
@@ -169,6 +156,35 @@ public class ToolItemScalingHelper {
 			return toolItem;
 		}
 		return null;
+	}
+
+	private ContributionManager getContributionManagerFromToolBar(final ToolBar toolbar, final int coolItemIndex) {
+		final CoolBar manager = ((CoolBar) toolbar.getParent());
+		final ArrayList<CoolItem> coolItems = new ArrayList<CoolItem>();
+		coolItems.addAll(Arrays.asList(manager.getItems()));
+		final ToolBarContributionItem2 contributionItem = (ToolBarContributionItem2) coolItems.get(coolItemIndex).getData();
+		final ContributionManager toolbarManager = (ContributionManager) contributionItem.getToolBarManager();
+		return toolbarManager;
+	}
+
+	/**
+	 * Checks if windows scaling is greater than 100%. If scaling is greather than 100% scaling is needed.
+	 * 
+	 * @return true if spacing is needed. Otherwise false.
+	 */
+	public Boolean needScaleBasedSpacing() {
+		final float[] dpi = SwtUtilities.getDpiFactors();
+		final boolean needSpacing = (dpi[0] > 1.0) ? true : false;
+		return true;
+	}
+
+	/**
+	 * Calculates the needed spacing between two menu items depending on the windows scaling
+	 */
+	public int calculateScalingBasedSpacing() {
+		final float[] dpiFactors = SwtUtilities.getDpiFactors();
+		final int separatorSpacing = (int) (dpiFactors[0] * LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.MENUBAR_SPACING, 4));
+		return separatorSpacing;
 	}
 
 	/**
