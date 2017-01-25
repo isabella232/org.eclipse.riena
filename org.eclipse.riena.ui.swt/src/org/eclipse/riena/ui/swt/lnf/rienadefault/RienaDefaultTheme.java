@@ -447,6 +447,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 		lnf.putLnfSetting(LnfKeyConstants.MENUBAR_TOP_MARGIN, 0);
 		lnf.putLnfSetting(LnfKeyConstants.TOOLBAR_TOP_MARGIN, 0);
 		lnf.putLnfSetting(LnfKeyConstants.MENUBAR_SPACING, 4);
+		lnf.putLnfSetting(LnfKeyConstants.TOOLBAR_SPACING, 8);
 		lnf.putLnfSetting(LnfKeyConstants.MENUBAR_ICON_SIZE, IconSize.A16);
 		lnf.putLnfSetting(LnfKeyConstants.TOOLBAR_ICON_SIZE, IconSize.B22);
 		lnf.putLnfSetting(LnfKeyConstants.EMBEDDED_TITLEBAR_ICON_SIZE, IconSize.A16);

@@ -19,7 +19,6 @@ import org.eclipse.jface.action.ContributionManager;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.internal.provisional.action.ToolBarContributionItem2;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.CoolBar;
 import org.eclipse.swt.widgets.CoolItem;
@@ -44,6 +43,7 @@ public class ToolItemScalingHelper {
 		int coolItemIndex = 0;
 		boolean needFirstSeparator = false;
 		for (final ToolBar toolBar : toolBars) {
+			//the first toolbar doesnt need an Separator at the beginning
 			if (coolItemIndex > 0) {
 				needFirstSeparator = true;
 			}
@@ -53,20 +53,21 @@ public class ToolItemScalingHelper {
 	}
 
 	/**
-	 * Create a new Contribution and adds it to the toolbarManager.
+	 * Create a new Contributions and add them to the toolbarManager.
 	 * 
 	 * @param toolItem
 	 *            the toolItem which to attach the contribution
 	 * @param index
 	 *            the index where to add the contribution in the toolarManager
 	 */
-	private void createContributionForToolBarSeparators(final ToolBar toolbar, final int coolItemIndex, final boolean firstSeparator) {
+	private void createContributionForToolBarSeparators(final ToolBar toolbar, final int coolItemIndex, final boolean firstSeparatorNeeded) {
 		final ContributionManager toolbarManager = getContributionManagerFromToolBar(toolbar, coolItemIndex);
-		final ToolbarItemContribution FirstSeparatorContribution = new ToolbarItemContribution();
-		FirstSeparatorContribution.setIsSeparator(false);
-
 		int indexCounter = 0;
-		if (firstSeparator && !(toolbarManager.getItems()[0] instanceof ToolbarItemContribution)) {
+
+		//Create and insert an ToolItemContribution at the beginning of the toolbar which is no Separator to avoid being kept of the cleanlist 
+		if (firstSeparatorNeeded && !(toolbarManager.getItems()[0] instanceof ToolbarItemContribution)) {
+			final ToolbarItemContribution FirstSeparatorContribution = new ToolbarItemContribution();
+			FirstSeparatorContribution.setIsSeparator(false);
 			toolbarManager.insert(indexCounter, FirstSeparatorContribution);
 		}
 
@@ -112,7 +113,7 @@ public class ToolItemScalingHelper {
 
 			separator.setWidth(width);
 			final Composite composite = new Composite(toolbar, SWT.NONE);
-			composite.setBackground(new Color(SwtUtilities.getDisplay(), 255, 0, 0));
+			//			composite.setBackground(new Color(SwtUtilities.getDisplay(), 255, 0, 0));
 			composite.setData("Separator", "Separator Composite"); //$NON-NLS-1$ //$NON-NLS-2$
 			separator.setControl(composite);
 			separator.setEnabled(false);
@@ -148,7 +149,7 @@ public class ToolItemScalingHelper {
 			final ToolItem separator = new ToolItem(toolbar, SWT.SEPARATOR, index);
 			separator.setWidth(width);
 			final Composite composite = new Composite(toolbar, SWT.NONE);
-			composite.setBackground(new Color(SwtUtilities.getDisplay(), 255, 0, 0));
+			//			composite.setBackground(new Color(SwtUtilities.getDisplay(), 255, 0, 0));
 			composite.setData("Separator", "Separator Composite"); //$NON-NLS-1$ //$NON-NLS-2$
 			separator.setControl(composite);
 			separator.setEnabled(false);
@@ -175,15 +176,28 @@ public class ToolItemScalingHelper {
 	public Boolean needScaleBasedSpacing() {
 		final float[] dpi = SwtUtilities.getDpiFactors();
 		final boolean needSpacing = (dpi[0] > 1.0) ? true : false;
-		return true;
+		return needSpacing;
 	}
 
 	/**
 	 * Calculates the needed spacing between two menu items depending on the windows scaling
+	 * 
+	 * @returns the spacing
 	 */
 	public int calculateScalingBasedSpacing() {
 		final float[] dpiFactors = SwtUtilities.getDpiFactors();
 		final int separatorSpacing = (int) (dpiFactors[0] * LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.MENUBAR_SPACING, 4));
+		return separatorSpacing;
+	}
+
+	/**
+	 * Calculates the needed spacing between two toolbars depending on the windows scaling
+	 * 
+	 * @return the spacing
+	 */
+	public int calculateSclaingBasedSpacingBetweenToolBars() {
+		final float[] dpiFactors = SwtUtilities.getDpiFactors();
+		final int separatorSpacing = (int) (dpiFactors[0] * LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.TOOLBAR_SPACING, 8));
 		return separatorSpacing;
 	}
 
