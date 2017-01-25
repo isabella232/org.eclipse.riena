@@ -14,7 +14,11 @@ Require-Bundle: org.eclipse.jface;resolution:=optional;visibility:=reexport,
  org.eclipse.rap.rwt;resolution:=optional;visibility:=reexport,
  org.eclipse.ui.workbench;resolution:=optional;visibility:=reexport,
  org.eclipse.rap.ui.workbench;resolution:=optional;visibility:=reexport,
- org.apache.batik;bundle-version="1.0.0"
+ com.caucho.hessian;bundle-version="3.2.0",
+ org.apache.batik.dom.svg;bundle-version="1.7.0",
+ org.apache.batik.transcoder;bundle-version="1.7.0",
+ org.apache.batik.util;bundle-version="1.7.0",
+ org.apache.batik.bridge;bundle-version="1.7.0"
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.riena.internal.ui.swt;x-friends:="org.eclipse.riena.navigation.ui.swt",
  org.eclipse.riena.internal.ui.swt.facades;x-friends:="org.eclipse.riena.ui.swt.3x,org.eclipse.riena.ui.swt.e4,org.eclipse.riena.ui.swt.rap",
