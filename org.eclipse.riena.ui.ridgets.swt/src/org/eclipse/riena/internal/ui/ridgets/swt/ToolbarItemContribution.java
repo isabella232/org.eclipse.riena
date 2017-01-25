@@ -12,6 +12,7 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IContributionManager;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.CoolBar;
 import org.eclipse.swt.widgets.Menu;
@@ -29,6 +30,7 @@ public class ToolbarItemContribution implements IContributionItem {
 
 	private final ICommandExtension command;
 	private boolean visible = true;
+	private boolean isSeparator = true;
 
 	public ToolbarItemContribution() {
 		this.command = null;
@@ -54,9 +56,30 @@ public class ToolbarItemContribution implements IContributionItem {
 
 	@Override
 	public void fill(final ToolBar parent, final int index) {
+		if (isFirstItemOfToolBar(index)) {
+			createFirstSeparator(parent);
+			return;
+		}
 		final ToolItem item = parent.getItem(index - 1);
 		final ToolItemScalingHelper scalingHelper = new ToolItemScalingHelper();
 		scalingHelper.createSeparatorForScalingOnPosition(parent, item, -1, index);
+	}
+
+	private boolean isFirstItemOfToolBar(final int index) {
+		return index == 0;
+	}
+
+	private void createFirstSeparator(final ToolBar parent) {
+		final ToolItemScalingHelper scalingHelper = new ToolItemScalingHelper();
+
+		final ToolItem separator = new ToolItem(parent, SWT.SEPARATOR, 0);
+		separator.setWidth(scalingHelper.calculateSclaingBasedSpacingBetweenToolBars());
+		final Composite composite = new Composite(parent, SWT.NONE);
+		//		composite.setBackground(new Color(SwtUtilities.getDisplay(), 255, 0, 0));
+		composite.setData("Separator", "Separator Composite");
+		separator.setControl(composite);
+		separator.setEnabled(false);
+		separator.setData("isFirstSeparator", true);
 	}
 
 	@Override
@@ -94,7 +117,11 @@ public class ToolbarItemContribution implements IContributionItem {
 
 	@Override
 	public boolean isSeparator() {
-		return true;
+		return isSeparator;
+	}
+
+	public void setIsSeparator(final boolean isSeparator) {
+		this.isSeparator = isSeparator;
 	}
 
 	@Override

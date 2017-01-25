@@ -435,6 +435,11 @@ public final class LnfKeyConstants {
 	/**
 	 * @since 6.2
 	 */
+	public static final String TOOLBAR_SPACING = "Toolbar.spacing";
+
+	/**
+	 * @since 6.2
+	 */
 	public static final String EMBEDDED_TITLEBAR_ICON_SIZE = "EembeddedTitlebar.iconsize"; //$NON-NLS-1$
 
 	public static final String TOOLBAR_FONT = "Toolbar.font"; //$NON-NLS-1$

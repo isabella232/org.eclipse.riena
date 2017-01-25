@@ -123,6 +123,8 @@ public class RienaDefaultLnf implements ILnfCustomizer {
 	}
 
 	/**
+	 * Maps the the given icon size to the given group.
+	 * 
 	 * @since 6.2
 	 */
 	public String putIconSizeGroupIdentifier(final IconSize iconSize, final String group) {
