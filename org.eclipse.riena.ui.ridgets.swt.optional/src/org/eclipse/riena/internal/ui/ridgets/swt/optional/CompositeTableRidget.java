@@ -649,7 +649,7 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 		}
 
 		public void refresh(final CompositeTable table, final int index, final Control row) {
-			if (index < rowValues.length) {
+			if (index < rowValues.length && index > -1) {
 				final Object rowBean = rowValues[index];
 				Assert.isLegal(rowBeanClass.isAssignableFrom(rowBean.getClass()));
 				final IRowRidget rowRidget = (IRowRidget) row.getData("rowRidget"); //$NON-NLS-1$
