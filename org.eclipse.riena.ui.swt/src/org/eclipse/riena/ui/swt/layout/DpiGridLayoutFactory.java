@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.layout;
 
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.layout.GridLayoutFactory;
-import org.eclipse.jface.layout.LayoutConstants;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridLayout;
@@ -29,6 +29,9 @@ public class DpiGridLayoutFactory {
 	 * Template layout. The factory will create copies of this layout.
 	 */
 	private final DpiGridLayout l;
+	private final static int HORIZONTAL_DIALOG_UNIT_PER_CHAR = 4;
+
+	private final static int VERTICAL_DIALOG_UNITS_PER_CHAR = 8;
 
 	/**
 	 * Creates a new DpiGridLayoutFactory that will create copies of the given layout.
@@ -115,10 +118,20 @@ public class DpiGridLayoutFactory {
 		final DpiGridLayout layout = new DpiGridLayout();
 		layout.marginWidth = 0;
 		layout.marginHeight = 0;
-		final Point defaultSpacing = LayoutConstants.getSpacing();
+		final Point defaultSpacing = computeSpacingWithoutScaling();
 		layout.horizontalSpacing = defaultSpacing.x;
 		layout.verticalSpacing = defaultSpacing.y;
 		return new DpiGridLayoutFactory(layout);
+	}
+
+	private static Point computeSpacingWithoutScaling() {
+		int horizontal = 0;
+		int vertical = 0;
+
+		horizontal = (6 * IDialogConstants.HORIZONTAL_SPACING + HORIZONTAL_DIALOG_UNIT_PER_CHAR / 2) / HORIZONTAL_DIALOG_UNIT_PER_CHAR;
+		vertical = (15 * IDialogConstants.VERTICAL_SPACING + VERTICAL_DIALOG_UNITS_PER_CHAR / 2) / VERTICAL_DIALOG_UNITS_PER_CHAR;
+
+		return new Point(horizontal, vertical);
 	}
 
 	/**
