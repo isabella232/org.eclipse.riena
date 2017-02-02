@@ -62,29 +62,32 @@ public class ToolItemScalingHelper {
 	 */
 	private void createContributionForToolBarSeparators(final ToolBar toolbar, final int coolItemIndex, final boolean firstSeparatorNeeded) {
 		final ContributionManager toolbarManager = getContributionManagerFromToolBar(toolbar, coolItemIndex);
-		int indexCounter = 0;
+		if (toolbarManager != null) {
+			int indexCounter = 0;
 
-		//Create and insert an ToolItemContribution at the beginning of the toolbar which is no Separator to avoid being kept of the cleanlist 
-		if (firstSeparatorNeeded && !(toolbarManager.getItems()[0] instanceof ToolbarItemContribution)) {
-			final ToolbarItemContribution FirstSeparatorContribution = new ToolbarItemContribution();
-			FirstSeparatorContribution.setIsSeparator(false);
-			toolbarManager.insert(indexCounter, FirstSeparatorContribution);
-		}
+			//Create and insert an ToolItemContribution at the beginning of the toolbar which is no Separator to avoid being kept of the cleanlist 
+			if (firstSeparatorNeeded && !(toolbarManager.getItems()[0] instanceof ToolbarItemContribution)) {
+				final ToolbarItemContribution FirstSeparatorContribution = new ToolbarItemContribution();
+				FirstSeparatorContribution.setIsSeparator(false);
+				toolbarManager.insert(indexCounter, FirstSeparatorContribution);
+			}
 
-		//Insert Contribution for TBManager to avoid being kicked off the cleanlist
-		final Iterator<IContributionItem> iterator = Arrays.asList(toolbarManager.getItems()).iterator();
-		while (iterator.hasNext()) {
-			indexCounter++;
-			if (!(iterator.next() instanceof ToolbarItemContribution)) {
-				toolbarManager.insert(indexCounter, new ToolbarItemContribution());
+			//Insert Contribution for TBManager to avoid being kicked off the cleanlist
+			final Iterator<IContributionItem> iterator = Arrays.asList(toolbarManager.getItems()).iterator();
+			while (iterator.hasNext()) {
 				indexCounter++;
+				if (!(iterator.next() instanceof ToolbarItemContribution)) {
+					toolbarManager.insert(indexCounter, new ToolbarItemContribution());
+					indexCounter++;
+				}
+			}
+
+			//Add the contribution to the toolbarItem to avoid being kicked off the cleanlist 
+			for (int i = 0; i < toolbar.getItems().length; i++) {
+				toolbar.getItem(i).setData("toolItemSeparatorContribution", new ToolbarItemContribution()); //$NON-NLS-1$
 			}
 		}
 
-		//Add the contribution to the toolbarItem to avoid being kicked off the cleanlist 
-		for (int i = 0; i < toolbar.getItems().length; i++) {
-			toolbar.getItem(i).setData("toolItemSeparatorContribution", new ToolbarItemContribution()); //$NON-NLS-1$
-		}
 	}
 
 	/**
@@ -160,6 +163,9 @@ public class ToolItemScalingHelper {
 	}
 
 	private ContributionManager getContributionManagerFromToolBar(final ToolBar toolbar, final int coolItemIndex) {
+		if (toolbar.getItemCount() == 0) {
+			return null;
+		}
 		final CoolBar manager = ((CoolBar) toolbar.getParent());
 		final ArrayList<CoolItem> coolItems = new ArrayList<CoolItem>();
 		coolItems.addAll(Arrays.asList(manager.getItems()));
