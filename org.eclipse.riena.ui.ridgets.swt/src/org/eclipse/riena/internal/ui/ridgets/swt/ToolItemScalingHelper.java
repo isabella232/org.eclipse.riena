@@ -163,15 +163,15 @@ public class ToolItemScalingHelper {
 	}
 
 	private ContributionManager getContributionManagerFromToolBar(final ToolBar toolbar, final int coolItemIndex) {
-		if (toolbar.getItemCount() == 0) {
-			return null;
-		}
 		final CoolBar manager = ((CoolBar) toolbar.getParent());
 		final ArrayList<CoolItem> coolItems = new ArrayList<CoolItem>();
 		coolItems.addAll(Arrays.asList(manager.getItems()));
-		final ToolBarContributionItem2 contributionItem = (ToolBarContributionItem2) coolItems.get(coolItemIndex).getData();
-		final ContributionManager toolbarManager = (ContributionManager) contributionItem.getToolBarManager();
-		return toolbarManager;
+		if (toolbar.getItemCount() != 0 && coolItems.size() > coolItemIndex) {
+			final ToolBarContributionItem2 contributionItem = (ToolBarContributionItem2) coolItems.get(coolItemIndex).getData();
+			final ContributionManager toolbarManager = (ContributionManager) contributionItem.getToolBarManager();
+			return toolbarManager;
+		}
+		return null;
 	}
 
 	/**
