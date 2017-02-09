@@ -594,14 +594,21 @@ public final class ImageStore {
 		}
 
 		if (imageSizeRequested.isSizeNone()) {
+			final String defaultMapping = fileName.substring(fileName.length() - 1);
 			fileName = removeDefaultmapping(fileName);
 			imageSizeRequested = imageSizecomputed;
+			if (getIconSizeGroupIdentifier(imageSizeRequested).equals(defaultMapping)) {
+				return fileName + fileExtension;
+			}
 			return fullName = fileName + getIconSizeGroupIdentifier(imageSizeRequested) + fileExtension;
 		}
 
 		final String defaultMapping = fileName.substring(fileName.length() - 1);
 		if (defaultMapping.equals(imageSizeRequested.getDefaultMapping())) {
 			fileName = removeDefaultmapping(fileName);
+			if (getIconSizeGroupIdentifier(imageSizeRequested).equals(defaultMapping)) {
+				return fullName = fileName + fileExtension;
+			}
 			return fullName = fileName + getIconSizeGroupIdentifier(imageSizeRequested) + fileExtension;
 		}
 
