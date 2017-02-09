@@ -103,6 +103,7 @@ public class TableRidget extends AbstractTableRidget {
 		}
 		super.bindUIControl();
 		if (control != null) {
+			updateColumnAlignment();
 			columnResizeListener = new ControlListener() {
 				public void controlResized(final ControlEvent e) {
 					applyTableColumnHeaders();
@@ -344,6 +345,31 @@ public class TableRidget extends AbstractTableRidget {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Updates the aligmnent of every Column. The Aligmnent is taken from the ColumnFormatters attached to this Ridget.
+	 */
+	private void updateColumnAlignment() {
+		if (null != getUIControl()) {
+			final TableColumn[] tableColumns = getUIControl().getColumns();
+			final IColumnFormatter[] columnFormatters = getColumnFormatters(getUIControl().getColumnCount());
+			for (int i = 0; i < tableColumns.length; i++) {
+				if (columnFormatters.length > i && columnFormatters[i] != null) {
+					if (columnFormatters[i].getHorizontalAlignment(null) == SWT.DEFAULT) {
+						tableColumns[i].setAlignment(tableColumns[i].getAlignment());
+					} else {
+						tableColumns[i].setAlignment(columnFormatters[i].getHorizontalAlignment(null));
+					}
+				}
+			}
+		}
+	}
+
+	@Override
+	public void setColumnFormatter(final int columnIndex, final IColumnFormatter formatter) {
+		super.setColumnFormatter(columnIndex, formatter);
+		updateColumnAlignment();
 	}
 
 	@Override
@@ -688,5 +714,4 @@ public class TableRidget extends AbstractTableRidget {
 			}
 		}
 	}
-
 }
