@@ -35,6 +35,7 @@ import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.core.util.StringUtils;
+import org.eclipse.riena.ui.core.resource.IconSize;
 import org.eclipse.riena.ui.ridgets.IColumnFormatter;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTWidgetRidget;
 import org.eclipse.riena.ui.swt.lnf.ILnfResource;
@@ -43,47 +44,37 @@ import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 
 /**
- * Label provider that formats the columns of a {@link TreeRidget} or
- * {@link TreeTableRidget}. {@link IColumnFormatter}s can be used to modify the
- * text, image, foreground color, background color or font of a particular
- * column.
+ * Label provider that formats the columns of a {@link TreeRidget} or {@link TreeTableRidget}. {@link IColumnFormatter}s can be used to modify the text, image,
+ * foreground color, background color or font of a particular column.
  * <p>
  * The appropriate image for a column is computed in the following fashion:
  * <p>
  * For the tree image (TreeRidget and column 0 in the TreeTableRidget):
  * <ul>
- * <li>if the column has a formatter, use the image from the formatter, if not
- * null</li>
- * <li>if image accessor properties are specified, use the image returned by the
- * property, if not null</li>
- * <li>if image accessor properties for leaves are specified, use the image
- * returned by the property, if not null</li>
+ * <li>if the column has a formatter, use the image from the formatter, if not null</li>
+ * <li>if image accessor properties are specified, use the image returned by the property, if not null</li>
+ * <li>if image accessor properties for leaves are specified, use the image returned by the property, if not null</li>
  * <li>otherwise no image is shown</li>
  * </ul>
  * <p>
  * For columns 1-n (TreeTableRidget):
  * <ul>
- * <li>if the column has a formatter, use the image from the formatter, if not
- * null</li>
- * <li>if the column has a boolean or Boolean value, use the default image for
- * boolean values (i.e. checked / unchecked box)</li>
+ * <li>if the column has a formatter, use the image from the formatter, if not null</li>
+ * <li>if the column has a boolean or Boolean value, use the default image for boolean values (i.e. checked / unchecked box)</li>
  * <li>otherwise no image is shown</li>
  * </ul>
  * <p>
- * The appropriate foreground color for a column is computed in the following
- * fashion:
+ * The appropriate foreground color for a column is computed in the following fashion:
  * <p>
  * For column 0 (TreeRidget):
  * <ul>
- * <li>if an enablement accessor property is specified and the corresponding
- * tree node is disabled, use a gray color</li>
+ * <li>if an enablement accessor property is specified and the corresponding tree node is disabled, use a gray color</li>
  * <li>otherwise use the widget's foreground color</li>
  * </ul>
  * <p>
  * For columns 0-n (TreeTableRidget):
  * <ul>
- * <li>if the column has a formatter, use the foreground color from the
- * formatter, if not null</li>
+ * <li>if the column has a formatter, use the foreground color from the formatter, if not null</li>
  * <li>otherwise use the widget's foreground</li>
  * </ul>
  */
@@ -108,68 +99,47 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider impl
 	 * @param viewer
 	 *            a non-null {@link TreeViewer} instance
 	 * @param treeElementClass
-	 *            the type of the elements in the tree (i.e. for treeRoot and
-	 *            all children).
+	 *            the type of the elements in the tree (i.e. for treeRoot and all children).
 	 * @param knownElements
-	 *            a non-null set of observable elements. The label provider may
-	 *            track this set to update the tree as necessary - see
+	 *            a non-null set of observable elements. The label provider may track this set to update the tree as necessary - see
 	 *            {@link ObservableListTreeContentProvider#getKnownElements()}
 	 * @param valueAccessors
-	 *            a non-null; non-empty array of Strings. Each String specifies
-	 *            an accessor for obtaining an Object value from each child
-	 *            object (example "value" specifies "getValue()"). The order in
-	 *            the array corresponds to the initial order of the columns,
-	 *            i.e. the 1st accessor will be used for column one/the tree,
-	 *            the 2nd for column two, the 3rd for column three and so on
+	 *            a non-null; non-empty array of Strings. Each String specifies an accessor for obtaining an Object value from each child object (example
+	 *            "value" specifies "getValue()"). The order in the array corresponds to the initial order of the columns, i.e. the 1st accessor will be used
+	 *            for column one/the tree, the 2nd for column two, the 3rd for column three and so on
 	 * @param enablementAccessor
-	 *            a String specifying an accessor for obtaining a boolean value
-	 *            from each child. The returned value will determine the
-	 *            enabled/disabled state of this child. Example: 'enabled'
-	 *            specifies "isEnabled()" or "getEnabled()". The parameter can
-	 *            be {@code null} to enable all children
+	 *            a String specifying an accessor for obtaining a boolean value from each child. The returned value will determine the enabled/disabled state of
+	 *            this child. Example: 'enabled' specifies "isEnabled()" or "getEnabled()". The parameter can be {@code null} to enable all children
 	 * @param imageAccessor
-	 *            a String specifying an accessor for obtaining a String value,
-	 *            which is the key (or filename) of an icon. (example "icon"
-	 *            specifies "getIcon()). This key will be used to obtain an icon
-	 *            for <b>leaves AND closed nodes</b> of the tree. The
-	 *            leafImageAccessor can be null; in that case the default icon
-	 *            is used for all leaves and nodes. Note: nodes will only get a
-	 *            custom icon if an openNodeImageAccessor is supplied as well
-	 *            (see below).
+	 *            a String specifying an accessor for obtaining a String value, which is the key (or filename) of an icon. (example "icon" specifies
+	 *            "getIcon()). This key will be used to obtain an icon for <b>leaves AND closed nodes</b> of the tree. The leafImageAccessor can be null; in
+	 *            that case the default icon is used for all leaves and nodes. Note: nodes will only get a custom icon if an openNodeImageAccessor is supplied
+	 *            as well (see below).
 	 * @param openNodeImageAccessor
-	 *            a String specifying an accessor for obtaining a String value
-	 *            which is the key (or filename) of an icon. (example "icon"
-	 *            specifies "getIcon()" ). This key will be used to obtain an
-	 *            icon for <b>open nodes</b> of the tree. The
-	 *            openNodeImageAccessor can be null; in that case the default
-	 *            icon is used for all nodes. Note: nodes will only get a custom
-	 *            icon if an imageAccessor is supplied as well (see above).
+	 *            a String specifying an accessor for obtaining a String value which is the key (or filename) of an icon. (example "icon" specifies "getIcon()"
+	 *            ). This key will be used to obtain an icon for <b>open nodes</b> of the tree. The openNodeImageAccessor can be null; in that case the default
+	 *            icon is used for all nodes. Note: nodes will only get a custom icon if an imageAccessor is supplied as well (see above).
 	 * @param formatters
-	 *            an array of IColumnFormatters; one for each column. Individual
-	 *            array entries may be null, in that case no formatter will be
-	 *            used for that column.
+	 *            an array of IColumnFormatters; one for each column. Individual array entries may be null, in that case no formatter will be used for that
+	 *            column.
 	 */
-	public static TreeRidgetLabelProvider createLabelProvider(final TreeViewer viewer, final Class<?> treeElementClass,
-			final IObservableSet knownElements, final String[] valueAccessors, final String enablementAccessor,
-			final String imageAccessor, final String openNodeImageAccessor, final IColumnFormatter[] formatters) {
-		final IObservableMap[] map = createAttributeMap(treeElementClass, knownElements, valueAccessors,
-				enablementAccessor, imageAccessor, openNodeImageAccessor);
+	public static TreeRidgetLabelProvider createLabelProvider(final TreeViewer viewer, final Class<?> treeElementClass, final IObservableSet knownElements,
+			final String[] valueAccessors, final String enablementAccessor, final String imageAccessor, final String openNodeImageAccessor,
+			final IColumnFormatter[] formatters) {
+		final IObservableMap[] map = createAttributeMap(treeElementClass, knownElements, valueAccessors, enablementAccessor, imageAccessor,
+				openNodeImageAccessor);
 		final int numColumns = valueAccessors.length;
-		return new TreeRidgetLabelProvider(viewer, map, valueAccessors, enablementAccessor, imageAccessor,
-				openNodeImageAccessor, formatters, numColumns);
+		return new TreeRidgetLabelProvider(viewer, map, valueAccessors, enablementAccessor, imageAccessor, openNodeImageAccessor, formatters, numColumns);
 	}
 
 	/**
-	 * Create an array of attributes that this label provides will observe. If
-	 * observing a bean, and the observed attributes change the label provider
-	 * will update the appropriate element.
+	 * Create an array of attributes that this label provides will observe. If observing a bean, and the observed attributes change the label provider will
+	 * update the appropriate element.
 	 */
-	private static IObservableMap[] createAttributeMap(final Class<?> treeElementClass,
-			final IObservableSet knownElements, final String[] valueAccessors, final String enablementAccessor,
-			final String imageAccessor, final String openNodeImageAccessor) {
+	private static IObservableMap[] createAttributeMap(final Class<?> treeElementClass, final IObservableSet knownElements, final String[] valueAccessors,
+			final String enablementAccessor, final String imageAccessor, final String openNodeImageAccessor) {
 		IObservableMap[] result;
-		final String[] attributes = computeAttributes(valueAccessors, enablementAccessor, imageAccessor,
-				openNodeImageAccessor);
+		final String[] attributes = computeAttributes(valueAccessors, enablementAccessor, imageAccessor, openNodeImageAccessor);
 		if (AbstractSWTWidgetRidget.isBean(treeElementClass)) {
 			result = BeansObservables.observeMaps(knownElements, treeElementClass, attributes);
 		} else {
@@ -191,8 +161,7 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider impl
 					try {
 						return String.valueOf(ReflectionUtils.invoke(element, "get" + s)); //$NON-NLS-1$
 					} catch (final RuntimeException ex) {
-						LOGGER.log(LogService.LOG_WARNING,
-								"Unexpected error when accessing property " + str + " in " + element, ex); //$NON-NLS-1$ //$NON-NLS-2$
+						LOGGER.log(LogService.LOG_WARNING, "Unexpected error when accessing property " + str + " in " + element, ex); //$NON-NLS-1$ //$NON-NLS-2$
 					}
 				}
 			}
@@ -200,8 +169,8 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider impl
 		return columnText;
 	}
 
-	private static String[] computeAttributes(final String[] valueAccessors, final String enablementAccessor,
-			final String imageAccessor, final String openNodeImageAccessor) {
+	private static String[] computeAttributes(final String[] valueAccessors, final String enablementAccessor, final String imageAccessor,
+			final String openNodeImageAccessor) {
 		int length = valueAccessors.length;
 		if (enablementAccessor != null) {
 			length++;
@@ -232,9 +201,9 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider impl
 		return attributes;
 	}
 
-	private TreeRidgetLabelProvider(final TreeViewer viewer, final IObservableMap[] attributeMap,
-			final String[] valueAccessors, final String enablementAccessor, final String imageAccessor,
-			final String openNodeImageAccessor, final IColumnFormatter[] formatters, final int numColumns) {
+	private TreeRidgetLabelProvider(final TreeViewer viewer, final IObservableMap[] attributeMap, final String[] valueAccessors,
+			final String enablementAccessor, final String imageAccessor, final String openNodeImageAccessor, final IColumnFormatter[] formatters,
+			final int numColumns) {
 		super(attributeMap, formatters, numColumns);
 		this.valueAccessors = valueAccessors;
 		final Tree tree = viewer.getTree();
@@ -256,6 +225,11 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider impl
 		//			boolean isExpanded = viewer.getExpandedState(element);
 		//			return getImageForNode(element, isExpanded);
 		//		}
+		if (isSubModuleNode(element.getClass())) {
+			final String key = getImageKey(element);
+			return Activator.getSharedImage(key, ((IconSize) LnfManager.getLnf().getSetting(LnfKeyConstants.EMBEDDED_TITLEBAR_ICON_SIZE)));
+
+		}
 		final String key = getImageKey(element);
 		return Activator.getSharedImage(key);
 	}
@@ -323,11 +297,8 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider impl
 	}
 
 	/**
-	 * Returns the image key for the given element. If the element is a folder,
-	 * the image key for an closed or open folder will be returned. If the
-	 * element is a leaf and the element has its own image key, the image key of
-	 * the element will be returned; otherwise the default image key of a leaf
-	 * will be returned.
+	 * Returns the image key for the given element. If the element is a folder, the image key for an closed or open folder will be returned. If the element is a
+	 * leaf and the element has its own image key, the image key of the element will be returned; otherwise the default image key of a leaf will be returned.
 	 * 
 	 * @param element
 	 * @return image key
@@ -352,13 +323,19 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider impl
 			ILnfResource<? extends Resource> lnfResource = null;
 			final Tree tree = (Tree) viewer.getControl();
 			final boolean navigation = TREE_KIND_NAVIGATION.equals(tree.getData(TREE_KIND_KEY));
-			lnfResource = navigation ? LnfManager.getLnf().getLnfResource(
-					LnfKeyConstants.SUB_MODULE_TREE_DOCUMENT_LEAF_ICON) : LnfManager.getLnf().getLnfResource(
-					LnfKeyConstants.WORKAREA_TREE_DOCUMENT_LEAF_ICON);
+			lnfResource = navigation ? LnfManager.getLnf().getLnfResource(LnfKeyConstants.SUB_MODULE_TREE_DOCUMENT_LEAF_ICON)
+					: LnfManager.getLnf().getLnfResource(LnfKeyConstants.WORKAREA_TREE_DOCUMENT_LEAF_ICON);
 			if (lnfResource instanceof ImageLnfResource) {
 				final ImageLnfResource imageResource = (ImageLnfResource) lnfResource;
 				result = imageResource.getImagePath();
 			}
+		}
+		if (isSubModuleNode(element.getClass())) {
+			if (result == null
+					|| Activator.getSharedImage(result, ((IconSize) LnfManager.getLnf().getSetting(LnfKeyConstants.EMBEDDED_TITLEBAR_ICON_SIZE))) == null) {
+				result = SharedImages.IMG_LEAF;
+			}
+			return result;
 		}
 		if (result == null || Activator.getSharedImage(result) == null) {
 			result = SharedImages.IMG_LEAF;
@@ -378,13 +355,11 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider impl
 			final boolean navigation = TREE_KIND_NAVIGATION.equals(tree.getData(TREE_KIND_KEY));
 			if (isExpanded) {
 
-				lnfResource = navigation ? LnfManager.getLnf().getLnfResource(
-						LnfKeyConstants.SUB_MODULE_TREE_FOLDER_OPEN_ICON) : LnfManager.getLnf().getLnfResource(
-						LnfKeyConstants.WORKAREA_TREE_FOLDER_OPEN_ICON);
+				lnfResource = navigation ? LnfManager.getLnf().getLnfResource(LnfKeyConstants.SUB_MODULE_TREE_FOLDER_OPEN_ICON)
+						: LnfManager.getLnf().getLnfResource(LnfKeyConstants.WORKAREA_TREE_FOLDER_OPEN_ICON);
 			} else {
-				lnfResource = navigation ? LnfManager.getLnf().getLnfResource(
-						LnfKeyConstants.SUB_MODULE_TREE_FOLDER_CLOSED_ICON) : LnfManager.getLnf().getLnfResource(
-						LnfKeyConstants.WORKAREA_TREE_FOLDER_CLOSED_ICON);
+				lnfResource = navigation ? LnfManager.getLnf().getLnfResource(LnfKeyConstants.SUB_MODULE_TREE_FOLDER_CLOSED_ICON)
+						: LnfManager.getLnf().getLnfResource(LnfKeyConstants.WORKAREA_TREE_FOLDER_CLOSED_ICON);
 			}
 			if (lnfResource instanceof ImageLnfResource) {
 				final ImageLnfResource imageResource = (ImageLnfResource) lnfResource;
@@ -427,8 +402,7 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider impl
 	// ////////////////
 
 	/**
-	 * This listener is in charge of updating a tree item's icon whenever the
-	 * item is collapsed or expanded.
+	 * This listener is in charge of updating a tree item's icon whenever the item is collapsed or expanded.
 	 */
 	private static final class UpdateIconsTreeListener implements TreeListener {
 
@@ -443,8 +417,7 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider impl
 		}
 
 		private void updateIcon(final TreeItem item, final boolean isExpanded) {
-			final TreeRidgetLabelProvider labelProvider = (TreeRidgetLabelProvider) item.getParent().getData(
-					KEY_LABELPROVIDER);
+			final TreeRidgetLabelProvider labelProvider = (TreeRidgetLabelProvider) item.getParent().getData(KEY_LABELPROVIDER);
 			labelProvider.updateNodeImage(item, isExpanded);
 		}
 	}
