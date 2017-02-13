@@ -11,6 +11,7 @@
 package org.eclipse.riena.example.client.controllers;
 
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
+import org.eclipse.riena.ui.core.resource.IconSize;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.ILabelRidget;
 
@@ -24,7 +25,7 @@ public class SvgPlaygroundController extends SubModuleController {
 		final IActionRidget button2 = getRidget(IActionRidget.class, "button2");
 		final IActionRidget button3 = getRidget(IActionRidget.class, "button3");
 		final ILabelRidget lbl = getRidget(ILabelRidget.class, "lbl");
-		button1.setIcon("RuV_CONNECT_4");
+		button1.setIcon("abba", IconSize.A16);
 		button2.setIcon("cloud");
 
 	}
