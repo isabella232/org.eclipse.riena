@@ -36,24 +36,9 @@ public class SvgButtonExampleController extends SubModuleController {
 		final IActionRidget btnAImage = getRidget(IActionRidget.class, "btnAImage"); //$NON-NLS-1$
 		btnAImage.setIcon("cloud", IconSize.A16); //$NON-NLS-1$
 
-		final IActionRidget btnA = getRidget(IActionRidget.class, "btn1ParamA"); //$NON-NLS-1$
-		btnA.setIcon("clouda"); //$NON-NLS-1$
-
-		final IActionRidget btnB = getRidget(IActionRidget.class, "btn1ParamB"); //$NON-NLS-1$
-		btnB.setIcon("cloudb"); //$NON-NLS-1$
-
-		final IActionRidget btnC = getRidget(IActionRidget.class, "btn1ParamC"); //$NON-NLS-1$
-		btnC.setIcon("cloudc"); //$NON-NLS-1$
-
-		final IActionRidget btnD = getRidget(IActionRidget.class, "btn1ParamD"); //$NON-NLS-1$
-		btnD.setIcon("cloudd"); //$NON-NLS-1$
-
 		//ImageButton
 		final IImageButtonRidget imageButtonRidget = getRidget(IImageButtonRidget.class, "imageButton"); //$NON-NLS-1$
 		imageButtonRidget.setIcon("cloud", IconSize.A16); //$NON-NLS-1$
-
-		final IImageButtonRidget imageButtonRidgetNoIconSize = getRidget(IImageButtonRidget.class, "imageButtonNoIconSize"); //$NON-NLS-1$
-		imageButtonRidgetNoIconSize.setIcon("test"); //$NON-NLS-1$
 
 		final IImageButtonRidget imageButtonRidgetB22 = getRidget(IImageButtonRidget.class, "imageButtonB22"); //$NON-NLS-1$
 		imageButtonRidgetB22.setIcon("test", IconSize.B22); //$NON-NLS-1$

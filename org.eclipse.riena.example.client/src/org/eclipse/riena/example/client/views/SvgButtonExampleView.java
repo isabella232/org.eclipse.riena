@@ -65,29 +65,17 @@ public class SvgButtonExampleView extends SubModuleView {
 		final Label lblButtonNOIS = new Label(buttonComposite, SWT.NONE);
 		lblButtonNOIS.setText("setIcon(\"cloud\", IconSize.A16)"); //$NON-NLS-1$
 
-		UIControlsFactory.createButton(buttonComposite, "", "btn1ParamA"); //$NON-NLS-1$ //$NON-NLS-2$
-		UIControlsFactory.createLabel(buttonComposite, "setIcon(\"clouda\")"); //$NON-NLS-1$
-
 		UIControlsFactory.createButton(buttonComposite, "", "btnBImage"); //$NON-NLS-1$ //$NON-NLS-2$
 		final Label lbl2 = new Label(buttonComposite, SWT.NONE);
 		lbl2.setText("setIcon(\"cloud\", IconSize.B22)"); //$NON-NLS-1$
-
-		UIControlsFactory.createButton(buttonComposite, "", "btn1ParamB"); //$NON-NLS-1$ //$NON-NLS-2$
-		UIControlsFactory.createLabel(buttonComposite, "setIcon(\"cloudb\")"); //$NON-NLS-1$
 
 		UIControlsFactory.createButton(buttonComposite, "", "btnCImage"); //$NON-NLS-1$ //$NON-NLS-2$
 		final Label lbl3 = new Label(buttonComposite, SWT.NONE);
 		lbl3.setText("setIcon(\"cloud\", IconSize.C32)"); //$NON-NLS-1$
 
-		UIControlsFactory.createButton(buttonComposite, "", "btn1ParamC"); //$NON-NLS-1$ //$NON-NLS-2$
-		UIControlsFactory.createLabel(buttonComposite, "setIcon(\"cloudc\")"); //$NON-NLS-1$
-
 		UIControlsFactory.createButton(buttonComposite, "", "btnDImage"); //$NON-NLS-1$ //$NON-NLS-2$
 		final Label lbl4 = new Label(buttonComposite, SWT.NONE);
 		lbl4.setText("setIcon(\"cloud\", IconSize.D48)"); //$NON-NLS-1$
-
-		UIControlsFactory.createButton(buttonComposite, "", "btn1ParamD"); //$NON-NLS-1$ //$NON-NLS-2$
-		UIControlsFactory.createLabel(buttonComposite, "setIcon(\"cloudd\")"); //$NON-NLS-1$
 
 		// Buttons without ridgets
 		UIControlsFactory.createLabel(buttonComposite, "Buttons without Ridgets"); //$NON-NLS-1$
@@ -97,11 +85,6 @@ public class SvgButtonExampleView extends SubModuleView {
 		btn1.setImage(ImageStore.getInstance().getImage("cloud", IconSize.B22)); //$NON-NLS-1$
 		final Label lblbtn1 = new Label(buttonComposite, SWT.NONE);
 		lblbtn1.setText("Image directly set on the Widget getImage(\"cloud\",IconSize.B22)"); //$NON-NLS-1$
-
-		final Button btn2 = new Button(buttonComposite, SWT.PUSH);
-		btn2.setImage(ImageStore.getInstance().getImage("cloudb")); //$NON-NLS-1$
-		final Label lblbtn2 = new Label(buttonComposite, SWT.NONE);
-		lblbtn2.setText("Image directly set on the Widget getImage(\"cloudb\")"); //$NON-NLS-1$
 
 		//Image Buttons
 		UIControlsFactory.createLabel(buttonComposite, "ImageButtons: ", SWT.NONE); //$NON-NLS-1$
@@ -116,9 +99,6 @@ public class SvgButtonExampleView extends SubModuleView {
 		imageButton.setHoverImage(ImageStore.getInstance().getImage("cloud", IconSize.A16)); //$NON-NLS-1$
 		final Label lblImageButton = new Label(buttonComposite, SWT.NONE);
 		lblImageButton.setText("ImageButton with IconSize B22 and A16 as HoverImage"); //$NON-NLS-1$
-
-		UIControlsFactory.createImageButton(buttonComposite, SWT.NONE, "imageButtonNoIconSize"); //$NON-NLS-1$
-		UIControlsFactory.createLabel(buttonComposite, "controlled by ridgetd with no IconSize"); //$NON-NLS-1$
 
 		UIControlsFactory.createImageButton(buttonComposite, SWT.NONE, "imageButtonB22"); //$NON-NLS-1$
 		UIControlsFactory.createLabel(buttonComposite, "controlled by ridgetd with IconSize.B22"); //$NON-NLS-1$
