@@ -33,6 +33,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
+import org.eclipse.riena.ui.core.resource.IconSize;
 import org.eclipse.riena.ui.swt.InfoFlyout;
 import org.eclipse.riena.ui.swt.layout.DpiGridLayoutFactory;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
@@ -63,6 +64,7 @@ public class InfoFlyoutRCP extends InfoFlyout {
 
 	private String message;
 	private String icon;
+	private IconSize iconSize;
 
 	private Shell shell;
 	private final Composite parent;
@@ -113,6 +115,18 @@ public class InfoFlyoutRCP extends InfoFlyout {
 	@Override
 	public void setIcon(final String icon) {
 		this.icon = icon;
+		this.iconSize = IconSize.A16;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.ui.swt.InfoFlyout#setIcon(java.lang.String, org.eclipse.riena.ui.core.resource.IconSize)
+	 */
+	@Override
+	public void setIcon(final String icon, final IconSize iconSize) {
+		this.icon = icon;
+		this.iconSize = iconSize;
 	}
 
 	@Override
@@ -167,7 +181,7 @@ public class InfoFlyoutRCP extends InfoFlyout {
 
 	private void updateIconAndMessage() {
 		rightLabel.setText(message);
-		leftLabel.setImage(ImageStore.getInstance().getImage(icon));
+		leftLabel.setImage(ImageStore.getInstance().getImage(icon, iconSize));
 		shell.layout(true);
 	}
 

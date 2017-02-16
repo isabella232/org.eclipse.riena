@@ -10,9 +10,10 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets;
 
+import org.eclipse.riena.ui.core.resource.IconSize;
+
 /**
- * A notification that turns up on top of the SubModuleView. No user interaction
- * is possible and it closes after a few seconds.
+ * A notification that turns up on top of the SubModuleView. No user interaction is possible and it closes after a few seconds.
  * <p>
  * It is possible to set a message and an icon.
  * 
@@ -30,14 +31,31 @@ public interface IInfoFlyoutRidget extends IRidget {
 	public class InfoFlyoutData {
 		private final String message;
 		private final String icon;
+		private IconSize iconSize = IconSize.A16;
 
 		public InfoFlyoutData(final String icon, final String message) {
 			this.icon = icon;
 			this.message = message;
 		}
 
+		/**
+		 * @since 6.2
+		 */
+		public InfoFlyoutData(final String icon, final IconSize iconSize, final String message) {
+			this.icon = icon;
+			this.iconSize = iconSize;
+			this.message = message;
+		}
+
 		public String getIcon() {
 			return icon;
+		}
+
+		/**
+		 * @since 6.2
+		 */
+		public IconSize getIconSize() {
+			return iconSize;
 		}
 
 		public String getMessage() {

@@ -35,6 +35,7 @@ public abstract class AbstractItemRidget extends AbstractSWTWidgetRidget impleme
 	private Item item;
 	private String text;
 	private String iconID;
+	private IconSize iconSize;
 	private final ActionObserver actionObserver;
 	private boolean textAlreadyInitialized;
 	private boolean useRidgetIcon;
@@ -139,6 +140,7 @@ public abstract class AbstractItemRidget extends AbstractSWTWidgetRidget impleme
 		final String oldIconID = this.iconID;
 		final IIconManager manager = IconManagerProvider.getInstance().getIconManager();
 		this.iconID = manager.getIconID(icon, size);
+		this.iconSize = size;
 		if (hasChanged(oldIconID, iconID) || !oldUseRidgetIcon) {
 			updateUIIcon();
 		}
@@ -222,7 +224,7 @@ public abstract class AbstractItemRidget extends AbstractSWTWidgetRidget impleme
 		if (control != null) {
 			Image image = null;
 			if (getIcon() != null) {
-				image = getManagedImage(getIcon());
+				image = getManagedImage(getIcon(), this.iconSize);
 			}
 			if ((image != null) || useRidgetIcon) {
 				control.setImage(image);
