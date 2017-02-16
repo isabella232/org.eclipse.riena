@@ -24,6 +24,7 @@ import org.eclipse.riena.ui.core.resource.IconSize;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.ImageStore;
+import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
  *
@@ -61,10 +62,7 @@ public class SvgSubModuleView extends SubModuleView {
 
 		final Composite compositeA = new Composite(pictureComposite, SWT.NONE);
 		compositeA.setLayout(layout);
-
-		final Label lblA = new Label(compositeA, SWT.NONE);
-		final Image imageA = ImageStore.getInstance().getImage("cloud", IconSize.B22); //$NON-NLS-1$
-		lblA.setImage(imageA);
+		final Label lblA = UIControlsFactory.createLabel(compositeA, "", "lblX");
 
 		final Label lblTA = new Label(compositeA, SWT.WRAP);
 		lblTA.setText(
@@ -73,9 +71,7 @@ public class SvgSubModuleView extends SubModuleView {
 
 		final Composite compositeB = new Composite(pictureComposite, SWT.NONE);
 		compositeB.setLayout(layout);
-		final Label lblB = new Label(compositeB, SWT.NONE);
-		final Image imageB = ImageStore.getInstance().getImage("cloud", IconSize.E64); //$NON-NLS-1$
-		lblB.setImage(imageB);
+		final Label lblB = UIControlsFactory.createLabel(compositeB, "", "lblY");
 
 		final Label lblTB = new Label(compositeB, SWT.WRAP);
 		lblTB.setText(

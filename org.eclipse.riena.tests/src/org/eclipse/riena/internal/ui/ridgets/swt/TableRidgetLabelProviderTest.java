@@ -13,8 +13,6 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import junit.framework.TestCase;
-
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.core.databinding.observable.map.IObservableMap;
@@ -36,6 +34,8 @@ import org.eclipse.riena.ui.ridgets.IColumnFormatter;
 import org.eclipse.riena.ui.ridgets.swt.ColumnFormatter;
 import org.eclipse.riena.ui.ridgets.swt.TableFormatter;
 
+import junit.framework.TestCase;
+
 /**
  * Tests for the class {@link TableRidgetLabelProvider}.
  */
@@ -53,6 +53,8 @@ public class TableRidgetLabelProviderTest extends TestCase {
 	private Point pointA;
 	private Point pointB;
 	private Point pointC;
+	private int alignmentTop;
+	private int alignmentBottom;
 	private IObservableMap[] attrMaps;
 	private IColumnFormatter[] formatters;
 	private IColumnFormatter[] noFormatters;
@@ -71,6 +73,8 @@ public class TableRidgetLabelProviderTest extends TestCase {
 		pointA = new Point(1, 1);
 		pointB = new Point(2, 2);
 		pointC = new Point(3, 3);
+		alignmentTop = SWT.TOP;
+		alignmentBottom = SWT.BOTTOM;
 
 		final IObservableSet elements = createElements();
 		final String[] columnProperties = { "word", "upperCase" }; //$NON-NLS-1$ //$NON-NLS-2$
@@ -90,6 +94,12 @@ public class TableRidgetLabelProviderTest extends TestCase {
 
 		assertEquals("Alpha", labelProvider.getText(elementA)); //$NON-NLS-1$
 		assertEquals("BRAVO", labelProvider.getText(elementB)); //$NON-NLS-1$
+	}
+
+	public void testGetHorizontalAligmnent() {
+		final TableRidgetLabelProvider labelProvider = new TableRidgetLabelProvider(attrMaps, formatters);
+		assertEquals(SWT.TOP, labelProvider.getHorizontalAlignment(elementA, 1));
+		assertEquals(SWT.BOTTOM, labelProvider.getHorizontalAlignment(elementB, 1));
 	}
 
 	public void testGetColumnText() {
@@ -599,6 +609,12 @@ public class TableRidgetLabelProviderTest extends TestCase {
 		public int getToolTipTimeDisplayed(final Object element) {
 			final WordNode wordNode = (WordNode) element;
 			return "alpha".equalsIgnoreCase(wordNode.getWord()) ? 4711 : 815; //$NON-NLS-1$
+		}
+
+		@Override
+		public int getHorizontalAlignment(final Object element) {
+			final WordNode wordNode = (WordNode) element;
+			return "alpha".equalsIgnoreCase(wordNode.getWord()) ? alignmentTop : alignmentBottom; //$NON-NLS-1$
 		}
 
 	}

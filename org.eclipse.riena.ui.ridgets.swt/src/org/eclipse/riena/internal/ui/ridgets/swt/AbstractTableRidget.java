@@ -334,7 +334,7 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 		formatterMap.clear();
 	}
 
-	private IColumnFormatter[] getColumnFormatters(final int numColumns) {
+	protected IColumnFormatter[] getColumnFormatters(final int numColumns) {
 		Assert.isLegal(numColumns >= 0);
 		final IColumnFormatter[] result = new IColumnFormatter[numColumns];
 		for (int i = 0; i < numColumns; i++) {
@@ -388,8 +388,9 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 			}
 			// viewer to single selection binding
 			final IObservableValue viewerSelection = ViewersObservables.observeSingleSelection(viewer);
-			dbc.bindValue(viewerSelection, getSingleSelectionObservable(), new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE)
-					.setAfterGetValidator(new OutputAwareValidator(this)), new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
+			dbc.bindValue(viewerSelection, getSingleSelectionObservable(),
+					new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE).setAfterGetValidator(new OutputAwareValidator(this)),
+					new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
 			control.addKeyListener(keyListener);
 			updateToolTipSupport();
 			// viewer to to multi-selection binding

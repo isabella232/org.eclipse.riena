@@ -88,11 +88,12 @@ public class Activator extends AbstractRienaUIPlugin {
 			sharedImages = new ImageRegistry();
 			SharedImages.initializeImageRegistry(sharedImages);
 		}
-		Image image = sharedImages.get(imageKey);
+		final String imageKeyExtended = imageKey + imageSize.getDefaultMapping();
+		Image image = sharedImages.get(imageKeyExtended);
 		if (image == null) {
 			image = ImageStore.getInstance().getImage(imageKey, imageSize);
 			if (image != null) {
-				sharedImages.put(imageKey, image);
+				sharedImages.put(imageKeyExtended, image);
 			}
 		}
 		return image;

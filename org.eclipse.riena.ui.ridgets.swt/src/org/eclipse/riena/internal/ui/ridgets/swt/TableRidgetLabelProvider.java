@@ -269,6 +269,17 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 		return null;
 	}
 
+	public int getHorizontalAlignment(final Object element, final int columnIndex) {
+		final IColumnFormatter formatter = getFormatter(columnIndex);
+		int alignment;
+		if (formatter != null) {
+			alignment = formatter.getHorizontalAlignment(element);
+		} else {
+			alignment = getTableFormatter().getHorizontalAlignment(element, getColumnValue(element, columnIndex), columnIndex);
+		}
+		return alignment;
+	}
+
 	public Font getFont(final Object element, final int columnIndex) {
 		final IColumnFormatter formatter = getFormatter(columnIndex);
 		Object font;

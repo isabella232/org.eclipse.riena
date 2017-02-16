@@ -120,10 +120,6 @@ public class SvgExtendedSubModuleView extends SubModuleView {
 		lblText.setText("Label with different Imagesizes:"); //$NON-NLS-1$
 		UIControlsFactory.createLabel(labelComposite, ""); //$NON-NLS-1$
 
-		UIControlsFactory.createLabel(labelComposite, "", "lblSmallImage"); //$NON-NLS-1$ //$NON-NLS-2$
-		final Label lblSmallText = new Label(labelComposite, SWT.NONE);
-		lblSmallText.setText("Controlled by Ridget IconSize C32"); //$NON-NLS-1$
-
 		UIControlsFactory.createLabel(labelComposite, "", "lblMediumImage"); //$NON-NLS-1$ //$NON-NLS-2$
 		final Label lblMediumText = new Label(labelComposite, SWT.NONE);
 		lblMediumText.setText("Controlled by Ridget  IconSize D48"); //$NON-NLS-1$
