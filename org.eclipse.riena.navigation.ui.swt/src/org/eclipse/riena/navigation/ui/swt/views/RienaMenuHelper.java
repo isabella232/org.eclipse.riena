@@ -133,9 +133,11 @@ public class RienaMenuHelper {
 		if (PlatformUI.isWorkbenchRunning()) {
 			try {
 				final ICoolBarManager coolBarManager2 = ((ApplicationWindow) PlatformUI.getWorkbench().getActiveWorkbenchWindow()).getCoolBarManager2();
-				final ContributionManager toolbarManager2 = (ContributionManager) ((IToolBarContributionItem) coolBarManager2.getItems()[0])
-						.getToolBarManager();
-				toolbarManager2.update(true);
+				if (coolBarManager2.getItems().length > 0) {
+					final ContributionManager toolbarManager2 = (ContributionManager) ((IToolBarContributionItem) coolBarManager2.getItems()[0])
+							.getToolBarManager();
+					toolbarManager2.update(true);
+				}
 			} catch (final Exception e) {
 				LOGGER.log(LogService.LOG_WARNING, "the toolbar could not be updated:" + e.getLocalizedMessage() + "\n"); //$NON-NLS-1$
 				for (final StackTraceElement element : e.getStackTrace()) {
