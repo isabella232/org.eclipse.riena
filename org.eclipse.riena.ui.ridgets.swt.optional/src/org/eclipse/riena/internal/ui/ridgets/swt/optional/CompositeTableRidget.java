@@ -104,7 +104,7 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 	private boolean isSortedAscending;
 	private int sortedColumn;
 
-	private boolean relayoutTableOnScrollEvent = false;
+	private boolean flushCache = false;
 	private boolean relayoutAllParents = false;
 
 	private final LnFUpdater lnfUpdater = LnFUpdater.getInstance();
@@ -149,28 +149,29 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 
 	/**
 	 * This should fix an issue with cutoff rows under some circumstances. If you do not encounter any problems with cut off rows you don't need to take any
-	 * further actions. Let the user configure the relayout behavior on scrollevents. If not set the default is that we don't relayout on scrollevents.
+	 * further actions. Let the user configure the re layout behavior on scrollevents. If not set the default is that we don't flush the caches and don't layout
+	 * all parents on scrollevents .
 	 * <p>
-	 * Attention: relayout big hierarchy trees of partens can cause performance issues
+	 * Attention: re layout big hierarchy trees of partens can cause performance issues
 	 * 
-	 * @param relayoutOnScrollEvent
-	 *            configures if we relayout on every scrollevent.
+	 * @param flushCashe
+	 *            configures if we flush the caches on every scrollevent.
 	 * @param relayoutAllParents
-	 *            configures if we relayout only the parent or all parents of the table.
+	 *            configures if we re layout only the parent or all parents of the table.
 	 */
-	public void configureLayoutBehaviorForScrollEvent(final boolean relayoutOnScrollEvent, final boolean relayoutAllParents) {
-		this.relayoutTableOnScrollEvent = relayoutOnScrollEvent;
+	public void configureLayoutBehaviorForScrollEvent(final boolean flushCache, final boolean relayoutAllParents) {
+		this.flushCache = flushCache;
 		this.relayoutAllParents = relayoutAllParents;
 	}
 
 	/**
-	 * Returns the relayoutTableOnScrollEvent and the relayoutAllPartens field.
+	 * Returns the flushCache and the relayoutAllPartens field.
 	 * 
 	 * @return an array with two values
 	 */
 	public boolean[] getLayoutBehaviorOnScrollEvent() {
 		final boolean[] result = new boolean[2];
-		result[0] = relayoutTableOnScrollEvent;
+		result[0] = flushCache;
 		result[1] = relayoutAllParents;
 		return result;
 	}
@@ -726,13 +727,14 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 	}
 
 	/**
-	 * Layouts the DetailsComposite whenever we scroll the table. This should fix an drawing issue, where some rows in the Table get cut off while scrolling.
+	 * Layouts the parent Composite of the compositeTable whenever we scroll the table. This should fix an drawing issue, where some rows in the Table get cut
+	 * off while scrolling.
 	 */
 	private class CompositeTableScrollListener extends ScrollListener {
 
 		@Override
 		public void tableScrolled(final ScrollEvent scrollEvent) {
-			CompositeTableRidget.this.getUIControl().getParent().layout(relayoutTableOnScrollEvent, relayoutAllParents);
+			CompositeTableRidget.this.getUIControl().getParent().layout(flushCache, relayoutAllParents);
 		}
 
 	}
