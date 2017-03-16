@@ -493,24 +493,25 @@ public final class ImageStore {
 			return null;
 		}
 
-		final Rectangle bounds = getImageBounds(url.toString(), imageSize);
-
-		BufferedImage bi = null;
-
-		rasterize.setUrl(url);
 		try {
-			bi = rasterize.createBufferedImage(bounds);
-		} catch (final TranscoderException e1) {
-			e1.printStackTrace();
-		}
+			final Rectangle bounds = getImageBounds(url.toString(), imageSize);
 
-		final ImageData imageData = SwtUtilities.convertAwtImageToImageData(bi);
-		if (imageData == null) {
+			rasterize.setUrl(url);
+			final BufferedImage bi = rasterize.createBufferedImage(bounds);
+
+			final ImageData imageData = SwtUtilities.convertAwtImageToImageData(bi);
+			if (imageData == null) {
+				return null;
+			}
+
+			return new Image(display, imageData);
+		} catch (final TranscoderException e) {
+			LOGGER.log(LogService.LOG_ERROR, "could transform SVG image:" + fullName, e);
+			return null;
+		} catch (final IOException e) {
+			LOGGER.log(LogService.LOG_ERROR, "could not compute bounds of the image:" + fullName, e);
 			return null;
 		}
-
-		return new Image(display, imageData);
-
 	}
 
 	/**
@@ -521,8 +522,9 @@ public final class ImageStore {
 	 * @param imageSize
 	 *            expected size of the SWT image (if {@code null} the size of the SVG is used)
 	 * @return bounds of the image
+	 * @throws IOException
 	 */
-	private Rectangle getImageBounds(final String url, final IconSize imageSize) {
+	private Rectangle getImageBounds(final String url, final IconSize imageSize) throws IOException {
 		int x = 0;
 		int y = 0;
 		int width = 0;
@@ -535,11 +537,7 @@ public final class ImageStore {
 
 		if (url != null) {
 			if (!(url.equals(""))) { //$NON-NLS-1$
-				try {
-					document = f.createDocument(url);
-				} catch (final IOException e) {
-					e.printStackTrace();
-				}
+				document = f.createDocument(url);
 			}
 
 		}
