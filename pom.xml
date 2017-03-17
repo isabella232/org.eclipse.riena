@@ -71,12 +71,13 @@
 		<module>org.eclipse.riena.navigation.ui.swt.presentation</module>
 		<module>org.eclipse.riena.navigation.ui.swt.rcp</module>
 		<module>org.eclipse.riena.objecttransaction</module>
-		<module>org.eclipse.riena.sample.app.common</module>
 		<module>org.eclipse.riena.sample.app.client</module>
 		<module>org.eclipse.riena.sample.app.client.mail</module>
 		<module>org.eclipse.riena.sample.app.client.rcpmail</module>
+		<module>org.eclipse.riena.sample.app.common</module>
 		<module>org.eclipse.riena.sample.app.server</module>
 		<module>org.eclipse.riena.sample.snippets</module>
+		<module>org.eclipse.riena.sample.snippets.optional</module>
 		<module>org.eclipse.riena.security.client.startup</module>
 		<module>org.eclipse.riena.security.common</module>
 		<module>org.eclipse.riena.security.server</module>
@@ -85,6 +86,7 @@
 		<module>org.eclipse.riena.security.ui</module>
 		<module>org.eclipse.riena.server</module>
 		<module>org.eclipse.riena.tests</module>
+		<module>org.eclipse.riena.tests.optional</module>
 		<module>org.eclipse.riena.ui.common</module>
 		<module>org.eclipse.riena.ui.core</module>
 		<module>org.eclipse.riena.ui.filter</module>
