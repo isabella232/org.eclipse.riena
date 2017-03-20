@@ -16,7 +16,7 @@
 	<repositories>
 		<repository>
 			<id>local_p2_repo</id>
-			<url>file:///C:/dev/oomph/scp-tycho-build/git/org.eclipse.riena.3xtargets/org.eclipse.riena.target3x/rcp</url>
+			<url>file:///${project.basedir}/../../org.eclipse.riena.3xtargets/org.eclipse.riena.target3x/rcp</url>
 			<layout>p2</layout>
 		</repository>
 		<repository>
