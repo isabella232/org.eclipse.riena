@@ -2,30 +2,32 @@
 
 pipeline {
 	agent any
+	options {
+		skipDefaultCheckout()
+	}
 	stages {
-		stage('Build') {
+		stage('Checkout') {
 			steps {
-				echo '-----------'
-				echo 'Building...'
-				echo '-----------'
+				deleteDir()
 				
-				withMaven {
-					bat "mvn clean package"
+				dir('org.eclipse.riena') {
+					checkout scm
+				}
+				dir('org.eclipse.riena.3xtargets') {
+					git(
+						url: '//vboxsrv/Git/org.eclipse.riena.3xtargets',
+						branch: 'tycho-build'
+					)
 				}
 			}
 		}
-		stage('Test') {
+		stage('Build') {
 			steps {
-				echo '----------'
-				echo 'Testing...'
-				echo '----------'
-			}
-		}
-		stage('Deploy') {
-			steps {
-				echo '------------'
-				echo 'Deploying...'
-				echo '------------'
+				dir('org.eclipse.riena') {
+					withMaven {
+						bat "mvn clean integration-test"
+					}
+				}
 			}
 		}
 	}
