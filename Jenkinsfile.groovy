@@ -30,5 +30,12 @@ pipeline {
 				}
 			}
 		}
+		stage('Reporting') {
+			steps {
+				dir('org.eclipse.riena') {
+					junit '**/surefire-reports/*.xml'
+				}
+			}
+		}
 	}
 }
