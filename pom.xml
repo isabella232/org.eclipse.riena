@@ -35,6 +35,11 @@
 		<module>com.caucho.hessian</module>
 		<module>com.kitfox.svg</module>
 		<module>org.eclipse.riena.beans.common</module>
+		<module>org.eclipse.riena.build.feature</module>
+		<module>org.eclipse.riena.build.feature.core.sdk</module>
+		<module>org.eclipse.riena.build.feature.samples.sdk</module>
+		<module>org.eclipse.riena.build.feature.sdk</module>
+		<module>org.eclipse.riena.build.tycho</module>
 		<module>org.eclipse.riena.client</module>
 		<module>org.eclipse.riena.client.communication</module>
 		<module>org.eclipse.riena.client.ridgets</module>
@@ -44,7 +49,19 @@
 		<module>org.eclipse.riena.communication.factory.hessian</module>
 		<module>org.eclipse.riena.communication.publisher</module>
 		<module>org.eclipse.riena.communication.publisher.hessian</module>
+		<module>org.eclipse.riena.communication.sample.pingpong.client</module>
+		<module>org.eclipse.riena.communication.sample.pingpong.client.config</module>
+		<module>org.eclipse.riena.communication.sample.pingpong.common</module>
+		<module>org.eclipse.riena.communication.sample.pingpong.server</module>
 		<module>org.eclipse.riena.core</module>
+		<module>org.eclipse.riena.demo.client</module>
+		<module>org.eclipse.riena.demo.client.rcp</module>
+		<module>org.eclipse.riena.demo.common</module>
+		<module>org.eclipse.riena.demo.server</module>
+		<module>org.eclipse.riena.example.client</module>
+		<module>org.eclipse.riena.example.client.optional</module>
+		<module>org.eclipse.riena.example.client.rcp</module>
+		<module>org.eclipse.riena.example.ping.client</module>
 		<module>org.eclipse.riena.monitor.client</module>
 		<module>org.eclipse.riena.monitor.common</module>
 		<module>org.eclipse.riena.navigation</module>
@@ -54,8 +71,12 @@
 		<module>org.eclipse.riena.navigation.ui.swt.presentation</module>
 		<module>org.eclipse.riena.navigation.ui.swt.rcp</module>
 		<module>org.eclipse.riena.objecttransaction</module>
-		<module>org.eclipse.riena.releng</module>
 		<module>org.eclipse.riena.sample.app.common</module>
+		<module>org.eclipse.riena.sample.app.client</module>
+		<module>org.eclipse.riena.sample.app.client.mail</module>
+		<module>org.eclipse.riena.sample.app.client.rcpmail</module>
+		<module>org.eclipse.riena.sample.app.server</module>
+		<module>org.eclipse.riena.sample.snippets</module>
 		<module>org.eclipse.riena.security.client.startup</module>
 		<module>org.eclipse.riena.security.common</module>
 		<module>org.eclipse.riena.security.server</module>
@@ -83,6 +104,47 @@
 				<artifactId>tycho-maven-plugin</artifactId>
 				<version>${tycho.version}</version>
 				<extensions>true</extensions>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-source-plugin</artifactId>
+				<version>${tycho.version}</version>
+				<executions>
+					<execution>
+						<id>plugin-source</id>
+						<goals>
+							<goal>plugin-source</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho.extras</groupId>
+				<artifactId>tycho-source-feature-plugin</artifactId>
+				<version>${tycho.version}</version>
+				<executions>
+					<execution>
+						<id>source-feature</id>
+						<phase>package</phase>
+						<goals>
+							<goal>source-feature</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-p2-plugin</artifactId>
+				<version>${tycho.version}</version>
+				<executions>
+					<execution>
+						<id>attach-p2-metadata</id>
+						<phase>package</phase>
+						<goals>
+							<goal>p2-metadata</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
