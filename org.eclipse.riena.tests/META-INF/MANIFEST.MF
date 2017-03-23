@@ -25,6 +25,7 @@ Export-Package: org.eclipse.riena,
  org.eclipse.riena.ui.tests.base;x-friends:="org.eclipse.riena.tests.optional"
 Import-Package: junit.framework;version="3.8.2",
  org.eclipse.equinox.security.auth,
+ org.eclipse.riena.internal.communication.console,
  org.osgi.service.log
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-Vendor: Eclipse.org - Riena
