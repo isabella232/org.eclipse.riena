@@ -134,6 +134,14 @@
 							<arch>x86</arch>
 						</environment>
 					</environments>
+					<filters>
+						<!-- Work around Equinox bug 348045. -->
+						<filter>
+							<type>p2-installable-unit</type>
+							<id>org.eclipse.equinox.servletbridge.extensionbundle</id>
+							<removeAll />
+						</filter>
+					</filters>
 					<dependency-resolution>
 						<optionalDependencies>ignore</optionalDependencies>
 						<extraRequirements>
