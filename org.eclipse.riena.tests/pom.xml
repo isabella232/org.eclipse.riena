@@ -22,6 +22,7 @@
 				<version>${tycho.version}</version>
 				<configuration>
 					<testClass>org.eclipse.riena.AllTests</testClass>
+					<runOrder>alphabetical</runOrder>
 				</configuration>
 			</plugin>
 			<plugin>
