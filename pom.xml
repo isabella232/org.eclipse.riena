@@ -88,7 +88,6 @@
 		<module>org.eclipse.riena.security.ui</module>
 		<module>org.eclipse.riena.server</module>
 		<module>org.eclipse.riena.tests</module>
-		<module>org.eclipse.riena.tests.optional</module>
 		<module>org.eclipse.riena.ui.common</module>
 		<module>org.eclipse.riena.ui.core</module>
 		<module>org.eclipse.riena.ui.filter</module>

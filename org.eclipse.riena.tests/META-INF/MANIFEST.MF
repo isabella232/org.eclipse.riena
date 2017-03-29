@@ -17,7 +17,9 @@ Require-Bundle: org.apache.log4j;resolution:=optional,
  org.eclipse.riena.security.services,
  org.eclipse.riena.security.ui,
  org.eclipse.riena.navigation.ui,
- com.ibm.icu;bundle-version="4.4.2"
+ org.eclipse.riena.ui.ridgets.swt.optional,
+ com.ibm.icu;bundle-version="4.4.2",
+ org.eclipse.nebula.widgets.grid;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Eclipse-RegisterBuddy: org.eclipse.riena.security.common
 Export-Package: org.eclipse.riena,
