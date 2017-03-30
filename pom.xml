@@ -35,11 +35,13 @@
 		<module>com.caucho.hessian</module>
 		<module>com.kitfox.svg</module>
 		<module>org.eclipse.riena.beans.common</module>
+		<module>org.eclipse.riena.build.externals.feature</module>
 		<module>org.eclipse.riena.build.feature</module>
 		<module>org.eclipse.riena.build.feature.core.sdk</module>
 		<module>org.eclipse.riena.build.feature.samples.sdk</module>
 		<module>org.eclipse.riena.build.feature.sdk</module>
-		<module>org.eclipse.riena.build.tycho</module>
+		<module>org.eclipse.riena.build.p2</module>
+		<module>org.eclipse.riena.build.p2full</module>
 		<module>org.eclipse.riena.client</module>
 		<module>org.eclipse.riena.client.communication</module>
 		<module>org.eclipse.riena.client.ridgets</module>
@@ -101,7 +103,7 @@
 
 	<build>
 		<outputDirectory>bin</outputDirectory>
-		
+
 		<plugins>
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
@@ -140,6 +142,20 @@
 							<type>p2-installable-unit</type>
 							<id>org.eclipse.equinox.servletbridge.extensionbundle</id>
 							<removeAll />
+						</filter>
+						<filter>
+							<type>eclipse-plugin</type>
+							<id>javax.servlet</id>
+							<restrictTo>
+								<versionRange>[2.3.0,3.1.0)</versionRange>
+							</restrictTo>
+						</filter>
+						<filter>
+							<type>eclipse-plugin</type>
+							<id>javax.servlet.source</id>
+							<restrictTo>
+								<versionRange>[2.3.0,3.1.0)</versionRange>
+							</restrictTo>
 						</filter>
 					</filters>
 					<dependency-resolution>

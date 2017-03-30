@@ -56,8 +56,9 @@ pipeline {
 		stage('Archive') {
 			steps {
 				dir('org.eclipse.riena') {
-					// Archive the generated p2 repository ZIP file for later use in downstream jobs.
-					archiveArtifacts artifacts: 'org.eclipse.riena.build.tycho/target/*.zip', fingerprint: true
+					// Archive the generated p2 repository ZIP files for later use in downstream jobs.
+					archiveArtifacts artifacts: 'org.eclipse.riena.build.p2/target/*.zip', fingerprint: true
+					archiveArtifacts artifacts: 'org.eclipse.riena.build.p2full/target/*.zip', fingerprint: true
 
 					// Archive the test reports from Tycho Surefire for tracking down test failures.
 					archiveArtifacts artifacts: 'org.eclipse.riena.tests/target/surefire-reports/*', fingerprint: true
