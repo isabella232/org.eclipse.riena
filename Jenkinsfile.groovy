@@ -38,7 +38,7 @@ pipeline {
 					// Run Maven build with pre-configured Maven installation named 'M3'.
 					// Note: This also runs the JUnit plugin-tests via tycho-surefire-plugin.
 					withMaven(maven: 'M3') {
-						bat "mvn -fn clean integration-test"
+						bat "mvn -fae clean integration-test"
 					}
 				}
 			}
