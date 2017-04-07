@@ -493,24 +493,25 @@ public final class ImageStore {
 			return null;
 		}
 
-		final Rectangle bounds = getImageBounds(url.toString(), imageSize);
-
-		BufferedImage bi = null;
-
-		rasterize.setUrl(url);
 		try {
-			bi = rasterize.createBufferedImage(bounds);
-		} catch (final TranscoderException e1) {
-			e1.printStackTrace();
-		}
+			final Rectangle bounds = getImageBounds(url.toString(), imageSize);
 
-		final ImageData imageData = SwtUtilities.convertAwtImageToImageData(bi);
-		if (imageData == null) {
+			rasterize.setUrl(url);
+			final BufferedImage bi = rasterize.createBufferedImage(bounds);
+
+			final ImageData imageData = SwtUtilities.convertAwtImageToImageData(bi);
+			if (imageData == null) {
+				return null;
+			}
+
+			return new Image(display, imageData);
+		} catch (final TranscoderException e) {
+			LOGGER.log(LogService.LOG_ERROR, "could transform SVG image:" + fullName, e);
+			return null;
+		} catch (final IOException e) {
+			LOGGER.log(LogService.LOG_ERROR, "could not compute bounds of the image:" + fullName, e);
 			return null;
 		}
-
-		return new Image(display, imageData);
-
 	}
 
 	/**
@@ -521,8 +522,9 @@ public final class ImageStore {
 	 * @param imageSize
 	 *            expected size of the SWT image (if {@code null} the size of the SVG is used)
 	 * @return bounds of the image
+	 * @throws IOException
 	 */
-	private Rectangle getImageBounds(final String url, final IconSize imageSize) {
+	private Rectangle getImageBounds(final String url, final IconSize imageSize) throws IOException {
 		int x = 0;
 		int y = 0;
 		int width = 0;
@@ -535,11 +537,7 @@ public final class ImageStore {
 
 		if (url != null) {
 			if (!(url.equals(""))) { //$NON-NLS-1$
-				try {
-					document = f.createDocument(url);
-				} catch (final IOException e) {
-					e.printStackTrace();
-				}
+				document = f.createDocument(url);
 			}
 
 		}
@@ -574,38 +572,41 @@ public final class ImageStore {
 	 * 
 	 * @param fullName
 	 *            The name of the image with file extension. Precondition: fullName must have the fileextension .svg
-	 * @param imageSizecomputed
-	 *            The computed imageSize.
 	 * @param imageSizeRequested
 	 *            The size of the Image.
 	 * @return The name of the image with the mapped IconSizeGroupIdentifier.
 	 * @since 6.2
 	 */
-	private String addIconGroupIdentifier(String fullName, final IconSize imageSizecomputed, IconSize imageSizeRequested) {
+	private String addIconGroupIdentifier(String fullName, final IconSize imageSizeRequested) {
 		Assert.isNotNull(fullName);
 		Assert.isNotNull(imageSizeRequested);
 		Assert.isTrue(fullName.endsWith(".svg"), "imagename must end with '.svg'"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		final String fileExtension = fullName.substring(fullName.length() - ".svg".length()); //$NON-NLS-1$
-		String fileName = fullName.substring(0, fullName.length() - ".svg".length()); //$NON-NLS-1$
-
-		if (imageSizeRequested.isSizeNone() && imageSizecomputed.isSizeNone()) {
-			return fullName = fileName + getIconSizeGroupIdentifier(imageSizeRequested) + fileExtension;
-		}
+		String fileName = getFileNameWithoutFileExtension(fullName);
 
 		if (imageSizeRequested.isSizeNone()) {
-			fileName = removeDefaultmapping(fileName);
-			imageSizeRequested = imageSizecomputed;
-			return fullName = fileName + getIconSizeGroupIdentifier(imageSizeRequested) + fileExtension;
+			return fullName = fileName + fileExtension;
 		}
 
 		final String defaultMapping = fileName.substring(fileName.length() - 1);
 		if (defaultMapping.equals(imageSizeRequested.getDefaultMapping())) {
 			fileName = removeDefaultmapping(fileName);
+			if (getIconSizeGroupIdentifier(imageSizeRequested).equals(defaultMapping)) {
+				return fullName = fileName + fileExtension;
+			}
 			return fullName = fileName + getIconSizeGroupIdentifier(imageSizeRequested) + fileExtension;
 		}
 
 		return fullName = fileName + getIconSizeGroupIdentifier(imageSizeRequested) + fileExtension;
+	}
+
+	/**
+	 * @param fullFileName
+	 * @return the filenmae without .svg extension.
+	 */
+	private String getFileNameWithoutFileExtension(final String fullFileName) {
+		return fullFileName.substring(0, fullFileName.length() - ".svg".length()); //$NON-NLS-1$
 	}
 
 	/**
@@ -796,7 +797,7 @@ public final class ImageStore {
 
 		private class PngDefaultOpertion implements IImageFind {
 			public Image find(final String imageName, final ImageFileExtension fileExtension, final IconSize imageSizeRequested) {
-				final Point dpi = SwtUtilities.getDpi();
+				final Point dpi = SwtUtilities.convertPointToDpi(new Point(96, 96));
 				final String fullFileName = getFullScaledName(imageName, fileExtension, dpi, imageSizeRequested);
 				final Image image = loadImage(fullFileName);
 				if (image != null) {
@@ -807,21 +808,32 @@ public final class ImageStore {
 		}
 
 		private class SvgDefaultOperation implements IImageFind {
-			public Image find(final String imageName, final ImageFileExtension fileExtension, final IconSize imageSizeRequested) {
+			public Image find(final String imageName, ImageFileExtension fileExtension, final IconSize imageSizeRequested) {
+				fileExtension = ImageFileExtension.SVG;
 				final String fullFileName = getFullSvgName(imageName);
 				Image image = null;
 				if (fullFileName != null) {
 					if (imageSizeRequested.isSizeNone()) {
-						final IconSize imageSizeComputed = computeIconSize(fullFileName, imageSizeRequested);
-						final String fullNameWithGroupIdentifier = addIconGroupIdentifier(fullFileName, imageSizeComputed, imageSizeRequested);
-						image = loadSvgImage(fullNameWithGroupIdentifier, imageSizeComputed);
+						image = loadSvgImage(imageName, IconSize.NONE);
 					} else {
-						final String fullNameWithGroupIdentifier = addIconGroupIdentifier(fullFileName, IconSize.NONE, imageSizeRequested);
+						final String fullNameWithGroupIdentifier = addIconGroupIdentifier(fullFileName, imageSizeRequested);
 						image = loadSvgImage(fullNameWithGroupIdentifier, imageSizeRequested);
 					}
 					if (image != null) {
 						return image;
 					} else {
+						String fileName = getFileNameWithoutFileExtension(fullFileName); //;
+						final String defaultMapping = fileName.substring(fileName.length() - 1);
+						if (defaultMapping.equals(imageSizeRequested.getDefaultMapping())) {
+							fileName = removeDefaultmapping(fileName);
+							if (getIconSizeGroupIdentifier(imageSizeRequested).equals(defaultMapping)) {
+								fileName = fileName + "." + fileExtension.getFileNameExtension(); //$NON-NLS-1$
+							}
+						}
+						image = loadSvgImage(fileName + "." + fileExtension.getFileNameExtension(), imageSizeRequested); //$NON-NLS-1$
+						if (image != null) {
+							return image;
+						}
 						image = loadSvgImage(fullFileName, imageSizeRequested);
 						if (image != null) {
 							return image;
@@ -830,6 +842,7 @@ public final class ImageStore {
 				}
 				return null;
 			}
+
 		}
 
 		private class PngOperationNoImageSize implements IImageFind {

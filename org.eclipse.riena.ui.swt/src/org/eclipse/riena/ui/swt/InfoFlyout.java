@@ -12,12 +12,12 @@ package org.eclipse.riena.ui.swt;
 
 import org.eclipse.swt.widgets.Composite;
 
+import org.eclipse.riena.ui.core.resource.IconSize;
 import org.eclipse.riena.ui.swt.utils.IPropertyNameProvider;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
- * This widget implements a message that pops-up on top of the SubModuleView. No
- * user interaction is possible and it closes after a few seconds.
+ * This widget implements a message that pops-up on top of the SubModuleView. No user interaction is possible and it closes after a few seconds.
  * <p>
  * It is possible to set a message and an icon.
  * 
@@ -45,6 +45,11 @@ public abstract class InfoFlyout implements IPropertyNameProvider {
 	public abstract void setMessage(final String message);
 
 	public abstract void setIcon(final String icon);
+
+	/**
+	 * @since 6.2
+	 */
+	public abstract void setIcon(final String icon, IconSize iconSize);
 
 	public final void setPropertyName(final String bindingId) {
 		this.bindingId = bindingId;

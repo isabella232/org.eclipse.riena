@@ -68,16 +68,13 @@ public class InfoFlyoutRidget extends AbstractRidget implements IInfoFlyoutRidge
 		try {
 			infos.put(info);
 		} catch (final InterruptedException e) {
-			new ConsoleLogger(InfoFlyoutRidget.class.getName()).log(LogService.LOG_ERROR,
-					"Queueing info failed: " + info, e); //$NON-NLS-1$
+			new ConsoleLogger(InfoFlyoutRidget.class.getName()).log(LogService.LOG_ERROR, "Queueing info failed: " + info, e); //$NON-NLS-1$
 		}
 	}
 
 	private class Worker extends Thread {
 
-		private final int sleepTime = LnfManager.getLnf().getIntegerSetting(
-				LnfKeyConstants.INFO_FLYOUT_SHOW_AND_HIDE_ANIMATION_TIME)
-				* 2
+		private final int sleepTime = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.INFO_FLYOUT_SHOW_AND_HIDE_ANIMATION_TIME) * 2
 				+ LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.INFO_FLYOUT_WAIT_ANIMATION_TIME)
 				+ LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.INFO_FLYOUT_PAUSE_ANIMATION_TIME);
 
@@ -104,7 +101,7 @@ public class InfoFlyoutRidget extends AbstractRidget implements IInfoFlyoutRidge
 				public void run() {
 					try {
 						infoFlyout.setMessage(info.getMessage());
-						infoFlyout.setIcon(info.getIcon());
+						infoFlyout.setIcon(info.getIcon(), info.getIconSize());
 						infoFlyout.openFlyout();
 					} finally {
 						if (infos.isEmpty()) {

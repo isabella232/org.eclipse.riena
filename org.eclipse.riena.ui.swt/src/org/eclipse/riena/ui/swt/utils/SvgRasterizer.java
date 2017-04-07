@@ -41,6 +41,8 @@ class SvgRasterizer {
 
 	/**
 	 * Creates and returns the image that represents the SVG Image.
+	 * 
+	 * @return a BufferedImage or null if creation failed.
 	 */
 	public BufferedImage createBufferedImage(final Rectangle imageBounds) throws TranscoderException {
 

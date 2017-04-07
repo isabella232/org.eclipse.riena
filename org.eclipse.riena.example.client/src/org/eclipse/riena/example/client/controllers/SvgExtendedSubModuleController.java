@@ -46,8 +46,6 @@ public class SvgExtendedSubModuleController extends SubModuleController {
 		combo1.setSelection(-1);
 
 		//Label
-		final ILabelRidget labelRidget = getRidget(ILabelRidget.class, "lblSmallImage"); //$NON-NLS-1$
-		labelRidget.setIcon("cloudc"); //$NON-NLS-1$
 
 		final ILabelRidget labelRidgetMediumImage = getRidget(ILabelRidget.class, "lblMediumImage"); //$NON-NLS-1$
 		labelRidgetMediumImage.setIcon("cloud", IconSize.D48); //$NON-NLS-1$
@@ -65,7 +63,7 @@ public class SvgExtendedSubModuleController extends SubModuleController {
 
 			public void callback() {
 				final IInfoFlyoutRidget flyout = getInfoFlyout();
-				final InfoFlyoutData info = new InfoFlyoutData("cloudc", //$NON-NLS-1$
+				final InfoFlyoutData info = new InfoFlyoutData("cloud", IconSize.C32, //$NON-NLS-1$
 						"Works with Svg's too"); //$NON-NLS-1$
 				flyout.addInfo(info);
 			}

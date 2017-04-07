@@ -49,6 +49,7 @@ import org.eclipse.riena.example.client.controllers.RidgetsSubModuleController;
 import org.eclipse.riena.example.client.controllers.StatuslineSubModuleController;
 import org.eclipse.riena.example.client.controllers.SvgButtonExampleController;
 import org.eclipse.riena.example.client.controllers.SvgExtendedSubModuleController;
+import org.eclipse.riena.example.client.controllers.SvgPlaygroundController;
 import org.eclipse.riena.example.client.controllers.SvgSubModuleController;
 import org.eclipse.riena.example.client.controllers.SystemPropertiesSubModuleController;
 import org.eclipse.riena.example.client.controllers.TableSubModuleController;
@@ -96,6 +97,7 @@ import org.eclipse.riena.example.client.views.RidgetsSubModuleView;
 import org.eclipse.riena.example.client.views.StatuslineSubModuleView;
 import org.eclipse.riena.example.client.views.SvgButtonExampleView;
 import org.eclipse.riena.example.client.views.SvgExtendedSubModuleView;
+import org.eclipse.riena.example.client.views.SvgPlaygroundView;
 import org.eclipse.riena.example.client.views.SvgSubModuleView;
 import org.eclipse.riena.example.client.views.SystemPropertiesSubModuleView;
 import org.eclipse.riena.example.client.views.TableSubModuleView;
@@ -290,11 +292,16 @@ public class PlaygroundNodeAssembler extends AbstractNavigationAssembler {
 		workarea.registerDefinition(svgExtendedSubModule, SvgExtendedSubModuleController.class, SvgExtendedSubModuleView.ID, false);
 		svgPlaygroundModule.addChild(svgExtendedSubModule);
 
-		final ISubModuleNode svgButtonExample = new SubModuleNode(
-				new NavigationNodeId("org.eclipse.riena.example.client.views.SvgButtonExampleView"), "SVG Buttons"); //$NON-NLS-1$ //$NON-NLS-2$
+		final ISubModuleNode svgButtonExample = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.example.client.views.SvgButtonExampleView"), //$NON-NLS-1$
+				"SVG Buttons"); //$NON-NLS-1$
 		svgButtonExample.setIcon("cloud"); //$NON-NLS-1$
 		workarea.registerDefinition(svgButtonExample, SvgButtonExampleController.class, SvgButtonExampleView.ID, false);
 		svgPlaygroundModule.addChild(svgButtonExample);
+
+		final ISubModuleNode svgPlayground = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.example.SvgPlayground"), "SVG Playground"); //$NON-NLS-1$ //$NON-NLS-2$
+		svgPlayground.setIcon("cloud"); //$NON-NLS-1$
+		workarea.registerDefinition(svgPlayground, SvgPlaygroundController.class, SvgPlaygroundView.ID, false);
+		svgPlaygroundModule.addChild(svgPlayground);
 
 		final ISubModuleNode svgSubModule = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.example.svgGround"), "SVG Icon Grouping"); //$NON-NLS-1$ //$NON-NLS-2$
 		svgSubModule.setIcon("cloud"); //$NON-NLS-1$

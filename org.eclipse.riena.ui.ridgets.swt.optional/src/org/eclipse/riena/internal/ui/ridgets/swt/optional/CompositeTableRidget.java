@@ -32,6 +32,8 @@ import org.eclipse.nebula.widgets.compositetable.CompositeTable;
 import org.eclipse.nebula.widgets.compositetable.IRowContentProvider;
 import org.eclipse.nebula.widgets.compositetable.IRowFocusListener;
 import org.eclipse.nebula.widgets.compositetable.RowConstructionListener;
+import org.eclipse.nebula.widgets.compositetable.ScrollEvent;
+import org.eclipse.nebula.widgets.compositetable.ScrollListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -81,7 +83,7 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 	private final Map<Integer, Boolean> sortableColumnsMap;
 	private final Map<Integer, Comparator<Object>> comparatorMap;
 	private final SelectionListener sortListener;
-
+	private final ScrollListener compositeTableScrollListener;
 	/**
 	 * An observable list supplied via bindToModel(...). May be null. May change at any time.
 	 */
@@ -102,12 +104,16 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 	private boolean isSortedAscending;
 	private int sortedColumn;
 
+	private boolean flushCache = false;
+	private boolean relayoutAllParents = false;
+
 	private final LnFUpdater lnfUpdater = LnFUpdater.getInstance();
 
 	public CompositeTableRidget() {
 		Assert.isLegal(!SelectionType.MULTI.equals(getSelectionType()));
 		rowToRidgetMapper = new CTRowToRidgetMapper();
 		selectionSynchronizer = new SelectionSynchronizer();
+		compositeTableScrollListener = new CompositeTableScrollListener();
 		sortableColumnsMap = new HashMap<Integer, Boolean>();
 		comparatorMap = new HashMap<Integer, Comparator<Object>>();
 		sortListener = new ColumnSortListener();
@@ -133,11 +139,41 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 				refreshRowStyles();
 			}
 		});
+
 	}
 
 	@Override
 	protected void checkUIControl(final Object uiControl) {
 		checkType(uiControl, CompositeTable.class);
+	}
+
+	/**
+	 * This should fix an issue with cutoff rows under some circumstances. If you do not encounter any problems with cut off rows you don't need to take any
+	 * further actions. Let the user configure the re layout behavior on scrollevents. If not set the default is that we don't flush the caches and don't layout
+	 * all parents on scrollevents .
+	 * <p>
+	 * Attention: re layout big hierarchy trees of partens can cause performance issues
+	 * 
+	 * @param flushCashe
+	 *            configures if we flush the caches on every scrollevent.
+	 * @param relayoutAllParents
+	 *            configures if we re layout only the parent or all parents of the table.
+	 */
+	public void configureLayoutBehaviorForScrollEvent(final boolean flushCache, final boolean relayoutAllParents) {
+		this.flushCache = flushCache;
+		this.relayoutAllParents = relayoutAllParents;
+	}
+
+	/**
+	 * Returns the flushCache and the relayoutAllPartens field.
+	 * 
+	 * @return an array with two values
+	 */
+	public boolean[] getLayoutBehaviorOnScrollEvent() {
+		final boolean[] result = new boolean[2];
+		result[0] = flushCache;
+		result[1] = relayoutAllParents;
+		return result;
 	}
 
 	@Override
@@ -148,6 +184,7 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 			control.addRowContentProvider(rowToRidgetMapper);
 			updateControl(control);
 			control.addRowFocusListener(selectionSynchronizer);
+			control.addScrollListener(compositeTableScrollListener);
 			getSingleSelectionObservable().addValueChangeListener(selectionSynchronizer);
 			if (getHeader() != null) {
 				for (final TableColumn column : getHeader().getColumns()) {
@@ -172,6 +209,7 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 			control.removeRowFocusListener(selectionSynchronizer);
 			control.removeRowContentProvider(rowToRidgetMapper);
 			control.removeRowConstructionListener(rowToRidgetMapper);
+			control.removeScrollListener(compositeTableScrollListener);
 		}
 	}
 
@@ -684,6 +722,19 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 		public void propertyChange(final PropertyChangeEvent evt) {
 			// delegation
 			propertyChangeSupport.firePropertyChange(IExtendedRidgetProperties.PROPERTY_ROW_VALUE, evt.getOldValue(), evt.getNewValue());
+		}
+
+	}
+
+	/**
+	 * Layouts the parent Composite of the compositeTable whenever we scroll the table. This should fix an drawing issue, where some rows in the Table get cut
+	 * off while scrolling.
+	 */
+	private class CompositeTableScrollListener extends ScrollListener {
+
+		@Override
+		public void tableScrolled(final ScrollEvent scrollEvent) {
+			CompositeTableRidget.this.getUIControl().getParent().layout(flushCache, relayoutAllParents);
 		}
 
 	}

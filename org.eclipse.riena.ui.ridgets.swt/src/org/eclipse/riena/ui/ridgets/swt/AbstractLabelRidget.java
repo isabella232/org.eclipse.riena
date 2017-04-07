@@ -24,15 +24,13 @@ import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
 import org.eclipse.riena.ui.ridgets.ILabelRidget;
 
 /**
- * Superclass of LabelRidget that does not depend on the Label SWT control. May
- * be reused for custom Label controls.
+ * Superclass of LabelRidget that does not depend on the Label SWT control. May be reused for custom Label controls.
  */
 public abstract class AbstractLabelRidget extends AbstractValueRidget implements ILabelRidget {
 
 	/**
-	 * This property is used by the databinding to sync ridget and model. It is
-	 * always fired before its sibling {@link ILabelRidget#PROPERTY_TEXT} to
-	 * ensure that the model is updated before any listeners try accessing it.
+	 * This property is used by the databinding to sync ridget and model. It is always fired before its sibling {@link ILabelRidget#PROPERTY_TEXT} to ensure
+	 * that the model is updated before any listeners try accessing it.
 	 * <p>
 	 * This property is not API. Do not use in client code.
 	 */
@@ -41,6 +39,7 @@ public abstract class AbstractLabelRidget extends AbstractValueRidget implements
 	private static final String EMPTY_STRING = ""; //$NON-NLS-1$
 	private String text;
 	private String iconID;
+	private IconSize iconSize;
 	private URL iconLocation;
 	private boolean textAlreadyInitialized;
 	private boolean useRidgetIcon;
@@ -68,8 +67,7 @@ public abstract class AbstractLabelRidget extends AbstractValueRidget implements
 	}
 
 	/**
-	 * If the text of the ridget has no value, initialize it with the text of
-	 * the UI control.
+	 * If the text of the ridget has no value, initialize it with the text of the UI control.
 	 */
 	private void initText() {
 		if (text == null && !textAlreadyInitialized) {
@@ -87,8 +85,7 @@ public abstract class AbstractLabelRidget extends AbstractValueRidget implements
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * The <i>full</i> name of the icon is returned, also called icon ID. The
-	 * icon ID (can) contains the name, the size and the state.
+	 * The <i>full</i> name of the icon is returned, also called icon ID. The icon ID (can) contains the name, the size and the state.
 	 */
 	public String getIcon() {
 		return iconID;
@@ -112,8 +109,7 @@ public abstract class AbstractLabelRidget extends AbstractValueRidget implements
 	}
 
 	/**
-	 * Always returns true because mandatory markers do not make sense for this
-	 * ridget.
+	 * Always returns true because mandatory markers do not make sense for this ridget.
 	 */
 	@Override
 	public boolean isDisableMandatoryMarker() {
@@ -134,8 +130,7 @@ public abstract class AbstractLabelRidget extends AbstractValueRidget implements
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * The name and the size of the icon will be managed by an implementation of
-	 * {@code IIconManager}.
+	 * The name and the size of the icon will be managed by an implementation of {@code IIconManager}.
 	 * 
 	 * @since 2.0
 	 */
@@ -145,6 +140,7 @@ public abstract class AbstractLabelRidget extends AbstractValueRidget implements
 		final String oldIcon = this.iconID;
 		final IIconManager manager = IconManagerProvider.getInstance().getIconManager();
 		this.iconID = manager.getIconID(icon, size);
+		this.iconSize = size;
 		if (hasChanged(oldIcon, icon) || !oldUseRidgetIcon) {
 			updateUIIcon();
 		}
@@ -199,7 +195,7 @@ public abstract class AbstractLabelRidget extends AbstractValueRidget implements
 		if (getUIControl() != null) {
 			Image image = null;
 			if (getIcon() != null) {
-				image = getManagedImage(getIcon());
+				image = getManagedImage(getIcon(), iconSize);
 			} else if (iconLocation != null) {
 				final String key = iconLocation.toExternalForm();
 				image = getManagedImage(key);

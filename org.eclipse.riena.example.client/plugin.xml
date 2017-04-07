@@ -488,6 +488,13 @@
             name="org.eclipse.riena.example.client.views.SvgButtonExampleView"
             restorable="true">
       </view>
+      <view
+            allowMultiple="true"
+            class="org.eclipse.riena.example.client.views.SvgPlaygroundView"
+            id="org.eclipse.riena.example.client.views.SvgPlaygroundView"
+            name="org.eclipse.riena.example.client.views.SvgPlaygroundView"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
