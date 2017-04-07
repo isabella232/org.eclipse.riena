@@ -6,8 +6,7 @@ Bundle-Version: 6.2.0.qualifier
 Require-Bundle: org.eclipse.core.databinding;visibility:=reexport,
  org.eclipse.core.databinding.beans;visibility:=reexport,
  org.eclipse.core.databinding.property;visibility:=reexport,
- org.eclipse.jface.databinding;resolution:=optional;visibility:=reexport,
- org.eclipse.rap.jface.databinding;resolution:=optional;visibility:=reexport,
+ org.eclipse.jface.databinding;visibility:=reexport,
  org.eclipse.riena.beans.common;visibility:=reexport,
  org.eclipse.riena.core;visibility:=reexport,
  org.eclipse.riena.ui.common;visibility:=reexport,
@@ -15,8 +14,6 @@ Require-Bundle: org.eclipse.core.databinding;visibility:=reexport,
  org.eclipse.riena.ui.ridgets;visibility:=reexport,
  org.eclipse.riena.ui.ridgets.swt;visibility:=reexport,
  org.eclipse.riena.ui.swt;visibility:=reexport,
- org.eclipse.riena.ui.swt.rap;resolution:=optional;visibility:=reexport,
- org.eclipse.riena.ui.swt.rcp;resolution:=optional;visibility:=reexport,
- org.eclipse.ui;resolution:=optional;visibility:=reexport,
- org.eclipse.rap.ui;resolution:=optional;visibility:=reexport
+ org.eclipse.riena.ui.swt.rcp;visibility:=reexport,
+ org.eclipse.ui;visibility:=reexport
 Bundle-Vendor: Eclipse.org - Riena
