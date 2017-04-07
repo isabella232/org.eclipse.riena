@@ -797,7 +797,7 @@ public final class ImageStore {
 
 		private class PngDefaultOpertion implements IImageFind {
 			public Image find(final String imageName, final ImageFileExtension fileExtension, final IconSize imageSizeRequested) {
-				final Point dpi = SwtUtilities.getDpi();
+				final Point dpi = SwtUtilities.convertPointToDpi(new Point(96, 96));
 				final String fullFileName = getFullScaledName(imageName, fileExtension, dpi, imageSizeRequested);
 				final Image image = loadImage(fullFileName);
 				if (image != null) {
