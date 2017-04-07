@@ -232,7 +232,7 @@ public final class ImageStore {
 
 		URI uri = null;
 
-		Point dpi = SwtUtilities.getDpi();
+		Point dpi = SwtUtilities.convertPointToDpi(SwtUtilities.getDefaultDpi());
 		String fullName = getFullScaledName(imageName, fileExtension, dpi);
 		uri = getUri(fullName);
 		if (uri != null) {
@@ -700,7 +700,7 @@ public final class ImageStore {
 	 * @since 6.0
 	 */
 	public String addImageScaleSuffix(final String imageName, final ImageFileExtension fileExtension) {
-		return addImageScaleSuffix(imageName, fileExtension, SwtUtilities.getDpi());
+		return addImageScaleSuffix(imageName, fileExtension, SwtUtilities.convertPointToDpi(SwtUtilities.getDefaultDpi()));
 	}
 
 	/**
@@ -797,7 +797,7 @@ public final class ImageStore {
 
 		private class PngDefaultOpertion implements IImageFind {
 			public Image find(final String imageName, final ImageFileExtension fileExtension, final IconSize imageSizeRequested) {
-				final Point dpi = SwtUtilities.convertPointToDpi(new Point(96, 96));
+				final Point dpi = SwtUtilities.convertPointToDpi(SwtUtilities.getDefaultDpi());
 				final String fullFileName = getFullScaledName(imageName, fileExtension, dpi, imageSizeRequested);
 				final Image image = loadImage(fullFileName);
 				if (image != null) {

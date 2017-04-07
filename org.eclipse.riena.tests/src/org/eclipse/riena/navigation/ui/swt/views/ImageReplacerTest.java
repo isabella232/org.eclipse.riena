@@ -130,8 +130,8 @@ public class ImageReplacerTest extends TestCase {
 		assertEquals(16, imageDescriptor.getImageData().width);
 		assertEquals(16, imageDescriptor.getImageData().height);
 
-		final Point dpi = SwtUtilities.getDpi();
-		ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpi", new Point(144, 144)); //$NON-NLS-1$
+		final float[] oldDpiFactors = SwtUtilities.getDpiFactors();
+		ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpiFactors", new float[] { 1.5f, 1.5f }); //$NON-NLS-1$
 
 		fileImageDescriptor = ImageDescriptor.createFromFile(null, "/icons/testimagea00.png"); //$NON-NLS-1$
 		imageDescriptor = ReflectionUtils.invokeHidden(replacer, "getScaledImage", new Object[] { fileImageDescriptor, IconSize.NONE }); //$NON-NLS-1$ 
@@ -146,7 +146,7 @@ public class ImageReplacerTest extends TestCase {
 		assertEquals(24, imageDescriptor.getImageData().width);
 		assertEquals(24, imageDescriptor.getImageData().height);
 
-		ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpi", dpi); //$NON-NLS-1$
+		ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpiFactors", oldDpiFactors); //$NON-NLS-1$
 		LnfManager.setLnf(originalLnf);
 
 	}
@@ -207,8 +207,8 @@ public class ImageReplacerTest extends TestCase {
 		assertEquals(16, iconDescriptor.getImageData().width);
 		assertEquals(16, iconDescriptor.getImageData().height);
 
-		final Point dpi = SwtUtilities.getDpi();
-		ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpi", new Point(144, 144)); //$NON-NLS-1$
+		final float[] oldDpiFactors = SwtUtilities.getDpiFactors();
+		ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpiFactors", new float[] { 1.5f, 1.5f }); //$NON-NLS-1$
 
 		ReflectionUtils.setHidden(item, "contributedIcon", urlImageDescriptor); //$NON-NLS-1$
 		ReflectionUtils.setHidden(item, "icon", urlImageDescriptor); //$NON-NLS-1$
@@ -234,7 +234,7 @@ public class ImageReplacerTest extends TestCase {
 		assertEquals(24, iconDescriptor.getImageData().width);
 		assertEquals(24, iconDescriptor.getImageData().height);
 
-		ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpi", dpi); //$NON-NLS-1$
+		ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpiFactors", oldDpiFactors); //$NON-NLS-1$
 		LnfManager.setLnf(originalLnf);
 
 	}
