@@ -253,7 +253,13 @@ public class InfoFlyoutRCP extends InfoFlyout {
 	}
 
 	private void updateLayoutData() {
-		final int topIndent = (HEIGHT - rightLabel.getBounds().height) / 2;
+		int topIndent = (HEIGHT - rightLabel.getBounds().height) / 2;
+
+		// Note: The DpiGridLayout used for the parent shell already scales all margins, identations, etc.
+		// according to the currently set scaling factor of the os. Thus, we need to specify the identation
+		// at 100% scaling.
+		final float[] dpiFactors = SwtUtilities.getDpiFactors();
+		topIndent = (int) (topIndent / dpiFactors[1] + 0.5);
 
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).indent(ICON_LEFT_MARGIN, topIndent).applyTo(leftLabel);
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).indent(TEXT_LEFT_MARGIN, topIndent).hint(RIGHT_LABEL_WIDTH, SWT.DEFAULT).applyTo(rightLabel);
