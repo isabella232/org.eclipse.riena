@@ -13,6 +13,7 @@ package org.eclipse.riena.ui.swt.lnf;
 import org.eclipse.swt.graphics.Image;
 
 import org.eclipse.riena.ui.core.resource.IconSize;
+import org.eclipse.riena.ui.core.resource.IconState;
 import org.eclipse.riena.ui.swt.utils.ImageStore;
 
 /**
@@ -41,6 +42,16 @@ public class ImageLnfResource extends AbstractLnfResource<Image> {
 	public ImageLnfResource(final String imagePath, final IconSize iconSize) {
 		this.imagePath = imagePath;
 		this.iconSize = iconSize;
+	}
+
+	/**
+	 * Creates a new {@link ImageLnfResource} instance with the given image path, {@link IconState}, and {@link IconSize}. The String representation of the
+	 * given {@link IconState} is appended to the given image path.
+	 * 
+	 * @since 6.2
+	 */
+	public ImageLnfResource(final String imagePath, final IconState iconState, final IconSize iconSize) {
+		this(imagePath + iconState.getDefaultMapping(), iconSize);
 	}
 
 	/**
