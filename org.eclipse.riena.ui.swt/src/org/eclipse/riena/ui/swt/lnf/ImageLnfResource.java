@@ -25,7 +25,13 @@ public class ImageLnfResource extends AbstractLnfResource<Image> {
 	private final IconSize iconSize;
 
 	/**
+	 * <p>
 	 * Creates a new {@link ImageLnfResource} with the given image path and {@link IconSize.NONE}.
+	 * </p>
+	 * <p>
+	 * <b>Note:</b> The {@link IconSize} should not be implicitly specified within the image path. Instead the explicit constructor
+	 * {@link ImageLnfResource#ImageLnfResource(String, IconSize)} should be used to specify another {@link IconSize} than the default {@link IconSize.NONE}.
+	 * </p>
 	 * 
 	 * @param image
 	 *            image to wrap
