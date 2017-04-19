@@ -234,44 +234,6 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 		assertNotNull(colorDisabled);
 	}
 
-	/**
-	 * Tests the <i>private</i> method {@code getImageKey(String)}.
-	 */
-	public void testGetImageKey() {
-		String key = ReflectionUtils.invokeHidden(labelProvider, "getImageKey", leaf);
-		assertEquals(SharedImages.IMG_LEAF, key);
-
-		viewer.collapseAll();
-		key = ReflectionUtils.invokeHidden(labelProvider, "getImageKey", node);
-		assertEquals(SharedImages.IMG_NODE_COLLAPSED, key);
-
-		viewer.expandAll();
-		key = ReflectionUtils.invokeHidden(labelProvider, "getImageKey", node);
-		assertEquals(SharedImages.IMG_NODE_EXPANDED, key);
-
-		final WordNodeWithIcon nodeWithIcon1 = new WordNodeWithIcon("node");
-		final WordNodeWithIcon nodeWithIcon2 = new WordNodeWithIcon("node");
-		final WordNodeWithIcon nodeWithIcon3 = new WordNodeWithIcon("node");
-		final IObservableSet elements = new WritableSet(Realm.getDefault(), Arrays.asList(new WordNode[] {
-				nodeWithIcon1, nodeWithIcon2, nodeWithIcon3 }), WordNode.class);
-		labelProvider = TreeRidgetLabelProvider.createLabelProvider(viewer, WordNodeWithIcon.class, elements,
-				COLUMN_PROPERTIES, null, "icon", null, noFormatters);
-
-		key = ReflectionUtils.invokeHidden(labelProvider, "getImageKey", nodeWithIcon1);
-		assertEquals(SharedImages.IMG_LEAF, key);
-
-		nodeWithIcon2.setIcon("unkown");
-		key = ReflectionUtils.invokeHidden(labelProvider, "getImageKey", nodeWithIcon2);
-		assertEquals(SharedImages.IMG_LEAF, key);
-
-		// skip this, if not running as a plug-in junit test
-		if (Activator.getDefault() != null) {
-			nodeWithIcon3.setIcon(ICON_ECLIPSE);
-			key = ReflectionUtils.invokeHidden(labelProvider, "getImageKey", nodeWithIcon3);
-			assertEquals(ICON_ECLIPSE, key);
-		}
-	}
-
 	public void testGetColumnTextWithFormatter() {
 		ReflectionUtils.invokeHidden(labelProvider, "setFormatters", (Object) formatters);
 
