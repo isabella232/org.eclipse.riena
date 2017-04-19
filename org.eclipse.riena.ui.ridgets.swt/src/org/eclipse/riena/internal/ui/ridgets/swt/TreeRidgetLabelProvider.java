@@ -225,13 +225,95 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider impl
 		//			boolean isExpanded = viewer.getExpandedState(element);
 		//			return getImageForNode(element, isExpanded);
 		//		}
-		if (isSubModuleNode(element.getClass())) {
-			final String key = getImageKey(element);
-			return Activator.getSharedImage(key, ((IconSize) LnfManager.getLnf().getSetting(LnfKeyConstants.EMBEDDED_TITLEBAR_ICON_SIZE)));
 
+		if (viewer.isExpandable(element)) {
+			return getImageForNode(element, viewer.getExpandedState(element));
+		} else {
+			return getImageForLeaf(element);
 		}
-		final String key = getImageKey(element);
-		return Activator.getSharedImage(key);
+	}
+
+	private Image getImageForNode(final Object element, final boolean isExpanded) {
+		String imageKey = null;
+
+		// First try to get the image key from the attributes.
+		if (imageAttribute != null && openImageAttribute != null) {
+			imageKey = isExpanded ? (String) openImageAttribute.get(element) : (String) imageAttribute.get(element);
+		}
+
+		// If there are no attributes or no image key specified, get it from the Lnf theme.
+		if ((imageKey == null) && (isSubModuleNode(element.getClass()))) {
+			ILnfResource<?> lnfResource = null;
+			final Tree tree = (Tree) viewer.getControl();
+
+			final boolean navigation = TREE_KIND_NAVIGATION.equals(tree.getData(TREE_KIND_KEY));
+			if (isExpanded) {
+				lnfResource = navigation ? LnfManager.getLnf().getLnfResource(LnfKeyConstants.SUB_MODULE_TREE_FOLDER_OPEN_ICON)
+						: LnfManager.getLnf().getLnfResource(LnfKeyConstants.WORKAREA_TREE_FOLDER_OPEN_ICON);
+			} else {
+				lnfResource = navigation ? LnfManager.getLnf().getLnfResource(LnfKeyConstants.SUB_MODULE_TREE_FOLDER_CLOSED_ICON)
+						: LnfManager.getLnf().getLnfResource(LnfKeyConstants.WORKAREA_TREE_FOLDER_CLOSED_ICON);
+			}
+			if (lnfResource instanceof ImageLnfResource) {
+				final ImageLnfResource imageResource = (ImageLnfResource) lnfResource;
+				imageKey = imageResource.getImagePath();
+			}
+		}
+
+		// By default load the image in IconSize.NONE ...
+		IconSize iconSize = IconSize.NONE;
+		if (isSubModuleNode(element.getClass())) {
+			// ... unless it's a SubModuleNode, then take the IconSize from the Lnf configuration.
+			iconSize = (IconSize) LnfManager.getLnf().getSetting(LnfKeyConstants.EMBEDDED_TITLEBAR_ICON_SIZE);
+		}
+
+		// Try to load the image for the identified key ...
+		Image image = Activator.getSharedImage(imageKey, iconSize);
+		if (image == null) {
+			// ... and if that fails load the default image.
+			imageKey = isExpanded ? SharedImages.IMG_NODE_EXPANDED : SharedImages.IMG_NODE_COLLAPSED;
+			image = Activator.getSharedImage(imageKey, iconSize);
+		}
+
+		return image;
+	}
+
+	private Image getImageForLeaf(final Object element) {
+		String imageKey = null;
+
+		// First try to get the image key from the attributes.
+		if (imageAttribute != null) {
+			imageKey = (String) imageAttribute.get(element);
+		}
+
+		// If there are no attributes or no image key specified, get it from the Lnf theme.
+		if ((imageKey == null) && (isSubModuleNode(element.getClass()))) {
+			ILnfResource<? extends Resource> lnfResource = null;
+			final Tree tree = (Tree) viewer.getControl();
+			final boolean navigation = TREE_KIND_NAVIGATION.equals(tree.getData(TREE_KIND_KEY));
+			lnfResource = navigation ? LnfManager.getLnf().getLnfResource(LnfKeyConstants.SUB_MODULE_TREE_DOCUMENT_LEAF_ICON)
+					: LnfManager.getLnf().getLnfResource(LnfKeyConstants.WORKAREA_TREE_DOCUMENT_LEAF_ICON);
+			if (lnfResource instanceof ImageLnfResource) {
+				final ImageLnfResource imageResource = (ImageLnfResource) lnfResource;
+				imageKey = imageResource.getImagePath();
+			}
+		}
+
+		// By default load the image in IconSize.NONE ...
+		IconSize iconSize = IconSize.NONE;
+		if (isSubModuleNode(element.getClass())) {
+			// ... unless it's a SubModuleNode, then take the IconSize from the Lnf configuration.
+			iconSize = (IconSize) LnfManager.getLnf().getSetting(LnfKeyConstants.EMBEDDED_TITLEBAR_ICON_SIZE);
+		}
+
+		// Try to load the image for the identified key ...
+		Image image = Activator.getSharedImage(imageKey, iconSize);
+		if (image == null) {
+			// ... and if that fails load the default image.
+			image = Activator.getSharedImage(SharedImages.IMG_LEAF, iconSize);
+		}
+
+		return image;
 	}
 
 	@Override
@@ -296,82 +378,6 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider impl
 		return result;
 	}
 
-	/**
-	 * Returns the image key for the given element. If the element is a folder, the image key for an closed or open folder will be returned. If the element is a
-	 * leaf and the element has its own image key, the image key of the element will be returned; otherwise the default image key of a leaf will be returned.
-	 * 
-	 * @param element
-	 * @return image key
-	 */
-	private String getImageKey(final Object element) {
-		final boolean isNode = viewer.isExpandable(element);
-		String result = null;
-		if (isNode) {
-			final boolean isExpanded = viewer.getExpandedState(element);
-			result = getImageKeyForNode(element, isExpanded);
-		} else {
-			result = getImageKeyForLeaf(element, result);
-		}
-		return result;
-	}
-
-	private String getImageKeyForLeaf(final Object element, String result) {
-		if (imageAttribute != null) {
-			result = (String) imageAttribute.get(element);
-		}
-		if ((result == null) && (isSubModuleNode(element.getClass()))) {
-			ILnfResource<? extends Resource> lnfResource = null;
-			final Tree tree = (Tree) viewer.getControl();
-			final boolean navigation = TREE_KIND_NAVIGATION.equals(tree.getData(TREE_KIND_KEY));
-			lnfResource = navigation ? LnfManager.getLnf().getLnfResource(LnfKeyConstants.SUB_MODULE_TREE_DOCUMENT_LEAF_ICON)
-					: LnfManager.getLnf().getLnfResource(LnfKeyConstants.WORKAREA_TREE_DOCUMENT_LEAF_ICON);
-			if (lnfResource instanceof ImageLnfResource) {
-				final ImageLnfResource imageResource = (ImageLnfResource) lnfResource;
-				result = imageResource.getImagePath();
-			}
-		}
-		if (isSubModuleNode(element.getClass())) {
-			if (result == null
-					|| Activator.getSharedImage(result, ((IconSize) LnfManager.getLnf().getSetting(LnfKeyConstants.EMBEDDED_TITLEBAR_ICON_SIZE))) == null) {
-				result = SharedImages.IMG_LEAF;
-			}
-			return result;
-		}
-		if (result == null || Activator.getSharedImage(result) == null) {
-			result = SharedImages.IMG_LEAF;
-		}
-		return result;
-	}
-
-	private String getImageKeyForNode(final Object element, final boolean isExpanded) {
-		String result = null;
-		if (imageAttribute != null && openImageAttribute != null) {
-			result = isExpanded ? (String) openImageAttribute.get(element) : (String) imageAttribute.get(element);
-		}
-		if ((result == null) && (isSubModuleNode(element.getClass()))) {
-			ILnfResource<?> lnfResource = null;
-			final Tree tree = (Tree) viewer.getControl();
-
-			final boolean navigation = TREE_KIND_NAVIGATION.equals(tree.getData(TREE_KIND_KEY));
-			if (isExpanded) {
-
-				lnfResource = navigation ? LnfManager.getLnf().getLnfResource(LnfKeyConstants.SUB_MODULE_TREE_FOLDER_OPEN_ICON)
-						: LnfManager.getLnf().getLnfResource(LnfKeyConstants.WORKAREA_TREE_FOLDER_OPEN_ICON);
-			} else {
-				lnfResource = navigation ? LnfManager.getLnf().getLnfResource(LnfKeyConstants.SUB_MODULE_TREE_FOLDER_CLOSED_ICON)
-						: LnfManager.getLnf().getLnfResource(LnfKeyConstants.WORKAREA_TREE_FOLDER_CLOSED_ICON);
-			}
-			if (lnfResource instanceof ImageLnfResource) {
-				final ImageLnfResource imageResource = (ImageLnfResource) lnfResource;
-				result = imageResource.getImagePath();
-			}
-		}
-		if (result == null || Activator.getSharedImage(result) == null) {
-			result = isExpanded ? SharedImages.IMG_NODE_EXPANDED : SharedImages.IMG_NODE_COLLAPSED;
-		}
-		return result;
-	}
-
 	private boolean isSubModuleNode(final Class<?> elementClass) {
 		final Class<?>[] interfaces = elementClass.getInterfaces();
 		for (final Class<?> type : interfaces) {
@@ -392,8 +398,7 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider impl
 			image = (Image) getFormatter(0).getImage(element);
 		}
 		if (image == null) {
-			final String key = getImageKeyForNode(element, isExpanded);
-			image = Activator.getSharedImage(key);
+			image = getImageForNode(element, isExpanded);
 		}
 		item.setImage(image);
 	}
