@@ -14,6 +14,8 @@
 	<packaging>eclipse-repository</packaging>
 
 	<build>
+		<finalName>Riena-3x-p2repo-${buildQualifier}-win32</finalName>
+
 		<plugins>
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>

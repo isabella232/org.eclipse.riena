@@ -1,4 +1,8 @@
 import hudson.tasks.test.AbstractTestResultAction
+import java.time.LocalDateTime
+import java.time.Instant
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 node('master') {
 
@@ -30,7 +34,7 @@ node('master') {
 			withMaven(maven: 'M3') {
 				try {
 					// fail at end so we finish the build and than fail, ignore testfailures(well collect the test failures later in the reporting pahse)
-					bat "mvn -fae clean integration-test -Dmaven.test.failure.ignore=true"
+					bat "mvn -fae clean integration-test -DforceContextQualifier=HEAD_" + getBuildTimestamp() + " -Dmaven.test.failure.ignore=true"
 				} catch (err) {
 					String error = "${err}"
 					//send mail with the catched error
@@ -65,6 +69,12 @@ node('master') {
 			}
 		}
 	}
+}
+
+def String getBuildTimestamp() {
+	def buildTimestampMillis = currentBuild.getStartTimeInMillis()
+	LocalDateTime buildTimestamp = LocalDateTime.ofInstant(Instant.ofEpochMilli(buildTimestampMillis), ZoneId.systemDefault());
+	return buildTimestamp.format(DateTimeFormatter.ofPattern("yyyyMMddHHmm"))
 }
 
 //function which sends an email in case of build error to receivers configured in the jenkins job
