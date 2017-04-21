@@ -19,7 +19,7 @@ import org.eclipse.riena.core.test.collect.NonGatherableTestCase;
 /**
  * 
  */
-@NonGatherableTestCase("This is not a ´TestCase´!")
+@NonGatherableTestCase("This is not a Â´TestCaseÂ´!")
 public class AllManualTests extends TestCase {
 
 	public static Test suite() {

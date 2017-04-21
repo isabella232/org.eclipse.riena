@@ -56,7 +56,7 @@ public class ServiceInjectorBuilder {
 			descriptor = Inject.service(annotation.service());
 		} else {
 			final Class<?>[] types = method.getParameterTypes();
-			Assert.isLegal(types.length == 1, "only one parameter allowed on ´bind´ method: " + method); //$NON-NLS-1$
+			Assert.isLegal(types.length == 1, "only one parameter allowed on Â´bindÂ´ method: " + method); //$NON-NLS-1$
 			descriptor = Inject.service(types[0]);
 		}
 		if (annotation.useRanking()) {

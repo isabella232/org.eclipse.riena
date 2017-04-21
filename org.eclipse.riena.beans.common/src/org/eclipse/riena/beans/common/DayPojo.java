@@ -28,12 +28,12 @@ public final class DayPojo {
 
 	public static List<DayPojo> createWeek() {
 		final List<DayPojo> result = new ArrayList<DayPojo>(7);
-		result.add(new DayPojo("Monday", "Montag", "lundi", "lunes", "lunedì")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-		result.add(new DayPojo("Tuesday", "Dienstag", "mardi", "martes", "martedì")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-		result.add(new DayPojo("Wednesday", "Mittwoch", "mercredi", "miércoles", "mercoledì")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-		result.add(new DayPojo("Thursday", "Donnerstag", "jeudi", "jueves", "giovedì")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-		result.add(new DayPojo("Friday", "Freitag", "vendredi", "viernes", "venerdì")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-		result.add(new DayPojo("Saturday", "Samstag", "samedi", "sábado", "sabato")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		result.add(new DayPojo("Monday", "Montag", "lundi", "lunes", "lunedÄ›")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		result.add(new DayPojo("Tuesday", "Dienstag", "mardi", "martes", "martedÄ›")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		result.add(new DayPojo("Wednesday", "Mittwoch", "mercredi", "miÃ©rcoles", "mercoledÄ›")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		result.add(new DayPojo("Thursday", "Donnerstag", "jeudi", "jueves", "giovedÄ›")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		result.add(new DayPojo("Friday", "Freitag", "vendredi", "viernes", "venerdÄ›")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		result.add(new DayPojo("Saturday", "Samstag", "samedi", "sÃ¡bado", "sabato")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 		result.add(new DayPojo("Sunday", "Sonntag", "dimanche", "domingo", "domenica")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 		return result;
 	}

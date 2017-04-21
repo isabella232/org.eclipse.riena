@@ -32,7 +32,7 @@ public class StringToUpperCaseConverterTest extends TestCase {
 	public void testStringToUpperCase() {
 		assertEquals("ABCD", converter.convert("abcd"));
 		assertEquals("HELLO_WORLD!", converter.convert("Hello_World!"));
-		assertEquals("ÄÖÜß", converter.convert("äöüß"));
+		assertEquals("Ã„Ã–ÃœÃŸ", converter.convert("Ã¤Ã¶Ã¼ÃŸ"));
 		assertEquals("1337", converter.convert("1337"));
 		assertEquals("\t\r\n", converter.convert("\t\r\n"));
 	}

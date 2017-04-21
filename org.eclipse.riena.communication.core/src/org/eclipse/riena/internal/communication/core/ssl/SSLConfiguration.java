@@ -259,7 +259,7 @@ public class SSLConfiguration {
 
 		public boolean verify(final String hostname, final SSLSession session) {
 			LOGGER.log(LogService.LOG_ERROR, "Hostname '" + hostname //$NON-NLS-1$
-					+ "' does not match the certificate´s host name (" + session.getPeerHost() + ")!"); //$NON-NLS-1$ //$NON-NLS-2$
+					+ "' does not match the certificateÂ´s host name (" + session.getPeerHost() + ")!"); //$NON-NLS-1$ //$NON-NLS-2$
 			return false;
 		}
 

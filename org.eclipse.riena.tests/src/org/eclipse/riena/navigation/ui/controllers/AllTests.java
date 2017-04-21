@@ -19,7 +19,7 @@ import org.eclipse.riena.internal.tests.Activator;
 /**
  *
  */
-@NonGatherableTestCase("This is not a ´TestCase´!")
+@NonGatherableTestCase("This is not a Â´TestCaseÂ´!")
 public final class AllTests {
 
 	private AllTests() {

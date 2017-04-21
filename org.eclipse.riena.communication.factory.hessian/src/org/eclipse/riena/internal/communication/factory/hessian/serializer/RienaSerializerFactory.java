@@ -29,7 +29,7 @@ import org.eclipse.riena.internal.communication.factory.hessian.Activator;
 
 /**
  * The {@code RienaSerializerFactory} is a delegating
- * {@code AbstractSerializerFactory}. It´s main purpose is to act like a regular
+ * {@code AbstractSerializerFactory}. ItÂ´s main purpose is to act like a regular
  * {@code AbstractSerializerFactory} but internally (not visible to hessian) it
  * manages a configurable, ordered list of
  * {@code AbstractRienaSerializerFactory}.

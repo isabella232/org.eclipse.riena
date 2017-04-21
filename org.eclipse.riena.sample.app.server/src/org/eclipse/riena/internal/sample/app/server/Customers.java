@@ -192,7 +192,7 @@ public class Customers implements ICustomers, ICustomerSearch {
 		customer.setLastName("Baggins"); //$NON-NLS-1$
 		address = new Address();
 		address.setCity("Hanau"); //$NON-NLS-1$
-		address.setStreet("Grüner Weg 3"); //$NON-NLS-1$
+		address.setStreet("GrÃ¼ner Weg 3"); //$NON-NLS-1$
 		address.setZipCode("62342"); //$NON-NLS-1$
 		address.setCountry("Germany"); //$NON-NLS-1$
 		customer.setAddress(address);

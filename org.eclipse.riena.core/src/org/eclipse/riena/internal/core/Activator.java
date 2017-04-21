@@ -34,7 +34,7 @@ public class Activator extends RienaPlugin {
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.eclipse.riena.core"; //$NON-NLS-1$
 
-	// ´startup´ status of Riena
+	// Â´startupÂ´ status of Riena
 	private boolean active;
 	private boolean startupActionsExecuted;
 

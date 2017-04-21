@@ -122,7 +122,7 @@ public class StartupsSafeRunnable implements ISafeRunnable {
 			return;
 		}
 		final Bundle bundle = startup.getContributingBundle();
-		// try to load and execute the ´starter´ class
+		// try to load and execute the Â´starterÂ´ class
 		try {
 			startup.createRunner().run();
 			LOGGER.log(LogService.LOG_INFO, "Startup: '" + bundle.getSymbolicName() + "' with starter '" //$NON-NLS-1$ //$NON-NLS-2$
@@ -170,7 +170,7 @@ public class StartupsSafeRunnable implements ISafeRunnable {
 		}
 	}
 
-	@IgnoreFindBugs(value = "EI_EXPOSE_REP2", justification = "deep cloning the ´startups´ is too expensive")
+	@IgnoreFindBugs(value = "EI_EXPOSE_REP2", justification = "deep cloning the Â´startupsÂ´ is too expensive")
 	@InjectExtension
 	public void update(final IRienaStartupExtension[] startups) {
 		this.startups = startups;

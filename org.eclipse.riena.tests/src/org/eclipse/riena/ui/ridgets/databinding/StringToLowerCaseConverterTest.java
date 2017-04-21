@@ -32,7 +32,7 @@ public class StringToLowerCaseConverterTest extends TestCase {
 	public void testStringToLowerCase() {
 		assertEquals("abcd", converter.convert("ABCD"));
 		assertEquals("hello_world!", converter.convert("Hello_World!"));
-		assertEquals("äöüß", converter.convert("ÄÖÜß"));
+		assertEquals("Ã¤Ã¶Ã¼ÃŸ", converter.convert("Ã„Ã–ÃœÃŸ"));
 		assertEquals("1337", converter.convert("1337"));
 		assertEquals("\t\r\n", converter.convert("\t\r\n"));
 	}

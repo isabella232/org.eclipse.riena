@@ -321,7 +321,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 			try {
 				final SwtViewId id = getViewId(source);
 				/*
-				 * hideView internally disposes(RCP) a view if ref count is 0. For shared views this behavior is critical as RCP doesn�t know if a View is
+				 * hideView internally disposes(RCP) a view if ref count is 0. For shared views this behavior is critical as RCP doesnďż˝t know if a View is
 				 * reused the Riena way. We just hide it if Riena has no more references. For a list of references we use the SwtViewProvider#getViewUsers API.
 				 * We cannot set parts invisible as this collides with the marker concept.
 				 */

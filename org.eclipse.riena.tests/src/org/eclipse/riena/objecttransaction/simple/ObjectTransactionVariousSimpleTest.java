@@ -254,7 +254,7 @@ public class ObjectTransactionVariousSimpleTest extends RienaTestCase {
 	}
 
 	/**
-	 * Instantiating and adding 2 Vertr‰ge after leaving CleanModus.
+	 * Instantiating and adding 2 Vertr√§ge after leaving CleanModus.
 	 * 
 	 * @throws Exception
 	 */
@@ -349,7 +349,7 @@ public class ObjectTransactionVariousSimpleTest extends RienaTestCase {
 	}
 
 	/**
-	 * Adding 2 previously-instantiated Vertr‰ge after leaving CleanModus.
+	 * Adding 2 previously-instantiated Vertr√§ge after leaving CleanModus.
 	 * 
 	 * @throws Exception
 	 */
@@ -381,7 +381,7 @@ public class ObjectTransactionVariousSimpleTest extends RienaTestCase {
 	}
 
 	/**
-	 * Modifying properties of 2 previously-added Vertr‰ge after leaving
+	 * Modifying properties of 2 previously-added Vertr√§ge after leaving
 	 * CleanModus.
 	 * 
 	 * @throws Exception
@@ -834,7 +834,7 @@ public class ObjectTransactionVariousSimpleTest extends RienaTestCase {
 
 		objectTransaction.setCleanModus(true);
 		final Kunde kunde = new Kunde("4711");
-		kunde.setNachname("m¸ller");
+		kunde.setNachname("m√ºller");
 		objectTransaction.setCleanModus(false);
 		objectTransaction.registerAsDeleted(kunde);
 		final IObjectTransactionExtract extract = objectTransaction.exportOnlyModifedObjectsToExtract();
@@ -863,7 +863,7 @@ public class ObjectTransactionVariousSimpleTest extends RienaTestCase {
 
 		objectTransaction.setCleanModus(true);
 		final Kunde kunde = new Kunde("4711");
-		kunde.setNachname("m¸ller");
+		kunde.setNachname("m√ºller");
 		objectTransaction.setCleanModus(false);
 
 		final IObjectTransaction subOT = objectTransaction.createSubObjectTransaction();

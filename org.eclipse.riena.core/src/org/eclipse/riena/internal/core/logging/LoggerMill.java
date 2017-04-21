@@ -140,13 +140,13 @@ public class LoggerMill {
 		}
 	}
 
-	@IgnoreFindBugs(value = "EI_EXPOSE_REP2", justification = "deep cloning the ´listenerDefs´ is too expensive")
+	@IgnoreFindBugs(value = "EI_EXPOSE_REP2", justification = "deep cloning the Â´listenerDefsÂ´ is too expensive")
 	@InjectExtension(order = 0)
 	public void update(final ILogListenerExtension[] listenerDefs) {
 		this.listenerDefs = listenerDefs;
 	}
 
-	@IgnoreFindBugs(value = "EI_EXPOSE_REP2", justification = "deep cloning the ´catcherDefs´ is too expensive")
+	@IgnoreFindBugs(value = "EI_EXPOSE_REP2", justification = "deep cloning the Â´catcherDefsÂ´ is too expensive")
 	@InjectExtension(order = 0)
 	public void update(final ILogCatcherExtension[] catcherDefs) {
 		this.catcherDefs = catcherDefs;

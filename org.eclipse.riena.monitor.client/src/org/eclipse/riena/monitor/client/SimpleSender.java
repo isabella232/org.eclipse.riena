@@ -37,8 +37,8 @@ import org.eclipse.riena.monitor.common.Collectible;
 import org.eclipse.riena.monitor.common.IReceiver;
 
 /**
- * This simple sender implements {@code ISender} that uses riena´s (remote)
- * services to communicate with the ´server´.
+ * This simple sender implements {@code ISender} that uses rienaÂ´s (remote)
+ * services to communicate with the Â´serverÂ´.
  * <p>
  * The simple sender expects the following configuration that can be passed with
  * its definition in an extension:

@@ -107,7 +107,7 @@ public abstract class RienaTestCase extends TestCase {
 	}
 
 	/**
-	 * Print the current test´s name.
+	 * Print the current testÂ´s name.
 	 */
 	protected void printTestName() {
 		tools.printTestName();
@@ -132,7 +132,7 @@ public abstract class RienaTestCase extends TestCase {
 	}
 
 	/**
-	 * Add an extension/extension point defined within the ´plugin.xml´ (located along side the test class) given with the <code>pluginResource</code> to the
+	 * Add an extension/extension point defined within the Â´plugin.xmlÂ´ (located along side the test class) given with the <code>pluginResource</code> to the
 	 * extension registry.
 	 * 
 	 * @param pluginResource
@@ -143,7 +143,7 @@ public abstract class RienaTestCase extends TestCase {
 	}
 
 	/**
-	 * Add an extension/extension point defined within the ´plugin.xml´ given with the <code>pluginResource</code> to the extension registry.
+	 * Add an extension/extension point defined within the Â´plugin.xmlÂ´ given with the <code>pluginResource</code> to the extension registry.
 	 * 
 	 * @param forLoad
 	 * @param pluginResource

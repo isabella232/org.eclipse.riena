@@ -47,7 +47,7 @@ import org.eclipse.riena.ui.swt.uiprocess.ProgressInfoDataObject;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
- * The {@link StatuslineUIProcess} shows info about all currently running {@link UIProcess}´s in the {@link Statusline}
+ * The {@link StatuslineUIProcess} shows info about all currently running {@link UIProcess}Â´s in the {@link Statusline}
  */
 public class StatuslineUIProcess extends AbstractStatuslineComposite {
 	/**
@@ -67,7 +67,7 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 	private Composite popupContent;
 	private List<ProgressInfoDataObject> pidos = new ArrayList<ProgressInfoDataObject>();
 	private final Map<ProcessState, ILabelFormatter> stateValueMappers = new HashMap<ProcessState, ILabelFormatter>();
-	// maps the pido´s key to a ControlHolder
+	// maps the pidoÂ´s key to a ControlHolder
 	private final Map<Integer, ControlHolder> pido2controlHolder = new HashMap<Integer, ControlHolder>();
 	// cache for data objects
 	private final Map<Integer, ProgressInfoDataObject> valueCache = new HashMap<Integer, ProgressInfoDataObject>();

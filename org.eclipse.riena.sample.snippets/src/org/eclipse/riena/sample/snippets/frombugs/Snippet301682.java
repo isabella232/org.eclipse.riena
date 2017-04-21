@@ -75,12 +75,12 @@ public class Snippet301682 {
 	private static List<MyNode> createInput() {
 
 		final List<MyNode> nodes = new ArrayList<MyNode>(7);
-		nodes.add(new MyNode("Monday", "Montag", "lundi", "lunes", "lunedì")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-		nodes.add(new MyNode("Tuesday", "Dienstag", "mardi", "martes", "martedì")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-		nodes.add(new MyNode("Wednesday", "Mittwoch", "mercredi", "miércoles", "mercoledì")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-		nodes.add(new MyNode("Thursday", "Donnerstag", "jeudi", "jueves", "giovedì")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-		nodes.add(new MyNode("Friday", "Freitag", "vendredi", "viernes", "venerdì")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-		nodes.add(new MyNode("Saturday", "Samstag", "samedi", "sábado", "sabato")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		nodes.add(new MyNode("Monday", "Montag", "lundi", "lunes", "lunedÄ›")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		nodes.add(new MyNode("Tuesday", "Dienstag", "mardi", "martes", "martedÄ›")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		nodes.add(new MyNode("Wednesday", "Mittwoch", "mercredi", "miÃ©rcoles", "mercoledÄ›")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		nodes.add(new MyNode("Thursday", "Donnerstag", "jeudi", "jueves", "giovedÄ›")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		nodes.add(new MyNode("Friday", "Freitag", "vendredi", "viernes", "venerdÄ›")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		nodes.add(new MyNode("Saturday", "Samstag", "samedi", "sÃ¡bado", "sabato")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 		nodes.add(new MyNode("Sunday", "Sonntag", "dimanche", "domingo", "domenica")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 
 		return nodes;

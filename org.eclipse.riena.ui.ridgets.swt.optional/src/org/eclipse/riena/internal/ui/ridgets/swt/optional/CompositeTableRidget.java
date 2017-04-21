@@ -709,7 +709,7 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 	}
 
 	/**
-	 * Observes the ridgets of the table´s rows
+	 * Observes the ridgets of the tableÂ´s rows
 	 */
 	private class RowChangeNotifier implements PropertyChangeListener {
 

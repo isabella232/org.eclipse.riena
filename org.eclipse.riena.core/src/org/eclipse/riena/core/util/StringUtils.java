@@ -84,7 +84,7 @@ public final class StringUtils {
 	}
 
 	/**
-	 * Tests ´deep´ emptiness. A string is empty if it is either null or its
+	 * Tests Â´deepÂ´ emptiness. A string is empty if it is either null or its
 	 * trimmed version has a zero length.
 	 * 
 	 * @param string
@@ -95,7 +95,7 @@ public final class StringUtils {
 	}
 
 	/**
-	 * Tests ´simple´ emptiness. A character sequence is empty either if it is
+	 * Tests Â´simpleÂ´ emptiness. A character sequence is empty either if it is
 	 * null or it has a zero length.
 	 * 
 	 * @param sequence

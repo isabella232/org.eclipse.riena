@@ -44,12 +44,12 @@ import org.eclipse.riena.core.util.WeakRef;
 public abstract class ServiceInjector implements IStoppable {
 
 	/**
-	 * Default ´bind´ method name.
+	 * Default Â´bindÂ´ method name.
 	 */
 	public static final String DEFAULT_BIND_METHOD_NAME = "bind"; //$NON-NLS-1$
 
 	/**
-	 * Default ´unbind´ method name.
+	 * Default Â´unbindÂ´ method name.
 	 */
 	public static final String DEFAULT_UNBIND_METHOD_NAME = "unbind"; //$NON-NLS-1$
 
@@ -404,7 +404,7 @@ public abstract class ServiceInjector implements IStoppable {
 		if (serviceRef == null) {
 			return;
 		}
-		// increments service use count, now it is ´1´
+		// increments service use count, now it is Â´1Â´
 		final Object service = context.getService(serviceRef);
 		if (service == null) {
 			return;
@@ -422,15 +422,15 @@ public abstract class ServiceInjector implements IStoppable {
 		if (serviceRef == null) {
 			return;
 		}
-		// need to get the service object, increments the use count, now it is ´2´
+		// need to get the service object, increments the use count, now it is Â´2Â´
 		final Object service = context.getService(serviceRef);
 		if (service == null) {
 			return;
 		}
 		invoke(unbindMethod, service);
-		// decrement the use count from prior getService(), now it is ´1´
+		// decrement the use count from prior getService(), now it is Â´1Â´
 		context.ungetService(serviceRef);
-		// decrement the use count from from prior bind, now it is ´0´
+		// decrement the use count from from prior bind, now it is Â´0Â´
 		context.ungetService(serviceRef);
 	}
 

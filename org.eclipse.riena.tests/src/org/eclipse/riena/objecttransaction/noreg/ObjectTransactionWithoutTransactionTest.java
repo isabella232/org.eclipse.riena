@@ -46,10 +46,10 @@ public class ObjectTransactionWithoutTransactionTest extends RienaTestCase {
 
 		addresse.setOrt("Frankfurt");
 		addresse.setPlz("60000");
-		addresse.setStrasse("Münchnerstr.");
+		addresse.setStrasse("MÃ¼nchnerstr.");
 		assertTrue("ort in addresse ist nicht Frankfurt", addresse.getOrt().equals("Frankfurt"));
 		assertTrue("plz in addresse ist nicht 60000", addresse.getPlz().equals("60000"));
-		assertTrue("strasse ist nicht Münchnerstr.", addresse.getStrasse().equals("Münchnerstr."));
+		assertTrue("strasse ist nicht MÃ¼nchnerstr.", addresse.getStrasse().equals("MÃ¼nchnerstr."));
 
 		showStatus("testSimpleAllNew", objectTransaction);
 	}
@@ -75,10 +75,10 @@ public class ObjectTransactionWithoutTransactionTest extends RienaTestCase {
 
 		addresse.setOrt("Frankfurt");
 		addresse.setPlz("60000");
-		addresse.setStrasse("Münchnerstr.");
+		addresse.setStrasse("MÃ¼nchnerstr.");
 		assertTrue("ort in addresse ist nicht Frankfurt", addresse.getOrt().equals("Frankfurt"));
 		assertTrue("plz in addresse ist nicht 60000", addresse.getPlz().equals("60000"));
-		assertTrue("strasse ist nicht Münchnerstr.", addresse.getStrasse().equals("Münchnerstr."));
+		assertTrue("strasse ist nicht MÃ¼nchnerstr.", addresse.getStrasse().equals("MÃ¼nchnerstr."));
 
 		showStatus("testSimpleExistingKundeAllNew", objectTransaction);
 	}
@@ -103,17 +103,17 @@ public class ObjectTransactionWithoutTransactionTest extends RienaTestCase {
 
 		addresse.setOrt("Frankfurt");
 		addresse.setPlz("60000");
-		addresse.setStrasse("Münchnerstr.");
+		addresse.setStrasse("MÃ¼nchnerstr.");
 
 		// test within clean modus
 		assertTrue("ort in addresse ist nicht Frankfurt", addresse.getOrt().equals("Frankfurt"));
 		assertTrue("plz in addresse ist nicht 60000", addresse.getPlz().equals("60000"));
-		assertTrue("strasse ist nicht Münchnerstr.", addresse.getStrasse().equals("Münchnerstr."));
+		assertTrue("strasse ist nicht MÃ¼nchnerstr.", addresse.getStrasse().equals("MÃ¼nchnerstr."));
 
 		// test after clean modus was left
 		assertTrue("ort in addresse ist nicht Frankfurt", addresse.getOrt().equals("Frankfurt"));
 		assertTrue("plz in addresse ist nicht 60000", addresse.getPlz().equals("60000"));
-		assertTrue("strasse ist nicht Münchnerstr.", addresse.getStrasse().equals("Münchnerstr."));
+		assertTrue("strasse ist nicht MÃ¼nchnerstr.", addresse.getStrasse().equals("MÃ¼nchnerstr."));
 
 		showStatus("testSimpleAllClean", objectTransaction);
 	}
@@ -134,19 +134,19 @@ public class ObjectTransactionWithoutTransactionTest extends RienaTestCase {
 
 		addresse.setOrt("Frankfurt");
 		addresse.setPlz("60000");
-		addresse.setStrasse("Münchnerstr.");
+		addresse.setStrasse("MÃ¼nchnerstr.");
 		assertTrue("ort in addresse ist nicht Frankfurt", addresse.getOrt().equals("Frankfurt"));
 		assertTrue("plz in addresse ist nicht 60000", addresse.getPlz().equals("60000"));
-		assertTrue("strasse ist nicht Münchnerstr.", addresse.getStrasse().equals("Münchnerstr."));
+		assertTrue("strasse ist nicht MÃ¼nchnerstr.", addresse.getStrasse().equals("MÃ¼nchnerstr."));
 
 		objectTransaction.registerAsDeleted(kunde.getAddresse());
 		addresse = new Addresse(true);
 
-		addresse.setOrt("München");
+		addresse.setOrt("MÃ¼nchen");
 		addresse.setPlz("80000");
 		addresse.setStrasse("Leopoldstrasse");
 
-		assertTrue("ort in addresse ist nicht München", addresse.getOrt().equals("München"));
+		assertTrue("ort in addresse ist nicht MÃ¼nchen", addresse.getOrt().equals("MÃ¼nchen"));
 		assertTrue("plz in addresse ist nicht 80000", addresse.getPlz().equals("80000"));
 		assertTrue("strasse ist nicht Leopoldstrasse", addresse.getStrasse().equals("Leopoldstrasse"));
 
@@ -266,11 +266,11 @@ public class ObjectTransactionWithoutTransactionTest extends RienaTestCase {
 
 		addresse.setOrt("Frankfurt");
 		addresse.setPlz("60000");
-		addresse.setStrasse("Münchnerstr.");
+		addresse.setStrasse("MÃ¼nchnerstr.");
 
 		assertTrue("ort in addresse ist nicht Frankfurt", addresse.getOrt().equals("Frankfurt"));
 		assertTrue("plz in addresse ist nicht 60000", addresse.getPlz().equals("60000"));
-		assertTrue("strasse ist nicht Münchnerstr.", addresse.getStrasse().equals("Münchnerstr."));
+		assertTrue("strasse ist nicht MÃ¼nchnerstr.", addresse.getStrasse().equals("MÃ¼nchnerstr."));
 
 		showStatus("testSimpleWithNewKundeAndSubTransactionWithNewAddress objectTransaction", objectTransaction);
 		showStatus("testSimpleWithNewKundeAndSubTransactionWithNewAddress subObjectTransaction", subObjectTransaction);
@@ -293,14 +293,14 @@ public class ObjectTransactionWithoutTransactionTest extends RienaTestCase {
 
 		addresse.setOrt("Frankfurt");
 		addresse.setPlz("60000");
-		addresse.setStrasse("Münchnerstr.");
+		addresse.setStrasse("MÃ¼nchnerstr.");
 		assertTrue("kundenr=4711", kunde.getKundennr().equals("4711"));
 		assertTrue("vorname=john", kunde.getVorname().equals("john"));
 		assertTrue("nachname=Miller", kunde.getNachname().equals("Miller"));
 
 		assertTrue("ort in addresse ist nicht Frankfurt", addresse.getOrt().equals("Frankfurt"));
 		assertTrue("plz in addresse ist nicht 60000", addresse.getPlz().equals("60000"));
-		assertTrue("strasse ist nicht Münchnerstr.", addresse.getStrasse().equals("Münchnerstr."));
+		assertTrue("strasse ist nicht MÃ¼nchnerstr.", addresse.getStrasse().equals("MÃ¼nchnerstr."));
 
 		final IObjectTransaction subObjectTransaction = ObjectTransactionFactory.getInstance()
 				.createSubObjectTransaction(objectTransaction);
@@ -315,12 +315,12 @@ public class ObjectTransactionWithoutTransactionTest extends RienaTestCase {
 		addresse = new Addresse(true);
 		subObjectTransaction.registerAsDeleted(kunde.getAddresse());
 
-		addresse.setOrt("München");
+		addresse.setOrt("MÃ¼nchen");
 		addresse.setPlz("80000");
 		addresse.setStrasse("Leopoldstrasse");
 		kunde.setAddresse(addresse);
 
-		assertTrue("ort in addresse ist nicht München", addresse.getOrt().equals("München"));
+		assertTrue("ort in addresse ist nicht MÃ¼nchen", addresse.getOrt().equals("MÃ¼nchen"));
 		assertTrue("plz in addresse ist nicht 80000", addresse.getPlz().equals("80000"));
 		assertTrue("strasse ist nicht Leopoldstrasse", addresse.getStrasse().equals("Leopoldstrasse"));
 
@@ -346,14 +346,14 @@ public class ObjectTransactionWithoutTransactionTest extends RienaTestCase {
 
 		addresse.setOrt("Frankfurt");
 		addresse.setPlz("60000");
-		addresse.setStrasse("Münchnerstr.");
+		addresse.setStrasse("MÃ¼nchnerstr.");
 		assertTrue("kundenr=4711", kunde.getKundennr().equals("4711"));
 		assertTrue("vorname=john", kunde.getVorname().equals("john"));
 		assertTrue("nachname=Miller", kunde.getNachname().equals("Miller"));
 
 		assertTrue("ort in addresse ist nicht Frankfurt", addresse.getOrt().equals("Frankfurt"));
 		assertTrue("plz in addresse ist nicht 60000", addresse.getPlz().equals("60000"));
-		assertTrue("strasse ist nicht Münchnerstr.", addresse.getStrasse().equals("Münchnerstr."));
+		assertTrue("strasse ist nicht MÃ¼nchnerstr.", addresse.getStrasse().equals("MÃ¼nchnerstr."));
 
 		final IObjectTransaction subObjectTransaction = ObjectTransactionFactory.getInstance()
 				.createSubObjectTransaction(objectTransaction);
@@ -368,11 +368,11 @@ public class ObjectTransactionWithoutTransactionTest extends RienaTestCase {
 		addresse = new Addresse(true);
 		subObjectTransaction.registerAsDeleted(kunde.getAddresse());
 
-		addresse.setOrt("München");
+		addresse.setOrt("MÃ¼nchen");
 		addresse.setPlz("80000");
 		addresse.setStrasse("Leopoldstrasse");
 		kunde.setAddresse(addresse);
-		assertTrue("ort in addresse ist nicht München", addresse.getOrt().equals("München"));
+		assertTrue("ort in addresse ist nicht MÃ¼nchen", addresse.getOrt().equals("MÃ¼nchen"));
 		assertTrue("plz in addresse ist nicht 80000", addresse.getPlz().equals("80000"));
 		assertTrue("strasse ist nicht Leopoldstrasse", addresse.getStrasse().equals("Leopoldstrasse"));
 
@@ -381,7 +381,7 @@ public class ObjectTransactionWithoutTransactionTest extends RienaTestCase {
 		assertTrue("vorname=jane", kunde.getVorname().equals("jane"));
 		assertTrue("nachname=Stewart", kunde.getNachname().equals("Stewart"));
 
-		assertTrue("ort in addresse ist nicht München", addresse.getOrt().equals("München"));
+		assertTrue("ort in addresse ist nicht MÃ¼nchen", addresse.getOrt().equals("MÃ¼nchen"));
 		assertTrue("plz in addresse ist nicht 80000", addresse.getPlz().equals("80000"));
 		assertTrue("strasse ist nicht Leopoldstrasse", addresse.getStrasse().equals("Leopoldstrasse"));
 
@@ -570,7 +570,7 @@ public class ObjectTransactionWithoutTransactionTest extends RienaTestCase {
 
 		assertTrue("falscher oder keine Vertrag beim Kunden gefunden", kunde.getVertrag("0815") == v1);
 		assertTrue("falscher oder keine Vertrag beim Kunden gefunden", kunde.getVertrag("0816") == v2);
-		assertTrue("Es gibt nicht 2 Verträge sondern :" + kunde.listVertrag().length, kunde.listVertrag().length == 2);
+		assertTrue("Es gibt nicht 2 VertrÃ¤ge sondern :" + kunde.listVertrag().length, kunde.listVertrag().length == 2);
 
 		showStatus("testSimpleWithExistingKundeUndNewVertraegeInSubTransactionAndCommit objectTransaction",
 				objectTransaction);
@@ -677,7 +677,7 @@ public class ObjectTransactionWithoutTransactionTest extends RienaTestCase {
 		v2.setVertragsBeschreibung("noch ein Vertrag");
 		kunde.addVertrag(v2);
 
-		assertTrue("Es gibt nicht 2 Verträge sondern :" + kunde.listVertrag().length, kunde.listVertrag().length == 2);
+		assertTrue("Es gibt nicht 2 VertrÃ¤ge sondern :" + kunde.listVertrag().length, kunde.listVertrag().length == 2);
 
 		final IObjectTransaction subObjectTransaction = ObjectTransactionFactory.getInstance()
 				.createSubObjectTransaction(objectTransaction);
@@ -762,7 +762,7 @@ public class ObjectTransactionWithoutTransactionTest extends RienaTestCase {
 		v2.setVertragsBeschreibung("noch ein Vertrag");
 		kunde.addVertrag(v2);
 
-		assertTrue("Es gibt nicht 2 Verträge sondern :" + kunde.listVertrag().length, kunde.listVertrag().length == 2);
+		assertTrue("Es gibt nicht 2 VertrÃ¤ge sondern :" + kunde.listVertrag().length, kunde.listVertrag().length == 2);
 
 		final IObjectTransaction subObjectTransaction = ObjectTransactionFactory.getInstance()
 				.createSubObjectTransaction(objectTransaction);

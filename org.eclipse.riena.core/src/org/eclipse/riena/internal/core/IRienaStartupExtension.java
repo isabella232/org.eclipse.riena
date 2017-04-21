@@ -39,7 +39,7 @@ public interface IRienaStartupExtension {
 	Bundle getContributingBundle();
 
 	/**
-	 * Get the ´time´ when this startup action shall be performed.
+	 * Get the Â´timeÂ´ when this startup action shall be performed.
 	 * 
 	 * @return either {@code null} or a value of {@code When}.
 	 * 
