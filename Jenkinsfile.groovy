@@ -5,25 +5,18 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 node('master') {
-
-	stage("checkout") {
-
-		//delete Workspace
+	stage("Checkout") {
+		// Delete the entire workspace to have a clean start.
 		deleteDir()
 
-		print 'git checkout riena'
-		dir('org.eclipse.riena') { checkout scm }
-		
-		//dir('org.eclipse.riena') { 
-		//	git branch: "${rienaBranch}", url: "${RienaRepo}"
-	   //}
-		
-
-		print 'checkout riena.3xtargets'
-		def targetsRepo = "${targetRepo}"
-		def branch3x = "${targetBranch}"
 		dir('org.eclipse.riena.3xtargets') {
-			git branch: branch3x, url: targetsRepo
+			// Checkout the targets repository in sub-directory.
+			git  url: params.targetsUrl, branch: params.targetsBranch
+		}
+
+		dir('org.eclipse.riena') {
+			// Trigger automatic checkout of the repository from which ths script was taken in sub-directory.
+			checkout scm
 		}
 	}
 
@@ -48,7 +41,6 @@ node('master') {
 		}
 	}
 
-
 	stage("Reporting") {
 		dir('org.eclipse.riena') {
 			// Collect the JUnit test reports from the previous Maven run. 
@@ -56,17 +48,17 @@ node('master') {
 			// Collect the Junit test results mark the build as unstable if there are test failures and send email with status informations
 			testStatuses()
 		}
+	}
 
-		stage('Archive') {
-			dir('org.eclipse.riena') {
-				// Archive the generated p2 repository ZIP file for later use in downstream jobs.
-				archiveArtifacts artifacts: 'org.eclipse.riena.build.p2/target/*.zip', fingerprint: true
-				archiveArtifacts artifacts: 'org.eclipse.riena.build.p2full/target/*.zip', fingerprint: true
+	stage('Archive') {
+		dir('org.eclipse.riena') {
+			// Archive the generated p2 repository ZIP file for later use in downstream jobs.
+			archiveArtifacts artifacts: 'org.eclipse.riena.build.p2/target/*.zip', fingerprint: true
+			archiveArtifacts artifacts: 'org.eclipse.riena.build.p2full/target/*.zip', fingerprint: true
 
-				// Archive the test reports from Tycho Surefire for tracking down test failures.
-				archiveArtifacts artifacts: 'org.eclipse.riena.tests/target/surefire-reports/*', fingerprint: true
-				//archiveArtifacts artifacts: 'org.eclipse.riena.tests.optional/target/surefire-reports/*', fingerprint: true
-			}
+			// Archive the test reports from Tycho Surefire for tracking down test failures.
+			archiveArtifacts artifacts: 'org.eclipse.riena.tests/target/surefire-reports/*', fingerprint: true
+			//archiveArtifacts artifacts: 'org.eclipse.riena.tests.optional/target/surefire-reports/*', fingerprint: true
 		}
 	}
 }
@@ -100,7 +92,7 @@ def sendErrorMail(String error) {
   </ul></p>"""
 
     //finally sends email 
-	emailext body: details, subject: "Job ${env.JOB_NAME}, build ${env.BUILD_NUMBER} has problems.", to: """$EmailReceiver"""
+	emailext body: details, subject: "Job ${env.JOB_NAME}, build ${env.BUILD_NUMBER} has problems.", to: """$emailNotificationReceivers"""
 
 }
 //function which sends an email in case of failed tests to receivers configured in the jenkins job
@@ -114,7 +106,7 @@ def sendTestFailedMail(String testStatus) {
  <li><a href="${env.BUILD_URL}testReport">Testreport</a></li>
  """
 //finally sends mail
-	emailext body: body, subject: "Job ${env.JOB_NAME}, build ${env.BUILD_NUMBER} ", to: """$EmailReceiver"""
+	emailext body: body, subject: "Job ${env.JOB_NAME}, build ${env.BUILD_NUMBER} ", to: """$emailNotificationReceivers"""
 
 }
 
