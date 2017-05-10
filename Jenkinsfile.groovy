@@ -4,7 +4,7 @@ import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
-node('master') {
+node('windows10 && x86 && jdk8') {
 	stage("Checkout") {
 		// Delete the entire workspace to have a clean start.
 		deleteDir()
@@ -25,17 +25,22 @@ node('master') {
 			// Run Maven build with pre-configured Maven installation named 'M3'.
 			// Note: This also runs the JUnit plugin-tests via tycho-surefire-plugin.
 			withMaven(maven: 'M3') {
-				try {
+				try{
 					// fail at end so we finish the build and than fail, ignore testfailures(well collect the test failures later in the reporting pahse)
 					bat "mvn -fae clean integration-test -DforceContextQualifier=HEAD_" + getBuildTimestamp() + " -Dmaven.test.failure.ignore=true"
-				} catch (err) {
-					String error = "${err}"
-					//send mail with the catched error
-					sendErrorMail(error)
-					// if the build encounters an failure mark the build as failed
-					currentBuild.result = 'FAILURE'
-				}
-
+					} catch(org.jenkinsci.plugins.scriptsecurity.sandbox.RejectedAccessException e){
+		        print "catched exception "+e;
+		        currentBuild.result = 'FAILURE'
+		        throw e;
+		      }
+		      catch(err){
+		        String error = "${err}"
+		        //send mail with the catched error
+		        sendErrorMail(error)
+		        // if the build encounters an failure mark the build as failed
+		        currentBuild.result = 'FAILURE'
+		      }
+		     }
 			}
 
 		}
@@ -61,7 +66,7 @@ node('master') {
 			//archiveArtifacts artifacts: 'org.eclipse.riena.tests.optional/target/surefire-reports/*', fingerprint: true
 		}
 	}
-}
+
 
 def String getBuildTimestamp() {
 	def buildTimestampMillis = currentBuild.getStartTimeInMillis()
