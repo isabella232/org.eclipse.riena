@@ -96,7 +96,7 @@ public final class UITestHelper {
 		while (!shell.isDisposed() && thread.isAlive()) {
 			try {
 				display.readAndDispatch();
-				sleepForShortWhile();
+				sleepForAnInstance();
 			} catch (final SWTException exc) {
 				// swallow this kind of exception
 				if (!exc.toString().contains("Workbench has not been created yet.")) { //$NON-NLS-1$
@@ -112,13 +112,21 @@ public final class UITestHelper {
 		// posted by the other thread.
 		// Solution: Check here again if there are further events to be processed.
 		while (display.readAndDispatch()) {
-			sleepForShortWhile();
+			sleepForAnInstance();
 		}
 	}
 
-	private static void sleepForShortWhile() {
+	private static void sleepForAnInstance() {
 		try {
 			Thread.sleep(20);
+		} catch (final InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void sleepForAnInstance(final long millis) {
+		try {
+			Thread.sleep(millis);
 		} catch (final InterruptedException e) {
 			e.printStackTrace();
 		}
