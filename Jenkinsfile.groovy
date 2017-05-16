@@ -4,7 +4,7 @@ import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
-node('windows10 && x86 && jdk8') {
+node('win10 && x86 && jdk8') {
 	stage("Checkout") {
 		// Delete the entire workspace to have a clean start.
 		deleteDir()
