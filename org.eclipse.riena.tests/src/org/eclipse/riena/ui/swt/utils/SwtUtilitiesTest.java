@@ -40,15 +40,24 @@ import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 @UITestCase
 public class SwtUtilitiesTest extends TestCase {
 
+	private RienaDefaultLnf oldLnf;
+
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
+
+		// Remember current Lnf to restore it later.
+		oldLnf = LnfManager.getLnf();
+
 		// clear cache 
 		ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpiFactors", new float[] { 0.0f, 0.0f }); //$NON-NLS-1$
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
+		// Restore old Lnf to avoid side-effects between tests.
+		LnfManager.setLnf(oldLnf);
+
 		// clear cache 
 		ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpiFactors", new float[] { 0.0f, 0.0f }); //$NON-NLS-1$
 		super.tearDown();
