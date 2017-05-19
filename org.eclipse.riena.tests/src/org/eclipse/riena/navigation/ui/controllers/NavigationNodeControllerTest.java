@@ -396,16 +396,22 @@ public class NavigationNodeControllerTest extends RienaTestCase {
 		myController.addRidget("0815", ridget2); //$NON-NLS-1$
 		final Handler onClick = new Handler();
 
-		AnnotationProcessor.getInstance().update(new IAnnotatedMethodHandlerExtension[] { create(OnClick.class, onClick) });
+		final IAnnotatedMethodHandlerExtension[] oldExtensions = ReflectionUtils.getHidden(AnnotationProcessor.getInstance(), "extensions"); //$NON-NLS-1$
+		try {
+			AnnotationProcessor.getInstance().update(new IAnnotatedMethodHandlerExtension[] { create(OnClick.class, onClick) });
 
-		final IDisposer disposer = AnnotationProcessor.getInstance().processMethods(myController);
-		myController.addAnnotationDisposer(disposer);
+			final IDisposer disposer = AnnotationProcessor.getInstance().processMethods(myController);
+			myController.addAnnotationDisposer(disposer);
 
-		assertEquals(1, Handler.counter);
+			assertEquals(1, Handler.counter);
 
-		node.dispose();
+			node.dispose();
 
-		assertEquals(0, Handler.counter);
+			assertEquals(0, Handler.counter);
+		} finally {
+			// Restore the old extensions within AnnotationProcessor singleton to not influence other tests.
+			AnnotationProcessor.getInstance().update(oldExtensions);
+		}
 	}
 
 	@SuppressWarnings({ "restriction" })
@@ -420,21 +426,27 @@ public class NavigationNodeControllerTest extends RienaTestCase {
 		myController2.addRidget("0815", ridget3); //$NON-NLS-1$
 		final Handler onClick = new Handler();
 
-		AnnotationProcessor.getInstance().update(new IAnnotatedMethodHandlerExtension[] { create(OnClick.class, onClick) });
+		final IAnnotatedMethodHandlerExtension[] oldExtensions = ReflectionUtils.getHidden(AnnotationProcessor.getInstance(), "extensions"); //$NON-NLS-1$
+		try {
+			AnnotationProcessor.getInstance().update(new IAnnotatedMethodHandlerExtension[] { create(OnClick.class, onClick) });
 
-		IDisposer disposer = AnnotationProcessor.getInstance().processMethods(myController);
-		myController.addAnnotationDisposer(disposer);
-		assertEquals(1, Handler.counter);
+			IDisposer disposer = AnnotationProcessor.getInstance().processMethods(myController);
+			myController.addAnnotationDisposer(disposer);
+			assertEquals(1, Handler.counter);
 
-		disposer = AnnotationProcessor.getInstance().processMethods(myController2);
-		myController2.addAnnotationDisposer(disposer);
+			disposer = AnnotationProcessor.getInstance().processMethods(myController2);
+			myController2.addAnnotationDisposer(disposer);
 
-		assertEquals(2, Handler.counter);
+			assertEquals(2, Handler.counter);
 
-		myController.setNavigationNode(node2);
-		node.dispose();
+			myController.setNavigationNode(node2);
+			node.dispose();
 
-		assertEquals(1, Handler.counter);
+			assertEquals(1, Handler.counter);
+		} finally {
+			// Restore the old extensions within AnnotationProcessor singleton to not influence other tests.
+			AnnotationProcessor.getInstance().update(oldExtensions);
+		}
 	}
 
 	@SuppressWarnings({ "restriction" })
@@ -447,20 +459,26 @@ public class NavigationNodeControllerTest extends RienaTestCase {
 		myController2.addRidget("0815", ridget2); //$NON-NLS-1$
 		final Handler onClick = new Handler();
 
-		AnnotationProcessor.getInstance().update(new IAnnotatedMethodHandlerExtension[] { create(OnClick.class, onClick) });
+		final IAnnotatedMethodHandlerExtension[] oldExtensions = ReflectionUtils.getHidden(AnnotationProcessor.getInstance(), "extensions"); //$NON-NLS-1$
+		try {
+			AnnotationProcessor.getInstance().update(new IAnnotatedMethodHandlerExtension[] { create(OnClick.class, onClick) });
 
-		IDisposer disposer = AnnotationProcessor.getInstance().processMethods(myController);
-		myController.addAnnotationDisposer(disposer);
-		assertEquals(1, Handler.counter);
+			IDisposer disposer = AnnotationProcessor.getInstance().processMethods(myController);
+			myController.addAnnotationDisposer(disposer);
+			assertEquals(1, Handler.counter);
 
-		disposer = AnnotationProcessor.getInstance().processMethods(myController2);
-		myController2.addAnnotationDisposer(disposer);
+			disposer = AnnotationProcessor.getInstance().processMethods(myController2);
+			myController2.addAnnotationDisposer(disposer);
 
-		assertEquals(2, Handler.counter);
+			assertEquals(2, Handler.counter);
 
-		node2.dispose();
+			node2.dispose();
 
-		assertEquals(1, Handler.counter);
+			assertEquals(1, Handler.counter);
+		} finally {
+			// Restore the old extensions within AnnotationProcessor singleton to not influence other tests.
+			AnnotationProcessor.getInstance().update(oldExtensions);
+		}
 	}
 
 	// helping classes
