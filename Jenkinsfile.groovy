@@ -8,7 +8,10 @@ import java.time.format.DateTimeFormatter
  * Main build script.
  ********************/
 
-node('win10 && x86 && jdk8') {
+requiredLabels = ['win10', 'x86', 'jdk8'].toArray()
+requiredLabelsStr = requiredLabels.join('&&')
+
+node(requiredLabelsStr) {
 
 	def numSplits = 0
 
@@ -16,15 +19,15 @@ node('win10 && x86 && jdk8') {
 		cleanWs()
 
 		parallel('Checkout of 3xTargets': {
-					dir('org.eclipse.riena.3xtargets') {
-						git url: params.targetsUrl, branch: params.targetsBranch
-					}
-				},
+			dir('org.eclipse.riena.3xtargets') {
+				git url: params.targetsUrl, branch: params.targetsBranch
+			}
+		},
 
-				'Checkout of Riena Sources': {
-					dir('org.eclipse.riena') { checkout scm }
-				}
-				)
+		'Checkout of Riena Sources': {
+			dir('org.eclipse.riena') { checkout scm }
+		}
+		)
 	}
 
 	stage('Build') {
@@ -98,9 +101,31 @@ def String getBuildTimestamp() {
 	return buildTimestamp.format(DateTimeFormatter.ofPattern('yyyyMMddHHmm'))
 }
 
+def int findNumberOfAvailableSlaves() {
+	def result = 0
+	for (slave in hudson.model.Hudson.instance.slaves) {
+		if (slave.getComputer().countIdle() == 0) {
+			continue
+		}
+		
+		for (label in requiredLabels) {
+			if (!slave.getLabelString().contains(label)) {
+				continue
+			}
+		}
+		
+		result++
+	}
+	
+	return result
+}
+
 def int runTests() {
+	// Number of available slaves defines how many parallel test executions we can have.
+	def numBuckets = findNumberOfAvailableSlaves()
+	
 	// Split tests in certain number of buckets.
-	def splits = splitTests generateInclusions: true, parallelism: count(2)
+	def splits = splitTests generateInclusions: true, parallelism: count(numBuckets)
 
 	// Dictionary to hold set of parallel test executions.
 	def testGroups = [:]
@@ -112,7 +137,7 @@ def int runTests() {
 		def split = splits[i]
 		def splitLabel = "split-${i}"
 		testGroups[splitLabel] = {
-			node('win10 && x86 && jdk8') {
+			node(requiredLabelsStr) {
 				prepareTestRun()
 				executeTestRun(split)
 
