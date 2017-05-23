@@ -242,7 +242,7 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider impl
 		}
 
 		// If there are no attributes or no image key specified, get it from the Lnf theme.
-		if ((imageKey == null) && (isSubModuleNode(element.getClass()))) {
+		if (imageKey == null) {
 			ILnfResource<?> lnfResource = null;
 			final Tree tree = (Tree) viewer.getControl();
 
@@ -287,7 +287,7 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider impl
 		}
 
 		// If there are no attributes or no image key specified, get it from the Lnf theme.
-		if ((imageKey == null) && (isSubModuleNode(element.getClass()))) {
+		if (imageKey == null) {
 			ILnfResource<? extends Resource> lnfResource = null;
 			final Tree tree = (Tree) viewer.getControl();
 			final boolean navigation = TREE_KIND_NAVIGATION.equals(tree.getData(TREE_KIND_KEY));
