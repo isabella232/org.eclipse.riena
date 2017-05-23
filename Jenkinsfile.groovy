@@ -20,7 +20,11 @@ node(requiredLabelsStr) {
 
 		parallel('Checkout of 3xTargets': {
 			dir('org.eclipse.riena.3xtargets') {
-				git url: params.targetsUrl, branch: params.targetsBranch
+				if (params.rienaTargetsTag != null && params.rienaTargetsTag != '') {
+					checkout scm: [$class: 'GitSCM', userRemoteConfigs: [[url: '${rienaTargetsUrl}']], branches: [[name: 'refs/tags/${rienaTargetsTag}' ]]], poll: false
+				} else if (params.rienaTargetsBranch != null && params.rienaTargetsBranch != '') {
+					git url: params.rienaTargetsUrl, branch: params.rienaTargetsBranch
+				}
 			}
 		},
 
@@ -37,7 +41,7 @@ node(requiredLabelsStr) {
 				try {
 					// Do not run tests here since we run them in parallel later.
 					// Fail at end to run entire build even in case of a failure.
-					bat 'mvn -fae clean package -DforceContextQualifier=HEAD_' + getBuildTimestamp()
+					bat "mvn -fae clean package -DforceContextQualifier=${buildQualifier()}"
 				} catch (err) {
 					String error = "${err}"
 
@@ -95,10 +99,14 @@ node(requiredLabelsStr) {
  * Helper functions.
  *******************/
 
-def String getBuildTimestamp() {
-	def buildTimestampMillis = currentBuild.getStartTimeInMillis()
-	LocalDateTime buildTimestamp = LocalDateTime.ofInstant(Instant.ofEpochMilli(buildTimestampMillis), ZoneId.systemDefault());
-	return buildTimestamp.format(DateTimeFormatter.ofPattern('yyyyMMddHHmm'))
+def String buildQualifier() {
+	if (params.rienaTag != null && params.rienaTag != '') {
+		return params.rienaTag
+	} else {	
+		def buildTimestampMillis = currentBuild.getStartTimeInMillis()
+		LocalDateTime buildTimestamp = LocalDateTime.ofInstant(Instant.ofEpochMilli(buildTimestampMillis), ZoneId.systemDefault());
+		return 'HEAD_' + buildTimestamp.format(DateTimeFormatter.ofPattern('yyyyMMddHHmm'))
+	}
 }
 
 def int findNumberOfAvailableSlaves() {
