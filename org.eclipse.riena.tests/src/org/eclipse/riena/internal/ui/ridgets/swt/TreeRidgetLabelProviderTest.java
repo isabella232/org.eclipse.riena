@@ -14,8 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
-
-import junit.framework.TestCase;
+import java.util.Map;
 
 import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.core.databinding.observable.map.IObservableMap;
@@ -43,6 +42,12 @@ import org.eclipse.riena.core.test.collect.UITestCase;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.ui.ridgets.IColumnFormatter;
 import org.eclipse.riena.ui.ridgets.swt.ColumnFormatter;
+import org.eclipse.riena.ui.swt.lnf.ILnfResource;
+import org.eclipse.riena.ui.swt.lnf.ImageLnfResource;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
+
+import junit.framework.TestCase;
 
 /**
  * Tests for the class {@link TreeRidgetLabelProvider}.
@@ -82,8 +87,7 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 		final IObservableSet elements = createElements();
 		formatters = new IColumnFormatter[] { new TestColumnFormatter(), null };
 		noFormatters = new IColumnFormatter[COLUMN_PROPERTIES.length];
-		labelProvider = TreeRidgetLabelProvider.createLabelProvider(viewer, WordNode.class, elements,
-				COLUMN_PROPERTIES, null, null, null, noFormatters);
+		labelProvider = TreeRidgetLabelProvider.createLabelProvider(viewer, WordNode.class, elements, COLUMN_PROPERTIES, null, null, null, noFormatters);
 
 		viewer.setContentProvider(new FTTreeContentProvider());
 		viewer.setLabelProvider(labelProvider);
@@ -113,25 +117,72 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 		assertNull(labelProvider.getColumnText(node, 99));
 
 		ReflectionUtils.invokeHidden(labelProvider, "setFormatters", (Object) new IColumnFormatter[] { null, null });
-		ReflectionUtils.setHidden(labelProvider, "attributeMaps", new IObservableMap[] {
-				new ObservableMap(new HashMap()), new ObservableMap(new HashMap()) });
+		ReflectionUtils.setHidden(labelProvider, "attributeMaps", new IObservableMap[] { new ObservableMap(new HashMap()), new ObservableMap(new HashMap()) });
 		final String[] valuesAccessors = new String[] { "aCount" };
 		ReflectionUtils.setHidden(labelProvider, "valueAccessors", valuesAccessors);
 		node = new WordNode("AAAaaaa");
 		assertEquals("7", labelProvider.getColumnText(node, 0));
 	}
 
-	public void testGetImage() {
+	/**
+	 * Tests if TreeRidgetLabelProvider returns the default icon for nodes and leaves if no icon is configured in Lnf.
+	 */
+	public void testGetImageFallback() {
+		final Map<String, ILnfResource<?>> oldLnfResources = clearTreeIconLnfResources();
+
+		try {
+			viewer.collapseAll();
+
+			final Image siCollapsed = Activator.getSharedImage(SharedImages.IMG_NODE_COLLAPSED);
+			assertNotNull(siCollapsed);
+			final Image nodeCollapsed = labelProvider.getImage(node);
+			assertSame(siCollapsed, nodeCollapsed);
+
+			viewer.expandAll();
+
+			final Image siExpanded = Activator.getSharedImage(SharedImages.IMG_NODE_EXPANDED);
+			assertNotNull(siExpanded);
+			final Image nodeExpanded = labelProvider.getImage(node);
+			assertSame(siExpanded, nodeExpanded);
+
+			viewer.collapseToLevel(node, 1);
+
+			assertSame(siCollapsed, labelProvider.getImage(node));
+
+			viewer.expandToLevel(node, 1);
+
+			assertSame(siExpanded, labelProvider.getImage(node));
+
+			final Image siLeaf = Activator.getSharedImage(SharedImages.IMG_LEAF);
+			assertNotNull(siLeaf);
+			final Image imgLeaf = labelProvider.getImage(leaf);
+			assertSame(siLeaf, imgLeaf);
+
+			// sanity check
+			assertNotSame(nodeExpanded, nodeCollapsed);
+			assertNotSame(nodeExpanded, imgLeaf);
+			assertNotSame(nodeCollapsed, imgLeaf);
+		} finally {
+			restoreTreeIconLnfResources(oldLnfResources);
+		}
+	}
+
+	/**
+	 * Tests if TreeRidgetLabelProvider returns the icon for nodes and leaves configured in the Lnf.
+	 */
+	public void testGetImageFromLnf() {
 		viewer.collapseAll();
 
-		final Image siCollapsed = Activator.getSharedImage(SharedImages.IMG_NODE_COLLAPSED);
+		String imagePath = ((ImageLnfResource) LnfManager.getLnf().getLnfResource(LnfKeyConstants.WORKAREA_TREE_FOLDER_CLOSED_ICON)).getImagePath();
+		final Image siCollapsed = Activator.getSharedImage(imagePath);
 		assertNotNull(siCollapsed);
 		final Image nodeCollapsed = labelProvider.getImage(node);
 		assertSame(siCollapsed, nodeCollapsed);
 
 		viewer.expandAll();
 
-		final Image siExpanded = Activator.getSharedImage(SharedImages.IMG_NODE_EXPANDED);
+		imagePath = ((ImageLnfResource) LnfManager.getLnf().getLnfResource(LnfKeyConstants.WORKAREA_TREE_FOLDER_OPEN_ICON)).getImagePath();
+		final Image siExpanded = Activator.getSharedImage(imagePath);
 		assertNotNull(siExpanded);
 		final Image nodeExpanded = labelProvider.getImage(node);
 		assertSame(siExpanded, nodeExpanded);
@@ -144,7 +195,8 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 
 		assertSame(siExpanded, labelProvider.getImage(node));
 
-		final Image siLeaf = Activator.getSharedImage(SharedImages.IMG_LEAF);
+		imagePath = ((ImageLnfResource) LnfManager.getLnf().getLnfResource(LnfKeyConstants.WORKAREA_TREE_DOCUMENT_LEAF_ICON)).getImagePath();
+		final Image siLeaf = Activator.getSharedImage(imagePath);
 		assertNotNull(siLeaf);
 		final Image imgLeaf = labelProvider.getImage(leaf);
 		assertSame(siLeaf, imgLeaf);
@@ -161,10 +213,10 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 		nodeWithIcon.setOpenIcon("open_16.gif");
 		final WordNodeWithIcon leafWithIcon = new WordNodeWithIcon(nodeWithIcon, "lwi");
 		leafWithIcon.setIcon("eclipse.gif");
-		final IObservableSet elements = new WritableSet(Realm.getDefault(), Arrays.asList(new WordNode[] {
-				nodeWithIcon, leafWithIcon }), WordNodeWithIcon.class);
-		labelProvider = TreeRidgetLabelProvider.createLabelProvider(viewer, WordNodeWithIcon.class, elements,
-				COLUMN_PROPERTIES, null, "icon", "openIcon", noFormatters);
+		final IObservableSet elements = new WritableSet(Realm.getDefault(), Arrays.asList(new WordNode[] { nodeWithIcon, leafWithIcon }),
+				WordNodeWithIcon.class);
+		labelProvider = TreeRidgetLabelProvider.createLabelProvider(viewer, WordNodeWithIcon.class, elements, COLUMN_PROPERTIES, null, "icon", "openIcon",
+				noFormatters);
 		viewer.setLabelProvider(labelProvider);
 		viewer.setInput(elements.toArray());
 
@@ -193,14 +245,47 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 		assertNotSame(nodeCollapsed, imgLeaf);
 	}
 
-	public void testGetColumnImage() {
+	public void testGetColumnImageFallback() {
+		final Map<String, ILnfResource<?>> oldLnfResources = clearTreeIconLnfResources();
+
+		try {
+			viewer.collapseAll();
+
+			final Image siCollapsed = Activator.getSharedImage(SharedImages.IMG_NODE_COLLAPSED);
+			assertNotNull(siCollapsed);
+			assertSame(siCollapsed, labelProvider.getColumnImage(node, 0));
+
+			final Image siLeaf = Activator.getSharedImage(SharedImages.IMG_LEAF);
+			assertNotNull(siLeaf);
+			assertSame(siLeaf, labelProvider.getColumnImage(leaf, 0));
+			assertNotSame(siLeaf, siCollapsed);
+
+			final Image siUnchecked = Activator.getSharedImage(SharedImages.IMG_UNCHECKED);
+			assertNotNull(siUnchecked);
+			assertEquals(siUnchecked, labelProvider.getColumnImage(node, 1));
+
+			final Image siChecked = Activator.getSharedImage(SharedImages.IMG_CHECKED);
+			assertNotNull(siChecked);
+			assertEquals(siChecked, labelProvider.getColumnImage(leaf, 1));
+
+			assertNotSame(siChecked, siUnchecked);
+
+			assertNull(labelProvider.getColumnImage(node, 99));
+		} finally {
+			restoreTreeIconLnfResources(oldLnfResources);
+		}
+	}
+
+	public void testGetColumnImageFromLnf() {
 		viewer.collapseAll();
 
-		final Image siCollapsed = Activator.getSharedImage(SharedImages.IMG_NODE_COLLAPSED);
+		String imagePath = ((ImageLnfResource) LnfManager.getLnf().getLnfResource(LnfKeyConstants.WORKAREA_TREE_FOLDER_CLOSED_ICON)).getImagePath();
+		final Image siCollapsed = Activator.getSharedImage(imagePath);
 		assertNotNull(siCollapsed);
 		assertSame(siCollapsed, labelProvider.getColumnImage(node, 0));
 
-		final Image siLeaf = Activator.getSharedImage(SharedImages.IMG_LEAF);
+		imagePath = ((ImageLnfResource) LnfManager.getLnf().getLnfResource(LnfKeyConstants.WORKAREA_TREE_DOCUMENT_LEAF_ICON)).getImagePath();
+		final Image siLeaf = Activator.getSharedImage(imagePath);
 		assertNotNull(siLeaf);
 		assertSame(siLeaf, labelProvider.getColumnImage(leaf, 0));
 		assertNotSame(siLeaf, siCollapsed);
@@ -222,8 +307,7 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 		final IObservableSet elements = createElements();
 		final WordNode wordNode = leaf;
 		// using upperCase as the enablement accessor; true => enabled; false => disabled
-		labelProvider = TreeRidgetLabelProvider.createLabelProvider(viewer, WordNode.class, elements,
-				COLUMN_PROPERTIES, "upperCase", null, null, noFormatters);
+		labelProvider = TreeRidgetLabelProvider.createLabelProvider(viewer, WordNode.class, elements, COLUMN_PROPERTIES, "upperCase", null, null, noFormatters);
 
 		wordNode.setUpperCase(true);
 		final Color colorEnabled = labelProvider.getForeground(wordNode);
@@ -248,12 +332,39 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 		assertNull(labelProvider.getColumnText(node, 99));
 	}
 
-	public void testGetColumnImageWithFormatter() {
-		final IColumnFormatter[] formatters2 = new IColumnFormatter[] { new TestColumnFormatter(),
-				new TestColumnFormatter() };
+	public void testGetColumnImageWithFormatterFallback() {
+		final Map<String, ILnfResource<?>> oldLnfResources = clearTreeIconLnfResources();
+
+		try {
+			final IColumnFormatter[] formatters2 = new IColumnFormatter[] { new TestColumnFormatter(), new TestColumnFormatter() };
+			ReflectionUtils.invokeHidden(labelProvider, "setFormatters", (Object) formatters2);
+			final Image siNode = Activator.getSharedImage(SharedImages.IMG_NODE_COLLAPSED);
+			final Image siLeaf = Activator.getSharedImage(SharedImages.IMG_LEAF);
+			final Image siError = Activator.getSharedImage(SharedImages.IMG_ERROR_DECO);
+
+			assertSame(siNode, labelProvider.getColumnImage(node, 0));
+			assertSame(siError, labelProvider.getColumnImage(leaf, 0));
+			assertSame(siLeaf, labelProvider.getColumnImage(alpha, 0));
+
+			final Image siUnchecked = Activator.getSharedImage(SharedImages.IMG_UNCHECKED);
+			assertSame(siUnchecked, labelProvider.getColumnImage(alpha, 1));
+
+			assertNull(labelProvider.getColumnImage(node, 99));
+		} finally {
+			restoreTreeIconLnfResources(oldLnfResources);
+		}
+	}
+
+	public void testGetColumnImageWithFormatterFromLnf() {
+		final IColumnFormatter[] formatters2 = new IColumnFormatter[] { new TestColumnFormatter(), new TestColumnFormatter() };
 		ReflectionUtils.invokeHidden(labelProvider, "setFormatters", (Object) formatters2);
-		final Image siNode = Activator.getSharedImage(SharedImages.IMG_NODE_COLLAPSED);
-		final Image siLeaf = Activator.getSharedImage(SharedImages.IMG_LEAF);
+
+		String imagePath = ((ImageLnfResource) LnfManager.getLnf().getLnfResource(LnfKeyConstants.WORKAREA_TREE_FOLDER_CLOSED_ICON)).getImagePath();
+		final Image siNode = Activator.getSharedImage(imagePath);
+
+		imagePath = ((ImageLnfResource) LnfManager.getLnf().getLnfResource(LnfKeyConstants.WORKAREA_TREE_DOCUMENT_LEAF_ICON)).getImagePath();
+		final Image siLeaf = Activator.getSharedImage(imagePath);
+
 		final Image siError = Activator.getSharedImage(SharedImages.IMG_ERROR_DECO);
 
 		assertSame(siNode, labelProvider.getColumnImage(node, 0));
@@ -279,8 +390,8 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 				}
 			};
 			final IColumnFormatter[] formatters = new IColumnFormatter[] { formatter, null };
-			final TreeRidgetLabelProvider labelProvider = TreeRidgetLabelProvider.createLabelProvider(viewer,
-					WordNode.class, createElements(), COLUMN_PROPERTIES, null, null, null, formatters);
+			final TreeRidgetLabelProvider labelProvider = TreeRidgetLabelProvider.createLabelProvider(viewer, WordNode.class, createElements(),
+					COLUMN_PROPERTIES, null, null, null, formatters);
 
 			final TreeItem treeItem = new TreeItem(viewer.getTree(), SWT.NONE);
 			new TreeItem(treeItem, SWT.NONE);
@@ -366,6 +477,26 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 		final TreeColumn tc2 = new TreeColumn(result, SWT.NONE);
 		tc2.setWidth(200);
 		return result;
+	}
+
+	private Map<String, ILnfResource<?>> clearTreeIconLnfResources() {
+		final HashMap<String, ILnfResource<?>> result = new HashMap<String, ILnfResource<?>>();
+
+		result.put(LnfKeyConstants.WORKAREA_TREE_FOLDER_CLOSED_ICON, LnfManager.getLnf().getLnfResource(LnfKeyConstants.WORKAREA_TREE_FOLDER_CLOSED_ICON));
+		result.put(LnfKeyConstants.WORKAREA_TREE_FOLDER_OPEN_ICON, LnfManager.getLnf().getLnfResource(LnfKeyConstants.WORKAREA_TREE_FOLDER_OPEN_ICON));
+		result.put(LnfKeyConstants.WORKAREA_TREE_DOCUMENT_LEAF_ICON, LnfManager.getLnf().getLnfResource(LnfKeyConstants.WORKAREA_TREE_DOCUMENT_LEAF_ICON));
+
+		LnfManager.getLnf().putLnfResource(LnfKeyConstants.WORKAREA_TREE_FOLDER_CLOSED_ICON, null);
+		LnfManager.getLnf().putLnfResource(LnfKeyConstants.WORKAREA_TREE_FOLDER_OPEN_ICON, null);
+		LnfManager.getLnf().putLnfResource(LnfKeyConstants.WORKAREA_TREE_DOCUMENT_LEAF_ICON, null);
+
+		return result;
+	}
+
+	private void restoreTreeIconLnfResources(final Map<String, ILnfResource<?>> resources) {
+		for (final Map.Entry<String, ILnfResource<?>> entry : resources.entrySet()) {
+			LnfManager.getLnf().putLnfResource(entry.getKey(), entry.getValue());
+		}
 	}
 
 	// helping classes
