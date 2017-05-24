@@ -57,20 +57,38 @@ node(requiredLabelsStr) {
 			}
 		}
 
-		dir('org.eclipse.riena') {
-			stash name: 'parentPom', includes: 'pom.xml'
-			stash name: 'testProject', includes: 'org.eclipse.riena.tests/**'
-			stash name: 'buildResult', includes: 'org.eclipse.riena.build.p2/target/*.zip'
-		}
-
-		dir('org.eclipse.riena.3xtargets/org.eclipse.riena.target3x') {
-			stash name: '3xTargets' , includes:  '**'
-		}
+		parallel (
+			'Stash Test Project' : {
+				dir('org.eclipse.riena') {
+					stash name: 'parentPom', includes: 'pom.xml'
+					stash name: 'testProject', includes: 'org.eclipse.riena.tests/**'
+				}
+			},
+			
+			'Stash Build Result' : {
+				dir('org.eclipse.riena') {
+					stash name: 'buildResult', includes: 'org.eclipse.riena.build.p2/target/*.zip'
+				}
+			},
+			
+			'Stash 3xTargets' : {
+				dir('org.eclipse.riena.3xtargets/org.eclipse.riena.target3x') {
+					stash name: '3xTargets' , includes:  '**'
+				}
+			}
+			)
 		
 		dir('org.eclipse.riena') {
 			// Archive the generated p2 repository ZIP files.
-			archiveArtifacts artifacts: 'org.eclipse.riena.build.p2/target/*.zip', fingerprint: true
-			archiveArtifacts artifacts: 'org.eclipse.riena.build.p2full/target/*.zip', fingerprint: true
+			parallel (
+				"Archiving small p2 repo" : {
+					archiveArtifacts artifacts: 'org.eclipse.riena.build.p2/target/*.zip', fingerprint: true
+				},
+				
+				"Archiving large p2 repo" : {
+					archiveArtifacts artifacts: 'org.eclipse.riena.build.p2full/target/*.zip', fingerprint: true
+				}
+				)
 		}
 	}
 }
