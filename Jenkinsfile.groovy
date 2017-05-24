@@ -11,9 +11,9 @@ import java.time.format.DateTimeFormatter
 requiredLabels = ['win10', 'x86', 'jdk8'].toArray()
 requiredLabelsStr = requiredLabels.join('&&')
 
-node(requiredLabelsStr) {
+numSplits = 0
 
-	def numSplits = 0
+node(requiredLabelsStr) {
 
 	stage('Checkout') {
 		cleanWs()
@@ -66,20 +66,20 @@ node(requiredLabelsStr) {
 		dir('org.eclipse.riena.3xtargets/org.eclipse.riena.target3x') {
 			stash name: '3xTargets' , includes:  '**'
 		}
-	}
-
-	stage('Test') {
-		numSplits = runTests()
-		reportTestStatus()
-	}
-
-	stage('Archive') {
+		
 		dir('org.eclipse.riena') {
 			// Archive the generated p2 repository ZIP files.
 			archiveArtifacts artifacts: 'org.eclipse.riena.build.p2/target/*.zip', fingerprint: true
 			archiveArtifacts artifacts: 'org.eclipse.riena.build.p2full/target/*.zip', fingerprint: true
 		}
+	}
+}
 
+stage('Test') {
+	numSplits = runTests()
+	reportTestStatus()
+	
+	node(requiredLabelsStr) {
 		dir('surefire-reports') {
 			// Loop over all splits of the test execution and unstash the stashed surefire reports into
 			// a separate sub-directory each.
