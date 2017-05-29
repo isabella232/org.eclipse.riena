@@ -235,6 +235,7 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider impl
 
 	private Image getImageForNode(final Object element, final boolean isExpanded) {
 		String imageKey = null;
+		IconSize iconSize = IconSize.NONE;
 
 		// First try to get the image key from the attributes.
 		if (imageAttribute != null && openImageAttribute != null) {
@@ -257,13 +258,12 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider impl
 			if (lnfResource instanceof ImageLnfResource) {
 				final ImageLnfResource imageResource = (ImageLnfResource) lnfResource;
 				imageKey = imageResource.getImagePath();
+				iconSize = imageResource.getIconSize();
 			}
 		}
 
-		// By default load the image in IconSize.NONE ...
-		IconSize iconSize = IconSize.NONE;
+		// If it's a SubModuleNode, take the IconSize from Lnf constant EMBEDDED_TITLEBAR_ICON_SIZE.
 		if (isSubModuleNode(element.getClass())) {
-			// ... unless it's a SubModuleNode, then take the IconSize from the Lnf configuration.
 			iconSize = (IconSize) LnfManager.getLnf().getSetting(LnfKeyConstants.EMBEDDED_TITLEBAR_ICON_SIZE);
 		}
 
@@ -280,6 +280,7 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider impl
 
 	private Image getImageForLeaf(final Object element) {
 		String imageKey = null;
+		IconSize iconSize = IconSize.NONE;
 
 		// First try to get the image key from the attributes.
 		if (imageAttribute != null) {
@@ -296,13 +297,12 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider impl
 			if (lnfResource instanceof ImageLnfResource) {
 				final ImageLnfResource imageResource = (ImageLnfResource) lnfResource;
 				imageKey = imageResource.getImagePath();
+				iconSize = imageResource.getIconSize();
 			}
 		}
 
-		// By default load the image in IconSize.NONE ...
-		IconSize iconSize = IconSize.NONE;
+		// If it's a SubModuleNode, take the IconSize from Lnf constant EMBEDDED_TITLEBAR_ICON_SIZE.
 		if (isSubModuleNode(element.getClass())) {
-			// ... unless it's a SubModuleNode, then take the IconSize from the Lnf configuration.
 			iconSize = (IconSize) LnfManager.getLnf().getSetting(LnfKeyConstants.EMBEDDED_TITLEBAR_ICON_SIZE);
 		}
 
