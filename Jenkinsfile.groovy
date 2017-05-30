@@ -1,4 +1,6 @@
 import hudson.tasks.test.AbstractTestResultAction
+import jenkins.model.Jenkins
+import hudson.model.Slave
 import java.time.LocalDateTime
 import java.time.Instant
 import java.time.ZoneId
@@ -128,22 +130,26 @@ def String buildQualifier() {
 }
 
 def int findNumberOfAvailableSlaves() {
-	def result = 0
-	for (slave in hudson.model.Hudson.instance.slaves) {
-		if (slave.getComputer().countIdle() == 0) {
-			continue
-		}
-		
-		for (label in requiredLabels) {
-			if (!slave.getLabelString().contains(label)) {
+	def availableSlaves = []
+	for (node in Jenkins.instance.nodes) {
+		if (node instanceof Slave) {
+			Slave slave = (Slave) node
+			if (slave.getComputer().countIdle() == 0) {
 				continue
 			}
+			
+			for (label in requiredLabels) {
+				if (!slave.labelString.contains(label)) {
+					continue
+				}
+			}
+			
+			availableSlaves.add(slave.nodeName)
 		}
-		
-		result++
 	}
 	
-	return result
+	print "There are ${availableSlaves.size} slaves available: ${availableSlaves.iterator().join(', ')}."
+	return availableSlaves.size
 }
 
 def int runTests() {
