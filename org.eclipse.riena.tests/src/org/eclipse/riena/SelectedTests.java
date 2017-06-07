@@ -15,7 +15,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Enumeration;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -59,7 +59,7 @@ public class SelectedTests extends TestCase {
 	public static Test buildTestSuite(final String includeTestsFile, final String excludeTestsFile) {
 		BufferedReader includeTestsFileReader = null;
 		final TestSuite testSuite = new TestSuite();
-		Set<String> testclasses = new HashSet<String>();
+		Set<String> testclasses = new LinkedHashSet<String>();
 
 		try {
 			final List<String> excludedTests = (excludeTestsFile != null && !excludeTestsFile.isEmpty()) ? readFile(excludeTestsFile) : Collections.EMPTY_LIST;
@@ -131,13 +131,13 @@ public class SelectedTests extends TestCase {
 	 * @throws IOException
 	 */
 	private static Set<String> readTestFromFile(final BufferedReader includeTestsFileReader) throws IOException {
-		Set<String> testclasses = new HashSet<String>();
+		final Set<String> testclasses = new LinkedHashSet<String>();
 		String test = null;
 		while ((test = includeTestsFileReader.readLine()) != null) {
 			test = processLine(test);
 			testclasses.add(test);
 		}
-		testclasses = removeSelfFromListOfTestcases(testclasses);
+		removeSelfFromListOfTestcases(testclasses);
 
 		return testclasses;
 	}
@@ -148,13 +148,12 @@ public class SelectedTests extends TestCase {
 	 * @param testclasses
 	 *            the new set of test classes without self.
 	 */
-	private static Set<String> removeSelfFromListOfTestcases(final Set<String> testclasses) {
+	private static void removeSelfFromListOfTestcases(final Set<String> testclasses) {
 		if (testclasses.remove(SelectedTests.class.getName().replaceAll("[.]", "/"))) { //$NON-NLS-1$ //$NON-NLS-2$
 			System.out
 					.println("Warning removed: " + SelectedTests.class.getName() + " from List of Tests because we dont want to add ourself to List of Tests"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 
-		return testclasses;
 	}
 
 	/**

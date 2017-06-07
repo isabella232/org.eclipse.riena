@@ -48,7 +48,6 @@
 						<configuration>
 							<argLine>-DincludeTestsFile=${includeTestsFile} -DexcludeTestsFile=${excludeTestsFile}</argLine>
 							<testClass>org.eclipse.riena.SelectedTests</testClass>
-							<runOrder>alphabetical</runOrder>
 						</configuration>
 					</plugin>
 				</plugins>
