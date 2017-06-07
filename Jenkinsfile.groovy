@@ -239,7 +239,7 @@ def prepareTestRun(){
 }
 
 def executeTestRun(split) {
-	def postfix = ''
+	def includeExcludeFileOption = ''
 	dir('org.eclipse.riena/org.eclipse.riena.tests') {
 		// Of n splits, n-1 work with an inclusion list, and the n-th one works with an exclusion list
 		// to ensure that tests which have not yet been seen in previous builds are also discovered.
