@@ -10,6 +10,8 @@ import java.time.format.DateTimeFormatter
  * Main build script.
  ********************/
 
+checkParams()
+
 requiredLabels = ['win10', 'x86', 'jdk8'].toArray()
 requiredLabelsStr = requiredLabels.join('&&')
 
@@ -23,7 +25,8 @@ node(requiredLabelsStr) {
 		parallel('Checkout of 3xTargets': {
 			dir('org.eclipse.riena.3xtargets') {
 				if (params.rienaTargetsTag != null && params.rienaTargetsTag != '') {
-					checkout scm: [$class: 'GitSCM', userRemoteConfigs: [[url: '${rienaTargetsUrl}']], branches: [[name: 'refs/tags/${rienaTargetsTag}' ]]], poll: false
+					checkout scm: [$class: 'GitSCM', userRemoteConfigs: [[url: '${rienaTargetsUrl}']],
+						branches: [[name: 'refs/tags/${rienaTargetsTag}' ]]], poll: false
 				} else if (params.rienaTargetsBranch != null && params.rienaTargetsBranch != '') {
 					git url: params.rienaTargetsUrl, branch: params.rienaTargetsBranch
 				}
@@ -119,12 +122,24 @@ stage('Test') {
  * Helper functions.
  *******************/
 
+def checkParams() {
+	if (params.rienaTargetsUrl == null || params.rienaTargetsUrl.isEmpty()) {
+		error("Missing parameter: Parameter 'rienaTargetsUrl' must be set.")
+	}
+	
+	if ((params.rienaTargetsBranch == null || params.rienaTargetsBranch.isEmpty()) &&
+		(params.rienaTargetsTag == null || params.rienaTargetsTag.isEmpty())) {
+		error("Missing parameter: Either parameter 'rienaTargetsBranch' or parameter 'rienaTargetsTag' must be set.")
+	}
+}
+
 def String buildQualifier() {
 	if (params.rienaTag != null && params.rienaTag != '') {
 		return params.rienaTag
 	} else {	
 		def buildTimestampMillis = currentBuild.getStartTimeInMillis()
-		LocalDateTime buildTimestamp = LocalDateTime.ofInstant(Instant.ofEpochMilli(buildTimestampMillis), ZoneId.systemDefault());
+		LocalDateTime buildTimestamp = LocalDateTime.ofInstant(
+			Instant.ofEpochMilli(buildTimestampMillis), ZoneId.systemDefault());
 		return 'HEAD_' + buildTimestamp.format(DateTimeFormatter.ofPattern('yyyyMMddHHmm'))
 	}
 }
@@ -207,8 +222,8 @@ def prepareTestRun(){
 				dir('tmp-copy') { unstash name: 'buildResult' }
 
 				dir('tmp-copy/org.eclipse.riena.build.p2/target/') {
-					// Unzip the all *.zip files copied from Riena job -> should be only one, but a loop is the easiest
-					// way to figure out the final filename.
+					// Unzip the all *.zip files copied from Riena job -> should be only one, but a loop is the
+					// easiest way to figure out the final filename.
 					def files = findFiles(glob: '*.zip')
 					for(int i = 0; i < files.size(); i++) {
 						def file = "${files[0].name}"
@@ -231,18 +246,19 @@ def executeTestRun(split) {
 		if (split.includes) {
 			print 'Inclusion split to execute: ' + split
 			writeFile file: 'includedTest.txt', text: split.list.join('\n')
-			postfix = ' -DincludeTestsFile=includedTest.txt'
+			includeExcludeFileOption = '-DincludeTestsFile=includedTest.txt'
 		} else {
 			print 'Exclusion split to execute: ' + split
 			writeFile file: 'excludedTest.txt', text: split.list.join('\n')
-			postfix = ' -DexcludeTestsFile=excludedTest.txt'
+			includeExcludeFileOption = '-DexcludeTestsFile=excludedTest.txt'
 		}
 	}
 
 	// Execute Maven build with tests.
 	dir('org.eclipse.riena/org.eclipse.riena.tests') {
 		try {
-			bat 'mvn clean integration-test -fae -Ptest -DfailIfNoTests=false -Dmaven.test.failure.ignore=true' + postfix
+			bat "mvn clean integration-test -fae -Ptest -DfailIfNoTests=false " +
+			    "-Dmaven.test.failure.ignore=true ${includeExcludeFileOption}"
 		} catch (err) {
 			String error = "${err}"
 
@@ -275,7 +291,7 @@ def reportTestStatus() {
                         <p><strong><span style="background-color: #ffff00;">Skipped: ${skipped}</span></strong></p>
                         <p><strong>Test diff: ${testResultAction.failureDiffString}</strong></p>"""
 
-		print 'Testing result: ' + total + ' test cases, ' + passed + ' passed, ' + failed + ' failed, ' + skipped + ' skipped.'
+		print "Testing result: ${total} test cases, ${passed} passed, ${failed} failed, ${skipped} skipped."
 
 		if (failed != 0) {
 			sendTestFailedMail(testStatus)
@@ -301,7 +317,7 @@ def sendErrorMail(String error) {
 					 </ul></p>"""
 
 	// Send eMail; Jenkins will automatically ignore and log this if no receiver is configured.
-	emailext body: details, subject: "Job ${env.JOB_NAME}, build ${env.BUILD_NUMBER} has problems.", to: """params.emailNotificationReceivers"""
+	emailext body: details, subject: "Job ${env.JOB_NAME}, build ${env.BUILD_NUMBER} has problems.", to: params.emailNotificationReceivers
 }
 
 def sendTestFailedMail(String testStatus) {
@@ -315,5 +331,5 @@ def sendTestFailedMail(String testStatus) {
 				  </ul></p>"""
 
 	// Send eMail; Jenkins will automatically ignore and log this if no receiver is configured.
-	emailext body: body, subject: "Job ${env.JOB_NAME}, build ${env.BUILD_NUMBER} ", to: "${params.emailNotificationReceivers}"
+	emailext body: body, subject: "Job ${env.JOB_NAME}, build ${env.BUILD_NUMBER} failed.", to: params.emailNotificationReceivers
 }
