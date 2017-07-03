@@ -12,8 +12,8 @@ import java.time.format.DateTimeFormatter
 
 checkParams()
 
-requiredLabels = ['win10', 'x86', 'jdk8'].toArray()
-requiredLabelsStr = requiredLabels.join('&&')
+requiredLabels = ['win10', 'x86', 'jdk8']
+requiredLabelsStr = requiredLabels.toArray().join('&&')
 
 numSplits = 0
 
@@ -149,20 +149,13 @@ def int findNumberOfAvailableSlaves() {
 	for (node in Jenkins.instance.nodes) {
 		if (node instanceof Slave) {
 			Slave slave = (Slave) node
-			if (slave.getComputer().countIdle() == 0) {
-				continue
+			def slaveLabels = Arrays.asList(slave.labelString.split(' '))
+			if (slave.getComputer().countIdle() > 0 && slaveLabels.containsAll(requiredLabels)) {
+				availableSlaves.add(slave.nodeName)
 			}
-			
-			for (label in requiredLabels) {
-				if (!slave.labelString.contains(label)) {
-					continue
-				}
-			}
-			
-			availableSlaves.add(slave.nodeName)
 		}
 	}
-	
+
 	print "There are ${availableSlaves.size} slaves available: ${availableSlaves.iterator().join(', ')}."
 	return availableSlaves.size
 }
