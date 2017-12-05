@@ -44,12 +44,19 @@ public class LabelRidget extends AbstractLabelRidget {
 	}
 
 	@Override
+	protected Image getUIControlImage() {
+		return getUIControl().getImage();
+	}
+
+	@Override
 	protected void setUIControlText(final String text) {
+		getUIControl().setImage(null);
 		getUIControl().setText(text);
 	}
 
 	@Override
 	protected void setUIControlImage(final Image image) {
+		getUIControl().setText("");
 		getUIControl().setImage(image);
 	}
 
