@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<component id="org.eclipse.riena.ui.ridgets.swt" version="2">
+    <resource path="src/org/eclipse/riena/ui/ridgets/swt/AbstractLabelRidget.java" type="org.eclipse.riena.ui.ridgets.swt.AbstractLabelRidget">
+        <filter comment="new abstract Method for getting the Image from Label Widget" id="336695337">
+            <message_arguments>
+                <message_argument value="org.eclipse.riena.ui.ridgets.swt.AbstractLabelRidget"/>
+                <message_argument value="getUIControlImage()"/>
+            </message_arguments>
+        </filter>
+    </resource>
+</component>

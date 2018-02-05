@@ -42,10 +42,13 @@ public abstract class AbstractLabelRidget extends AbstractValueRidget implements
 	private IconSize iconSize;
 	private URL iconLocation;
 	private boolean textAlreadyInitialized;
+	private boolean iconAlreadyInitalized;
+	private Image imageFromUiControl;
 	private boolean useRidgetIcon;
 
 	public AbstractLabelRidget() {
 		textAlreadyInitialized = false;
+		iconAlreadyInitalized = false;
 		useRidgetIcon = false;
 	}
 
@@ -62,6 +65,7 @@ public abstract class AbstractLabelRidget extends AbstractValueRidget implements
 	@Override
 	protected void bindUIControl() {
 		initText();
+		initIcon();
 		updateUIText();
 		updateUIIcon();
 	}
@@ -80,6 +84,23 @@ public abstract class AbstractLabelRidget extends AbstractValueRidget implements
 				textAlreadyInitialized = true;
 			}
 		}
+	}
+
+	private void initIcon() {
+		if (iconIDIsEmpty() && !iconAlreadyInitalized) {
+			final Control control = getUIControl();
+			if (control != null && !control.isDisposed()) {
+				final Image uiControlImage = getUIControlImage();
+				if (uiControlImage != null) {
+					imageFromUiControl = uiControlImage;
+					iconAlreadyInitalized = true;
+				}
+			}
+		}
+	}
+
+	private boolean iconIDIsEmpty() {
+		return iconID == null || iconID == EMPTY_STRING;
 	}
 
 	/**
@@ -158,6 +179,7 @@ public abstract class AbstractLabelRidget extends AbstractValueRidget implements
 	public void setText(final String text) {
 		final String oldValue = this.text;
 		this.text = text;
+		useRidgetIcon = false;
 		updateUIText();
 		firePropertyChange(PROPERTY_TEXT_INTERNAL, oldValue, this.text);
 		firePropertyChange(ILabelRidget.PROPERTY_TEXT, oldValue, this.text);
@@ -180,8 +202,16 @@ public abstract class AbstractLabelRidget extends AbstractValueRidget implements
 	 */
 	protected abstract String getUIControlText();
 
+	/**
+	 * @since 6.2
+	 */
+	protected abstract Image getUIControlImage();
+
 	private void updateUIText() {
 		if (getUIControl() != null) {
+			if (getUIControlText().equals(text)) {
+				setUIControlText(EMPTY_STRING);
+			}
 			setUIControlText(text);
 		}
 	}
@@ -193,17 +223,23 @@ public abstract class AbstractLabelRidget extends AbstractValueRidget implements
 
 	private void updateUIIcon() {
 		if (getUIControl() != null) {
-			Image image = null;
-			if (getIcon() != null) {
-				image = getManagedImage(getIcon(), iconSize);
-			} else if (iconLocation != null) {
-				final String key = iconLocation.toExternalForm();
-				image = getManagedImage(key);
-			}
+			final Image image = getManagedImage();
 			if ((image != null) || useRidgetIcon) {
 				setUIControlImage(image);
+			} else if (iconAlreadyInitalized) {
+				setUIControlImage(imageFromUiControl);
 			}
 		}
+	}
+
+	private Image getManagedImage() {
+		if (getIcon() != null) {
+			return getManagedImage(getIcon(), iconSize);
+		} else if (iconLocation != null) {
+			final String key = iconLocation.toExternalForm();
+			return getManagedImage(key);
+		}
+		return null;
 	}
 
 	/**
