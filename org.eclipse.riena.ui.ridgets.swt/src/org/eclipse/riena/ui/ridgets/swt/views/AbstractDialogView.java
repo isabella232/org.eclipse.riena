@@ -43,6 +43,7 @@ import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.SWTControlFinder;
 import org.eclipse.riena.ui.swt.utils.ShellHelper;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
@@ -297,7 +298,7 @@ public abstract class AbstractDialogView extends Dialog {
 
 	private Integer getStatuslineHeight() {
 		if (statusLine) {
-			return LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.DIALOG_STATUSLINE_HEIGHT);
+			return SwtUtilities.convertYToDpi(LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.DIALOG_STATUSLINE_HEIGHT));
 		} else {
 			return 0;
 		}
