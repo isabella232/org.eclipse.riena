@@ -256,7 +256,7 @@ public class RienaMenuHelper {
 	 */
 	private void removeDisposedItemsFromUiControlsList() {
 		final Iterator<Object> iter = getUIControls().iterator();
-		while (getUIControls().iterator().hasNext()) {
+		while (iter.hasNext()) {
 			Item itemControl = (Item) iter.next();
 			if (itemControl.isDisposed()) {
 				itemControl = null;
@@ -272,8 +272,6 @@ public class RienaMenuHelper {
 
 		final MenuItem[] items = menu.getItems();
 		for (final MenuItem item : items) {
-			System.out.println("MenuItem: " + item.getText());
-			System.out.println("ITEMS: " + menu.getItems().length);
 			createRidget(controller, item);
 		}
 	}
