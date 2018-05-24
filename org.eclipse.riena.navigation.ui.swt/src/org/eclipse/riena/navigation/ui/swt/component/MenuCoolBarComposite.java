@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.component;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -112,6 +113,7 @@ public class MenuCoolBarComposite extends Composite {
 	 */
 	public List<ToolItem> updateMenuItems() {
 		if (menuCoolBar != null) {
+			removeTopMenuListenerOnMenu();
 			menuCoolBar.dispose();
 		}
 		create();
@@ -198,6 +200,24 @@ public class MenuCoolBarComposite extends Composite {
 
 	private Font getMenuBarFont() {
 		return LnfManager.getLnf().getFont(LnfKeyConstants.MENUBAR_FONT);
+	}
+
+	/**
+	 * Removes all TopMenuListeners. Not removing them would cause some serious MemoryLeak.
+	 */
+	private void removeTopMenuListenerOnMenu() {
+		final MenuManagerHelper helper = new MenuManagerHelper();
+		for (final ToolItem item : getToolItems()) {
+			final Menu menu = (Menu) item.getData("Menu"); //$NON-NLS-1$
+			helper.removeListeners(item, menu);
+		}
+	}
+
+	/**
+	 * @return A List of ToolItems from the ToolBar in the menuCoolBar
+	 */
+	private ArrayList<ToolItem> getToolItems() {
+		return new ArrayList<ToolItem>(Arrays.asList(((ToolBar) menuCoolBar.getItems()[0].getControl()).getItems()));
 	}
 
 }
