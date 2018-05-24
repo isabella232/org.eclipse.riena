@@ -13,6 +13,7 @@ package org.eclipse.riena.navigation.ui.swt.views;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import org.osgi.service.log.LogService;
@@ -235,15 +236,31 @@ public class RienaMenuHelper {
 			return;
 		}
 
-		final IRidget ridget = menuItemBindingManager.createRidget(item);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(item, id);
+		removeDisposedItemsFromUiControlsList();
 
-		getUIControls().add(item);
-		controller.addRidget(id, ridget);
+		if (!getUIControls().contains(item)) {
+			getUIControls().add(item);
+			final IRidget ridget = menuItemBindingManager.createRidget(item);
+			SWTBindingPropertyLocator.getInstance().setBindingProperty(item, id);
+			controller.addRidget(id, ridget);
+		}
 
 		if (item instanceof MenuItem) {
 			final MenuItem menuItem = (MenuItem) item;
 			createRidget(controller, menuItem.getMenu());
+		}
+	}
+
+	/**
+	 * Removes all the disposed items from {@linkplain #uiControls}
+	 */
+	private void removeDisposedItemsFromUiControlsList() {
+		final Iterator<Object> iter = getUIControls().iterator();
+		while (iter.hasNext()) {
+			final Item itemControl = (Item) iter.next();
+			if (itemControl.isDisposed()) {
+				iter.remove();
+			}
 		}
 	}
 
