@@ -257,9 +257,8 @@ public class RienaMenuHelper {
 	private void removeDisposedItemsFromUiControlsList() {
 		final Iterator<Object> iter = getUIControls().iterator();
 		while (iter.hasNext()) {
-			Item itemControl = (Item) iter.next();
+			final Item itemControl = (Item) iter.next();
 			if (itemControl.isDisposed()) {
-				itemControl = null;
 				iter.remove();
 			}
 		}
