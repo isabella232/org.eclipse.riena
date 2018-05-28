@@ -55,12 +55,14 @@ public class MenuManagerHelper {
 	}
 
 	public void removeListeners(final ToolItem toolItem, final Menu menu) {
-		final Listener[] listeners = menu.getListeners(SWT.Hide);
-		for (final Listener listener : listeners) {
-			if (listener instanceof TypedListener) {
-				final TypedListener typedListener = (TypedListener) listener;
-				if (typedListener.getEventListener() instanceof TopMenuListener) {
-					menu.removeMenuListener((TopMenuListener) typedListener.getEventListener());
+		if (menu != null) {
+			final Listener[] listeners = menu.getListeners(SWT.Hide);
+			for (final Listener listener : listeners) {
+				if (listener instanceof TypedListener) {
+					final TypedListener typedListener = (TypedListener) listener;
+					if (typedListener.getEventListener() instanceof TopMenuListener) {
+						menu.removeMenuListener((TopMenuListener) typedListener.getEventListener());
+					}
 				}
 			}
 		}
