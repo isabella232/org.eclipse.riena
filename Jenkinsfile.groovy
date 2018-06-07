@@ -156,8 +156,8 @@ def int findNumberOfAvailableSlaves() {
 		}
 	}
 
-	print "There are ${availableSlaves.size} slaves available: ${availableSlaves.iterator().join(', ')}."
-	return availableSlaves.size
+	print "There are ${availableSlaves.size()} slaves available: ${availableSlaves.iterator().join(', ')}."
+	return availableSlaves.size()
 }
 
 def int runTests() {
