@@ -12,7 +12,7 @@ import java.time.format.DateTimeFormatter
 
 checkParams()
 
-requiredLabels = ['win8', 'x86', 'jdk8']
+requiredLabels = ['scp', 'win8', 'x86', 'jdk8']
 requiredLabelsStr = requiredLabels.toArray().join('&&')
 
 numSplits = 0
