@@ -17,7 +17,7 @@
 	<repositories>
 		<repository>
 			<id>local_p2_repo</id>
-			<url>file:///C:/Users/skr/git/riena-3xtargets-playground/org.eclipse.riena.target3x//rcp</url>
+			<url>file:///${project.basedir}/../../org.eclipse.riena.3xtargets/org.eclipse.riena.target3x/rcp</url>
 			<layout>p2</layout>
 		</repository>
 		<repository>
