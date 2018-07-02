@@ -46,13 +46,6 @@ v1.0
          unpack="false"/>
 
    <plugin
-         id="javax.el"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="javax.el.source"
          download-size="0"
          install-size="0"
@@ -2047,6 +2040,20 @@ v1.0
 
    <plugin
          id="org.eclipse.e4.ui.css.swt"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="javax.el"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="javax.xml"
          download-size="0"
          install-size="0"
          version="0.0.0"
