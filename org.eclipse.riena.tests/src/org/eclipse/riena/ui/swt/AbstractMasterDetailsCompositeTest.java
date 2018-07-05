@@ -1,7 +1,5 @@
 package org.eclipse.riena.ui.swt;
 
-import junit.framework.TestCase;
-
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
@@ -19,6 +17,8 @@ import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
+import junit.framework.TestCase;
+
 @UITestCase
 public class AbstractMasterDetailsCompositeTest extends TestCase {
 
@@ -33,6 +33,7 @@ public class AbstractMasterDetailsCompositeTest extends TestCase {
 	@Override
 	protected void tearDown() throws Exception {
 		SwtUtilities.dispose(shell);
+		LnfManager.setLnf(new RienaDefaultLnf());
 	}
 
 	public void testAbstractMasterDetailsComposite() throws Exception {

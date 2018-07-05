@@ -44,6 +44,17 @@ public class ImageStoreTest extends RienaTestCase {
 		ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpiFactors", new float[] { 0.0f, 0.0f }); //$NON-NLS-1$
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.core.test.RienaTestCase#tearDown()
+	 */
+	@Override
+	protected void tearDown() throws Exception {
+		super.tearDown();
+		LnfManager.setLnf(new RienaDefaultLnf());
+	}
+
 	/**
 	 * Tests the <i>private</i> method {@code getFullName}.
 	 */

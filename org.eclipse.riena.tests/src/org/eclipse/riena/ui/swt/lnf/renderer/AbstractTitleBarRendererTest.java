@@ -53,8 +53,8 @@ public class AbstractTitleBarRendererTest extends RienaTestCase {
 		gc = null;
 		renderer.dispose();
 		renderer = null;
-
 		super.tearDown();
+		LnfManager.setLnf(new RienaDefaultLnf());
 	}
 
 	/**
@@ -123,8 +123,7 @@ public class AbstractTitleBarRendererTest extends RienaTestCase {
 	}
 
 	/**
-	 * This class changes the visibility of some method for testing and
-	 * implements the abstract methods.
+	 * This class changes the visibility of some method for testing and implements the abstract methods.
 	 */
 	private static class TitleBarRenderer extends AbstractTitleBarRenderer {
 
@@ -180,8 +179,7 @@ public class AbstractTitleBarRendererTest extends RienaTestCase {
 	}
 
 	/**
-	 * This Look and Feel adds additional images. This images are used for
-	 * testing.
+	 * This Look and Feel adds additional images. This images are used for testing.
 	 */
 	private static class TitleBarLnf extends RienaDefaultLnf {
 
