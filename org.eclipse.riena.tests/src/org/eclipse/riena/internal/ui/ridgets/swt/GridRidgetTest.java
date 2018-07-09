@@ -16,8 +16,6 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-import junit.framework.Assert;
-
 import org.eclipse.core.databinding.observable.ChangeEvent;
 import org.eclipse.core.databinding.observable.IChangeListener;
 import org.eclipse.core.databinding.observable.list.IObservableList;
@@ -31,7 +29,6 @@ import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Table;
 
 import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.beans.common.PersonManager;
@@ -48,12 +45,23 @@ import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.listener.ClickEvent;
 import org.eclipse.riena.ui.ridgets.listener.SelectionEvent;
 import org.eclipse.riena.ui.ridgets.swt.ColumnFormatter;
-import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
+
+import junit.framework.Assert;
 
 /**
  * Tests of the class {@link Grid}.
  */
 public class GridRidgetTest extends AbstractTableListRidgetTest {
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.internal.ui.ridgets.swt.AbstractTableListRidgetTest#setUp()
+	 */
+	@Override
+	public void setUp() throws Exception {
+		super.setUp();
+	}
 
 	@Override
 	protected Grid createWidget(final Composite parent) {
@@ -139,11 +147,6 @@ public class GridRidgetTest extends AbstractTableListRidgetTest {
 	@Override
 	protected boolean supportsMulti() {
 		return true;
-	}
-
-	public void testRidgetMapping() {
-		final SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
-		assertSame(GridRidget.class, mapper.getRidgetClass(getWidget()));
 	}
 
 	public void testBindToModel() {
@@ -584,8 +587,7 @@ public class GridRidgetTest extends AbstractTableListRidgetTest {
 
 		ridget.setSortedAscending(true);
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_SORT_ASCENDING,
-				Boolean.TRUE, Boolean.FALSE));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_SORT_ASCENDING, Boolean.TRUE, Boolean.FALSE));
 
 		ridget.setSortedAscending(false);
 
@@ -595,8 +597,7 @@ public class GridRidgetTest extends AbstractTableListRidgetTest {
 		ridget.setSortedAscending(false);
 
 		verifyPropertyChangeEvents();
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_SORT_ASCENDING,
-				Boolean.FALSE, Boolean.TRUE));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_SORT_ASCENDING, Boolean.FALSE, Boolean.TRUE));
 
 		ridget.setSortedAscending(true);
 
@@ -613,8 +614,7 @@ public class GridRidgetTest extends AbstractTableListRidgetTest {
 
 		assertEquals(-1, ridget.getSortedColumn());
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_SORTED_COLUMN,
-				Integer.valueOf(-1), Integer.valueOf(0)));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_SORTED_COLUMN, Integer.valueOf(-1), Integer.valueOf(0)));
 
 		ridget.setSortedColumn(0);
 
@@ -624,8 +624,7 @@ public class GridRidgetTest extends AbstractTableListRidgetTest {
 		ridget.setSortedColumn(0);
 
 		verifyPropertyChangeEvents();
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_SORTED_COLUMN,
-				Integer.valueOf(0), Integer.valueOf(1)));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_SORTED_COLUMN, Integer.valueOf(0), Integer.valueOf(1)));
 
 		ridget.setSortedColumn(1);
 
@@ -640,8 +639,7 @@ public class GridRidgetTest extends AbstractTableListRidgetTest {
 		ridget.setColumnSortable(0, true);
 
 		verifyPropertyChangeEvents();
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_COLUMN_SORTABILITY, null,
-				Integer.valueOf(0)));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_COLUMN_SORTABILITY, null, Integer.valueOf(0)));
 
 		ridget.setColumnSortable(0, false);
 
@@ -651,8 +649,7 @@ public class GridRidgetTest extends AbstractTableListRidgetTest {
 		ridget.setColumnSortable(0, false);
 
 		verifyPropertyChangeEvents();
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_COLUMN_SORTABILITY, null,
-				Integer.valueOf(0)));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_COLUMN_SORTABILITY, null, Integer.valueOf(0)));
 
 		ridget.setColumnSortable(0, true);
 
@@ -724,9 +721,7 @@ public class GridRidgetTest extends AbstractTableListRidgetTest {
 	}
 
 	/**
-	 * Tests that for single selection, the ridget selection state and the ui
-	 * selection state cannot be changed by the user when ridget is set to
-	 * "output only".
+	 * Tests that for single selection, the ridget selection state and the ui selection state cannot be changed by the user when ridget is set to "output only".
 	 */
 	public void testOutputSingleSelectionCannotBeChangedFromUI() {
 		final ITableRidget ridget = getRidget();
@@ -757,9 +752,8 @@ public class GridRidgetTest extends AbstractTableListRidgetTest {
 	}
 
 	/**
-	 * Tests that for multiple selection, the ridget selection state and the ui
-	 * selection state cannot be changed by the user when ridget is set to
-	 * "output only".
+	 * Tests that for multiple selection, the ridget selection state and the ui selection state cannot be changed by the user when ridget is set to "output
+	 * only".
 	 */
 	public void testOutputMultipleSelectionCannotBeChangedFromUI() {
 		final ITableRidget ridget = getRidget();
