@@ -46,7 +46,7 @@ node(requiredLabelsStr) {
 				try {
 					// Do not run tests here since we run them in parallel later.
 					// Fail at end to run entire build even in case of a failure.
-					bat "mvn -fae clean package -DforceContextQualifier=${buildQualifier()}"
+					bat "mvn -fae clean package -DforceContextQualifier=${buildQualifier()} -Dmaven.repo.local=${env.WORKSPACE}\\.repository"
 				} catch (err) {
 					String error = "${err}"
 
@@ -251,7 +251,7 @@ def executeTestRun(split) {
 	dir('org.eclipse.riena/org.eclipse.riena.tests') {
 		try {
 			bat "mvn clean integration-test -fae -Ptest -DfailIfNoTests=false " +
-			    "-Dmaven.test.failure.ignore=true ${includeExcludeFileOption}"
+			    "-Dmaven.test.failure.ignore=true ${includeExcludeFileOption} -Dmaven.repo.local=${env.WORKSPACE}\\.repository"
 		} catch (err) {
 			String error = "${err}"
 
