@@ -420,30 +420,6 @@ public class ValueBindingSupportTest extends RienaTestCase {
 	}
 
 	/**
-	 * As per Bug 327684
-	 */
-	public void testRebindToModelNoPerfomanceDegratation() {
-		assertNotNull(target);
-		assertNotNull(model);
-		final ValueBindingSupport secondValueBindingSupport = new ValueBindingSupport(target, model);
-
-		final long start1 = System.currentTimeMillis();
-		for (int i = 0; i < 100; i++) {
-			secondValueBindingSupport.rebindToModel();
-		}
-		final long time1 = System.currentTimeMillis() - start1;
-
-		final long start2 = System.currentTimeMillis();
-		for (int i = 0; i < 100; i++) {
-			secondValueBindingSupport.rebindToModel();
-		}
-		final long time2 = System.currentTimeMillis() - start2;
-
-		final String msg = String.format("1st iteration: %d, 2nd iteration: %d", time1, time2); //$NON-NLS-1$
-		assertTrue(msg, (time2 / 2) <= time1);
-	}
-
-	/**
 	 * Tests the <i>private</i> method {@code isNestedProperty(String)}.
 	 */
 	public void testIsNestedProperty() {

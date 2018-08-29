@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt;
 
-import junit.framework.TestCase;
-
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
@@ -21,6 +19,8 @@ import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
+
+import junit.framework.TestCase;
 
 /**
  * Tests of the class {@link RienaWindowRenderer}.
@@ -47,6 +47,7 @@ public class RienaWindowRendererTest extends TestCase {
 		renderer = null;
 		SwtUtilities.dispose(shell);
 		dialog = null;
+		LnfManager.setLnf(new RienaDefaultLnf());
 	}
 
 	/**
