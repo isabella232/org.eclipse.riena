@@ -30,6 +30,11 @@
 			<url>http://download.eclipse.org/tools/orbit/downloads/drops/R20140525021250/repository</url>
 			<layout>p2</layout>
 		</repository>
+		<repository>
+		<id>equinox_sdk_p2</id>
+		<url>http://download.eclipse.org/releases/oxygen</url>
+		<layout>p2</layout>
+		</repository>
 	</repositories>
 
 	<modules>
