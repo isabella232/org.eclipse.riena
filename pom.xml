@@ -161,6 +161,92 @@
 								<versionRange>[2.3.0,3.1.0)</versionRange>
 							</restrictTo>
 						</filter>
+						<!-- SWT -->
+						<filter>
+						<type>eclipse-plugin</type>
+						<id>org.eclipse.swt</id>
+						<restrictTo>
+							<versionRange>[3.103.0,3.104.0]</versionRange>
+						</restrictTo>
+						</filter>
+						<filter>
+						<type>eclipse-plugin</type>
+						<id>org.eclipse.swt.win32.win32.x86</id>
+						<restrictTo>
+							<versionRange>[3.103.0,3.104.0]</versionRange>
+						</restrictTo>
+						</filter>
+						<filter>
+						<type>eclipse-plugin</type>
+						<id>org.eclipse.swt.win32.win32.x86.source</id>
+						<restrictTo>
+							<versionRange>[3.103.0,3.104.0]</versionRange>
+						</restrictTo>
+						</filter>
+						<!-- Core.Databinding -->
+						<filter>
+						<type>eclipse-plugin</type>
+						<id>org.eclipse.core.databinding.source</id>
+						<restrictTo>
+							<versionRange>[1.4.1,1.4.2]</versionRange>
+						</restrictTo>
+						</filter>
+						<filter>
+						<type>eclipse-plugin</type>
+						<id>org.eclipse.core.databinding.observable.source</id>
+						<restrictTo>
+							<versionRange>[1.4.1,1.4.2]</versionRange>
+						</restrictTo>
+						</filter>
+						
+						<filter>
+						<type>eclipse-plugin</type>
+						<id>org.eclipse.core.databinding.property.source</id>
+						<restrictTo>
+							<versionRange>[1.4.100,1.4.200]</versionRange>
+						</restrictTo>
+						</filter>
+						
+						<filter>
+						<type>eclipse-plugin</type>
+						<id>org.eclipse.core.databinding.beans</id>
+						<restrictTo>
+							<versionRange>[1.2.200,1.2.300]</versionRange>
+						</restrictTo>
+						</filter>
+						
+						<filter>
+						<type>eclipse-plugin</type>
+						<id>org.eclipse.core.databinding.property</id>
+						<restrictTo>
+							<versionRange>[1.4.100,1.4.200]</versionRange>
+						</restrictTo>
+						</filter>
+						
+						<filter>
+						<type>eclipse-plugin</type>
+						<id>org.eclipse.core.databinding.observable</id>
+						<restrictTo>
+							<versionRange>[1.4.1,1.4.2]</versionRange>
+						</restrictTo>
+						</filter>
+						
+						<filter>
+						<type>eclipse-plugin</type>
+						<id>org.eclipse.core.databinding.beans.source</id>
+						<restrictTo>
+							<versionRange>[1.2.200,1.4.300]</versionRange>
+						</restrictTo>
+						</filter>
+						
+						<filter>
+						<type>eclipse-plugin</type>
+						<id>org.eclipse.core.databinding</id>
+						<restrictTo>
+							<versionRange>[1.4.1,1.4.2]</versionRange>
+						</restrictTo>
+						</filter>
+						
 					</filters>
 				</configuration>
 			</plugin>
