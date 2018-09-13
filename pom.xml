@@ -200,7 +200,6 @@
 								<versionRange>[1.4.1,1.4.2]</versionRange>
 							</restrictTo>
 						</filter>
-
 						<filter>
 							<type>eclipse-plugin</type>
 							<id>org.eclipse.core.databinding.property.source</id>
@@ -208,7 +207,6 @@
 								<versionRange>[1.4.100,1.4.200]</versionRange>
 							</restrictTo>
 						</filter>
-
 						<filter>
 							<type>eclipse-plugin</type>
 							<id>org.eclipse.core.databinding.beans</id>
@@ -216,7 +214,6 @@
 								<versionRange>[1.2.200,1.2.300]</versionRange>
 							</restrictTo>
 						</filter>
-
 						<filter>
 							<type>eclipse-plugin</type>
 							<id>org.eclipse.core.databinding.property</id>
@@ -224,7 +221,6 @@
 								<versionRange>[1.4.100,1.4.200]</versionRange>
 							</restrictTo>
 						</filter>
-
 						<filter>
 							<type>eclipse-plugin</type>
 							<id>org.eclipse.core.databinding.observable</id>
@@ -232,7 +228,6 @@
 								<versionRange>[1.4.1,1.4.2]</versionRange>
 							</restrictTo>
 						</filter>
-
 						<filter>
 							<type>eclipse-plugin</type>
 							<id>org.eclipse.core.databinding.beans.source</id>
@@ -240,7 +235,6 @@
 								<versionRange>[1.2.200,1.4.300]</versionRange>
 							</restrictTo>
 						</filter>
-
 						<filter>
 							<type>eclipse-plugin</type>
 							<id>org.eclipse.core.databinding</id>
@@ -248,7 +242,91 @@
 								<versionRange>[1.4.1,1.4.2]</versionRange>
 							</restrictTo>
 						</filter>
-						
+						<!-- Batik  -->
+						<filter>
+							<type>eclipse-plugin</type>
+							<id>org.apache.batik.dom</id>
+							<restrictTo>
+								<versionRange>[1.7.0,1.8.0]</versionRange>
+							</restrictTo>
+						</filter>
+						<filter>
+							<type>eclipse-plugin</type>
+							<id>org.apache.batik.parser</id>
+							<restrictTo>
+								<versionRange>[1.7.0,1.8.0]</versionRange>
+							</restrictTo>
+						</filter>
+						<filter>
+							<type>eclipse-plugin</type>
+							<id>org.apache.batik.dom.svg</id>
+							<restrictTo>
+								<versionRange>[1.7.0,1.8.0]</versionRange>
+							</restrictTo>
+						</filter>
+						<filter>
+							<type>eclipse-plugin</type>
+							<id>org.apache.batik.svggen</id>
+							<restrictTo>
+								<versionRange>[1.7.0,1.8.0]</versionRange>
+							</restrictTo>
+						</filter>
+						<filter>
+							<type>eclipse-plugin</type>
+							<id>org.apache.batik.transcoder</id>
+							<restrictTo>
+								<versionRange>[1.7.0,1.8.0]</versionRange>
+							</restrictTo>
+						</filter>
+						<filter>
+							<type>eclipse-plugin</type>
+							<id>org.apache.batik.util.gui</id>
+							<restrictTo>
+								<versionRange>[1.7.0,1.8.0]</versionRange>
+							</restrictTo>
+						</filter>
+						<filter>
+							<type>eclipse-plugin</type>
+							<id>org.apache.batik.ext.awt</id>
+							<restrictTo>
+								<versionRange>[1.7.0,1.8.0]</versionRange>
+							</restrictTo>
+						</filter>
+						<filter>
+							<type>eclipse-plugin</type>
+							<id>org.apache.batik.xml</id>
+							<restrictTo>
+								<versionRange>[1.7.0,1.8.0]</versionRange>
+							</restrictTo>
+						</filter>
+						<filter>
+							<type>eclipse-plugin</type>
+							<id>org.apache.batik.extension</id>
+							<restrictTo>
+								<versionRange>[1.7.0,1.8.0]</versionRange>
+							</restrictTo>
+						</filter>
+						<filter>
+							<type>eclipse-plugin</type>
+							<id>org.apache.batik.util</id>
+							<restrictTo>
+								<versionRange>[1.7.0,1.8.0]</versionRange>
+							</restrictTo>
+						</filter>
+						<filter>
+							<type>eclipse-plugin</type>
+							<id>org.apache.batik.bridge</id>
+							<restrictTo>
+								<versionRange>[1.7.0,1.8.0]</versionRange>
+							</restrictTo>
+						</filter>
+						<filter>
+							<type>eclipse-plugin</type>
+							<id>org.apache.batik.css</id>
+							<restrictTo>
+								<versionRange>[1.7.0,1.8.0]</versionRange>
+							</restrictTo>
+						</filter>
 					</filters>
 				</configuration>
 			</plugin>
