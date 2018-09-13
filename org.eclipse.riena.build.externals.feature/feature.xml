@@ -32,7 +32,7 @@ v1.0
    </license>
 
    <includes
-         id="org.eclipse.equinox.executable"
+         id="org.eclipse.riena.build.executable.feature"
          version="0.0.0"/>
 
    <plugin
@@ -1856,8 +1856,8 @@ v1.0
          install-size="0"
          version="0.0.0"
          unpack="false"/>
-         
-          <plugin
+
+   <plugin
          id="org.apache.batik.bridge"
          download-size="0"
          install-size="0"
