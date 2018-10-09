@@ -185,6 +185,20 @@
 								<versionRange>[3.103.0,3.104.0]</versionRange>
 							</restrictTo>
 						</filter>
+						<filter>
+							<type>eclipse-plugin</type>
+							<id>org.eclipse.swt.win32.win32.x86_64</id>
+							<restrictTo>
+								<versionRange>[3.103.0,3.104.0]</versionRange>
+							</restrictTo>
+						</filter>
+						<filter>
+							<type>eclipse-plugin</type>
+							<id>org.eclipse.swt.win32.win32.x86_64.source</id>
+							<restrictTo>
+								<versionRange>[3.103.0,3.104.0]</versionRange>
+							</restrictTo>
+						</filter>
 						<!-- Core.Databinding -->
 						<filter>
 							<type>eclipse-plugin</type>
