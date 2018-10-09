@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="Riena on 3.x custom" sequenceNumber="44">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><?pde version="3.8"?><target name="Riena on 3.x custom" sequenceNumber="44">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="org.apache.commons.beanutils" version="1.8.0.v201205091237"/>
@@ -24,12 +23,12 @@
 <unit id="org.eclipse.equinox.executable.feature.group" version="3.7.2.v20171108-1834"/>
 <repository location="http://download.eclipse.org/releases/oxygen"/>
 </location>
-<location path="${project_loc:org.eclipse.riena.target3x}/rcp" type="Directory"/>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.nebula.widgets.compositetable.feature.feature.group" version="1.0.0.201605312033"/>
 <unit id="org.eclipse.nebula.widgets.grid.feature.feature.group" version="1.0.0.201605312033"/>
 <repository location="http://download.eclipse.org/nebula/releases/1.0.0"/>
 </location>
 <location path="C:\IDES\SCP-TYCHO\git\riena-3xtargets-playground\org.eclipse.riena.target3x\rcp\features" type="Directory"/>
+	<location path="C:\IDES\SCP-TYCHO_64\git\riena-3xtargets-playground\org.eclipse.riena.target3x\rcp" type="Directory"/>
 </locations>
 </target>
