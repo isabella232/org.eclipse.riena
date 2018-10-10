@@ -14,7 +14,7 @@
 	<packaging>eclipse-repository</packaging>
 
 	<build>
-		<finalName>Riena-3x-p2fullrepo-${buildQualifier}-win32</finalName>
+		<finalName>Riena-3x-p2fullrepo-${buildQualifier}-win64</finalName>
 
 		<plugins>
 			<plugin>
