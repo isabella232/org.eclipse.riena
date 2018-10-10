@@ -46,7 +46,8 @@ node(requiredLabelsStr) {
 				try {
 					// Do not run tests here since we run them in parallel later.
 					// Fail at end to run entire build even in case of a failure.
-					bat "mvn -fae clean package -DforceContextQualifier=${buildQualifier()} -Dmaven.repo.local=${env.WORKSPACE}\\.repository"
+                    bat "setx JAVA_HOME \"${params.JAVA_PATH}\""
+					bat "echo %JAVA_HOME% && mvn -fae clean package -DforceContextQualifier=${buildQualifier()} -Dmaven.repo.local=${env.WORKSPACE}\\.repository"+" -Djvm=\"${params.JAVA_PATH}\\bin\\java\""
 				} catch (err) {
 					String error = "${err}"
 
@@ -250,8 +251,9 @@ def executeTestRun(split) {
 	// Execute Maven build with tests.
 	dir('org.eclipse.riena/org.eclipse.riena.tests') {
 		try {
+            bat "setx JAVA_HOME \"${params.JAVA_PATH}\""
 			bat "mvn clean integration-test -fae -Ptest -DfailIfNoTests=false " +
-			    "-Dmaven.test.failure.ignore=true ${includeExcludeFileOption} -Dmaven.repo.local=${env.WORKSPACE}\\.repository"
+			    "-Dmaven.test.failure.ignore=true ${includeExcludeFileOption} -Dmaven.repo.local=${env.WORKSPACE}\\.repository "+" -Djvm=\"${params.JAVA_PATH}\\bin\\java\""
 		} catch (err) {
 			String error = "${err}"
 
