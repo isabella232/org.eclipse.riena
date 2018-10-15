@@ -702,8 +702,8 @@ public abstract class CompletionCombo extends Composite {
 	 * 
 	 * @exception SWTException
 	 *                <ul>
-	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li> <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that
-	 *                created the receiver</li>
+	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
+	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
 	 *                </ul>
 	 * 
 	 * @see #deselectAll
@@ -1553,8 +1553,8 @@ public abstract class CompletionCombo extends Composite {
 	 * 
 	 * @exception SWTException
 	 *                <ul>
-	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li> <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that
-	 *                created the receiver</li>
+	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
+	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
 	 *                </ul>
 	 */
 	public void removeAll() {
@@ -2228,7 +2228,7 @@ public abstract class CompletionCombo extends Composite {
 		case SWTFacade.MouseWheel:
 			notifyListeners(SWTFacade.MouseWheel, event);
 			event.type = SWT.None;
-			if (isDisposed()) {
+			if (isDisposed() || !hasFocus) {
 				break;
 			}
 			if (!event.doit) {
@@ -2567,8 +2567,8 @@ public abstract class CompletionCombo extends Composite {
 		if (isAllowMissmatch()) {
 			// Special character: dash, punctuation, currency, quotes, brackets, ...
 			final int type = Character.getType(ch);
-			if (type == Character.LETTER_NUMBER || type == Character.OTHER_NUMBER || type >= Character.DASH_PUNCTUATION
-					&& type < Character.FINAL_QUOTE_PUNCTUATION) {
+			if (type == Character.LETTER_NUMBER || type == Character.OTHER_NUMBER
+					|| type >= Character.DASH_PUNCTUATION && type < Character.FINAL_QUOTE_PUNCTUATION) {
 				return true;
 			}
 		}
