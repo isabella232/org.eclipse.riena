@@ -12,7 +12,7 @@ import java.time.format.DateTimeFormatter
 
 checkParams()
 
-requiredLabels = ['scp', 'win8', 'x86', 'jdk8']
+requiredLabels = ['scp', 'win8']
 requiredLabelsStr = requiredLabels.toArray().join('&&')
 
 numSplits = 0
@@ -42,12 +42,12 @@ node(requiredLabelsStr) {
 	stage('Build') {
 		dir('org.eclipse.riena') {
 			// Run Maven build with pre-configured Maven installation named 'M3'.
-			withMaven(maven: 'M3') {
+			// Run with pre configured-JDK from Jenkins-Tools 
+			withMaven(maven: 'M3',jdk: params.JDK) {
 				try {
 					// Do not run tests here since we run them in parallel later.
 					// Fail at end to run entire build even in case of a failure.
-                    bat "setx JAVA_HOME \"${params.JAVA_PATH}\""
-					bat "echo %JAVA_HOME% && mvn -fae clean package -DforceContextQualifier=${buildQualifier()} -Dmaven.repo.local=${env.WORKSPACE}\\.repository"+" -Djvm=\"${params.JAVA_PATH}\\bin\\java\""
+                    bat "mvn -fae clean package -DforceContextQualifier=${buildQualifier()} -Dmaven.repo.local=${env.WORKSPACE}\\.repository"
 				} catch (err) {
 					String error = "${err}"
 
@@ -251,9 +251,11 @@ def executeTestRun(split) {
 	// Execute Maven build with tests.
 	dir('org.eclipse.riena/org.eclipse.riena.tests') {
 		try {
-            bat "setx JAVA_HOME \"${params.JAVA_PATH}\""
+		withMaven(maven: 'M3',jdk: params.JDK) {
 			bat "mvn clean integration-test -fae -Ptest -DfailIfNoTests=false " +
-			    "-Dmaven.test.failure.ignore=true ${includeExcludeFileOption} -Dmaven.repo.local=${env.WORKSPACE}\\.repository "+" -Djvm=\"${params.JAVA_PATH}\\bin\\java\""
+			    "-Dmaven.test.failure.ignore=true ${includeExcludeFileOption} -Dmaven.repo.local=${env.WORKSPACE}\\.repository"
+		}
+            
 		} catch (err) {
 			String error = "${err}"
 
