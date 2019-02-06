@@ -47,7 +47,7 @@ node(requiredLabelsStr) {
 				try {
 					// Do not run tests here since we run them in parallel later.
 					// Fail at end to run entire build even in case of a failure.
-                    bat "mvn -fae clean package -DforceContextQualifier=${buildQualifier()} -Dmaven.repo.local=${env.WORKSPACE}\\.repository"
+                    bat "mvn -fae clean package -DforceContextQualifier=${buildQualifier()} -Dmaven.repo.local=${env.WORKSPACE}\\.repository -Darch=${params.ARCH}"
 				} catch (err) {
 					String error = "${err}"
 
@@ -253,7 +253,7 @@ def executeTestRun(split) {
 		try {
 		withMaven(maven: 'M3',jdk: params.JDK) {
 			bat "mvn clean integration-test -fae -Ptest -DfailIfNoTests=false " +
-			    "-Dmaven.test.failure.ignore=true ${includeExcludeFileOption} -Dmaven.repo.local=${env.WORKSPACE}\\.repository"
+			    "-Dmaven.test.failure.ignore=true ${includeExcludeFileOption} -Dmaven.repo.local=${env.WORKSPACE}\\.repository -Darch=${params.ARCH}"
 		}
             
 		} catch (err) {
