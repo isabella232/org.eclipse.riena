@@ -479,9 +479,12 @@ public final class SwtUtilities {
 	 * @since 6.0
 	 */
 	public static Point convertPointToDpi(final Point pixelPoint) {
-		final int x = convertXToDpi(pixelPoint.x);
-		final int y = convertYToDpi(pixelPoint.y);
-		return new Point(x, y);
+		if (cachedDpi == null) {
+			final int x = convertXToDpi(pixelPoint.x);
+			final int y = convertYToDpi(pixelPoint.y);
+			cachedDpi = new Point(x, y);
+		}
+		return cachedDpi;
 	}
 
 	/**
