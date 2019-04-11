@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import java.util.HashMap;
+
 import org.osgi.framework.BundleContext;
 
 import org.eclipse.core.runtime.Assert;
@@ -41,11 +43,15 @@ public class Activator extends AbstractRienaUIPlugin {
 	// Helper class for shared colors
 	private static SharedColors sharedColors;
 
+	//Container for IMages that dont exists
+	private static HashMap<String, Object> nonExistingImages;
+
 	@Override
 	public void start(final BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
 		initializeDefaultClassRidgetMappings();
+		nonExistingImages = new HashMap<String, Object>();
 	}
 
 	@Override
@@ -59,6 +65,9 @@ public class Activator extends AbstractRienaUIPlugin {
 			sharedImages = null;
 		}
 		plugin = null;
+
+		nonExistingImages.clear();
+
 		super.stop(context);
 	}
 
@@ -89,14 +98,20 @@ public class Activator extends AbstractRienaUIPlugin {
 			SharedImages.initializeImageRegistry(sharedImages);
 		}
 		final String imageKeyWithSize = imageKey + imageSize.getDefaultMapping();
-		Image image = sharedImages.get(imageKeyWithSize);
-		if (image == null) {
-			image = ImageStore.getInstance().getImage(imageKey, imageSize);
-			if (image != null) {
-				sharedImages.put(imageKeyWithSize, image);
+		if (!nonExistingImages.containsKey(imageKeyWithSize)) {
+			Image image = sharedImages.get(imageKeyWithSize);
+			if (image == null) {
+				image = ImageStore.getInstance().getImage(imageKey, imageSize);
+				if (image != null) {
+					sharedImages.put(imageKeyWithSize, image);
+				} else {
+					nonExistingImages.put(imageKeyWithSize, null);
+					return null;
+				}
 			}
+			return image;
 		}
-		return image;
+		return null;
 	}
 
 	/**
