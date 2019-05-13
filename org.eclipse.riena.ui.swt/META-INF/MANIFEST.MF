@@ -4,16 +4,13 @@ Bundle-Name: Riena UI SWT Plug-in
 Bundle-SymbolicName: org.eclipse.riena.ui.swt;singleton:=true
 Bundle-Version: 6.2.0.qualifier
 Bundle-Activator: org.eclipse.riena.internal.ui.swt.Activator
-Require-Bundle: org.eclipse.jface;resolution:=optional;visibility:=reexport,
- org.eclipse.rap.jface;resolution:=optional;visibility:=reexport,
+Require-Bundle: org.eclipse.jface;visibility:=reexport,
  org.eclipse.riena.core,
  org.eclipse.riena.ui.core,
  org.eclipse.riena.ui.common,
  org.eclipse.riena.ui.ridgets,
- org.eclipse.swt;resolution:=optional;visibility:=reexport,
- org.eclipse.rap.rwt;resolution:=optional;visibility:=reexport,
- org.eclipse.ui.workbench;resolution:=optional;visibility:=reexport,
- org.eclipse.rap.ui.workbench;resolution:=optional;visibility:=reexport,
+ org.eclipse.swt;visibility:=reexport,
+ org.eclipse.ui.workbench;visibility:=reexport,
  com.caucho.hessian;bundle-version="3.2.0",
  org.apache.batik.dom.svg;bundle-version="1.7.0",
  org.apache.batik.transcoder;bundle-version="1.7.0",

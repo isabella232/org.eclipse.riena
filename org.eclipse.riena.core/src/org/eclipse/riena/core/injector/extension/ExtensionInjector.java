@@ -392,7 +392,7 @@ public class ExtensionInjector implements IStoppable {
 		 * .core. runtime.IExtensionPoint[])
 		 */
 		public void added(final IExtensionPoint[] extensionPoints) {
-			// We don´t care about other extension points. We only listen to the
+			// We donÂ´t care about other extension points. We only listen to the
 			// extensions for the id <code>extensionDesc</code>!
 		}
 

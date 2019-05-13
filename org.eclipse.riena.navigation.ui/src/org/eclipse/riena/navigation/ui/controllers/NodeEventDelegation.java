@@ -98,12 +98,12 @@ public class NodeEventDelegation extends SimpleNavigationNodeAdapter implements 
 		}
 		listeners.remove(listener);
 		if (observers.size() == 1) {
-			//don´t need observation delegation anymore
+			//donÂ´t need observation delegation anymore
 			context2Observers.remove(context);
 			INavigationNode<?> node = null;
 			if (context instanceof INavigationNode<?>) {
 				node = INavigationNode.class.cast(context);
-				// don´t need to observe anymore
+				// donÂ´t need to observe anymore
 				node.removeSimpleListener(this);
 			}
 			return;

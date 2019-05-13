@@ -18,6 +18,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.batik.dom.svg.SAXSVGDocumentFactory;
@@ -67,7 +68,9 @@ public final class ImageStore {
 
 	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), ImageStore.class);
 
-	private final SvgRasterizer rasterize;
+	private final SvgRasterizer svgRasterizer;
+
+	HashMap<String, Boolean> cachedImageNames = new HashMap<String, Boolean>();
 
 	private ImageStore() {
 		// utility class
@@ -78,7 +81,7 @@ public final class ImageStore {
 		listOfStrategys.add(availableOperations.getPngOperationSecondlastAttempt());
 		listOfStrategys.add(availableOperations.getPngDefaultImageOperation());
 
-		rasterize = new SvgRasterizer();
+		svgRasterizer = new SvgRasterizer();
 	}
 
 	/**
@@ -496,8 +499,8 @@ public final class ImageStore {
 		try {
 			final Rectangle bounds = getImageBounds(url.toString(), imageSize);
 
-			rasterize.setUrl(url);
-			final BufferedImage bi = rasterize.createBufferedImage(bounds);
+			svgRasterizer.setUrl(url);
+			final BufferedImage bi = svgRasterizer.createBufferedImage(bounds);
 
 			final ImageData imageData = SwtUtilities.convertAwtImageToImageData(bi);
 			if (imageData == null) {
@@ -759,18 +762,33 @@ public final class ImageStore {
 		}
 
 		return imageName;
-
 	}
 
 	private synchronized boolean imageExists(final String imageName, final ImageFileExtension fileExtension) {
 		final String fullName = getFullName(imageName, fileExtension);
+		if (cachedImageNames.containsKey(fullName)) {
+			return cachedImageNames.get(fullName);
+		}
 		final ImageDescriptor descriptor = getImageDescriptor(fullName);
+		if (descriptor == null) {
+			cachedImageNames.put(fullName, false);
+		} else {
+			cachedImageNames.put(fullName, true);
+		}
 		return (descriptor != null);
 	}
 
 	@InjectExtension
 	public void update(final IImagePathExtension[] iconPaths) {
 		this.iconPaths = iconPaths;
+		this.clearCachedImageNames();
+	}
+
+	/**
+	 * After updating iconPaths we clear cached Imagenames.
+	 */
+	private void clearCachedImageNames() {
+		this.cachedImageNames.clear();
 	}
 
 	private class ImageOperations {

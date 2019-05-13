@@ -19,9 +19,9 @@ import org.eclipse.riena.core.test.collect.TestCollector;
 import org.eclipse.riena.internal.tests.Activator;
 
 /**
- * Tests all ´integration´ test cases within this bundle.
+ * Tests all Â´integrationÂ´ test cases within this bundle.
  */
-@NonGatherableTestCase("This is not a ´TestCase´!")
+@NonGatherableTestCase("This is not a Â´TestCaseÂ´!")
 public class AllIntegrationTests extends TestCase {
 
 	@SuppressWarnings("unchecked")

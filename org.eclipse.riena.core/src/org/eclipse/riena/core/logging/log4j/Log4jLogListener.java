@@ -58,7 +58,7 @@ import org.eclipse.riena.internal.core.logging.log4j.ILog4jLogListenerConfigurat
 /**
  * The <code>Log4LogListener</code> reroutes all logging within Riena into the Log4J logging system.<br>
  * To activate it is necessary to contribute to the extension point "org.eclipse.riena.core.logging.listeners". Within that configuration it is possible to pass
- * a ´log4j.xml´ as a resource to configure Log4j, e.g.
+ * a Â´log4j.xmlÂ´ as a resource to configure Log4j, e.g.
  * 
  * <pre>
  * &lt;extension point=&quot;org.eclipse.riena.core.logListeners&quot;&gt;

@@ -85,8 +85,8 @@ public class ValidExpressionTest extends RienaTestCase {
 		assertTrue("Deutsche Bundesbank Frankfurt am Main BIC", rule.validate("MARKDEFF").isOK());
 		assertTrue("Deutsche Bundesbank Frankfurt am Main BIC (optional postfix)", rule.validate("MARKDEFFXXX").isOK());
 		assertTrue("Schweizer Bank UBS AG BIC", rule.validate("UBSWCHZH80A").isOK());
-		assertTrue("Rhön-Rennsteig-Sparkasse BIC", rule.validate("HELADEF1RRS").isOK());
-		assertTrue("Rhön-Rennsteig-Sparkasse BIC, transactions from USA", rule.validate("HELADEFF").isOK());
+		assertTrue("RhÃ¶n-Rennsteig-Sparkasse BIC", rule.validate("HELADEF1RRS").isOK());
+		assertTrue("RhÃ¶n-Rennsteig-Sparkasse BIC, transactions from USA", rule.validate("HELADEFF").isOK());
 
 		assertFalse("Alnum in first 6 characters", rule.validate("R2OSGGSX").isOK());
 		assertFalse("postfix too long", rule.validate("MARKDEFFXXXX").isOK());

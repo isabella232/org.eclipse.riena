@@ -35,7 +35,7 @@ public class VariableManagerUtilTest extends RienaTestCase {
 			fgManager = StringVariableManager.class.getDeclaredField("fgManager");
 			fgManager.setAccessible(true);
 		} catch (final Throwable e) {
-			fail("Could not access field ´fgManager´ from StringVariableManager!");
+			fail("Could not access field Â´fgManagerÂ´ from StringVariableManager!");
 		}
 	}
 

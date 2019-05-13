@@ -1,32 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>org.eclipse.riena.tests</artifactId>
-	<packaging>eclipse-test-plugin</packaging>
 	<parent>
 		<groupId>org.eclipse.riena</groupId>
-		<artifactId>org.eclipse.riena.build.tycho</artifactId>
+		<artifactId>org.eclipse.riena.parent</artifactId>
 		<version>6.2.0-SNAPSHOT</version>
-		<relativePath>../org.eclipse.riena.build.tycho</relativePath>
 	</parent>
-
+	<groupId>org.eclipse.riena</groupId>
+	<artifactId>org.eclipse.riena.tests</artifactId>
+	<packaging>eclipse-test-plugin</packaging>
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-surefire-plugin</artifactId>
-				<version>${tycho-version}</version>
+				<version>${tycho.version}</version>
 				<configuration>
-					<testSuite>org.eclipse.riena.tests</testSuite>
 					<testClass>org.eclipse.riena.AllTests</testClass>
-					<showEclipseLog>true</showEclipseLog>
-					<useUIHarness>true</useUIHarness>
-					<useUIThread>false</useUIThread>
-					<argLine>${ui.test.vmargs}</argLine>
+					<runOrder>alphabetical</runOrder>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
+	<profiles>
+		<profile>
+			<id>test</id>
+
+			<properties>
+				<includeTestsFile></includeTestsFile>
+				<excludeTestsFile></excludeTestsFile>
+			</properties>
+
+			<repositories>
+				<repository>
+					<id>riena_p2_repo</id>
+					<url>file:///${project.basedir}/../../p2.small</url>
+					<layout>p2</layout>
+				</repository>
+			</repositories>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.eclipse.tycho</groupId>
+						<artifactId>tycho-surefire-plugin</artifactId>
+						<version>${tycho.version}</version>
+						<configuration>
+							<argLine>-DincludeTestsFile=${includeTestsFile} -DexcludeTestsFile=${excludeTestsFile}</argLine>
+							<testClass>org.eclipse.riena.SelectedTests</testClass>
+							<runOrder>random</runOrder>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>

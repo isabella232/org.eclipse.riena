@@ -16,7 +16,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- * Utility class for sharing of a common timer. We don´t want to have a big
+ * Utility class for sharing of a common timer. We donÂ´t want to have a big
  * number of worker threads.
  */
 public final class TimerUtil {

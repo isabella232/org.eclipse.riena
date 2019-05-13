@@ -15,7 +15,7 @@ import org.eclipse.riena.ui.core.uiprocess.UIProcess;
 
 /**
  * interface for the ridget controlling the display of active {@link UIProcess}
- * ´s infos.
+ * Â´s infos.
  */
 public interface IStatuslineUIProcessRidget extends IProgressVisualizerObserver, IRidget {
 

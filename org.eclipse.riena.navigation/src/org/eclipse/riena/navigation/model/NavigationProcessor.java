@@ -568,7 +568,7 @@ public class NavigationProcessor implements INavigationProcessor {
 	}
 
 	/*
-	 * unregisters the given node as and all of it�s children as jump targets and sources recursively
+	 * unregisters the given node as and all of itďż˝s children as jump targets and sources recursively
 	 */
 	private void handleJumpsOnDispose(final INavigationNode<?> node) {
 		runObserved(node, new Runnable() {

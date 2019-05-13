@@ -63,7 +63,7 @@ public class CompoundProxySelector extends ProxySelector {
 			}
 
 		}
-		// in case we have ´failed proxies´ we move them towards the end of the list
+		// in case we have Â´failed proxiesÂ´ we move them towards the end of the list
 		ProxySelectorUtils.resort(result, failedProxies);
 		// add a final NO_PROXY
 		result.add(Proxy.NO_PROXY);
@@ -72,7 +72,7 @@ public class CompoundProxySelector extends ProxySelector {
 
 	@Override
 	public void connectFailed(final URI uri, final SocketAddress sa, final IOException ioe) {
-		// we ´resort´ the resulted proxy list by moving the failed proxies to the end of the list (see select) ... 
+		// we Â´resortÂ´ the resulted proxy list by moving the failed proxies to the end of the list (see select) ... 
 		final Proxy failed = ProxySelectorUtils.createProxy(uri.getScheme(), sa);
 		failedProxies.add(failed);
 		// ... and additionally delegate it to all proxy selectors  so that they can do their job.

@@ -94,7 +94,7 @@ public class ModuleViewTest extends RienaTestCase {
 		view.dispose();
 		SwtUtilities.dispose(shell);
 		node = null;
-
+		LnfManager.setLnf(new RienaDefaultLnf());
 		super.tearDown();
 	}
 
@@ -167,16 +167,14 @@ public class ModuleViewTest extends RienaTestCase {
 
 	}
 
-	private void assertUnBlockedState(final EmbeddedTitleBar title, final Composite body, final Tree tree,
-			final Cursor waitCursor) {
+	private void assertUnBlockedState(final EmbeddedTitleBar title, final Composite body, final Tree tree, final Cursor waitCursor) {
 		assertNotSame(waitCursor, title.getCursor());
 		assertTrue(title.isCloseable());
 		assertNotSame(waitCursor, body.getCursor());
 		assertTrue(tree.getEnabled());
 	}
 
-	private void assertBlockedState(final EmbeddedTitleBar title, final Composite body, final Tree tree,
-			final Cursor waitCursor) {
+	private void assertBlockedState(final EmbeddedTitleBar title, final Composite body, final Tree tree, final Cursor waitCursor) {
 		assertSame(waitCursor, title.getCursor());
 		assertSame(waitCursor, body.getCursor());
 		assertFalse(title.isCloseable());
@@ -401,8 +399,7 @@ public class ModuleViewTest extends RienaTestCase {
 	}
 
 	/**
-	 * This ModuleView makes the visibility of the method {@code getTree()}
-	 * public for testing.
+	 * This ModuleView makes the visibility of the method {@code getTree()} public for testing.
 	 */
 	private class MyModuleView extends ModuleView {
 

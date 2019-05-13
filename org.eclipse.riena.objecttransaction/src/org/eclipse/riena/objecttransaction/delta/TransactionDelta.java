@@ -26,7 +26,7 @@ public class TransactionDelta implements Cloneable {
 	private IObjectId objectId;
 	private State state; // (Clean, Created, Modified, Deleted)
 	private String version; // version of TransactionDelta
-	private Map<String, AbstractBaseChange> referenceChanges; // (refName à
+	private Map<String, AbstractBaseChange> referenceChanges; // (refName Å•
 
 	// newValue)
 

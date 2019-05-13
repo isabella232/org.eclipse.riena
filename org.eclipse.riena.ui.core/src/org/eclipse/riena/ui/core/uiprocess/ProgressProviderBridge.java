@@ -89,7 +89,7 @@ public class ProgressProviderBridge extends ProgressProvider {
 		final UICallbackDispatcher dispatcher = (UICallbackDispatcher) uiprocess.getAdapter(UICallbackDispatcher.class);
 
 		IProgressVisualizer progressVisualizer = jobToVisualizer.get(job);
-		if (progressVisualizer == null) {
+		if (progressVisualizer == null && visualizerLocator != null) {
 			progressVisualizer = visualizerLocator.getProgressVisualizer(context);
 			jobToVisualizer.put(job, progressVisualizer);
 			dispatcher.addUIMonitor(progressVisualizer);

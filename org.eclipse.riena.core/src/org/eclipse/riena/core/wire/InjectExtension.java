@@ -16,7 +16,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotate a ´update´ method for extension injection.
+ * Annotate a Â´updateÂ´ method for extension injection.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
@@ -43,12 +43,12 @@ public @interface InjectExtension {
 	int max() default Integer.MAX_VALUE;
 
 	/**
-	 * Is this a ´heterogeneous´ extension
+	 * Is this a Â´heterogeneousÂ´ extension
 	 */
 	boolean heterogeneous() default false;
 
 	/**
-	 * Is this a ´specific´ extension
+	 * Is this a Â´specificÂ´ extension
 	 */
 	boolean specific() default false;
 

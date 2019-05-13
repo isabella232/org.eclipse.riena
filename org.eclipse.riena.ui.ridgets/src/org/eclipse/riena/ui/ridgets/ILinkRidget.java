@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- * Florian Pirchner – initial API and implementation (based on other ridgets of 
+ * Florian Pirchner â€“ initial API and implementation (based on other ridgets of 
  *                    compeople AG)
  * compeople AG     - adjustments for Riena v1.2
  *******************************************************************************/

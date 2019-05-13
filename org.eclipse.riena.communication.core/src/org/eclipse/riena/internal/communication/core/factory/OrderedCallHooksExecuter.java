@@ -20,7 +20,7 @@ import org.eclipse.riena.core.util.Orderer;
 import org.eclipse.riena.core.wire.InjectExtension;
 
 /**
- * A {@link ICallHook} that executes the ´ordered´ call hooks.
+ * A {@link ICallHook} that executes the Â´orderedÂ´ call hooks.
  */
 public class OrderedCallHooksExecuter implements ICallHook {
 

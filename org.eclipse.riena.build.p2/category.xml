@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/org.eclipse.riena.build.feature_6.2.0.qualifier.jar" id="org.eclipse.riena.build.feature" version="6.2.0.qualifier"/>
+</site>

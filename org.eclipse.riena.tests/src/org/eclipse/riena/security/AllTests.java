@@ -21,7 +21,7 @@ import org.eclipse.riena.internal.tests.Activator;
 /**
  * Tests all test cases within this package/sub-packages.
  */
-@NonGatherableTestCase("This is not a ´TestCase´!")
+@NonGatherableTestCase("This is not a Â´TestCaseÂ´!")
 public class AllTests extends TestCase {
 
 	@SuppressWarnings("unchecked")

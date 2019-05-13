@@ -10,8 +10,8 @@ Require-Bundle: org.eclipse.osgi.services,
  org.eclipse.riena.navigation.ui;visibility:=reexport,
  org.eclipse.riena.ui.ridgets.swt,
  org.eclipse.riena.ui.workarea,
- org.eclipse.ui;resolution:=optional,
- org.eclipse.rap.ui;resolution:=optional
+ org.eclipse.ui,
+ org.easymock;resolution:=optional
 Bundle-ActivationPolicy: lazy 
 Export-Package: org.eclipse.riena.internal.navigation.ui.swt;x-friends:="org.eclipse.riena.tests",
  org.eclipse.riena.internal.navigation.ui.swt.handlers;x-friends:="org.eclipse.riena.tests",

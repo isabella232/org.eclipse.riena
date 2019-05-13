@@ -21,7 +21,7 @@
  * - removed dependencies from HiveMind
  * - added generics, uses extended for loops, ..
  * - adapted to Riena/Eclipse coding conventions
- * - moved ´internal´ classes (separate files) into one file 
+ * - moved Â´internalÂ´ classes (separate files) into one file 
  */
 package org.eclipse.riena.core.util;
 

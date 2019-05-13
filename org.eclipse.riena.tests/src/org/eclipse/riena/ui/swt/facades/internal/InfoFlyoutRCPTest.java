@@ -30,10 +30,13 @@ public class InfoFlyoutRCPTest extends TestCase {
 	private InfoFlyoutRCP infoFLyout;
 	private Shell shell;
 
+	private RienaDefaultLnf oldLnf;
+
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 		ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpiFactors", new float[] { 0.0f, 0.0f }); //$NON-NLS-1$
+		oldLnf = LnfManager.getLnf();
 		LnfManager.setLnf(new MyLnf());
 		shell = new Shell();
 		infoFLyout = new InfoFlyoutRCP(shell);
@@ -41,6 +44,9 @@ public class InfoFlyoutRCPTest extends TestCase {
 
 	@Override
 	protected void tearDown() throws Exception {
+		ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpiFactors", new float[] { 0.0f, 0.0f }); //$NON-NLS-1$
+		LnfManager.setLnf(oldLnf);
+
 		infoFLyout = null;
 		SwtUtilities.dispose(shell);
 		shell = null;

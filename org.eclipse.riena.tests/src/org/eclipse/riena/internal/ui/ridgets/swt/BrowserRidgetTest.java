@@ -190,6 +190,8 @@ public class BrowserRidgetTest extends AbstractSWTRidgetTest {
 		ridget.setOutputOnly(true);
 		final String text = "<hmtl><body><h2>Riena</h2></body></html>";
 		ridget.setText(text);
+
+		UITestHelper.sleepForAnInstance(100);
 		UITestHelper.readAndDispatch(control);
 
 		assertEquals(text, ridget.getText());

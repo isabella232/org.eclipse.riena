@@ -89,7 +89,7 @@ public class Extra extends AbstractBean {
 		sb.append("Category: "); //$NON-NLS-1$
 		sb.append(getCategory());
 		sb.append(", "); //$NON-NLS-1$
-		sb.append("Price (€): "); //$NON-NLS-1$
+		sb.append("Price (â‚¬): "); //$NON-NLS-1$
 		sb.append(", "); //$NON-NLS-1$
 		sb.append(getPrice());
 		sb.append(", "); //$NON-NLS-1$

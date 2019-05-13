@@ -17,7 +17,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Indicates that the warning issued by CheckStyle can be ´ignored´. The effect
+ * Indicates that the warning issued by CheckStyle can be Â´ignoredÂ´. The effect
  * of this annotation is only for documentation purposes.
  * <p>
  * It usage is as follow:

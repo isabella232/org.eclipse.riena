@@ -10,8 +10,7 @@ Require-Bundle: org.eclipse.core.databinding,
  org.eclipse.riena.ui.core,
  org.eclipse.riena.ui.ridgets,
  org.eclipse.riena.ui.workarea;bundle-version="6.1.0",
- org.eclipse.ui;bundle-version="3.6.0";resolution:=optional,
- org.eclipse.rap.ui;bundle-version="1.4.0";resolution:=optional
+ org.eclipse.ui;bundle-version="3.6.0"
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.riena.internal.navigation.ui;x-friends:="org.eclipse.riena.tests",
  org.eclipse.riena.internal.navigation.ui.filter;x-friends:="org.eclipse.riena.tests",

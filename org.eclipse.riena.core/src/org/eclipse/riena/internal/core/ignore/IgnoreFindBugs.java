@@ -18,7 +18,7 @@ import java.lang.annotation.Target;
 
 /**
  * Indicates that the warning issued by FindBugs http://findbugs.sourceforge.net
- * can be ´ignored´. The effect of this annotation is only for documentation
+ * can be Â´ignoredÂ´. The effect of this annotation is only for documentation
  * purposes. The annotation support of findbugs is currently not usable because
  * of IP stuff that is now to late. However, the idea is that we can replace
  * this annotation with the findbugs annotation when the IP stuff has been done.

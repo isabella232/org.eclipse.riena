@@ -44,6 +44,17 @@ public class ImageStoreTest extends RienaTestCase {
 		ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpiFactors", new float[] { 0.0f, 0.0f }); //$NON-NLS-1$
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.core.test.RienaTestCase#tearDown()
+	 */
+	@Override
+	protected void tearDown() throws Exception {
+		super.tearDown();
+		LnfManager.setLnf(new RienaDefaultLnf());
+	}
+
 	/**
 	 * Tests the <i>private</i> method {@code getFullName}.
 	 */
@@ -111,10 +122,12 @@ public class ImageStoreTest extends RienaTestCase {
 			assertEquals(16, image.getBounds().width);
 
 			ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpiFactors", new float[] { 1.5f, 1.5f }); //$NON-NLS-1$
+			ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpi", null); //$NON-NLS-1$
 			image = store.getImage("testimagea", IconSize.A16); //$NON-NLS-1$
 			assertEquals(24, image.getBounds().width);
 
 			ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpiFactors", new float[] { 1.8f, 1.8f }); //$NON-NLS-1$
+			ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpi", null); //$NON-NLS-1$
 			image = store.getImage("testimagea", IconSize.A16); //$NON-NLS-1$
 			assertEquals(16, image.getBounds().width);
 
@@ -431,6 +444,355 @@ public class ImageStoreTest extends RienaTestCase {
 	}
 
 	/**
+	 * Tests the method {@code testGetImageUriReturnsNullForNoneExistingPNG}.
+	 * 
+	 * @throws Exception
+	 */
+	public void testGetImageUriReturnsNullForNoneExistingPNG() throws Exception {
+
+		final ImageStore store = ImageStore.getInstance();
+		final float[] oldDpiFactors = SwtUtilities.getDpiFactors();
+		final RienaDefaultLnf originalLnf = LnfManager.getLnf();
+
+		try {
+			LnfManager.setLnf(new ScaleLnf());
+
+			final URI imageUri = store.getImageUri("abc", ImageFileExtension.PNG); //$NON-NLS-1$
+			assertNull(imageUri);
+
+		} finally {
+			LnfManager.setLnf(originalLnf);
+			ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpiFactors", oldDpiFactors); //$NON-NLS-1$
+		}
+
+	}
+
+	/**
+	 * Tests the method {@code testGetImageUriReturnsNullForNoneExistingGIF}.
+	 * 
+	 * @throws Exception
+	 */
+	public void testGetImageUriReturnsExistingGIF() throws Exception {
+
+		final ImageStore store = ImageStore.getInstance();
+		final float[] oldDpiFactors = SwtUtilities.getDpiFactors();
+		final RienaDefaultLnf originalLnf = LnfManager.getLnf();
+
+		try {
+			LnfManager.setLnf(new ScaleLnf());
+			// existing gif image file
+			final URI imageUri = store.getImageUri("closed_16", ImageFileExtension.GIF); //$NON-NLS-1$
+			assertNotNull(imageUri);
+			assertEquals("/icons/closed_16.gif", imageUri.getPath()); //$NON-NLS-1$
+
+		} finally {
+			LnfManager.setLnf(originalLnf);
+			ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpiFactors", oldDpiFactors); //$NON-NLS-1$
+		}
+
+	}
+
+	/**
+	 * Tests the method {@code testGetImageUrForExistingGIFBySearchingForPNG}.
+	 * 
+	 * @throws Exception
+	 */
+	public void testGetImageUrForExistingGIFBySearchingForPNG() throws Exception {
+
+		final ImageStore store = ImageStore.getInstance();
+		final float[] oldDpiFactors = SwtUtilities.getDpiFactors();
+		final RienaDefaultLnf originalLnf = LnfManager.getLnf();
+
+		try {
+			LnfManager.setLnf(new ScaleLnf());
+
+			final URI imageUri = store.getImageUri("closed_16.gif", ImageFileExtension.PNG); //$NON-NLS-1$
+			assertNotNull(imageUri);
+			assertEquals("/icons/closed_16.gif", imageUri.getPath()); //$NON-NLS-1$
+
+		} finally {
+			LnfManager.setLnf(originalLnf);
+			ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpiFactors", oldDpiFactors); //$NON-NLS-1$
+		}
+
+	}
+
+	/**
+	 * Tests the method {@code testGetImageUriForGIFBySearchingOnlyForImageName}.
+	 * 
+	 * @throws Exception
+	 */
+	public void testGetImageUriForGIFBySearchingOnlyForImageName() throws Exception {
+
+		final ImageStore store = ImageStore.getInstance();
+		final float[] oldDpiFactors = SwtUtilities.getDpiFactors();
+		final RienaDefaultLnf originalLnf = LnfManager.getLnf();
+
+		try {
+			LnfManager.setLnf(new ScaleLnf());
+
+			final URI imageUri = store.getImageUri("closed_16.gif", null); //$NON-NLS-1$
+			assertNotNull(imageUri);
+			assertEquals("/icons/closed_16.gif", imageUri.getPath()); //$NON-NLS-1$
+		} finally {
+			LnfManager.setLnf(originalLnf);
+			ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpiFactors", oldDpiFactors); //$NON-NLS-1$
+		}
+
+	}
+
+	/**
+	 * Tests the method {@code testGetImageUriForNoneExistingJPGImage}.
+	 * 
+	 * @throws Exception
+	 */
+	public void testGetImageUriForNoneExistingJPGImage() throws Exception {
+
+		final ImageStore store = ImageStore.getInstance();
+		final float[] oldDpiFactors = SwtUtilities.getDpiFactors();
+		final RienaDefaultLnf originalLnf = LnfManager.getLnf();
+
+		try {
+			LnfManager.setLnf(new ScaleLnf());
+
+			final URI imageUri = store.getImageUri("closed_16", ImageFileExtension.JPG); //$NON-NLS-1$
+			assertNull(imageUri);
+
+		} finally {
+			LnfManager.setLnf(originalLnf);
+			ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpiFactors", oldDpiFactors); //$NON-NLS-1$
+		}
+
+	}
+
+	/**
+	 * Tests the method {@code testGetImageUriForExistingPNGImage}.
+	 * 
+	 * @throws Exception
+	 */
+	public void testGetImageUriForExistingPNGImage() throws Exception {
+
+		final ImageStore store = ImageStore.getInstance();
+		final float[] oldDpiFactors = SwtUtilities.getDpiFactors();
+		final RienaDefaultLnf originalLnf = LnfManager.getLnf();
+
+		try {
+			LnfManager.setLnf(new ScaleLnf());
+
+			// existing png image file
+			final URI imageUri = store.getImageUri("spirit", ImageFileExtension.PNG); //$NON-NLS-1$
+			assertNotNull(imageUri);
+			assertEquals("/icons/spirit.png", imageUri.getPath()); //$NON-NLS-1$
+
+		} finally {
+			LnfManager.setLnf(originalLnf);
+			ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpiFactors", oldDpiFactors); //$NON-NLS-1$
+		}
+
+	}
+
+	/**
+	 * Tests the method {@code testGetImageUriForExistingPngBySearchingForNonExistingJPGImage}.
+	 * 
+	 * @throws Exception
+	 */
+	public void testGetImageUriForExistingPngBySearchingForNonExistingJPGImage() throws Exception {
+
+		final ImageStore store = ImageStore.getInstance();
+		final float[] oldDpiFactors = SwtUtilities.getDpiFactors();
+		final RienaDefaultLnf originalLnf = LnfManager.getLnf();
+
+		try {
+			LnfManager.setLnf(new ScaleLnf());
+
+			final URI imageUri = store.getImageUri("spirit.png", ImageFileExtension.JPG); //$NON-NLS-1$
+			assertNotNull(imageUri);
+			assertEquals("/icons/spirit.png", imageUri.getPath()); //$NON-NLS-1$
+		} finally {
+			LnfManager.setLnf(originalLnf);
+			ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpiFactors", oldDpiFactors); //$NON-NLS-1$
+		}
+
+	}
+
+	/**
+	 * Tests the method {@code getImageUri}.
+	 * 
+	 * @throws Exception
+	 */
+	public void testGetImageUriForExistingPNFBySearchingForImageNameOnly() throws Exception {
+
+		final ImageStore store = ImageStore.getInstance();
+		final float[] oldDpiFactors = SwtUtilities.getDpiFactors();
+		final RienaDefaultLnf originalLnf = LnfManager.getLnf();
+
+		try {
+			LnfManager.setLnf(new ScaleLnf());
+
+			final URI imageUri = store.getImageUri("spirit.png", null); //$NON-NLS-1$
+			assertNotNull(imageUri);
+			assertEquals("/icons/spirit.png", imageUri.getPath()); //$NON-NLS-1$
+		} finally {
+			LnfManager.setLnf(originalLnf);
+			ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpiFactors", oldDpiFactors); //$NON-NLS-1$
+		}
+
+	}
+
+	/**
+	 * Tests the method {@code getImageUri}.
+	 * 
+	 * @throws Exception
+	 */
+	public void testGetImageUriForNoneExistingImageBySearchingWithImageFileExtension() throws Exception {
+
+		final ImageStore store = ImageStore.getInstance();
+		final float[] oldDpiFactors = SwtUtilities.getDpiFactors();
+		final RienaDefaultLnf originalLnf = LnfManager.getLnf();
+
+		try {
+			LnfManager.setLnf(new ScaleLnf());
+
+			final URI imageUri = store.getImageUri("spirit", ImageFileExtension.GIF); //$NON-NLS-1$
+			assertNull(imageUri);
+
+		} finally {
+			LnfManager.setLnf(originalLnf);
+			ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpiFactors", oldDpiFactors); //$NON-NLS-1$
+		}
+
+	}
+
+	/**
+	 * Tests the method {@code getImageUri}.
+	 * 
+	 * @throws Exception
+	 */
+	public void testGetImageUriWithStandardScaledCachedDPI() throws Exception {
+
+		final ImageStore store = ImageStore.getInstance();
+		final float[] oldDpiFactors = SwtUtilities.getDpiFactors();
+		final RienaDefaultLnf originalLnf = LnfManager.getLnf();
+
+		try {
+			LnfManager.setLnf(new ScaleLnf());
+
+			// image file with scaling exists
+			ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpi", new Point(96, 96)); //$NON-NLS-1$
+			final URI imageUri = store.getImageUri("testimagea", ImageFileExtension.PNG); //$NON-NLS-1$
+			assertEquals("/icons/testimagea00.png", imageUri.getPath()); //$NON-NLS-1$
+
+		} finally {
+			LnfManager.setLnf(originalLnf);
+			ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpiFactors", oldDpiFactors); //$NON-NLS-1$
+		}
+
+	}
+
+	/**
+	 * Tests the method {@code getImageUri}.
+	 * 
+	 * @throws Exception
+	 */
+	public void testGetImageUriWith150PercentScaling() throws Exception {
+
+		final ImageStore store = ImageStore.getInstance();
+		final float[] oldDpiFactors = SwtUtilities.getDpiFactors();
+		final RienaDefaultLnf originalLnf = LnfManager.getLnf();
+
+		try {
+			LnfManager.setLnf(new ScaleLnf());
+
+			ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpiFactors", new float[] { 1.5f, 1.5f }); //$NON-NLS-1$
+			ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpi", null); //$NON-NLS-1$
+			final URI imageUri = store.getImageUri("testimagea", ImageFileExtension.PNG); //$NON-NLS-1$
+			assertEquals("/icons/testimagea03.png", imageUri.getPath()); //$NON-NLS-1$
+
+		} finally {
+			LnfManager.setLnf(originalLnf);
+			ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpiFactors", oldDpiFactors); //$NON-NLS-1$
+		}
+
+	}
+
+	/**
+	 * Tests the method {@code testGetImageUriUsingDefaultScalingForNoneExistingScaleFactor}.
+	 * 
+	 * @throws Exception
+	 */
+	public void testGetImageUriUsingDefaultScalingForNoneExistingScaleFactor() throws Exception {
+
+		final ImageStore store = ImageStore.getInstance();
+		final float[] oldDpiFactors = SwtUtilities.getDpiFactors();
+		final RienaDefaultLnf originalLnf = LnfManager.getLnf();
+
+		try {
+			LnfManager.setLnf(new ScaleLnf());
+			// image file with scaling does not exist, use default scaling
+			ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpiFactors", new float[] { 1.8f, 1.8f }); //$NON-NLS-1$
+			ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpi", null); //$NON-NLS-1$
+			final URI imageUri = store.getImageUri("testimagea", ImageFileExtension.PNG); //$NON-NLS-1$
+			assertEquals("/icons/testimagea00.png", imageUri.getPath()); //$NON-NLS-1$
+
+		} finally {
+			LnfManager.setLnf(originalLnf);
+			ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpiFactors", oldDpiFactors); //$NON-NLS-1$
+		}
+
+	}
+
+	/**
+	 * Tests the method {@code testGetImageUriForNoneExistingImage}.
+	 * 
+	 * @throws Exception
+	 */
+	public void testGetImageUriForNoneExistingImage() throws Exception {
+
+		final ImageStore store = ImageStore.getInstance();
+		final float[] oldDpiFactors = SwtUtilities.getDpiFactors();
+		final RienaDefaultLnf originalLnf = LnfManager.getLnf();
+
+		try {
+			LnfManager.setLnf(new ScaleLnf());
+			// image file does not exists
+			ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpiFactors", new float[] { 0, 0 }); //$NON-NLS-1$
+			final URI imageUri = store.getImageUri("testimagea", ImageFileExtension.GIF); //$NON-NLS-1$
+			assertNull(imageUri);
+
+		} finally {
+			LnfManager.setLnf(originalLnf);
+			ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpiFactors", oldDpiFactors); //$NON-NLS-1$
+		}
+
+	}
+
+	/**
+	 * Tests the method {@code getImageUri}.
+	 * 
+	 * @throws Exception
+	 */
+	public void testGetImageUriUsingExactFileName() throws Exception {
+
+		final ImageStore store = ImageStore.getInstance();
+		final float[] oldDpiFactors = SwtUtilities.getDpiFactors();
+		final RienaDefaultLnf originalLnf = LnfManager.getLnf();
+
+		try {
+			LnfManager.setLnf(new ScaleLnf());
+
+			// use given image file name
+			ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpiFactors", new float[] { 0, 0 }); //$NON-NLS-1$
+			final URI imageUri = store.getImageUri("testimagea03.png", null); //$NON-NLS-1$
+			assertEquals("/icons/testimagea03.png", imageUri.getPath()); //$NON-NLS-1$
+
+		} finally {
+			LnfManager.setLnf(originalLnf);
+			ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpiFactors", oldDpiFactors); //$NON-NLS-1$
+		}
+
+	}
+
+	/**
 	 * Tests the method {@code getImageUri}.
 	 * 
 	 * @throws Exception
@@ -482,19 +844,19 @@ public class ImageStoreTest extends RienaTestCase {
 			imageUri = store.getImageUri("spirit", ImageFileExtension.GIF); //$NON-NLS-1$
 			assertNull(imageUri);
 
-			ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpi", new Point(144, 144)); //$NON-NLS-1$
-
 			// image file with scaling exists
 			ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpi", new Point(96, 96)); //$NON-NLS-1$
 			imageUri = store.getImageUri("testimagea", ImageFileExtension.PNG); //$NON-NLS-1$
 			assertEquals("/icons/testimagea00.png", imageUri.getPath()); //$NON-NLS-1$
 
 			ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpiFactors", new float[] { 1.5f, 1.5f }); //$NON-NLS-1$
+			ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpi", null); //$NON-NLS-1$
 			imageUri = store.getImageUri("testimagea", ImageFileExtension.PNG); //$NON-NLS-1$
 			assertEquals("/icons/testimagea03.png", imageUri.getPath()); //$NON-NLS-1$
 
 			// image file with scaling does not exist, use default scaling
 			ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpiFactors", new float[] { 1.8f, 1.8f }); //$NON-NLS-1$
+			ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpi", null); //$NON-NLS-1$
 			imageUri = store.getImageUri("testimagea", ImageFileExtension.PNG); //$NON-NLS-1$
 			assertEquals("/icons/testimagea00.png", imageUri.getPath()); //$NON-NLS-1$
 

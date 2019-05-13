@@ -46,6 +46,7 @@ import org.eclipse.riena.ui.swt.lnf.ILnfResource;
 import org.eclipse.riena.ui.swt.lnf.ImageLnfResource;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 
 import junit.framework.TestCase;
 
@@ -73,6 +74,7 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 
 	@Override
 	protected void setUp() throws Exception {
+		LnfManager.setLnf(new RienaDefaultLnf());
 		final Display display = Display.getDefault();
 		final Realm realm = SWTObservables.getRealm(display);
 		ReflectionUtils.invokeHidden(realm, "setDefault", realm);

@@ -28,8 +28,8 @@ import org.eclipse.core.runtime.Assert;
  * associated with a service injector {@link #andStart()} gets stopped all bound
  * services will be unbound.
  * <p>
- * The ServiceDescriptor and ServiceInjector are implemented as a ´fluent
- * interface´ allowing constructs like:
+ * The ServiceDescriptor and ServiceInjector are implemented as a Â´fluent
+ * interfaceÂ´ allowing constructs like:
  * <ul>
  * <li>Inject.service("id1").into(target).andStart(context)</li>
  * <li>

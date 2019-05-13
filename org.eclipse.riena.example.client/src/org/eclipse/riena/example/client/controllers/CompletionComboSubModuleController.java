@@ -103,13 +103,13 @@ public class CompletionComboSubModuleController extends SubModuleController {
 		values.add(new City("Pisa", Country.ITALY)); //$NON-NLS-1$
 		values.add(new City("Berlin", Country.GERMANY)); //$NON-NLS-1$
 		values.add(new City("Hamburg", Country.GERMANY)); //$NON-NLS-1$
-		values.add(new City("Köln", Country.GERMANY)); //$NON-NLS-1$
+		values.add(new City("KÃ¶ln", Country.GERMANY)); //$NON-NLS-1$
 		values.add(new City("Frankfurt am Main", Country.GERMANY)); //$NON-NLS-1$
 		values.add(new City("Stuttgart", Country.GERMANY)); //$NON-NLS-1$
 		values.add(new City("Dortmund", Country.GERMANY)); //$NON-NLS-1$
 		values.add(new City("Essen", Country.GERMANY)); //$NON-NLS-1$
-		values.add(new City("Düsseldorf", Country.GERMANY)); //$NON-NLS-1$
-		values.add(new City("München", Country.GERMANY)); //$NON-NLS-1$
+		values.add(new City("DÃ¼sseldorf", Country.GERMANY)); //$NON-NLS-1$
+		values.add(new City("MÃ¼nchen", Country.GERMANY)); //$NON-NLS-1$
 		values.add(new City("Mannheim", Country.GERMANY)); //$NON-NLS-1$
 		values.add(new City("Paris", Country.FRANCE)); //$NON-NLS-1$
 		values.add(new City("Marseille", Country.FRANCE)); //$NON-NLS-1$

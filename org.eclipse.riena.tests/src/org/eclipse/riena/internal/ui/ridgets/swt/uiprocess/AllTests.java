@@ -22,7 +22,7 @@ import org.eclipse.riena.internal.tests.Activator;
  * Tests all test cases within package:
  * <code>org.eclipse.riena.internal.ui.ridgets.swt.uiprocess</code>
  */
-@NonGatherableTestCase("This is not a ´TestCase´!")
+@NonGatherableTestCase("This is not a Â´TestCaseÂ´!")
 public class AllTests extends TestCase {
 
 	@SuppressWarnings("unchecked")

@@ -123,7 +123,7 @@ public class ImageReplacerTest extends TestCase {
 		LnfManager.setLnf(new MyLnf());
 
 		final ImageReplacer replacer = ImageReplacer.getInstance();
-
+		ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpi", null); //$NON-NLS-1$
 		ImageDescriptor fileImageDescriptor = ImageDescriptor.createFromFile(null, "/icons/testimagea00.png"); //$NON-NLS-1$
 		ImageDescriptor imageDescriptor = ReflectionUtils.invokeHidden(replacer, "getScaledImage", new Object[] { fileImageDescriptor, IconSize.NONE }); //$NON-NLS-1$ 
 		assertNotNull(imageDescriptor);
@@ -132,6 +132,7 @@ public class ImageReplacerTest extends TestCase {
 
 		final float[] oldDpiFactors = SwtUtilities.getDpiFactors();
 		ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpiFactors", new float[] { 1.5f, 1.5f }); //$NON-NLS-1$
+		ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpi", null); //$NON-NLS-1$
 
 		fileImageDescriptor = ImageDescriptor.createFromFile(null, "/icons/testimagea00.png"); //$NON-NLS-1$
 		imageDescriptor = ReflectionUtils.invokeHidden(replacer, "getScaledImage", new Object[] { fileImageDescriptor, IconSize.NONE }); //$NON-NLS-1$ 
@@ -209,6 +210,7 @@ public class ImageReplacerTest extends TestCase {
 
 		final float[] oldDpiFactors = SwtUtilities.getDpiFactors();
 		ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpiFactors", new float[] { 1.5f, 1.5f }); //$NON-NLS-1$
+		ReflectionUtils.setHidden(SwtUtilities.class, "cachedDpi", null); //$NON-NLS-1$
 
 		ReflectionUtils.setHidden(item, "contributedIcon", urlImageDescriptor); //$NON-NLS-1$
 		ReflectionUtils.setHidden(item, "icon", urlImageDescriptor); //$NON-NLS-1$

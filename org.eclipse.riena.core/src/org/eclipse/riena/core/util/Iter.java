@@ -116,8 +116,8 @@ public final class Iter {
 	}
 
 	/**
-	 * Create an {@code Iterable} for the given iterator. This method´s intended
-	 * use is for ´pre generic´ apis.
+	 * Create an {@code Iterable} for the given iterator. This methodÂ´s intended
+	 * use is for Â´pre genericÂ´ apis.
 	 * 
 	 * @param <T>
 	 *            generic type for the {@code Iterable}
@@ -134,8 +134,8 @@ public final class Iter {
 	}
 
 	/**
-	 * Create an {@code Iterable} for the given iterator. This method´s intended
-	 * use is for ´pre generic´ apis.
+	 * Create an {@code Iterable} for the given iterator. This methodÂ´s intended
+	 * use is for Â´pre genericÂ´ apis.
 	 * 
 	 * @param <T>
 	 *            generic type for the {@code Iterable}

@@ -12,7 +12,7 @@ package org.eclipse.riena.ui.swt.uiprocess;
 
 /**
  * A {@code ICancelListener} observes the
- * {@link org.eclipse.jface.window.ApplicationWindow}´s cancel state
+ * {@link org.eclipse.jface.window.ApplicationWindow}Â´s cancel state
  */
 public interface ICancelListener {
 

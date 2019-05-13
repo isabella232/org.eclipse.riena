@@ -54,7 +54,7 @@ import org.eclipse.riena.core.injector.extension.ExtensionDescriptor;
  * <code>databaseURL</code>.
  * <li>To enforce another name mapping a method can be annotated with
  * <code>@MapName("name")</code>. The <i>name</i> specifies the name of the
- * element or attribute. The extension element´s value can be retrieved by
+ * element or attribute. The extension elementÂ´s value can be retrieved by
  * annotating the method with <code>@MapContent()</code>. The return type must
  * be <code>String</code>. The method names of such annotated methods can be
  * arbitrary</li>
@@ -75,10 +75,10 @@ import org.eclipse.riena.core.injector.extension.ExtensionDescriptor;
  * name and a class instance will be returned.</li>
  * <li><code>an enum</code> than the attribute is interpreted as the value (case
  * insensitive) of the corresponding enum type. <code>null</code> will be
- * returned if the attribute´s value is not given, i.e. <code>null</code> or the
+ * returned if the attributeÂ´s value is not given, i.e. <code>null</code> or the
  * empty string.</li>
  * <li>and finally if none of the above matches the mapping tries to create an
- * new instance of the attribute´s value (interpreted as class name) each time
+ * new instance of the attributeÂ´s value (interpreted as class name) each time
  * it is called. If the extension attribute is not defined <code>null</code>
  * will be returned.</li>
  * </ul>

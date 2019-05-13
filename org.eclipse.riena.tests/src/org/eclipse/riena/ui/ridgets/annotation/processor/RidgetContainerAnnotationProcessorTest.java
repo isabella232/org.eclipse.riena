@@ -47,11 +47,14 @@ import org.eclipse.riena.ui.ridgets.listener.IFocusListener;
 public class RidgetContainerAnnotationProcessorTest extends RienaTestCase {
 
 	private AnnotationProcessor processor;
+	private IAnnotatedMethodHandlerExtension[] oldExtensions;
 
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
+
 		processor = AnnotationProcessor.getInstance();
+		oldExtensions = ReflectionUtils.getHidden(processor, "extensions"); //$NON-NLS-1$
 
 		final Display display = Display.getDefault();
 		final Realm realm = SWTObservables.getRealm(display);
@@ -62,6 +65,9 @@ public class RidgetContainerAnnotationProcessorTest extends RienaTestCase {
 	@Override
 	protected void tearDown() throws Exception {
 		super.tearDown();
+
+		// Restore the old extensions within AnnotationProcessor singleton to not influence other tests.
+		processor.update(oldExtensions);
 	}
 
 	@SuppressWarnings("deprecation")

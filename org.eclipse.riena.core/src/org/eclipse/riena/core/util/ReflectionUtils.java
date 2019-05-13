@@ -53,7 +53,7 @@ public final class ReflectionUtils {
 	}
 
 	/**
-	 * Create a new instance of type ´className´ by invoking the constructor
+	 * Create a new instance of type Â´classNameÂ´ by invoking the constructor
 	 * with the given list of arguments.
 	 * 
 	 * @param className
@@ -76,7 +76,7 @@ public final class ReflectionUtils {
 	}
 
 	/**
-	 * Create a new instance of type ´className´ by invoking the constructor
+	 * Create a new instance of type Â´classNameÂ´ by invoking the constructor
 	 * with the given list of arguments.
 	 * 
 	 * @param className
@@ -99,7 +99,7 @@ public final class ReflectionUtils {
 	}
 
 	/**
-	 * Create a new instance of type ´clazz´ by invoking the constructor with
+	 * Create a new instance of type Â´clazzÂ´ by invoking the constructor with
 	 * the given list of arguments.
 	 * 
 	 * @param clazz
@@ -114,7 +114,7 @@ public final class ReflectionUtils {
 	}
 
 	/**
-	 * Create a new instance of type ´clazz´ by invoking the ´private´
+	 * Create a new instance of type Â´clazzÂ´ by invoking the Â´privateÂ´
 	 * constructor with the given list of arguments.
 	 * 
 	 * @param clazz
@@ -129,7 +129,7 @@ public final class ReflectionUtils {
 	}
 
 	/**
-	 * Create a new proxy instance of type ´interfaceName´.
+	 * Create a new proxy instance of type Â´interfaceNameÂ´.
 	 * 
 	 * @param interfaceName
 	 *            the type of new instance.
@@ -151,7 +151,7 @@ public final class ReflectionUtils {
 	}
 
 	/**
-	 * Create a new proxy instance of type ´interfaze´.
+	 * Create a new proxy instance of type Â´interfazeÂ´.
 	 * 
 	 * @param interfaze
 	 *            the type of new instance.
@@ -195,7 +195,7 @@ public final class ReflectionUtils {
 	}
 
 	/**
-	 * Invoke a ´hidden´ (private, protected, ...) method on a given object. <br>
+	 * Invoke a Â´hiddenÂ´ (private, protected, ...) method on a given object. <br>
 	 * <b>This method should not be used for production code but only for unit
 	 * tests! </b>
 	 * 
@@ -246,7 +246,7 @@ public final class ReflectionUtils {
 	}
 
 	/**
-	 * Invoke a ´hidden´ (private, protected, ...) method on a given object
+	 * Invoke a Â´hiddenÂ´ (private, protected, ...) method on a given object
 	 * allowing this method to throw the given type of exception.<br>
 	 * <b>This method should not be used for production code but only for unit
 	 * tests! </b>
@@ -329,7 +329,7 @@ public final class ReflectionUtils {
 	}
 
 	/**
-	 * Set a ´hidden´ (private, protected, ...) field on a given object. <br>
+	 * Set a Â´hiddenÂ´ (private, protected, ...) field on a given object. <br>
 	 * <b>This field should not be used for production code but only for unit
 	 * test. </b>
 	 * 
@@ -360,7 +360,7 @@ public final class ReflectionUtils {
 	}
 
 	/**
-	 * Get a ´hidden´ (private, protected, ...) field from a given object. <br>
+	 * Get a Â´hiddenÂ´ (private, protected, ...) field from a given object. <br>
 	 * <b>This method should not be used for production code but only for unit
 	 * test. </b>
 	 * 
@@ -638,7 +638,7 @@ public final class ReflectionUtils {
 	}
 
 	/**
-	 * Create a new instance of type ´clazz´ by invoking the constructor with
+	 * Create a new instance of type Â´clazzÂ´ by invoking the constructor with
 	 * the given list of arguments.
 	 * 
 	 * @param open

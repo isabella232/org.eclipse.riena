@@ -31,7 +31,7 @@ public class ProgressProviderBridgeTest extends TestCase {
 		final ProgressProviderBridge bridge = new ProgressProviderBridge() {
 			@Override
 			protected void registerJobChangeListener() {
-				//don´t register observer
+				//donÂ´t register observer
 			}
 		};
 		final SingletonProvider<ProgressProviderBridge> singletonProvider = ReflectionUtils.getHidden(

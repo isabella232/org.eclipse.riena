@@ -1,0 +1,1927 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.eclipse.riena.build.externals.feature"
+      label="external Dependencies for Riena"
+      version="6.2.0.qualifier"
+      provider-name="compeople AG">
+
+   <description url="http://www.eclipse.org/riena">
+      This feature contains the 3rd party components from
+Eclipse Equinox and Eclipse RCP needed for Riena.
+Install this feature into your target platform to
+resolve all requirements needed for installing the
+Riena components. DO NOT INSTALL this feature into
+your Eclipse IDE. Only install it into your target
+platform.
+   </description>
+
+   <copyright>
+      Copyright (c) 2007 - 2017 compeople AG and others.
+* All rights reserved. This program and the accompanying materials
+* are made available under the terms of the Eclipse Public License
+v1.0
+* which accompanies this distribution, and is available at
+* http://www.eclipse.org/legal/epl-v10.html
+*
+* Contributors:
+*    compeople AG - initial API and implementation
+   </copyright>
+
+   <license url="%licenseURL">
+      %license
+   </license>
+
+   <plugin
+         id="com.ibm.icu"
+         download-size="0"
+         install-size="0"
+         version="4.4.2.v20110823"
+         unpack="false"/>
+
+   <plugin
+         id="com.ibm.icu.source"
+         download-size="0"
+         install-size="0"
+         version="4.4.2.v20110823"
+         unpack="false"/>
+
+   <plugin
+         id="javax.el.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="javax.servlet"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="javax.servlet.jsp"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="javax.servlet.jsp.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="javax.servlet.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.commons.codec"
+         download-size="0"
+         install-size="0"
+         version="1.9.0.v20170208-1614"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.commons.codec.source"
+         download-size="0"
+         install-size="0"
+         version="1.9.0.v20170208-1614"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.commons.httpclient"
+         download-size="0"
+         install-size="0"
+         version="3.1.0.v201012070820"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.commons.httpclient.source"
+         download-size="0"
+         install-size="0"
+         version="3.1.0.v201012070820"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.commons.logging"
+         download-size="0"
+         install-size="0"
+         version="1.1.1.v201101211721"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.commons.logging.source"
+         download-size="0"
+         install-size="0"
+         version="1.1.1.v201101211721"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.felix.gogo.command"
+         download-size="0"
+         install-size="0"
+         version="0.10.0.v201209301215"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.felix.gogo.command.source"
+         download-size="0"
+         install-size="0"
+         version="0.10.0.v201209301215"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.felix.gogo.runtime"
+         download-size="0"
+         install-size="0"
+         version="0.10.0.v201209301036"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.felix.gogo.runtime.source"
+         download-size="0"
+         install-size="0"
+         version="0.10.0.v201209301036"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.felix.gogo.shell"
+         download-size="0"
+         install-size="0"
+         version="0.10.0.v201212101605"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.felix.gogo.shell.source"
+         download-size="0"
+         install-size="0"
+         version="0.10.0.v201212101605"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.jasper.glassfish"
+         download-size="0"
+         install-size="0"
+         version="2.2.2.v201501141630"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.jasper.glassfish.source"
+         download-size="0"
+         install-size="0"
+         version="2.2.2.v201501141630"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.mina.core"
+         download-size="0"
+         install-size="0"
+         version="2.0.7.v201401071602"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.mina.core.source"
+         download-size="0"
+         install-size="0"
+         version="2.0.7.v201401071602"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.sshd.core"
+         download-size="0"
+         install-size="0"
+         version="0.7.0.v201303101611"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.sshd.core.source"
+         download-size="0"
+         install-size="0"
+         version="0.7.0.v201303101611"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.core.commands"
+         download-size="0"
+         install-size="0"
+         version="3.6.1.v20120912-135020"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.core.commands.source"
+         download-size="0"
+         install-size="0"
+         version="3.6.1.v20120912-135020"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.core.contenttype"
+         download-size="0"
+         install-size="0"
+         version="3.6.0.v20170207-1037"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.core.contenttype.source"
+         download-size="0"
+         install-size="0"
+         version="3.4.200.v20120523-2004"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.core.databinding"
+         download-size="0"
+         install-size="0"
+         version="1.4.1.v20120912-135020"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.core.databinding.beans"
+         download-size="0"
+         install-size="0"
+         version="1.2.200.v20120523-1956"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.core.databinding.beans.source"
+         download-size="0"
+         install-size="0"
+         version="1.2.200.v20120523-1956"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.core.databinding.observable"
+         download-size="0"
+         install-size="0"
+         version="1.4.1.v20120521-2332"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.core.databinding.observable.source"
+         download-size="0"
+         install-size="0"
+         version="1.4.1.v20120521-2332"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.core.databinding.property"
+         download-size="0"
+         install-size="0"
+         version="1.4.100.v20120523-1956"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.core.databinding.property.source"
+         download-size="0"
+         install-size="0"
+         version="1.4.100.v20120523-1956"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.core.databinding.source"
+         download-size="0"
+         install-size="0"
+         version="1.4.1.v20120912-135020"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.core.expressions"
+         download-size="0"
+         install-size="0"
+         version="3.6.0.v20170207-1037"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.core.expressions.source"
+         download-size="0"
+         install-size="0"
+         version="3.4.400.v20120523-2004"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.core.jobs"
+         download-size="0"
+         install-size="0"
+         version="3.9.3.v20180115-1757"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.core.jobs.source"
+         download-size="0"
+         install-size="0"
+         version="3.5.200.v20120521-2346"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.core.runtime"
+         download-size="0"
+         install-size="0"
+         version="3.13.0.v20170207-1030"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.core.runtime.compatibility.auth"
+         download-size="0"
+         install-size="0"
+         version="3.2.300.v20120523-2004"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.core.runtime.compatibility.auth.source"
+         download-size="0"
+         install-size="0"
+         version="3.2.300.v20120523-2004"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.core.runtime.source"
+         download-size="0"
+         install-size="0"
+         version="3.8.0.v20120521-2346"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.core.variables"
+         download-size="0"
+         install-size="0"
+         version="3.4.0.v20170113-2056"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ecf"
+         download-size="0"
+         install-size="0"
+         version="3.8.0.v20170104-0657"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ecf.filetransfer"
+         download-size="0"
+         install-size="0"
+         version="5.0.0.v20160817-1024"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ecf.filetransfer.source"
+         download-size="0"
+         install-size="0"
+         version="5.0.0.v20160817-1024"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ecf.identity"
+         download-size="0"
+         install-size="0"
+         version="3.8.0.v20161203-2153"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ecf.identity.source"
+         download-size="0"
+         install-size="0"
+         version="3.8.0.v20161203-2153"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ecf.provider.filetransfer"
+         download-size="0"
+         install-size="0"
+         version="3.2.300.v20161203-1840"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ecf.provider.filetransfer.httpclient"
+         download-size="0"
+         install-size="0"
+         version="4.0.200.v20120610-1946"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ecf.provider.filetransfer.httpclient.source"
+         download-size="0"
+         install-size="0"
+         version="4.0.200.v20120610-1946"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ecf.provider.filetransfer.httpclient.ssl"
+         download-size="0"
+         install-size="0"
+         version="1.0.0.v20120610-1946"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ecf.provider.filetransfer.httpclient.ssl.source"
+         download-size="0"
+         install-size="0"
+         version="1.0.0.v20120610-1946"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ecf.provider.filetransfer.source"
+         download-size="0"
+         install-size="0"
+         version="3.2.300.v20161203-1840"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ecf.provider.filetransfer.ssl"
+         download-size="0"
+         install-size="0"
+         version="1.0.0.v20160817-1024"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ecf.provider.filetransfer.ssl.source"
+         download-size="0"
+         install-size="0"
+         version="1.0.0.v20160817-1024"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ecf.source"
+         download-size="0"
+         install-size="0"
+         version="3.8.0.v20170104-0657"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ecf.ssl"
+         download-size="0"
+         install-size="0"
+         version="1.2.0.v20160817-1024"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ecf.ssl.source"
+         download-size="0"
+         install-size="0"
+         version="1.2.0.v20160817-1024"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.app"
+         download-size="0"
+         install-size="0"
+         version="1.3.400.v20150715-1528"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.app.source"
+         download-size="0"
+         install-size="0"
+         version="1.3.400.v20150715-1528"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.bidi"
+         download-size="0"
+         install-size="0"
+         version="1.1.0.v20160728-1031"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.bidi.source"
+         download-size="0"
+         install-size="0"
+         version="1.1.0.v20160728-1031"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.cm"
+         download-size="0"
+         install-size="0"
+         version="1.2.0.v20170105-1446"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.cm.source"
+         download-size="0"
+         install-size="0"
+         version="1.2.0.v20170105-1446"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.common"
+         download-size="0"
+         install-size="0"
+         version="3.9.0.v20170207-1454"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.common.source"
+         download-size="0"
+         install-size="0"
+         version="3.9.0.v20170207-1454"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.concurrent"
+         download-size="0"
+         install-size="0"
+         version="1.1.0.v20130327-1442"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.concurrent.source"
+         download-size="0"
+         install-size="0"
+         version="1.1.0.v20130327-1442"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.console"
+         download-size="0"
+         install-size="0"
+         version="1.1.300.v20170512-2111"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.console.jaas.fragment"
+         download-size="0"
+         install-size="0"
+         version="1.0.0.v20130327-1442"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.console.source"
+         download-size="0"
+         install-size="0"
+         version="1.1.300.v20170512-2111"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.console.ssh"
+         download-size="0"
+         install-size="0"
+         version="1.0.200.v20170105-1446"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.console.ssh.source"
+         download-size="0"
+         install-size="0"
+         version="1.0.200.v20170105-1446"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.coordinator"
+         download-size="0"
+         install-size="0"
+         version="1.3.300.v20170512-2111"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.coordinator.source"
+         download-size="0"
+         install-size="0"
+         version="1.3.300.v20170512-2111"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.device"
+         download-size="0"
+         install-size="0"
+         version="1.0.400.v20130327-1442"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.device.source"
+         download-size="0"
+         install-size="0"
+         version="1.0.400.v20130327-1442"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.ds"
+         download-size="0"
+         install-size="0"
+         version="1.5.0.v20170307-1429"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.ds.source"
+         download-size="0"
+         install-size="0"
+         version="1.5.0.v20170307-1429"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.event"
+         download-size="0"
+         install-size="0"
+         version="1.4.0.v20170105-1446"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.event.source"
+         download-size="0"
+         install-size="0"
+         version="1.4.0.v20170105-1446"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.frameworkadmin"
+         download-size="0"
+         install-size="0"
+         version="2.0.300.v20160504-1450"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.frameworkadmin.equinox"
+         download-size="0"
+         install-size="0"
+         version="1.0.800.v20170524-1345"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.frameworkadmin.equinox.source"
+         download-size="0"
+         install-size="0"
+         version="1.0.800.v20170524-1345"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.frameworkadmin.source"
+         download-size="0"
+         install-size="0"
+         version="2.0.300.v20160504-1450"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.http.jetty"
+         download-size="0"
+         install-size="0"
+         version="3.4.0.v20170503-2025"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.http.jetty.source"
+         download-size="0"
+         install-size="0"
+         version="3.4.0.v20170503-2025"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.http.registry"
+         download-size="0"
+         install-size="0"
+         version="1.1.400.v20150715-1528"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.http.registry.source"
+         download-size="0"
+         install-size="0"
+         version="1.1.400.v20150715-1528"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.http.servlet"
+         download-size="0"
+         install-size="0"
+         version="1.4.0.v20170524-1452"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.http.servlet.source"
+         download-size="0"
+         install-size="0"
+         version="1.4.0.v20170524-1452"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.http.servletbridge"
+         download-size="0"
+         install-size="0"
+         version="1.0.300.v20130327-1442"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.http.servletbridge.source"
+         download-size="0"
+         install-size="0"
+         version="1.0.300.v20130327-1442"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.io"
+         download-size="0"
+         install-size="0"
+         version="1.1.100.v20150430-1834"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.io.source"
+         download-size="0"
+         install-size="0"
+         version="1.1.100.v20150430-1834"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.ip"
+         download-size="0"
+         install-size="0"
+         version="1.1.400.v20161007-1324"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.ip.source"
+         download-size="0"
+         install-size="0"
+         version="1.1.400.v20161007-1324"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.jsp.jasper"
+         download-size="0"
+         install-size="0"
+         version="1.0.500.v20150119-1358"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.jsp.jasper.registry"
+         download-size="0"
+         install-size="0"
+         version="1.0.300.v20130327-1442"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.jsp.jasper.registry.source"
+         download-size="0"
+         install-size="0"
+         version="1.0.300.v20130327-1442"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.jsp.jasper.source"
+         download-size="0"
+         install-size="0"
+         version="1.0.500.v20150119-1358"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.log"
+         download-size="0"
+         install-size="0"
+         version="1.2.300.v20120912-130548"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.log.source"
+         download-size="0"
+         install-size="0"
+         version="1.2.300.v20120912-130548"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.metatype"
+         download-size="0"
+         install-size="0"
+         version="1.4.300.v20170105-1446"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.metatype.source"
+         download-size="0"
+         install-size="0"
+         version="1.4.300.v20170105-1446"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.artifact.repository"
+         download-size="0"
+         install-size="0"
+         version="1.1.650.v20170928-1405"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.artifact.repository.source"
+         download-size="0"
+         install-size="0"
+         version="1.1.650.v20170928-1405"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.console"
+         download-size="0"
+         install-size="0"
+         version="1.0.600.v20170511-1106"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.console.source"
+         download-size="0"
+         install-size="0"
+         version="1.0.600.v20170511-1106"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.core"
+         download-size="0"
+         install-size="0"
+         version="2.4.101.v20170906-1259"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.core.source"
+         download-size="0"
+         install-size="0"
+         version="2.4.101.v20170906-1259"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.director"
+         download-size="0"
+         install-size="0"
+         version="2.3.300.v20160504-1450"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.director.app"
+         download-size="0"
+         install-size="0"
+         version="1.0.500.v20160419-0834"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.director.app.source"
+         download-size="0"
+         install-size="0"
+         version="1.0.500.v20160419-0834"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.director.source"
+         download-size="0"
+         install-size="0"
+         version="2.3.300.v20160504-1450"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.directorywatcher"
+         download-size="0"
+         install-size="0"
+         version="1.1.100.v20150423-1455"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.directorywatcher.source"
+         download-size="0"
+         install-size="0"
+         version="1.1.100.v20150423-1455"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.discovery"
+         download-size="0"
+         install-size="0"
+         version="1.0.400.v20160504-1450"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.discovery.compatibility"
+         download-size="0"
+         install-size="0"
+         version="1.0.201.v20170906-1259"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.engine"
+         download-size="0"
+         install-size="0"
+         version="2.5.0.v20170319-2002"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.engine.source"
+         download-size="0"
+         install-size="0"
+         version="2.5.0.v20170319-2002"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.extensionlocation"
+         download-size="0"
+         install-size="0"
+         version="1.2.300.v20160419-0834"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.extensionlocation.source"
+         download-size="0"
+         install-size="0"
+         version="1.2.300.v20160419-0834"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.garbagecollector"
+         download-size="0"
+         install-size="0"
+         version="1.0.300.v20160504-1450"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.garbagecollector.source"
+         download-size="0"
+         install-size="0"
+         version="1.0.300.v20160504-1450"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.installer"
+         download-size="0"
+         install-size="0"
+         version="1.0.500.v20160419-0100"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.installer.source"
+         download-size="0"
+         install-size="0"
+         version="1.0.500.v20160419-0100"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.jarprocessor"
+         download-size="0"
+         install-size="0"
+         version="1.0.500.v20160504-1450"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.jarprocessor.source"
+         download-size="0"
+         install-size="0"
+         version="1.0.500.v20160504-1450"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.metadata"
+         download-size="0"
+         install-size="0"
+         version="2.3.200.v20170511-1106"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.metadata.repository"
+         download-size="0"
+         install-size="0"
+         version="1.2.401.v20170906-1259"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.metadata.repository.source"
+         download-size="0"
+         install-size="0"
+         version="1.2.401.v20170906-1259"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.metadata.source"
+         download-size="0"
+         install-size="0"
+         version="2.3.200.v20170511-1106"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.operations"
+         download-size="0"
+         install-size="0"
+         version="2.4.300.v20170511-1106"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.operations.source"
+         download-size="0"
+         install-size="0"
+         version="2.4.300.v20170511-1106"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.publisher"
+         download-size="0"
+         install-size="0"
+         version="1.4.200.v20170511-1216"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.publisher.eclipse"
+         download-size="0"
+         install-size="0"
+         version="1.2.201.v20170906-1259"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.publisher.eclipse.source"
+         download-size="0"
+         install-size="0"
+         version="1.2.201.v20170906-1259"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.publisher.source"
+         download-size="0"
+         install-size="0"
+         version="1.4.200.v20170511-1216"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.ql"
+         download-size="0"
+         install-size="0"
+         version="2.0.100.v20110808-1657"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.ql.source"
+         download-size="0"
+         install-size="0"
+         version="2.0.100.v20110808-1657"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.reconciler.dropins"
+         download-size="0"
+         install-size="0"
+         version="1.1.400.v20160504-1450"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.reconciler.dropins.source"
+         download-size="0"
+         install-size="0"
+         version="1.1.400.v20160504-1450"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.repository"
+         download-size="0"
+         install-size="0"
+         version="2.3.301.v20170906-1259"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.repository.source"
+         download-size="0"
+         install-size="0"
+         version="2.3.301.v20170906-1259"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.repository.tools"
+         download-size="0"
+         install-size="0"
+         version="2.1.400.v20170511-1216"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.repository.tools.source"
+         download-size="0"
+         install-size="0"
+         version="2.1.400.v20170511-1216"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.touchpoint.eclipse"
+         download-size="0"
+         install-size="0"
+         version="2.1.501.v20170906-1259"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.touchpoint.eclipse.source"
+         download-size="0"
+         install-size="0"
+         version="2.1.501.v20170906-1259"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.touchpoint.natives"
+         download-size="0"
+         install-size="0"
+         version="1.2.200.v20170511-1216"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.touchpoint.natives.source"
+         download-size="0"
+         install-size="0"
+         version="1.2.200.v20170511-1216"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.transport.ecf"
+         download-size="0"
+         install-size="0"
+         version="1.1.300.v20161004-0244"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.updatechecker"
+         download-size="0"
+         install-size="0"
+         version="1.1.400.v20170106-2125"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.updatechecker.source"
+         download-size="0"
+         install-size="0"
+         version="1.1.400.v20170106-2125"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.updatesite"
+         download-size="0"
+         install-size="0"
+         version="1.0.601.v20170906-1259"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.updatesite.source"
+         download-size="0"
+         install-size="0"
+         version="1.0.601.v20170906-1259"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.preferences"
+         download-size="0"
+         install-size="0"
+         version="3.7.0.v20170126-2132"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.preferences.source"
+         download-size="0"
+         install-size="0"
+         version="3.7.0.v20170126-2132"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.region"
+         download-size="0"
+         install-size="0"
+         version="1.4.0.v20170117-1425"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.region.source"
+         download-size="0"
+         install-size="0"
+         version="1.4.0.v20170117-1425"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.registry"
+         download-size="0"
+         install-size="0"
+         version="3.7.0.v20170222-1344"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.registry.source"
+         download-size="0"
+         install-size="0"
+         version="3.7.0.v20170222-1344"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.security"
+         download-size="0"
+         install-size="0"
+         version="1.2.300.v20170505-1235"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.security.source"
+         download-size="0"
+         install-size="0"
+         version="1.2.300.v20170505-1235"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.security.ui"
+         download-size="0"
+         install-size="0"
+         version="1.1.400.v20170505-1235"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.security.ui.source"
+         download-size="0"
+         install-size="0"
+         version="1.1.400.v20170505-1235"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.servletbridge"
+         download-size="0"
+         install-size="0"
+         version="1.3.200.v20160128-1435"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.servletbridge.source"
+         download-size="0"
+         install-size="0"
+         version="1.3.200.v20160128-1435"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.simpleconfigurator"
+         download-size="0"
+         install-size="0"
+         version="1.2.1.v20180131-1435"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.simpleconfigurator.manipulator"
+         download-size="0"
+         install-size="0"
+         version="2.0.300.v20170515-0721"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.simpleconfigurator.manipulator.source"
+         download-size="0"
+         install-size="0"
+         version="2.0.300.v20170515-0721"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.simpleconfigurator.source"
+         download-size="0"
+         install-size="0"
+         version="1.2.1.v20180131-1435"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.supplement"
+         download-size="0"
+         install-size="0"
+         version="1.7.0.v20170329-1416"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.supplement.source"
+         download-size="0"
+         install-size="0"
+         version="1.7.0.v20170329-1416"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.transforms.hook"
+         download-size="0"
+         install-size="0"
+         version="1.2.0.v20170105-1446"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.transforms.hook.source"
+         download-size="0"
+         install-size="0"
+         version="1.2.0.v20170105-1446"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.transforms.xslt"
+         download-size="0"
+         install-size="0"
+         version="1.0.300.v20130327-1442"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.transforms.xslt.source"
+         download-size="0"
+         install-size="0"
+         version="1.0.300.v20130327-1442"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.useradmin"
+         download-size="0"
+         install-size="0"
+         version="1.1.400.v20130327-1442"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.useradmin.source"
+         download-size="0"
+         install-size="0"
+         version="1.1.400.v20130327-1442"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.util"
+         download-size="0"
+         install-size="0"
+         version="1.0.500.v20130404-1337"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.util.source"
+         download-size="0"
+         install-size="0"
+         version="1.0.500.v20130404-1337"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.weaving.aspectj"
+         download-size="0"
+         install-size="0"
+         version="1.0.100.v20120524-1707"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.weaving.aspectj.source"
+         download-size="0"
+         install-size="0"
+         version="1.0.100.v20120524-1707"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.weaving.caching"
+         download-size="0"
+         install-size="0"
+         version="1.1.0.v20161007-1415"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.weaving.caching.j9"
+         download-size="0"
+         install-size="0"
+         version="1.1.0.v20160929-1449"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.weaving.caching.j9.source"
+         download-size="0"
+         install-size="0"
+         version="1.1.0.v20160929-1449"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.weaving.caching.source"
+         download-size="0"
+         install-size="0"
+         version="1.1.0.v20161007-1415"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.weaving.hook"
+         download-size="0"
+         install-size="0"
+         version="1.2.0.v20160929-1449"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.weaving.hook.source"
+         download-size="0"
+         install-size="0"
+         version="1.2.0.v20160929-1449"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.wireadmin"
+         download-size="0"
+         install-size="0"
+         version="1.0.600.v20150715-1528"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.wireadmin.source"
+         download-size="0"
+         install-size="0"
+         version="1.0.600.v20150715-1528"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.help"
+         download-size="0"
+         install-size="0"
+         version="3.6.0.v20120912-134126"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.help.source"
+         download-size="0"
+         install-size="0"
+         version="3.6.0.v20120912-134126"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.jetty.continuation"
+         download-size="0"
+         install-size="0"
+         version="9.4.8.v20171121"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.jetty.continuation.source"
+         download-size="0"
+         install-size="0"
+         version="9.4.8.v20171121"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.jetty.http"
+         download-size="0"
+         install-size="0"
+         version="9.4.8.v20171121"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.jetty.http.source"
+         download-size="0"
+         install-size="0"
+         version="9.4.8.v20171121"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.jetty.io"
+         download-size="0"
+         install-size="0"
+         version="9.4.8.v20171121"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.jetty.io.source"
+         download-size="0"
+         install-size="0"
+         version="9.4.8.v20171121"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.jetty.security"
+         download-size="0"
+         install-size="0"
+         version="9.4.8.v20171121"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.jetty.security.source"
+         download-size="0"
+         install-size="0"
+         version="9.4.8.v20171121"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.jetty.server"
+         download-size="0"
+         install-size="0"
+         version="9.4.8.v20171121"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.jetty.server.source"
+         download-size="0"
+         install-size="0"
+         version="9.4.8.v20171121"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.jetty.servlet"
+         download-size="0"
+         install-size="0"
+         version="9.4.8.v20171121"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.jetty.servlet.source"
+         download-size="0"
+         install-size="0"
+         version="9.4.8.v20171121"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.jetty.util"
+         download-size="0"
+         install-size="0"
+         version="9.4.8.v20171121"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.jetty.util.source"
+         download-size="0"
+         install-size="0"
+         version="9.4.8.v20171121"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.jface"
+         download-size="0"
+         install-size="0"
+         version="3.8.0.v20120912-135020"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.jface.databinding"
+         download-size="0"
+         install-size="0"
+         version="1.6.0.v20120912-135020"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.jface.databinding.source"
+         download-size="0"
+         install-size="0"
+         version="1.6.0.v20120912-135020"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.jface.source"
+         download-size="0"
+         install-size="0"
+         version="3.8.0.v20120912-135020"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.osgi"
+         download-size="0"
+         install-size="0"
+         version="3.12.100.v20180210-1608"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.osgi.services"
+         download-size="0"
+         install-size="0"
+         version="3.6.0.v20170228-1906"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.osgi.services.source"
+         download-size="0"
+         install-size="0"
+         version="3.6.0.v20170228-1906"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.osgi.source"
+         download-size="0"
+         install-size="0"
+         version="3.12.100.v20180210-1608"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.osgi.util"
+         download-size="0"
+         install-size="0"
+         version="3.4.0.v20170111-1608"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.osgi.util.source"
+         download-size="0"
+         install-size="0"
+         version="3.4.0.v20170111-1608"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.pde.junit.runtime"
+         download-size="0"
+         install-size="0"
+         version="3.4.200.v20120530-1435"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.pde.junit.runtime.source"
+         download-size="0"
+         install-size="0"
+         version="3.4.200.v20120530-1435"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.rcp"
+         download-size="0"
+         install-size="0"
+         version="3.8.1.v201301310800"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.rcp.source"
+         download-size="0"
+         install-size="0"
+         version="3.8.1.v201301310800"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.swt"
+         download-size="0"
+         install-size="0"
+         version="3.103.0.v20140304-1521"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ui"
+         download-size="0"
+         install-size="0"
+         version="3.8.2.v20121018-234953"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ui.source"
+         download-size="0"
+         install-size="0"
+         version="3.8.2.v20121018-234953"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ui.workbench"
+         download-size="0"
+         install-size="0"
+         version="3.8.2.v20121128-133708"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ui.workbench.source"
+         download-size="0"
+         install-size="0"
+         version="3.8.2.v20121128-133708"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.update.configurator"
+         download-size="0"
+         install-size="0"
+         version="3.3.200.v20120912-142556"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.update.configurator.source"
+         download-size="0"
+         install-size="0"
+         version="3.3.200.v20120912-142556"
+         unpack="false"/>
+
+   <plugin
+         id="org.sat4j.core"
+         download-size="0"
+         install-size="0"
+         version="2.3.5.v201308161310"
+         unpack="false"/>
+
+   <plugin
+         id="org.sat4j.pb"
+         download-size="0"
+         install-size="0"
+         version="2.3.5.v201404071733"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.jdt.junit.runtime"
+         download-size="0"
+         install-size="0"
+         version="3.4.500.v20140527-1138"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.jdt.junit.runtime.source"
+         download-size="0"
+         install-size="0"
+         version="3.4.500.v20140527-1138"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ui.browser"
+         download-size="0"
+         install-size="0"
+         version="3.4.300.v20150429-0602"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ui.browser.source"
+         download-size="0"
+         install-size="0"
+         version="3.4.300.v20150429-0602"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ui.forms"
+         download-size="0"
+         install-size="0"
+         version="3.6.200.v20150506-2029"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ui.forms.source"
+         download-size="0"
+         install-size="0"
+         version="3.6.200.v20150506-2029"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.felix.scr"
+         download-size="0"
+         install-size="0"
+         version="2.0.10.v20170501-2007"
+         unpack="false"/>
+
+   <plugin
+         id="org.tukaani.xz"
+         download-size="0"
+         install-size="0"
+         version="1.5.0.v20170111-1717"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.e4.ui.css.core"
+         download-size="0"
+         install-size="0"
+         version="0.11.0.v20150511-1937"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.e4.ui.css.swt"
+         download-size="0"
+         install-size="0"
+         version="0.12.0.v20150511-1003"
+         unpack="false"/>
+
+   <plugin
+         id="javax.el"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="javax.xml"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.batik.bridge"
+         download-size="0"
+         install-size="0"
+         version="1.7.0.v201011041433"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.batik.css"
+         download-size="0"
+         install-size="0"
+         version="1.7.0.v201011041433"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.batik.dom"
+         download-size="0"
+         install-size="0"
+         version="1.7.1.v201505191845"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.batik.dom.svg"
+         download-size="0"
+         install-size="0"
+         version="1.7.0.v201011041433"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.batik.ext.awt"
+         download-size="0"
+         install-size="0"
+         version="1.7.0.v201011041433"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.batik.extension"
+         download-size="0"
+         install-size="0"
+         version="1.7.0.v201011041433"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.batik.parser"
+         download-size="0"
+         install-size="0"
+         version="1.7.0.v201011041433"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.batik.svggen"
+         download-size="0"
+         install-size="0"
+         version="1.7.0.v201011041433"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.batik.transcoder"
+         download-size="0"
+         install-size="0"
+         version="1.7.0.v201011041433"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.batik.util"
+         download-size="0"
+         install-size="0"
+         version="1.7.0.v201011041433"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.batik.util.gui"
+         download-size="0"
+         install-size="0"
+         version="1.7.0.v200903091627"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.batik.xml"
+         download-size="0"
+         install-size="0"
+         version="1.7.0.v201011041433"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.swt.win32.win32.x86_64"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.swt.win32.win32.x86_64.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.security.win32.x86_64"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.security.win32.x86_64.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.core.net"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.core.net.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.core.net.win32.x86_64"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.launcher"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.launcher.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.launcher.win32.win32.x86_64"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"
+         unpack="false"/>
+
+</feature>

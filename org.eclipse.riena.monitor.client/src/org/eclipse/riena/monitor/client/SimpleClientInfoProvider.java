@@ -28,7 +28,7 @@ import org.eclipse.riena.internal.monitor.client.Activator;
  * <p>
  * The java system properties have to be given as a comma separated list within
  * the extension definition for this client info provider. There a few
- * ´synthetic´ properties that retrieve information about the host:
+ * Â´syntheticÂ´ properties that retrieve information about the host:
  * <ul>
  * <li>x-host.address - retrieves the host's ip address as given by
  * InetAddress.getLocalHost().getHostAddress()</li>
@@ -51,19 +51,19 @@ import org.eclipse.riena.internal.monitor.client.Activator;
 public class SimpleClientInfoProvider implements IClientInfoProvider, IExecutableExtension {
 
 	/**
-	 * ´Synthetic´ property that retrieves the hosts ip address, i.e.
+	 * Â´SyntheticÂ´ property that retrieves the hosts ip address, i.e.
 	 * {@code InetAddress.getLocalHost().getHostAddress()}
 	 */
 	public static final String HOST_ADDRESS = "x-host.address"; //$NON-NLS-1$
 
 	/**
-	 * ´Synthetic´ property that retrieves the canonical host name, i.e.
+	 * Â´SyntheticÂ´ property that retrieves the canonical host name, i.e.
 	 * {@code InetAddress.getLocalHost().getCanonicalHostName()}
 	 */
 	public static final String HOST_CANONICALNAME = "x-host.canonicalname"; //$NON-NLS-1$
 
 	/**
-	 * ´Synthetic´ property that retrieves the host name, i.e.
+	 * Â´SyntheticÂ´ property that retrieves the host name, i.e.
 	 * {@code InetAddress.getLocalHost().getHostName()}
 	 */
 	public static final String HOST_NAME = "x-host.name"; //$NON-NLS-1$
