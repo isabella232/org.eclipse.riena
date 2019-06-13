@@ -12,8 +12,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<tycho.version>1.1.0</tycho.version>
-		<arch>x86_64</arch>
+		<tycho.version>1.4.0</tycho.version>
 	</properties>
 
 	<repositories>
