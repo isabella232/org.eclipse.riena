@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.batik.dom.svg.SAXSVGDocumentFactory;
 import org.apache.batik.transcoder.TranscoderException;
@@ -70,7 +71,7 @@ public final class ImageStore {
 
 	private final SvgRasterizer svgRasterizer;
 
-	HashMap<String, Boolean> cachedImageNames = new HashMap<String, Boolean>();
+	private final Map<String, Boolean> cachedImageNames = new HashMap<String, Boolean>();
 
 	private ImageStore() {
 		// utility class
