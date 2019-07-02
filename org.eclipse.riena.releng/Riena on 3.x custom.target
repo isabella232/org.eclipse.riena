@@ -28,7 +28,6 @@
 <unit id="org.eclipse.nebula.widgets.grid.feature.feature.group" version="1.0.0.201605312033"/>
 <repository location="http://download.eclipse.org/nebula/releases/1.0.0"/>
 </location>
-<location path="C:\IDES\SCP-TYCHO\git\riena-3xtargets-playground\org.eclipse.riena.target3x\rcp\features" type="Directory"/>
-	<location path="C:\IDES\SCP-TYCHO_64\git\riena-3xtargets-playground\org.eclipse.riena.target3x\rcp" type="Directory"/>
+	<location path="${project_loc:3xtargets}\org.eclipse.riena.target3x\rcp" type="Directory"/>
 </locations>
 </target>
