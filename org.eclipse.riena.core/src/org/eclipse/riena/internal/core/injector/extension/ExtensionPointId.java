@@ -23,10 +23,10 @@ import org.eclipse.riena.core.util.StringUtils;
 
 /**
  * A extension point is in general a simple string. However, the extension
- * injector supports multiple ´compatible´ extension point id's for a single
- * ´update´ method. These id's will be treated as if they were one!.
+ * injector supports multiple Â´compatibleÂ´ extension point id's for a single
+ * Â´updateÂ´ method. These id's will be treated as if they were one!.
  * <p>
- * Extension points are called ´compatible´ if the same
+ * Extension points are called Â´compatibleÂ´ if the same
  * {@code ExtensionInterface} can be used for both of them.
  * <p>
  * The objective here is to support a smooth and simple transition from
@@ -50,7 +50,7 @@ public class ExtensionPointId {
 	}
 
 	/**
-	 * Create a ´raw´ extension point id.
+	 * Create a Â´rawÂ´ extension point id.
 	 * 
 	 * @param id
 	 */
@@ -63,7 +63,7 @@ public class ExtensionPointId {
 	 * <p>
 	 * This means:
 	 * <ul>
-	 * <li>splitting the ´raw´ extension point id separated by commas into
+	 * <li>splitting the Â´rawÂ´ extension point id separated by commas into
 	 * separate id's</li>
 	 * <li>retrieve id's if not specified from the {@code ExtensionInterface},
 	 * i.e. from the annotation or by convention from a {@code String} field
@@ -121,7 +121,7 @@ public class ExtensionPointId {
 	}
 
 	/**
-	 * Split the comma ´,´ separated string.
+	 * Split the comma Â´,Â´ separated string.
 	 * <p>
 	 * That could also be made wit {@code String.split()} but this
 	 * implementation avoids creating a regExp and because of that it is a

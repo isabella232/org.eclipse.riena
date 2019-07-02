@@ -660,7 +660,7 @@ public abstract class CompletionCombo extends Composite {
 			event.y = pt.y;
 			notifyListeners(SWTFacade.MouseWheel, event);
 			event.type = SWT.None;
-			if (isDisposed()) {
+			if (isDisposed() || !hasFocus) {
 				break;
 			}
 			if (!event.doit) {

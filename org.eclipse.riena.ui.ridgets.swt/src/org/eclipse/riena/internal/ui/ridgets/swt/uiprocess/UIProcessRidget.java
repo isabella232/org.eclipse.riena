@@ -270,7 +270,7 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 		if (!visualizer.getProcessInfo().isDialogVisible()) {
 			return;
 		}
-		// if it´s the only visualizer for the current context: close window
+		// if itÂ´s the only visualizer for the current context: close window
 		if (isActive(visualizer) && isLonelyVisualizer(visualizer)) {
 			visualizer.getProcessInfo().setIgnoreCancel(true);
 			close();
@@ -414,7 +414,7 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 	}
 
 	/**
-	 * cleanly remove the visualizer from the it´s container and update user
+	 * cleanly remove the visualizer from the itÂ´s container and update user
 	 * interface
 	 */
 	public void removeProgressVisualizer(final IProgressVisualizer visualizer) {

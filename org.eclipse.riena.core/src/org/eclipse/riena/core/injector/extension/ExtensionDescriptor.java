@@ -41,8 +41,8 @@ import org.eclipse.riena.internal.core.injector.extension.ExtensionPointId;
  * Configuration modifications as defined by <code>ConfigurationPlugin</code>
  * will also be performed.
  * <p>
- * The ExtensionDescriptor and ExtensionInjector are implemented as a ´fluent
- * interface´ allowing constructs like:
+ * The ExtensionDescriptor and ExtensionInjector are implemented as a Â´fluent
+ * interfaceÂ´ allowing constructs like:
  * <ul>
  * <li>Inject.extension("id1").into(target).andStart(context)</li>
  * <li>
@@ -66,7 +66,7 @@ import org.eclipse.riena.internal.core.injector.extension.ExtensionPointId;
  * This fluent interface makes a few assumptions (defaults) that makes writing
  * extension injectors short and expressive , e.g. the first example in the
  * above list means: try to retrieve <i>interface type</i> by reflection, expect
- * zero to ´unbound´ occurrences of extensions and the update method name is
+ * zero to Â´unboundÂ´ occurrences of extensions and the update method name is
  * "update".
  * <p>
  * The expected cardinality of extensions (min/max occurrences) can be specified
@@ -105,7 +105,7 @@ public class ExtensionDescriptor {
 	/**
 	 * Define the interface type used as a bean for injecting. <br>
 	 * If not defined the extension injector tries to figure it out by
-	 * reflection and the name of the ´update´ method.
+	 * reflection and the name of the Â´updateÂ´ method.
 	 * 
 	 * @param interfaceType
 	 * @return itself
@@ -132,7 +132,7 @@ public class ExtensionDescriptor {
 	}
 
 	/**
-	 * Inject the ´extensions´ into the specified target object.
+	 * Inject the Â´extensionsÂ´ into the specified target object.
 	 * 
 	 * @param target
 	 * @return itself

@@ -96,12 +96,39 @@ public final class UITestHelper {
 		while (!shell.isDisposed() && thread.isAlive()) {
 			try {
 				display.readAndDispatch();
+				sleepForAnInstance();
 			} catch (final SWTException exc) {
 				// swallow this kind of exception
 				if (!exc.toString().contains("Workbench has not been created yet.")) { //$NON-NLS-1$
 					throw exc;
 				}
 			}
+		}
+
+		// There is a risk for a race condition here: If the scheduler preempted the main thread
+		// executing this method after entering the while loop and assignd computing power to
+		// the event posting thread and if that thread finishes its execution in one shot, the
+		// main thread will not enter the first while-loop again and would loose all events
+		// posted by the other thread.
+		// Solution: Check here again if there are further events to be processed.
+		while (display.readAndDispatch()) {
+			sleepForAnInstance();
+		}
+	}
+
+	private static void sleepForAnInstance() {
+		try {
+			Thread.sleep(20);
+		} catch (final InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void sleepForAnInstance(final long millis) {
+		try {
+			Thread.sleep(millis);
+		} catch (final InterruptedException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -111,7 +138,7 @@ public final class UITestHelper {
 	private static class EventSender implements Runnable {
 
 		private static final int MS_SHORT_WAIT = 10;
-		private static final int MS_LONG_WAIT = 250;
+		private static final int MS_LONG_WAIT = 10;
 
 		private final Display display;
 		private final int keyCode;

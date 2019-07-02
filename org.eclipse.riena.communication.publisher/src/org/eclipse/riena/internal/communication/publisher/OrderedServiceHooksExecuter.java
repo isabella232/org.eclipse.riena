@@ -20,7 +20,7 @@ import org.eclipse.riena.core.util.Orderer;
 import org.eclipse.riena.core.wire.InjectExtension;
 
 /**
- * A {@code IServiceHook} that executes the ´ordered´ service hooks.
+ * A {@code IServiceHook} that executes the Â´orderedÂ´ service hooks.
  */
 public class OrderedServiceHooksExecuter implements IServiceHook {
 

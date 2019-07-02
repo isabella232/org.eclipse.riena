@@ -201,7 +201,7 @@ public class GenericNavigationAssembler extends AbstractNavigationAssembler impl
 			final NavigationNodeId targetId, final NavigationArgument navigationArgument,
 			final Map<String, Object> context) {
 
-		Assert.isNotNull(subApplicationDefinition, "Error building sub-application. Sub‰-application cannot be null"); //$NON-NLS-1$
+		Assert.isNotNull(subApplicationDefinition, "Error building sub-application. Sub√§-application cannot be null"); //$NON-NLS-1$
 		Assert.isNotNull(subApplicationDefinition.getPerspectiveId(),
 				"Error building sub-application. Attribute 'perspectiveId' cannot be null for sub-application = " //$NON-NLS-1$
 						+ subApplicationDefinition.getPerspectiveId());

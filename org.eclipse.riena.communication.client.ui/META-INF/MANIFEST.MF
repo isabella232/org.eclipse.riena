@@ -8,8 +8,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.riena.communication.core,
  org.eclipse.riena.core,
  org.eclipse.osgi.services,
- org.eclipse.swt;resolution:=optional;visibility:=reexport,
- org.eclipse.rap.rwt;resolution:=optional;visibility:=reexport
+ org.eclipse.swt;visibility:=reexport
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.eclipse.riena.communication.client.ui.hooks

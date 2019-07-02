@@ -30,7 +30,7 @@ import org.eclipse.riena.internal.tests.Activator;
  * All test cases taking more than 10 seconds are skipped. It removes about 20% of the tests that take 80% of the time. Currently this suite runs in 75 seconds.
  * You should not rely solely on the results of this suite, however it should be useful if you want to run many tests quite frequently.
  */
-@NonGatherableTestCase("This is not a ´TestCase´!")
+@NonGatherableTestCase("This is not a Â´TestCaseÂ´!")
 public class AllFastTests extends TestCase {
 
 	private static Set<String> longTests;

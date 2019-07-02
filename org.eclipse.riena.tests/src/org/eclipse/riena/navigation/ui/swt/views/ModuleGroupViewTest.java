@@ -12,8 +12,6 @@ package org.eclipse.riena.navigation.ui.swt.views;
 
 import java.util.List;
 
-import junit.framework.TestCase;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -32,6 +30,8 @@ import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
+
+import junit.framework.TestCase;
 
 /**
  * Tests of the class {@link ModuleGroupView}.
@@ -177,8 +177,7 @@ public class ModuleGroupViewTest extends TestCase {
 	}
 
 	/**
-	 * Tests the <i>private</i> method
-	 * {@code equals(FormAttachment, FormAttachment)}.
+	 * Tests the <i>private</i> method {@code equals(FormAttachment, FormAttachment)}.
 	 */
 	public void testEqualsFormAttachment() {
 

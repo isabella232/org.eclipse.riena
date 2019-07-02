@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<component id="org.eclipse.riena.client" version="2">
+    <resource path="META-INF/MANIFEST.MF">
+        <filter comment="Suppress API breakage warning due to removed obsolete dependency." id="923795461">
+            <message_arguments>
+                <message_argument value="6.2.0"/>
+                <message_argument value="6.1.0"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="META-INF/MANIFEST.MF" type="org.eclipse.riena.communication.client.ui.hooks.UIThreadAlertCallHook">
+        <filter comment="Suppress API breakage warning due to removed re-exported type." id="305422471">
+            <message_arguments>
+                <message_argument value="org.eclipse.riena.communication.client.ui.hooks.UIThreadAlertCallHook"/>
+                <message_argument value="org.eclipse.riena.client_6.1.0"/>
+            </message_arguments>
+        </filter>
+    </resource>
+</component>

@@ -48,17 +48,17 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 
-		mapper = SwtControlRidgetMapper.getInstance();
+		// Use own instance of SwtControlRidgetMapper here to not influence other tests
+		// which rely on the global singleton.
+		mapper = ReflectionUtils.newInstanceHidden(SwtControlRidgetMapper.class);
+
 		shell = new Shell();
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
-
-		// Create new instance of SwtControlRidgetMapper to start with initial mappings only (not additional mappings added in previous test cases)
-		final Object scrm = ReflectionUtils.getHidden(SwtControlRidgetMapper.class, "SCRM");
-		ReflectionUtils.setHidden(scrm, "singleton", null);
 		mapper = null;
+
 		shell.dispose();
 		shell = null;
 

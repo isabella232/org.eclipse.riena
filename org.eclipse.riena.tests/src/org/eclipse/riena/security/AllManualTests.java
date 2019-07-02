@@ -21,7 +21,7 @@ import org.eclipse.riena.internal.tests.Activator;
 /**
  * Tests all manual test cases within this package.
  */
-@NonGatherableTestCase("This is not a ´TestCase´!")
+@NonGatherableTestCase("This is not a Â´TestCaseÂ´!")
 public class AllManualTests extends TestCase {
 
 	@SuppressWarnings("unchecked")

@@ -20,8 +20,8 @@ package org.eclipse.riena.core.wire;
  * <li>Wiring by explicitly specifying a class responsible for all the wiring
  * needs of a component. This is done with the class annotation {@code WireWith}
  * .</li>
- * <li>Wiring by annotating the ´bind´ methods of a component for service
- * injection with {@code InjectService} and the ´update´ method for extension
+ * <li>Wiring by annotating the Â´bindÂ´ methods of a component for service
+ * injection with {@code InjectService} and the Â´updateÂ´ method for extension
  * injection with {@code InjectExtension}.
  * </ul>
  */

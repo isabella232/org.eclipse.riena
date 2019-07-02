@@ -53,7 +53,7 @@ public class ExtensionInjectorBuilder {
 	 */
 	public ExtensionInjector build() {
 		final Class<?>[] types = method.getParameterTypes();
-		Assert.isLegal(types.length == 1, "only one parameter allowed on ´update´ method"); //$NON-NLS-1$
+		Assert.isLegal(types.length == 1, "only one parameter allowed on Â´updateÂ´ method"); //$NON-NLS-1$
 		ExtensionDescriptor descriptor = StringUtils.isGiven(annotation.id()) ? Inject.extension(annotation.id())
 				: Inject.extension();
 		descriptor = descriptor.expectingMinMax(annotation.min(), annotation.max());

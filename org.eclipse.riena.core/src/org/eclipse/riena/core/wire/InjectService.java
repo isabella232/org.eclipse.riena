@@ -16,7 +16,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotate a ´bind´ method for service injection.
+ * Annotate a Â´bindÂ´ method for service injection.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

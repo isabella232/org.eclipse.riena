@@ -149,7 +149,7 @@ public class TestingTools {
 				final Bundle bundle = FrameworkUtil.getBundle(testCase.getTestClass());
 				context = bundle.getBundleContext();
 			} catch (final Throwable t) {
-				Nop.reason("We don´t care. Maybe it is not running as a plugin test."); //$NON-NLS-1$
+				Nop.reason("We donÂ´t care. Maybe it is not running as a plugin test."); //$NON-NLS-1$
 			}
 		}
 		return context;
@@ -187,7 +187,7 @@ public class TestingTools {
 	}
 
 	/**
-	 * Print the current test´s name.
+	 * Print the current testÂ´s name.
 	 */
 	public void printTestName() {
 		if (!isTrace()) {
@@ -225,7 +225,7 @@ public class TestingTools {
 	}
 
 	/**
-	 * Add an extension/extension point defined within the ´plugin.xml´ (located along side the test class) given with the <code>pluginResource</code> to the
+	 * Add an extension/extension point defined within the Â´plugin.xmlÂ´ (located along side the test class) given with the <code>pluginResource</code> to the
 	 * extension registry.
 	 * 
 	 * @param pluginResource
@@ -236,7 +236,7 @@ public class TestingTools {
 	}
 
 	/**
-	 * Add an extension/extension point defined within the ´plugin.xml´ given with the <code>pluginResource</code> to the extension registry.
+	 * Add an extension/extension point defined within the Â´plugin.xmlÂ´ given with the <code>pluginResource</code> to the extension registry.
 	 * 
 	 * @param forLoad
 	 * @param pluginResource

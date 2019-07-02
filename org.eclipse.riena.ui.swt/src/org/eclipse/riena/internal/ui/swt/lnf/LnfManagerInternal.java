@@ -197,7 +197,7 @@ public final class LnfManagerInternal {
 					e);
 		}
 		//
-		// This code has been ´removed´ because it is likely the cause for sporadic errors - which is not good!
+		// This code has been Â´removedÂ´ because it is likely the cause for sporadic errors - which is not good!
 		// 
 		//		try {
 		//			return Thread.currentThread().getContextClassLoader().loadClass(className);

@@ -6,7 +6,7 @@
  * 
  * Contributors: IBM Corporation - initial API and implementation
  *               compeople AG    - this is a beefed up (modified for generics, changed names, 
- *                                 added convenience methods, ..) version of p2´s  
+ *                                 added convenience methods, ..) version of p2Â´s  
  *                                 org.eclipse.equinox.internal.p2.core.helpers.ServiceHelper
  ******************************************************************************/
 package org.eclipse.riena.core.service;

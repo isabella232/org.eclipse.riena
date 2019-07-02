@@ -74,10 +74,10 @@ public class OnePersonSubModuleController extends SubModuleController {
 		person.setBirthday("12.08.1964"); //$NON-NLS-1$
 		person.setBirthplace("Berlin"); //$NON-NLS-1$
 		person.setGender(Person.FEMALE);
-		person.getAddress().setStreetAndNumber("Heidestraße 17"); //$NON-NLS-1$
+		person.getAddress().setStreetAndNumber("HeidestraÃŸe 17"); //$NON-NLS-1$
 		person.getAddress().setCountry(Locale.GERMANY.getCountry());
 		person.getAddress().setPostalCode(81739);
-		person.getAddress().setTown("München"); //$NON-NLS-1$
+		person.getAddress().setTown("MÃ¼nchen"); //$NON-NLS-1$
 	}
 
 	/**

@@ -204,15 +204,25 @@ public final class SwtUtilities {
 	 * @since 3.0
 	 */
 	public static int findColumn(final Table table, final Point pt) {
-		int width = 0;
+		final TableColumn[] columns = mapColumsToCurrentVisualOrder(table);
+		return findColumnIndex(table, columns, pt);
+	}
+
+	private static TableColumn[] mapColumsToCurrentVisualOrder(final Table table) {
 		final int[] colOrder = table.getColumnOrder();
-		// compute the current column ordering
 		final TableColumn[] columns = new TableColumn[colOrder.length];
 		for (int i = 0; i < colOrder.length; i++) {
 			final int idx = colOrder[i];
 			columns[i] = table.getColumn(idx);
 		}
-		// find the column under Point pt
+		return columns;
+	}
+
+	private static int findColumnIndex(final Table table, final TableColumn[] columns, final Point pt) {
+		int width = table.getHorizontalBar() != null //
+				? -table.getHorizontalBar().getSelection() //
+				: 0;
+
 		for (final TableColumn col : columns) {
 			final int colWidth = col.getWidth();
 			if (width < pt.x && pt.x < width + colWidth) {
@@ -469,9 +479,12 @@ public final class SwtUtilities {
 	 * @since 6.0
 	 */
 	public static Point convertPointToDpi(final Point pixelPoint) {
-		final int x = convertXToDpi(pixelPoint.x);
-		final int y = convertYToDpi(pixelPoint.y);
-		return new Point(x, y);
+		if (cachedDpi == null) {
+			final int x = convertXToDpi(pixelPoint.x);
+			final int y = convertYToDpi(pixelPoint.y);
+			cachedDpi = new Point(x, y);
+		}
+		return cachedDpi;
 	}
 
 	/**
