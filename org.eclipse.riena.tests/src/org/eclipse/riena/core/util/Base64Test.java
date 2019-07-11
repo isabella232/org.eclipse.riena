@@ -12,15 +12,11 @@
  *******************************************************************************/
 package org.eclipse.riena.core.util;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Random;
 
 import org.eclipse.riena.core.test.RienaTestCase;
 import org.eclipse.riena.core.test.collect.NonUITestCase;
-
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
 
 /**
  * Test {@link Base64}
@@ -113,13 +109,14 @@ public class Base64Test extends RienaTestCase {
 		}
 	}
 
-	public void testRegression() throws IOException {
-		final String encodeBASE64 = new BASE64Encoder().encode(DECODED2.getBytes());
-		final String encodeBase64 = new String(Base64.encode(DECODED2.getBytes()));
-		assertEquals(encodeBASE64, encodeBase64);
-		final String decodeBASE64 = new String(new BASE64Decoder().decodeBuffer(encodeBASE64));
-		final String decodeBase64 = new String(Base64.decode(encodeBase64.getBytes()));
-		assertEquals(decodeBASE64, decodeBase64);
-	}
+	//	public void testRegression() throws IOException {
+	//	
+	//		final String encodeBASE64 = new BASE64Encoder().encode(DECODED2.getBytes());
+	//		final String encodeBase64 = new String(Base64.encode(DECODED2.getBytes()));
+	//		assertEquals(encodeBASE64, encodeBase64);
+	//		final String decodeBASE64 = new String(new BASE64Decoder().decodeBuffer(encodeBASE64));
+	//		final String decodeBase64 = new String(Base64.decode(encodeBase64.getBytes()));
+	//		assertEquals(decodeBASE64, decodeBase64);
+	//	}
 
 }
