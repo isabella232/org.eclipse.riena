@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.batik.dom.svg.SAXSVGDocumentFactory;
+import org.apache.batik.anim.dom.*;
 import org.apache.batik.transcoder.TranscoderException;
 import org.apache.batik.util.XMLResourceDescriptor;
 import org.w3c.dom.Document;

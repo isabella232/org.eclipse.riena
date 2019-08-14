@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry exported="true" kind="lib" path="xmlgraphics-commons-2.3.jar"/>
+	<classpathentry exported="true" kind="lib" path="batik-awt-util-1.11.jar"/>
+	<classpathentry exported="true" kind="lib" path="batik-script-1.11.jar"/>
+	<classpathentry exported="true" kind="lib" path="batik-constants-1.11.jar"/>
+	<classpathentry exported="true" kind="lib" path="batik-i18n-1.11.jar"/>
+	<classpathentry exported="true" kind="lib" path="batik-gvt-1.11.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+	<classpathentry exported="true" kind="lib" path="batik-anim-1.11.jar"/>
+	<classpathentry exported="true" kind="lib" path="batik-bridge-1.11.jar"/>
+	<classpathentry exported="true" kind="lib" path="batik-css-1.11.jar"/>
+	<classpathentry exported="true" kind="lib" path="batik-dom-1.11.jar"/>
+	<classpathentry exported="true" kind="lib" path="batik-ext-1.11.jar"/>
+	<classpathentry exported="true" kind="lib" path="batik-extension-1.11.jar"/>
+	<classpathentry exported="true" kind="lib" path="batik-gui-util-1.11.jar"/>
+	<classpathentry exported="true" kind="lib" path="batik-svg-dom-1.11.jar"/>
+	<classpathentry exported="true" kind="lib" path="batik-svggen-1.11.jar"/>
+	<classpathentry exported="true" kind="lib" path="batik-transcoder-1.11.jar"/>
+	<classpathentry exported="true" kind="lib" path="batik-util-1.11.jar"/>
+	<classpathentry exported="true" kind="lib" path="batik-xml-1.11.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

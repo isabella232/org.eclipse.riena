@@ -1,4 +1,6 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><?pde version="3.8"?><target name="Riena on 3.x custom" sequenceNumber="44">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?pde version="3.8"?>
+<target name="Riena on 3.x custom" sequenceNumber="44">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="org.apache.commons.beanutils" version="1.8.0.v201205091237"/>
@@ -18,7 +20,6 @@
 <unit id="org.pushingpixels.trident.source" version="1.2.0.v201305152020"/>
 <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20140525021250/repository/"/>
 </location>
-<location path="${project_loc:de.compeople.scp.targets}/repository" type="Directory"/>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.equinox.executable.feature.group" version="3.7.2.v20171108-1834"/>
 <repository location="http://download.eclipse.org/releases/oxygen"/>
@@ -28,6 +29,7 @@
 <unit id="org.eclipse.nebula.widgets.grid.feature.feature.group" version="1.0.0.201605312033"/>
 <repository location="http://download.eclipse.org/nebula/releases/1.0.0"/>
 </location>
-	<location path="${project_loc:3xtargets}\org.eclipse.riena.target3x\rcp" type="Directory"/>
+	<location path="C:\IDES\SCP-NEO\git\de-compeople-scp-targets\de.compeople.scp.targets\repository" type="Directory"/>
+	<location path="${project_loc:org.eclipse.riena.3xtargets}\org.eclipse.riena.target3x\testDestination\" type="Directory"/>
 </locations>
 </target>
