@@ -198,7 +198,7 @@
 								<versionRange>[3.103.0,3.104.0]</versionRange>
 							</restrictTo>
 						</filter>
-						<!-- Core.Databinding -->
+						<!-- Core.Databinding used by workbench -->
 						<filter>
 							<type>eclipse-plugin</type>
 							<id>org.eclipse.core.databinding.source</id>
@@ -256,6 +256,8 @@
 							</restrictTo>
 						</filter>
 						<!-- Batik  -->
+						
+						<!-- 
 						<filter>
 							<type>eclipse-plugin</type>
 							<id>org.apache.batik.dom</id>
@@ -340,6 +342,8 @@
 								<versionRange>[1.7.0,1.8.0]</versionRange>
 							</restrictTo>
 						</filter>
+						
+						 -->
 					</filters>
 				</configuration>
 			</plugin>
