@@ -41,6 +41,7 @@
 	<modules>
 		<module>com.caucho.hessian</module>
 		<module>org.eclipse.riena.beans.common</module>
+		<module>org.apache.batik</module>
 		<module>org.eclipse.riena.build.externals.feature</module>
 		<module>org.eclipse.riena.build.feature</module>
 		<module>org.eclipse.riena.build.feature.core.sdk</module>
@@ -255,95 +256,6 @@
 								<versionRange>[1.4.1,1.4.2]</versionRange>
 							</restrictTo>
 						</filter>
-						<!-- Batik  -->
-						
-						<!-- 
-						<filter>
-							<type>eclipse-plugin</type>
-							<id>org.apache.batik.dom</id>
-							<restrictTo>
-								<versionRange>[1.7.0,1.8.0]</versionRange>
-							</restrictTo>
-						</filter>
-						<filter>
-							<type>eclipse-plugin</type>
-							<id>org.apache.batik.parser</id>
-							<restrictTo>
-								<versionRange>[1.7.0,1.8.0]</versionRange>
-							</restrictTo>
-						</filter>
-						<filter>
-							<type>eclipse-plugin</type>
-							<id>org.apache.batik.dom.svg</id>
-							<restrictTo>
-								<versionRange>[1.7.0,1.8.0]</versionRange>
-							</restrictTo>
-						</filter>
-						<filter>
-							<type>eclipse-plugin</type>
-							<id>org.apache.batik.svggen</id>
-							<restrictTo>
-								<versionRange>[1.7.0,1.8.0]</versionRange>
-							</restrictTo>
-						</filter>
-						<filter>
-							<type>eclipse-plugin</type>
-							<id>org.apache.batik.transcoder</id>
-							<restrictTo>
-								<versionRange>[1.7.0,1.8.0]</versionRange>
-							</restrictTo>
-						</filter>
-						<filter>
-							<type>eclipse-plugin</type>
-							<id>org.apache.batik.util.gui</id>
-							<restrictTo>
-								<versionRange>[1.7.0,1.8.0]</versionRange>
-							</restrictTo>
-						</filter>
-						<filter>
-							<type>eclipse-plugin</type>
-							<id>org.apache.batik.ext.awt</id>
-							<restrictTo>
-								<versionRange>[1.7.0,1.8.0]</versionRange>
-							</restrictTo>
-						</filter>
-						<filter>
-							<type>eclipse-plugin</type>
-							<id>org.apache.batik.xml</id>
-							<restrictTo>
-								<versionRange>[1.7.0,1.8.0]</versionRange>
-							</restrictTo>
-						</filter>
-						<filter>
-							<type>eclipse-plugin</type>
-							<id>org.apache.batik.extension</id>
-							<restrictTo>
-								<versionRange>[1.7.0,1.8.0]</versionRange>
-							</restrictTo>
-						</filter>
-						<filter>
-							<type>eclipse-plugin</type>
-							<id>org.apache.batik.util</id>
-							<restrictTo>
-								<versionRange>[1.7.0,1.8.0]</versionRange>
-							</restrictTo>
-						</filter>
-						<filter>
-							<type>eclipse-plugin</type>
-							<id>org.apache.batik.bridge</id>
-							<restrictTo>
-								<versionRange>[1.7.0,1.8.0]</versionRange>
-							</restrictTo>
-						</filter>
-						<filter>
-							<type>eclipse-plugin</type>
-							<id>org.apache.batik.css</id>
-							<restrictTo>
-								<versionRange>[1.7.0,1.8.0]</versionRange>
-							</restrictTo>
-						</filter>
-						
-						 -->
 					</filters>
 				</configuration>
 			</plugin>
