@@ -771,20 +771,6 @@ v1.0
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.equinox.log"
-         download-size="0"
-         install-size="0"
-         version="1.2.300.v20120912-130548"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.equinox.log.source"
-         download-size="0"
-         install-size="0"
-         version="1.2.300.v20120912-130548"
-         unpack="false"/>
-
-   <plugin
          id="org.eclipse.equinox.metatype"
          download-size="0"
          install-size="0"
