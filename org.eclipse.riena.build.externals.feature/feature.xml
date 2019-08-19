@@ -95,20 +95,6 @@ v1.0
          unpack="false"/>
 
    <plugin
-         id="org.apache.commons.httpclient"
-         download-size="0"
-         install-size="0"
-         version="3.1.0.v201012070820"
-         unpack="false"/>
-
-   <plugin
-         id="org.apache.commons.httpclient.source"
-         download-size="0"
-         install-size="0"
-         version="3.1.0.v201012070820"
-         unpack="false"/>
-
-   <plugin
          id="org.apache.commons.logging"
          download-size="0"
          install-size="0"
@@ -126,42 +112,42 @@ v1.0
          id="org.apache.felix.gogo.command"
          download-size="0"
          install-size="0"
-         version="0.10.0.v201209301215"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="org.apache.felix.gogo.command.source"
          download-size="0"
          install-size="0"
-         version="0.10.0.v201209301215"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="org.apache.felix.gogo.runtime"
          download-size="0"
          install-size="0"
-         version="0.10.0.v201209301036"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="org.apache.felix.gogo.runtime.source"
          download-size="0"
          install-size="0"
-         version="0.10.0.v201209301036"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="org.apache.felix.gogo.shell"
          download-size="0"
          install-size="0"
-         version="0.10.0.v201212101605"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="org.apache.felix.gogo.shell.source"
          download-size="0"
          install-size="0"
-         version="0.10.0.v201212101605"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
@@ -196,14 +182,14 @@ v1.0
          id="org.apache.sshd.core"
          download-size="0"
          install-size="0"
-         version="0.7.0.v201303101611"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="org.apache.sshd.core.source"
          download-size="0"
          install-size="0"
-         version="0.7.0.v201303101611"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
@@ -218,20 +204,6 @@ v1.0
          download-size="0"
          install-size="0"
          version="3.6.1.v20120912-135020"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.core.contenttype"
-         download-size="0"
-         install-size="0"
-         version="3.6.0.v20170207-1037"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.core.contenttype.source"
-         download-size="0"
-         install-size="0"
-         version="3.4.200.v20120523-2004"
          unpack="false"/>
 
    <plugin
@@ -308,21 +280,21 @@ v1.0
          id="org.eclipse.core.jobs"
          download-size="0"
          install-size="0"
-         version="3.9.3.v20180115-1757"
+         version="3.10.400.v20190506-1457"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.core.jobs.source"
          download-size="0"
          install-size="0"
-         version="3.5.200.v20120521-2346"
+         version="3.10.400.v20190506-1457"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.core.runtime"
          download-size="0"
          install-size="0"
-         version="3.13.0.v20170207-1030"
+         version="3.15.300.v20190508-0543"
          unpack="false"/>
 
    <plugin
@@ -343,7 +315,7 @@ v1.0
          id="org.eclipse.core.runtime.source"
          download-size="0"
          install-size="0"
-         version="3.8.0.v20120521-2346"
+         version="3.15.300.v20190508-0543"
          unpack="false"/>
 
    <plugin
@@ -514,14 +486,14 @@ v1.0
          id="org.eclipse.equinox.common"
          download-size="0"
          install-size="0"
-         version="3.9.0.v20170207-1454"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.equinox.common.source"
          download-size="0"
          install-size="0"
-         version="3.9.0.v20170207-1454"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
@@ -549,7 +521,7 @@ v1.0
          id="org.eclipse.equinox.console.jaas.fragment"
          download-size="0"
          install-size="0"
-         version="1.0.0.v20130327-1442"
+         version="1.0.200.v20180827-1235"
          fragment="true"
          unpack="false"/>
 
@@ -1023,20 +995,6 @@ v1.0
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.equinox.p2.ql"
-         download-size="0"
-         install-size="0"
-         version="2.0.100.v20110808-1657"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.equinox.p2.ql.source"
-         download-size="0"
-         install-size="0"
-         version="2.0.100.v20110808-1657"
-         unpack="false"/>
-
-   <plugin
          id="org.eclipse.equinox.p2.reconciler.dropins"
          download-size="0"
          install-size="0"
@@ -1159,28 +1117,28 @@ v1.0
          id="org.eclipse.equinox.region"
          download-size="0"
          install-size="0"
-         version="1.4.0.v20170117-1425"
+         version="1.4.400.v20190514-1046"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.equinox.region.source"
          download-size="0"
          install-size="0"
-         version="1.4.0.v20170117-1425"
+         version="1.4.400.v20190514-1046"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.equinox.registry"
          download-size="0"
          install-size="0"
-         version="3.7.0.v20170222-1344"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.equinox.registry.source"
          download-size="0"
          install-size="0"
-         version="3.7.0.v20170222-1344"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
@@ -1322,20 +1280,6 @@ v1.0
          download-size="0"
          install-size="0"
          version="1.0.500.v20130404-1337"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.equinox.weaving.aspectj"
-         download-size="0"
-         install-size="0"
-         version="1.0.100.v20120524-1707"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.equinox.weaving.aspectj.source"
-         download-size="0"
-         install-size="0"
-         version="1.0.100.v20120524-1707"
          unpack="false"/>
 
    <plugin
@@ -1539,7 +1483,7 @@ v1.0
          id="org.eclipse.osgi"
          download-size="0"
          install-size="0"
-         version="3.12.100.v20180210-1608"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
@@ -1672,14 +1616,14 @@ v1.0
          id="org.eclipse.jdt.junit.runtime"
          download-size="0"
          install-size="0"
-         version="3.4.500.v20140527-1138"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.jdt.junit.runtime.source"
          download-size="0"
          install-size="0"
-         version="3.4.500.v20140527-1138"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
@@ -1725,115 +1669,10 @@ v1.0
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.e4.ui.css.core"
-         download-size="0"
-         install-size="0"
-         version="0.11.0.v20150511-1937"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.e4.ui.css.swt"
-         download-size="0"
-         install-size="0"
-         version="0.12.0.v20150511-1003"
-         unpack="false"/>
-
-   <plugin
          id="javax.el"
          download-size="0"
          install-size="0"
          version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="javax.xml"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.apache.batik.bridge"
-         download-size="0"
-         install-size="0"
-         version="1.7.0.v201011041433"
-         unpack="false"/>
-
-   <plugin
-         id="org.apache.batik.css"
-         download-size="0"
-         install-size="0"
-         version="1.7.0.v201011041433"
-         unpack="false"/>
-
-   <plugin
-         id="org.apache.batik.dom"
-         download-size="0"
-         install-size="0"
-         version="1.7.1.v201505191845"
-         unpack="false"/>
-
-   <plugin
-         id="org.apache.batik.dom.svg"
-         download-size="0"
-         install-size="0"
-         version="1.7.0.v201011041433"
-         unpack="false"/>
-
-   <plugin
-         id="org.apache.batik.ext.awt"
-         download-size="0"
-         install-size="0"
-         version="1.7.0.v201011041433"
-         unpack="false"/>
-
-   <plugin
-         id="org.apache.batik.extension"
-         download-size="0"
-         install-size="0"
-         version="1.7.0.v201011041433"
-         unpack="false"/>
-
-   <plugin
-         id="org.apache.batik.parser"
-         download-size="0"
-         install-size="0"
-         version="1.7.0.v201011041433"
-         unpack="false"/>
-
-   <plugin
-         id="org.apache.batik.svggen"
-         download-size="0"
-         install-size="0"
-         version="1.7.0.v201011041433"
-         unpack="false"/>
-
-   <plugin
-         id="org.apache.batik.transcoder"
-         download-size="0"
-         install-size="0"
-         version="1.7.0.v201011041433"
-         unpack="false"/>
-
-   <plugin
-         id="org.apache.batik.util"
-         download-size="0"
-         install-size="0"
-         version="1.7.0.v201011041433"
-         unpack="false"/>
-
-   <plugin
-         id="org.apache.batik.util.gui"
-         download-size="0"
-         install-size="0"
-         version="1.7.0.v200903091627"
-         unpack="false"/>
-
-   <plugin
-         id="org.apache.batik.xml"
-         download-size="0"
-         install-size="0"
-         version="1.7.0.v201011041433"
          unpack="false"/>
 
    <plugin
@@ -1908,6 +1747,54 @@ v1.0
          install-size="0"
          version="0.0.0"
          fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.batik"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.apache.httpcomponents.httpclient"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.httpcomponents.httpclient.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.httpcomponents.httpclient.win"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.httpcomponents.httpclient.win.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.httpcomponents.httpcore"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.httpcomponents.httpcore.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
          unpack="false"/>
 
 </feature>
