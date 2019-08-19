@@ -13,6 +13,7 @@ package org.eclipse.riena.core;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceReference;
+import org.osgi.service.log.LoggerConsumer;
 
 import org.eclipse.equinox.log.Logger;
 
@@ -133,6 +134,176 @@ public final class Log4r {
 		}
 
 		public void log(final Object context, final int level, final String message, final Throwable exception) {
+		}
+
+		public boolean isTraceEnabled() {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		public void trace(String message) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		public void trace(String format, Object arg) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		public void trace(String format, Object arg1, Object arg2) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		public void trace(String format, Object... arguments) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		public <E extends Exception> void trace(LoggerConsumer<E> consumer) throws E {
+			// TODO Auto-generated method stub
+			
+		}
+
+		public boolean isDebugEnabled() {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		public void debug(String message) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		public void debug(String format, Object arg) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		public void debug(String format, Object arg1, Object arg2) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		public void debug(String format, Object... arguments) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		public <E extends Exception> void debug(LoggerConsumer<E> consumer) throws E {
+			// TODO Auto-generated method stub
+			
+		}
+
+		public boolean isInfoEnabled() {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		public void info(String message) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		public void info(String format, Object arg) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		public void info(String format, Object arg1, Object arg2) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		public void info(String format, Object... arguments) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		public <E extends Exception> void info(LoggerConsumer<E> consumer) throws E {
+			// TODO Auto-generated method stub
+			
+		}
+
+		public boolean isWarnEnabled() {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		public void warn(String message) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		public void warn(String format, Object arg) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		public void warn(String format, Object arg1, Object arg2) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		public void warn(String format, Object... arguments) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		public <E extends Exception> void warn(LoggerConsumer<E> consumer) throws E {
+			// TODO Auto-generated method stub
+			
+		}
+
+		public boolean isErrorEnabled() {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		public void error(String message) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		public void error(String format, Object arg) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		public void error(String format, Object arg1, Object arg2) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		public void error(String format, Object... arguments) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		public <E extends Exception> void error(LoggerConsumer<E> consumer) throws E {
+			// TODO Auto-generated method stub
+			
+		}
+
+		public void audit(String message) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		public void audit(String format, Object arg) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		public void audit(String format, Object arg1, Object arg2) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		public void audit(String format, Object... arguments) {
+			// TODO Auto-generated method stub
+			
 		}
 
 	}

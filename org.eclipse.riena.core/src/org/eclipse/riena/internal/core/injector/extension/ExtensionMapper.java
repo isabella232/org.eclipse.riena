@@ -302,6 +302,11 @@ public final class ExtensionMapper {
 			return wrappedExtension != null ? wrappedExtension.isValid() : wrappedExtensionPoint.isValid();
 		}
 
+		public int getHandleId() {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+
 	}
 
 }
