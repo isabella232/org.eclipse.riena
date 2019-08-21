@@ -418,20 +418,6 @@ v1.0
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.equinox.event"
-         download-size="0"
-         install-size="0"
-         version="1.4.0.v20170105-1446"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.equinox.event.source"
-         download-size="0"
-         install-size="0"
-         version="1.4.0.v20170105-1446"
-         unpack="false"/>
-
-   <plugin
          id="org.eclipse.equinox.frameworkadmin"
          download-size="0"
          install-size="0"
@@ -1813,6 +1799,20 @@ v1.0
 
    <plugin
          id="org.apache.felix.scr.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.event"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.event.source"
          download-size="0"
          install-size="0"
          version="0.0.0"
