@@ -312,20 +312,6 @@ v1.0
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.equinox.cm"
-         download-size="0"
-         install-size="0"
-         version="1.2.0.v20170105-1446"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.equinox.cm.source"
-         download-size="0"
-         install-size="0"
-         version="1.2.0.v20170105-1446"
-         unpack="false"/>
-
-   <plugin
          id="org.eclipse.equinox.common"
          download-size="0"
          install-size="0"
@@ -1806,6 +1792,20 @@ v1.0
 
    <plugin
          id="org.eclipse.osgi.services.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.cm"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.cm.source"
          download-size="0"
          install-size="0"
          version="0.0.0"
