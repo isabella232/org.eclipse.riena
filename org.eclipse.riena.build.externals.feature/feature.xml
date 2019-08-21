@@ -1428,13 +1428,6 @@ v1.0
          unpack="false"/>
 
    <plugin
-         id="org.apache.felix.scr"
-         download-size="0"
-         install-size="0"
-         version="2.0.10.v20170501-2007"
-         unpack="false"/>
-
-   <plugin
          id="org.tukaani.xz"
          download-size="0"
          install-size="0"
@@ -1806,6 +1799,20 @@ v1.0
 
    <plugin
          id="org.eclipse.equinox.cm.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.felix.scr"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.felix.scr.source"
          download-size="0"
          install-size="0"
          version="0.0.0"
