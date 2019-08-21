@@ -23,36 +23,4 @@
 			</plugin>
 		</plugins>
 	</build>
-	<profiles>
-		<profile>
-			<id>test</id>
-
-			<properties>
-				<includeTestsFile></includeTestsFile>
-				<excludeTestsFile></excludeTestsFile>
-			</properties>
-
-			<repositories>
-				<repository>
-					<id>riena_p2_repo</id>
-					<url>file:///${project.basedir}/../../p2.small</url>
-					<layout>p2</layout>
-				</repository>
-			</repositories>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.eclipse.tycho</groupId>
-						<artifactId>tycho-surefire-plugin</artifactId>
-						<version>${tycho.version}</version>
-						<configuration>
-							<argLine>-DincludeTestsFile=${includeTestsFile} -DexcludeTestsFile=${excludeTestsFile}</argLine>
-							<testClass>org.eclipse.riena.SelectedTests</testClass>
-							<runOrder>random</runOrder>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
 </project>
