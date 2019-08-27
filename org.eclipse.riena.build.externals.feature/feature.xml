@@ -477,14 +477,14 @@ v1.0
          id="org.eclipse.equinox.http.servlet"
          download-size="0"
          install-size="0"
-         version="1.4.0.v20170524-1452"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.equinox.http.servlet.source"
          download-size="0"
          install-size="0"
-         version="1.4.0.v20170524-1452"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
