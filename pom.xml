@@ -143,26 +143,6 @@
 						</environment>
 					</environments>
 					<filters>
-						<!-- Work around Equinox bug 348045. -->
-						<filter>
-							<type>p2-installable-unit</type>
-							<id>org.eclipse.equinox.servletbridge.extensionbundle</id>
-							<removeAll />
-						</filter>
-						<filter>
-							<type>eclipse-plugin</type>
-							<id>javax.servlet</id>
-							<restrictTo>
-								<versionRange>[2.3.0,3.1.0)</versionRange>
-							</restrictTo>
-						</filter>
-						<filter>
-							<type>eclipse-plugin</type>
-							<id>javax.servlet.source</id>
-							<restrictTo>
-								<versionRange>[2.3.0,3.1.0)</versionRange>
-							</restrictTo>
-						</filter>
 						<!-- SWT -->
 						<filter>
 							<type>eclipse-plugin</type>
