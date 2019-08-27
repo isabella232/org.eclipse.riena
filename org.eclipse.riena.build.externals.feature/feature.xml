@@ -1400,20 +1400,6 @@ v1.0
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.ui.forms"
-         download-size="0"
-         install-size="0"
-         version="3.6.200.v20150506-2029"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.ui.forms.source"
-         download-size="0"
-         install-size="0"
-         version="3.6.200.v20150506-2029"
-         unpack="false"/>
-
-   <plugin
          id="org.tukaani.xz"
          download-size="0"
          install-size="0"
@@ -1813,6 +1799,34 @@ v1.0
 
    <plugin
          id="org.eclipse.equinox.event.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="com.sun.jna"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="com.sun.jna.platform"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="com.sun.jna.platform.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="com.sun.jna.source"
          download-size="0"
          install-size="0"
          version="0.0.0"
