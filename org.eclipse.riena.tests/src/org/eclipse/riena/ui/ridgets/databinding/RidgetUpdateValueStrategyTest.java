@@ -12,8 +12,6 @@ package org.eclipse.riena.ui.ridgets.databinding;
 
 import java.util.GregorianCalendar;
 
-import junit.framework.TestCase;
-
 import org.easymock.EasyMock;
 
 import org.eclipse.core.databinding.UpdateValueStrategy;
@@ -26,6 +24,8 @@ import org.eclipse.riena.core.test.collect.NonUITestCase;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.ui.ridgets.ValueBindingSupport;
 
+import junit.framework.TestCase;
+
 /**
  * Tests of the class <code>RidgetUpdateValueStrategy</code>.
  */
@@ -34,7 +34,8 @@ public class RidgetUpdateValueStrategyTest extends TestCase {
 
 	public void testCreateConverter() throws Exception {
 
-		final RidgetUpdateValueStrategy strategy = new RidgetUpdateValueStrategy(new ValueBindingSupport(EasyMock.createNiceMock(IObservableValue.class)));
+		final RidgetUpdateValueStrategy strategy = new RidgetUpdateValueStrategy(
+				new ValueBindingSupport((IObservableValue) EasyMock.createNiceMock(IObservableValue.class)));
 
 		IConverter converter = ReflectionUtils.invokeHidden(strategy, "createConverter", String.class, Double.TYPE);
 		assertTrue(converter instanceof StringToNumberAllowingNullConverter);
@@ -106,7 +107,8 @@ public class RidgetUpdateValueStrategyTest extends TestCase {
 
 	public void testValidateAfterSetWithSetOk() throws Exception {
 		final boolean[] validateAfterSetCalled = new boolean[1]; // must be final and modifiable
-		final RidgetUpdateValueStrategy strategy = new RidgetUpdateValueStrategy(new ValueBindingSupport(EasyMock.createNiceMock(IObservableValue.class))) {
+		final RidgetUpdateValueStrategy strategy = new RidgetUpdateValueStrategy(
+				new ValueBindingSupport((IObservableValue) EasyMock.createNiceMock(IObservableValue.class))) {
 			/*
 			 * (non-Javadoc)
 			 * 
