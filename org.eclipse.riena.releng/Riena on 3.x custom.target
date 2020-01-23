@@ -169,8 +169,8 @@
 		<plugin id="org.eclipse.equinox.launcher.gtk.linux.ppc64le"/>
 		<plugin id="org.eclipse.equinox.launcher.source" version="1.4.0.v20161219-1356"/>
 		<plugin id="org.eclipse.equinox.launcher.source" version="1.5.400.v20190515-0925"/>
-		<plugin id="org.eclipse.equinox.launcher.win32.win32.x86_64" version="1.1.551.v20171108-1834"/>
 		<plugin id="org.eclipse.equinox.launcher.win32.win32.x86_64" version="1.1.1000.v20190125-2016"/>
+		<plugin id="org.eclipse.equinox.launcher.win32.win32.x86_64" version="1.1.551.v20171108-1834"/>
 		<plugin id="org.eclipse.equinox.log.stream"/>
 		<plugin id="org.eclipse.equinox.log.stream.source"/>
 		<plugin id="org.eclipse.equinox.metatype"/>
@@ -347,6 +347,8 @@
 		<plugin id="org.w3c.dom.smil"/>
 		<plugin id="org.w3c.dom.svg"/>
 		<plugin id="org.w3c.dom.svg.wiring.patch"/>
-		<plugin id="org.easymock" version="4.1.0"/>
+		<plugin id="org.easymock"/>
+		<plugin id="org.apache.logging.log4j.api" version="2.13.0"/>
+		<plugin id="org.apache.logging.log4j.core" version="2.13.0"/>
 	</includeBundles>
 </target>

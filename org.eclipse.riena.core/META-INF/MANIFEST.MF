@@ -8,6 +8,7 @@ Bundle-ActivationPolicy: lazy
 Eclipse-BuddyPolicy: registered
 Import-Package: org.apache.log4j;resolution:=optional,
  org.apache.log4j.xml;resolution:=optional,
+ org.apache.logging.log4j;version="2.13.0",
  org.osgi.framework;version="1.3.0",
  org.osgi.service.log;version="1.3.0"
 Export-Package: org.eclipse.riena.core,
