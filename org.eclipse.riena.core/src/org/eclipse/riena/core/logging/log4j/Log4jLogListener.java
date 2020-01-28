@@ -62,20 +62,29 @@ import org.eclipse.riena.internal.core.logging.log4j.ILog4jLogListenerConfigurat
  * <b>Note:</b> The logger configuration (log4j.xml) might contain substitution strings, e.g. to specify the target log location of a {@code FileAppender}, e.g.
  * 
  * <pre>
- * &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
- * &lt;!DOCTYPE log4j:configuration SYSTEM &quot;log4j.dtd&quot;&gt;
- * &lt;log4j:configuration xmlns:log4j=&quot;http://jakarta.apache.org/log4j/&quot;&gt;
- * &lt;appender name=&quot;LOGFILE&quot; class=&quot;org.apache.log4j.FileAppender&quot;&gt;
- *     &lt;param name=&quot;File&quot;   value=&quot;${log4j.log.home}/scp_example.log&quot; /&gt;
- *     &lt;layout class=&quot;org.apache.log4j.PatternLayout&quot;&gt;
- *         &lt;param name=&quot;ConversionPattern&quot; value=&quot;%-5p %-17d{yyyy-MM-dd HH:mm:ss} [%t] %c %m%n&quot;/&gt;
- *     &lt;/layout&gt;
- * &lt;/appender&gt;
- *     &lt;root&gt;
- *         &lt;level value=&quot;debug&quot; /&gt;
- *         &lt;appender-ref ref=&quot;LOGFILE&quot; /&gt;
- *     &lt;/root&gt;
- * &lt;/log4j:configuration&gt;
+ * &lt;?xml version="1.0" encoding="UTF-8" ?&gt;
+ * &lt;!DOCTYPE xml&gt;
+ * &lt;Configuration status="warn" name="Spirit default logging"
+ * 	packages=""&gt;
+ * 	&lt;Appenders&gt;
+ * 		&lt;Console name="STDOUT"&gt;
+ * 			&lt;PatternLayout pattern="%d [%t] %-5p %c: %m%n" /&gt;
+ * 		&lt;/Console&gt;
+ * 		&lt;RollingFile name="LOGFILE" fileName="${log4j.log.home}/spirit_default.log"
+ * 			filePattern="${log4j.log.home}/spirit_default.log.%d{yyyy-MM-dd}"&gt;
+ * 			&lt;PatternLayout pattern="%d [%t] %-5p %c: %m%n" /&gt;
+ * 			&lt;Policies&gt;
+ * 				&lt;TimeBasedTriggeringPolicy /&gt;
+ * 			&lt;/Policies&gt;
+ * 		&lt;/RollingFile&gt;
+ * 	&lt;/Appenders&gt;
+ * 	&lt;Loggers&gt;
+ * 		&lt;Root level="warn"&gt;
+ * 			&lt;AppenderRef ref="STDOUT" /&gt;
+ * 			&lt;AppenderRef ref="LOGFILE" /&gt;
+ * 		&lt;/Root&gt;
+ * 	&lt;/Loggers&gt;
+ * &lt;/Configuration&gt;
  * </pre>
  * 
  * Such substitutions can be defined with {@code StringVariableManager} extension points, e.g.
@@ -189,98 +198,6 @@ public class Log4jLogListener implements LogListener, IExecutableExtension {
 			StatusLogger.getLogger().removeListener(listener);
 		}
 	}
-
-	//	private Document createDocument(final URL configuration) throws CoreException {
-	//		final DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-	//		dbf.setValidating(true);
-	//		try {
-	//			final DocumentBuilder db = dbf.newDocumentBuilder();
-	//			db.setErrorHandler(new SAXErrorHandler());
-	//			db.setEntityResolver(new Log4jEntityResolver());
-	//			final String xml = VariableManagerUtil.substitute(read(configuration.openStream()));
-	//			final InputSource inputSource = new InputSource(new StringReader(xml));
-	//			inputSource.setSystemId("dummy://log4j.dtd"); //$NON-NLS-1$
-	//			return db.parse(inputSource);
-	//		} catch (final ParserConfigurationException e) {
-	//			throw new CoreException(new Status(IStatus.ERROR, Activator.getDefault().getBundle().getSymbolicName(),
-	//					"Could not configure log4j. Parser configuration error.", e)); //$NON-NLS-1$
-	//		} catch (final SAXException e) {
-	//			throw new CoreException(new Status(IStatus.ERROR, Activator.getDefault().getBundle().getSymbolicName(),
-	//					"Could not configure log4j. Unable to parse xml configuration.", e)); //$NON-NLS-1$
-	//		} catch (final IOException e) {
-	//			throw new CoreException(new Status(IStatus.ERROR, Activator.getDefault().getBundle().getSymbolicName(), "Could not configure log4j.", e)); //$NON-NLS-1$
-	//		}
-	//	}
-
-	//	protected void configure(final Element root) {
-	//		// workaround to fix class loader problems with log4j
-	//		// implementation. see "eclipse rich client platform, eclipse
-	//		// series, page 340.
-	//		final Thread thread = Thread.currentThread();
-	//		final ClassLoader savedClassLoader = thread.getContextClassLoader();
-	//		thread.setContextClassLoader(this.getClass().getClassLoader());
-	//		try {
-	//			// configure the log4j with given log4j.xml
-	//			DOMConfigurator.configure(root);
-	//		} finally {
-	//			thread.setContextClassLoader(savedClassLoader);
-	//		}
-	//	}
-
-	//	/**
-	//	 * @param openStream
-	//	 * @return
-	//	 * @throws IOException
-	//	 */
-	//	protected String read(final InputStream inputStream) throws IOException {
-	//		final BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-	//		final StringBuilder bob = new StringBuilder();
-	//		int ch;
-	//		while ((ch = reader.read()) != -1) {
-	//			bob.append((char) ch);
-	//		}
-	//		return bob.toString();
-	//	}
-
-	//	/**
-	//	 * A generic custom log level for log4j.
-	//	 */
-	//	private static final class CustomLevel extends Level {
-	//
-	//		private static final long serialVersionUID = 8076188016013250132L;
-	//
-	//		private static Map<Integer, CustomLevel> map = new HashMap<Integer, CustomLevel>();
-	//		private static final int LOG4J_LEVEL = Priority.FATAL_INT * 2;
-	//		// This value is duplicated here (because of access restrictions) from log4j SyslogAppender
-	//		private static final int SYSLOG_APPENDER_LOG_USER = 1 << 3;
-	//
-	//		/**
-	//		 * Create a generic custom log level.We assume that the custom osgi log levels are all below 1!
-	//		 * 
-	//		 * @param osgiLogLevel
-	//		 * @return
-	//		 */
-	//		private static synchronized CustomLevel create(final int osgiLogLevel) {
-	//			Assert.isTrue(osgiLogLevel < 1, "custom osgi log levels must be below 1"); //$NON-NLS-1$
-	//			CustomLevel customLevel = map.get(osgiLogLevel);
-	//			if (customLevel != null) {
-	//				return customLevel;
-	//			}
-	//			customLevel = new CustomLevel(LOG4J_LEVEL + Math.abs(osgiLogLevel), "Custom(" + osgiLogLevel + ")", //$NON-NLS-1$ //$NON-NLS-2$
-	//					SYSLOG_APPENDER_LOG_USER);
-	//			map.put(osgiLogLevel, customLevel);
-	//			return customLevel;
-	//		}
-	//
-	//		/**
-	//		 * @param level
-	//		 * @param levelStr
-	//		 * @param syslogEquivalent
-	//		 */
-	//		private CustomLevel(final int level, final String levelStr, final int syslogEquivalent) {
-	//			super(level, levelStr, syslogEquivalent);
-	//		}
-	//	}
 
 	private static class ErrorListener implements StatusListener {
 
