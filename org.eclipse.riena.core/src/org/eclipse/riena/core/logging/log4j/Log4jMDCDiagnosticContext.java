@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.log4j.MDC;
+import org.apache.logging.log4j.ThreadContext;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -28,8 +28,7 @@ import org.eclipse.riena.core.util.VariableManagerUtil;
 import org.eclipse.riena.internal.core.Activator;
 
 /**
- * The {@code Log4jMDCDiagnosticContext} is a log4j diagnostic context that uses
- * log4j {@code MDC} class.
+ * The {@code Log4jMDCDiagnosticContext} is a log4j2 diagnostic context that uses log4j2 {@code ThreadContext} class.
  * <p>
  * This diagnostic context can be configured like this:
  * 
@@ -39,16 +38,12 @@ import org.eclipse.riena.internal.core.Activator;
  * &lt;/extension&gt;
  * </pre>
  * 
- * The {@code Log4jMDCDiagnosticContext} is a configurable
- * {@code IExecutableExtension}. The configuration data (the data after the
- * colon ':' in the class attribute) defines the key(s) and value(s) that get
- * pushed to the {@code MDC}. If multiple keys/values should be pushed to the
- * {@code MDC} than they have to be separated by commas.
+ * The {@code Log4jMDCDiagnosticContext} is a configurable {@code IExecutableExtension}. The configuration data (the data after the colon ':' in the class
+ * attribute) defines the key(s) and value(s) that get pushed to the {@code ThreadContext}. If multiple keys/values should be pushed to the
+ * {@code ThreadContext} than they have to be separated by commas.
  * <p>
- * The values can contain variable substitutions which will be resolved by the
- * {@code IStringVariableManager}.<br>
- * If a key is preceded with an asterisk '*' the key will be evaluated each time
- * the diagnostic context will be set; otherwise only once when this class gets
+ * The values can contain variable substitutions which will be resolved by the {@code IStringVariableManager}.<br>
+ * If a key is preceded with an asterisk '*' the key will be evaluated each time the diagnostic context will be set; otherwise only once when this class gets
  * instantiated.
  */
 public class Log4jMDCDiagnosticContext implements ILog4jDiagnosticContext, IExecutableExtension {
@@ -58,11 +53,11 @@ public class Log4jMDCDiagnosticContext implements ILog4jDiagnosticContext, IExec
 
 	public void push() {
 		for (final Entry<String, String> entry : staticContextInfo.entrySet()) {
-			MDC.put(entry.getKey(), entry.getValue());
+			ThreadContext.put(entry.getKey(), entry.getValue());
 		}
 		for (final Entry<String, String> entry : dynamicContextInfo.entrySet()) {
 			try {
-				MDC.put(entry.getKey(), VariableManagerUtil.substitute(entry.getValue()));
+				ThreadContext.put(entry.getKey(), VariableManagerUtil.substitute(entry.getValue()));
 			} catch (final CoreException e) {
 				throw new Log4jMDCDiagnosticContextFailure("Could not perform string substitution for: " //$NON-NLS-1$
 						+ entry.getValue(), e);
@@ -72,15 +67,14 @@ public class Log4jMDCDiagnosticContext implements ILog4jDiagnosticContext, IExec
 
 	public void pop() {
 		for (final String key : staticContextInfo.keySet()) {
-			MDC.remove(key);
+			ThreadContext.remove(key);
 		}
 		for (final String key : dynamicContextInfo.keySet()) {
-			MDC.remove(key);
+			ThreadContext.remove(key);
 		}
 	}
 
-	public void setInitializationData(final IConfigurationElement config, final String propertyName, final Object data)
-			throws CoreException {
+	public void setInitializationData(final IConfigurationElement config, final String propertyName, final Object data) throws CoreException {
 		try {
 			for (final Entry<String, String> entry : PropertiesUtils.asMap(data, new String[] {}).entrySet()) {
 				final String key = entry.getKey();

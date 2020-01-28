@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.core.logging.log4j;
 
-import org.apache.log4j.MDC;
+import org.apache.logging.log4j.ThreadContext;
 
 import org.eclipse.core.runtime.CoreException;
 
@@ -24,33 +24,33 @@ import org.eclipse.riena.core.util.VariableManagerUtil;
 @NonUITestCase
 public class Log4jMDCDiagnosticContextTest extends RienaTestCase {
 
-	private Log4jMDCDiagnosticContext mdc;
+	private Log4jMDCDiagnosticContext diagnosticContext;
 
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		mdc = new Log4jMDCDiagnosticContext();
+		diagnosticContext = new Log4jMDCDiagnosticContext();
 	}
 
 	public void testStaticSubstitution() throws CoreException {
 		VariableManagerUtil.addVariable("userS", "STATIC");
-		mdc.setInitializationData(null, null, "user=${userS}");
-		mdc.push();
-		assertEquals("STATIC", MDC.get("user"));
+		diagnosticContext.setInitializationData(null, null, "user=${userS}");
+		diagnosticContext.push();
+		assertEquals("STATIC", ThreadContext.get("user"));
 		VariableManagerUtil.removeVariable("userS");
 		VariableManagerUtil.addVariable("userS", "STATIC2");
-		mdc.push();
-		assertEquals("STATIC", MDC.get("user"));
+		diagnosticContext.push();
+		assertEquals("STATIC", ThreadContext.get("user"));
 	}
 
 	public void testDynamicSubstitution() throws CoreException {
 		VariableManagerUtil.addVariable("userD", "DYNAMIC");
-		mdc.setInitializationData(null, null, "*user=${userD}");
-		mdc.push();
-		assertEquals("DYNAMIC", MDC.get("user"));
+		diagnosticContext.setInitializationData(null, null, "*user=${userD}");
+		diagnosticContext.push();
+		assertEquals("DYNAMIC", ThreadContext.get("user"));
 		VariableManagerUtil.removeVariable("userD");
 		VariableManagerUtil.addVariable("userD", "MORE_DYNAMIC");
-		mdc.push();
-		assertEquals("MORE_DYNAMIC", MDC.get("user"));
+		diagnosticContext.push();
+		assertEquals("MORE_DYNAMIC", ThreadContext.get("user"));
 	}
 }

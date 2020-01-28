@@ -27,8 +27,8 @@
 <unit id="org.eclipse.nebula.widgets.grid.feature.feature.group" version="1.0.0.201605312033"/>
 <repository location="http://download.eclipse.org/nebula/releases/1.0.0"/>
 </location>
-	<location path="C:\IDES\SCP-NEO\git\de-compeople-scp-targets\de.compeople.scp.targets\repository" type="Directory"/>
 	<location path="${project_loc:org.eclipse.riena.3xtargets}\org.eclipse.riena.target3x\testDestination\" type="Directory"/>
+	<location path="${project_loc:de.compeople.scp.targets}\repository\plugins" type="Directory"/>
 </locations>
 	<includeBundles>
 		<plugin id="com.ibm.icu"/>
@@ -69,8 +69,6 @@
 		<plugin id="org.apache.httpcomponents.httpcore.source"/>
 		<plugin id="org.apache.jasper.glassfish"/>
 		<plugin id="org.apache.jasper.glassfish.source"/>
-		<plugin id="org.apache.log4j"/>
-		<plugin id="org.apache.log4j.source"/>
 		<plugin id="org.apache.mina.core"/>
 		<plugin id="org.apache.mina.core.source"/>
 		<plugin id="org.apache.oro"/>
@@ -164,8 +162,8 @@
 		<plugin id="org.eclipse.equinox.jsp.jasper.registry"/>
 		<plugin id="org.eclipse.equinox.jsp.jasper.registry.source"/>
 		<plugin id="org.eclipse.equinox.jsp.jasper.source"/>
-		<plugin id="org.eclipse.equinox.launcher" version="1.4.0.v20161219-1356"/>
 		<plugin id="org.eclipse.equinox.launcher" version="1.5.400.v20190515-0925"/>
+		<plugin id="org.eclipse.equinox.launcher" version="1.4.0.v20161219-1356"/>
 		<plugin id="org.eclipse.equinox.launcher.gtk.linux.ppc64le"/>
 		<plugin id="org.eclipse.equinox.launcher.source" version="1.4.0.v20161219-1356"/>
 		<plugin id="org.eclipse.equinox.launcher.source" version="1.5.400.v20190515-0925"/>
@@ -281,7 +279,6 @@
 		<plugin id="org.eclipse.help"/>
 		<plugin id="org.eclipse.help.source"/>
 		<plugin id="org.eclipse.jdt.junit.runtime"/>
-		<plugin id="org.eclipse.jdt.junit4.runtime.source"/>
 		<plugin id="org.eclipse.jetty.continuation"/>
 		<plugin id="org.eclipse.jetty.continuation.source"/>
 		<plugin id="org.eclipse.jetty.http"/>
@@ -347,6 +344,8 @@
 		<plugin id="org.w3c.dom.smil"/>
 		<plugin id="org.w3c.dom.svg"/>
 		<plugin id="org.w3c.dom.svg.wiring.patch"/>
-		<plugin id="org.easymock" version="4.1.0"/>
+		<plugin id="org.easymock"/>
+		<plugin id="org.apache.logging.log4j.api" version="2.13.0"/>
+		<plugin id="org.apache.logging.log4j.core" version="2.13.0"/>
 	</includeBundles>
 </target>
