@@ -158,13 +158,6 @@ v1.0
          unpack="false"/>
 
    <plugin
-         id="org.apache.log4j"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.apache.oro"
          download-size="0"
          install-size="0"
@@ -714,5 +707,27 @@ v1.0
          download-size="0"
          install-size="0"
          version="0.0.0"/>
+
+   <plugin
+         id="org.apache.logging.log4j.api"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.logging.log4j.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.riena.core.log4j2.apiconfig"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"
+         unpack="false"/>
 
 </feature>
