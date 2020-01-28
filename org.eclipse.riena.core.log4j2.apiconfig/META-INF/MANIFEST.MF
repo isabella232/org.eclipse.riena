@@ -5,5 +5,4 @@ Bundle-SymbolicName: org.eclipse.riena.core.log4j2.apiconfig
 Bundle-Version: 1.0.0.qualifier
 Fragment-Host: org.apache.logging.log4j.api;bundle-version="2.13.0"
 Automatic-Module-Name: org.eclipse.riena.log4j2.apiconfig
-Bundle-RequiredExecutionEnvironment: JavaSE-11
 DynamicImport-Package: *
