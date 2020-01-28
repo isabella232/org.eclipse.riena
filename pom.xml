@@ -63,6 +63,7 @@
 		<module>org.eclipse.riena.communication.sample.pingpong.common</module>
 		<module>org.eclipse.riena.communication.sample.pingpong.server</module>
 		<module>org.eclipse.riena.core</module>
+		<module>org.eclipse.riena.core.log4j2.apiconfig</module>
 		<module>org.eclipse.riena.demo.client</module>
 		<module>org.eclipse.riena.demo.client.rcp</module>
 		<module>org.eclipse.riena.demo.common</module>
