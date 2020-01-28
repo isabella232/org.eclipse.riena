@@ -6,8 +6,6 @@
 <unit id="org.apache.commons.beanutils" version="1.8.0.v201205091237"/>
 <unit id="org.apache.commons.beanutils.source" version="1.8.0.v201205091237"/>
 <unit id="org.apache.commons.collections" version="3.2.0.v2013030210310"/>
-<unit id="org.apache.log4j" version="1.2.15.v201012070815"/>
-<unit id="org.apache.log4j.source" version="1.2.15.v201012070815"/>
 <unit id="org.apache.oro" version="2.0.8.v201005080400"/>
 <unit id="org.apache.oro.source" version="2.0.8.v201005080400"/>
 <unit id="org.hamcrest.core" version="1.3.0.v201303031735"/>
@@ -28,7 +26,7 @@
 <repository location="http://download.eclipse.org/nebula/releases/1.0.0"/>
 </location>
 	<location path="${project_loc:org.eclipse.riena.3xtargets}\org.eclipse.riena.target3x\testDestination\" type="Directory"/>
-	<location path="${project_loc:de.compeople.scp.targets}\repository\plugins" type="Directory"/>
+	<location path="${project_loc:de-compeople-scp-targets}\de.compeople.scp.targets\repository\plugins" type="Directory"/>
 </locations>
 	<includeBundles>
 		<plugin id="com.ibm.icu"/>
