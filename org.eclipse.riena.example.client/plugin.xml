@@ -1778,7 +1778,7 @@
    </extension>
    <extension point="org.eclipse.riena.core.logListeners">
 		<logListener filter-class="org.eclipse.riena.core.logging.log4j.Log4jLogFilter"
-        	listener-class="org.eclipse.riena.core.logging.log4j.Log4jLogListener"
+        	listener-class="org.eclipse.riena.core.logging.log4j.Log4jLogListener:/log4j.xml"
         	name="Riena Logger (Client)"
         	sync="true"/>
    </extension>
