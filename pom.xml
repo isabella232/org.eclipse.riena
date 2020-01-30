@@ -47,7 +47,6 @@
 		<module>org.eclipse.riena.build.feature.core.sdk</module>
 		<module>org.eclipse.riena.build.feature.samples.sdk</module>
 		<module>org.eclipse.riena.build.feature.sdk</module>
-		<module>org.eclipse.riena.build.p2</module>
 		<module>org.eclipse.riena.build.p2full</module>
 		<module>org.eclipse.riena.client</module>
 		<module>org.eclipse.riena.client.communication</module>
