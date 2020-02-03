@@ -23,7 +23,8 @@ Bundle-ClassPath: batik-bridge-1.11.jar,
  batik-awt-util-1.11.jar,
  xmlgraphics-commons-2.3.jar,
  org.w3c.dom.events_3.0.0.draft20060413_v201105210656.jar,
- org.w3c.dom.smil_1.0.1.v200903091627.jar
+ org.w3c.dom.smil_1.0.1.v200903091627.jar,
+ org.w3c.dom.svg_1.1.0.v201011041433.jar
 Export-Package: org.apache.batik,
  org.apache.batik.anim,
  org.apache.batik.anim.dom,
@@ -123,7 +124,9 @@ Export-Package: org.apache.batik,
  org.apache.xmlgraphics.xmp,
  org.apache.xmlgraphics.xmp.merge,
  org.apache.xmlgraphics.xmp.schemas,
- org.apache.xmlgraphics.xmp.schemas.pdf
+ org.apache.xmlgraphics.xmp.schemas.pdf,
+ org.w3c.dom.events,
+ org.w3c.dom.svg
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Automatic-Module-Name: org.apache.batik
 Import-Package: org.w3c.css.sac
