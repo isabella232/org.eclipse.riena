@@ -6,7 +6,7 @@ Bundle-Version: 6.2.0.qualifier
 Bundle-Activator: org.eclipse.riena.internal.communication.sample.pingpong.client.Activator
 Import-Package: org.osgi.framework;version="1.4.0"
 Require-Bundle: org.eclipse.riena.communication.sample.pingpong.common
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.riena.internal.communication.sample.pingpong.client;x-internal:=true
 Bundle-Vendor: Eclipse.org - Riena

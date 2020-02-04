@@ -9,7 +9,7 @@ Import-Package: com.caucho.hessian.client,
  org.osgi.framework
 Require-Bundle: org.eclipse.riena.communication.core,
  org.eclipse.riena.core
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.riena.communication.factory.hessian.serializer,
  org.eclipse.riena.internal.communication.factory.hessian;x-friends:="org.eclipse.riena.tests",

@@ -29,7 +29,7 @@ Export-Package: org.eclipse.riena.internal.ui.swt;x-friends:="org.eclipse.riena.
  org.eclipse.riena.ui.swt.separator,
  org.eclipse.riena.ui.swt.uiprocess,
  org.eclipse.riena.ui.swt.utils
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Import-Package: junit.framework;version="3.8.2";resolution:=optional,
  org.apache.batik.anim.dom,
  org.apache.batik.bridge,

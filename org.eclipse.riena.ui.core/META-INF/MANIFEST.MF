@@ -12,5 +12,5 @@ Export-Package: org.eclipse.riena.internal.ui.core;x-internal:=true,
  org.eclipse.riena.ui.core.marker,
  org.eclipse.riena.ui.core.resource,
  org.eclipse.riena.ui.core.uiprocess
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Vendor: Eclipse.org - Riena

@@ -13,5 +13,5 @@ Export-Package: org.eclipse.riena.internal.objecttransaction;x-internal:=true,
  org.eclipse.riena.objecttransaction.context,
  org.eclipse.riena.objecttransaction.delta,
  org.eclipse.riena.objecttransaction.state
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Vendor: Eclipse.org - Riena

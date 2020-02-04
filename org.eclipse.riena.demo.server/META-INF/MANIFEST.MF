@@ -7,7 +7,7 @@ Bundle-Activator: org.eclipse.riena.internal.demo.server.Activator
 Require-Bundle: org.eclipse.riena.demo.common,
  org.eclipse.riena.server
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: org.eclipse.riena.demo.server,
  org.eclipse.riena.internal.demo.server;x-internal:=true
 Bundle-Vendor: Eclipse.org - Riena

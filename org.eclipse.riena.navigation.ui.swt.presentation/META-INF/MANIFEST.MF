@@ -11,7 +11,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.riena.ui.swt,
  org.eclipse.riena.ui.ridgets.swt,
  org.eclipse.riena.ui.workarea;bundle-version="6.1.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: org.eclipse.riena.navigation.ui.swt,
  org.eclipse.riena.navigation.ui.swt.presentation.stack.common,
  org.eclipse.riena.navigation.ui.swt.views

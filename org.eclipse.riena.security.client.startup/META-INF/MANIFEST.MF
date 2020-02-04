@@ -8,6 +8,6 @@ Require-Bundle: org.eclipse.riena.core,
  org.eclipse.riena.communication.core,
  org.eclipse.riena.security.common
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: org.eclipse.riena.internal.security.client.startup;x-internal:=true
 Bundle-Vendor: Eclipse.org - Riena

@@ -5,7 +5,7 @@ Bundle-SymbolicName: org.eclipse.riena.communication.sample.pingpong.common
 Bundle-Version: 6.2.0.qualifier
 Eclipse-RegisterBuddy: org.eclipse.riena.communication.core
 Export-Package: org.eclipse.riena.communication.sample.pingpong.common
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.eclipse.riena.communication.core
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: Eclipse.org - Riena

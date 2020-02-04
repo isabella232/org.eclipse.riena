@@ -8,6 +8,6 @@ Bundle-ActivationPolicy: lazy
 Import-Package: org.osgi.framework;version="1.4.0"
 Require-Bundle: org.eclipse.riena.client.communication,
  org.eclipse.riena.communication.sample.pingpong.common
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: org.eclipse.riena.internal.communication.sample.pingpong.client.config;x-internal:=true
 Bundle-Vendor: Eclipse.org - Riena
