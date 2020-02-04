@@ -26,7 +26,7 @@
 <repository location="http://download.eclipse.org/nebula/releases/1.0.0"/>
 </location>
 	<location path="${project_loc:org.eclipse.riena.3xtargets}\org.eclipse.riena.target3x\testDestination\" type="Directory"/>
-	<location path="${project_loc:de-compeople-scp-targets}\de.compeople.scp.targets\repository\plugins" type="Directory"/>
+	<location path="${project_loc:de.compeople.scp.targets}\repository\plugins" type="Directory"/>
 </locations>
 	<includeBundles>
 		<plugin id="com.ibm.icu"/>
