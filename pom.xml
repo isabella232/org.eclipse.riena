@@ -78,7 +78,6 @@
 		<module>org.eclipse.riena.navigation.ui.swt</module>
 		<module>org.eclipse.riena.navigation.ui.swt.3x</module>
 		<module>org.eclipse.riena.navigation.ui.swt.presentation</module>
-		<module>org.eclipse.riena.navigation.ui.swt.rcp</module>
 		<module>org.eclipse.riena.objecttransaction</module>
 		<module>org.eclipse.riena.sample.app.client</module>
 		<module>org.eclipse.riena.sample.app.client.mail</module>
