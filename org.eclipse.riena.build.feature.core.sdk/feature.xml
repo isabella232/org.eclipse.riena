@@ -619,20 +619,6 @@ v1.0
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.riena.navigation.ui.swt.rcp"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.riena.navigation.ui.swt.rcp.source"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.apache.commons.beanutils.source"
          download-size="0"
          install-size="0"
