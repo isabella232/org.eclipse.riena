@@ -341,7 +341,6 @@
 		<plugin id="org.w3c.dom.events"/>
 		<plugin id="org.w3c.dom.smil"/>
 		<plugin id="org.w3c.dom.svg"/>
-		<plugin id="org.w3c.dom.svg.wiring.patch"/>
 		<plugin id="org.easymock"/>
 		<plugin id="org.apache.logging.log4j.api" version="2.13.0"/>
 		<plugin id="org.apache.logging.log4j.core" version="2.13.0"/>
