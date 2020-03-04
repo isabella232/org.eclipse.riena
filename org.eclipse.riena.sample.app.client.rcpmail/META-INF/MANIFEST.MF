@@ -6,6 +6,6 @@ Bundle-Version: 6.2.0.qualifier
 Bundle-Activator: org.eclipse.riena.sample.app.client.rcpmail.Activator
 Bundle-Vendor: Eclipse.org - Riena
 Require-Bundle: org.eclipse.riena.client
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.riena.sample.app.client.rcpmail

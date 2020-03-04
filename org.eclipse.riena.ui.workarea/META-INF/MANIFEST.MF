@@ -8,7 +8,7 @@ Require-Bundle: org.eclipse.riena.core,
  org.eclipse.riena.navigation,
  org.eclipse.riena.ui.core,
  org.eclipse.riena.ui.ridgets
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.riena.internal.ui.workarea;x-internal:=true,
  org.eclipse.riena.internal.ui.workarea.registry;x-internal:=true,

@@ -8,7 +8,7 @@ Bundle-Vendor: Eclipse.org - Riena
 Require-Bundle: org.eclipse.riena.client,
  org.eclipse.riena.sample.app.common
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: org.eclipse.riena.internal.sample.app.client;x-internal:=true,
  org.eclipse.riena.sample.app.client.helloworld.applications,
  org.eclipse.riena.sample.app.client.helloworld.controllers,

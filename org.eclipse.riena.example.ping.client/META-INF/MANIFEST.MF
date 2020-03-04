@@ -7,7 +7,7 @@ Bundle-Activator: org.eclipse.riena.internal.example.ping.client.Activator
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.riena.client;bundle-version="2.1.0"
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: org.eclipse.riena.example.ping.client,
  org.eclipse.riena.example.ping.client.controllers,
  org.eclipse.riena.example.ping.client.model,

@@ -11,11 +11,7 @@ Require-Bundle: org.eclipse.jface;visibility:=reexport,
  org.eclipse.riena.ui.ridgets,
  org.eclipse.swt;visibility:=reexport,
  org.eclipse.ui.workbench;visibility:=reexport,
- com.caucho.hessian;bundle-version="3.2.0",
- org.apache.batik.dom.svg;bundle-version="1.7.0",
- org.apache.batik.transcoder;bundle-version="1.7.0",
- org.apache.batik.util;bundle-version="1.7.0",
- org.apache.batik.bridge;bundle-version="1.7.0"
+ com.caucho.hessian;bundle-version="3.2.0"
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.riena.internal.ui.swt;x-friends:="org.eclipse.riena.navigation.ui.swt",
  org.eclipse.riena.internal.ui.swt.facades;x-friends:="org.eclipse.riena.ui.swt.3x,org.eclipse.riena.ui.swt.e4,org.eclipse.riena.ui.swt.rap",
@@ -33,8 +29,22 @@ Export-Package: org.eclipse.riena.internal.ui.swt;x-friends:="org.eclipse.riena.
  org.eclipse.riena.ui.swt.separator,
  org.eclipse.riena.ui.swt.uiprocess,
  org.eclipse.riena.ui.swt.utils
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Import-Package: junit.framework;version="3.8.2";resolution:=optional,
+ org.apache.batik.anim.dom,
+ org.apache.batik.bridge,
+ org.apache.batik.dom.svg,
+ org.apache.batik.gvt,
+ org.apache.batik.gvt.renderer,
+ org.apache.batik.transcoder,
+ org.apache.batik.transcoder.image,
+ org.apache.batik.transcoder.image.resources,
+ org.apache.batik.transcoder.keys,
+ org.apache.batik.transcoder.print,
+ org.apache.batik.transcoder.svg2svg,
+ org.apache.batik.transcoder.wmf,
+ org.apache.batik.transcoder.wmf.tosvg,
+ org.apache.batik.util,
  org.osgi.service.log;version="1.3.0"
 Eclipse-BuddyPolicy: registered
 Bundle-Vendor: Eclipse.org - Riena

@@ -13,15 +13,17 @@ package org.eclipse.riena.core.logging.log4j;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.core.config.LoggerConfig;
 
 import org.eclipse.osgi.framework.console.CommandInterpreter;
 import org.eclipse.osgi.framework.console.CommandProvider;
 
 /**
- * A {@code LogFilter} where the log level threshold can be set thru its command
- * provider interface.
+ * A {@code LogFilter} where the log level threshold can be set thru its command provider interface.
  */
 public class Log4jCommandProvider implements CommandProvider {
 
@@ -30,46 +32,61 @@ public class Log4jCommandProvider implements CommandProvider {
 	/**
 	 * log4jLevel command. See {@link #getHelp()} for details.
 	 * 
-	 * @param intp
+	 * @param interpreter
 	 */
-	public void _log4jLevel(final CommandInterpreter intp) {
+	public void _log4jLevel(final CommandInterpreter interpreter) {
 
-		final String category = intp.nextArgument();
-		String loglevel = intp.nextArgument();
+		final String category = interpreter.nextArgument();
+		String loglevel = interpreter.nextArgument();
 
-		final String categoryForDisplay = category == null ? ROOT_LOGGER_NAME : category;
-		final Logger logger = category == null || category.equals(ROOT_LOGGER_NAME) ? Logger.getRootLogger() : Logger
-				.getLogger(category);
+		final String effectiveCategory = category == null || category.equals(ROOT_LOGGER_NAME) //
+				? null //
+				: category;
+
+		final String categoryForDisplay = effectiveCategory == null //
+				? ROOT_LOGGER_NAME //
+				: category;
 
 		if (loglevel == null) {
-			intp.println(String.format("LogLevel for %s is %s", categoryForDisplay, getLogLevelString(logger))); //$NON-NLS-1$
+			interpreter.println(String.format("LogLevel for %s is %s", categoryForDisplay, getLogLevelString(effectiveCategory))); //$NON-NLS-1$
 		} else {
 			loglevel = loglevel.toUpperCase();
 			final Level newLevel = Level.toLevel(loglevel);
 			if (newLevel.toString().equals(loglevel)) {
-				logger.setLevel(newLevel);
-				intp.println(String.format("LogLevel for %s set to %s", categoryForDisplay, getLogLevelString(logger))); //$NON-NLS-1$
+				final LoggerContext loggerContext = (LoggerContext) LogManager.getContext();
+
+				final LoggerConfig loggerConfig = effectiveCategory == null // 
+						? loggerContext.getConfiguration().getRootLogger() //
+						: loggerContext.getConfiguration().getLoggerConfig(effectiveCategory);
+
+				loggerConfig.setLevel(newLevel);
+				loggerContext.updateLoggers();
+				interpreter.println(String.format("LogLevel for %s set to %s", categoryForDisplay, getLogLevelString(effectiveCategory))); //$NON-NLS-1$
 			} else {
-				intp.println(String.format("LogLevel for %s is %s (not changed to unknown level %s)", //$NON-NLS-1$
-						categoryForDisplay, getLogLevelString(logger), loglevel));
+				interpreter.println(String.format("LogLevel for %s is %s (not changed to unknown level %s)", //$NON-NLS-1$
+						categoryForDisplay, getLogLevelString(effectiveCategory), loglevel));
 			}
 		}
 	}
 
-	private String getLogLevelString(final Logger logger) {
+	private String getLogLevelString(final String effectiveCategory) {
+		final Logger logger = effectiveCategory == null //
+				? LogManager.getRootLogger() //
+				: LogManager.getLogger(effectiveCategory);
+
 		if (logger == null) {
 			return "OFF"; //$NON-NLS-1$
-		} else if (logger.isEnabledFor(Level.ALL)) {
+		} else if (logger.isEnabled(Level.ALL)) {
 			return "ALL"; //$NON-NLS-1$
-		} else if (logger.isEnabledFor(Level.DEBUG)) {
+		} else if (logger.isEnabled(Level.DEBUG)) {
 			return "DEBUG"; //$NON-NLS-1$
-		} else if (logger.isEnabledFor(Level.INFO)) {
+		} else if (logger.isEnabled(Level.INFO)) {
 			return "INFO"; //$NON-NLS-1$
-		} else if (logger.isEnabledFor(Level.WARN)) {
+		} else if (logger.isEnabled(Level.WARN)) {
 			return "WARN"; //$NON-NLS-1$
-		} else if (logger.isEnabledFor(Level.ERROR)) {
+		} else if (logger.isEnabled(Level.ERROR)) {
 			return "ERROR"; //$NON-NLS-1$
-		} else if (logger.isEnabledFor(Level.OFF)) {
+		} else if (logger.isEnabled(Level.OFF)) {
 			return "OFF"; //$NON-NLS-1$
 		}
 		return "UNKNOWN"; //$NON-NLS-1$

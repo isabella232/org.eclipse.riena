@@ -18,8 +18,6 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import junit.framework.TestCase;
-
 import org.easymock.EasyMock;
 
 import org.eclipse.swt.graphics.DeviceData;
@@ -31,6 +29,8 @@ import org.eclipse.riena.core.test.RienaTestCase;
 import org.eclipse.riena.core.test.collect.UITestCase;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.ui.swt.uiprocess.SwtUISynchronizer;
+
+import junit.framework.TestCase;
 
 /**
  * {@link TestCase} for {@link SwtUISynchronizer}
@@ -293,7 +293,7 @@ public class SwtUISynchronizerTest extends RienaTestCase {
 				return true;
 			}
 		};
-		synchronizer.syncExec(EasyMock.createNiceMock(Runnable.class));
+		synchronizer.syncExec((Runnable) EasyMock.createNiceMock(Runnable.class));
 		assertEquals(1, mockDisplay.syncExecCalls);
 		assertEquals(0, mockDisplay.asyncExecCalls);
 
@@ -312,7 +312,7 @@ public class SwtUISynchronizerTest extends RienaTestCase {
 				return true;
 			}
 		};
-		synchronizer.asyncExec(EasyMock.createNiceMock(Runnable.class));
+		synchronizer.asyncExec((Runnable) EasyMock.createNiceMock(Runnable.class));
 		assertEquals(0, mockDisplay.syncExecCalls);
 		assertEquals(1, mockDisplay.asyncExecCalls);
 	}

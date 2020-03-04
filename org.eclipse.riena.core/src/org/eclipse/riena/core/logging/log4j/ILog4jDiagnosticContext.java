@@ -11,18 +11,17 @@
 package org.eclipse.riena.core.logging.log4j;
 
 /**
- * Implementations of {@code ILog4jDiagnosticContext} allow to set diagnostic
- * context information for the log4j logging.
+ * Implementations of {@code ILog4jDiagnosticContext} allow to set diagnostic context information for the log4j2 logging.
  */
 public interface ILog4jDiagnosticContext {
 
 	/**
-	 * Called just before the log4j logging is called.
+	 * Called just before the log4j2 logging is called.
 	 */
 	void push();
 
 	/**
-	 * Called right after the log4j logging is called.
+	 * Called right after the log4j2 logging is called.
 	 */
 	void pop();
 }

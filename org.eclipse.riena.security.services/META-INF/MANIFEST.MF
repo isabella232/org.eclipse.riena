@@ -8,7 +8,7 @@ Require-Bundle: org.eclipse.riena.core,
  org.eclipse.riena.security.common,
  org.eclipse.riena.security.server
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Import-Package: org.eclipse.equinox.security.auth;version="1.0.0"
 Export-Package: org.eclipse.riena.internal.security.authenticationservice;x-internal:=true,
  org.eclipse.riena.internal.security.authorizationservice;x-friends:="org.eclipse.riena.tests",

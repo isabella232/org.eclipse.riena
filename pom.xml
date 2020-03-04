@@ -18,7 +18,7 @@
 	<repositories>
 		<repository>
 			<id>local_p2_repo</id>
-			<url>file:///${project.basedir}/../../3xtargets/org.eclipse.riena.target3x/rcp</url>
+			<url>file:///${project.basedir}/../../3xtargets/org.eclipse.riena.target3x/testDestination</url>
 			<layout>p2</layout>
 		</repository>
 		<repository>
@@ -41,12 +41,12 @@
 	<modules>
 		<module>com.caucho.hessian</module>
 		<module>org.eclipse.riena.beans.common</module>
+		<module>org.apache.batik</module>
 		<module>org.eclipse.riena.build.externals.feature</module>
 		<module>org.eclipse.riena.build.feature</module>
 		<module>org.eclipse.riena.build.feature.core.sdk</module>
 		<module>org.eclipse.riena.build.feature.samples.sdk</module>
 		<module>org.eclipse.riena.build.feature.sdk</module>
-		<module>org.eclipse.riena.build.p2</module>
 		<module>org.eclipse.riena.build.p2full</module>
 		<module>org.eclipse.riena.client</module>
 		<module>org.eclipse.riena.client.communication</module>
@@ -62,6 +62,7 @@
 		<module>org.eclipse.riena.communication.sample.pingpong.common</module>
 		<module>org.eclipse.riena.communication.sample.pingpong.server</module>
 		<module>org.eclipse.riena.core</module>
+		<module>org.eclipse.riena.core.log4j2.apiconfig</module>
 		<module>org.eclipse.riena.demo.client</module>
 		<module>org.eclipse.riena.demo.client.rcp</module>
 		<module>org.eclipse.riena.demo.common</module>
@@ -77,7 +78,6 @@
 		<module>org.eclipse.riena.navigation.ui.swt</module>
 		<module>org.eclipse.riena.navigation.ui.swt.3x</module>
 		<module>org.eclipse.riena.navigation.ui.swt.presentation</module>
-		<module>org.eclipse.riena.navigation.ui.swt.rcp</module>
 		<module>org.eclipse.riena.objecttransaction</module>
 		<module>org.eclipse.riena.sample.app.client</module>
 		<module>org.eclipse.riena.sample.app.client.mail</module>
@@ -142,26 +142,6 @@
 						</environment>
 					</environments>
 					<filters>
-						<!-- Work around Equinox bug 348045. -->
-						<filter>
-							<type>p2-installable-unit</type>
-							<id>org.eclipse.equinox.servletbridge.extensionbundle</id>
-							<removeAll />
-						</filter>
-						<filter>
-							<type>eclipse-plugin</type>
-							<id>javax.servlet</id>
-							<restrictTo>
-								<versionRange>[2.3.0,3.1.0)</versionRange>
-							</restrictTo>
-						</filter>
-						<filter>
-							<type>eclipse-plugin</type>
-							<id>javax.servlet.source</id>
-							<restrictTo>
-								<versionRange>[2.3.0,3.1.0)</versionRange>
-							</restrictTo>
-						</filter>
 						<!-- SWT -->
 						<filter>
 							<type>eclipse-plugin</type>
@@ -198,7 +178,7 @@
 								<versionRange>[3.103.0,3.104.0]</versionRange>
 							</restrictTo>
 						</filter>
-						<!-- Core.Databinding -->
+						<!-- Core.Databinding used by workbench -->
 						<filter>
 							<type>eclipse-plugin</type>
 							<id>org.eclipse.core.databinding.source</id>
@@ -253,91 +233,6 @@
 							<id>org.eclipse.core.databinding</id>
 							<restrictTo>
 								<versionRange>[1.4.1,1.4.2]</versionRange>
-							</restrictTo>
-						</filter>
-						<!-- Batik  -->
-						<filter>
-							<type>eclipse-plugin</type>
-							<id>org.apache.batik.dom</id>
-							<restrictTo>
-								<versionRange>[1.7.0,1.8.0]</versionRange>
-							</restrictTo>
-						</filter>
-						<filter>
-							<type>eclipse-plugin</type>
-							<id>org.apache.batik.parser</id>
-							<restrictTo>
-								<versionRange>[1.7.0,1.8.0]</versionRange>
-							</restrictTo>
-						</filter>
-						<filter>
-							<type>eclipse-plugin</type>
-							<id>org.apache.batik.dom.svg</id>
-							<restrictTo>
-								<versionRange>[1.7.0,1.8.0]</versionRange>
-							</restrictTo>
-						</filter>
-						<filter>
-							<type>eclipse-plugin</type>
-							<id>org.apache.batik.svggen</id>
-							<restrictTo>
-								<versionRange>[1.7.0,1.8.0]</versionRange>
-							</restrictTo>
-						</filter>
-						<filter>
-							<type>eclipse-plugin</type>
-							<id>org.apache.batik.transcoder</id>
-							<restrictTo>
-								<versionRange>[1.7.0,1.8.0]</versionRange>
-							</restrictTo>
-						</filter>
-						<filter>
-							<type>eclipse-plugin</type>
-							<id>org.apache.batik.util.gui</id>
-							<restrictTo>
-								<versionRange>[1.7.0,1.8.0]</versionRange>
-							</restrictTo>
-						</filter>
-						<filter>
-							<type>eclipse-plugin</type>
-							<id>org.apache.batik.ext.awt</id>
-							<restrictTo>
-								<versionRange>[1.7.0,1.8.0]</versionRange>
-							</restrictTo>
-						</filter>
-						<filter>
-							<type>eclipse-plugin</type>
-							<id>org.apache.batik.xml</id>
-							<restrictTo>
-								<versionRange>[1.7.0,1.8.0]</versionRange>
-							</restrictTo>
-						</filter>
-						<filter>
-							<type>eclipse-plugin</type>
-							<id>org.apache.batik.extension</id>
-							<restrictTo>
-								<versionRange>[1.7.0,1.8.0]</versionRange>
-							</restrictTo>
-						</filter>
-						<filter>
-							<type>eclipse-plugin</type>
-							<id>org.apache.batik.util</id>
-							<restrictTo>
-								<versionRange>[1.7.0,1.8.0]</versionRange>
-							</restrictTo>
-						</filter>
-						<filter>
-							<type>eclipse-plugin</type>
-							<id>org.apache.batik.bridge</id>
-							<restrictTo>
-								<versionRange>[1.7.0,1.8.0]</versionRange>
-							</restrictTo>
-						</filter>
-						<filter>
-							<type>eclipse-plugin</type>
-							<id>org.apache.batik.css</id>
-							<restrictTo>
-								<versionRange>[1.7.0,1.8.0]</versionRange>
 							</restrictTo>
 						</filter>
 					</filters>

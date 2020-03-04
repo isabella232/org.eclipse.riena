@@ -7,7 +7,7 @@ Require-Bundle: org.eclipse.riena.communication.sample.pingpong.common,
  org.eclipse.riena.server
 Bundle-Activator: org.eclipse.riena.internal.communication.sample.pingpong.server.Activator
 Import-Package: org.osgi.framework;version="1.4.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.riena.internal.communication.sample.pingpong.server;x-internal:=true
 Bundle-Vendor: Eclipse.org - Riena
