@@ -10,8 +10,13 @@
  *******************************************************************************/
 package org.eclipse.riena.core.logging.log4j;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URISyntaxException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URL;
 
 import org.apache.logging.log4j.Level;
@@ -29,10 +34,15 @@ import org.eclipse.core.runtime.ContributorFactoryOSGi;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.equinox.log.ExtendedLogEntry;
 
 import org.eclipse.riena.core.logging.ConsoleLogger;
+import org.eclipse.riena.core.util.IOUtils;
+import org.eclipse.riena.core.util.VariableManagerUtil;
 import org.eclipse.riena.core.wire.InjectExtension;
+import org.eclipse.riena.internal.core.Activator;
 import org.eclipse.riena.internal.core.logging.log4j.ILog4jDiagnosticContextExtension;
 import org.eclipse.riena.internal.core.logging.log4j.ILog4jLogListenerConfigurationExtension;
 
@@ -184,19 +194,44 @@ public class Log4jLogListener implements LogListener, IExecutableExtension {
 		}
 	}
 
-	protected void configure(final URL url) {
+	protected void configure(final URL url) throws CoreException {
 		final ErrorListener listener = new ErrorListener();
 		StatusLogger.getLogger().registerListener(listener);
 		try {
-			LogManager.getContext(null, false, url.toURI());
+			final File temp = resolveVariables(url);
+			LogManager.getContext(null, false, temp.toURI());
 			if (listener.containsErrors()) {
 				EMERGENCY_LOGGER.error("Initializing logging from '" + url + "' failed because of " + listener.getListedErrors()); //$NON-NLS-1$ //$NON-NLS-2$
 			}
-		} catch (final URISyntaxException e) {
-			EMERGENCY_LOGGER.error("Initializing logging from '" + url + "' failed.", e); //$NON-NLS-1$ //$NON-NLS-2$
+			temp.delete();
+		} catch (final IOException e) {
+			throw new CoreException(new Status(IStatus.ERROR, Activator.getDefault().getBundle().getSymbolicName(),
+					"Could not configure log4j. Initializing logging from " + url + " failed.", e)); //$NON-NLS-1$ //$NON-NLS-2$
+		} catch (final CoreException e) {
+			throw new CoreException(new Status(IStatus.ERROR, Activator.getDefault().getBundle().getSymbolicName(),
+					"Could not configure log4j. Initializing logging from " + url + " failed because string substitution failed.", e)); //$NON-NLS-1$ //$NON-NLS-2$
 		} finally {
 			StatusLogger.getLogger().removeListener(listener);
 		}
+	}
+
+	private File resolveVariables(final URL configuration) throws IOException, CoreException {
+		final String resolvedConfiguration = VariableManagerUtil.substitute(read(configuration.openStream()));
+		return writeToTemporaryFile(resolvedConfiguration);
+	}
+
+	protected String read(final InputStream inputStream) throws IOException {
+		final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		IOUtils.copy(inputStream, outputStream);
+		return outputStream.toString();
+	}
+
+	protected File writeToTemporaryFile(final String content) throws IOException {
+		final File tempFile = File.createTempFile("log4j", null); //$NON-NLS-1$
+		final OutputStream tempOutputStream = new FileOutputStream(tempFile);
+		IOUtils.copy(new ByteArrayInputStream(content.getBytes()), tempOutputStream);
+		tempFile.deleteOnExit();
+		return tempFile;
 	}
 
 	private static class ErrorListener implements StatusListener {
