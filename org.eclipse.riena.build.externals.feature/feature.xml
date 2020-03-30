@@ -301,14 +301,14 @@ v1.0
          id="org.eclipse.equinox.bidi"
          download-size="0"
          install-size="0"
-         version="1.1.0.v20160728-1031"
+         version="1.2.0.v20190514-1046"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.equinox.bidi.source"
          download-size="0"
          install-size="0"
-         version="1.1.0.v20160728-1031"
+         version="1.2.0.v20190514-1046"
          unpack="false"/>
 
    <plugin
