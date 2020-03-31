@@ -11,7 +11,7 @@
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-surefire-plugin</artifactId>
-				<version>${tycho.version}</version>
+				<version>1.4.0</version>
 				<configuration>
 					<testClass>org.eclipse.riena.AllTests</testClass>
 					<runOrder>alphabetical</runOrder>
