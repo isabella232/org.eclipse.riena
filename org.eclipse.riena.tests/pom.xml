@@ -5,6 +5,7 @@
 
 	<groupId>org.eclipse.riena</groupId>
 	<artifactId>org.eclipse.riena.tests</artifactId>
+	<version>6.2.0-SNAPSHOT</version>
 	<packaging>eclipse-test-plugin</packaging>
 	<build>
 		<plugins>
