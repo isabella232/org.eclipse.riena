@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="batik-codec-1.11.jar"/>
 	<classpathentry exported="true" kind="lib" path="xmlgraphics-commons-2.3.jar"/>
 	<classpathentry exported="true" kind="lib" path="batik-awt-util-1.11.jar"/>
 	<classpathentry exported="true" kind="lib" path="batik-script-1.11.jar"/>
