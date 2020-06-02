@@ -18,7 +18,6 @@ import org.osgi.framework.Bundle;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.graphics.Rectangle;
 
 import org.eclipse.riena.core.test.RienaTestCase;
@@ -343,58 +342,6 @@ public class ImageStoreTest extends RienaTestCase {
 
 		final ImageDescriptor image = store.getImageDescriptor("noImage", IconSize.A16);
 		assertEquals(null, image);
-	}
-
-	/**
-	 * Tests the <i>private</i> method {@code getFullSvgName}.
-	 * 
-	 * @throws Exception
-	 *             handled by JUnit
-	 */
-	public void testCreateSvgImage() throws Exception {
-
-		final ImageStore store = ImageStore.getInstance();
-
-		String name = null;
-		IconSize size = null;
-		Image image = ReflectionUtils.invokeHidden(store, "createSvgImage", name, size); //$NON-NLS-1$
-		assertNull(image);
-
-		name = "blaBla"; //$NON-NLS-1$
-		size = IconSize.A16;
-		image = ReflectionUtils.invokeHidden(store, "createSvgImage", name, size); //$NON-NLS-1$
-		assertNull(image);
-
-		name = "cloud"; //$NON-NLS-1$
-		size = IconSize.A16;
-		name = ReflectionUtils.invokeHidden(store, "getFullSvgName", name); //$NON-NLS-1$
-		image = ReflectionUtils.invokeHidden(store, "createSvgImage", name, size); //$NON-NLS-1$
-		assertNotNull(image);
-		int w = SwtUtilities.convertXToDpi(size.getWidth());
-		int h = SwtUtilities.convertYToDpi(size.getHeight());
-		assertEquals(w, image.getImageData().width);
-		assertEquals(h, image.getImageData().height);
-		if (!SwtUtilities.isDpiScalingEnabled()) {
-			final int pixelValue = image.getImageData().getPixel(0, 6);
-			final RGB rgb = image.getImageData().palette.getRGB(pixelValue);
-			assertEquals(new RGB(73, 83, 85), rgb);
-		}
-
-		name = "cloud"; //$NON-NLS-1$
-		size = IconSize.C32;
-		name = ReflectionUtils.invokeHidden(store, "getFullSvgName", name); //$NON-NLS-1$
-		image = ReflectionUtils.invokeHidden(store, "createSvgImage", name, size); //$NON-NLS-1$
-		assertNotNull(image);
-		w = SwtUtilities.convertXToDpi(size.getWidth());
-		h = SwtUtilities.convertYToDpi(size.getHeight());
-		assertEquals(w, image.getImageData().width);
-		assertEquals(h, image.getImageData().height);
-		if (!SwtUtilities.isDpiScalingEnabled()) {
-			final int pixelValue = image.getImageData().getPixel(0, 15);
-			final RGB rgb = image.getImageData().palette.getRGB(pixelValue);
-			assertEquals(new RGB(33, 34, 32), rgb);
-		}
-
 	}
 
 	/**
