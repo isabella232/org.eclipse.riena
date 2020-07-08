@@ -28,7 +28,7 @@
 		</repository>
 		<repository>
 			<id>orbit_p2_repo</id>
-			<url>http://download.eclipse.org/tools/orbit/downloads/drops/R20140525021250/repository</url>
+			<url>https://archive.eclipse.org/tools/orbit/downloads/drops/R20140525021250/repository</url>
 			<layout>p2</layout>
 		</repository>
 		<repository>
