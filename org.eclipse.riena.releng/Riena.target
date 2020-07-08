@@ -14,7 +14,7 @@
 <unit id="org.junit.source" version="4.11.0.v201303080030"/>
 <unit id="org.pushingpixels.trident" version="1.2.0.v201305152020"/>
 <unit id="org.pushingpixels.trident.source" version="1.2.0.v201305152020"/>
-<repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20140525021250/repository/"/>
+<repository location="https://archive.eclipse.org/tools/orbit/downloads/drops/R20140525021250/repository/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.equinox.executable.feature.group" version="3.7.2.v20171108-1834"/>
