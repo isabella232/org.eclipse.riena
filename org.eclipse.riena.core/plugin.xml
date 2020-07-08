@@ -31,6 +31,10 @@
 		 <diagnosticContext class="org.eclipse.riena.core.logging.log4j.Log4jMDCDiagnosticContext:key=${riena.user.name}@${riena.host.name}" />
          -->
    </extension>
+   <extension point="org.eclipse.riena.core.log4jConfiguration">
+   		 <!-- This extension point will be ignored by the Log4jLogListener. However, it is neccessary to trigger the update() method in the listener. -->
+ 	     <configuration location=""/>
+   </extension>
    
    <extension
          point="org.eclipse.riena.core.logCatchers">
@@ -39,6 +43,7 @@
          <logCatcher name="Java" class="org.eclipse.riena.core.logging.JavaLogCatcher"/>
          -->
    </extension>
+   
    <extension
          point="org.eclipse.riena.core.exceptionHandlers">
       <exceptionHandler
