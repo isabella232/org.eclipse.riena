@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Batik
 Bundle-SymbolicName: org.apache.batik
-Bundle-Version: 1.11.0
+Bundle-Version: 1.11.1
 Bundle-ClassPath: batik-bridge-1.11.jar,
  batik-css-1.11.jar,
  batik-dom-1.11.jar,
