@@ -39,8 +39,9 @@ Export-Package: org.eclipse.riena.core,
 Require-Bundle: org.eclipse.core.runtime;visibility:=reexport,
  org.eclipse.core.variables;visibility:=reexport,
  org.junit;bundle-version="4.10.0";resolution:=optional;visibility:=reexport,
- org.easymock,
- org.apache.logging.log4j.api;bundle-version="2.13.0",
- org.apache.logging.log4j.core;bundle-version="2.13.0"
+ org.easymock
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Vendor: Eclipse.org - Riena
+Bundle-ClassPath: .,
+ lib/log4j-api-2.13.0.jar,
+ lib/log4j-core-2.13.0.jar
