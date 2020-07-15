@@ -10,20 +10,23 @@
  *******************************************************************************/
 package org.eclipse.riena.core;
 
+import java.lang.reflect.Proxy;
+
 import org.osgi.framework.Bundle;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceReference;
+import org.osgi.service.log.LogLevel;
 import org.osgi.service.log.LoggerConsumer;
 
 import org.eclipse.equinox.log.Logger;
 
 import org.eclipse.riena.core.logging.ConsoleLogger;
+import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.logging.LoggerProvider;
 
 /**
  * Gets a logger ({@code Logger}) from the {@code IRienaActivator}. <br>
- * <b>Note: </b> The recommended pattern for classes within bundles where their
- * activator is an instance of {@code IRienaActivator} is: <br>
+ * <b>Note: </b> The recommended pattern for classes within bundles where their activator is an instance of {@code IRienaActivator} is: <br>
  * <code>
  * 	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), This.class);
  * </code>
@@ -37,12 +40,9 @@ public final class Log4r {
 	/**
 	 * Get a {@code Logger} for class {@code clazz}.
 	 * <p>
-	 * If this is called in an OSGi context this method will return the
-	 * {@code Logger} of the Riena framework. Otherwise if the boolean system
-	 * property {@code LoggerMill.RIENA_DEFAULT_LOGGING} is {@code true} a
-	 * simple {@code Logger} that writes to the console will be returned. If the
-	 * system property is {@code false} a <i>null</i> logger that does nothing
-	 * will be returned.
+	 * If this is called in an OSGi context this method will return the {@code Logger} of the Riena framework. Otherwise if the boolean system property
+	 * {@code LoggerMill.RIENA_DEFAULT_LOGGING} is {@code true} a simple {@code Logger} that writes to the console will be returned. If the system property is
+	 * {@code false} a <i>null</i> logger that does nothing will be returned.
 	 * 
 	 * @param clazz
 	 *            categorizes the logger
@@ -51,7 +51,7 @@ public final class Log4r {
 	public static Logger getLogger(final Class<?> clazz) {
 		final Bundle bundle = FrameworkUtil.getBundle(clazz);
 		if (bundle != null) {
-			return LoggerProvider.instance().getLogger(clazz);
+			return tweakLogger(LoggerProvider.instance().getLogger(clazz));
 		}
 		return getEmergencyLogger(clazz.getName());
 	}
@@ -59,24 +59,19 @@ public final class Log4r {
 	/**
 	 * Get a {@code Logger} for class {@code clazz}.
 	 * <p>
-	 * <b>Note: </b>Consider using {@code Log4r.getLogger(Class<? clazz)}. It is
-	 * functional identical but does not have the dependency to the activator.
+	 * <b>Note: </b>Consider using {@code Log4r.getLogger(Class<? clazz)}. It is functional identical but does not have the dependency to the activator.
 	 * 
 	 * @param activator
-	 *            If the activator is NOT {@code null} this method will return
-	 *            the {@code Logger} of the Riena framework. Otherwise if the
-	 *            boolean system property
-	 *            {@code LoggerMill.RIENA_DEFAULT_LOGGING} is {@code true} a
-	 *            simple {@code Logger} that writes to the console will be
-	 *            returned. If the system property is {@code false} a
-	 *            <i>null</i> logger that does nothing will be returned.
+	 *            If the activator is NOT {@code null} this method will return the {@code Logger} of the Riena framework. Otherwise if the boolean system
+	 *            property {@code LoggerMill.RIENA_DEFAULT_LOGGING} is {@code true} a simple {@code Logger} that writes to the console will be returned. If the
+	 *            system property is {@code false} a <i>null</i> logger that does nothing will be returned.
 	 * @param clazz
 	 *            categorizes the logger
 	 * @return the {@code Logger}
 	 */
 	public static Logger getLogger(final IRienaActivator activator, final Class<?> clazz) {
 		if (activator != null) {
-			return LoggerProvider.instance().getLogger(clazz);
+			return tweakLogger(LoggerProvider.instance().getLogger(clazz));
 		}
 		return getEmergencyLogger(clazz.getName());
 	}
@@ -85,22 +80,43 @@ public final class Log4r {
 	 * Get a {@code Logger} for class {@code className}.
 	 * 
 	 * @param activator
-	 *            If the activator is NOT {@code null} this method will return
-	 *            the {@code Logger} of the Riena framework. Otherwise if the
-	 *            boolean system property
-	 *            {@code LoggerMill.RIENA_DEFAULT_LOGGING} is {@code true} a
-	 *            simple {@code Logger} that writes to the console will be
-	 *            returned. If the system property is {@code false} a
-	 *            <i>null</i> logger that does nothing will be returned.
+	 *            If the activator is NOT {@code null} this method will return the {@code Logger} of the Riena framework. Otherwise if the boolean system
+	 *            property {@code LoggerMill.RIENA_DEFAULT_LOGGING} is {@code true} a simple {@code Logger} that writes to the console will be returned. If the
+	 *            system property is {@code false} a <i>null</i> logger that does nothing will be returned.
 	 * @param className
 	 *            categorizes the logger
 	 * @return the {@code Logger}
 	 */
 	public static Logger getLogger(final IRienaActivator activator, final String className) {
 		if (activator != null) {
-			return LoggerProvider.instance().getLogger(className);
+			return tweakLogger(LoggerProvider.instance().getLogger(className));
 		}
 		return getEmergencyLogger(className);
+	}
+
+	/**
+	 * It turned out that the {@code org.eclipse.osgi.internal.log.LoggerImpl} obtained from the {@code org.eclipse.equinox.log.ExtendedLogService} indirectly
+	 * via the {@code org.eclipse.riena.internal.core.logging.LoggerProvider} is created without a {@code LoggerContext}, i.e. {@literal null} and so the
+	 * {@code org.eclipse.osgi.internal.log.LoggerImpl#enabledLevel} field is always WARN. This prevents logging for lower levels.<br>
+	 * This method tries to set this field to TRACE via reflection.
+	 * 
+	 * @param logger
+	 *            logger to tweak
+	 * @return the input logger
+	 */
+	private static Logger tweakLogger(final Logger logger) {
+		try {
+			Proxy.getInvocationHandler(logger);
+			// We have a proxy for deferred log handling, i.e. it will become later a real logger.
+		} catch (final IllegalArgumentException e) {
+			// if getInvocationHandler() fails, we now have hopefully the equinox LoggerImpl.
+			try {
+				ReflectionUtils.setHidden(logger, "enabledLevel", LogLevel.TRACE); //$NON-NLS-1$
+			} catch (final Throwable t) {
+				getEmergencyLogger("TweakingLoggerImpl").error("Tweaking failed.", t); //$NON-NLS-1$ //$NON-NLS-2$
+			}
+		}
+		return logger;
 	}
 
 	// use ConsoleLogger unless the system property specifies otherwise
@@ -124,10 +140,10 @@ public final class Log4r {
 		public void log(final int level, final String message, final Throwable exception) {
 		}
 
-		public void log(final ServiceReference sr, final int level, final String message) {
+		public void log(final ServiceReference<?> sr, final int level, final String message) {
 		}
 
-		public void log(final ServiceReference sr, final int level, final String message, final Throwable exception) {
+		public void log(final ServiceReference<?> sr, final int level, final String message, final Throwable exception) {
 		}
 
 		public void log(final Object context, final int level, final String message) {
@@ -137,173 +153,110 @@ public final class Log4r {
 		}
 
 		public boolean isTraceEnabled() {
-			// TODO Auto-generated method stub
 			return false;
 		}
 
-		public void trace(String message) {
-			// TODO Auto-generated method stub
-			
+		public void trace(final String message) {
 		}
 
-		public void trace(String format, Object arg) {
-			// TODO Auto-generated method stub
-			
+		public void trace(final String format, final Object arg) {
 		}
 
-		public void trace(String format, Object arg1, Object arg2) {
-			// TODO Auto-generated method stub
-			
+		public void trace(final String format, final Object arg1, final Object arg2) {
 		}
 
-		public void trace(String format, Object... arguments) {
-			// TODO Auto-generated method stub
-			
+		public void trace(final String format, final Object... arguments) {
 		}
 
-		public <E extends Exception> void trace(LoggerConsumer<E> consumer) throws E {
-			// TODO Auto-generated method stub
-			
+		public <E extends Exception> void trace(final LoggerConsumer<E> consumer) throws E {
 		}
 
 		public boolean isDebugEnabled() {
-			// TODO Auto-generated method stub
 			return false;
 		}
 
-		public void debug(String message) {
-			// TODO Auto-generated method stub
-			
+		public void debug(final String message) {
 		}
 
-		public void debug(String format, Object arg) {
-			// TODO Auto-generated method stub
-			
+		public void debug(final String format, final Object arg) {
 		}
 
-		public void debug(String format, Object arg1, Object arg2) {
-			// TODO Auto-generated method stub
-			
+		public void debug(final String format, final Object arg1, final Object arg2) {
 		}
 
-		public void debug(String format, Object... arguments) {
-			// TODO Auto-generated method stub
-			
+		public void debug(final String format, final Object... arguments) {
 		}
 
-		public <E extends Exception> void debug(LoggerConsumer<E> consumer) throws E {
-			// TODO Auto-generated method stub
-			
+		public <E extends Exception> void debug(final LoggerConsumer<E> consumer) throws E {
 		}
 
 		public boolean isInfoEnabled() {
-			// TODO Auto-generated method stub
 			return false;
 		}
 
-		public void info(String message) {
-			// TODO Auto-generated method stub
-			
+		public void info(final String message) {
 		}
 
-		public void info(String format, Object arg) {
-			// TODO Auto-generated method stub
-			
+		public void info(final String format, final Object arg) {
 		}
 
-		public void info(String format, Object arg1, Object arg2) {
-			// TODO Auto-generated method stub
-			
+		public void info(final String format, final Object arg1, final Object arg2) {
 		}
 
-		public void info(String format, Object... arguments) {
-			// TODO Auto-generated method stub
-			
+		public void info(final String format, final Object... arguments) {
 		}
 
-		public <E extends Exception> void info(LoggerConsumer<E> consumer) throws E {
-			// TODO Auto-generated method stub
-			
+		public <E extends Exception> void info(final LoggerConsumer<E> consumer) throws E {
 		}
 
 		public boolean isWarnEnabled() {
-			// TODO Auto-generated method stub
 			return false;
 		}
 
-		public void warn(String message) {
-			// TODO Auto-generated method stub
-			
+		public void warn(final String message) {
 		}
 
-		public void warn(String format, Object arg) {
-			// TODO Auto-generated method stub
-			
+		public void warn(final String format, final Object arg) {
 		}
 
-		public void warn(String format, Object arg1, Object arg2) {
-			// TODO Auto-generated method stub
-			
+		public void warn(final String format, final Object arg1, final Object arg2) {
 		}
 
-		public void warn(String format, Object... arguments) {
-			// TODO Auto-generated method stub
-			
+		public void warn(final String format, final Object... arguments) {
 		}
 
-		public <E extends Exception> void warn(LoggerConsumer<E> consumer) throws E {
-			// TODO Auto-generated method stub
-			
+		public <E extends Exception> void warn(final LoggerConsumer<E> consumer) throws E {
 		}
 
 		public boolean isErrorEnabled() {
-			// TODO Auto-generated method stub
 			return false;
 		}
 
-		public void error(String message) {
-			// TODO Auto-generated method stub
-			
+		public void error(final String message) {
 		}
 
-		public void error(String format, Object arg) {
-			// TODO Auto-generated method stub
-			
+		public void error(final String format, final Object arg) {
 		}
 
-		public void error(String format, Object arg1, Object arg2) {
-			// TODO Auto-generated method stub
-			
+		public void error(final String format, final Object arg1, final Object arg2) {
 		}
 
-		public void error(String format, Object... arguments) {
-			// TODO Auto-generated method stub
-			
+		public void error(final String format, final Object... arguments) {
 		}
 
-		public <E extends Exception> void error(LoggerConsumer<E> consumer) throws E {
-			// TODO Auto-generated method stub
-			
+		public <E extends Exception> void error(final LoggerConsumer<E> consumer) throws E {
 		}
 
-		public void audit(String message) {
-			// TODO Auto-generated method stub
-			
+		public void audit(final String message) {
 		}
 
-		public void audit(String format, Object arg) {
-			// TODO Auto-generated method stub
-			
+		public void audit(final String format, final Object arg) {
 		}
 
-		public void audit(String format, Object arg1, Object arg2) {
-			// TODO Auto-generated method stub
-			
+		public void audit(final String format, final Object arg1, final Object arg2) {
 		}
 
-		public void audit(String format, Object... arguments) {
-			// TODO Auto-generated method stub
-			
+		public void audit(final String format, final Object... arguments) {
 		}
 
 	}

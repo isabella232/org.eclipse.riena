@@ -10,18 +10,27 @@
  *******************************************************************************/
 package org.eclipse.riena.core.logging.log4j;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URISyntaxException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URI;
 import java.net.URL;
+import java.util.WeakHashMap;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.spi.LoggerContext;
 import org.apache.logging.log4j.status.StatusData;
 import org.apache.logging.log4j.status.StatusListener;
 import org.apache.logging.log4j.status.StatusLogger;
 
 import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
 import org.osgi.service.log.LogEntry;
 import org.osgi.service.log.LogListener;
 
@@ -29,10 +38,16 @@ import org.eclipse.core.runtime.ContributorFactoryOSGi;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.equinox.log.ExtendedLogEntry;
 
 import org.eclipse.riena.core.logging.ConsoleLogger;
+import org.eclipse.riena.core.util.IOUtils;
+import org.eclipse.riena.core.util.StringUtils;
+import org.eclipse.riena.core.util.VariableManagerUtil;
 import org.eclipse.riena.core.wire.InjectExtension;
+import org.eclipse.riena.internal.core.Activator;
 import org.eclipse.riena.internal.core.logging.log4j.ILog4jDiagnosticContextExtension;
 import org.eclipse.riena.internal.core.logging.log4j.ILog4jLogListenerConfigurationExtension;
 
@@ -50,8 +65,8 @@ import org.eclipse.riena.internal.core.logging.log4j.ILog4jLogListenerConfigurat
  * &lt;/extension&gt;
  * </pre>
  * 
- * Additionally it is possible to contribute multiple Log4j xml configuration files from various bundles and fragments with the extension point
- * "org.eclipse.riena.core.log4jConfiguration", e.g.:
+ * It is possible to omit the log4j configuration (after the colon). This requires that the log4j configuration has to be defined by the extension point
+ * "org.eclipse.riena.core.log4jConfiguration", e.g:
  * 
  * <pre>
  * &lt;extension point=&quot;org.eclipse.riena.core.log4jConfiguration&quot;&gt;
@@ -59,7 +74,11 @@ import org.eclipse.riena.internal.core.logging.log4j.ILog4jLogListenerConfigurat
  * &lt;/extension&gt;
  * </pre>
  * 
- * <b>Note:</b> The logger configuration (log4j.xml) might contain substitution strings, e.g. to specify the target log location of a {@code FileAppender}, e.g.
+ * <b>Note:</b> Although multiple extension points may be contributed only the first valid log4j configuration will be taken. The configuration given by the
+ * definition in the log listener will be applied after the configuration via the extension points.
+ * <p>
+ * 
+ * Additionally, the logger configuration might contain substitution strings, e.g. to specify the target log location of a {@code FileAppender}, e.g.
  * 
  * <pre>
  * &lt;?xml version="1.0" encoding="UTF-8" ?&gt;
@@ -110,8 +129,18 @@ public class Log4jLogListener implements LogListener, IExecutableExtension {
 
 	private ILog4jDiagnosticContext log4jDiagnosticContext;
 
-	public Log4jLogListener() {
-	}
+	/**
+	 * These are the informations retrieved via the {@code #setInitializationData(IConfigurationElement, String, Object)}. <br>
+	 * If given they will be tried to configure after all configurations via the extension points has been made. See
+	 * {@code #update(ILog4jLogListenerConfigurationExtension[])}
+	 */
+	private IConfigurationElement configElement = null;
+	private String configLocation = null;
+
+	/**
+	 * 'Weakly' remember the successful log4j configuration associated with a user friendly string representation of the log4j configuration location.
+	 */
+	private final WeakHashMap<LoggerContext, String> loggerContexts = new WeakHashMap<LoggerContext, String>();
 
 	public void logged(final LogEntry entry) {
 		final ExtendedLogEntry extendedEntry = (ExtendedLogEntry) entry;
@@ -155,48 +184,104 @@ public class Log4jLogListener implements LogListener, IExecutableExtension {
 		}
 	}
 
-	public void setInitializationData(final IConfigurationElement config, final String propertyName, Object data) throws CoreException {
+	public void setInitializationData(final IConfigurationElement configElement, final String propertyName, final Object data) throws CoreException {
 		if (data == null) {
-			data = DEFAULT_CONFIGURATION;
+			this.configElement = configElement;
+			this.configLocation = DEFAULT_CONFIGURATION;
+		} else if (data instanceof String) {
+			this.configElement = configElement;
+			this.configLocation = (String) data;
 		}
-		if (!(data instanceof String)) {
-			return;
-		}
-		configure(config, (String) data);
 	}
 
 	protected void configure(final IConfigurationElement config, final String configuration) throws CoreException {
-		final Bundle bundle = ContributorFactoryOSGi.resolve(config.getContributor());
-		configure(bundle, configuration);
-	}
-
-	protected void configure(final Bundle bundle, final String configuration) throws CoreException {
 		// fetch URL of log4j configuration file using the context of the bundle where the configuration resides
-		// attention: #getResource(String) would not work for fragments. As we know the exact bundle use #getEntry()
-		// instead
+		// attention: #getResource(String) would not work for fragments. As we know the exact bundle use #getEntry() instead
+		final Bundle bundle = ContributorFactoryOSGi.resolve(config.getContributor());
 		final URL url = bundle.getEntry(configuration);
+		final String userFriendlyLocation = userFriendlyConfigurationLocation(bundle, configuration);
 		if (url != null) {
-			configure(url);
+			configure(userFriendlyLocation, url);
 		} else {
-			EMERGENCY_LOGGER.error("Could not find specified log4j configuration '" + configuration //$NON-NLS-1$
-					+ "' within bundle '" //$NON-NLS-1$
-					+ bundle.getSymbolicName() + "'."); //$NON-NLS-1$
+			EMERGENCY_LOGGER.error("Could not find specified log4j configuration '" + userFriendlyLocation + "'."); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 
-	protected void configure(final URL url) {
+	private void configure(final String userFriendlyLocation, final URL url) throws CoreException {
+		EMERGENCY_LOGGER.debug("Trying to configure " + userFriendlyLocation); //$NON-NLS-1$
+		String extendedUserFiendlyLocation = userFriendlyLocation;
+		File resolvedConfiguration = null;
+		try {
+			resolvedConfiguration = resolveVariables(url);
+			extendedUserFiendlyLocation += "(from temporary " + resolvedConfiguration + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+			configure(extendedUserFiendlyLocation, resolvedConfiguration.toURI());
+		} catch (final IOException e) {
+			throw new CoreException(new Status(IStatus.ERROR, Activator.getDefault().getBundle().getSymbolicName(),
+					"Could not configure log4j. Initializing logging from " + extendedUserFiendlyLocation + " failed.", e)); //$NON-NLS-1$ //$NON-NLS-2$
+		} catch (final CoreException e) {
+			throw new CoreException(new Status(IStatus.ERROR, Activator.getDefault().getBundle().getSymbolicName(),
+					"Could not configure log4j. Initializing logging from " + extendedUserFiendlyLocation + " failed because string substitution failed.", e)); //$NON-NLS-1$ //$NON-NLS-2$
+		} finally {
+			if (resolvedConfiguration != null) {
+				resolvedConfiguration.delete();
+			}
+		}
+	}
+
+	private void configure(final String userFriendlyLocation, final URI uri) {
+
 		final ErrorListener listener = new ErrorListener();
 		StatusLogger.getLogger().registerListener(listener);
-		try {
-			LogManager.getContext(null, false, url.toURI());
+		final LoggerContext loggerContext = LogManager.getContext(this.getClass().getClassLoader(), false, uri);
+		StatusLogger.getLogger().removeListener(listener);
+
+		final String alreadyExisting = loggerContexts.get(loggerContext);
+		if (alreadyExisting == null) {
 			if (listener.containsErrors()) {
-				EMERGENCY_LOGGER.error("Initializing logging from '" + url + "' failed because of " + listener.getListedErrors()); //$NON-NLS-1$ //$NON-NLS-2$
+				final String basicErrorMessage = "Initializing logging from '" + userFriendlyLocation + "' failed because of " + listener.getListedErrors(); //$NON-NLS-1$ //$NON-NLS-2$
+				if (loggerContext instanceof AutoCloseable) {
+					try {
+						((AutoCloseable) loggerContext).close();
+						EMERGENCY_LOGGER.error(basicErrorMessage + " but could close it."); //$NON-NLS-1$
+					} catch (final Exception e) {
+						EMERGENCY_LOGGER.error(basicErrorMessage + " but closing failed", e); //$NON-NLS-1$
+					}
+				} else {
+					EMERGENCY_LOGGER.error(basicErrorMessage);
+				}
+			} else {
+				loggerContexts.put(loggerContext, userFriendlyLocation);
+				EMERGENCY_LOGGER.info("Configuring loggin from " + userFriendlyLocation + " succeeded."); //$NON-NLS-1$ //$NON-NLS-2$
 			}
-		} catch (final URISyntaxException e) {
-			EMERGENCY_LOGGER.error("Initializing logging from '" + url + "' failed.", e); //$NON-NLS-1$ //$NON-NLS-2$
-		} finally {
-			StatusLogger.getLogger().removeListener(listener);
+		} else {
+			EMERGENCY_LOGGER.warn("Configuring " + userFriendlyLocation + " is not possible because " + alreadyExisting + " has already been configured."); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
 		}
+	}
+
+	private static String userFriendlyConfigurationLocation(final Bundle bundle, final String configuration) {
+		final String bundleName = bundle.getSymbolicName() != null //
+				? bundle.getSymbolicName() + "-" + bundle.getVersion() // //$NON-NLS-1$
+				: bundle.toString();
+		return bundleName + ":" + configuration; //$NON-NLS-1$
+	}
+
+	private static File resolveVariables(final URL configuration) throws IOException, CoreException {
+		final String resolvedConfiguration = VariableManagerUtil.substitute(read(configuration.openStream()));
+		return writeToTemporaryFile(resolvedConfiguration);
+	}
+
+	protected static String read(final InputStream inputStream) throws IOException {
+		final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		IOUtils.copy(inputStream, outputStream);
+		return outputStream.toString();
+	}
+
+	protected static File writeToTemporaryFile(final String content) throws IOException {
+		final File tempFile = File.createTempFile("log4j", null); //$NON-NLS-1$
+		tempFile.deleteOnExit();
+		final OutputStream tempOutputStream = new FileOutputStream(tempFile);
+		IOUtils.copy(new ByteArrayInputStream(content.getBytes()), tempOutputStream);
+		return tempFile;
 	}
 
 	private static class ErrorListener implements StatusListener {
@@ -205,7 +290,6 @@ public class Log4jLogListener implements LogListener, IExecutableExtension {
 
 		@Override
 		public void close() throws IOException {
-			errors.setLength(0);
 		}
 
 		public boolean containsErrors() {
@@ -218,7 +302,7 @@ public class Log4jLogListener implements LogListener, IExecutableExtension {
 
 		@Override
 		public void log(final StatusData data) {
-			errors.append(" * " + data.getMessage().getFormattedMessage()); //$NON-NLS-1$
+			errors.append(" * " + data.getLevel() + ": " + data.getMessage().getFormattedMessage()); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 
 		@Override
@@ -226,6 +310,12 @@ public class Log4jLogListener implements LogListener, IExecutableExtension {
 			return Level.ERROR;
 		}
 
+		@Override
+		public String toString() {
+			return containsErrors() //
+					? "Errors: " + errors //$NON-NLS-1$ 
+					: "No errors"; //$NON-NLS-1$
+		}
 	}
 
 	/**
@@ -240,7 +330,14 @@ public class Log4jLogListener implements LogListener, IExecutableExtension {
 	@InjectExtension()
 	public void update(final ILog4jLogListenerConfigurationExtension[] extensions) throws CoreException {
 		for (final ILog4jLogListenerConfigurationExtension ext : extensions) {
-			configure(ext.getConfigurationElement(), ext.getLocation());
+			// Ignore the (empty) extension from this bundle. This is only be done to trigger this update method!
+			if (FrameworkUtil.getBundle(Log4jLogListener.class) != ContributorFactoryOSGi.resolve(ext.getConfigurationElement().getContributor())) {
+				configure(ext.getConfigurationElement(), ext.getLocation());
+			}
+		}
+		// And finally try to configure the data from the {@link #setInitializationData(IConfigurationElement, String, Object)}
+		if (configElement != null && !StringUtils.isDeepEmpty(configLocation)) {
+			configure(configElement, configLocation);
 		}
 	}
 
@@ -248,4 +345,5 @@ public class Log4jLogListener implements LogListener, IExecutableExtension {
 	public void update(final ILog4jDiagnosticContextExtension log4jDiagnosticContextExtension) {
 		log4jDiagnosticContext = log4jDiagnosticContextExtension == null ? null : log4jDiagnosticContextExtension.createDiagnosticContext();
 	}
+
 }
