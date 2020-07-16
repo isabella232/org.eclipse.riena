@@ -41,7 +41,6 @@
 	<modules>
 		<module>com.caucho.hessian</module>
 		<module>org.eclipse.riena.beans.common</module>
-		<module>org.apache.batik</module>
 		<module>org.eclipse.riena.build.externals.feature</module>
 		<module>org.eclipse.riena.build.feature</module>
 		<module>org.eclipse.riena.build.feature.core.sdk</module>
