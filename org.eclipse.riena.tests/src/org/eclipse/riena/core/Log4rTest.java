@@ -10,10 +10,14 @@
  *******************************************************************************/
 package org.eclipse.riena.core;
 
+import org.osgi.service.log.LogLevel;
+
 import org.eclipse.equinox.log.Logger;
 
 import org.eclipse.riena.core.test.RienaTestCase;
 import org.eclipse.riena.core.test.collect.NonUITestCase;
+import org.eclipse.riena.core.util.ReflectionFailure;
+import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.tests.Activator;
 
 /**
@@ -98,5 +102,16 @@ public class Log4rTest extends RienaTestCase {
 
 	private boolean isInOsgiDevMode() {
 		return System.getProperty("osgi.dev") != null; //$NON-NLS-1$
+	}
+
+	public void testThatTheTweakedLoggerImplHasTheEnabledLevelFieldSetToTrace() {
+		final Logger logger = Log4r.getLogger(getClass());
+		assertEquals("org.eclipse.osgi.internal.log.LoggerImpl", logger.getClass().getName());
+		try {
+			final LogLevel logLevel = ReflectionUtils.getHidden(logger, "enabledLevel");
+			assertEquals(LogLevel.TRACE, logLevel);
+		} catch (final ReflectionFailure e) {
+			fail("Implementation of Logger has changed. The enabledLevel field is no longer accessible!");
+		}
 	}
 }
