@@ -1488,12 +1488,6 @@ v1.0
          unpack="false"/>
 
    <plugin
-         id="org.apache.batik"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
          id="org.apache.httpcomponents.httpclient"
          download-size="0"
          install-size="0"
@@ -1827,6 +1821,13 @@ v1.0
 
    <plugin
          id="com.sun.jna.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.xmlgraphics.batik"
          download-size="0"
          install-size="0"
          version="0.0.0"

@@ -31,8 +31,7 @@
 	<includeBundles>
 		<plugin id="com.ibm.icu"/>
 		<plugin id="com.ibm.icu.source"/>
-		<plugin id="com.sun.jna" version="4.5.1.v20180403-1933"/>
-		<plugin id="com.sun.jna" version="4.2.1"/>
+		<plugin id="com.sun.jna"/>
 		<plugin id="com.sun.jna.platform"/>
 		<plugin id="com.sun.jna.platform.source"/>
 		<plugin id="com.sun.jna.source"/>
@@ -160,8 +159,8 @@
 		<plugin id="org.eclipse.equinox.jsp.jasper.registry"/>
 		<plugin id="org.eclipse.equinox.jsp.jasper.registry.source"/>
 		<plugin id="org.eclipse.equinox.jsp.jasper.source"/>
-		<plugin id="org.eclipse.equinox.launcher" version="1.5.400.v20190515-0925"/>
 		<plugin id="org.eclipse.equinox.launcher" version="1.4.0.v20161219-1356"/>
+		<plugin id="org.eclipse.equinox.launcher" version="1.5.400.v20190515-0925"/>
 		<plugin id="org.eclipse.equinox.launcher.gtk.linux.ppc64le"/>
 		<plugin id="org.eclipse.equinox.launcher.source" version="1.4.0.v20161219-1356"/>
 		<plugin id="org.eclipse.equinox.launcher.source" version="1.5.400.v20190515-0925"/>
@@ -334,16 +333,16 @@
 		<plugin id="org.pushingpixels.trident.source"/>
 		<plugin id="org.sat4j.core"/>
 		<plugin id="org.sat4j.pb"/>
-		<plugin id="org.slf4j.api" version="1.7.2.v20121108-1250"/>
+		<plugin id="org.slf4j.api"/>
 		<plugin id="org.slf4j.api.source"/>
 		<plugin id="org.tukaani.xz"/>
 		<plugin id="org.w3c.css.sac"/>
 		<plugin id="org.w3c.dom.events"/>
 		<plugin id="org.w3c.dom.smil"/>
 		<plugin id="org.w3c.dom.svg"/>
-		<plugin id="org.w3c.dom.svg.wiring.patch"/>
 		<plugin id="org.easymock"/>
-		<plugin id="org.apache.logging.log4j.api" version="2.13.0"/>
-		<plugin id="org.apache.logging.log4j.core" version="2.13.0"/>
+		<plugin id="org.apache.logging.log4j.api"/>
+		<plugin id="org.apache.logging.log4j.core"/>
+		<plugin id="org.apache.xmlgraphics.batik" version="1.11"/>
 	</includeBundles>
 </target>

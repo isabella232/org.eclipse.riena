@@ -703,12 +703,6 @@ v1.0
          unpack="false"/>
 
    <plugin
-         id="org.apache.batik"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
          id="org.apache.logging.log4j.api"
          download-size="0"
          install-size="0"
@@ -728,6 +722,13 @@ v1.0
          install-size="0"
          version="0.0.0"
          fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.xmlgraphics.batik"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
          unpack="false"/>
 
 </feature>
