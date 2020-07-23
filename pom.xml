@@ -18,7 +18,7 @@
 	<repositories>
 		<repository>
 			<id>local_p2_repo</id>
-			<url>file:///${project.basedir}/../../3xtargets/org.eclipse.riena.target3x/testDestination</url>
+			<url>file:///${project.basedir}/../../org.eclipse.riena.3xtargets/org.eclipse.riena.target3x/testDestination</url>
 			<layout>p2</layout>
 		</repository>
 		<repository>
